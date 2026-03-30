@@ -3,9 +3,11 @@ name: tests
 on:
   pull_request:
     branches:
+      - "master"
       - "19.0*"
   push:
     branches:
+      - "master"
       - "19.0"
       - "19.0-ocabot-*"
 
