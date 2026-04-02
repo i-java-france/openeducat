@@ -1,7 +1,7 @@
-import { patch } from "@web/core/utils/patch";
-import { PivotRenderer } from "@web/views/pivot/pivot_renderer";
+import {patch} from "@web/core/utils/patch";
+import {PivotRenderer} from "@web/views/pivot/pivot_renderer";
 
-import { useEffect, useRef } from "@odoo/owl";
+import {useEffect, useRef} from "@odoo/owl";
 
 patch(PivotRenderer.prototype, {
     setup() {
@@ -10,7 +10,8 @@ patch(PivotRenderer.prototype, {
         if (this.env.isSmall) {
             useEffect(() => {
                 if (this.root.el) {
-                    const tooltipElems = this.root.el.querySelectorAll("*[data-tooltip]");
+                    const tooltipElems =
+                        this.root.el.querySelectorAll("*[data-tooltip]");
                     for (const el of tooltipElems) {
                         el.removeAttribute("data-tooltip");
                         el.removeAttribute("data-tooltip-position");

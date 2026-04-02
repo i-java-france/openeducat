@@ -19,27 +19,27 @@
 ##############################################################################
 
 {
-    'name': 'OpenEduCat ERP',
-    'version': '19.0.1.0',
-    'license': 'LGPL-3',
-    'category': 'Education',
+    "name": "OpenEduCat ERP",
+    "version": "19.0.1.0",
+    "license": "LGPL-3",
+    "category": "Education",
     "sequence": 3,
-    'summary': 'Manage Students, Faculties and Education Institute',
-    'complexity': "easy",
-    'author': 'OpenEduCat Inc',
-    'website': 'https://www.openeducat.org',
-    'depends': [
-        'openeducat_admission',
-        'openeducat_assignment',
-        'openeducat_attendance',
-        'openeducat_library',
-        'openeducat_parent',
-        'openeducat_exam',
+    "summary": "Manage Students, Faculties and Education Institute",
+    "complexity": "easy",
+    "author": "OpenEduCat Inc",
+    "website": "https://www.openeducat.org",
+    "depends": [
+        "openeducat_admission",
+        "openeducat_assignment",
+        "openeducat_attendance",
+        "openeducat_library",
+        "openeducat_parent",
+        "openeducat_exam",
     ],
-    'images': [
-        'static/description/openeducat-erp_banner.jpg',
+    "images": [
+        "static/description/openeducat-erp_banner.jpg",
     ],
-    'installable': True,
-    'auto_install': False,
-    'application': True,
+    "installable": True,
+    "auto_install": False,
+    "application": True,
 }

@@ -26,16 +26,16 @@ class OpDepartment(models.Model):
     _name = "op.department"
     _description = "OpenEduCat Department"
 
-    name = fields.Char('Name', required=True)
-    code = fields.Char('Code', required=True)
-    parent_id = fields.Many2one('op.department', 'Parent Department')
+    name = fields.Char("Name", required=True)
+    code = fields.Char("Code", required=True)
+    parent_id = fields.Many2one("op.department", "Parent Department")
 
     @api.model_create_multi
     def create(self, vals):
-        departments = super(OpDepartment, self).create(vals)
+        departments = super().create(vals)
         if departments:
-            self.env.user.write({'department_ids': [(4, d.id) for d in departments]})
+            self.env.user.write({"department_ids": [(4, d.id) for d in departments]})
         return departments
 
     def copy(self, default=None):
-        raise ValidationError(_('You cannot duplicate a department record.'))
+        raise ValidationError(_("You cannot duplicate a department record."))

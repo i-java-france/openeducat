@@ -24,55 +24,57 @@ from .test_admission_common import TestAdmissionCommon
 
 
 class TestAdmission(TestAdmissionCommon):
-
     def setUp(self):
-        super(TestAdmission, self).setUp()
+        super().setUp()
 
     def test_case_1_admissions(self):
         admissions = self.op_admission.search([])
         self.op_admission._onchange_name()
 
         vals = {
-            'name': 'AHIR',
-            'first_name': 'Nikul',
-            'middle_name': 'M',
-            'last_name': 'Last',
-            'application_number': self.env.ref(
-                'openeducat_admission.seq_op_admission').id,
-            'birth_date': '2002-12-20',
-            'course_id': self.env.ref('openeducat_core.op_course_5').id,
-            'batch_id': self.env.ref('openeducat_core.op_batch_4').id,
-            'phone': 32234234,
-            'mobile': 93432,
-            'email': 'nik.ahir@gmail.com',
-            'state': 'submit',
-            'gender': 'm',
-            'register_id': self.env.ref(
-                'openeducat_admission.op_admission_register_3').id,
-            'image': False
+            "name": "AHIR",
+            "first_name": "Nikul",
+            "middle_name": "M",
+            "last_name": "Last",
+            "application_number": self.env.ref(
+                "openeducat_admission.seq_op_admission"
+            ).id,
+            "birth_date": "2002-12-20",
+            "course_id": self.env.ref("openeducat_core.op_course_5").id,
+            "batch_id": self.env.ref("openeducat_core.op_batch_4").id,
+            "phone": 32234234,
+            "mobile": 93432,
+            "email": "nik.ahir@gmail.com",
+            "state": "submit",
+            "gender": "m",
+            "register_id": self.env.ref(
+                "openeducat_admission.op_admission_register_3"
+            ).id,
+            "image": False,
         }
 
         studnet_1 = self.op_admission.create(vals)
         studnet_1.enroll_student()
 
         vals_2 = {
-            'name': 'Ahir',
-            'first_name': 'Nikul',
-            'middle_name': 'M',
-            'last_name': 'Last',
-            'birth_date': '2002-12-20',
-            'course_id': self.env.ref('openeducat_core.op_course_5').id,
-            'batch_id': self.env.ref('openeducat_core.op_batch_4').id,
-            'phone': 32234234,
-            'mobile': 93432,
-            'email': 'nisak.ahir@gmail.com',
-            'state': 'submit',
-            'gender': 'm',
-            'register_id': self.env.ref(
-                'openeducat_admission.op_admission_register_3').id,
-            'student_id': self.env.ref('openeducat_core.op_student_18').id,
-            'fees_term_id': 2,
-            'fees': 1000,
+            "name": "Ahir",
+            "first_name": "Nikul",
+            "middle_name": "M",
+            "last_name": "Last",
+            "birth_date": "2002-12-20",
+            "course_id": self.env.ref("openeducat_core.op_course_5").id,
+            "batch_id": self.env.ref("openeducat_core.op_batch_4").id,
+            "phone": 32234234,
+            "mobile": 93432,
+            "email": "nisak.ahir@gmail.com",
+            "state": "submit",
+            "gender": "m",
+            "register_id": self.env.ref(
+                "openeducat_admission.op_admission_register_3"
+            ).id,
+            "student_id": self.env.ref("openeducat_core.op_student_18").id,
+            "fees_term_id": 2,
+            "fees": 1000,
         }
 
         studnet_2 = self.op_admission.create(vals_2)
@@ -97,15 +99,14 @@ class TestAdmission(TestAdmissionCommon):
 
 
 class TestAdmissionregister(TestAdmissionCommon):
-
     def setUp(self):
-        super(TestAdmissionregister, self).setUp()
+        super().setUp()
 
     def test_case_1_register(self):
         register = self.op_register.search([])
 
         for registers in register:
-            logging.info('Admission registar Name : %s :' % (registers.name))
+            logging.info("Admission registar Name : %s :" % (registers.name))
 
         register.confirm_register()
         register.set_to_draft()
@@ -118,127 +119,137 @@ class TestAdmissionregister(TestAdmissionCommon):
 
 
 class TestAdmissionAnalysisWizard(TestAdmissionCommon):
-
     def setUp(self):
-        super(TestAdmissionAnalysisWizard, self).setUp()
+        super().setUp()
 
     def test_wizard_admission_analysis(self):
         vals = {
-            'course_id': self.env.ref('openeducat_core.op_course_2').id,
-            'start_date': '2018-01-01',
-            'end_date': '2019-12-30',
+            "course_id": self.env.ref("openeducat_core.op_course_2").id,
+            "start_date": "2018-01-01",
+            "end_date": "2019-12-30",
         }
         admission = self.wizard_admission.create(vals)
         admission.print_report()
 
 
 class TestAdmissionScenarios(TestAdmissionCommon):
-
     def setUp(self):
-        super(TestAdmissionScenarios, self).setUp()
+        super().setUp()
 
     def test_01_admission_workflow(self):
-        """ Test the complete admission state transition workflow """
-        from odoo.exceptions import ValidationError
-        
-        course = self.env.ref('openeducat_core.op_course_1')
-        
-        register = self.op_register.create({
-            'name': 'Test Register 2026',
-            'course_id': course.id,
-            'start_date': '2026-01-01',
-            'end_date': '2026-12-31',
-            'min_count': 1,
-            'max_count': 50,
-        })
+        """Test the complete admission state transition workflow"""
+
+        course = self.env.ref("openeducat_core.op_course_1")
+
+        register = self.op_register.create(
+            {
+                "name": "Test Register 2026",
+                "course_id": course.id,
+                "start_date": "2026-01-01",
+                "end_date": "2026-12-31",
+                "min_count": 1,
+                "max_count": 50,
+            }
+        )
         register.confirm_register()
         register.start_application()
-        self.assertEqual(register.state, 'application')
+        self.assertEqual(register.state, "application")
 
-        admission = self.op_admission.create({
-            'name': 'DOE',
-            'first_name': 'John',
-            'last_name': 'Doe',
-            'birth_date': '2005-01-01',
-            'gender': 'm',
-            'course_id': course.id,
-            'register_id': register.id,
-            'email': 'john.doe@example.com',
-            'state': 'draft',
-        })
-        self.assertEqual(admission.state, 'draft')
+        admission = self.op_admission.create(
+            {
+                "name": "DOE",
+                "first_name": "John",
+                "last_name": "Doe",
+                "birth_date": "2005-01-01",
+                "gender": "m",
+                "course_id": course.id,
+                "register_id": register.id,
+                "email": "john.doe@example.com",
+                "state": "draft",
+            }
+        )
+        self.assertEqual(admission.state, "draft")
 
         admission.submit_form()
-        self.assertEqual(admission.state, 'submit')
-        
+        self.assertEqual(admission.state, "submit")
+
         admission.confirm_in_progress()
-        self.assertEqual(admission.state, 'confirm')
-        
+        self.assertEqual(admission.state, "confirm")
+
         admission.admission_confirm()
-        self.assertEqual(admission.state, 'admission')
+        self.assertEqual(admission.state, "admission")
 
         admission.enroll_student()
-        self.assertEqual(admission.state, 'done')
-        
+        self.assertEqual(admission.state, "done")
+
         self.assertTrue(admission.student_id)
-        self.assertEqual(admission.student_id.first_name, 'John')
+        self.assertEqual(admission.student_id.first_name, "John")
 
     def test_02_register_capacity(self):
-        """ Test admission capacity constraints on the register """
+        """Test admission capacity constraints on the register"""
         from odoo.exceptions import ValidationError
-        
-        course = self.env.ref('openeducat_core.op_course_2')
-        register = self.op_register.create({
-            'name': 'Test Registration Full',
-            'course_id': course.id,
-            'start_date': '2026-01-01',
-            'end_date': '2026-12-31',
-            'min_count': 1,
-            'max_count': 1,
-        })
+
+        course = self.env.ref("openeducat_core.op_course_2")
+        register = self.op_register.create(
+            {
+                "name": "Test Registration Full",
+                "course_id": course.id,
+                "start_date": "2026-01-01",
+                "end_date": "2026-12-31",
+                "min_count": 1,
+                "max_count": 1,
+            }
+        )
         register.confirm_register()
         register.start_application()
 
-        admission1 = self.op_admission.create({
-            'name': 'A',
-            'first_name': 'Test',
-            'last_name': '1',
-            'birth_date': '2005-01-01',
-            'gender': 'm',
-            'course_id': course.id,
-            'register_id': register.id,
-            'email': 't1@example.com',
-        })
+        admission1 = self.op_admission.create(
+            {
+                "name": "A",
+                "first_name": "Test",
+                "last_name": "1",
+                "birth_date": "2005-01-01",
+                "gender": "m",
+                "course_id": course.id,
+                "register_id": register.id,
+                "email": "t1@example.com",
+            }
+        )
         admission1.submit_form()
         admission1.enroll_student()
 
-        admission2 = self.op_admission.create({
-            'name': 'B',
-            'first_name': 'Test',
-            'last_name': '2',
-            'birth_date': '2005-01-01',
-            'gender': 'm',
-            'course_id': course.id,
-            'register_id': register.id,
-            'email': 't2@example.com',
-        })
-        
+        admission2 = self.op_admission.create(
+            {
+                "name": "B",
+                "first_name": "Test",
+                "last_name": "2",
+                "birth_date": "2005-01-01",
+                "gender": "m",
+                "course_id": course.id,
+                "register_id": register.id,
+                "email": "t2@example.com",
+            }
+        )
+
         # Test if an error is raised during over-enrolling
         with self.assertRaises(ValidationError):
             admission2.submit_form()
             admission2.enroll_student()
 
     def test_03_register_invalid_dates(self):
-        """ Test validation when start_date is > end_date """
+        """Test validation when start_date is > end_date"""
         from odoo.exceptions import ValidationError
-        course = self.env.ref('openeducat_core.op_course_3')
-        
+
+        course = self.env.ref("openeducat_core.op_course_3")
+
         with self.assertRaises(ValidationError):
-            self.op_register.create({
-                'name': 'Test Invalid Dates',
-                'course_id': course.id,
-                'start_date': '2026-12-31',
-                'end_date': '2026-01-01',
-                'min_count': 1,
-                'max_count': 50,
-            })
+            self.op_register.create(
+                {
+                    "name": "Test Invalid Dates",
+                    "course_id": course.id,
+                    "start_date": "2026-12-31",
+                    "end_date": "2026-01-01",
+                    "min_count": 1,
+                    "max_count": 50,
+                }
+            )

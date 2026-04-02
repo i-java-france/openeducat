@@ -25,8 +25,9 @@ class OpMediaType(models.Model):
     _name = "op.media.type"
     _description = "Media Type"
 
-    name = fields.Char('Name', size=64, required=True)
-    code = fields.Char('Code', size=64, required=True)
+    name = fields.Char("Name", size=64, required=True)
+    code = fields.Char("Code", size=64, required=True)
 
-    _unique_media_type_code = models.Constraint('unique(code)',
-                                                'Code should be unique per media type!')
+    _unique_media_type_code = models.Constraint(
+        "unique(code)", "Code should be unique per media type!"
+    )

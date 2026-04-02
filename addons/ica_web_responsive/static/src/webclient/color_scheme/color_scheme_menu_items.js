@@ -1,8 +1,8 @@
-import { markup } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
+import {markup} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
 
 export function switchColorSchemeItem(env) {
-    const { setUserColorScheme, userColorScheme } = env.services.color_scheme;
+    const {setUserColorScheme, userColorScheme} = env.services.color_scheme;
     return {
         type: "item",
         id: "color_scheme.switch_theme",

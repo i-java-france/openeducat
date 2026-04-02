@@ -25,5 +25,5 @@ class OpAuthor(models.Model):
     _name = "op.author"
     _description = "Media Author"
 
-    name = fields.Char('Name', size=128, required=True)
-    media_ids = fields.Many2many('op.media', string='Media(s)')
+    name = fields.Char("Name", size=128, required=True)
+    media_ids = fields.Many2many("op.media", string="Media(s)")

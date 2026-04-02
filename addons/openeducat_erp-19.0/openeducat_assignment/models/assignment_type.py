@@ -11,14 +11,17 @@ from odoo import fields, models
 
 
 class GradingAssigmentType(models.Model):
-    _name = 'grading.assignment.type'
+    _name = "grading.assignment.type"
     _description = "Assignment Type"
 
     name = fields.Char(string="Name", required=True)
     code = fields.Char(string="Code", required=True)
-    assign_type = fields.Selection([('sub', 'Subjective'),
-                                    ('attendance', 'Attendance')],
-                                   string='Type', default='sub')
+    assign_type = fields.Selection(
+        [("sub", "Subjective"), ("attendance", "Attendance")],
+        string="Type",
+        default="sub",
+    )
 
     _unique_code = models.Constraint(
-        'unique(code)', "The code must be unique across all assignment types.")
+        "unique(code)", "The code must be unique across all assignment types."
+    )

@@ -13,23 +13,32 @@
     .nav-tabs {
         .nav-link {
             &:not(.active) {
-                background-color: var(--Notebook__link-background-color, #{$o-gray-100});
+                background-color: var(
+                    --Notebook__link-background-color,
+                    #{$o-gray-100}
+                );
                 color: inherit;
 
                 &:hover {
-                    background-color: var(--Notebook__link-background-color--hover, #{$o-gray-200});
+                    background-color: var(
+                        --Notebook__link-background-color--hover,
+                        #{$o-gray-200}
+                    );
                 }
             }
 
             &.active {
-                --#{$prefix}nav-tabs-link-active-color: var(--Notebook__link-color--active, #{$o-brand-odoo});
+                --#{$prefix}nav-tabs-link-active-color: var(
+                    --Notebook__link-color--active,
+                    #{$o-brand-odoo}
+                );
 
                 &::after {
                     position: absolute;
                     inset: -$border-width;
                     height: $border-width * 3;
                     background-color: var(--Notebook__link-border-top-color--active);
-                    content: '';
+                    content: "";
                 }
             }
         }

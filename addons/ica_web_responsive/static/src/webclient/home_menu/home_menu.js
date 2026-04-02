@@ -1,8 +1,8 @@
-import { hasTouch, isIosApp, isMacOS } from "@web/core/browser/feature_detection";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
-import { user } from "@web/core/user";
-import { useService } from "@web/core/utils/hooks";
-import { useSortable } from "@web/core/utils/sortable_owl";
+import {hasTouch, isIosApp, isMacOS} from "@web/core/browser/feature_detection";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
+import {user} from "@web/core/user";
+import {useService} from "@web/core/utils/hooks";
+import {useSortable} from "@web/core/utils/sortable_owl";
 
 import {
     Component,
@@ -18,7 +18,7 @@ class FooterComponent extends Component {
     static template = "ica_web_responsive.HomeMenu.CommandPalette.Footer";
     static props = {
         //prop added by the command palette
-        switchNamespace: { type: Function, optional: true },
+        switchNamespace: {type: Function, optional: true},
     };
 
     setup() {
@@ -34,7 +34,7 @@ class FooterComponent extends Component {
  */
 export class HomeMenu extends Component {
     static template = "ica_web_responsive.HomeMenu";
-    static components = {  };
+    static components = {};
     static props = {
         apps: {
             type: Array,
@@ -63,12 +63,12 @@ export class HomeMenu extends Component {
                         ],
                         optional: true,
                     },
-                    webIconData: { type: String, optional: 1 },
+                    webIconData: {type: String, optional: 1},
                     xmlid: String,
                 },
             },
         },
-        reorderApps: { type: Function },
+        reorderApps: {type: Function},
     };
 
     /**
@@ -129,11 +129,13 @@ export class HomeMenu extends Component {
 
         onPatched(() => {
             if (this.state.focusedIndex !== null && !this.env.isSmall) {
-                const selectedItem = document.querySelector(".o_home_menu .o_menuitem.o_focused");
+                const selectedItem = document.querySelector(
+                    ".o_home_menu .o_menuitem.o_focused"
+                );
                 // When TAB is managed externally the class o_focused disappears.
                 if (selectedItem) {
                     // Center window on the focused item
-                    selectedItem.scrollIntoView({ block: "center" });
+                    selectedItem.scrollIntoView({block: "center"});
                 }
             }
         });
@@ -209,11 +211,15 @@ export class HomeMenu extends Component {
                     newIndex = focusedIndex - 1;
                 } else {
                     newIndex =
-                        focusedIndex + Math.min(lastIndex - focusedIndex, this.maxIconNumber - 1);
+                        focusedIndex +
+                        Math.min(lastIndex - focusedIndex, this.maxIconNumber - 1);
                 }
                 break;
             case "nextColumn":
-                if (focusedIndex === lastIndex || (focusedIndex + 1) % this.maxIconNumber === 0) {
+                if (
+                    focusedIndex === lastIndex ||
+                    (focusedIndex + 1) % this.maxIconNumber === 0
+                ) {
                     // app is the last one on its line
                     newIndex = (currentLine - 1) * this.maxIconNumber;
                 } else {
@@ -237,7 +243,8 @@ export class HomeMenu extends Component {
                 } else {
                     // we go to the next line on the closest column
                     newIndex =
-                        focusedIndex + Math.min(this.maxIconNumber, lastIndex - focusedIndex);
+                        focusedIndex +
+                        Math.min(this.maxIconNumber, lastIndex - focusedIndex);
                 }
                 break;
         }
@@ -252,7 +259,7 @@ export class HomeMenu extends Component {
 
     _focusInput() {
         if (!this.env.isSmall && this.inputRef.el) {
-            this.inputRef.el.focus({ preventScroll: true });
+            this.inputRef.el.focus({preventScroll: true});
         }
     }
 
@@ -269,7 +276,7 @@ export class HomeMenu extends Component {
      * @param {HTMLElement} params.element
      * @param {HTMLElement} params.previous
      */
-    _sortAppDrop({ element, previous }) {
+    _sortAppDrop({element, previous}) {
         const order = this.props.apps.map((app) => app.xmlid);
         const elementId = element.children[0].dataset.menuXmlid;
         const elementIndex = order.indexOf(elementId);
@@ -292,7 +299,7 @@ export class HomeMenu extends Component {
      * @param {Object} params
      * @param {HTMLElement} params.element
      */
-    _sortStart({ element, addClass }) {
+    _sortStart({element, addClass}) {
         addClass(element.children[0], "o_dragged_app");
     }
 
@@ -351,9 +358,11 @@ export class HomeMenu extends Component {
                 this.inputRef.el.value = "";
             }
         };
-        const searchValue = this.compositionStart ? "/" : `/${this.inputRef.el.value.trim()}`;
+        const searchValue = this.compositionStart
+            ? "/"
+            : `/${this.inputRef.el.value.trim()}`;
         this.compositionStart = false;
-        this.command.openMainPalette({ searchValue, FooterComponent }, onClose);
+        this.command.openMainPalette({searchValue, FooterComponent}, onClose);
     }
 
     _onInputBlur() {
@@ -363,7 +372,10 @@ export class HomeMenu extends Component {
         // if we blur search input to focus on body (eg. click on any
         // non-interactive element) restore focus to avoid IME input issue
         setTimeout(() => {
-            if (document.activeElement === document.body && this.ui.activeElement === document) {
+            if (
+                document.activeElement === document.body &&
+                this.ui.activeElement === document
+            ) {
                 this._focusInput();
             }
         }, 0);

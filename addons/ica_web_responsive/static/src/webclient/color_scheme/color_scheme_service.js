@@ -1,9 +1,9 @@
-import { registry } from "@web/core/registry";
-import { browser } from "@web/core/browser/browser";
-import { cookie } from "@web/core/browser/cookie";
-import { user } from "@web/core/user";
+import {registry} from "@web/core/registry";
+import {browser} from "@web/core/browser/browser";
+import {cookie} from "@web/core/browser/cookie";
+import {user} from "@web/core/user";
 
-import { switchColorSchemeItem } from "./color_scheme_menu_items";
+import {switchColorSchemeItem} from "./color_scheme_menu_items";
 
 const serviceRegistry = registry.category("services");
 const userMenuRegistry = registry.category("user_menuitems");
@@ -19,7 +19,7 @@ export function currentColorScheme() {
 export const colorSchemeService = {
     dependencies: ["ui"],
 
-    start(env, { ui }) {
+    start(env, {ui}) {
         userMenuRegistry.add("color_scheme.switch", switchColorSchemeItem);
 
         const setCurrentColorScheme = (scheme) => {

@@ -8,10 +8,10 @@
             }
         }
 
-        th > .o_group_by_menu  > .dropdown-menu {
+        th > .o_group_by_menu > .dropdown-menu {
             .dropdown-item {
                 // caret centered vertically
-                .dropdown-toggle::after{
+                .dropdown-toggle::after {
                     top: 12px;
                 }
 

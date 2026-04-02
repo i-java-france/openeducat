@@ -26,21 +26,26 @@ class OpProgram(models.Model):
     _inherit = "mail.thread"
     _description = "OpenEduCat Program"
 
-    name = fields.Char('Name', required=True, translate=True, tracking=True)
-    code = fields.Char('Code', size=16, required=True, translate=True)
+    name = fields.Char("Name", required=True, translate=True, tracking=True)
+    code = fields.Char("Code", size=16, required=True, translate=True)
     max_unit_load = fields.Float("Maximum Unit Load")
     min_unit_load = fields.Float("Minimum Unit Load")
     department_id = fields.Many2one(
-        'op.department', 'Department',
-        default=lambda self:
-        self.env.user.dept_id and self.env.user.dept_id.id or False)
+        "op.department",
+        "Department",
+        default=lambda self: self.env.user.dept_id
+        and self.env.user.dept_id.id
+        or False,
+    )
     active = fields.Boolean(default=True)
-    image_1920 = fields.Image('Image', attachment=True)
+    image_1920 = fields.Image("Image", attachment=True)
     program_level_id = fields.Many2one(
-        'op.program.level', 'Program Level', required=True)
+        "op.program.level", "Program Level", required=True
+    )
 
-    _unique_program_code = models.Constraint('unique(code)',
-                                             'Code should be unique per program!')
+    _unique_program_code = models.Constraint(
+        "unique(code)", "Code should be unique per program!"
+    )
 
 
 class OpProgramLevel(models.Model):
@@ -48,7 +53,8 @@ class OpProgramLevel(models.Model):
     _inherit = "mail.thread"
     _description = "OpenEduCat Program level"
 
-    name = fields.Char('Name', required=True, translate=True, tracking=True)
+    name = fields.Char("Name", required=True, translate=True, tracking=True)
 
-    _unique_level_name = models.Constraint('unique(name)',
-                                           'Name should be unique per Program level!')
+    _unique_level_name = models.Constraint(
+        "unique(name)", "Name should be unique per Program level!"
+    )

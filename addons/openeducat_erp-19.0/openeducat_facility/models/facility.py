@@ -25,9 +25,10 @@ class OpFacility(models.Model):
     _name = "op.facility"
     _description = "Manage Facility"
 
-    name = fields.Char('Name', size=16, required=True)
-    code = fields.Char('Code', size=16, required=True)
+    name = fields.Char("Name", size=16, required=True)
+    code = fields.Char("Code", size=16, required=True)
     active = fields.Boolean(default=True)
 
-    _unique_facility_code = models.Constraint('unique(code)',
-                                              'Code should be unique per facility!')
+    _unique_facility_code = models.Constraint(
+        "unique(code)", "Code should be unique per facility!"
+    )

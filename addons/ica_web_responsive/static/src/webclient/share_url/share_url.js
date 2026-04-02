@@ -1,8 +1,8 @@
-import { _t } from "@web/core/l10n/translation";
-import { markup } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { browser } from "@web/core/browser/browser";
-import { isDisplayStandalone } from "@web/core/browser/feature_detection";
+import {_t} from "@web/core/l10n/translation";
+import {markup} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {browser} from "@web/core/browser/browser";
+import {isDisplayStandalone} from "@web/core/browser/feature_detection";
 
 export async function shareUrl() {
     await navigator

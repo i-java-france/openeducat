@@ -23,6 +23,6 @@ from odoo.tests import common
 
 class TestFacilityCommon(common.TransactionCase):
     def setUp(self):
-        super(TestFacilityCommon, self).setUp()
-        self.op_facility = self.env['op.facility']
-        self.op_facility_line = self.env['op.facility.line']
+        super().setUp()
+        self.op_facility = self.env["op.facility"]
+        self.op_facility_line = self.env["op.facility.line"]

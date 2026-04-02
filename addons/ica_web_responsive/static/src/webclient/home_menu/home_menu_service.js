@@ -1,16 +1,16 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { user } from "@web/core/user";
-import { Mutex } from "@web/core/utils/concurrency";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { computeAppsAndMenuItems, reorderApps } from "@web/webclient/menus/menu_helpers";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {user} from "@web/core/user";
+import {Mutex} from "@web/core/utils/concurrency";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {computeAppsAndMenuItems, reorderApps} from "@web/webclient/menus/menu_helpers";
 import {
     ControllerNotFoundError,
     standardActionServiceProps,
 } from "@web/webclient/actions/action_service";
-import { HomeMenu } from "./home_menu";
+import {HomeMenu} from "./home_menu";
 
-import { Component, onMounted, onWillUnmount, reactive, xml } from "@odoo/owl";
+import {Component, onMounted, onWillUnmount, reactive, xml} from "@odoo/owl";
 
 export const homeMenuService = {
     dependencies: ["action"],
@@ -22,9 +22,9 @@ export const homeMenuService = {
         });
         const mutex = new Mutex(); // used to protect against concurrent toggling requests
         class HomeMenuAction extends Component {
-            static components = { HomeMenu };
+            static components = {HomeMenu};
             static target = "current";
-            static props = { ...standardActionServiceProps };
+            static props = {...standardActionServiceProps};
             static template = xml`<HomeMenu t-props="homeMenuProps"/>`;
             static displayName = _t("Home");
 
@@ -35,7 +35,9 @@ export const homeMenuService = {
                 useBus(this.env.bus, "MENUS:APP-CHANGED", () => this.render());
             }
             get homeMenuProps() {
-                const homemenuConfig = JSON.parse(user.settings?.homemenu_config || "null");
+                const homemenuConfig = JSON.parse(
+                    user.settings?.homemenu_config || "null"
+                );
                 const apps = reactive(
                     computeAppsAndMenuItems(this.menus.getMenuAsTree("root")).apps
                 );
@@ -48,7 +50,7 @@ export const homeMenuService = {
                 };
             }
             async onMounted() {
-                const { breadcrumbs } = this.env.config;
+                const {breadcrumbs} = this.env.config;
                 state.hasHomeMenu = true;
                 state.hasBackgroundAction = breadcrumbs.length > 0;
                 this.env.bus.trigger("HOME-MENU:TOGGLED");

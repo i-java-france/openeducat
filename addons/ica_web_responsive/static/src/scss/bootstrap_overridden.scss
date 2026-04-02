@@ -12,7 +12,6 @@ $dark: $o-gray-900 !default;
 $warning: #e99d00 !default;
 $danger: #d44c59 !default;
 
-
 // Options
 
 // Enable predefined decorative box-shadow styles on various components.
@@ -62,7 +61,7 @@ $btn-focus-box-shadow: 0 !default;
 //
 // Dropdown menu container and contents.
 
-$dropdown-box-shadow: 0 .3rem 1rem rgba(#000, .1) !default;
+$dropdown-box-shadow: 0 0.3rem 1rem rgba(#000, 0.1) !default;
 
 // Forms
 //
@@ -102,7 +101,6 @@ $nav-link-color: $o-main-text-color !default;
 $nav-tabs-link-active-color: $o-main-headings-color !default;
 $nav-tabs-link-active-bg: transparent !default;
 
-
 // Badges
 
 $badge-border-radius: $o-border-radius !default;
@@ -124,11 +122,9 @@ $list-group-active-color: $o-enterprise-action-color !default;
 $list-group-active-bg: $component-active-bg !default;
 $list-group-active-border-color: $o-enterprise-action-color !default;
 
-
 // Image thumbnails
 
 $thumbnail-box-shadow: 0 !default;
-
 
 // Breadcrumbs
 

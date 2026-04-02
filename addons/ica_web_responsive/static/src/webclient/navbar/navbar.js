@@ -1,7 +1,7 @@
-import { NavBar } from "@web/webclient/navbar/navbar";
-import { useService, useBus } from "@web/core/utils/hooks";
-import { _t } from "@web/core/l10n/translation";
-import { useEffect, useRef } from "@odoo/owl";
+import {NavBar} from "@web/webclient/navbar/navbar";
+import {useService, useBus} from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
+import {useEffect, useRef} from "@odoo/owl";
 
 export class EnterpriseNavBar extends NavBar {
     static template = "ica_web_responsive.EnterpriseNavBar";
@@ -31,14 +31,19 @@ export class EnterpriseNavBar extends NavBar {
     }
     _updateMenuAppsIcon() {
         const menuAppsEl = this.menuAppsRef.el;
-        menuAppsEl.classList.toggle("o_hidden", !this.isInApp && !this.hasBackgroundAction);
+        menuAppsEl.classList.toggle(
+            "o_hidden",
+            !this.isInApp && !this.hasBackgroundAction
+        );
         menuAppsEl.classList.toggle(
             "o_menu_toggle_back",
             !this.isInApp && this.hasBackgroundAction
         );
         if (!this.isScopedApp) {
             const title =
-                !this.isInApp && this.hasBackgroundAction ? _t("Previous view") : _t("Home menu");
+                !this.isInApp && this.hasBackgroundAction
+                    ? _t("Previous view")
+                    : _t("Home menu");
             menuAppsEl.title = title;
             menuAppsEl.ariaLabel = title;
         }

@@ -1,5 +1,5 @@
-import { startWebClient } from "@web/start";
-import { WebClientEnterprise } from "./webclient/webclient";
+import {startWebClient} from "@web/start";
+import {WebClientEnterprise} from "./webclient/webclient";
 
 /**
  * This file starts the enterprise webclient. In the manifest, it replaces

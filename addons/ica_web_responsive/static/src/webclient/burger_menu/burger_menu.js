@@ -1,6 +1,6 @@
-import { BurgerMenu } from "@web/webclient/burger_menu/burger_menu";
-import { useService } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
+import {BurgerMenu} from "@web/webclient/burger_menu/burger_menu";
+import {useService} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
 
 export class EnterpriseBurgerMenu extends BurgerMenu {
     setup() {
@@ -17,4 +17,6 @@ const systrayItem = {
     Component: EnterpriseBurgerMenu,
 };
 
-registry.category("systray").add("burger_menu", systrayItem, { sequence: 0, force: true });
+registry
+    .category("systray")
+    .add("burger_menu", systrayItem, {sequence: 0, force: true});

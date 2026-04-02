@@ -19,30 +19,27 @@
 ###############################################################################
 
 {
-    'name': 'OpenEduCat Classroom',
-    'version': '19.0.1.0',
-    'license': 'LGPL-3',
-    'category': 'Education',
+    "name": "OpenEduCat Classroom",
+    "version": "19.0.1.0",
+    "license": "LGPL-3",
+    "category": "Education",
     "sequence": 3,
-    'summary': 'Manage Classroom',
-    'complexity': "easy",
-    'author': 'OpenEduCat Inc',
-    'website': 'https://www.openeducat.org',
-    'depends': ['openeducat_core', 'openeducat_facility', 'product'],
-    'data': [
-        'security/op_classroom_security.xml',
-        'security/ir.model.access.csv',
-        'views/classroom_view.xml',
-        'menus/op_menu.xml',
+    "summary": "Manage Classroom",
+    "complexity": "easy",
+    "author": "OpenEduCat Inc",
+    "website": "https://www.openeducat.org",
+    "depends": ["openeducat_core", "openeducat_facility", "product"],
+    "data": [
+        "security/op_classroom_security.xml",
+        "security/ir.model.access.csv",
+        "views/classroom_view.xml",
+        "menus/op_menu.xml",
     ],
-    'demo': [
-        'demo/classroom_demo.xml',
-        'demo/facility_line_demo.xml'
+    "demo": ["demo/classroom_demo.xml", "demo/facility_line_demo.xml"],
+    "images": [
+        "static/description/openeducat-classroom_banner.jpg",
     ],
-    'images': [
-        'static/description/openeducat-classroom_banner.jpg',
-    ],
-    'installable': True,
-    'auto_install': False,
-    'application': True,
+    "installable": True,
+    "auto_install": False,
+    "application": True,
 }

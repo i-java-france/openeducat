@@ -1,10 +1,10 @@
-import { isMobileOS } from "@web/core/browser/feature_detection";
-import { user } from "@web/core/user";
-import { useService } from "@web/core/utils/hooks";
-import { patch } from "@web/core/utils/patch";
-import { ListRenderer } from "@web/views/list/list_renderer";
-import { _t } from "@web/core/l10n/translation";
-import { onWillDestroy, useState } from "@odoo/owl";
+import {isMobileOS} from "@web/core/browser/feature_detection";
+import {user} from "@web/core/user";
+import {useService} from "@web/core/utils/hooks";
+import {patch} from "@web/core/utils/patch";
+import {ListRenderer} from "@web/views/list/list_renderer";
+import {_t} from "@web/core/l10n/translation";
+import {onWillDestroy, useState} from "@odoo/owl";
 
 export const patchListRendererDesktop = () => ({
     setup() {
@@ -12,7 +12,7 @@ export const patchListRendererDesktop = () => ({
         this.actionService = useService("action");
         const list = this.props.list;
 
-        const { actionId, actionType } = this.env.config || {};
+        const {actionId, actionType} = this.env.config || {};
 
         // Start by determining if the current ListRenderer is in a context that would
         // allow the edition of the arch by studio.
@@ -27,7 +27,7 @@ export const patchListRendererDesktop = () => ({
             list === list.model.root &&
             actionId &&
             actionType === "ir.actions.act_window";
-        this.studioEditable = useState({ value: isPotentiallyEditable });
+        this.studioEditable = useState({value: isPotentiallyEditable});
 
         if (isPotentiallyEditable) {
             const computeStudioEditable = (action) => {
@@ -70,7 +70,10 @@ export const patchListRendererDesktop = () => ({
                 stopListening();
             };
             const stopListening = () =>
-                this.env.bus.removeEventListener("ACTION_MANAGER:UI-UPDATED", onUiUpdated);
+                this.env.bus.removeEventListener(
+                    "ACTION_MANAGER:UI-UPDATED",
+                    onUiUpdated
+                );
             this.env.bus.addEventListener("ACTION_MANAGER:UI-UPDATED", onUiUpdated);
 
             onWillDestroy(stopListening);
@@ -86,4 +89,7 @@ export const patchListRendererDesktop = () => ({
     },
 });
 
-export const unpatchListRendererDesktop = patch(ListRenderer.prototype, patchListRendererDesktop());
+export const unpatchListRendererDesktop = patch(
+    ListRenderer.prototype,
+    patchListRendererDesktop()
+);
