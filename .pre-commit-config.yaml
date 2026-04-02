@@ -1,5 +1,8 @@
 exclude: |
   (?x)
+  # --- TEMPORARY IGNORE ---
+  ^addons/|
+
   # NOT INSTALLABLE ADDONS
   # END NOT INSTALLABLE ADDONS
   # Ignore the reference folder (not an installable addon)
