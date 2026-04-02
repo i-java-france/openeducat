@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { Interaction } from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
 
 export class GallerySlider001 extends Interaction {
     // TODO in master: use `.o_slideshow[data-vjs='001']`
@@ -21,15 +21,20 @@ export class GallerySlider001 extends Interaction {
         this.carouselEl = this.el.classList.contains("carousel")
             ? this.el
             : this.el.querySelector(".carousel");
-        this.indicatorsWrapperEl = this.carouselEl?.querySelector(".carousel-indicators");
+        this.indicatorsWrapperEl =
+            this.carouselEl?.querySelector(".carousel-indicators");
 
         if (this.indicatorsWrapperEl) {
-            this.indicatorEls = this.indicatorsWrapperEl.querySelectorAll("[data-bs-slide-to]");
+            this.indicatorEls =
+                this.indicatorsWrapperEl.querySelectorAll("[data-bs-slide-to]");
 
             if (this.indicatorEls.length) {
                 const isRTL = !!this.el.closest(".o_rtl, [dir='rtl']");
                 const nbIndicators = this.indicatorEls.length - 1;
-                const index = { left: isRTL ? nbIndicators : 0, right: isRTL ? 0 : nbIndicators };
+                const index = {
+                    left: isRTL ? nbIndicators : 0,
+                    right: isRTL ? 0 : nbIndicators,
+                };
                 this.leftIndicatorEl = this.indicatorEls.item(index.left);
                 this.rightIndicatorEl = this.indicatorEls.item(index.right);
 
@@ -64,7 +69,9 @@ export class GallerySlider001 extends Interaction {
     }
 }
 
-registry.category("public.interactions").add("website.gallery_slider_001", GallerySlider001);
+registry
+    .category("public.interactions")
+    .add("website.gallery_slider_001", GallerySlider001);
 registry
     .category("public.interactions.edit")
-    .add("website.gallery_slider_001", { Interaction: GallerySlider001 });
+    .add("website.gallery_slider_001", {Interaction: GallerySlider001});

@@ -1,25 +1,25 @@
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 import {
+    contains,
     defineModels,
     fields,
     models,
     mountView,
     patchWithCleanup,
-    contains,
 } from "@web/../tests/web_test_helpers";
-import { user } from "@web/core/user";
-import { htmlEditorVersions } from "@html_editor/html_migrations/html_migrations_utils";
-import { PropertyValue } from "@web/views/fields/properties/property_value";
-import { setSelection } from "@html_editor/../tests/_helpers/selection";
-import { insertText } from "@html_editor/../tests/_helpers/user_actions";
-import { queryOne } from "@odoo/hoot-dom";
+import {user} from "@web/core/user";
+import {htmlEditorVersions} from "@html_editor/html_migrations/html_migrations_utils";
+import {PropertyValue} from "@web/views/fields/properties/property_value";
+import {setSelection} from "@html_editor/../tests/_helpers/selection";
+import {insertText} from "@html_editor/../tests/_helpers/user_actions";
+import {queryOne} from "@odoo/hoot-dom";
 
 const VERSIONS = htmlEditorVersions();
 const CURRENT_VERSION = VERSIONS.at(-1);
 
 class Partner extends models.Model {
     _name = "res.partner";
-    user_id = fields.Many2one({ relation: "res.users" });
+    user_id = fields.Many2one({relation: "res.users"});
 
     properties = fields.Properties({
         definition_record: "user_id",
@@ -30,7 +30,7 @@ class Partner extends models.Model {
         {
             id: 1,
             user_id: 1,
-            properties: { bd6404492c244cff_html: "<b> test </b>" },
+            properties: {bd6404492c244cff_html: "<b> test </b>"},
         },
         {
             id: 2,
@@ -69,7 +69,7 @@ class User extends models.Model {
 defineModels([Partner, User]);
 
 test("properties: html", async () => {
-    patchWithCleanup(user, { hasGroup: (group) => false });
+    patchWithCleanup(user, {hasGroup: (group) => false});
     let editor;
     patchWithCleanup(PropertyValue.prototype, {
         onEditorLoad(ed) {
@@ -93,7 +93,9 @@ test("properties: html", async () => {
     );
 
     setSelection({
-        anchorNode: queryOne(`[name="properties"] .odoo-editor-editable .o-paragraph b`),
+        anchorNode: queryOne(
+            `[name="properties"] .odoo-editor-editable .o-paragraph b`
+        ),
         anchorOffset: 0,
     });
     await insertText(editor, " foo");
@@ -111,7 +113,7 @@ test("properties: html", async () => {
 });
 
 test("properties: html migration", async () => {
-    patchWithCleanup(user, { hasGroup: (group) => false });
+    patchWithCleanup(user, {hasGroup: (group) => false});
     let component;
     patchWithCleanup(PropertyValue.prototype, {
         setup() {
@@ -131,14 +133,16 @@ test("properties: html migration", async () => {
             </form>`,
     });
     expect(`[name="properties"] .odoo-editor-editable`).toHaveCount(1);
-    expect(`[name="properties"] .odoo-editor-editable a[href*="excalidraw.com"]`).toHaveCount(1);
+    expect(
+        `[name="properties"] .odoo-editor-editable a[href*="excalidraw.com"]`
+    ).toHaveCount(1);
     expect(component.editor.getContent()).toBe(
         `<p data-oe-version="${CURRENT_VERSION}">Hello World</p><p><a href="https://excalidraw.com">https://excalidraw.com</a></p>`
     );
 });
 
 test("properties: html readonly", async () => {
-    patchWithCleanup(user, { hasGroup: (group) => false });
+    patchWithCleanup(user, {hasGroup: (group) => false});
     await mountView({
         type: "form",
         resId: 1,
@@ -155,7 +159,7 @@ test("properties: html readonly", async () => {
 });
 
 test("properties: html in list view", async () => {
-    patchWithCleanup(user, { hasGroup: (group) => false });
+    patchWithCleanup(user, {hasGroup: (group) => false});
     await mountView({
         resModel: "res.partner",
         type: "list",
@@ -169,7 +173,9 @@ test("properties: html in list view", async () => {
     await contains(".o_optional_columns_dropdown_toggle").click();
     await contains(".o-dropdown--menu input[type='checkbox']").click();
     expect("div[name='properties.bd6404492c244cff_html']").toHaveCount(3);
-    const elements = document.querySelectorAll("div[name='properties.bd6404492c244cff_html']");
+    const elements = document.querySelectorAll(
+        "div[name='properties.bd6404492c244cff_html']"
+    );
     expect(elements[0].innerText).toBe("test");
     expect(elements[1].innerText).toBe("Hello World\n\nhttps://excalidraw.com");
     expect(elements[2].innerText).toBe("");

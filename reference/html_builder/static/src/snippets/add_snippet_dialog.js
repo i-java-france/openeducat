@@ -1,13 +1,20 @@
-import { Component, onMounted, onWillUnmount, onWillRender, useRef, useState } from "@odoo/owl";
-import { loadBundle, loadCSS } from "@web/core/assets";
-import { isBrowserFirefox } from "@web/core/browser/feature_detection";
-import { Dialog } from "@web/core/dialog/dialog";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { localization } from "@web/core/l10n/localization";
-import { getFirstAndLastTabableElements } from "@web/core/ui/ui_service";
-import { cookie } from "@web/core/browser/cookie";
-import { useChildRef } from "@web/core/utils/hooks";
-import { SnippetViewer } from "./snippet_viewer";
+import {
+    Component,
+    onMounted,
+    onWillUnmount,
+    onWillRender,
+    useRef,
+    useState,
+} from "@odoo/owl";
+import {loadBundle, loadCSS} from "@web/core/assets";
+import {isBrowserFirefox} from "@web/core/browser/feature_detection";
+import {Dialog} from "@web/core/dialog/dialog";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {localization} from "@web/core/l10n/localization";
+import {getFirstAndLastTabableElements} from "@web/core/ui/ui_service";
+import {cookie} from "@web/core/browser/cookie";
+import {useChildRef} from "@web/core/utils/hooks";
+import {SnippetViewer} from "./snippet_viewer";
 
 /**
  * @typedef {((arg: { iframe: HTMLIFrameElement }) => void)[]} snippet_preview_dialog_stylesheets_handlers
@@ -16,14 +23,14 @@ import { SnippetViewer } from "./snippet_viewer";
 
 export class AddSnippetDialog extends Component {
     static template = "html_builder.AddSnippetDialog";
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
-        selectedSnippet: { type: Object },
-        selectSnippet: { type: Function },
-        snippetModel: { type: Object },
-        close: { type: Function },
-        installSnippetModule: { type: Function },
-        editor: { type: Object },
+        selectedSnippet: {type: Object},
+        selectSnippet: {type: Function},
+        snippetModel: {type: Object},
+        close: {type: Function},
+        installSnippetModule: {type: Function},
+        editor: {type: Object},
     };
 
     setup() {
@@ -58,7 +65,7 @@ export class AddSnippetDialog extends Component {
                 // Make sure empty preview iframe is loaded.
                 // This event is never triggered on Chrome.
                 await new Promise((resolve) => {
-                    this.iframeRef.el.addEventListener("load", resolve, { once: true });
+                    this.iframeRef.el.addEventListener("load", resolve, {once: true});
                 });
             }
 
@@ -71,7 +78,10 @@ export class AddSnippetDialog extends Component {
             iframeDocument.body.parentElement.classList.add("o_add_snippets_preview");
             iframeDocument.body.style.setProperty("direction", localization.direction);
             iframeDocument.body.tabIndex = "-1";
-            iframeDocument.addEventListener("keydown", this.onIframeDocumentKeydown.bind(this));
+            iframeDocument.addEventListener(
+                "keydown",
+                this.onIframeDocumentKeydown.bind(this)
+            );
 
             root = this.__owl__.app.createRoot(SnippetViewer, {
                 props: this.snippetViewerProps,
@@ -83,8 +93,12 @@ export class AddSnippetDialog extends Component {
         });
 
         onWillRender(() => {
-            if (!this.props.snippetModel.hasCustomGroup && this.state.groupSelected === "custom") {
-                this.state.groupSelected = this.props.snippetModel.snippetGroups[0].groupName;
+            if (
+                !this.props.snippetModel.hasCustomGroup &&
+                this.state.groupSelected === "custom"
+            ) {
+                this.state.groupSelected =
+                    this.props.snippetModel.snippetGroups[0].groupName;
             }
         });
 
@@ -114,7 +128,7 @@ export class AddSnippetDialog extends Component {
         const editorPreviewAssetsBundles = this.props.editor.getResource(
             "snippet_preview_dialog_bundles"
         );
-        const loadOptions = { targetDoc: this.iframeRef.el.contentDocument, js: false };
+        const loadOptions = {targetDoc: this.iframeRef.el.contentDocument, js: false};
         await Promise.all([
             ...editorPreviewAssetsBundles.map((assetsBundle) =>
                 loadCSSBundleFromEditor(assetsBundle, loadOptions)
@@ -147,7 +161,9 @@ export class AddSnippetDialog extends Component {
         metaElement.setAttribute("name", "color-scheme");
         metaElement.content = colorScheme;
         iframeDocument.head.appendChild(metaElement);
-        iframeDocument.body.parentElement.classList.add("o_add_snippets_preview--" + colorScheme);
+        iframeDocument.body.parentElement.classList.add(
+            "o_add_snippets_preview--" + colorScheme
+        );
     }
 
     /**
@@ -178,9 +194,13 @@ export class AddSnippetDialog extends Component {
         if (!["tab", "shift+tab"].includes(hotkey)) {
             return;
         }
-        const [, lastTabableElInIframe] = getFirstAndLastTabableElements(ev.currentTarget);
+        const [, lastTabableElInIframe] = getFirstAndLastTabableElements(
+            ev.currentTarget
+        );
         if (hotkey === "tab" && lastTabableElInIframe === ev.target) {
-            const [firstTabableElInDialog] = getFirstAndLastTabableElements(this.modalRef.el);
+            const [firstTabableElInDialog] = getFirstAndLastTabableElements(
+                this.modalRef.el
+            );
             firstTabableElInDialog.focus();
             ev.preventDefault();
             ev.stopPropagation();

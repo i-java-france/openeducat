@@ -27,7 +27,7 @@ import * as NumberPopup from "@point_of_sale/../tests/generic_helpers/number_pop
  * clickPaymentMethod("Cash", true, { amount: "10.20" });
  */
 export function clickPaymentMethod(name, isCheckNeeded = false, options = {}) {
-    const { remaining = null, change = null, amount = null } = options;
+    const {remaining = null, change = null, amount = null} = options;
 
     const step = [
         {
@@ -78,7 +78,8 @@ export function clickRetryButton() {
     return [
         {
             content: "Retry sending the payment request using the payment terminal.",
-            trigger: ".paymentlines .paymentline .send_payment_request:contains('Retry')",
+            trigger:
+                ".paymentlines .paymentline .send_payment_request:contains('Retry')",
             run: "click",
         },
     ];
@@ -142,7 +143,9 @@ export function clickValidate() {
  * @param {String} keys space-separated numpad keys
  */
 export function clickNumpad(keys) {
-    return keys.split(" ").map((key) => ({ ...Numpad.click(key), isActive: ["desktop"] }));
+    return keys
+        .split(" ")
+        .map((key) => ({...Numpad.click(key), isActive: ["desktop"]}));
 }
 export function clickBack() {
     return [
@@ -191,8 +194,13 @@ export function clickTipButton() {
  * // Enter the amount "100" on the "Bank" payment line and check that the remaining amount is 50 and the change is 20
  * enterPaymentLineAmount("Bank", "100", true, { remaining: "50.0", change: "20.0" });
  */
-export function enterPaymentLineAmount(lineName, keys, isCheckNeeded = false, options = {}) {
-    const { remaining = null, change = null, amount = null } = options;
+export function enterPaymentLineAmount(
+    lineName,
+    keys,
+    isCheckNeeded = false,
+    options = {}
+) {
+    const {remaining = null, change = null, amount = null} = options;
     const step = [
         ...clickNumpad(keys.split("").join(" ")),
         ...fillPaymentLineAmountMobile(lineName, keys),
@@ -379,7 +387,10 @@ export function clickPartnerButton() {
 }
 
 export function clickCustomer(name, pressEnter = false) {
-    return [...PartnerList.searchCustomerValue(name, pressEnter), PartnerList.clickPartner(name)];
+    return [
+        ...PartnerList.searchCustomerValue(name, pressEnter),
+        PartnerList.clickPartner(name),
+    ];
 }
 
 export function shippingLaterHighlighted() {
@@ -398,7 +409,7 @@ export function syncCurrentOrder() {
             trigger: "body",
             run: async () => {
                 const currentOrder = posmodel.getOrder();
-                const order = await posmodel.syncAllOrders({ orders: [currentOrder] });
+                const order = await posmodel.syncAllOrders({orders: [currentOrder]});
 
                 if (!order[0].isSynced) {
                     throw new Error("Order ID is not a number after sync.");

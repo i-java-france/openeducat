@@ -1,10 +1,13 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { describe, expect, getFixture, test } from "@odoo/hoot";
-import { animationFrame, click, queryOne } from "@odoo/hoot-dom";
-import { advanceTime } from "@odoo/hoot-mock";
+import {describe, expect, getFixture, test} from "@odoo/hoot";
+import {animationFrame, click, queryOne} from "@odoo/hoot-dom";
+import {advanceTime} from "@odoo/hoot-mock";
 
-import { onceAllImagesLoaded } from "@website/utils/images";
+import {onceAllImagesLoaded} from "@website/utils/images";
 
 setupInteractionWhiteList(["website.gallery_slider", "website.gallery_slider_001"]);
 
@@ -142,7 +145,7 @@ const defaultOldLightbox = `
 `;
 
 test("gallery_slider does nothing if there is no o_slideshow s_image_gallery", async () => {
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <div id="wrapwrap">
             <section class="s_image_gallery"/>
         </div>
@@ -151,7 +154,7 @@ test("gallery_slider does nothing if there is no o_slideshow s_image_gallery", a
 });
 
 test("gallery_slider interaction on image gallery", async () => {
-    const { core } = await startInteractions(defaultGallery);
+    const {core} = await startInteractions(defaultGallery);
     expect(core.interactions).toHaveLength(1);
     await animationFrame();
     await onceAllImagesLoaded(getFixture());
@@ -166,7 +169,7 @@ test("gallery_slider interaction on image gallery", async () => {
 });
 
 test("gallery_slider interaction on lightbox", async () => {
-    const { core } = await startInteractions(defaultLightbox);
+    const {core} = await startInteractions(defaultLightbox);
     expect(core.interactions).toHaveLength(1);
     await onceAllImagesLoaded(getFixture());
     await advanceTime(SLIDE_DURATION);
@@ -187,7 +190,7 @@ test("gallery_slider interaction on lightbox", async () => {
 });
 
 test("gallery_slider interaction on old lightbox", async () => {
-    const { core } = await startInteractions(defaultOldLightbox);
+    const {core} = await startInteractions(defaultOldLightbox);
     expect(core.interactions).toHaveLength(1);
     const interaction = core.interactions[0].interaction;
     await onceAllImagesLoaded(getFixture());

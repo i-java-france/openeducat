@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
+
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, exceptions, fields, models, _
+from odoo import _, api, exceptions, fields, models
 from odoo.tools import format_list
 
 
@@ -135,7 +135,7 @@ class ResConfigSettings(models.TransientModel):
     def set_values(self):
         group_use_lead_id = self.env['ir.model.data']._xmlid_to_res_id('crm.group_use_lead')
         has_group_lead_before = group_use_lead_id in self.env.user.all_group_ids.ids
-        super(ResConfigSettings, self).set_values()
+        super().set_values()
         # update use leads / opportunities setting on all teams according to settings update
         has_group_lead_after = group_use_lead_id in self.env.user.all_group_ids.ids
         if has_group_lead_before != has_group_lead_after:

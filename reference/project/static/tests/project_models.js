@@ -1,5 +1,5 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { defineModels, fields, models } from "@web/../tests/web_test_helpers";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {defineModels, fields, models} from "@web/../tests/web_test_helpers";
 
 export class ProjectProject extends models.Model {
     _name = "project.project";
@@ -7,14 +7,20 @@ export class ProjectProject extends models.Model {
     name = fields.Char();
     is_favorite = fields.Boolean();
     is_template = fields.Boolean();
-    active = fields.Boolean({ default: true });
-    stage_id = fields.Many2one({ relation: "project.project.stage" });
-    date = fields.Date({ string: "Expiration Date" });
+    active = fields.Boolean({default: true});
+    stage_id = fields.Many2one({relation: "project.project.stage"});
+    date = fields.Date({string: "Expiration Date"});
     date_start = fields.Date();
-    user_id = fields.Many2one({ relation: "res.users", falsy_value_label: "👤 Unassigned" });
-    allow_task_dependencies = fields.Boolean({ string: "Task Dependencies", default: false });
-    allow_milestones = fields.Boolean({ string: "Milestones", default: false });
-    allow_recurring_tasks = fields.Boolean({ string: "Recurring Tasks", default: false });
+    user_id = fields.Many2one({
+        relation: "res.users",
+        falsy_value_label: "👤 Unassigned",
+    });
+    allow_task_dependencies = fields.Boolean({
+        string: "Task Dependencies",
+        default: false,
+    });
+    allow_milestones = fields.Boolean({string: "Milestones", default: false});
+    allow_recurring_tasks = fields.Boolean({string: "Recurring Tasks", default: false});
 
     _records = [
         {
@@ -24,7 +30,7 @@ export class ProjectProject extends models.Model {
             date: "2024-01-09 07:00:00",
             date_start: "2024-01-03 12:00:00",
         },
-        { id: 2, name: "Project 2", stage_id: 2 },
+        {id: 2, name: "Project 2", stage_id: 2},
     ];
 
     _views = {
@@ -61,7 +67,7 @@ export class ProjectProject extends models.Model {
                 allow_recurring_tasks = true;
             }
         }
-        return { allow_task_dependencies, allow_milestones, allow_recurring_tasks };
+        return {allow_task_dependencies, allow_milestones, allow_recurring_tasks};
     }
 }
 
@@ -71,8 +77,8 @@ export class ProjectProjectStage extends models.Model {
     name = fields.Char();
 
     _records = [
-        { id: 1, name: "Stage 1" },
-        { id: 2, name: "Stage 2" },
+        {id: 1, name: "Stage 1"},
+        {id: 2, name: "Stage 2"},
     ];
 
     _views = {
@@ -85,18 +91,21 @@ export class ProjectTask extends models.Model {
     _name = "project.task";
 
     name = fields.Char();
-    parent_id = fields.Many2one({ relation: "project.task" });
+    parent_id = fields.Many2one({relation: "project.task"});
     child_ids = fields.One2many({
         relation: "project.task",
         relation_field: "parent_id",
     });
     subtask_count = fields.Integer();
-    sequence = fields.Integer({ string: "Sequence", default: 10 });
+    sequence = fields.Integer({string: "Sequence", default: 10});
     closed_subtask_count = fields.Integer();
-    project_id = fields.Many2one({ relation: "project.project", falsy_value_label: "🔒 Private" });
-    display_in_project = fields.Boolean({ default: true });
-    stage_id = fields.Many2one({ relation: "project.task.type" });
-    milestone_id = fields.Many2one({ relation: "project.milestone" });
+    project_id = fields.Many2one({
+        relation: "project.project",
+        falsy_value_label: "🔒 Private",
+    });
+    display_in_project = fields.Boolean({default: true});
+    stage_id = fields.Many2one({relation: "project.task.type"});
+    milestone_id = fields.Many2one({relation: "project.milestone"});
     state = fields.Selection({
         selection: [
             ["01_in_progress", "In Progress"],
@@ -118,13 +127,13 @@ export class ProjectTask extends models.Model {
             ["1", "High"],
         ],
     });
-    partner_id = fields.Many2one({ string: "Partner", relation: "res.partner" });
-    planned_date_begin = fields.Datetime({ string: "Start Date" });
-    date_deadline = fields.Datetime({ string: "Stop Date" });
-    depend_on_ids = fields.Many2many({ relation: "project.task" });
+    partner_id = fields.Many2one({string: "Partner", relation: "res.partner"});
+    planned_date_begin = fields.Datetime({string: "Start Date"});
+    date_deadline = fields.Datetime({string: "Stop Date"});
+    depend_on_ids = fields.Many2many({relation: "project.task"});
     closed_depend_on_count = fields.Integer();
     is_closed = fields.Boolean();
-    is_template = fields.Boolean({ string: "Is Template", default: false });
+    is_template = fields.Boolean({string: "Is Template", default: false});
 
     plan_task_in_calendar(idOrIds, values) {
         return this.write(idOrIds, values);
@@ -164,9 +173,9 @@ export class ProjectTaskType extends models.Model {
     sequence = fields.Integer();
 
     _records = [
-        { id: 1, name: "Todo" },
-        { id: 2, name: "In Progress" },
-        { id: 3, name: "Done" },
+        {id: 1, name: "Todo"},
+        {id: 2, name: "In Progress"},
+        {id: 3, name: "Done"},
     ];
 }
 
@@ -175,7 +184,7 @@ export class ProjectMilestone extends models.Model {
 
     name = fields.Char();
 
-    _records = [{ id: 1, name: "Milestone 1" }];
+    _records = [{id: 1, name: "Milestone 1"}];
 }
 
 export function defineProjectModels() {

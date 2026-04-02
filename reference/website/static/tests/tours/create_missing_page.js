@@ -12,7 +12,7 @@ registerWebsitePreviewTour(
         edition: true,
     },
     () => [
-        ...clickOnSnippet({ id: "o_header_standard", name: "Header" }),
+        ...clickOnSnippet({id: "o_header_standard", name: "Header"}),
         changeOption("Header", "[aria-label='Open menu editor']"),
         {
             content: "Open the link dialog (click 'Add Menu Item')",
@@ -45,7 +45,8 @@ registerWebsitePreviewTour(
         },
         {
             content: "Check that the page is not found.",
-            trigger: ".modal-dialog .o_website_dialog main div.position-relative.o_page_not_found",
+            trigger:
+                ".modal-dialog .o_website_dialog main div.position-relative.o_page_not_found",
         },
         {
             content: "Confirm the new menu entry",
@@ -59,12 +60,15 @@ registerWebsitePreviewTour(
             content: "Drag the new menu item at the top",
             trigger: '.oe_menu_editor li:contains("Zoé’s Diner") .oi-draggable',
             run(helpers) {
-                return helpers.drag_and_drop('.oe_menu_editor li:contains("Home") .oi-draggable', {
-                    position: {
-                        top: 20,
-                    },
-                    relative: true,
-                });
+                return helpers.drag_and_drop(
+                    '.oe_menu_editor li:contains("Home") .oi-draggable',
+                    {
+                        position: {
+                            top: 20,
+                        },
+                        relative: true,
+                    }
+                );
             },
         },
         {
@@ -85,7 +89,7 @@ registerWebsitePreviewTour(
             content: "Wait edit mode",
             trigger: ".o_builder_sidebar_open",
         },
-        ...clickOnSnippet({ id: "o_header_standard", name: "Header" }),
+        ...clickOnSnippet({id: "o_header_standard", name: "Header"}),
         changeOption("Header", "[aria-label='Open menu editor']"),
         {
             content: "Check that the 'Create Page' button is missing.",

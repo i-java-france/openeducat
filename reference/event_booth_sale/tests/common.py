@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import Command
+
 from odoo.addons.event_booth.tests.common import TestEventBoothCommon
 
 
@@ -9,7 +9,7 @@ class TestEventBoothSaleCommon(TestEventBoothCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestEventBoothSaleCommon, cls).setUpClass()
+        super().setUpClass()
 
         cls.env['account.tax.group'].create(
             {'name': 'Test Account Tax Group', 'company_id': cls.env.company.id}

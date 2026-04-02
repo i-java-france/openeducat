@@ -1,9 +1,10 @@
 import uuid
 from json import JSONDecodeError
+
 import requests
+from requests.exceptions import ConnectionError, HTTPError, Timeout
 
 from odoo import _, api, fields, models
-from requests.exceptions import Timeout, ConnectionError, HTTPError
 
 DEMO_EFAKTURA_URL = 'https://demoefaktura.mfin.gov.rs/api/publicApi/sales-invoice/ubl'
 EFAKTURA_URL = 'https://efakturadev.mfin.gov.rs/api/publicApi/sales-invoice/ubl'

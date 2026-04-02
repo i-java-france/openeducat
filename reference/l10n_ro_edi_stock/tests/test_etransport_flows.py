@@ -1,13 +1,13 @@
 import base64
+from unittest.mock import patch
+
+from freezegun import freeze_time
 
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tools import misc
 
 from odoo.addons.l10n_ro_edi_stock.tests.common import TestL10nRoEdiStockCommon
-
-from unittest.mock import patch
-from freezegun import freeze_time
 
 
 @patch('odoo.addons.l10n_ro_edi_stock.models.etransport_api.ETransportAPI._make_etransport_request')

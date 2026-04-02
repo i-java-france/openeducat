@@ -1,19 +1,24 @@
-import { describe, expect, test, beforeEach, Deferred, animationFrame } from "@odoo/hoot";
-import { waitFor, waitForNone, click, queryOne } from "@odoo/hoot-dom";
+import {Deferred, animationFrame, beforeEach, describe, expect, test} from "@odoo/hoot";
+import {click, queryOne, waitFor, waitForNone} from "@odoo/hoot-dom";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
 } from "@website/../tests/builder/website_helpers";
-import { setupEditor } from "@html_editor/../tests/_helpers/editor";
-import { setSelection } from "@html_editor/../tests/_helpers/selection";
-import { expectElementCount } from "@html_editor/../tests/_helpers/ui_expectations";
-import { patchWithCleanup, mockService, onRpc, contains } from "@web/../tests/web_test_helpers";
-import { MAIN_PLUGINS } from "@html_editor/plugin_sets";
-import { MenuDataPlugin } from "@website/builder/plugins/menu_data_plugin";
-import { MenuDialog } from "@website/components/dialog/edit_menu";
-import { SavePlugin } from "@html_builder/core/save_plugin";
-import { insertText } from "@html_editor/../tests/_helpers/user_actions";
-import { browser } from "@web/core/browser/browser";
+import {setupEditor} from "@html_editor/../tests/_helpers/editor";
+import {setSelection} from "@html_editor/../tests/_helpers/selection";
+import {expectElementCount} from "@html_editor/../tests/_helpers/ui_expectations";
+import {
+    contains,
+    mockService,
+    onRpc,
+    patchWithCleanup,
+} from "@web/../tests/web_test_helpers";
+import {MAIN_PLUGINS} from "@html_editor/plugin_sets";
+import {MenuDataPlugin} from "@website/builder/plugins/menu_data_plugin";
+import {MenuDialog} from "@website/components/dialog/edit_menu";
+import {SavePlugin} from "@html_builder/core/save_plugin";
+import {insertText} from "@html_editor/../tests/_helpers/user_actions";
+import {browser} from "@web/core/browser/browser";
 
 defineWebsiteModels();
 
@@ -24,7 +29,7 @@ beforeEach(() => {
 
 describe("NavbarLinkPopover", () => {
     test("should open a navbar popover when the selection is inside a top menu link and close outside of a top menu link", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             `<ul class="top_menu">
                 <li>
                     <a class="nav-link" href="exists">
@@ -34,23 +39,26 @@ describe("NavbarLinkPopover", () => {
             </ul>
             <p>Outside</p>`,
             {
-                config: { Plugins: [...MAIN_PLUGINS, MenuDataPlugin, SavePlugin] },
+                config: {Plugins: [...MAIN_PLUGINS, MenuDataPlugin, SavePlugin]},
             }
         );
         await expectElementCount(".o-we-linkpopover", 0);
-        // selection inside a top menu link
-        setSelection({ anchorNode: el.querySelector(".nav-link > span"), anchorOffset: 0 });
+        // Selection inside a top menu link
+        setSelection({
+            anchorNode: el.querySelector(".nav-link > span"),
+            anchorOffset: 0,
+        });
         await waitFor(".o-we-linkpopover");
-        // remove link button replaced with sitemap button
+        // Remove link button replaced with sitemap button
         expect(".o-we-linkpopover:has(i.fa-chain-broken)").toHaveCount(0);
         expect(".o-we-linkpopover:has(button.js_edit_menu)").toHaveCount(1);
-        // selection outside a top menu link
-        setSelection({ anchorNode: el.querySelector("p"), anchorOffset: 0 });
+        // Selection outside a top menu link
+        setSelection({anchorNode: el.querySelector("p"), anchorOffset: 0});
         await expectElementCount(".o-we-linkpopover", 0);
     });
 
     test("should open a navbar popover when the selection is inside a top menu link and stay open if selection move in the same link", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             `<ul class="top_menu">
                 <li>
                     <a class="nav-link" href="exists">
@@ -59,22 +67,28 @@ describe("NavbarLinkPopover", () => {
                 </li>
             </ul>`,
             {
-                config: { Plugins: [...MAIN_PLUGINS, MenuDataPlugin, SavePlugin] },
+                config: {Plugins: [...MAIN_PLUGINS, MenuDataPlugin, SavePlugin]},
             }
         );
         expect(".o-we-linkpopover:has(button.js_edit_menu)").toHaveCount(0);
-        // open navbar link popover
-        setSelection({ anchorNode: el.querySelector(".nav-link > span"), anchorOffset: 0 });
+        // Open navbar link popover
+        setSelection({
+            anchorNode: el.querySelector(".nav-link > span"),
+            anchorOffset: 0,
+        });
         await waitFor(".o-we-linkpopover");
         expect(".o-we-linkpopover:has(button.js_edit_menu)").toHaveCount(1);
-        // selection in the same link
-        setSelection({ anchorNode: el.querySelector(".nav-link > span"), anchorOffset: 1 });
+        // Selection in the same link
+        setSelection({
+            anchorNode: el.querySelector(".nav-link > span"),
+            anchorOffset: 1,
+        });
         await waitFor(".o-we-linkpopover");
         expect(".o-we-linkpopover:has(button.js_edit_menu)").toHaveCount(1);
     });
 
     test("should open a navbar popover when the selection is inside a top menu dropdown link", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             `<ul class="top_menu">
                 <li>
                     <a class="nav-link" href="exists">
@@ -93,12 +107,15 @@ describe("NavbarLinkPopover", () => {
                 </div>
             </ul>`,
             {
-                config: { Plugins: [...MAIN_PLUGINS, MenuDataPlugin, SavePlugin] },
+                config: {Plugins: [...MAIN_PLUGINS, MenuDataPlugin, SavePlugin]},
             }
         );
         expect(".o-we-linkpopover:has(button.js_edit_menu)").toHaveCount(0);
-        // selection in dropdown menu
-        setSelection({ anchorNode: el.querySelector(".dropdown-item > span"), anchorOffset: 0 });
+        // Selection in dropdown menu
+        setSelection({
+            anchorNode: el.querySelector(".dropdown-item > span"),
+            anchorOffset: 0,
+        });
         await waitFor(".o-we-linkpopover");
         expect(".o-we-linkpopover:has(button.js_edit_menu)").toHaveCount(1);
     });
@@ -113,8 +130,8 @@ describe("NavbarLinkPopover", () => {
         onRpc("/html_editor/link_preview_internal", () => ({}));
         onRpc("/contactus", () => ({}));
 
-        // website pages should be prefixed with /@
-        const { el } = await setupEditor(
+        // Website pages should be prefixed with /@
+        const {el} = await setupEditor(
             `<ul class="top_menu">
                 <li>
                     <a class="nav-link" href="/contactus">
@@ -123,13 +140,16 @@ describe("NavbarLinkPopover", () => {
                 </li>
             </ul>`,
             {
-                config: { Plugins: [...MAIN_PLUGINS, MenuDataPlugin, SavePlugin] },
+                config: {Plugins: [...MAIN_PLUGINS, MenuDataPlugin, SavePlugin]},
             }
         );
 
         await expectElementCount(".o-we-linkpopover", 0);
-        // selection inside a top menu link
-        setSelection({ anchorNode: el.querySelector(".nav-link > span"), anchorOffset: 0 });
+        // Selection inside a top menu link
+        setSelection({
+            anchorNode: el.querySelector(".nav-link > span"),
+            anchorOffset: 0,
+        });
         await waitFor(".o-we-linkpopover");
         await click(".o-we-linkpopover a");
         expect.verifySteps(["website page url prefixed"]);
@@ -138,7 +158,7 @@ describe("NavbarLinkPopover", () => {
 
 describe("MenuDialog", () => {
     test("after clicking on edit link button, a MenuDialog should appear", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             `<ul class="top_menu">
                 <li>
                     <a class="nav-link" href="exists">
@@ -147,7 +167,7 @@ describe("MenuDialog", () => {
                 </li>
             </ul>`,
             {
-                config: { Plugins: [...MAIN_PLUGINS, MenuDataPlugin, SavePlugin] },
+                config: {Plugins: [...MAIN_PLUGINS, MenuDataPlugin, SavePlugin]},
             }
         );
         patchWithCleanup(MenuDialog.prototype, {
@@ -161,13 +181,16 @@ describe("MenuDialog", () => {
             others: [],
         }));
         expect(".o-we-linkpopover:has(button.js_edit_menu)").toHaveCount(0);
-        // open navbar link popover
-        setSelection({ anchorNode: el.querySelector(".nav-link > span"), anchorOffset: 0 });
+        // Open navbar link popover
+        setSelection({
+            anchorNode: el.querySelector(".nav-link > span"),
+            anchorOffset: 0,
+        });
         await waitFor(".o-we-linkpopover");
         expect(".o-we-linkpopover:has(button.js_edit_menu)").toHaveCount(1);
-        // click the link edit button
+        // Click the link edit button
         await click(".o_we_edit_link");
-        // check that MenuDialog is open and that name and url have been passed correctly
+        // Check that MenuDialog is open and that name and url have been passed correctly
         await waitFor(".o_website_dialog");
         expect("input.form-control:not(#url_input)").toHaveValue("Top Menu Item");
         expect("#url_input").toHaveValue("exists");
@@ -219,7 +242,7 @@ describe("EditMenuDialog", () => {
         });
     });
     test("after clicking on edit menu button, an EditMenuDialog should appear", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             `<ul class="top_menu">
                 <li>
                     <a class="nav-link" href="exists">
@@ -228,11 +251,11 @@ describe("EditMenuDialog", () => {
                 </li>
             </ul>`,
             {
-                config: { Plugins: [...MAIN_PLUGINS, MenuDataPlugin, SavePlugin] },
+                config: {Plugins: [...MAIN_PLUGINS, MenuDataPlugin, SavePlugin]},
             }
         );
 
-        onRpc(({ model, method, args }) => {
+        onRpc(({model, method, args}) => {
             expect(model).toBe("website.menu");
             expect(method).toBe("get_tree");
             expect(args[0]).toBe(1);
@@ -247,13 +270,16 @@ describe("EditMenuDialog", () => {
         }));
 
         expect(".o-we-linkpopover:has(button.js_edit_menu)").toHaveCount(0);
-        // open navbar link popover
-        setSelection({ anchorNode: el.querySelector(".nav-link > span"), anchorOffset: 0 });
+        // Open navbar link popover
+        setSelection({
+            anchorNode: el.querySelector(".nav-link > span"),
+            anchorOffset: 0,
+        });
         await waitFor(".o-we-linkpopover");
         expect(".o-we-linkpopover:has(button.js_edit_menu)").toHaveCount(1);
-        // click on edit menu button
+        // Click on edit menu button
         await click(".js_edit_menu");
-        // check that EditMenuDialog is open with correct values
+        // Check that EditMenuDialog is open with correct values
         await waitFor(".o_website_dialog");
         expect(".oe_menu_editor").toHaveCount(1);
         expect(".js_menu_label").toHaveText("Top Menu Item");
@@ -270,11 +296,11 @@ describe("EditMenuDialog", () => {
                 </li>
             </ul>`,
             {
-                config: { Plugins: [...MAIN_PLUGINS, MenuDataPlugin, SavePlugin] },
+                config: {Plugins: [...MAIN_PLUGINS, MenuDataPlugin, SavePlugin]},
             }
         );
 
-        onRpc(({ model, method, args }) => {
+        onRpc(({model, method, args}) => {
             expect(model).toBe("website.menu");
             expect(method).toBe("get_tree");
             expect(args[0]).toBe(1);
@@ -295,7 +321,7 @@ describe("EditMenuDialog", () => {
     });
 
     test("clicking save in the EditMenuDialog should not clear the editor changes", async () => {
-        const { getEditor } = await setupWebsiteBuilder(
+        const {getEditor} = await setupWebsiteBuilder(
             // Using tel: as link to avoid having to mock fetching metadata for link preview
             // This does not influence the test in any way
             `<ul class="top_menu">
@@ -313,7 +339,7 @@ describe("EditMenuDialog", () => {
             }
         );
 
-        onRpc(({ method, model, args }) => {
+        onRpc(({method, model, args}) => {
             if (method === "save" && model === "ir.ui.view") {
                 expect(args[1]).toInclude("EDITED TEXT");
                 expect.step("editor_has_saved");
@@ -328,16 +354,19 @@ describe("EditMenuDialog", () => {
 
         const editor = getEditor();
 
-        // add some text
+        // Add some text
         var p = queryOne(":iframe section > p");
-        setSelection({ anchorNode: p, anchorOffset: 0 });
+        setSelection({anchorNode: p, anchorOffset: 0});
         await insertText(editor, "EDITED ");
         expect(p).toHaveInnerHTML("EDITED TEXT");
 
-        // open navbar link popover
-        setSelection({ anchorNode: queryOne(":iframe .nav-link > span"), anchorOffset: 0 });
+        // Open navbar link popover
+        setSelection({
+            anchorNode: queryOne(":iframe .nav-link > span"),
+            anchorOffset: 0,
+        });
 
-        // open menu editor and save
+        // Open menu editor and save
         await waitFor(".o-we-linkpopover");
         await click(queryOne("button.js_edit_menu"));
         await waitFor("footer.modal-footer");
@@ -381,12 +410,12 @@ describe("EditMenuDialog", () => {
         };
 
         test("existing page do not have 'Create Page' button", async () => {
-            await setupWebsiteBuilder("", { headerContent: `<header>header</header>` });
+            await setupWebsiteBuilder("", {headerContent: `<header>header</header>`});
             await contains(":iframe header").click();
 
             onRpc("website.menu", "get_tree", () => sampleMenuData);
             onRpc("/website/check_existing_link", async (request) => {
-                const { params } = await request.json();
+                const {params} = await request.json();
                 expect(params.link).toEqual("/top-menu-url");
                 return true;
             });
@@ -395,12 +424,12 @@ describe("EditMenuDialog", () => {
             expect("button:contains('Create Page')").toHaveCount(0);
         });
         test("non-existing page have 'Create Page' button", async () => {
-            await setupWebsiteBuilder("", { headerContent: `<header>header</header>` });
+            await setupWebsiteBuilder("", {headerContent: `<header>header</header>`});
             await contains(":iframe header").click();
 
             onRpc("website.menu", "get_tree", () => sampleMenuData);
             onRpc("/website/check_existing_link", async (request) => {
-                const { params } = await request.json();
+                const {params} = await request.json();
                 expect(params.link).toEqual("/top-menu-url");
                 return false;
             });
@@ -415,16 +444,20 @@ describe("EditMenuDialog", () => {
             });
             await contains(":iframe header").click();
 
-            onRpc("website.menu", "get_tree", () => ({ ...sampleMenuData, children: [] }));
+            onRpc("website.menu", "get_tree", () => ({
+                ...sampleMenuData,
+                children: [],
+            }));
             await contains("button:contains('Edit Menu')").click();
 
             patchWithCleanup(MenuDialog.prototype, {
                 setup() {
                     super.setup();
-                    this.website.pageDocument = builder.getEditableContent().ownerDocument;
+                    this.website.pageDocument =
+                        builder.getEditableContent().ownerDocument;
                 },
                 onClickOk() {
-                    // little lie to avoid calling `toRelativeIfSameDomain`,
+                    // Little lie to avoid calling `toRelativeIfSameDomain`,
                     // so that we still have the absolute url (see NOTE above)
                     this.props.isMegaMenu = true;
                     super.onClickOk();
@@ -436,7 +469,7 @@ describe("EditMenuDialog", () => {
 
             const deferred = new Deferred();
             onRpc("/website/check_existing_link", async (request) => {
-                const { params } = await request.json();
+                const {params} = await request.json();
                 expect(params.link).toEqual("/top-menu-url");
                 expect.step("check existing");
                 await deferred;
@@ -450,7 +483,7 @@ describe("EditMenuDialog", () => {
 
             expect("button:contains('Create Page')").toHaveCount(0);
             deferred.resolve();
-            // the request is done again by "Edit Menu"
+            // The request is done again by "Edit Menu"
             await expect.waitForSteps(["check existing"]);
             await animationFrame();
             expect("button:contains('Create Page')").toHaveCount(1);

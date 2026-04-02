@@ -1,22 +1,21 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import logging
+import base64
 import json
-from datetime import datetime
-from markupsafe import Markup
-from itertools import groupby
+import logging
 from collections import defaultdict
-from uuid import uuid4
-from random import randrange
+from datetime import datetime
+from itertools import groupby
 from pprint import pformat
+from random import randrange
+from uuid import uuid4
 
 import pytz
+from markupsafe import Markup
 
-from odoo import api, fields, models, tools, _
-from odoo.tools import float_is_zero, float_round, float_repr, float_compare, formatLang
-from odoo.exceptions import ValidationError, UserError
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Command, Domain
-import base64
-
+from odoo.tools import float_compare, float_is_zero, float_repr, float_round, formatLang
 
 _logger = logging.getLogger(__name__)
 
@@ -431,7 +430,7 @@ class PosOrder(models.Model):
     @api.depends('lines.is_total_cost_computed')
     def _compute_is_total_cost_computed(self):
         for order in self:
-            order.is_total_cost_computed = not False in order.lines.mapped('is_total_cost_computed')
+            order.is_total_cost_computed = False not in order.lines.mapped('is_total_cost_computed')
 
     @api.depends('partner_id')
     def _compute_contact_details(self):
@@ -1559,7 +1558,7 @@ class PosOrderLine(models.Model):
 
     @api.model
     def _is_field_accepted(self, field):
-        return field in self._fields and not field in ['combo_parent_id', 'combo_line_ids']
+        return field in self._fields and field not in ['combo_parent_id', 'combo_line_ids']
 
     @api.depends('refund_orderline_ids', 'refund_orderline_ids.order_id.state')
     def _compute_refund_qty(self):

@@ -1,18 +1,18 @@
-import { Domain } from "@web/core/domain";
-import { serializeDate, serializeDateTime } from "@web/core/l10n/dates";
-import { registry } from "@web/core/registry";
-import { KeepLast } from "@web/core/utils/concurrency";
-import { useAutofocus, useBus, useChildRef, useService } from "@web/core/utils/hooks";
-import { DomainSelectorDialog } from "@web/core/domain_selector_dialog/domain_selector_dialog";
-import { fuzzyTest } from "@web/core/utils/search";
-import { _t } from "@web/core/l10n/translation";
-import { SearchBarMenu } from "../search_bar_menu/search_bar_menu";
-import { Component, status, useRef, useState } from "@odoo/owl";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { hasTouch, isIOS } from "@web/core/browser/feature_detection";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { useNavigation } from "@web/core/navigation/navigation";
+import {Domain} from "@web/core/domain";
+import {serializeDate, serializeDateTime} from "@web/core/l10n/dates";
+import {registry} from "@web/core/registry";
+import {KeepLast} from "@web/core/utils/concurrency";
+import {useAutofocus, useBus, useChildRef, useService} from "@web/core/utils/hooks";
+import {DomainSelectorDialog} from "@web/core/domain_selector_dialog/domain_selector_dialog";
+import {fuzzyTest} from "@web/core/utils/search";
+import {_t} from "@web/core/l10n/translation";
+import {SearchBarMenu} from "../search_bar_menu/search_bar_menu";
+import {Component, status, useRef, useState} from "@odoo/owl";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {hasTouch, isIOS} from "@web/core/browser/feature_detection";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {useNavigation} from "@web/core/navigation/navigation";
 
 const parsers = registry.category("parsers");
 
@@ -34,7 +34,15 @@ const parseValue = (value, fieldType) => {
     }
 };
 
-const CHAR_FIELDS = ["char", "html", "many2many", "many2one", "one2many", "text", "properties"];
+const CHAR_FIELDS = [
+    "char",
+    "html",
+    "many2many",
+    "many2one",
+    "one2many",
+    "text",
+    "properties",
+];
 const FOLDABLE_TYPES = ["properties", "many2one", "many2many"];
 
 let nextItemId = 1;
@@ -48,13 +56,13 @@ export class SearchBar extends Component {
         DropdownItem,
     };
     static props = {
-        autofocus: { type: Boolean, optional: true },
+        autofocus: {type: Boolean, optional: true},
         slots: {
             type: Object,
             optional: true,
             shape: {
-                default: { optional: true },
-                "search-bar-additional-menu": { optional: true },
+                default: {optional: true},
+                "search-bar-additional-menu": {optional: true},
             },
         },
         toggler: {
@@ -69,11 +77,15 @@ export class SearchBar extends Component {
     setup() {
         this.dialogService = useService("dialog");
         this.fields = this.env.searchModel.searchViewFields;
-        this.searchItemsFields = this.env.searchModel.getSearchItems((f) => f.type === "field");
+        this.searchItemsFields = this.env.searchModel.getSearchItems(
+            (f) => f.type === "field"
+        );
         this.root = useRef("root");
         this.ui = useService("ui");
 
-        this.visibilityState = useState(this.props.toggler?.state || { showSearchBar: true });
+        this.visibilityState = useState(
+            this.props.toggler?.state || {showSearchBar: true}
+        );
 
         // core state
         this.state = useState({
@@ -101,7 +113,7 @@ export class SearchBar extends Component {
         this.inputRef =
             this.env.config.disableSearchBarAutofocus || !this.props.autofocus
                 ? useRef("autofocus")
-                : useAutofocus({ mobile: this.ui.isSmall }); // only force the focus on touch devices on small screens
+                : useAutofocus({mobile: this.ui.isSmall}); // only force the focus on touch devices on small screens
 
         useBus(this.env.searchModel, "focus-search", () => {
             this.inputRef.el.focus();
@@ -134,12 +146,12 @@ export class SearchBar extends Component {
         for (const id of expanded) {
             const searchItem = this.getSearchItem(id);
             if (searchItem.type === "field" && searchItem.fieldType === "properties") {
-                tasks.push({ id, prom: this.getSearchItemsProperties(searchItem) });
+                tasks.push({id, prom: this.getSearchItemsProperties(searchItem)});
             } else if (!subItems[id]) {
                 if (!this.state.subItemsLimits[id]) {
                     this.state.subItemsLimits[id] = SUB_ITEMS_DEFAULT_LIMIT;
                 }
-                tasks.push({ id, prom: this.computeSubItems(searchItem, query) });
+                tasks.push({id, prom: this.computeSubItems(searchItem, query)});
             }
         }
 
@@ -189,7 +201,10 @@ export class SearchBar extends Component {
         /** @todo do something with respect to localization (rtl) */
         let preposition = this.getPreposition(searchItem);
 
-        if ((isFieldProperty && FOLDABLE_TYPES.includes(fieldType)) || fieldType === "properties") {
+        if (
+            (isFieldProperty && FOLDABLE_TYPES.includes(fieldType)) ||
+            fieldType === "properties"
+        ) {
             // Do not chose preposition for foldable properties
             // or the properties item itself
             preposition = null;
@@ -204,7 +219,7 @@ export class SearchBar extends Component {
             ];
             let options;
             if (isFieldProperty) {
-                const { selection, tags } = searchItem.propertyFieldDefinition || {};
+                const {selection, tags} = searchItem.propertyFieldDefinition || {};
                 options = selection || tags || booleanOptions;
             } else {
                 options = booleanOptions;
@@ -242,7 +257,9 @@ export class SearchBar extends Component {
             preposition,
             searchItemId: searchItem.id,
             label: this.state.query,
-            operator: searchItem.operator || (CHAR_FIELDS.includes(fieldType) ? "ilike" : "="),
+            operator:
+                searchItem.operator ||
+                (CHAR_FIELDS.includes(fieldType) ? "ilike" : "="),
             value,
             isFieldProperty,
         };
@@ -283,7 +300,7 @@ export class SearchBar extends Component {
     }
 
     getFieldType(searchItem) {
-        const { type } =
+        const {type} =
             searchItem.type === "field_property"
                 ? searchItem.propertyFieldDefinition
                 : this.fields[searchItem.fieldName];
@@ -330,7 +347,7 @@ export class SearchBar extends Component {
             const limitToFetch = this.state.subItemsLimits[searchItem.id] + 1;
             options = await this.orm.call(relation, "name_search", [], {
                 domain: domain,
-                context: { ...this.env.searchModel.globalContext, ...field.context },
+                context: {...this.env.searchModel.globalContext, ...field.context},
                 limit: limitToFetch,
                 name: query.trim(),
             });
@@ -362,10 +379,11 @@ export class SearchBar extends Component {
                     label: _t("Load more"),
                     unselectable: true,
                     loadMore: () => {
-                        this.state.subItemsLimits[searchItem.id] += SUB_ITEMS_DEFAULT_LIMIT;
+                        this.state.subItemsLimits[searchItem.id] +=
+                            SUB_ITEMS_DEFAULT_LIMIT;
                         const newSubItems = [...this.subItems];
                         newSubItems[searchItem.id] = undefined;
-                        this.computeState({ subItems: newSubItems });
+                        this.computeState({subItems: newSubItems});
                     },
                 });
             }
@@ -403,9 +421,9 @@ export class SearchBar extends Component {
         this.inputRef.el.focus();
     }
 
-    resetState(options = { focus: true }) {
+    resetState(options = {focus: true}) {
         this.state.subItemsLimits = {};
-        this.computeState({ expanded: [], query: "", subItems: [] });
+        this.computeState({expanded: [], query: "", subItems: []});
         if (options.focus) {
             this.inputRef.el.focus();
         }
@@ -430,8 +448,8 @@ export class SearchBar extends Component {
         }
 
         if (!item.unselectable) {
-            const { searchItemId, fieldType, operator } = item;
-            let { label, value } = item;
+            const {searchItemId, fieldType, operator} = item;
+            let {label, value} = item;
             if (
                 !["selection", "boolean", "tags"].includes(fieldType) &&
                 this.state.query !== label &&
@@ -444,7 +462,11 @@ export class SearchBar extends Component {
                 label = this.state.query;
                 value = parseValue(this.state.query.trim(), fieldType);
             }
-            this.env.searchModel.addAutoCompletionValues(searchItemId, { label, operator, value });
+            this.env.searchModel.addAutoCompletionValues(searchItemId, {
+                label,
+                operator,
+                value,
+            });
         }
 
         if (item.loadMore) {
@@ -472,11 +494,12 @@ export class SearchBar extends Component {
                 expanded.splice(index, 1);
             }
         }
-        this.computeState({ expanded });
+        this.computeState({expanded});
     }
 
     setupFacetNavigation() {
-        const isFacet = (target) => target && target.classList.contains("o_searchview_facet");
+        const isFacet = (target) =>
+            target && target.classList.contains("o_searchview_facet");
 
         useNavigation(this.facetContainerRef, {
             shouldFocusChildInput: false,
@@ -498,7 +521,8 @@ export class SearchBar extends Component {
                 },
                 enter: {
                     isAvailable: () => !this.inputDropdownState.isOpen,
-                    callback: () => this.env.searchModel.search() /** @todo keep this thing ?*/,
+                    callback: () =>
+                        this.env.searchModel.search() /** @todo keep this thing ?*/,
                 },
                 arrowdown: {
                     callback: () => this.env.searchModel.trigger("focus-view"),
@@ -506,7 +530,7 @@ export class SearchBar extends Component {
                 backspace: {
                     bypassEditableProtection: true,
                     allowRepeat: false,
-                    isAvailable: ({ target }) =>
+                    isAvailable: ({target}) =>
                         isFacet(target) ||
                         (target.selectionStart === 0 && target.selectionEnd === 0),
                     callback: (navigator) => {
@@ -521,8 +545,9 @@ export class SearchBar extends Component {
                 arrowright: {
                     bypassEditableProtection: true,
                     allowRepeat: false,
-                    isAvailable: ({ target }) =>
-                        isFacet(target) || target.selectionStart === this.state.query.length,
+                    isAvailable: ({target}) =>
+                        isFacet(target) ||
+                        target.selectionStart === this.state.query.length,
                     callback: (navigator) => {
                         navigator.next();
                         if (navigator.activeItem.el === this.inputRef.el) {
@@ -532,12 +557,16 @@ export class SearchBar extends Component {
                 },
                 arrowleft: {
                     bypassEditableProtection: true,
-                    isAvailable: ({ target }) => isFacet(target) || target.selectionStart === 0,
+                    isAvailable: ({target}) =>
+                        isFacet(target) || target.selectionStart === 0,
                     callback: (navigator) => {
                         navigator.previous();
                         if (navigator.activeItem.el === this.inputRef.el) {
                             const inputLength = this.inputRef.el.value.length;
-                            this.inputRef.el.setSelectionRange(inputLength, inputLength);
+                            this.inputRef.el.setSelectionRange(
+                                inputLength,
+                                inputLength
+                            );
                         }
                     },
                 },
@@ -557,18 +586,24 @@ export class SearchBar extends Component {
         const isCollapsible = (index) => {
             const item = this.items[index];
             return (
-                item && ((item.isParent && item.isExpanded) || item.isChild || item.isFieldProperty)
+                item &&
+                ((item.isParent && item.isExpanded) ||
+                    item.isChild ||
+                    item.isFieldProperty)
             );
         };
 
         return {
             virtualFocus: true,
-            getItems: () => this.menuRef.el?.querySelectorAll(":scope .o-dropdown-item") ?? [],
-            isNavigationAvailable: ({ navigator, target }) =>
+            getItems: () =>
+                this.menuRef.el?.querySelectorAll(":scope .o-dropdown-item") ?? [],
+            isNavigationAvailable: ({navigator, target}) =>
                 this.inputDropdownState.isOpen &&
-                (this.facetContainerRef.el?.contains(target) || navigator.contains(target)),
+                (this.facetContainerRef.el?.contains(target) ||
+                    navigator.contains(target)),
             onUpdated: (navigator) => (this.navigator = navigator),
-            onItemActivated: (itemEl) => (this.lastActiveItemId = parseInt(itemEl.id, 10)),
+            onItemActivated: (itemEl) =>
+                (this.lastActiveItemId = parseInt(itemEl.id, 10)),
             hotkeys: {
                 escape: {
                     callback: () => {
@@ -579,7 +614,8 @@ export class SearchBar extends Component {
                 arrowright: {
                     bypassEditableProtection: true,
                     allowRepeat: false,
-                    isAvailable: ({ navigator }) => isExpansible(navigator.activeItemIndex),
+                    isAvailable: ({navigator}) =>
+                        isExpansible(navigator.activeItemIndex),
                     callback: (navigator) => {
                         const item = this.items[navigator.activeItemIndex];
                         if (item.isParent) {
@@ -593,7 +629,8 @@ export class SearchBar extends Component {
                 },
                 arrowleft: {
                     bypassEditableProtection: true,
-                    isAvailable: ({ navigator }) => isCollapsible(navigator.activeItemIndex),
+                    isAvailable: ({navigator}) =>
+                        isCollapsible(navigator.activeItemIndex),
                     callback: (navigator) => {
                         const item = this.items[navigator.activeItemIndex];
 
@@ -606,9 +643,13 @@ export class SearchBar extends Component {
                         } else if (item && item.isChild) {
                             navigator.items[findIndex(item.searchItemId)]?.setActive();
                         } else if (item && item.isFieldProperty) {
-                            navigator.items[findIndex(item.propertyItemId)]?.setActive();
+                            navigator.items[
+                                findIndex(item.propertyItemId)
+                            ]?.setActive();
                         } else if (this.inputRef.el.selectionStart === 0) {
-                            navigator.items[this.env.searchModel.facets.length - 1]?.setActive();
+                            navigator.items[
+                                this.env.searchModel.facets.length - 1
+                            ]?.setActive();
                         }
                     },
                 },
@@ -621,14 +662,14 @@ export class SearchBar extends Component {
     //---------------------------------------------------------------------
 
     onFacetLabelClick(target, facet) {
-        const { domain, groupId } = facet;
+        const {domain, groupId} = facet;
         if (this.env.searchModel.canOrderByCount && facet.type === "groupBy") {
             this.env.searchModel.switchGroupBySort();
             return;
         } else if (!domain) {
             return;
         }
-        const { resModel } = this.env.searchModel;
+        const {resModel} = this.env.searchModel;
         this.dialogService.add(DomainSelectorDialog, {
             resModel,
             domain,
@@ -679,7 +720,7 @@ export class SearchBar extends Component {
                 // Protection for IME input
                 this.inputDropdownState.open();
             }
-            this.computeState({ query, expanded: [], subItems: [] });
+            this.computeState({query, expanded: [], subItems: []});
         } else if (this.items.length) {
             this.inputDropdownState.close();
             this.resetState();
@@ -714,7 +755,7 @@ export class SearchBar extends Component {
 
     onInputDropdownChanged(isOpen) {
         if (!isOpen && status(this) === "mounted") {
-            this.resetState({ focus: false });
+            this.resetState({focus: false});
         } else if (this.navigator) {
             this.navigator.items[0]?.setActive();
         }

@@ -1,14 +1,17 @@
 /** @ts-check */
-import { mockDate } from "@odoo/hoot-mock";
-import { defineSpreadsheetModels } from "@spreadsheet/../tests/helpers/data";
-import { describe, expect, test } from "@odoo/hoot";
+import {mockDate} from "@odoo/hoot-mock";
+import {defineSpreadsheetModels} from "@spreadsheet/../tests/helpers/data";
+import {describe, expect, test} from "@odoo/hoot";
 
-import { createSpreadsheetWithChart } from "@spreadsheet/../tests/helpers/chart";
-import { addGlobalFilter, setGlobalFilterValue } from "@spreadsheet/../tests/helpers/commands";
-import { globalFieldMatchingRegistry } from "@spreadsheet/global_filters/helpers";
-import { THIS_YEAR_GLOBAL_FILTER } from "../helpers/global_filter";
+import {createSpreadsheetWithChart} from "@spreadsheet/../tests/helpers/chart";
+import {
+    addGlobalFilter,
+    setGlobalFilterValue,
+} from "@spreadsheet/../tests/helpers/commands";
+import {globalFieldMatchingRegistry} from "@spreadsheet/global_filters/helpers";
+import {THIS_YEAR_GLOBAL_FILTER} from "../helpers/global_filter";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 describe.current.tags("headless");
 defineSpreadsheetModels();
@@ -20,24 +23,26 @@ defineSpreadsheetModels();
 async function addChartGlobalFilter(model) {
     const chartId = model.getters.getChartIds(model.getters.getActiveSheetId())[0];
     await addGlobalFilter(model, THIS_YEAR_GLOBAL_FILTER, {
-        chart: { [chartId]: { chain: "date", type: "date" } },
+        chart: {[chartId]: {chain: "date", type: "date"}},
     });
 }
 
 test("Can add a chart global filter", async function () {
-    const { model } = await createSpreadsheetWithChart();
+    const {model} = await createSpreadsheetWithChart();
     expect(model.getters.getGlobalFilters().length).toBe(0);
     await addChartGlobalFilter(model);
     expect(model.getters.getGlobalFilters().length).toBe(1);
     const chartId = model.getters.getChartIds(model.getters.getActiveSheetId())[0];
-    const computedDomain = model.getters.getChartDataSource(chartId).getComputedDomain();
+    const computedDomain = model.getters
+        .getChartDataSource(chartId)
+        .getComputedDomain();
     expect(computedDomain.length).toBe(3);
     expect(computedDomain[0]).toBe("&");
 });
 
 test("Chart is loaded with computed domain", async function () {
-    const { model } = await createSpreadsheetWithChart({
-        mockRPC: function (route, { model, method, kwargs }) {
+    const {model} = await createSpreadsheetWithChart({
+        mockRPC: function (route, {model, method, kwargs}) {
             if (model === "partner" && method === "formatted_read_group") {
                 expect(kwargs.domain.length).toBe(3);
                 expect(kwargs.domain[0]).toBe("&");
@@ -49,7 +54,7 @@ test("Chart is loaded with computed domain", async function () {
 });
 
 test("Chart is impacted by global filter in dashboard mode", async function () {
-    const { model } = await createSpreadsheetWithChart();
+    const {model} = await createSpreadsheetWithChart();
     expect(model.getters.getGlobalFilters().length).toBe(0);
     const chartId = model.getters.getChartIds(model.getters.getActiveSheetId())[0];
 
@@ -60,14 +65,14 @@ test("Chart is impacted by global filter in dashboard mode", async function () {
         label: "Last Year",
     };
     await addGlobalFilter(model, filter, {
-        chart: { [chartId]: { chain: "date", type: "date" } },
+        chart: {[chartId]: {chain: "date", type: "date"}},
     });
     model.updateMode("dashboard");
     let computedDomain = model.getters.getChartDataSource(chartId).getComputedDomain();
     expect(computedDomain).toEqual([]);
     await setGlobalFilterValue(model, {
         id: "42",
-        value: { type: "year", year: DateTime.local().year - 1 },
+        value: {type: "year", year: DateTime.local().year - 1},
     });
     computedDomain = model.getters.getChartDataSource(chartId).getComputedDomain();
     expect(computedDomain.length).toBe(3);
@@ -75,7 +80,7 @@ test("Chart is impacted by global filter in dashboard mode", async function () {
 });
 
 test("field matching is removed when chart is deleted", async function () {
-    const { model } = await createSpreadsheetWithChart();
+    const {model} = await createSpreadsheetWithChart();
     await addChartGlobalFilter(model);
     const [filter] = model.getters.getGlobalFilters();
     const [chartId] = model.getters.getChartIds(model.getters.getActiveSheetId());
@@ -89,7 +94,8 @@ test("field matching is removed when chart is deleted", async function () {
         figureId: model.getters.getFigureIdFromChartId(chartId),
     });
     expect(globalFieldMatchingRegistry.get("chart").getIds(model.getters)).toEqual([], {
-        message: "it should have removed the chart and its fieldMatching and datasource altogether",
+        message:
+            "it should have removed the chart and its fieldMatching and datasource altogether",
     });
     model.dispatch("REQUEST_UNDO");
     expect(model.getters.getChartFieldMatch(chartId)[filter.id]).toEqual(matching);
@@ -99,7 +105,7 @@ test("field matching is removed when chart is deleted", async function () {
 
 test("field matching is removed when filter is deleted", async function () {
     mockDate("2022-07-10 00:00:00");
-    const { model } = await createSpreadsheetWithChart();
+    const {model} = await createSpreadsheetWithChart();
     await addChartGlobalFilter(model);
     const [filter] = model.getters.getGlobalFilters();
     const [chartId] = model.getters.getChartIds(model.getters.getActiveSheetId());
@@ -117,7 +123,8 @@ test("field matching is removed when filter is deleted", async function () {
         id: filter.id,
     });
     expect(model.getters.getChartFieldMatch(chartId)[filter.id]).toBe(undefined, {
-        message: "it should have removed the chart and its fieldMatching and datasource altogether",
+        message:
+            "it should have removed the chart and its fieldMatching and datasource altogether",
     });
     expect(model.getters.getChartDataSource(chartId).getComputedDomain()).toEqual([]);
     model.dispatch("REQUEST_UNDO");

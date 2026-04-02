@@ -1,6 +1,6 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 
-import { computeAggregatedValue } from "@web/views/utils";
+import {computeAggregatedValue} from "@web/views/utils";
 
 describe.current.tags("headless");
 
@@ -50,11 +50,17 @@ describe("computeAggregatedValue", () => {
         expect(computeAggregatedValue([7], "count_distinct")).toBe(1);
         expect(computeAggregatedValue([7, 3], "count_distinct")).toBe(2);
         expect(computeAggregatedValue([7.23, 3.1], "count_distinct")).toBe(2);
-        expect(computeAggregatedValue([10, 2, -3, 2, -5, 27, 2], "count_distinct")).toBe(5);
+        expect(
+            computeAggregatedValue([10, 2, -3, 2, -5, 27, 2], "count_distinct")
+        ).toBe(5);
     });
 
     test("invalid aggregator", () => {
-        expect(() => computeAggregatedValue([])).toThrow("Invalid aggregator 'undefined'");
-        expect(() => computeAggregatedValue([], "oups")).toThrow("Invalid aggregator 'oups'");
+        expect(() => computeAggregatedValue([])).toThrow(
+            "Invalid aggregator 'undefined'"
+        );
+        expect(() => computeAggregatedValue([], "oups")).toThrow(
+            "Invalid aggregator 'oups'"
+        );
     });
 });

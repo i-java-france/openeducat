@@ -1,11 +1,11 @@
-import { HtmlViewer } from "@html_editor/components/html_viewer/html_viewer";
-import { expect, test } from "@odoo/hoot";
-import { waitFor } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { markup } from "@odoo/owl";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { registry } from "@web/core/registry";
-import { WebClient } from "@web/webclient/webclient";
+import {HtmlViewer} from "@html_editor/components/html_viewer/html_viewer";
+import {expect, test} from "@odoo/hoot";
+import {waitFor} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {markup} from "@odoo/owl";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {registry} from "@web/core/registry";
+import {WebClient} from "@web/webclient/webclient";
 
 test(`XML-like self-closing elements are fixed in a standalone HtmlViewer`, async () => {
     await mountWithCleanup(WebClient);
@@ -57,7 +57,7 @@ test(`copy from HtmlViewer must support application/vnd.odoo.odoo-editor`, async
     await animationFrame();
 
     const clipboardData = new DataTransfer();
-    const ev = new ClipboardEvent("copy", { bubbles: true, clipboardData });
+    const ev = new ClipboardEvent("copy", {bubbles: true, clipboardData});
     beforeNode.dispatchEvent(ev);
 
     expect(clipboardData.getData("text/plain").trim()).toBe("A");
@@ -96,7 +96,9 @@ test(`copy from HtmlViewer should copy all the selection`, async () => {
     getSelection().addRange(range);
     await animationFrame();
     const clipboardData = new DataTransfer();
-    tableParent.dispatchEvent(new ClipboardEvent("copy", { bubbles: true, clipboardData }));
+    tableParent.dispatchEvent(
+        new ClipboardEvent("copy", {bubbles: true, clipboardData})
+    );
 
     expect(clipboardData.getData("text/html")).toInclude("table");
     expect(clipboardData.getData("application/vnd.odoo.odoo-editor")).toBe(

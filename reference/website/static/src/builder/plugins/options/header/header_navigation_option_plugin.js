@@ -1,8 +1,8 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { HeaderNavigationOption } from "./header_navigation_option";
-import { withSequence } from "@html_editor/utils/resource";
-import { HEADER_NAVIGATION } from "./header_option_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {HeaderNavigationOption} from "./header_navigation_option";
+import {withSequence} from "@html_editor/utils/resource";
+import {HEADER_NAVIGATION} from "./header_option_plugin";
 
 class HeaderNavigationOptionPlugin extends Plugin {
     static id = "HeaderNavigationOptionPlugin";
@@ -30,7 +30,7 @@ class HeaderNavigationOptionPlugin extends Plugin {
     }
 
     async getCurrentActiveViews() {
-        const actionParams = { views: this.keys };
+        const actionParams = {views: this.keys};
         await this.dependencies.customizeWebsite.loadConfigKey(actionParams);
         const currentActiveViews = {};
         for (const key of this.keys) {

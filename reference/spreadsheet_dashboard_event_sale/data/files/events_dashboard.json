@@ -7,38 +7,38 @@
       "colNumber": 5,
       "rowNumber": 56,
       "rows": {
-        "6": { "size": 40 },
-        "22": { "size": 40 },
-        "23": { "size": 40 },
-        "24": { "size": 29 },
-        "25": { "size": 29 },
-        "26": { "size": 29 },
-        "27": { "size": 29 },
-        "28": { "size": 29 },
-        "29": { "size": 29 },
-        "30": { "size": 29 },
-        "31": { "size": 29 },
-        "32": { "size": 29 },
-        "33": { "size": 29 },
-        "35": { "size": 40 },
-        "36": { "size": 40 },
-        "37": { "size": 29 },
-        "38": { "size": 29 },
-        "39": { "size": 29 },
-        "40": { "size": 29 },
-        "41": { "size": 29 },
-        "42": { "size": 29 },
-        "43": { "size": 29 },
-        "44": { "size": 29 },
-        "45": { "size": 29 },
-        "46": { "size": 29 }
+        "6": {"size": 40},
+        "22": {"size": 40},
+        "23": {"size": 40},
+        "24": {"size": 29},
+        "25": {"size": 29},
+        "26": {"size": 29},
+        "27": {"size": 29},
+        "28": {"size": 29},
+        "29": {"size": 29},
+        "30": {"size": 29},
+        "31": {"size": 29},
+        "32": {"size": 29},
+        "33": {"size": 29},
+        "35": {"size": 40},
+        "36": {"size": 40},
+        "37": {"size": 29},
+        "38": {"size": 29},
+        "39": {"size": 29},
+        "40": {"size": 29},
+        "41": {"size": 29},
+        "42": {"size": 29},
+        "43": {"size": 29},
+        "44": {"size": 29},
+        "45": {"size": 29},
+        "46": {"size": 29}
       },
       "cols": {
-        "0": { "size": 374 },
-        "1": { "size": 100 },
-        "2": { "size": 50 },
-        "3": { "size": 375 },
-        "4": { "size": 100 }
+        "0": {"size": 374},
+        "1": {"size": 100},
+        "2": {"size": 50},
+        "3": {"size": 375},
+        "4": {"size": 100}
       },
       "merges": [],
       "cells": {
@@ -186,22 +186,22 @@
       },
       "conditionalFormats": [
         {
-          "rule": { "type": "DataBarRule", "color": 15726335, "rangeValues": "B25:B34" },
+          "rule": {"type": "DataBarRule", "color": 15726335, "rangeValues": "B25:B34"},
           "id": "813e8f10-5d2d-42bf-994d-84a21425573c",
           "ranges": ["A25:A34"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 16775149, "rangeValues": "E25:E34" },
+          "rule": {"type": "DataBarRule", "color": 16775149, "rangeValues": "E25:E34"},
           "id": "95cfb086-980c-418f-b6cf-65663c0fe449",
           "ranges": ["D25:D34"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 15531509, "rangeValues": "B38:B47" },
+          "rule": {"type": "DataBarRule", "color": 15531509, "rangeValues": "B38:B47"},
           "id": "3a61df0c-f147-4d90-a6a7-08e4b50e495a",
           "ranges": ["A38:A47"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 16708338, "rangeValues": "E38:E47" },
+          "rule": {"type": "DataBarRule", "color": 16708338, "rangeValues": "E38:E47"},
           "id": "0b11b334-4302-4e29-b4e7-e2d964d6c999",
           "ranges": ["D38:D47"]
         }
@@ -214,7 +214,7 @@
           "height": 345,
           "tag": "chart",
           "data": {
-            "title": { "text": "" },
+            "title": {"text": ""},
             "background": "#FFFFFF",
             "legendPosition": "none",
             "metaData": {
@@ -227,7 +227,7 @@
             },
             "searchParams": {
               "comparison": null,
-              "context": { "registration_view_hide_group_by_create_date_week": 1 },
+              "context": {"registration_view_hide_group_by_create_date_week": 1},
               "domain": [],
               "groupBy": ["state"],
               "orderBy": []
@@ -237,14 +237,30 @@
             "verticalAxisPosition": "left",
             "stacked": true,
             "fieldMatching": {
-              "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": { "chain": "event_begin_date", "type": "datetime", "offset": 0 },
-              "62e15eb2-9410-4803-b189-5fa789a7e94f": { "chain": "event_id.address_id", "type": "many2one" },
-              "d9cfb0b0-01a0-45be-996e-723f4283000b": { "chain": "event_id.event_type_id", "type": "many2one" },
-              "43c04fb0-d3b7-47c8-852b-b823c36df0ee": { "chain": "event_id.tag_ids", "type": "many2many" },
-              "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": { "chain": "event_organizer_id", "type": "many2one" }
+              "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": {
+                "chain": "event_begin_date",
+                "type": "datetime",
+                "offset": 0
+              },
+              "62e15eb2-9410-4803-b189-5fa789a7e94f": {
+                "chain": "event_id.address_id",
+                "type": "many2one"
+              },
+              "d9cfb0b0-01a0-45be-996e-723f4283000b": {
+                "chain": "event_id.event_type_id",
+                "type": "many2one"
+              },
+              "43c04fb0-d3b7-47c8-852b-b823c36df0ee": {
+                "chain": "event_id.tag_ids",
+                "type": "many2many"
+              },
+              "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": {
+                "chain": "event_organizer_id",
+                "type": "many2one"
+              }
             }
           },
-          "offset": { "x": 525, "y": 178 },
+          "offset": {"x": 525, "y": 178},
           "col": 0,
           "row": 0
         },
@@ -254,7 +270,7 @@
           "height": 345,
           "tag": "chart",
           "data": {
-            "title": { "text": "" },
+            "title": {"text": ""},
             "background": "#FFFFFF",
             "legendPosition": "none",
             "metaData": {
@@ -277,14 +293,30 @@
             "verticalAxisPosition": "left",
             "stacked": true,
             "fieldMatching": {
-              "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": { "chain": "date_begin", "type": "datetime", "offset": 0 },
-              "62e15eb2-9410-4803-b189-5fa789a7e94f": { "chain": "address_id", "type": "many2one" },
-              "d9cfb0b0-01a0-45be-996e-723f4283000b": { "chain": "event_type_id", "type": "many2one" },
-              "43c04fb0-d3b7-47c8-852b-b823c36df0ee": { "chain": "tag_ids", "type": "many2many" },
-              "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": { "chain": "organizer_id", "type": "many2one" }
+              "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": {
+                "chain": "date_begin",
+                "type": "datetime",
+                "offset": 0
+              },
+              "62e15eb2-9410-4803-b189-5fa789a7e94f": {
+                "chain": "address_id",
+                "type": "many2one"
+              },
+              "d9cfb0b0-01a0-45be-996e-723f4283000b": {
+                "chain": "event_type_id",
+                "type": "many2one"
+              },
+              "43c04fb0-d3b7-47c8-852b-b823c36df0ee": {
+                "chain": "tag_ids",
+                "type": "many2many"
+              },
+              "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": {
+                "chain": "organizer_id",
+                "type": "many2one"
+              }
             }
           },
-          "offset": { "x": 0, "y": 178 },
+          "offset": {"x": 0, "y": 178},
           "col": 0,
           "row": 0
         },
@@ -297,15 +329,15 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "percentage",
-            "title": { "text": "Events", "bold": true, "color": "#434343" },
+            "title": {"text": "Events", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#EFF6FF",
             "baseline": "Data!E3",
-            "baselineDescr": { "text": "since last period" },
+            "baselineDescr": {"text": "since last period"},
             "keyValue": "Data!D3",
             "humanize": false
           },
-          "offset": { "x": 0, "y": 9 },
+          "offset": {"x": 0, "y": 9},
           "col": 0,
           "row": 0
         },
@@ -318,15 +350,15 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "percentage",
-            "title": { "text": "Revenue", "bold": true, "color": "#434343" },
+            "title": {"text": "Revenue", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FFF7ED",
             "baseline": "Data!E4",
-            "baselineDescr": { "text": "since last period" },
+            "baselineDescr": {"text": "since last period"},
             "keyValue": "Data!D4",
             "humanize": false
           },
-          "offset": { "x": 210, "y": 9 },
+          "offset": {"x": 210, "y": 9},
           "col": 0,
           "row": 0
         },
@@ -339,15 +371,15 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "percentage",
-            "title": { "text": "Attendees", "bold": true, "color": "#434343" },
+            "title": {"text": "Attendees", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#EFF6FF",
             "baseline": "Data!E2",
-            "baselineDescr": { "text": "since last period" },
+            "baselineDescr": {"text": "since last period"},
             "keyValue": "Data!D2",
             "humanize": false
           },
-          "offset": { "x": 420, "y": 9 },
+          "offset": {"x": 420, "y": 9},
           "col": 0,
           "row": 0
         }
@@ -429,10 +461,10 @@
       "rowNumber": 101,
       "rows": {},
       "cols": {
-        "1": { "size": 93 },
-        "2": { "size": 93 },
-        "3": { "size": 93 },
-        "4": { "size": 93 }
+        "1": {"size": 93},
+        "2": {"size": 93},
+        "3": {"size": 93},
+        "4": {"size": 93}
       },
       "merges": [],
       "cells": {
@@ -457,7 +489,7 @@
         "E3": "=FORMAT.LARGE.NUMBER(C3)",
         "E4": "=FORMAT.LARGE.NUMBER(C4)"
       },
-      "styles": { "A1:C1": 5, "D1:E1": 6, "D2:E4": 7 },
+      "styles": {"A1:C1": 5, "D1:E1": 6, "D2:E4": 7},
       "formats": {},
       "borders": {},
       "conditionalFormats": [],
@@ -474,36 +506,36 @@
     }
   ],
   "styles": {
-    "1": { "textColor": "#01666b", "fontSize": 16, "bold": true },
-    "2": { "textColor": "#434343", "bold": true, "fontSize": 11 },
-    "3": { "textColor": "#434343", "verticalAlign": "middle" },
+    "1": {"textColor": "#01666b", "fontSize": 16, "bold": true},
+    "2": {"textColor": "#434343", "bold": true, "fontSize": 11},
+    "3": {"textColor": "#434343", "verticalAlign": "middle"},
     "4": {
       "textColor": "#434343",
       "bold": true,
       "fontSize": 11,
       "align": "center"
     },
-    "5": { "bold": true },
-    "6": { "bold": true, "fillColor": "#f2f2f2" },
-    "7": { "fillColor": "#f2f2f2" }
+    "5": {"bold": true},
+    "6": {"bold": true, "fillColor": "#f2f2f2"},
+    "7": {"fillColor": "#f2f2f2"}
   },
   "formats": {},
   "borders": {
     "1": {
-      "bottom": { "style": "thin", "color": "#CCCCCC" }
+      "bottom": {"style": "thin", "color": "#CCCCCC"}
     },
     "2": {
-      "top": { "style": "thin", "color": "#CCCCCC" }
+      "top": {"style": "thin", "color": "#CCCCCC"}
     },
     "3": {
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     },
     "4": {
-      "top": { "style": "thick", "color": "#FFFFFF" },
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "top": {"style": "thick", "color": "#FFFFFF"},
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     },
     "5": {
-      "top": { "style": "thick", "color": "#FFFFFF" }
+      "top": {"style": "thick", "color": "#FFFFFF"}
     }
   },
   "revisionId": "START_REVISION",
@@ -524,20 +556,32 @@
     "1": {
       "type": "ODOO",
       "fieldMatching": {
-        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": { "chain": "date_begin", "type": "datetime", "offset": 0 },
-        "62e15eb2-9410-4803-b189-5fa789a7e94f": { "chain": "address_id", "type": "many2one" },
-        "d9cfb0b0-01a0-45be-996e-723f4283000b": { "chain": "event_type_id", "type": "many2one" },
-        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": { "chain": "tag_ids", "type": "many2many" },
-        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": { "chain": "organizer_id", "type": "many2one" }
+        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": {
+          "chain": "date_begin",
+          "type": "datetime",
+          "offset": 0
+        },
+        "62e15eb2-9410-4803-b189-5fa789a7e94f": {
+          "chain": "address_id",
+          "type": "many2one"
+        },
+        "d9cfb0b0-01a0-45be-996e-723f4283000b": {
+          "chain": "event_type_id",
+          "type": "many2one"
+        },
+        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": {
+          "chain": "tag_ids",
+          "type": "many2many"
+        },
+        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": {
+          "chain": "organizer_id",
+          "type": "many2one"
+        }
       },
       "context": {},
-      "domain": [
-        ["address_id", "!=", false]
-      ],
+      "domain": [["address_id", "!=", false]],
       "id": "1",
-      "measures": [
-        { "id": "__count", "fieldName": "__count" }
-      ],
+      "measures": [{"id": "__count", "fieldName": "__count"}],
       "model": "event.event",
       "name": "Event by Venue",
       "sortedColumn": {
@@ -547,27 +591,37 @@
       },
       "formulaId": "1",
       "columns": [],
-      "rows": [
-        { "fieldName": "address_id" }
-      ]
+      "rows": [{"fieldName": "address_id"}]
     },
     "2": {
       "type": "ODOO",
       "fieldMatching": {
-        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": { "chain": "date_begin", "type": "datetime", "offset": 0 },
-        "62e15eb2-9410-4803-b189-5fa789a7e94f": { "chain": "address_id", "type": "many2one" },
-        "d9cfb0b0-01a0-45be-996e-723f4283000b": { "chain": "event_type_id", "type": "many2one" },
-        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": { "chain": "tag_ids", "type": "many2many" },
-        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": { "chain": "organizer_id", "type": "many2one" }
+        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": {
+          "chain": "date_begin",
+          "type": "datetime",
+          "offset": 0
+        },
+        "62e15eb2-9410-4803-b189-5fa789a7e94f": {
+          "chain": "address_id",
+          "type": "many2one"
+        },
+        "d9cfb0b0-01a0-45be-996e-723f4283000b": {
+          "chain": "event_type_id",
+          "type": "many2one"
+        },
+        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": {
+          "chain": "tag_ids",
+          "type": "many2many"
+        },
+        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": {
+          "chain": "organizer_id",
+          "type": "many2one"
+        }
       },
       "context": {},
-      "domain": [
-        ["event_type_id", "!=", false]
-      ],
+      "domain": [["event_type_id", "!=", false]],
       "id": "2",
-      "measures": [
-        { "id": "__count", "fieldName": "__count" }
-      ],
+      "measures": [{"id": "__count", "fieldName": "__count"}],
       "model": "event.event",
       "name": "Event by Template",
       "sortedColumn": {
@@ -577,27 +631,37 @@
       },
       "formulaId": "2",
       "columns": [],
-      "rows": [
-        { "fieldName": "event_type_id" }
-      ]
+      "rows": [{"fieldName": "event_type_id"}]
     },
     "3": {
       "type": "ODOO",
       "fieldMatching": {
-        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": { "chain": "date_begin", "type": "datetime", "offset": 0 },
-        "62e15eb2-9410-4803-b189-5fa789a7e94f": { "chain": "address_id", "type": "many2one" },
-        "d9cfb0b0-01a0-45be-996e-723f4283000b": { "chain": "event_type_id", "type": "many2one" },
-        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": { "chain": "tag_ids", "type": "many2many" },
-        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": { "chain": "organizer_id", "type": "many2one" }
+        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": {
+          "chain": "date_begin",
+          "type": "datetime",
+          "offset": 0
+        },
+        "62e15eb2-9410-4803-b189-5fa789a7e94f": {
+          "chain": "address_id",
+          "type": "many2one"
+        },
+        "d9cfb0b0-01a0-45be-996e-723f4283000b": {
+          "chain": "event_type_id",
+          "type": "many2one"
+        },
+        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": {
+          "chain": "tag_ids",
+          "type": "many2many"
+        },
+        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": {
+          "chain": "organizer_id",
+          "type": "many2one"
+        }
       },
       "context": {},
-      "domain": [
-        ["tag_ids", "!=", false]
-      ],
+      "domain": [["tag_ids", "!=", false]],
       "id": "3",
-      "measures": [
-        { "id": "__count", "fieldName": "__count" }
-      ],
+      "measures": [{"id": "__count", "fieldName": "__count"}],
       "model": "event.event",
       "name": "Event by Tags",
       "sortedColumn": {
@@ -607,27 +671,37 @@
       },
       "formulaId": "3",
       "columns": [],
-      "rows": [
-        { "fieldName": "tag_ids" }
-      ]
+      "rows": [{"fieldName": "tag_ids"}]
     },
     "4": {
       "type": "ODOO",
       "fieldMatching": {
-        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": { "chain": "date_begin", "type": "datetime", "offset": 0 },
-        "62e15eb2-9410-4803-b189-5fa789a7e94f": { "chain": "address_id", "type": "many2one" },
-        "d9cfb0b0-01a0-45be-996e-723f4283000b": { "chain": "event_type_id", "type": "many2one" },
-        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": { "chain": "tag_ids", "type": "many2many" },
-        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": { "chain": "organizer_id", "type": "many2one" }
+        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": {
+          "chain": "date_begin",
+          "type": "datetime",
+          "offset": 0
+        },
+        "62e15eb2-9410-4803-b189-5fa789a7e94f": {
+          "chain": "address_id",
+          "type": "many2one"
+        },
+        "d9cfb0b0-01a0-45be-996e-723f4283000b": {
+          "chain": "event_type_id",
+          "type": "many2one"
+        },
+        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": {
+          "chain": "tag_ids",
+          "type": "many2many"
+        },
+        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": {
+          "chain": "organizer_id",
+          "type": "many2one"
+        }
       },
       "context": {},
-      "domain": [
-        ["organizer_id", "!=", false]
-      ],
+      "domain": [["organizer_id", "!=", false]],
       "id": "4",
-      "measures": [
-        { "id": "__count", "fieldName": "__count" }
-      ],
+      "measures": [{"id": "__count", "fieldName": "__count"}],
       "model": "event.event",
       "name": "Event by Organizer",
       "sortedColumn": {
@@ -637,25 +711,37 @@
       },
       "formulaId": "4",
       "columns": [],
-      "rows": [
-        { "fieldName": "organizer_id" }
-      ]
+      "rows": [{"fieldName": "organizer_id"}]
     },
     "5": {
       "type": "ODOO",
       "fieldMatching": {
-        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": { "chain": "event_begin_date", "type": "datetime", "offset": 0 },
-        "62e15eb2-9410-4803-b189-5fa789a7e94f": { "chain": "event_id.address_id", "type": "many2one" },
-        "d9cfb0b0-01a0-45be-996e-723f4283000b": { "chain": "event_id.event_type_id", "type": "many2one" },
-        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": { "chain": "event_id.tag_ids", "type": "many2many" },
-        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": { "chain": "event_organizer_id", "type": "many2one" }
+        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": {
+          "chain": "event_begin_date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "62e15eb2-9410-4803-b189-5fa789a7e94f": {
+          "chain": "event_id.address_id",
+          "type": "many2one"
+        },
+        "d9cfb0b0-01a0-45be-996e-723f4283000b": {
+          "chain": "event_id.event_type_id",
+          "type": "many2one"
+        },
+        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": {
+          "chain": "event_id.tag_ids",
+          "type": "many2many"
+        },
+        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": {
+          "chain": "event_organizer_id",
+          "type": "many2one"
+        }
       },
-      "context": { "registration_view_hide_group_by_create_date_week": 1 },
+      "context": {"registration_view_hide_group_by_create_date_week": 1},
       "domain": [],
       "id": "5",
-      "measures": [
-        { "id": "__count", "fieldName": "__count" }
-      ],
+      "measures": [{"id": "__count", "fieldName": "__count"}],
       "model": "event.registration",
       "name": "attendees - current",
       "sortedColumn": null,
@@ -666,18 +752,32 @@
     "6": {
       "type": "ODOO",
       "fieldMatching": {
-        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": { "chain": "event_begin_date", "type": "datetime", "offset": -1 },
-        "62e15eb2-9410-4803-b189-5fa789a7e94f": { "chain": "event_id.address_id", "type": "many2one" },
-        "d9cfb0b0-01a0-45be-996e-723f4283000b": { "chain": "event_id.event_type_id", "type": "many2one" },
-        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": { "chain": "event_id.tag_ids", "type": "many2many" },
-        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": { "chain": "event_organizer_id", "type": "many2one" }
+        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": {
+          "chain": "event_begin_date",
+          "type": "datetime",
+          "offset": -1
+        },
+        "62e15eb2-9410-4803-b189-5fa789a7e94f": {
+          "chain": "event_id.address_id",
+          "type": "many2one"
+        },
+        "d9cfb0b0-01a0-45be-996e-723f4283000b": {
+          "chain": "event_id.event_type_id",
+          "type": "many2one"
+        },
+        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": {
+          "chain": "event_id.tag_ids",
+          "type": "many2many"
+        },
+        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": {
+          "chain": "event_organizer_id",
+          "type": "many2one"
+        }
       },
-      "context": { "registration_view_hide_group_by_create_date_week": 1 },
+      "context": {"registration_view_hide_group_by_create_date_week": 1},
       "domain": [],
       "id": "6",
-      "measures": [
-        { "id": "__count", "fieldName": "__count" }
-      ],
+      "measures": [{"id": "__count", "fieldName": "__count"}],
       "model": "event.registration",
       "name": "attendees - previous",
       "sortedColumn": null,
@@ -688,20 +788,34 @@
     "7": {
       "type": "ODOO",
       "fieldMatching": {
-        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": { "chain": "event_date_begin", "type": "date", "offset": 0 },
-        "62e15eb2-9410-4803-b189-5fa789a7e94f": { "chain": "event_id.address_id", "type": "many2one" },
-        "d9cfb0b0-01a0-45be-996e-723f4283000b": { "chain": "event_type_id", "type": "many2one" },
-        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": { "chain": "event_id.tag_ids", "type": "many2many" },
-        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": { "chain": "event_id.organizer_id", "type": "many2one" }
+        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": {
+          "chain": "event_date_begin",
+          "type": "date",
+          "offset": 0
+        },
+        "62e15eb2-9410-4803-b189-5fa789a7e94f": {
+          "chain": "event_id.address_id",
+          "type": "many2one"
+        },
+        "d9cfb0b0-01a0-45be-996e-723f4283000b": {
+          "chain": "event_type_id",
+          "type": "many2one"
+        },
+        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": {
+          "chain": "event_id.tag_ids",
+          "type": "many2many"
+        },
+        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": {
+          "chain": "event_id.organizer_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "pivot_measures": ["__count__", "sale_price_untaxed", "sale_price"]
       },
       "domain": [],
       "id": "7",
-      "measures": [
-        { "id": "sale_price_untaxed", "fieldName": "sale_price_untaxed" }
-      ],
+      "measures": [{"id": "sale_price_untaxed", "fieldName": "sale_price_untaxed"}],
       "model": "event.sale.report",
       "name": "untaxed revenue - current",
       "sortedColumn": null,
@@ -712,11 +826,27 @@
     "8": {
       "type": "ODOO",
       "fieldMatching": {
-        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": { "chain": "event_date_begin", "type": "date", "offset": -1 },
-        "62e15eb2-9410-4803-b189-5fa789a7e94f": { "chain": "event_id.address_id", "type": "many2one" },
-        "d9cfb0b0-01a0-45be-996e-723f4283000b": { "chain": "event_type_id", "type": "many2one" },
-        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": { "chain": "event_id.tag_ids", "type": "many2many" },
-        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": { "chain": "event_id.organizer_id", "type": "many2one" }
+        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": {
+          "chain": "event_date_begin",
+          "type": "date",
+          "offset": -1
+        },
+        "62e15eb2-9410-4803-b189-5fa789a7e94f": {
+          "chain": "event_id.address_id",
+          "type": "many2one"
+        },
+        "d9cfb0b0-01a0-45be-996e-723f4283000b": {
+          "chain": "event_type_id",
+          "type": "many2one"
+        },
+        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": {
+          "chain": "event_id.tag_ids",
+          "type": "many2many"
+        },
+        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": {
+          "chain": "event_id.organizer_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "pivot_measures": ["__count__", "sale_price_untaxed", "sale_price"]
@@ -724,9 +854,9 @@
       "domain": [],
       "id": "8",
       "measures": [
-        { "id": "__count", "fieldName": "__count" },
-        { "id": "sale_price_untaxed", "fieldName": "sale_price_untaxed" },
-        { "id": "sale_price", "fieldName": "sale_price" }
+        {"id": "__count", "fieldName": "__count"},
+        {"id": "sale_price_untaxed", "fieldName": "sale_price_untaxed"},
+        {"id": "sale_price", "fieldName": "sale_price"}
       ],
       "model": "event.sale.report",
       "name": "untaxed revenue - previous",
@@ -738,18 +868,32 @@
     "9": {
       "type": "ODOO",
       "fieldMatching": {
-        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": { "chain": "date_begin", "type": "datetime", "offset": 0 },
-        "62e15eb2-9410-4803-b189-5fa789a7e94f": { "chain": "address_id", "type": "many2one" },
-        "d9cfb0b0-01a0-45be-996e-723f4283000b": { "chain": "event_type_id", "type": "many2one" },
-        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": { "chain": "tag_ids", "type": "many2many" },
-        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": { "chain": "organizer_id", "type": "many2one" }
+        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": {
+          "chain": "date_begin",
+          "type": "datetime",
+          "offset": 0
+        },
+        "62e15eb2-9410-4803-b189-5fa789a7e94f": {
+          "chain": "address_id",
+          "type": "many2one"
+        },
+        "d9cfb0b0-01a0-45be-996e-723f4283000b": {
+          "chain": "event_type_id",
+          "type": "many2one"
+        },
+        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": {
+          "chain": "tag_ids",
+          "type": "many2many"
+        },
+        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": {
+          "chain": "organizer_id",
+          "type": "many2one"
+        }
       },
       "context": {},
       "domain": [],
       "id": "9",
-      "measures": [
-        { "id": "__count", "fieldName": "__count" }
-      ],
+      "measures": [{"id": "__count", "fieldName": "__count"}],
       "model": "event.event",
       "name": "events - current",
       "sortedColumn": null,
@@ -760,18 +904,32 @@
     "10": {
       "type": "ODOO",
       "fieldMatching": {
-        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": { "chain": "date_begin", "type": "datetime", "offset": -1 },
-        "62e15eb2-9410-4803-b189-5fa789a7e94f": { "chain": "address_id", "type": "many2one" },
-        "d9cfb0b0-01a0-45be-996e-723f4283000b": { "chain": "event_type_id", "type": "many2one" },
-        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": { "chain": "tag_ids", "type": "many2many" },
-        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": { "chain": "organizer_id", "type": "many2one" }
+        "f849aaa6-4c1a-43f6-9c0b-7a5ea9c83eae": {
+          "chain": "date_begin",
+          "type": "datetime",
+          "offset": -1
+        },
+        "62e15eb2-9410-4803-b189-5fa789a7e94f": {
+          "chain": "address_id",
+          "type": "many2one"
+        },
+        "d9cfb0b0-01a0-45be-996e-723f4283000b": {
+          "chain": "event_type_id",
+          "type": "many2one"
+        },
+        "43c04fb0-d3b7-47c8-852b-b823c36df0ee": {
+          "chain": "tag_ids",
+          "type": "many2many"
+        },
+        "4a35bef8-8a57-48ae-8dc6-5883d97cc9da": {
+          "chain": "organizer_id",
+          "type": "many2one"
+        }
       },
       "context": {},
       "domain": [],
       "id": "10",
-      "measures": [
-        { "id": "__count", "fieldName": "__count" }
-      ],
+      "measures": [{"id": "__count", "fieldName": "__count"}],
       "model": "event.event",
       "name": "events - previous",
       "sortedColumn": null,

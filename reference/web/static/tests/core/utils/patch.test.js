@@ -1,9 +1,9 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { patch } from "@web/core/utils/patch";
+import {describe, expect, test} from "@odoo/hoot";
+import {patch} from "@web/core/utils/patch";
 
 class BaseClass {
     static staticStr = "base";
-    static staticObj = { base: "base" };
+    static staticObj = {base: "base"};
     static staticArr = ["base"];
     static staticFn() {
         expect.step("base.staticFn");
@@ -16,7 +16,7 @@ class BaseClass {
         this._dynamic = "base";
 
         this.str = "base";
-        this.obj = { base: "base" };
+        this.obj = {base: "base"};
         this.arr = ["base"];
 
         expect.step("base.setup");
@@ -25,7 +25,7 @@ class BaseClass {
         expect.step("base.fn");
     }
     async asyncFn() {
-        // also check this binding
+        // Also check this binding
         expect.step(`base.${this.str}`);
     }
     get dynamic() {
@@ -49,7 +49,7 @@ function applyGenericPatch(Klass, tag) {
         async asyncFn() {
             await Promise.resolve();
             await super.asyncFn(...arguments);
-            // also check this binding
+            // Also check this binding
             expect.step(`${tag}.${this.str}`);
         },
     });
@@ -59,7 +59,7 @@ function applyGenericStaticPatch(Klass, tag) {
     return patch(Klass, {
         staticStr: Klass.staticStr + tag,
         staticArr: [...Klass.staticArr, tag],
-        staticObj: { ...Klass.staticObj, patch: tag },
+        staticObj: {...Klass.staticObj, patch: tag},
         staticFn() {
             super.staticFn();
             expect.step(`${tag}.staticFn`);
@@ -71,7 +71,7 @@ function createGenericExtension() {
     return class Extension extends BaseClass {
         static staticStr = BaseClass.staticStr + "extension";
         static staticArr = [...BaseClass.staticArr, "extension"];
-        static staticObj = { ...BaseClass.staticObj, extension: "extension" };
+        static staticObj = {...BaseClass.staticObj, extension: "extension"};
         static staticFn() {
             super.staticFn();
             expect.step("extension.staticFn");
@@ -194,13 +194,13 @@ test("instance fields", () => {
     expect.verifySteps(["base.setup"]);
     expect(instance.str).toBe("basepatch");
     expect(instance.arr).toEqual(["base", "patch"]);
-    expect(instance.obj).toEqual({ base: "base", patch: "patch" });
+    expect(instance.obj).toEqual({base: "base", patch: "patch"});
 
     unpatch();
-    // unpatch does not change instance fields' values
+    // Unpatch does not change instance fields' values
     expect(instance.str).toBe("basepatch");
     expect(instance.arr).toEqual(["base", "patch"]);
-    expect(instance.obj).toEqual({ base: "base", patch: "patch" });
+    expect(instance.obj).toEqual({base: "base", patch: "patch"});
 });
 
 test("call instance method defined in patch", () => {
@@ -237,17 +237,17 @@ test("class methods", () => {
 test("class fields", () => {
     expect(BaseClass.staticStr).toBe("base");
     expect(BaseClass.staticArr).toEqual(["base"]);
-    expect(BaseClass.staticObj).toEqual({ base: "base" });
+    expect(BaseClass.staticObj).toEqual({base: "base"});
 
     const unpatch = applyGenericStaticPatch(BaseClass, "patch");
     expect(BaseClass.staticStr).toBe("basepatch");
     expect(BaseClass.staticArr).toEqual(["base", "patch"]);
-    expect(BaseClass.staticObj).toEqual({ base: "base", patch: "patch" });
+    expect(BaseClass.staticObj).toEqual({base: "base", patch: "patch"});
 
     unpatch();
     expect(BaseClass.staticStr).toBe("base");
     expect(BaseClass.staticArr).toEqual(["base"]);
-    expect(BaseClass.staticObj).toEqual({ base: "base" });
+    expect(BaseClass.staticObj).toEqual({base: "base"});
 });
 
 test("lazy patch", () => {
@@ -289,7 +289,7 @@ test("setter", () => {
             super.dynamic = "patch:" + value;
         },
     });
-    expect(instance.dynamic).toBe("1"); // nothing changed
+    expect(instance.dynamic).toBe("1"); // Nothing changed
 
     instance.dynamic = "2";
     expect(instance.dynamic).toBe("patch:2");
@@ -300,16 +300,19 @@ test("setter", () => {
 });
 
 test("patch getter/setter with value", () => {
-    const originalDescriptor = Object.getOwnPropertyDescriptor(BaseClass.prototype, "dynamic");
+    const originalDescriptor = Object.getOwnPropertyDescriptor(
+        BaseClass.prototype,
+        "dynamic"
+    );
 
-    const unpatch = patch(BaseClass.prototype, { dynamic: "patched" });
+    const unpatch = patch(BaseClass.prototype, {dynamic: "patched"});
     const instance = new BaseClass();
     expect.verifySteps(["base.setup"]);
     expect(Object.getOwnPropertyDescriptor(BaseClass.prototype, "dynamic")).toEqual({
         value: "patched",
         writable: true,
         configurable: true,
-        enumerable: false, // class properties are not enumerable
+        enumerable: false, // Class properties are not enumerable
     });
     expect(instance.dynamic).toBe("patched");
 
@@ -367,7 +370,7 @@ test("call another super method", () => {
             super.fn();
         },
         fn() {
-            expect.step("patch.fn"); // should not called
+            expect.step("patch.fn"); // Should not called
         },
     });
 
@@ -383,7 +386,12 @@ describe("inheritance", () => {
     test("extend > patch base > unpatch base", () => {
         const Extension = createGenericExtension();
         new Extension().fn();
-        expect.verifySteps(["base.setup", "extension.setup", "base.fn", "extension.fn"]);
+        expect.verifySteps([
+            "base.setup",
+            "extension.setup",
+            "base.fn",
+            "extension.fn",
+        ]);
 
         const unpatch = applyGenericPatch(BaseClass, "patch");
         new Extension().fn();
@@ -398,7 +406,12 @@ describe("inheritance", () => {
 
         unpatch();
         new Extension().fn();
-        expect.verifySteps(["base.setup", "extension.setup", "base.fn", "extension.fn"]);
+        expect.verifySteps([
+            "base.setup",
+            "extension.setup",
+            "base.fn",
+            "extension.fn",
+        ]);
     });
 
     test("patch base > extend > unpatch base", () => {
@@ -416,13 +429,23 @@ describe("inheritance", () => {
 
         unpatch();
         new Extension().fn();
-        expect.verifySteps(["base.setup", "extension.setup", "base.fn", "extension.fn"]);
+        expect.verifySteps([
+            "base.setup",
+            "extension.setup",
+            "base.fn",
+            "extension.fn",
+        ]);
     });
 
     test("extend > patch extension > unpatch extension", () => {
         const Extension = createGenericExtension();
         new Extension().fn();
-        expect.verifySteps(["base.setup", "extension.setup", "base.fn", "extension.fn"]);
+        expect.verifySteps([
+            "base.setup",
+            "extension.setup",
+            "base.fn",
+            "extension.fn",
+        ]);
 
         const unpatch = applyGenericPatch(Extension, "patch.extension");
         new Extension().fn();
@@ -437,13 +460,23 @@ describe("inheritance", () => {
 
         unpatch();
         new Extension().fn();
-        expect.verifySteps(["base.setup", "extension.setup", "base.fn", "extension.fn"]);
+        expect.verifySteps([
+            "base.setup",
+            "extension.setup",
+            "base.fn",
+            "extension.fn",
+        ]);
     });
 
     test("extend > patch base > patch extension > unpatch base > unpatch extension", () => {
         const Extension = createGenericExtension();
         new Extension().fn();
-        expect.verifySteps(["base.setup", "extension.setup", "base.fn", "extension.fn"]);
+        expect.verifySteps([
+            "base.setup",
+            "extension.setup",
+            "base.fn",
+            "extension.fn",
+        ]);
 
         const unpatchBase = applyGenericPatch(BaseClass, "patch");
         new Extension().fn();
@@ -482,13 +515,23 @@ describe("inheritance", () => {
 
         unpatchExtension();
         new Extension().fn();
-        expect.verifySteps(["base.setup", "extension.setup", "base.fn", "extension.fn"]);
+        expect.verifySteps([
+            "base.setup",
+            "extension.setup",
+            "base.fn",
+            "extension.fn",
+        ]);
     });
 
     test("extend > patch base > patch extension > unpatch extension > unpatch base", () => {
         const Extension = createGenericExtension();
         new Extension().fn();
-        expect.verifySteps(["base.setup", "extension.setup", "base.fn", "extension.fn"]);
+        expect.verifySteps([
+            "base.setup",
+            "extension.setup",
+            "base.fn",
+            "extension.fn",
+        ]);
 
         const unpatchBase = applyGenericPatch(BaseClass, "patch");
         new Extension().fn();
@@ -527,13 +570,23 @@ describe("inheritance", () => {
 
         unpatchBase();
         new Extension().fn();
-        expect.verifySteps(["base.setup", "extension.setup", "base.fn", "extension.fn"]);
+        expect.verifySteps([
+            "base.setup",
+            "extension.setup",
+            "base.fn",
+            "extension.fn",
+        ]);
     });
 
     test("extend > patch extension > patch base > unpatch base > unpatch extension", () => {
         const Extension = createGenericExtension();
         new Extension().fn();
-        expect.verifySteps(["base.setup", "extension.setup", "base.fn", "extension.fn"]);
+        expect.verifySteps([
+            "base.setup",
+            "extension.setup",
+            "base.fn",
+            "extension.fn",
+        ]);
 
         const unpatchExtension = applyGenericPatch(Extension, "patch.extension");
         new Extension().fn();
@@ -572,13 +625,23 @@ describe("inheritance", () => {
 
         unpatchExtension();
         new Extension().fn();
-        expect.verifySteps(["base.setup", "extension.setup", "base.fn", "extension.fn"]);
+        expect.verifySteps([
+            "base.setup",
+            "extension.setup",
+            "base.fn",
+            "extension.fn",
+        ]);
     });
 
     test("extend > patch extension > patch base > unpatch extension > unpatch base", () => {
         const Extension = createGenericExtension();
         new Extension().fn();
-        expect.verifySteps(["base.setup", "extension.setup", "base.fn", "extension.fn"]);
+        expect.verifySteps([
+            "base.setup",
+            "extension.setup",
+            "base.fn",
+            "extension.fn",
+        ]);
 
         const unpatchExtension = applyGenericPatch(Extension, "patch.extension");
         new Extension().fn();
@@ -617,7 +680,12 @@ describe("inheritance", () => {
 
         unpatchBase();
         new Extension().fn();
-        expect.verifySteps(["base.setup", "extension.setup", "base.fn", "extension.fn"]);
+        expect.verifySteps([
+            "base.setup",
+            "extension.setup",
+            "base.fn",
+            "extension.fn",
+        ]);
     });
 
     test("patch base > extend > patch extension > unpatch base > unpatch extension", () => {
@@ -659,7 +727,12 @@ describe("inheritance", () => {
 
         unpatchExtension();
         new Extension().fn();
-        expect.verifySteps(["base.setup", "extension.setup", "base.fn", "extension.fn"]);
+        expect.verifySteps([
+            "base.setup",
+            "extension.setup",
+            "base.fn",
+            "extension.fn",
+        ]);
     });
 
     test("patch base > extend > patch extension > unpatch extension > unpatch base", () => {
@@ -701,7 +774,12 @@ describe("inheritance", () => {
 
         unpatchBase();
         new Extension().fn();
-        expect.verifySteps(["base.setup", "extension.setup", "base.fn", "extension.fn"]);
+        expect.verifySteps([
+            "base.setup",
+            "extension.setup",
+            "base.fn",
+            "extension.fn",
+        ]);
     });
 
     test("class methods", () => {
@@ -724,7 +802,11 @@ describe("inheritance", () => {
 
         unpatchBase();
         Extension.staticFn();
-        expect.verifySteps(["base.staticFn", "extension.staticFn", "patch.extension.staticFn"]);
+        expect.verifySteps([
+            "base.staticFn",
+            "extension.staticFn",
+            "patch.extension.staticFn",
+        ]);
 
         unpatchExtension();
         Extension.staticFn();
@@ -759,7 +841,7 @@ describe("inheritance", () => {
         const Extension = createGenericExtension();
         expect(Extension.staticStr).toBe("baseextension");
         expect(Extension.staticArr).toEqual(["base", "extension"]);
-        expect(Extension.staticObj).toEqual({ base: "base", extension: "extension" });
+        expect(Extension.staticObj).toEqual({base: "base", extension: "extension"});
 
         // /!\ WARNING /!\
         // If patch comes after the inherit then extension won't have
@@ -767,12 +849,12 @@ describe("inheritance", () => {
         const unpatch = applyGenericStaticPatch(BaseClass, "patch");
         expect(Extension.staticStr).toBe("baseextension");
         expect(Extension.staticArr).toEqual(["base", "extension"]);
-        expect(Extension.staticObj).toEqual({ base: "base", extension: "extension" });
+        expect(Extension.staticObj).toEqual({base: "base", extension: "extension"});
 
         unpatch();
         expect(Extension.staticStr).toBe("baseextension");
         expect(Extension.staticArr).toEqual(["base", "extension"]);
-        expect(Extension.staticObj).toEqual({ base: "base", extension: "extension" });
+        expect(Extension.staticObj).toEqual({base: "base", extension: "extension"});
     });
 
     test("lazy patch", () => {
@@ -796,7 +878,7 @@ describe("inheritance", () => {
 
     test("keep original descriptor details", () => {
         class Klass {
-            // getter declared in classes are not enumerable
+            // Getter declared in classes are not enumerable
             get getter() {
                 return false;
             }
@@ -807,7 +889,7 @@ describe("inheritance", () => {
         expect(descriptor.enumerable).toBe(false);
 
         patch(Klass.prototype, {
-            // getter declared in object are enumerable
+            // Getter declared in object are enumerable
             get getter() {
                 return true;
             },
@@ -848,7 +930,7 @@ describe("other", () => {
     });
 
     test("can call a non bound patched method", () => {
-        // use case: patching a function on window (e.g. setTimeout)
+        // Use case: patching a function on window (e.g. setTimeout)
 
         const obj = {
             fn() {
@@ -864,7 +946,7 @@ describe("other", () => {
             },
         });
 
-        const fn = obj.fn; // purposely not bound
+        const fn = obj.fn; // Purposely not bound
         fn();
         expect.verifySteps(["patched", "original"]);
     });

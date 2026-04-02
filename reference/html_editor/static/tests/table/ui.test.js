@@ -1,18 +1,25 @@
-import { expect, test } from "@odoo/hoot";
-import { click, hover, queryAllAttributes, queryOne, waitFor, waitForNone } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { setupEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
-import { getContent } from "../_helpers/selection";
-import { undo } from "../_helpers/user_actions";
-import { expectElementCount } from "../_helpers/ui_expectations";
+import {expect, test} from "@odoo/hoot";
+import {
+    click,
+    hover,
+    queryAllAttributes,
+    queryOne,
+    waitFor,
+    waitForNone,
+} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {setupEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
+import {getContent} from "../_helpers/selection";
+import {undo} from "../_helpers/user_actions";
+import {expectElementCount} from "../_helpers/ui_expectations";
 
 function availableCommands(menu) {
-    return queryAllAttributes("span div.user-select-none", "name", { root: menu });
+    return queryAllAttributes("span div.user-select-none", "name", {root: menu});
 }
 
 test("should only display the table ui menu if the table isContentEditable=true", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <table><tbody><tr>
             <td>11[]</td>
         </tr></tbody></table>`);
@@ -24,7 +31,7 @@ test("should only display the table ui menu if the table isContentEditable=true"
 });
 
 test("should display the table ui menu only if hover on first row/col", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <table>
             <tbody>
             <tr><td class="a">1[]</td><td class="b">2</td></tr>
@@ -51,7 +58,7 @@ test("should display the table ui menu only if hover on first row/col", async ()
 });
 
 test("should not display the table ui menu if the table element isContentEditable=false", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <table contenteditable="false"><tbody><tr>
             <td>11[]</td>
         </tr></tbody></table>`);
@@ -63,7 +70,7 @@ test("should not display the table ui menu if the table element isContentEditabl
 });
 
 test("should not display the table ui menu if we leave the editor content", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <table><tbody><tr>
             <td>11[]</td>
         </tr></tbody></table>`);
@@ -79,7 +86,7 @@ test("should not display the table ui menu if we leave the editor content", asyn
 });
 
 test("should display the table ui menu when hovering on TH", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <table><tbody><tr>
             <th>11[]</th>
         </tr></tbody></table>`);
@@ -92,7 +99,7 @@ test("should display the table ui menu when hovering on TH", async () => {
 
 test.tags("desktop");
 test("should display the resizeCursor if the table element isContentEditable=true", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <table><tbody><tr>
             <td>11[]</td>
         </tr></tbody></table>`);
@@ -105,14 +112,14 @@ test("should display the resizeCursor if the table element isContentEditable=tru
     const x = tdBox.x + 1;
     const y = tdBox.bottom - tdBox.height / 2;
 
-    await hover(td, { position: { x, y } });
+    await hover(td, {position: {x, y}});
 
     await waitFor(".o_col_resize");
     expect(".o_col_resize").toHaveCount(1);
 });
 
 test("should not display the resizeCursor if the table element isContentEditable=false", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <table contenteditable="false"><tbody><tr>
             <td>11[]</td>
         </tr></tbody></table>`);
@@ -127,7 +134,7 @@ test("should not display the resizeCursor if the table element isContentEditable
 });
 
 test("list of table commands in first column", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <p><br></p>
         <table>
             <tbody>
@@ -136,7 +143,7 @@ test("list of table commands in first column", async () => {
         </table>`);
     await expectElementCount(".o-we-table-menu", 0);
 
-    // check list of commands on first column
+    // Check list of commands on first column
     await hover(el.querySelector("td.a"));
     await waitFor(".o-we-table-menu");
     expect("[data-type='column'].o-we-table-menu").toHaveCount(1);
@@ -148,7 +155,7 @@ test("list of table commands in first column", async () => {
     expect("[data-type='column'].o-we-table-menu").toHaveCount(1);
     expect("[data-type='row'].o-we-table-menu").toHaveCount(0);
     expect(availableCommands(queryOne(".dropdown-menu"))).toEqual([
-        // no move left
+        // No move left
         "move_right",
         "insert_left",
         "insert_right",
@@ -158,7 +165,7 @@ test("list of table commands in first column", async () => {
 });
 
 test("list of table commands in second column", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <table>
             <tbody>
             <tr><td class="a">1[]</td><td class="b">2</td><td class="c">3</td></tr>
@@ -166,7 +173,7 @@ test("list of table commands in second column", async () => {
         </table>`);
     await expectElementCount(".o-we-table-menu", 0);
 
-    // check list of commands on second column
+    // Check list of commands on second column
     await hover(el.querySelector("td.b"));
     await waitFor(".o-we-table-menu");
     expect("[data-type='column'].o-we-table-menu").toHaveCount(1);
@@ -183,7 +190,7 @@ test("list of table commands in second column", async () => {
 });
 
 test("list of table commands in last column", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <table>
             <tbody>
             <tr><td class="a">1[]</td><td class="b">2</td><td class="c">3</td></tr>
@@ -191,7 +198,7 @@ test("list of table commands in last column", async () => {
         </table>`);
     await expectElementCount(".o-we-table-menu", 0);
 
-    // check list of commands on last column
+    // Check list of commands on last column
     await hover(el.querySelector("td.c"));
     await waitFor(".o-we-table-menu");
     expect("[data-type='column'].o-we-table-menu").toHaveCount(1);
@@ -199,7 +206,7 @@ test("list of table commands in last column", async () => {
     await waitFor(".dropdown-menu");
     expect(availableCommands(queryOne(".dropdown-menu"))).toEqual([
         "move_left",
-        // no move right
+        // No move right
         "insert_left",
         "insert_right",
         "delete",
@@ -208,7 +215,7 @@ test("list of table commands in last column", async () => {
 });
 
 test("list of table commands in first row", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <table>
             <tbody>
             <tr><td class="a">1[]</td></tr>
@@ -218,7 +225,7 @@ test("list of table commands in first row", async () => {
         </table>`);
     await expectElementCount(".o-we-table-menu", 0);
 
-    // check list of commands on first row
+    // Check list of commands on first row
     await hover(el.querySelector("td.a"));
     await waitFor(".o-we-table-menu");
     expect("[data-type='column'].o-we-table-menu").toHaveCount(1);
@@ -231,7 +238,7 @@ test("list of table commands in first row", async () => {
     expect("[data-type='row'].o-we-table-menu").toHaveCount(1);
     expect(availableCommands(queryOne(".dropdown-menu"))).toEqual([
         "make_header",
-        // no remove header
+        // No remove header
         // no move up
         "move_down",
         "insert_above",
@@ -242,7 +249,7 @@ test("list of table commands in first row", async () => {
 });
 
 test("list of table commands in first row if it's table header (TH)", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <table>
             <tbody>
                 <tr><th class="a o_table_header">1[]</th></tr>
@@ -252,7 +259,7 @@ test("list of table commands in first row if it's table header (TH)", async () =
         </table>`);
     await expectElementCount(".o-we-table-menu", 0);
 
-    // check list of commands on table header row
+    // Check list of commands on table header row
     await hover(el.querySelector("th.a"));
     await waitFor(".o-we-table-menu");
     await expectElementCount("[data-type='column'].o-we-table-menu", 1);
@@ -260,11 +267,11 @@ test("list of table commands in first row if it's table header (TH)", async () =
     await click("[data-type='row'].o-we-table-menu");
     await waitFor(".dropdown-menu");
     expect(availableCommands(queryOne(".dropdown-menu"))).toEqual([
-        //no make header
+        // No make header
         "remove_header",
-        // no move up
+        // No move up
         "move_down",
-        // no insert above
+        // No insert above
         "insert_below",
         "delete",
         "clear_content",
@@ -272,7 +279,7 @@ test("list of table commands in first row if it's table header (TH)", async () =
 });
 
 test("list of table commands in second row", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <table>
             <tbody>
             <tr><td class="a">1[]</td></tr>
@@ -282,7 +289,7 @@ test("list of table commands in second row", async () => {
         </table>`);
     await expectElementCount(".o-we-table-menu", 0);
 
-    // check list of commands on second row
+    // Check list of commands on second row
     await hover(el.querySelector("td.b"));
     await waitFor(".o-we-table-menu");
     expect("[data-type='row'].o-we-table-menu").toHaveCount(1);
@@ -299,7 +306,7 @@ test("list of table commands in second row", async () => {
 });
 
 test("list of table commands in last row", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <table>
             <tbody>
             <tr><td class="a">1[]</td></tr>
@@ -309,7 +316,7 @@ test("list of table commands in last row", async () => {
         </table>`);
     await expectElementCount(".o-we-table-menu", 0);
 
-    // check list of commands on last row
+    // Check list of commands on last row
     await hover(el.querySelector("td.c"));
     await waitFor(".o-we-table-menu");
     expect("[data-type='row'].o-we-table-menu").toHaveCount(1);
@@ -317,7 +324,7 @@ test("list of table commands in last row", async () => {
     await waitFor(".dropdown-menu");
     expect(availableCommands(queryOne(".dropdown-menu"))).toEqual([
         "move_up",
-        // no move down
+        // No move down
         "insert_above",
         "insert_below",
         "delete",
@@ -326,7 +333,7 @@ test("list of table commands in last row", async () => {
 });
 
 test("open/close table menu", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <table>
             <tbody>
             <tr><td class="a">1[]</td></tr>
@@ -336,7 +343,7 @@ test("open/close table menu", async () => {
         </table>`);
     await expectElementCount(".o-we-table-menu", 0);
 
-    // check list of commands on first row
+    // Check list of commands on first row
     await hover(el.querySelector("td.a"));
     await waitFor(".o-we-table-menu");
     expect("[data-type='column'].o-we-table-menu").toHaveCount(1);
@@ -358,7 +365,7 @@ test("open/close table menu", async () => {
 });
 
 test("basic delete column operation", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -369,17 +376,17 @@ test("basic delete column operation", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show col ui
+    // Hover on td to show col ui
     await hover(el.querySelector("td.b"));
     await waitFor(".o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click(".o-we-table-menu");
     await waitFor("div[name='delete']");
 
-    // delete column
+    // Delete column
     await click("div[name='delete']");
-    // not sure about selection...
+    // Not sure about selection...
     expect(getContent(el)).toBe(
         unformat(`
         <p data-selection-placeholder=""><br></p>
@@ -407,7 +414,7 @@ test("basic delete column operation", async () => {
 });
 
 test("basic clear column content operation", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -418,17 +425,17 @@ test("basic clear column content operation", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show col ui
+    // Hover on td to show col ui
     await hover(el.querySelector("td.b"));
     await waitFor(".o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click(".o-we-table-menu");
     await waitFor("div[name='clear_content']");
 
-    // clear content of the column
+    // Clear content of the column
     await click("div[name='clear_content']");
-    // not sure about selection...
+    // Not sure about selection...
     expect(getContent(el)).toBe(
         unformat(`
         <p data-selection-placeholder=""><br></p>
@@ -456,7 +463,7 @@ test("basic clear column content operation", async () => {
 });
 
 test("basic delete row operation", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -467,17 +474,17 @@ test("basic delete row operation", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show col ui
+    // Hover on td to show col ui
     await hover(el.querySelector("td.c"));
     await waitFor(".o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click(".o-we-table-menu");
     await waitFor("div[name='delete']");
 
-    // delete row
+    // Delete row
     await click("div[name='delete']");
-    // not sure about selection...
+    // Not sure about selection...
     expect(getContent(el)).toBe(
         unformat(`
         <p data-selection-placeholder=""><br></p>
@@ -504,7 +511,7 @@ test("basic delete row operation", async () => {
 });
 
 test("basic clear row content operation", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -515,17 +522,17 @@ test("basic clear row content operation", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show col ui
+    // Hover on td to show col ui
     await hover(el.querySelector("td.c"));
     await waitFor(".o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click(".o-we-table-menu");
     await waitFor("div[name='clear_content']");
 
-    // clear content of the row
+    // Clear content of the row
     await click("div[name='clear_content']");
-    // not sure about selection...
+    // Not sure about selection...
     expect(getContent(el)).toBe(
         unformat(`
         <p data-selection-placeholder=""><br></p>
@@ -553,7 +560,7 @@ test("basic clear row content operation", async () => {
 });
 
 test("insert column left operation", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -564,15 +571,15 @@ test("insert column left operation", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show col ui
+    // Hover on td to show col ui
     await hover(el.querySelector("td.b"));
     await waitFor(".o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click(".o-we-table-menu");
     await waitFor("div[name='insert_left']");
 
-    // insert column left
+    // Insert column left
     await click("div[name='insert_left']");
     expect(getContent(el)).toBe(
         unformat(`
@@ -609,7 +616,7 @@ test("insert column left operation", async () => {
 });
 
 test("insert column right operation", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -620,15 +627,15 @@ test("insert column right operation", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show col ui
+    // Hover on td to show col ui
     await hover(el.querySelector("td.a"));
     await waitFor("[data-type='column'].o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click("[data-type='column'].o-we-table-menu");
     await waitFor("div[name='insert_right']");
 
-    // insert column right
+    // Insert column right
     await click("div[name='insert_right']");
     expect(getContent(el)).toBe(
         unformat(`
@@ -665,7 +672,7 @@ test("insert column right operation", async () => {
 });
 
 test("insert column right operation when table header exists", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -676,15 +683,15 @@ test("insert column right operation when table header exists", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on th to show col ui
+    // Hover on th to show col ui
     await hover(el.querySelector("th.a"));
     await waitFor("[data-type='column'].o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click("[data-type='column'].o-we-table-menu");
     await waitFor("div[name='insert_right']");
 
-    // insert column right
+    // Insert column right
     await click("div[name='insert_right']");
     expect(getContent(el)).toBe(
         unformat(`
@@ -708,7 +715,7 @@ test("insert column right operation when table header exists", async () => {
 });
 
 test("insert row above operation", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -719,15 +726,15 @@ test("insert row above operation", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show row ui
+    // Hover on td to show row ui
     await hover(el.querySelector("td.c"));
     await waitFor(".o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click(".o-we-table-menu");
     await waitFor("div[name='insert_above']");
 
-    // insert row above
+    // Insert row above
     await click("div[name='insert_above']");
     expect(getContent(el)).toBe(
         unformat(`
@@ -766,7 +773,7 @@ test("insert row above operation", async () => {
 });
 
 test("insert row above operation should not retain height and width styles", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -777,15 +784,15 @@ test("insert row above operation should not retain height and width styles", asy
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show row ui
+    // Hover on td to show row ui
     await hover(el.querySelector("td.a"));
     await waitFor(".o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click(".o-we-table-menu");
     await waitFor("div[name='insert_above']");
 
-    // insert row above
+    // Insert row above
     await click("div[name='insert_above']");
     expect(getContent(el)).toBe(
         unformat(`
@@ -811,7 +818,7 @@ test("insert row above operation should not retain height and width styles", asy
 });
 
 test("insert row below operation", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -822,15 +829,15 @@ test("insert row below operation", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show row ui
+    // Hover on td to show row ui
     await hover(el.querySelector("td.a"));
     await waitFor("[data-type='row'].o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click("[data-type='row'].o-we-table-menu");
     await waitFor("div[name='insert_below']");
 
-    // insert row below
+    // Insert row below
     await click("div[name='insert_below']");
     expect(getContent(el)).toBe(
         unformat(`
@@ -869,7 +876,7 @@ test("insert row below operation", async () => {
 });
 
 test("move column left operation", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -880,15 +887,15 @@ test("move column left operation", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show row ui
+    // Hover on td to show row ui
     await hover(el.querySelector("td.b"));
     await waitFor("[data-type='column'].o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click("[data-type='column'].o-we-table-menu");
     await waitFor("div[name='move_left']");
 
-    // move column left
+    // Move column left
     await click("div[name='move_left']");
     expect(getContent(el)).toBe(
         unformat(`
@@ -917,7 +924,7 @@ test("move column left operation", async () => {
 });
 
 test("move column right operation", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -928,15 +935,15 @@ test("move column right operation", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show row ui
+    // Hover on td to show row ui
     await hover(el.querySelector("td.a"));
     await waitFor("[data-type='column'].o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click("[data-type='column'].o-we-table-menu");
     await waitFor("div[name='move_right']");
 
-    // move column right
+    // Move column right
     await click("div[name='move_right']");
     expect(getContent(el)).toBe(
         unformat(`
@@ -965,7 +972,7 @@ test("move column right operation", async () => {
 });
 
 test("move row above operation", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -976,15 +983,15 @@ test("move row above operation", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show row ui
+    // Hover on td to show row ui
     await hover(el.querySelector("td.c"));
     await waitFor("[data-type='row'].o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click("[data-type='row'].o-we-table-menu");
     await waitFor("div[name='move_up']");
 
-    // move row up
+    // Move row up
     await click("div[name='move_up']");
     expect(getContent(el)).toBe(
         unformat(`
@@ -1013,7 +1020,7 @@ test("move row above operation", async () => {
 });
 
 test("move second row to top when first row is header row", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -1024,15 +1031,15 @@ test("move second row to top when first row is header row", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show row ui
+    // Hover on td to show row ui
     await hover(el.querySelector("td.a"));
     await waitFor("[data-type='row'].o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click("[data-type='row'].o-we-table-menu");
     await waitFor("div[name='move_up']");
 
-    // move row up
+    // Move row up
     await click("div[name='move_up']");
     expect(getContent(el)).toBe(
         unformat(`
@@ -1048,7 +1055,7 @@ test("move second row to top when first row is header row", async () => {
 });
 
 test("preserve table rows width on move row above operation", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -1060,15 +1067,15 @@ test("preserve table rows width on move row above operation", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show row ui
+    // Hover on td to show row ui
     await hover(el.querySelector("td.c"));
     await waitFor("[data-type='row'].o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click("[data-type='row'].o-we-table-menu");
     await waitFor("div[name='move_up']");
 
-    // move row up
+    // Move row up
     await click("div[name='move_up']");
     expect(getContent(el)).toBe(
         unformat(`
@@ -1085,7 +1092,7 @@ test("preserve table rows width on move row above operation", async () => {
 });
 
 test("move row below operation", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -1096,15 +1103,15 @@ test("move row below operation", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show row ui
+    // Hover on td to show row ui
     await hover(el.querySelector("td.a"));
     await waitFor("[data-type='row'].o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click("[data-type='row'].o-we-table-menu");
     await waitFor("div[name='move_down']");
 
-    // move row below
+    // Move row below
     await click("div[name='move_down']");
     expect(getContent(el)).toBe(
         unformat(`
@@ -1133,7 +1140,7 @@ test("move row below operation", async () => {
 });
 
 test("move header row below operation", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -1144,15 +1151,15 @@ test("move header row below operation", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on th to show row ui
+    // Hover on th to show row ui
     await hover(el.querySelector("th.a"));
     await waitFor("[data-type='row'].o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click("[data-type='row'].o-we-table-menu");
     await waitFor("div[name='move_down']");
 
-    // move row below
+    // Move row below
     await click("div[name='move_down']");
     expect(getContent(el)).toBe(
         unformat(`
@@ -1168,7 +1175,7 @@ test("move header row below operation", async () => {
 });
 
 test("preserve table rows width on move row below operation", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -1180,15 +1187,15 @@ test("preserve table rows width on move row below operation", async () => {
     );
     await expectElementCount(".o-we-table-menu", 0);
 
-    // hover on td to show row ui
+    // Hover on td to show row ui
     await hover(el.querySelector("td.a"));
     await waitFor("[data-type='row'].o-we-table-menu");
 
-    // click on it to open dropdown
+    // Click on it to open dropdown
     await click("[data-type='row'].o-we-table-menu");
     await waitFor("div[name='move_down']");
 
-    // move row below
+    // Move row below
     await click("div[name='move_down']");
     expect(getContent(el)).toBe(
         unformat(`
@@ -1205,7 +1212,7 @@ test("preserve table rows width on move row below operation", async () => {
 });
 
 test("reset table size to remove custom width", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
         <table style="width: 150px;">
             <tbody>
@@ -1251,7 +1258,7 @@ test("reset table size to remove custom width", async () => {
 });
 
 test("reset table size to remove custom height", async () => {
-    const { el, editor } = await setupEditor(
+    const {el, editor} = await setupEditor(
         unformat(`
         <table>
             <tbody>
@@ -1296,7 +1303,7 @@ test("reset table size to remove custom height", async () => {
 });
 
 test("reset row size to remove custom height", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         unformat(`
         <table class="table table-bordered o_table">
             <tbody>
@@ -1325,7 +1332,7 @@ test("reset row size to remove custom height", async () => {
     expect("[data-type='row'].o-we-table-menu").toHaveCount(1);
 
     await click("[data-type='row'].o-we-table-menu");
-    await waitFor(".dropdown-menu", { timeout: 1000 });
+    await waitFor(".dropdown-menu", {timeout: 1000});
     await click(queryOne(".dropdown-menu [name='reset_row_size']"));
     expect(getContent(el)).toBe(
         unformat(
@@ -1355,7 +1362,7 @@ test("reset row size to remove custom height", async () => {
 });
 
 test("should redistribute excess width from current column to smaller columns", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         unformat(`
             <table class="table table-bordered o_table" style="width: 500px">
                 <tbody>
@@ -1383,7 +1390,7 @@ test("should redistribute excess width from current column to smaller columns", 
     expect("[data-type='column'].o-we-table-menu").toHaveCount(1);
 
     await click("[data-type='column'].o-we-table-menu");
-    await waitFor(".dropdown-menu", { timeout: 1000 });
+    await waitFor(".dropdown-menu", {timeout: 1000});
     await click(queryOne(".dropdown-menu [name='reset_column_size']"));
     expect(getContent(el)).toBe(
         unformat(
@@ -1412,7 +1419,7 @@ test("should redistribute excess width from current column to smaller columns", 
 });
 
 test("should redistribute excess width from larger columns to current column", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         unformat(`
             <table class="table table-bordered o_table" style="width: 700px">
                 <tbody>
@@ -1444,7 +1451,7 @@ test("should redistribute excess width from larger columns to current column", a
     expect("[data-type='column'].o-we-table-menu").toHaveCount(1);
 
     await click("[data-type='column'].o-we-table-menu");
-    await waitFor(".dropdown-menu", { timeout: 1000 });
+    await waitFor(".dropdown-menu", {timeout: 1000});
     await click(queryOne(".dropdown-menu [name='reset_column_size']"));
     expect(getContent(el)).toBe(
         unformat(

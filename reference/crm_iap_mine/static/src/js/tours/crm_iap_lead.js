@@ -1,9 +1,9 @@
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
 import "@crm/js/tours/crm";
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
-import { markup } from "@odoo/owl";
+import {markup} from "@odoo/owl";
 
 patch(registry.category("web_tour.tours").get("crm_tour"), {
     steps() {
@@ -23,7 +23,11 @@ patch(registry.category("web_tour.tours").get("crm_tour"), {
                  *
                  */
                 trigger: ".o_button_generate_leads",
-                content: markup(_t("Looking for more opportunities?<br>Try the <b>Lead Generation</b> tool.")),
+                content: markup(
+                    _t(
+                        "Looking for more opportunities?<br>Try the <b>Lead Generation</b> tool."
+                    )
+                ),
                 tooltipPosition: "bottom",
                 run: "click .o_button_generate_leads",
             },

@@ -5,8 +5,8 @@ import {
     goToTheme,
     registerWebsitePreviewTour,
 } from "@website/js/tours/tour_utils";
-import { whenReady } from "@odoo/owl";
-import { editorsWeakMap, setSelection } from "@html_editor/../tests/tours/helpers/editor";
+import {whenReady} from "@odoo/owl";
+import {editorsWeakMap, setSelection} from "@html_editor/../tests/tours/helpers/editor";
 
 registerWebsitePreviewTour(
     "rte_translator",
@@ -149,7 +149,8 @@ registerWebsitePreviewTour(
             <font style="color: rgb(255, 0, 0);">services</font>. To be successful your content needs to be\
             useful to your <a href="/999">readers</a>.</p> <input value="test translate default value" placeholder="test translate placeholder"/>\
             <p>&lt;b&gt;&lt;/b&gt; is an HTML&nbsp;tag &amp; is empty</p>';
-                this.anchor.querySelector(".oe_img_bg").title = "test translate image title";
+                this.anchor.querySelector(".oe_img_bg").title =
+                    "test translate image title";
                 const editor = editorsWeakMap.get(this.anchor.ownerDocument);
                 editor.shared.history.addStep();
             },
@@ -202,9 +203,11 @@ registerWebsitePreviewTour(
             trigger: ":iframe #wrap p font:first",
             async run(actionHelper) {
                 await actionHelper.editor("translated Parseltongue text");
-                setSelection({ anchorNode: this.anchor.childNodes[0], anchorOffset: 22 });
-                this.anchor.dispatchEvent(new KeyboardEvent("keyup", { bubbles: true, key: "_" }));
-                this.anchor.dispatchEvent(new InputEvent("input", { bubbles: true }));
+                setSelection({anchorNode: this.anchor.childNodes[0], anchorOffset: 22});
+                this.anchor.dispatchEvent(
+                    new KeyboardEvent("keyup", {bubbles: true, key: "_"})
+                );
+                this.anchor.dispatchEvent(new InputEvent("input", {bubbles: true}));
             },
         },
         {
@@ -215,13 +218,16 @@ registerWebsitePreviewTour(
                 this.anchor.textContent = "<{translated}>" + this.anchor.textContent;
                 const editor = editorsWeakMap.get(this.anchor.ownerDocument);
                 editor.shared.history.addStep();
-                setSelection({ anchorNode: this.anchor.childNodes[0], anchorOffset: 0 });
-                this.anchor.dispatchEvent(new KeyboardEvent("keyup", { bubbles: true, key: "_" }));
-                this.anchor.dispatchEvent(new InputEvent("input", { bubbles: true }));
+                setSelection({anchorNode: this.anchor.childNodes[0], anchorOffset: 0});
+                this.anchor.dispatchEvent(
+                    new KeyboardEvent("keyup", {bubbles: true, key: "_"})
+                );
+                this.anchor.dispatchEvent(new InputEvent("input", {bubbles: true}));
             },
         },
         {
-            trigger: ":iframe #wrap .o_dirty font:first:contains(translated Parseltongue text)",
+            trigger:
+                ":iframe #wrap .o_dirty font:first:contains(translated Parseltongue text)",
         },
         {
             content: "click on input",
@@ -248,16 +254,19 @@ registerWebsitePreviewTour(
         },
         {
             content: "check: input marked as translated",
-            trigger: ':iframe input[placeholder="test Parseltongue placeholder"].oe_translated',
+            trigger:
+                ':iframe input[placeholder="test Parseltongue placeholder"].oe_translated',
         },
         ...clickOnSave(),
         {
             content: "check: content is translated",
-            trigger: ":iframe #wrap p font:first:contains(translated Parseltongue text)",
+            trigger:
+                ":iframe #wrap p font:first:contains(translated Parseltongue text)",
         },
         {
             content: "check: content with special char is translated",
-            trigger: ":iframe #wrap input + p:contains(<{translated}><b></b> is an HTML tag & )",
+            trigger:
+                ":iframe #wrap input + p:contains(<{translated}><b></b> is an HTML tag & )",
         },
         {
             content: "check: placeholder translation",
@@ -363,7 +372,8 @@ registerWebsitePreviewTour(
         },
         {
             content: "check bis: content is translated",
-            trigger: ":iframe #wrap p font:first:contains(translated Parseltongue text)",
+            trigger:
+                ":iframe #wrap p font:first:contains(translated Parseltongue text)",
             run: "click",
         },
         {
@@ -386,9 +396,16 @@ registerWebsitePreviewTour(
             trigger: '.ace_text-layer .ace_line:contains("an HTML")',
             run() {
                 const parser = new DOMParser();
-                const doc = parser.parseFromString(this.anchor.textContent, "text/html");
-                const lineEscapedText = doc.body.querySelector("p:last-child").textContent;
-                if (lineEscapedText !== "&lt;b&gt;&lt;/b&gt; is an HTML&nbsp;tag &amp; is empty") {
+                const doc = parser.parseFromString(
+                    this.anchor.textContent,
+                    "text/html"
+                );
+                const lineEscapedText =
+                    doc.body.querySelector("p:last-child").textContent;
+                if (
+                    lineEscapedText !==
+                    "&lt;b&gt;&lt;/b&gt; is an HTML&nbsp;tag &amp; is empty"
+                ) {
                     console.error(
                         "The HTML editor should display the correct untranslated content"
                     );

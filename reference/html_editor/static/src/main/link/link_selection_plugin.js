@@ -1,7 +1,7 @@
-import { Plugin } from "@html_editor/plugin";
-import { closestElement, selectElements } from "@html_editor/utils/dom_traversal";
-import { removeClass } from "@html_editor/utils/dom";
-import { isProtected, isProtecting } from "@html_editor/utils/dom_info";
+import {Plugin} from "@html_editor/plugin";
+import {closestElement, selectElements} from "@html_editor/utils/dom_traversal";
+import {removeClass} from "@html_editor/utils/dom";
+import {isProtected, isProtecting} from "@html_editor/utils/dom_info";
 
 /*
     This plugin solves selection issues around links (allowing the cursor at the
@@ -45,7 +45,7 @@ export class LinkSelectionPlugin extends Plugin {
     resources = {
         /** Handlers */
         selectionchange_handlers: this.resetLinkInSelection.bind(this),
-        clean_for_save_handlers: ({ root }) => this.clearLinkInSelectionClass(root),
+        clean_for_save_handlers: ({root}) => this.clearLinkInSelectionClass(root),
         normalize_handlers: () => this.resetLinkInSelection(),
         feff_providers: this.addFeffsToLinks.bind(this),
         system_classes: ["o_link_in_selection"],
@@ -80,7 +80,8 @@ export class LinkSelectionPlugin extends Plugin {
     }
 
     isLinkEligibleForZwnbsp(link) {
-        const { anchorNode, focusNode } = this.dependencies.selection.getEditableSelection();
+        const {anchorNode, focusNode} =
+            this.dependencies.selection.getEditableSelection();
         // we can't rely on `o_link_in_selection` class because it can be
         // added to siblings while splitting link element.
         const isLinkSelected = link.contains(anchorNode) || link.contains(focusNode);
@@ -93,16 +94,18 @@ export class LinkSelectionPlugin extends Plugin {
             this.editable.contains(link) &&
             !isProtected(link) &&
             !isProtecting(link) &&
-            !this.getResource("ineligible_link_for_zwnbsp_predicates").some((p) => p(link))
+            !this.getResource("ineligible_link_for_zwnbsp_predicates").some((p) =>
+                p(link)
+            )
         );
     }
 
     isLinkEligibleForVisualIndication(link) {
         return (
             this.isLinkEligibleForZwnbsp(link) &&
-            !this.getResource("ineligible_link_for_selection_indication_predicates").some(
-                (predicate) => predicate(link)
-            )
+            !this.getResource(
+                "ineligible_link_for_selection_indication_predicates"
+            ).some((predicate) => predicate(link))
         );
     }
 
@@ -112,10 +115,12 @@ export class LinkSelectionPlugin extends Plugin {
      *
      * @param {SelectionData} [selectionData]
      */
-    resetLinkInSelection(selectionData = this.dependencies.selection.getSelectionData()) {
+    resetLinkInSelection(
+        selectionData = this.dependencies.selection.getSelectionData()
+    ) {
         this.clearLinkInSelectionClass(this.editable);
 
-        const { anchorNode, focusNode } = selectionData.editableSelection;
+        const {anchorNode, focusNode} = selectionData.editableSelection;
         const [anchorLink, focusLink] = [anchorNode, focusNode].map((node) =>
             closestElement(node, "a")
         );

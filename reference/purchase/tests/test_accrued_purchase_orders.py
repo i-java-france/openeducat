@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
-from odoo import fields, Command
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.tests import tagged
+from odoo import Command
 from odoo.exceptions import UserError
+from odoo.tests import tagged
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
 @tagged('post_install', '-at_install')
@@ -184,14 +184,14 @@ class TestAccruedPurchaseOrders(AccountTestInvoicingCommon):
 
     def test_error_when_different_currencies_accrued(self):
         """
-        Tests that if two Purchase Orders with different currencies are selected for Accrued Expense Entry, 
+        Tests that if two Purchase Orders with different currencies are selected for Accrued Expense Entry,
         a UserError is raised.
         """
         purchase_orders = self.env['purchase.order'].create([
             {
                 'partner_id': self.partner_a.id,
                 'currency_id': self.company_data['currency'].id,
-            }, 
+            },
             {
                 'partner_id': self.partner_a.id,
                 'currency_id': self.other_currency.id,

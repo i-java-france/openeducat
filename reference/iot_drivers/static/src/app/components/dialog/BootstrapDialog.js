@@ -1,15 +1,15 @@
 /* global owl */
 
-const { Component, xml, useEffect, useRef } = owl;
+const {Component, xml, useEffect, useRef} = owl;
 
 export class BootstrapDialog extends Component {
     static props = {
         identifier: String,
         slots: Object,
-        btnName: { type: String, optional: true },
-        isLarge: { type: Boolean, optional: true },
-        onOpen: { type: Function, optional: true },
-        onClose: { type: Function, optional: true },
+        btnName: {type: String, optional: true},
+        isLarge: {type: Boolean, optional: true},
+        onOpen: {type: Function, optional: true},
+        onClose: {type: Function, optional: true},
     };
 
     setup() {
@@ -26,12 +26,21 @@ export class BootstrapDialog extends Component {
                 }
 
                 if (this.props.onClose) {
-                    this.dialog.el.addEventListener("hide.bs.modal", this.props.onClose);
+                    this.dialog.el.addEventListener(
+                        "hide.bs.modal",
+                        this.props.onClose
+                    );
                 }
 
                 return () => {
-                    this.dialog.el.removeEventListener("show.bs.modal", this.props.onOpen);
-                    this.dialog.el.removeEventListener("hide.bs.modal", this.props.onClose);
+                    this.dialog.el.removeEventListener(
+                        "show.bs.modal",
+                        this.props.onOpen
+                    );
+                    this.dialog.el.removeEventListener(
+                        "hide.bs.modal",
+                        this.props.onClose
+                    );
                 };
             },
             () => [this.dialog]

@@ -4,9 +4,9 @@ import ast
 import json
 
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 from odoo.fields import Domain
 from odoo.tools import SQL
-from odoo.exceptions import ValidationError, UserError
 from odoo.tools.translate import _
 
 

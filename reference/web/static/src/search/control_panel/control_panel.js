@@ -1,23 +1,23 @@
-import { _t } from "@web/core/l10n/translation";
-import { browser } from "@web/core/browser/browser";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { Pager } from "@web/core/pager/pager";
-import { useService } from "@web/core/utils/hooks";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { useCommand } from "@web/core/commands/command_hook";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
-import { useSortable } from "@web/core/utils/sortable_owl";
-import { user } from "@web/core/user";
-import { AccordionItem } from "@web/core/dropdown/accordion_item";
-import { CheckBox } from "@web/core/checkbox/checkbox";
-import { makeContext } from "@web/core/context";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { Transition } from "@web/core/transition";
-import { Breadcrumbs } from "../breadcrumbs/breadcrumbs";
-import { SearchBar } from "../search_bar/search_bar";
+import {_t} from "@web/core/l10n/translation";
+import {browser} from "@web/core/browser/browser";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {Pager} from "@web/core/pager/pager";
+import {useService} from "@web/core/utils/hooks";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {useCommand} from "@web/core/commands/command_hook";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
+import {useSortable} from "@web/core/utils/sortable_owl";
+import {user} from "@web/core/user";
+import {AccordionItem} from "@web/core/dropdown/accordion_item";
+import {CheckBox} from "@web/core/checkbox/checkbox";
+import {makeContext} from "@web/core/context";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {Transition} from "@web/core/transition";
+import {Breadcrumbs} from "../breadcrumbs/breadcrumbs";
+import {SearchBar} from "../search_bar/search_bar";
 
-import { Component, useState, onMounted, useRef, useEffect } from "@odoo/owl";
+import {Component, useState, onMounted, useRef, useEffect} from "@odoo/owl";
 
 const STICKY_CLASS = "o_mobile_sticky";
 
@@ -76,7 +76,7 @@ class EmbeddedActionsConfigHandler {
             "res.users.settings",
             "get_embedded_actions_settings",
             [user.settings.id],
-            { context: { res_model: this.parentResModel, res_id: this.currentActiveId } }
+            {context: {res_model: this.parentResModel, res_id: this.currentActiveId}}
         );
     }
 
@@ -100,8 +100,8 @@ export class ControlPanel extends Component {
         Transition,
     };
     static props = {
-        display: { type: Object, optional: true },
-        slots: { type: Object, optional: true },
+        display: {type: Object, optional: true},
+        slots: {type: Object, optional: true},
     };
 
     setup() {
@@ -117,8 +117,12 @@ export class ControlPanel extends Component {
         this.root = useRef("root");
         this.newActionNameRef = useRef("newActionNameRef");
         this.defaultEmbeddedActions = this.env.config.embeddedActions;
-        if (this.env.config.embeddedActions?.length > 0 && !this.env.config.parentActionId) {
-            const { parent_res_model, parent_action_id } = this.env.config.embeddedActions[0];
+        if (
+            this.env.config.embeddedActions?.length > 0 &&
+            !this.env.config.parentActionId
+        ) {
+            const {parent_res_model, parent_action_id} =
+                this.env.config.embeddedActions[0];
             this.defaultEmbeddedActions = [
                 {
                     id: false,
@@ -166,12 +170,16 @@ export class ControlPanel extends Component {
 
         this.onScrollThrottledBound = this.onScrollThrottled.bind(this);
 
-        const { viewSwitcherEntries, viewType } = this.env.config;
+        const {viewSwitcherEntries, viewType} = this.env.config;
         for (const view of viewSwitcherEntries || []) {
-            useCommand(_t("Show %s view", view.name), () => this.switchView(view.type), {
-                category: "view_switcher",
-                isAvailable: () => view.type !== viewType,
-            });
+            useCommand(
+                _t("Show %s view", view.name),
+                () => this.switchView(view.type),
+                {
+                    category: "view_switcher",
+                    isAvailable: () => view.type !== viewType,
+                }
+            );
         }
 
         if (viewSwitcherEntries?.length > 1) {
@@ -182,7 +190,8 @@ export class ControlPanel extends Component {
                 },
                 {
                     bypassEditableProtection: true,
-                    withOverlay: () => this.root.el.querySelector("nav.o_cp_switch_buttons"),
+                    withOverlay: () =>
+                        this.root.el.querySelector("nav.o_cp_switch_buttons"),
                 }
             );
         }
@@ -267,7 +276,8 @@ export class ControlPanel extends Component {
 
     getDropdownClass(action) {
         return (!this.env.isSmall && this._isEmbeddedActionVisible(action)) ||
-            (this.env.isSmall && this.state.embeddedInfos.currentEmbeddedAction?.id === action.id)
+            (this.env.isSmall &&
+                this.state.embeddedInfos.currentEmbeddedAction?.id === action.id)
             ? "selected"
             : "";
     }
@@ -283,10 +293,11 @@ export class ControlPanel extends Component {
         if (!this.env.config) {
             return {};
         }
-        const { currentEmbeddedActionId } = this.env.config;
+        const {currentEmbeddedActionId} = this.env.config;
         return (
-            this.defaultEmbeddedActions?.find(({ id }) => id === currentEmbeddedActionId) ||
-            this.defaultEmbeddedActions?.[0]
+            this.defaultEmbeddedActions?.find(
+                ({id}) => id === currentEmbeddedActionId
+            ) || this.defaultEmbeddedActions?.[0]
         );
     }
 
@@ -318,8 +329,12 @@ export class ControlPanel extends Component {
             // We then need to keep the browser user settings up to date with the DB
             const embeddedSettings =
                 await this.embeddedActionsConfigHandler.fetchEmbeddedActionsConfig();
-            if (this.embeddedActionsConfigHandler.embeddedActionsKey in embeddedSettings) {
-                this.embeddedActionsConfigHandler.updateEmbeddedActionsConfig(embeddedSettings);
+            if (
+                this.embeddedActionsConfigHandler.embeddedActionsKey in embeddedSettings
+            ) {
+                this.embeddedActionsConfigHandler.updateEmbeddedActionsConfig(
+                    embeddedSettings
+                );
                 this.state.embeddedInfos.visibleEmbeddedActions =
                     this.embeddedActionsConfigHandler.getEmbeddedActionsConfig(
                         "embedded_actions_visibility"
@@ -337,7 +352,8 @@ export class ControlPanel extends Component {
             } else {
                 // Store a new embedded actions config if still not found in the settings
                 const config = {
-                    res_model: this.state.embeddedInfos.currentEmbeddedAction.parent_res_model,
+                    res_model:
+                        this.state.embeddedInfos.currentEmbeddedAction.parent_res_model,
                     embedded_actions_visibility: [],
                     embedded_visibility: true,
                     embedded_actions_order: [],
@@ -347,9 +363,13 @@ export class ControlPanel extends Component {
                     const embeddedActionKey =
                         this.state.embeddedInfos.currentEmbeddedAction?.id || false;
                     if (
-                        !this.state.embeddedInfos.visibleEmbeddedActions.includes(embeddedActionKey)
+                        !this.state.embeddedInfos.visibleEmbeddedActions.includes(
+                            embeddedActionKey
+                        )
                     ) {
-                        this.state.embeddedInfos.visibleEmbeddedActions.push(embeddedActionKey);
+                        this.state.embeddedInfos.visibleEmbeddedActions.push(
+                            embeddedActionKey
+                        );
                         config.embedded_actions_visibility =
                             this.state.embeddedInfos.visibleEmbeddedActions;
                     }
@@ -410,7 +430,7 @@ export class ControlPanel extends Component {
      * @param {import("@web/views/view").ViewType} viewType
      */
     switchView(viewType, newWindow) {
-        this.actionService.switchView(viewType, {}, { newWindow });
+        this.actionService.switchView(viewType, {}, {newWindow});
     }
 
     cycleThroughViews() {
@@ -453,18 +473,23 @@ export class ControlPanel extends Component {
             const embeddedActionIndex =
                 this.state.embeddedInfos.visibleEmbeddedActions.indexOf(actionId);
             if (embeddedActionIndex !== -1) {
-                this.state.embeddedInfos.visibleEmbeddedActions.splice(embeddedActionIndex, 1);
+                this.state.embeddedInfos.visibleEmbeddedActions.splice(
+                    embeddedActionIndex,
+                    1
+                );
             }
         } else {
             this.state.embeddedInfos.visibleEmbeddedActions.push(actionId);
         }
         this.embeddedActionsConfigHandler.setEmbeddedActionsConfig({
-            embedded_actions_visibility: this.state.embeddedInfos.visibleEmbeddedActions,
+            embedded_actions_visibility:
+                this.state.embeddedInfos.visibleEmbeddedActions,
         });
     }
 
     _onShareCheckboxChange() {
-        this.state.embeddedInfos.newActionIsShared = !this.state.embeddedInfos.newActionIsShared;
+        this.state.embeddedInfos.newActionIsShared =
+            !this.state.embeddedInfos.newActionIsShared;
     }
 
     /**
@@ -479,17 +504,23 @@ export class ControlPanel extends Component {
             visibleEmbeddedActions,
         } = this.state.embeddedInfos;
         if (!newActionName) {
-            this.notificationService.add(_t("A name for your new action is required."), {
-                type: "danger",
-            });
+            this.notificationService.add(
+                _t("A name for your new action is required."),
+                {
+                    type: "danger",
+                }
+            );
             ev.stopPropagation();
             return this.newActionNameRef.el.focus();
         }
-        const duplicateName = embeddedActions.some(({ name }) => name === newActionName);
+        const duplicateName = embeddedActions.some(({name}) => name === newActionName);
         if (duplicateName) {
-            this.notificationService.add(_t("An action with the same name already exists."), {
-                type: "danger",
-            });
+            this.notificationService.add(
+                _t("An action with the same name already exists."),
+                {
+                    type: "danger",
+                }
+            );
             ev.stopPropagation();
             return this.newActionNameRef.el.focus();
         }
@@ -560,7 +591,9 @@ export class ControlPanel extends Component {
             title: _t("Warning"),
             body: action.user_id
                 ? _t("Are you sure that you want to remove this embedded action?")
-                : _t("This embedded action is global and will be removed for everyone."),
+                : _t(
+                      "This embedded action is global and will be removed for everyone."
+                  ),
             confirmLabel: _t("Delete"),
             confirm: async () => await this._deleteEmbeddedAction(action),
             cancel: () => {},
@@ -572,14 +605,14 @@ export class ControlPanel extends Component {
      * @param {EmbeddedAction} action
      */
     async _deleteEmbeddedAction(action) {
-        const { visibleEmbeddedActions, embeddedActions, currentEmbeddedAction } =
+        const {visibleEmbeddedActions, embeddedActions, currentEmbeddedAction} =
             this.state.embeddedInfos;
         const embeddedActionIndex = visibleEmbeddedActions.indexOf(action.id);
         if (embeddedActionIndex !== -1) {
             visibleEmbeddedActions.splice(embeddedActionIndex, 1);
         }
         this.state.embeddedInfos.embeddedActions = embeddedActions.filter(
-            ({ id }) => id !== action.id
+            ({id}) => id !== action.id
         );
         const order = this.state.embeddedInfos.embeddedActions.map((el) => el.id);
         this.embeddedActionsConfigHandler.setEmbeddedActionsConfig({
@@ -588,17 +621,20 @@ export class ControlPanel extends Component {
         });
         await this.orm.unlink("ir.embedded.actions", [action.id]);
         if (action.id === currentEmbeddedAction?.id) {
-            const { active_id, active_model } = this.env.searchModel.globalContext;
+            const {active_id, active_model} = this.env.searchModel.globalContext;
             const actionContext = action.context ? makeContext([action.context]) : {};
             const additionalContext = {
                 ...actionContext,
                 active_id,
                 active_model,
             };
-            this.actionService.doAction(action.parent_action_id[0] || action.parent_action_id, {
-                additionalContext,
-                stackPosition: "replaceCurrentAction",
-            });
+            this.actionService.doAction(
+                action.parent_action_id[0] || action.parent_action_id,
+                {
+                    additionalContext,
+                    stackPosition: "replaceCurrentAction",
+                }
+            );
         }
     }
 
@@ -607,7 +643,7 @@ export class ControlPanel extends Component {
      */
     async onEmbeddedActionClick(action) {
         this.env.config.setEmbeddedActions(this.state.embeddedInfos.embeddedActions);
-        const { active_id, active_model } = this.env.searchModel.globalContext;
+        const {active_id, active_model} = this.env.searchModel.globalContext;
         const actionContext = action.context ? makeContext([action.context]) : {};
         const context = {
             ...actionContext,
@@ -627,7 +663,7 @@ export class ControlPanel extends Component {
                 stackPosition: "replaceCurrentAction",
                 viewType: action.default_view_mode,
             },
-            { isEmbeddedAction: true }
+            {isEmbeddedAction: true}
         );
     }
 
@@ -635,8 +671,8 @@ export class ControlPanel extends Component {
      * @param {number[]} order
      */
     _sortEmbeddedActions(order) {
-        this.state.embeddedInfos.embeddedActions = this.state.embeddedInfos.embeddedActions.sort(
-            (a, b) => {
+        this.state.embeddedInfos.embeddedActions =
+            this.state.embeddedInfos.embeddedActions.sort((a, b) => {
                 const indexA = order.indexOf(a.id);
                 if (!indexA) {
                     return -1;
@@ -646,15 +682,14 @@ export class ControlPanel extends Component {
                     return 1;
                 }
                 return indexA - indexB;
-            }
-        );
+            });
     }
 
     /**
      * @param {Object} params
      * @param {HTMLElement} params.element
      */
-    _sortEmbeddedActionStart({ element, addClass }) {
+    _sortEmbeddedActionStart({element, addClass}) {
         addClass(element, "o_dragged_embedded_action");
     }
 
@@ -663,7 +698,7 @@ export class ControlPanel extends Component {
      * @param {HTMLElement} params.element
      * @param {HTMLElement} params.previous
      */
-    _sortEmbeddedActionDrop({ element, previous }) {
+    _sortEmbeddedActionDrop({element, previous}) {
         const order = this.state.embeddedInfos.embeddedActions.map((el) => el.id);
         const elementId = Number(element.dataset.id) || false;
         const elementIndex = order.indexOf(elementId);

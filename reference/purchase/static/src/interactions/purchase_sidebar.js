@@ -1,5 +1,5 @@
-import { Sidebar } from "@portal/interactions/sidebar";
-import { registry } from "@web/core/registry";
+import {Sidebar} from "@portal/interactions/sidebar";
+import {registry} from "@web/core/registry";
 
 export class PurchaseSidebar extends Sidebar {
     static selector = ".o_portal_purchase_sidebar";
@@ -12,7 +12,7 @@ export class PurchaseSidebar extends Sidebar {
     start() {
         super.start();
         // Nav Menu ScrollSpy
-        this.generateMenu({ "max-width": "200px" });
+        this.generateMenu({"max-width": "200px"});
     }
 }
 

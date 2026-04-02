@@ -1,9 +1,11 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<InvoiceData xmlns:base="http://schemas.nav.gov.hu/OSA/3.0/base"
+<?xml version='1.0' encoding='UTF-8' ?>
+<InvoiceData
+    xmlns:base="http://schemas.nav.gov.hu/OSA/3.0/base"
     xmlns:common="http://schemas.nav.gov.hu/NTCA/1.0/common"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="http://schemas.nav.gov.hu/OSA/3.0/data"
-    xsi:schemaLocation="http://schemas.nav.gov.hu/OSA/3.0/data invoiceData.xsd">
+    xsi:schemaLocation="http://schemas.nav.gov.hu/OSA/3.0/data invoiceData.xsd"
+>
     <invoiceNumber>INV/2024/00001</invoiceNumber>
     <invoiceIssueDate>2024-01-31</invoiceIssueDate>
     <completenessIndicator>false</completenessIndicator>
@@ -22,7 +24,8 @@
                             <base:countryCode>HU</base:countryCode>
                             <base:postalCode>1073</base:postalCode>
                             <base:city>Budapest</base:city>
-                            <base:additionalAddressDetail>Akácfa utca 74.</base:additionalAddressDetail>
+                            <base:additionalAddressDetail
+                            >Akácfa utca 74.</base:additionalAddressDetail>
                         </base:simpleAddress>
                     </supplierAddress>
                     <supplierBankAccountNumber>HU0123456789</supplierBankAccountNumber>
@@ -43,7 +46,8 @@
                             <base:countryCode>HU</base:countryCode>
                             <base:postalCode>4000</base:postalCode>
                             <base:city>Debrecen</base:city>
-                            <base:additionalAddressDetail>Alkotmány utca 11.</base:additionalAddressDetail>
+                            <base:additionalAddressDetail
+                            >Alkotmány utca 11.</base:additionalAddressDetail>
                         </base:simpleAddress>
                     </customerAddress>
                     <customerBankAccountNumber>HU6666666666</customerBankAccountNumber>
@@ -89,7 +93,8 @@
                         </lineVatData>
                         <lineGrossAmountData>
                             <lineGrossAmountNormal>30.48</lineGrossAmountNormal>
-                            <lineGrossAmountNormalHUF>11605.87</lineGrossAmountNormalHUF>
+                            <lineGrossAmountNormalHUF
+                            >11605.87</lineGrossAmountNormalHUF>
                         </lineGrossAmountData>
                     </lineAmountsNormal>
                 </line>
@@ -144,7 +149,8 @@
                         </lineVatData>
                         <lineGrossAmountData>
                             <lineGrossAmountNormal>118.00</lineGrossAmountNormal>
-                            <lineGrossAmountNormalHUF>44930.86</lineGrossAmountNormalHUF>
+                            <lineGrossAmountNormalHUF
+                            >44930.86</lineGrossAmountNormalHUF>
                         </lineGrossAmountData>
                     </lineAmountsNormal>
                 </line>
@@ -170,7 +176,8 @@
                         </lineVatRate>
                         <lineGrossAmountData>
                             <lineGrossAmountNormal>200.00</lineGrossAmountNormal>
-                            <lineGrossAmountNormalHUF>76154.00</lineGrossAmountNormalHUF>
+                            <lineGrossAmountNormalHUF
+                            >76154.00</lineGrossAmountNormalHUF>
                         </lineGrossAmountData>
                     </lineAmountsNormal>
                 </line>

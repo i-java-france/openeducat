@@ -17,7 +17,7 @@
         button.o-default-button:not(:only-child) {
             display: none;
         }
-        
+
         @include media-breakpoint-down(md) {
             .btn {
                 width: 45%;
@@ -25,7 +25,6 @@
                 white-space: inherit;
             }
         }
-
     }
 
     @include media-breakpoint-down(sm) {

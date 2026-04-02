@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -14,7 +13,7 @@ class ResPartnerBank(models.Model):
 
     @api.model
     def _get_supported_account_types(self):
-        rslt = super(ResPartnerBank, self)._get_supported_account_types()
+        rslt = super()._get_supported_account_types()
         rslt.append(('aba', _('ABA')))
         return rslt
 

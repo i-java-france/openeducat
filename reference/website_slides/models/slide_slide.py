@@ -5,14 +5,14 @@ import datetime
 import io
 import logging
 import re
-import requests
 
+import requests
 from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
 from werkzeug import urls
 
-from odoo import api, fields, models, _
-from odoo.exceptions import RedirectWarning, UserError, AccessError
+from odoo import _, api, fields, models
+from odoo.exceptions import AccessError, RedirectWarning, UserError
 from odoo.http import request
 from odoo.tools import html2plaintext, sql
 from odoo.tools.pdf import PdfFileReader
@@ -571,7 +571,7 @@ class SlideSlide(models.Model):
 
         slides = super().create(vals_list)
 
-        for slide, vals in zip(slides, vals_list):
+        for slide, vals in zip(slides, vals_list, strict=False):
             # avoid fetching external metadata when installing the module (i.e. for demo data)
             # we also support a context key if you don't want to fetch the metadata when creating a slide
             if any(vals.get(url_param) for url_param in ['url', 'video_url', 'document_google_url', 'image_google_url']) \
@@ -1315,7 +1315,7 @@ class SlideSlide(models.Model):
             'link': 'fa-file-code-o', # appears in template "slide_icon"
         }
         results_data = super()._search_render_results(fetch_fields, mapping, icon, limit)
-        for slide, data in zip(self, results_data):
+        for slide, data in zip(self, results_data, strict=False):
             data['_fa'] = icon_per_category.get(slide.slide_category, 'fa-file-pdf-o')
             data['url'] = slide.website_absolute_url
             data['course'] = _('Course: %s', slide.channel_id.name)

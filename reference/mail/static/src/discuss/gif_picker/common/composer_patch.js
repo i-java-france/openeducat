@@ -1,10 +1,10 @@
-import { Composer } from "@mail/core/common/composer";
-import { markEventHandled } from "@web/core/utils/misc";
+import {Composer} from "@mail/core/common/composer";
+import {markEventHandled} from "@web/core/utils/misc";
 
-import { markup, useRef } from "@odoo/owl";
+import {markup, useRef} from "@odoo/owl";
 
-import { useService } from "@web/core/utils/hooks";
-import { patch } from "@web/core/utils/patch";
+import {useService} from "@web/core/utils/hooks";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {Composer} */
 const composerPatch = {
@@ -25,7 +25,8 @@ const composerPatch = {
     },
     get hasGifPicker() {
         return (
-            (this.store.hasGifPickerFeature || this.store.self.main_user_id?.is_admin) &&
+            (this.store.hasGifPickerFeature ||
+                this.store.self.main_user_id?.is_admin) &&
             !this.env.inChatter &&
             !this.props.composer.message
         );

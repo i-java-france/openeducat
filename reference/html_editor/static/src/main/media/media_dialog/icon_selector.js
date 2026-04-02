@@ -1,7 +1,7 @@
-import { SearchMedia } from "./search_media";
-import { fonts } from "@html_editor/utils/fonts";
+import {SearchMedia} from "./search_media";
+import {fonts} from "@html_editor/utils/fonts";
 
-import { Component, useState } from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 
 export class IconSelector extends Component {
     static mediaSpecificClasses = ["fa"];
@@ -30,7 +30,7 @@ export class IconSelector extends Component {
     }
 
     get selectedMediaIds() {
-        return this.props.selectedMedia[this.props.id].map(({ id }) => id);
+        return this.props.selectedMedia[this.props.id].map(({id}) => id);
     }
 
     search(needle) {
@@ -42,7 +42,7 @@ export class IconSelector extends Component {
                 const icons = font.icons.filter(
                     (icon) => icon.alias.indexOf(this.state.needle.toLowerCase()) >= 0
                 );
-                return { ...font, icons };
+                return {...font, icons};
             });
         }
     }
@@ -73,17 +73,17 @@ export class IconSelector extends Component {
     }
     static initFonts() {
         fonts.computeFonts();
-        const allFonts = fonts.fontIcons.map(({ cssData, base }) => {
+        const allFonts = fonts.fontIcons.map(({cssData, base}) => {
             const uniqueIcons = Array.from(
                 new Map(
                     cssData.map((icon) => {
                         const alias = icon.names.join(",");
                         const id = `${base}_${alias}`;
-                        return [id, { ...icon, alias, id }];
+                        return [id, {...icon, alias, id}];
                     })
                 ).values()
             );
-            return { base, icons: uniqueIcons };
+            return {base, icons: uniqueIcons};
         });
         return allFonts;
     }

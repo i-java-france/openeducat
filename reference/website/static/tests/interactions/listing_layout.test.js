@@ -1,10 +1,13 @@
-import { setupInteractionWhiteList, startInteractions } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { click, microTick, queryOne } from "@odoo/hoot-dom";
-import { Deferred } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {click, microTick, queryOne} from "@odoo/hoot-dom";
+import {Deferred} from "@odoo/hoot-mock";
 
-import { onRpc } from "@web/../tests/web_test_helpers";
+import {onRpc} from "@web/../tests/web_test_helpers";
 
 setupInteractionWhiteList("website.listing_layout");
 

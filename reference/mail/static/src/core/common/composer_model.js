@@ -1,11 +1,11 @@
-import { fields, OR, Record } from "@mail/core/common/record";
+import {fields, OR, Record} from "@mail/core/common/record";
 import {
     convertBrToLineBreak,
     getNonEditableMentions,
     prettifyMessageText,
 } from "@mail/utils/common/format";
-import { markup } from "@odoo/owl";
-import { isHtmlEmpty } from "@web/core/utils/html";
+import {markup} from "@odoo/owl";
+import {isHtmlEmpty} from "@web/core/utils/html";
 
 export class Composer extends Record {
     static id = OR("thread", "message");
@@ -27,7 +27,7 @@ export class Composer extends Record {
      * @param {Object} [options]
      * @param {boolean} [options.moveCursorToEnd=false] - If true, place cursor at end of composerText
      */
-    insertText(text, position, { moveCursorToEnd = false } = {}) {
+    insertText(text, position, {moveCursorToEnd = false} = {}) {
         const before = this.composerText.substring(0, position);
         const after = this.composerText.substring(position);
         this.composerText = before + text + after;
@@ -116,7 +116,7 @@ export class Composer extends Record {
         },
     });
     autofocus = 0;
-    replyToMessage = fields.One("mail.message", { inverse: "composerAsReplyToMessage" });
+    replyToMessage = fields.One("mail.message", {inverse: "composerAsReplyToMessage"});
     /** @type {"text" | "html" | undefined} */
     updateFrom = undefined;
 
@@ -125,7 +125,9 @@ export class Composer extends Record {
     }
 
     get targetThread() {
-        return this.replyToMessage?.thread ?? this.thread ?? this.message?.thread ?? null;
+        return (
+            this.replyToMessage?.thread ?? this.thread ?? this.message?.thread ?? null
+        );
     }
 }
 

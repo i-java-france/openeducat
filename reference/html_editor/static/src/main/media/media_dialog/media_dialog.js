@@ -1,12 +1,12 @@
-import { _t } from "@web/core/l10n/translation";
-import { useService, useChildRef } from "@web/core/utils/hooks";
-import { Dialog } from "@web/core/dialog/dialog";
-import { Notebook } from "@web/core/notebook/notebook";
-import { ImageSelector } from "./image_selector";
-import { IconSelector } from "./icon_selector";
+import {_t} from "@web/core/l10n/translation";
+import {useService, useChildRef} from "@web/core/utils/hooks";
+import {Dialog} from "@web/core/dialog/dialog";
+import {Notebook} from "@web/core/notebook/notebook";
+import {ImageSelector} from "./image_selector";
+import {IconSelector} from "./icon_selector";
 
-import { Component, useState, useRef, useEffect } from "@odoo/owl";
-import { iconClasses } from "@html_editor/utils/dom_info";
+import {Component, useState, useRef, useEffect} from "@odoo/owl";
+import {iconClasses} from "@html_editor/utils/dom_info";
 
 export const TABS = {
     IMAGES: {
@@ -37,9 +37,9 @@ export class MediaDialog extends Component {
         Notebook,
     };
     static props = {
-        extraTabs: { type: Array, optional: true, element: Object },
-        visibleTabs: { type: Array, optional: true, element: String },
-        activeTab: { type: String, optional: true },
+        extraTabs: {type: Array, optional: true, element: Object},
+        visibleTabs: {type: Array, optional: true, element: String},
+        activeTab: {type: String, optional: true},
         "*": true,
     };
 
@@ -118,7 +118,8 @@ export class MediaDialog extends Component {
                     this.selectMedia(...args, tab.id, additionalProps.multiSelect),
                 save: this.save.bind(this),
                 onAttachmentChange: this.props.onAttachmentChange,
-                errorMessages: (errorMessage) => (this.errorMessages[tab.id] = errorMessage),
+                errorMessages: (errorMessage) =>
+                    (this.errorMessages[tab.id] = errorMessage),
                 modalRef: this.modalRef,
             },
         });
@@ -142,7 +143,8 @@ export class MediaDialog extends Component {
         if (onlyImages) {
             return;
         }
-        const addIcons = !this.props.visibleTabs || this.props.visibleTabs.includes(TABS.ICONS.id);
+        const addIcons =
+            !this.props.visibleTabs || this.props.visibleTabs.includes(TABS.ICONS.id);
         if (addIcons) {
             const fonts = TABS.ICONS.Component.initFonts();
             this.addTab(TABS.ICONS, {
@@ -154,7 +156,9 @@ export class MediaDialog extends Component {
                 TABS.ICONS.Component.tagNames.includes(this.props.media.tagName)
             ) {
                 const classes = this.props.media.className.split(/\s+/);
-                const predefinedMediaFont = fonts.find((font) => classes.includes(font.base));
+                const predefinedMediaFont = fonts.find((font) =>
+                    classes.includes(font.base)
+                );
                 if (predefinedMediaFont) {
                     const selectedIcon = predefinedMediaFont.icons.find((icon) =>
                         icon.names.some((name) => classes.includes(name))
@@ -164,8 +168,12 @@ export class MediaDialog extends Component {
                         this.selectMedia(selectedIcon, TABS.ICONS.id);
                     }
                 } else {
-                    const iconRegex = new RegExp(`\\b(?:${iconClasses.join("|")})(?:-\\S+)?\\b`);
-                    const fallbackIconClasses = classes.filter((cls) => iconRegex.test(cls));
+                    const iconRegex = new RegExp(
+                        `\\b(?:${iconClasses.join("|")})(?:-\\S+)?\\b`
+                    );
+                    const fallbackIconClasses = classes.filter((cls) =>
+                        iconRegex.test(cls)
+                    );
                     this.initialIconClasses.push(...fallbackIconClasses);
                 }
             }
@@ -182,7 +190,7 @@ export class MediaDialog extends Component {
     async renderMedia(selectedMedia) {
         const elements = await this.tabs[this.state.activeTab].Component.createElements(
             selectedMedia,
-            { orm: this.orm }
+            {orm: this.orm}
         );
         elements.forEach((element) => {
             if (this.props.media) {
@@ -196,16 +204,19 @@ export class MediaDialog extends Component {
                         element.dataset.shape = this.props.media.dataset.shape;
                     }
                     if (this.props.media.dataset.shapeColors) {
-                        element.dataset.shapeColors = this.props.media.dataset.shapeColors;
+                        element.dataset.shapeColors =
+                            this.props.media.dataset.shapeColors;
                     }
                     if (this.props.media.dataset.shapeFlip) {
                         element.dataset.shapeFlip = this.props.media.dataset.shapeFlip;
                     }
                     if (this.props.media.dataset.shapeRotate) {
-                        element.dataset.shapeRotate = this.props.media.dataset.shapeRotate;
+                        element.dataset.shapeRotate =
+                            this.props.media.dataset.shapeRotate;
                     }
                     if (this.props.media.dataset.hoverEffect) {
-                        element.dataset.hoverEffect = this.props.media.dataset.hoverEffect;
+                        element.dataset.hoverEffect =
+                            this.props.media.dataset.hoverEffect;
                     }
                     if (this.props.media.dataset.hoverEffectColor) {
                         element.dataset.hoverEffectColor =
@@ -224,10 +235,13 @@ export class MediaDialog extends Component {
             for (const otherTab of Object.keys(this.tabs).filter(
                 (key) => key !== this.state.activeTab
             )) {
-                for (const property of this.tabs[otherTab].Component.mediaSpecificStyles) {
+                for (const property of this.tabs[otherTab].Component
+                    .mediaSpecificStyles) {
                     element.style.removeProperty(property);
                 }
-                element.classList.remove(...this.tabs[otherTab].Component.mediaSpecificClasses);
+                element.classList.remove(
+                    ...this.tabs[otherTab].Component.mediaSpecificClasses
+                );
                 const extraClassesToRemove = [];
                 for (const name of this.tabs[otherTab].Component.mediaExtraClasses) {
                     if (typeof name === "string") {
@@ -279,7 +293,7 @@ export class MediaDialog extends Component {
         }
         if (multiSelect) {
             const isMediaSelected = this.selectedMedia[tabId]
-                .map(({ id }) => id)
+                .map(({id}) => id)
                 .includes(media.id);
             if (!isMediaSelected) {
                 this.selectedMedia[tabId].push(media);

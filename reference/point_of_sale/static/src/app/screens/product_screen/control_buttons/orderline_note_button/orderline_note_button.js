@@ -1,16 +1,16 @@
-import { _t } from "@web/core/l10n/translation";
-import { Component } from "@odoo/owl";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { TextInputPopup } from "@point_of_sale/app/components/popups/text_input_popup/text_input_popup";
-import { useService } from "@web/core/utils/hooks";
-import { makeAwaitable } from "@point_of_sale/app/utils/make_awaitable_dialog";
+import {_t} from "@web/core/l10n/translation";
+import {Component} from "@odoo/owl";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {TextInputPopup} from "@point_of_sale/app/components/popups/text_input_popup/text_input_popup";
+import {useService} from "@web/core/utils/hooks";
+import {makeAwaitable} from "@point_of_sale/app/utils/make_awaitable_dialog";
 
 export class NoteButton extends Component {
     static template = "point_of_sale.NoteButton";
     static props = {
-        icon: { type: String, optional: true },
-        label: { type: String, optional: false },
-        class: { type: String, optional: true },
+        icon: {type: String, optional: true},
+        label: {type: String, optional: false},
+        class: {type: String, optional: true},
     };
 
     setup() {
@@ -27,7 +27,7 @@ export class NoteButton extends Component {
         } else {
             this.pos.getOrder().setGeneralCustomerNote(payload);
         }
-        return { confirmed: typeof payload === "string", inputNote: payload };
+        return {confirmed: typeof payload === "string", inputNote: payload};
     }
 
     // Update line changes and set them
@@ -86,11 +86,15 @@ export class NoteButton extends Component {
 
     get orderlineNote() {
         const orderline = this.pos.getOrder().getSelectedOrderline();
-        return this.type === "internal" ? orderline.getNote() : orderline.getCustomerNote();
+        return this.type === "internal"
+            ? orderline.getNote()
+            : orderline.getCustomerNote();
     }
 
     get currentNote() {
-        return this.pos.getOrder().getSelectedOrderline() ? this.orderlineNote : this.orderNote;
+        return this.pos.getOrder().getSelectedOrderline()
+            ? this.orderlineNote
+            : this.orderNote;
     }
     get type() {
         return "customer";
@@ -126,7 +130,9 @@ export class InternalNoteButton extends NoteButton {
     async onClick() {
         const selectedOrderline = this.pos.getOrder().getSelectedOrderline();
         const selectedNote = JSON.parse(this.currentNote || "[]");
-        const payload = await this.openTextInput(selectedNote.map((n) => n.text).join("\n"));
+        const payload = await this.openTextInput(
+            selectedNote.map((n) => n.text).join("\n")
+        );
         const coloredNotes = payload ? this.reframeNotes(payload) : "[]";
         if (selectedOrderline) {
             this.setChanges(selectedOrderline, coloredNotes);

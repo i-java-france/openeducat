@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
     <t t-name="hr.BackgroundImage">
         <img
@@ -8,6 +8,6 @@
             t-att-data-tooltip-delay="hasTooltip and props.zoomDelay"
             t-attf-src="#{getUrl(props.previewImage or props.name)}"
             alt="Binary file"
-           />
+        />
     </t>
 </templates>

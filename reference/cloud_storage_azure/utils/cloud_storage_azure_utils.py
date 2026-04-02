@@ -8,11 +8,12 @@ importing the azure.storage.blob library.
 import base64
 import hashlib
 import hmac
+from datetime import date
+from urllib.parse import quote
 
 import requests
-from urllib.parse import quote
-from datetime import date
 from lxml import etree
+
 from odoo.exceptions import ValidationError
 
 X_MS_VERSION = '2023-11-03'

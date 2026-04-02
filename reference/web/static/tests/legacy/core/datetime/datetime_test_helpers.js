@@ -1,9 +1,9 @@
 /** @odoo-module alias=@web/../tests/core/datetime/datetime_test_helpers default=false */
 
-import { patchWithCleanup } from "@web/../tests/helpers/utils";
-import { localization } from "@web/core/l10n/localization";
-import { ensureArray } from "@web/core/utils/arrays";
-import { click, getFixture } from "../../helpers/utils";
+import {patchWithCleanup} from "@web/../tests/helpers/utils";
+import {localization} from "@web/core/l10n/localization";
+import {ensureArray} from "@web/core/utils/arrays";
+import {click, getFixture} from "../../helpers/utils";
 
 /**
  * @typedef {import("@web/core/datetime/datetime_picker").DateTimePickerProps} DateTimePickerProps
@@ -32,7 +32,7 @@ export function assertDateTimePicker(expectedParams) {
         return;
     }
 
-    const { title, date, time } = expectedParams;
+    const {title, date, time} = expectedParams;
 
     // Title
     if (title) {
@@ -53,9 +53,15 @@ export function assertDateTimePicker(expectedParams) {
         const timePickers = select(".o_time_picker");
         for (let i = 0; i < time.length; i++) {
             const expectedTime = time[i];
-            const values = select(timePickers[i], ".o_time_picker_select").map((sel) => sel.value);
+            const values = select(timePickers[i], ".o_time_picker_select").map(
+                (sel) => sel.value
+            );
             const actual = [...values.slice(0, 2).map(Number), ...values.slice(2)];
-            assert.deepEqual(actual, expectedTime, `time values should be [${expectedTime}]`);
+            assert.deepEqual(
+                actual,
+                expectedTime,
+                `time values should be [${expectedTime}]`
+            );
         }
     } else {
         assert.containsNone(fixture, ".o_time_picker");
@@ -69,7 +75,7 @@ export function assertDateTimePicker(expectedParams) {
     let outOfRangeCells = 0;
     let todayCells = 0;
     for (let i = 0; i < date.length; i++) {
-        const { cells, daysOfWeek, weekNumbers } = date[i];
+        const {cells, daysOfWeek, weekNumbers} = date[i];
         const datePickerEl = datePickerEls[i];
         const cellEls = select(datePickerEl, ".o_date_item_cell");
 
@@ -179,7 +185,7 @@ const select = (...selectors) => {
 };
 
 export function useTwelveHourClockFormat() {
-    const { dateFormat = "dd/MM/yyyy", timeFormat = "HH:mm:ss" } = localization;
+    const {dateFormat = "dd/MM/yyyy", timeFormat = "HH:mm:ss"} = localization;
     const twcTimeFormat = `${timeFormat.replace(/H/g, "h")} a`;
     patchWithCleanup(localization, {
         dateTimeFormat: `${dateFormat} ${twcTimeFormat}`,

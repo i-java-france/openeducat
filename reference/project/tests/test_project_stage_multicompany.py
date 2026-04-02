@@ -1,13 +1,13 @@
-from .test_multicompany import TestMultiCompanyProject
-
 from odoo.exceptions import UserError
+
+from .test_multicompany import TestMultiCompanyProject
 
 
 class TestProjectStagesMulticompany(TestMultiCompanyProject):
 
     @classmethod
     def setUpClass(cls):
-        super(TestProjectStagesMulticompany, cls).setUpClass()
+        super().setUpClass()
 
         Users = cls.env['res.users'].with_context({'no_reset_password': True})
         cls.user_manager_companies = Users.create({

@@ -13,7 +13,6 @@ from odoo.http import request
 from odoo.addons.payment.logging import get_payment_logger
 from odoo.addons.payment_paymob import const
 
-
 _logger = get_payment_logger(__name__)
 
 

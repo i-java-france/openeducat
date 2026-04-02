@@ -1,7 +1,8 @@
-from lxml import etree
 from urllib.parse import urlencode
 
-from odoo import api, fields, models, _
+from lxml import etree
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import cleanup_xml_node
 from odoo.tools.sql import column_exists, create_column

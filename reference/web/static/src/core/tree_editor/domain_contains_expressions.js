@@ -1,9 +1,9 @@
-import { Expression, isTree } from "./condition_tree";
-import { constructTreeFromDomain } from "./construct_tree_from_domain";
+import {Expression, isTree} from "./condition_tree";
+import {constructTreeFromDomain} from "./construct_tree_from_domain";
 
 function treeContainsExpressions(tree) {
     if (tree.type === "condition") {
-        const { path, operator, value } = tree;
+        const {path, operator, value} = tree;
         if (isTree(value) && treeContainsExpressions(value)) {
             return true;
         }

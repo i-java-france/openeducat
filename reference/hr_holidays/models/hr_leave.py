@@ -1,25 +1,24 @@
 import logging
-import pytz
-
 from collections import defaultdict
-
-from datetime import datetime, timedelta, time
-from dateutil.relativedelta import relativedelta
+from datetime import datetime, time, timedelta
 from math import ceil
+
+import pytz
+from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
 
-from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
-from odoo.addons.resource.models.utils import HOURS_PER_DAY
-
 from odoo import api, fields, models
-from odoo.addons.base.models.res_partner import _tz_get
 from odoo.exceptions import AccessError, UserError, ValidationError
-from odoo.tools.date_utils import float_to_time
 from odoo.fields import Command, Date, Domain
-from odoo.tools.float_utils import float_round, float_compare
+from odoo.tools.date_utils import float_to_time
+from odoo.tools.float_utils import float_compare, float_round
 from odoo.tools.intervals import Intervals
 from odoo.tools.misc import clean_context, format_date
 from odoo.tools.translate import _
+
+from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
+from odoo.addons.base.models.res_partner import _tz_get
+from odoo.addons.resource.models.utils import HOURS_PER_DAY
 
 _logger = logging.getLogger(__name__)
 

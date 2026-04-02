@@ -1,17 +1,17 @@
-import { _t } from "@web/core/l10n/translation";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { browser } from "@web/core/browser/browser";
-import { evaluateExpr } from "@web/core/py_js/py";
-import { download } from "@web/core/network/download";
-import { rpc } from "@web/core/network/rpc";
-import { ExportDataDialog } from "@web/views/view_dialogs/export_data_dialog";
+import {_t} from "@web/core/l10n/translation";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {browser} from "@web/core/browser/browser";
+import {evaluateExpr} from "@web/core/py_js/py";
+import {download} from "@web/core/network/download";
+import {rpc} from "@web/core/network/rpc";
+import {ExportDataDialog} from "@web/views/view_dialogs/export_data_dialog";
 import {
     deleteConfirmationMessage,
     ConfirmationDialog,
 } from "@web/core/confirmation_dialog/confirmation_dialog";
 
-import { useComponent, useEffect } from "@odoo/owl";
-import { DynamicList } from "@web/model/relational_model/dynamic_list";
+import {useComponent, useEffect} from "@odoo/owl";
+import {DynamicList} from "@web/model/relational_model/dynamic_list";
 
 /**
  * Allows for a component (usually a View component) to handle links with
@@ -26,12 +26,12 @@ import { DynamicList } from "@web/model/relational_model/dynamic_list";
  * @param  {String} params.resModel The default resModel to which actions will apply
  * @param  {Function} [params.reload] The function to execute to reload, if a button has data-reload-on-close
  */
-export function useActionLinks({ resModel, reload }) {
+export function useActionLinks({resModel, reload}) {
     const component = useComponent();
     const keepLast = component.env.keepLast;
 
     const orm = useService("orm");
-    const { doAction } = useService("action");
+    const {doAction} = useService("action");
 
     async function handler(ev) {
         ev.preventDefault();
@@ -124,7 +124,7 @@ export function useBounceButton(containerRef, shouldBounce) {
 }
 
 export function useExportRecords(env, context, getDefaultExportList) {
-    const { model, searchModel } = env;
+    const {model, searchModel} = env;
     useBus(searchModel, "direct-export-data", async () => {
         _downloadExport(getDefaultExportList(), false, "xlsx");
     });
@@ -194,7 +194,8 @@ export function useDeleteRecords(model) {
         let body = deleteConfirmationMessage;
         if (
             records?.length > 1 ||
-            (isDynamicList && (model.root.isDomainSelected || model.root.selection.length > 1))
+            (isDynamicList &&
+                (model.root.isDomainSelected || model.root.selection.length > 1))
         ) {
             body = _t("Are you sure you want to delete these records?");
         }
@@ -213,6 +214,6 @@ export function useDeleteRecords(model) {
     }
     return (dialogProps, records) => {
         const defaultProps = getDefaultDialogProps(records);
-        model.dialog.add(ConfirmationDialog, { ...defaultProps, ...dialogProps });
+        model.dialog.add(ConfirmationDialog, {...defaultProps, ...dialogProps});
     };
 }

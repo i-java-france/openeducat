@@ -1,4 +1,4 @@
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 import {
     contains,
     defineModels,
@@ -6,10 +6,10 @@ import {
     fields,
     models,
     mountView,
-    patchWithCleanup,
     onRpc,
+    patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { TimezoneMismatchField } from "@web/views/fields/timezone_mismatch/timezone_mismatch_field";
+import {TimezoneMismatchField} from "@web/views/fields/timezone_mismatch/timezone_mismatch_field";
 
 class Localization extends models.Model {
     country = fields.Selection({
@@ -22,7 +22,7 @@ class Localization extends models.Model {
         },
     });
     tz_offset = fields.Char();
-    _records = [{ id: 1, country: "belgium" }];
+    _records = [{id: 1, country: "belgium"}];
 }
 
 defineModels([Localization]);
@@ -33,7 +33,7 @@ test("in a list view", async () => {
         type: "list",
         resModel: "localization",
         resId: 1,
-        arch: /*xml*/ `
+        arch: /* xml*/ `
             <list string="Localizations" editable="top">
                 <field name="tz_offset" column_invisible="True"/>
                 <field name="country" widget="timezone_mismatch" />
@@ -42,7 +42,9 @@ test("in a list view", async () => {
     });
     expect("td:contains(Belgium)").toHaveCount(1);
     await contains(".o_data_cell").click();
-    await editSelectMenu(".o_field_widget[name='country'] input", { value: "United States" });
+    await editSelectMenu(".o_field_widget[name='country'] input", {
+        value: "United States",
+    });
     expect(".o_data_cell input").toHaveValue(
         /United States\s+\([0-9]+\/[0-9]+\/[0-9]+ [0-9]+:[0-9]+:[0-9]+\)/
     );
@@ -54,7 +56,7 @@ test("in a form view", async () => {
         type: "form",
         resModel: "localization",
         resId: 1,
-        arch: /*xml*/ `
+        arch: /* xml*/ `
             <form>
                 <field name="tz_offset" invisible="True"/>
                 <field name="country" widget="timezone_mismatch" />
@@ -63,7 +65,9 @@ test("in a form view", async () => {
     });
     await contains(".o_field_widget[name='country'] input").click();
     expect(".o_select_menu_item:contains(Belgium)").toHaveCount(1);
-    await editSelectMenu(".o_field_widget[name='country'] input", { value: "United States" });
+    await editSelectMenu(".o_field_widget[name='country'] input", {
+        value: "United States",
+    });
     expect(".o_field_widget[name='country'] input").toHaveValue(
         /United States\s+\([0-9]+\/[0-9]+\/[0-9]+ [0-9]+:[0-9]+:[0-9]+\)/
     );

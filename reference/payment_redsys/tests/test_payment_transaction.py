@@ -1,9 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo.tests import tagged
+
 from odoo.addons.payment import utils as payment_utils
 from odoo.addons.payment_redsys.tests.common import RedsysCommon
-
-from odoo.tests import tagged
 
 
 @tagged('post_install', '-at_install')

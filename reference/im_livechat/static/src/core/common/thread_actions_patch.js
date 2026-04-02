@@ -1,8 +1,8 @@
-import { ThreadAction, threadActionsRegistry } from "@mail/core/common/thread_actions";
-import { patch } from "@web/core/utils/patch";
+import {ThreadAction, threadActionsRegistry} from "@mail/core/common/thread_actions";
+import {patch} from "@web/core/utils/patch";
 
 patch(ThreadAction.prototype, {
-    _condition({ action, store, thread }) {
+    _condition({action, store, thread}) {
         const visitorActions = [
             "fold-chat-window",
             "close",
@@ -22,7 +22,7 @@ patch(ThreadAction.prototype, {
 });
 
 patch(threadActionsRegistry.get("invite-people"), {
-    condition({ thread }) {
+    condition({thread}) {
         if (thread?.channel_type === "livechat") {
             return super.condition(...arguments) && !thread.livechat_end_dt;
         }
@@ -31,7 +31,7 @@ patch(threadActionsRegistry.get("invite-people"), {
 });
 
 patch(threadActionsRegistry.get("notification-settings"), {
-    condition({ thread }) {
+    condition({thread}) {
         if (thread?.channel_type === "livechat") {
             return super.condition(...arguments) && !thread.livechat_end_dt;
         }
@@ -40,7 +40,7 @@ patch(threadActionsRegistry.get("notification-settings"), {
 });
 
 patch(threadActionsRegistry.get("camera-call"), {
-    condition({ thread }) {
+    condition({thread}) {
         if (thread?.channel_type === "livechat") {
             return super.condition(...arguments) && !thread.livechat_end_dt;
         }
@@ -49,7 +49,7 @@ patch(threadActionsRegistry.get("camera-call"), {
 });
 
 patch(threadActionsRegistry.get("call"), {
-    condition({ thread }) {
+    condition({thread}) {
         if (thread?.channel_type === "livechat") {
             return super.condition(...arguments) && !thread.livechat_end_dt;
         }

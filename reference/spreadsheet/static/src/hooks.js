@@ -1,14 +1,14 @@
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
 
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
 
-import { stores } from "@odoo/o-spreadsheet";
-import { useEffect, useEnv, useExternalListener, useState } from "@odoo/owl";
+import {stores} from "@odoo/o-spreadsheet";
+import {useEffect, useEnv, useExternalListener, useState} from "@odoo/owl";
 
-import { loadBundle } from "@web/core/assets";
+import {loadBundle} from "@web/core/assets";
 
-const { useStore, useStoreProvider, NotificationStore, GridRenderer } = stores;
+const {useStore, useStoreProvider, NotificationStore, GridRenderer} = stores;
 /**
  * Hook that will capture the 'Ctrl+p' press that corresponds to the user intent to print a spreadsheet.
  * It will prepare the spreadsheet for printing by:
@@ -24,7 +24,7 @@ const { useStore, useStoreProvider, NotificationStore, GridRenderer } = stores;
  */
 export function useSpreadsheetPrint(model) {
     let frozenPrintState = undefined;
-    const printState = useState({ active: false });
+    const printState = useState({active: false});
     const env = useEnv();
 
     useExternalListener(
@@ -41,7 +41,7 @@ export function useSpreadsheetPrint(model) {
                 await preparePrint();
             }
         },
-        { capture: true }
+        {capture: true}
     );
     useExternalListener(window, "afterprint", afterPrint);
 
@@ -60,10 +60,10 @@ export function useSpreadsheetPrint(model) {
      */
     function getPrintRect() {
         const sheetId = model().getters.getActiveSheetId();
-        const { bottom, right } = model().getters.getSheetZone(sheetId);
-        const { end: width } = model().getters.getColDimensions(sheetId, right);
-        const { end: height } = model().getters.getRowDimensions(sheetId, bottom);
-        return { x: 0, y: 0, width, height };
+        const {bottom, right} = model().getters.getSheetZone(sheetId);
+        const {end: width} = model().getters.getColDimensions(sheetId, right);
+        const {end: height} = model().getters.getRowDimensions(sheetId, bottom);
+        return {x: 0, y: 0, width, height};
     }
 
     /**
@@ -75,8 +75,8 @@ export function useSpreadsheetPrint(model) {
             return;
         }
         await loadBundle("spreadsheet.assets_print");
-        const { width, height } = model().getters.getSheetViewDimension();
-        const { width: widthAndHeader, height: heightAndHeader } =
+        const {width, height} = model().getters.getSheetViewDimension();
+        const {width: widthAndHeader, height: heightAndHeader} =
             model().getters.getSheetViewDimension();
         const viewRect = {
             x: widthAndHeader - width,
@@ -91,8 +91,8 @@ export function useSpreadsheetPrint(model) {
         };
         const startPrinting = () => {
             // reset the viewport to A1 visibility
-            model().dispatch("SET_VIEWPORT_OFFSET", { offsetX: 0, offsetY: 0 });
-            model().dispatch("RESIZE_SHEETVIEW", { ...getPrintRect() });
+            model().dispatch("SET_VIEWPORT_OFFSET", {offsetX: 0, offsetY: 0});
+            model().dispatch("RESIZE_SHEETVIEW", {...getPrintRect()});
             printState.active = true;
         };
         if (model().getters.isDashboard()) {
@@ -118,8 +118,8 @@ export function useSpreadsheetPrint(model) {
         }
         if (frozenPrintState) {
             model().dispatch("RESIZE_SHEETVIEW", frozenPrintState.viewRect);
-            const { scrollX: offsetX, scrollY: offsetY } = frozenPrintState.offset;
-            model().dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+            const {scrollX: offsetX, scrollY: offsetY} = frozenPrintState.offset;
+            model().dispatch("SET_VIEWPORT_OFFSET", {offsetX, offsetY});
             model().updateMode(frozenPrintState.mode);
             frozenPrintState = undefined;
         }

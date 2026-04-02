@@ -7,13 +7,15 @@ import re
 import textwrap
 from binascii import Error as binascii_error
 from collections import defaultdict
+
 from lxml import html
 
 from odoo import _, api, fields, models, modules, tools
 from odoo.exceptions import AccessError, MissingError
 from odoo.fields import Command, Domain
-from odoo.tools import clean_context, groupby, SQL
+from odoo.tools import SQL, clean_context, groupby
 from odoo.tools.misc import OrderedSet
+
 from odoo.addons.mail.tools.discuss import Store
 
 _logger = logging.getLogger(__name__)
@@ -770,7 +772,7 @@ class MailMessage(models.Model):
         if attachments_tocheck:
             attachments_tocheck.check_access('read')
 
-        for message, values, tracking_values_cmd in zip(messages, vals_list, tracking_values_list):
+        for message, values, tracking_values_cmd in zip(messages, vals_list, tracking_values_list, strict=False):
             if tracking_values_cmd:
                 vals_lst = [dict(cmd[2], mail_message_id=message.id) for cmd in tracking_values_cmd if len(cmd) == 3 and cmd[0] == 0]
                 other_cmd = [cmd for cmd in tracking_values_cmd if len(cmd) != 3 or cmd[0] != 0]

@@ -1,18 +1,18 @@
-import { Component, onWillStart, onWillUpdateProps } from "@odoo/owl";
-import { getExpressionDisplayedOperators } from "@web/core/expression_editor/expression_editor_operator_editor";
-import { _t } from "@web/core/l10n/translation";
-import { ModelFieldSelector } from "@web/core/model_field_selector/model_field_selector";
-import { condition } from "@web/core/tree_editor/condition_tree";
-import { expressionFromTree } from "@web/core/tree_editor/expression_from_tree";
-import { TreeEditor } from "@web/core/tree_editor/tree_editor";
-import { getOperatorEditorInfo } from "@web/core/tree_editor/tree_editor_operator_editor";
-import { getDefaultValue } from "@web/core/tree_editor/tree_editor_value_editors";
-import { treeFromExpression } from "@web/core/tree_editor/tree_from_expression";
-import { getDefaultPath } from "@web/core/tree_editor/utils";
+import {Component, onWillStart, onWillUpdateProps} from "@odoo/owl";
+import {getExpressionDisplayedOperators} from "@web/core/expression_editor/expression_editor_operator_editor";
+import {_t} from "@web/core/l10n/translation";
+import {ModelFieldSelector} from "@web/core/model_field_selector/model_field_selector";
+import {condition} from "@web/core/tree_editor/condition_tree";
+import {expressionFromTree} from "@web/core/tree_editor/expression_from_tree";
+import {TreeEditor} from "@web/core/tree_editor/tree_editor";
+import {getOperatorEditorInfo} from "@web/core/tree_editor/tree_editor_operator_editor";
+import {getDefaultValue} from "@web/core/tree_editor/tree_editor_value_editors";
+import {treeFromExpression} from "@web/core/tree_editor/tree_from_expression";
+import {getDefaultPath} from "@web/core/tree_editor/utils";
 
 export class ExpressionEditor extends Component {
     static template = "web.ExpressionEditor";
-    static components = { TreeEditor };
+    static components = {TreeEditor};
     static props = {
         resModel: String,
         fields: Object,
@@ -27,7 +27,9 @@ export class ExpressionEditor extends Component {
 
     async onPropsUpdated(props) {
         this.filteredFields = Object.fromEntries(
-            Object.entries(props.fields).filter(([_, fieldDef]) => fieldDef.type !== "properties")
+            Object.entries(props.fields).filter(
+                ([_, fieldDef]) => fieldDef.type !== "properties"
+            )
         );
         try {
             this.tree = treeFromExpression(props.expression, {
@@ -72,7 +74,7 @@ export class ExpressionEditor extends Component {
         }
         return {
             component: ModelFieldSelector,
-            extractProps: ({ value, update }) => ({
+            extractProps: ({value, update}) => ({
                 path: value,
                 update,
                 resModel: this.props.resModel,
@@ -82,7 +84,8 @@ export class ExpressionEditor extends Component {
                 followRelations: false,
                 isDebugMode: this.isDebugMode,
             }),
-            isSupported: (value) => [0, 1].includes(value) || value in this.filteredFields,
+            isSupported: (value) =>
+                [0, 1].includes(value) || value in this.filteredFields,
             // by construction, all values received by the path editor are O/1 or a field (name) in this.props.fields.
             // (see _leafFromAST in condition_tree.js)
             stringify: (value) => this.props.fields[value].string,

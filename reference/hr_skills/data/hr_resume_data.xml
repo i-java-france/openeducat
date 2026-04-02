@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='utf-8' ?>
 <odoo>
     <data>
         <record id="resume_type_experience" model="hr.resume.line.type">
@@ -14,8 +14,7 @@
         <record id="resume_type_training" model="hr.resume.line.type">
             <field name="name">Training</field>
             <field name="sequence">3</field>
-            <field name="is_course" eval="True"/>
+            <field name="is_course" eval="True" />
         </record>
     </data>
-
 </odoo>

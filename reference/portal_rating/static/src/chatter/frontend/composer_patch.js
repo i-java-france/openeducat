@@ -1,9 +1,9 @@
-import { Composer } from "@mail/core/common/composer";
+import {Composer} from "@mail/core/common/composer";
 
-import { patch } from "@web/core/utils/patch";
-import { rpc } from "@web/core/network/rpc";
-import { useState } from "@odoo/owl";
-import { isMobileOS } from "@web/core/browser/feature_detection";
+import {patch} from "@web/core/utils/patch";
+import {rpc} from "@web/core/network/rpc";
+import {useState} from "@odoo/owl";
+import {isMobileOS} from "@web/core/browser/feature_detection";
 
 const MAX_STAR_RATING = 5;
 const DEFAULT_STAR_RATING = 4;
@@ -64,10 +64,10 @@ patch(Composer.prototype, {
     },
 
     onMoveStar(ev) {
-        this.handleStar(ev, { hovered: !isMobileOS() });
+        this.handleStar(ev, {hovered: !isMobileOS()});
     },
 
-    handleStar(ev, { hovered } = {}) {
+    handleStar(ev, {hovered} = {}) {
         const index = parseInt(ev.currentTarget.getAttribute("index"));
         if (Number.isNaN(index) || index < 0 || index > MAX_STAR_RATING - 1) {
             if (hovered) {
@@ -88,7 +88,7 @@ patch(Composer.prototype, {
 
     onMouseLeaveStar(ev) {
         if (!isMobileOS()) {
-            this.handleStar(ev, { hovered: true });
+            this.handleStar(ev, {hovered: true});
         }
     },
 

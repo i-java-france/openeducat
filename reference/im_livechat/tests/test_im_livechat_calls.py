@@ -4,6 +4,7 @@ from functools import wraps
 from unittest.mock import patch
 
 from odoo.tests.common import tagged
+
 from odoo.addons.im_livechat.controllers.main import LivechatController
 from odoo.addons.im_livechat.tests.common import TestImLivechatCommon
 

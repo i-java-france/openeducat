@@ -1,5 +1,4 @@
 import requests
-
 from lxml import etree
 from requests import RequestException
 

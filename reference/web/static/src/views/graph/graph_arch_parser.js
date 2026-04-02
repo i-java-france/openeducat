@@ -1,13 +1,13 @@
-import { exprToBoolean } from "@web/core/utils/strings";
-import { visitXML } from "@web/core/utils/xml";
-import { GROUPABLE_TYPES } from "@web/search/utils/misc";
+import {exprToBoolean} from "@web/core/utils/strings";
+import {visitXML} from "@web/core/utils/xml";
+import {GROUPABLE_TYPES} from "@web/search/utils/misc";
 
 const MODES = ["bar", "line", "pie"];
 const ORDERS = ["ASC", "DESC", "asc", "desc", null];
 
 export class GraphArchParser {
     parse(arch, fields = {}) {
-        const archInfo = { fields, fieldAttrs: {}, groupBy: [], measures: [] };
+        const archInfo = {fields, fieldAttrs: {}, groupBy: [], measures: []};
         visitXML(arch, (node) => {
             switch (node.tagName) {
                 case "graph": {
@@ -20,7 +20,9 @@ export class GraphArchParser {
                         archInfo.stacked = exprToBoolean(node.getAttribute("stacked"));
                     }
                     if (node.hasAttribute("cumulated")) {
-                        archInfo.cumulated = exprToBoolean(node.getAttribute("cumulated"));
+                        archInfo.cumulated = exprToBoolean(
+                            node.getAttribute("cumulated")
+                        );
                     }
                     if (node.hasAttribute("cumulated_start")) {
                         archInfo.cumulatedStart = exprToBoolean(
@@ -76,7 +78,7 @@ export class GraphArchParser {
                         // the last field with type="measure" (if any) will be used as measure else __count
                         archInfo.measure = fieldName;
                     } else {
-                        const { type } = archInfo.fields[fieldName]; // exists (rng validation)
+                        const {type} = archInfo.fields[fieldName]; // exists (rng validation)
                         if (GROUPABLE_TYPES.includes(type)) {
                             let groupBy = fieldName;
                             const interval = node.getAttribute("interval");

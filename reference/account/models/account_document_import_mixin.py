@@ -1,12 +1,13 @@
-from contextlib import contextmanager
-from copy import deepcopy
 import difflib
 import io
 import itertools
 import logging
+from contextlib import contextmanager
+from copy import deepcopy
+from struct import error as StructError
+
 from lxml import etree
 from markupsafe import Markup
-from struct import error as StructError
 
 from odoo import api, models, modules
 from odoo.exceptions import RedirectWarning
@@ -154,7 +155,7 @@ class AccountDocumentImportMixin(models.AbstractModel):
         file_data_groups = grouping_method(files_data)
 
         records = self.create([{}] * len(file_data_groups))
-        for record, file_data_group in zip(records, file_data_groups):
+        for record, file_data_group in zip(records, file_data_groups, strict=False):
             attachment_records = self._from_files_data(file_data_group)
             attachment_records.write({
                 'res_model': record._name,
@@ -166,7 +167,7 @@ class AccountDocumentImportMixin(models.AbstractModel):
             )
 
         # Call _extend_with_attachments at the end, because it commits the transaction.
-        for record, file_data_group in zip(records, file_data_groups):
+        for record, file_data_group in zip(records, file_data_groups, strict=False):
             record._extend_with_attachments(file_data_group, new=True)
 
         return records

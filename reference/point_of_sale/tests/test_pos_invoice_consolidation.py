@@ -1,6 +1,7 @@
 from odoo import Command
-from odoo.addons.point_of_sale.tests.common import CommonPosTest, TestPoSCommon
 from odoo.tests.common import tagged
+
+from odoo.addons.point_of_sale.tests.common import CommonPosTest, TestPoSCommon
 
 
 @tagged('post_install', '-at_install')

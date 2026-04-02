@@ -2,7 +2,8 @@ import time
 
 from odoo import Command
 from odoo.exceptions import UserError
-from odoo.tests import tagged, freeze_time
+from odoo.tests import freeze_time, tagged
+
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 

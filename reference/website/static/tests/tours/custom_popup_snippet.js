@@ -5,9 +5,9 @@ import {
 } from "@website/js/tours/tour_utils";
 
 const snippets = [
-    { id: "s_popup", name: "Popup", groupName: "Content" },
-    { id: "s_banner", name: "Banner", groupName: "Into" },
-    { customID: "s_popup", name: "Custom Popup", groupName: "Custom" },
+    {id: "s_popup", name: "Popup", groupName: "Content"},
+    {id: "s_banner", name: "Banner", groupName: "Into"},
+    {customID: "s_popup", name: "Custom Popup", groupName: "Custom"},
 ];
 
 registerWebsitePreviewTour(
@@ -21,7 +21,8 @@ registerWebsitePreviewTour(
         ...clickOnSnippet(snippets[1]),
         {
             content: "save this snippet to save later",
-            trigger: ".options-container[data-container-title='Popup'] .oe_snippet_save",
+            trigger:
+                ".options-container[data-container-title='Popup'] .oe_snippet_save",
             run: "click",
         },
         {

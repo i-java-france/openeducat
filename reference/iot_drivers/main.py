@@ -1,10 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import logging
+import subprocess
+import time
+from threading import Thread
+
 import requests
 import schedule
-import subprocess
-from threading import Thread
-import time
 
 from odoo.addons.iot_drivers.tools import certificate, helpers, upgrade, wifi
 from odoo.addons.iot_drivers.tools.system import IS_RPI

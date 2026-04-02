@@ -1,4 +1,4 @@
-import { Record } from "@mail/core/common/record";
+import {Record} from "@mail/core/common/record";
 
 export class LivechatChannel extends Record {
     static _name = "im_livechat.channel";

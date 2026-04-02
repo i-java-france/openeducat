@@ -1,10 +1,10 @@
 /** @odoo-module **/
 
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { getActiveElement, queryFirst, keyDown, click } from "@odoo/hoot-dom";
-import { mountWithCleanup, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { barcodeService } from "@barcodes/barcode_service";
-import { Component, xml } from "@odoo/owl";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {click, getActiveElement, keyDown, queryFirst} from "@odoo/hoot-dom";
+import {mountWithCleanup, patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {barcodeService} from "@barcodes/barcode_service";
+import {Component, xml} from "@odoo/owl";
 
 beforeEach(() => {
     patchWithCleanup(barcodeService, {
@@ -52,7 +52,14 @@ test("barcode field automatically focus behavior", async () => {
 
     // Those elements absolutely need to keep the focus:
     // inputs elements:
-    const keepFocusedElements = ["email", "number", "password", "tel", "text", "explicit_text"];
+    const keepFocusedElements = [
+        "email",
+        "number",
+        "password",
+        "tel",
+        "text",
+        "explicit_text",
+    ];
     for (let i = 0; i < keepFocusedElements.length; ++i) {
         element = queryFirst(`input[name=${keepFocusedElements[i]}]`);
         await click(element);
@@ -61,12 +68,12 @@ test("barcode field automatically focus behavior", async () => {
             message: `input ${keepFocusedElements[i]} should keep focus`,
         });
     }
-    // textarea element
+    // Textarea element
     element = queryFirst(`textarea`);
     await click(element);
     await keyDown("d");
-    expect(`textarea`).toBeFocused({ message: "textarea should keep focus" });
-    // contenteditable elements
+    expect(`textarea`).toBeFocused({message: "textarea should keep focus"});
+    // Contenteditable elements
     element = queryFirst(`[contenteditable=true]`);
     await click(element);
     await keyDown("e");

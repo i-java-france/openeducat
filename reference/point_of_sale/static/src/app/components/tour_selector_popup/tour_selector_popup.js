@@ -1,10 +1,10 @@
-import { Dialog } from "@web/core/dialog/dialog";
-import { Component, useState } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
+import {Dialog} from "@web/core/dialog/dialog";
+import {Component, useState} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
 
 export class TourSelectorPopup extends Component {
-    static components = { Dialog };
+    static components = {Dialog};
     static template = "point_of_sale.TourSelectorPopup";
     static props = ["close", "getPayload"];
 

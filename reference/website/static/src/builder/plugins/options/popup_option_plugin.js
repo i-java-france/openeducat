@@ -1,9 +1,12 @@
-import { SNIPPET_SPECIFIC, SNIPPET_SPECIFIC_END } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { withSequence } from "@html_editor/utils/resource";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {
+    SNIPPET_SPECIFIC,
+    SNIPPET_SPECIFIC_END,
+} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {withSequence} from "@html_editor/utils/resource";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 export const POPUP = SNIPPET_SPECIFIC;
 export const COOKIES_BAR = SNIPPET_SPECIFIC_END;
@@ -49,8 +52,12 @@ class PopupOptionPlugin extends Plugin {
             if (!el.matches?.(".s_popup")) {
                 return false;
             }
-            const popupModalChildrenEls = [...(el.querySelector(".modal-content")?.children ?? [])];
-            return popupModalChildrenEls.every((child) => child.matches(".s_popup_close"));
+            const popupModalChildrenEls = [
+                ...(el.querySelector(".modal-content")?.children ?? []),
+            ];
+            return popupModalChildrenEls.every((child) =>
+                child.matches(".s_popup_close")
+            );
         },
         on_cloned_handlers: this.onCloned.bind(this),
         on_snippet_dropped_handlers: this.onSnippetDropped.bind(this),
@@ -58,21 +65,27 @@ class PopupOptionPlugin extends Plugin {
         no_parent_containers: ".s_popup",
     };
 
-    onCloned({ cloneEl }) {
+    onCloned({cloneEl}) {
         if (cloneEl.matches(".s_popup")) {
             this.assignUniqueID(cloneEl);
         }
     }
 
-    onSnippetDropped({ snippetEl }) {
+    onSnippetDropped({snippetEl}) {
         if (snippetEl.matches(".s_popup")) {
             this.assignUniqueID(snippetEl);
             this.dependencies.history.addCustomMutation({
                 apply: () => {
-                    this.dependencies.visibility.toggleTargetVisibility(snippetEl, true);
+                    this.dependencies.visibility.toggleTargetVisibility(
+                        snippetEl,
+                        true
+                    );
                 },
                 revert: () => {
-                    this.dependencies.visibility.toggleTargetVisibility(snippetEl, false);
+                    this.dependencies.visibility.toggleTargetVisibility(
+                        snippetEl,
+                        false
+                    );
                 },
             });
         }
@@ -100,12 +113,12 @@ class PopupOptionPlugin extends Plugin {
 // current page only.
 export class MoveBlockAction extends BuilderAction {
     static id = "moveBlock";
-    isApplied({ editingElement, value }) {
+    isApplied({editingElement, value}) {
         return editingElement.closest("#o_shared_blocks")
             ? value === "allPages"
             : value === "currentPage";
     }
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         const selector =
             value === "allPages" ? "#o_shared_blocks" : "main .oe_structure.o_editable";
         const whereEl = this.editable.querySelector(selector);
@@ -115,16 +128,23 @@ export class MoveBlockAction extends BuilderAction {
 }
 export class SetBackdropAction extends BuilderAction {
     static id = "setBackdrop";
-    isApplied({ editingElement }) {
-        const hasBackdropColor = !!editingElement.style.getPropertyValue("background-color").trim();
-        const hasNoBackdropClass = editingElement.classList.contains("s_popup_no_backdrop");
+    isApplied({editingElement}) {
+        const hasBackdropColor = !!editingElement.style
+            .getPropertyValue("background-color")
+            .trim();
+        const hasNoBackdropClass =
+            editingElement.classList.contains("s_popup_no_backdrop");
         return hasBackdropColor && !hasNoBackdropClass;
     }
-    apply({ editingElement }) {
+    apply({editingElement}) {
         editingElement.classList.remove("s_popup_no_backdrop");
-        editingElement.style.setProperty("background-color", "var(--black-50)", "important");
+        editingElement.style.setProperty(
+            "background-color",
+            "var(--black-50)",
+            "important"
+        );
     }
-    clean({ editingElement }) {
+    clean({editingElement}) {
         editingElement.classList.add("s_popup_no_backdrop");
         editingElement.style.removeProperty("background-color");
     }
@@ -132,16 +152,16 @@ export class SetBackdropAction extends BuilderAction {
 export class CopyAnchorAction extends BuilderAction {
     static id = "copyAnchor";
     static dependencies = ["anchor"];
-    apply({ editingElement }) {
+    apply({editingElement}) {
         this.dependencies.anchor.createOrEditAnchorLink(editingElement);
     }
 }
 export class SetPopupDelayAction extends BuilderAction {
     static id = "setPopupDelay";
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         editingElement.dataset.showAfter = value * 1000;
     }
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         return editingElement.dataset.showAfter / 1000;
     }
 }

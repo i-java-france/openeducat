@@ -6,11 +6,11 @@ from datetime import timedelta
 from operator import itemgetter
 from re import findall as regex_findall
 
-from odoo import _, api, Command, fields, models, SUPERUSER_ID
+from odoo import SUPERUSER_ID, Command, _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
-from odoo.tools.misc import clean_context, OrderedSet, groupby
+from odoo.tools.misc import OrderedSet, clean_context, groupby
 
 PROCUREMENT_PRIORITIES = [('0', 'Normal'), ('1', 'Urgent')]
 
@@ -1075,7 +1075,7 @@ Please change the quantity done or the rounding precision in your settings.""",
             lot_qties = [1] * len(lot_names)
 
         vals_list = []
-        for lot, qty in zip(lot_names, lot_qties):
+        for lot, qty in zip(lot_names, lot_qties, strict=False):
             if not lot.get('quantity'):
                 lot['quantity'] = qty
             loc_dest = self.env['stock.location'].browse(default_vals['location_dest_id'])
@@ -1560,7 +1560,7 @@ Please change the quantity done or the rounding precision in your settings.""",
         procurement_requests = []
         move_create_proc = self.browse(move_create_proc)
         quantities = move_create_proc._prepare_procurement_qty()
-        for move, quantity in zip(move_create_proc, quantities):
+        for move, quantity in zip(move_create_proc, quantities, strict=False):
             values = move._prepare_procurement_values()
             origin = move._prepare_procurement_origin()
             procurement_requests.append(self.env['stock.rule'].Procurement(
@@ -2168,7 +2168,7 @@ Please change the quantity done or the rounding precision in your settings.""",
     def unlink(self):
         # With the non plannified picking, draft moves could have some move lines.
         self.with_context(prefetch_fields=False).mapped('move_line_ids').unlink()
-        return super(StockMove, self).unlink()
+        return super().unlink()
 
     def _prepare_move_split_vals(self, qty):
         vals = {

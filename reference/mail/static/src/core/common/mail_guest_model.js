@@ -1,12 +1,12 @@
-import { fields, Record } from "@mail/core/common/record";
-import { imageUrl } from "@web/core/utils/urls";
-import { rpc } from "@web/core/network/rpc";
-import { debounce } from "@web/core/utils/timing";
-import { Store } from "@mail/core/common/store_service";
+import {fields, Record} from "@mail/core/common/record";
+import {imageUrl} from "@web/core/utils/urls";
+import {rpc} from "@web/core/network/rpc";
+import {debounce} from "@web/core/utils/timing";
+import {Store} from "@mail/core/common/store_service";
 
 const TRANSPARENT_AVATAR =
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAQAAABpN6lAAAAAqElEQVR42u3QMQEAAAwCoNm/9GJ4CBHIjYsAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBDQ9+KgAIHd5IbMAAAAAElFTkSuQmCC";
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 /**
  * @typedef {'offline' | 'bot' | 'online' | 'away' | 'im_partner' | undefined} ImStatus
@@ -45,7 +45,9 @@ export class MailGuest extends Record {
         },
         onUpdate() {
             if (this.previousPresencechannel) {
-                this.store.env.services.bus_service.deleteChannel(this.previousPresencechannel);
+                this.store.env.services.bus_service.deleteChannel(
+                    this.previousPresencechannel
+                );
             }
             if (this._triggerPresenceSubscription) {
                 this.store.env.services.bus_service.addChannel(this.presenceChannel);
@@ -62,7 +64,11 @@ export class MailGuest extends Record {
     /** @type {ImStatus} */
     im_status = fields.Attr(null, {
         onUpdate() {
-            if (this.eq(this.store.self_guest) && this.im_status === "offline" && this.id < 0) {
+            if (
+                this.eq(this.store.self_guest) &&
+                this.im_status === "offline" &&
+                this.id < 0
+            ) {
                 this.store.env.services.im_status.updateBusPresence();
             }
         },

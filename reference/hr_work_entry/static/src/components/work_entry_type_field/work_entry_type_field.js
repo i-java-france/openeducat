@@ -1,17 +1,20 @@
-import { registry } from "@web/core/registry";
-import { buildM2OFieldDescription, Many2OneField } from "@web/views/fields/many2one/many2one_field";
-import { Component, onWillRender, onWillUpdateProps, useState } from "@odoo/owl";
-import { Many2One } from "@web/views/fields/many2one/many2one";
+import {registry} from "@web/core/registry";
+import {
+    buildM2OFieldDescription,
+    Many2OneField,
+} from "@web/views/fields/many2one/many2one_field";
+import {Component, onWillRender, onWillUpdateProps, useState} from "@odoo/owl";
+import {Many2One} from "@web/views/fields/many2one/many2one";
 
 export class WorkEntryType extends Component {
     static template = "hr_work_entry.WorkEntryType";
     static props = {
         data: Object,
-        className: { type: String, optional: true },
+        className: {type: String, optional: true},
     };
 
     setup() {
-        this.state = useState({ data: this.props.data });
+        this.state = useState({data: this.props.data});
         onWillUpdateProps((nextProps) => {
             this.state.data = nextProps.data;
         });
@@ -42,7 +45,8 @@ export class WorkEntryTypeMany2One extends Many2One {
         return {
             ...props,
             update: (records) => {
-                const idNamePair = records && extractData(records[0]) ? records[0] : false;
+                const idNamePair =
+                    records && extractData(records[0]) ? records[0] : false;
                 this.update(idNamePair);
             },
         };
@@ -59,7 +63,7 @@ export class Many2OneWorkEntryTypeField extends Many2OneField {
 
     setup() {
         super.setup();
-        this.state = useState({ data: this.props.record.data });
+        this.state = useState({data: this.props.record.data});
         onWillRender(() => {
             if (this.props.record.data?.work_entry_type_id.color) {
                 this.state.data = this.props.record.data.work_entry_type_id;
@@ -73,7 +77,7 @@ export class Many2OneWorkEntryTypeField extends Many2OneField {
         const props = super.m2oProps;
         return {
             ...props,
-            specification: { display_code: 1, color: 1 },
+            specification: {display_code: 1, color: 1},
         };
     }
 }
@@ -81,8 +85,8 @@ export class Many2OneWorkEntryTypeField extends Many2OneField {
 export const many2OneWorkEntryTypeField = {
     ...buildM2OFieldDescription(Many2OneWorkEntryTypeField),
     fieldDependencies: [
-        { name: "display_code", type: "char" },
-        { name: "color", type: "char" },
+        {name: "display_code", type: "char"},
+        {name: "color", type: "char"},
     ],
 };
 

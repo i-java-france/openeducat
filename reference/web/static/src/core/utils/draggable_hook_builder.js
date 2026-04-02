@@ -1,9 +1,9 @@
-import { clamp } from "@web/core/utils/numbers";
-import { omit } from "@web/core/utils/objects";
-import { closestScrollableX, closestScrollableY } from "@web/core/utils/scrolling";
-import { setRecurringAnimationFrame } from "@web/core/utils/timing";
-import { browser } from "../browser/browser";
-import { hasTouch, isBrowserFirefox, isIOS } from "../browser/feature_detection";
+import {clamp} from "@web/core/utils/numbers";
+import {omit} from "@web/core/utils/objects";
+import {closestScrollableX, closestScrollableY} from "@web/core/utils/scrolling";
+import {setRecurringAnimationFrame} from "@web/core/utils/timing";
+import {browser} from "../browser/browser";
+import {hasTouch, isBrowserFirefox, isIOS} from "../browser/feature_detection";
 
 /**
  * @typedef {ReturnType<typeof makeCleanupManager>} CleanupManager
@@ -173,7 +173,8 @@ function makeCleanupManager(defaultCleanupFn) {
      * Registers the given cleanup function to be called when cleaning up hooks.
      * @param {() => any} [cleanupFn]
      */
-    const add = (cleanupFn) => typeof cleanupFn === "function" && cleanups.push(cleanupFn);
+    const add = (cleanupFn) =>
+        typeof cleanupFn === "function" && cleanups.push(cleanupFn);
 
     /**
      * Runs all cleanup functions while clearing the cleanups list.
@@ -189,7 +190,7 @@ function makeCleanupManager(defaultCleanupFn) {
 
     add(defaultCleanupFn);
 
-    return { add, cleanup };
+    return {add, cleanup};
 }
 
 /**
@@ -220,12 +221,12 @@ function makeDOMHelpers(cleanup) {
         if (!el || !event || !callback) {
             return;
         }
-        const { noAddedStyle } = options;
+        const {noAddedStyle} = options;
         delete options.noAddedStyle;
         el.addEventListener(event, callback, options);
         if (!noAddedStyle && /mouse|pointer|touch/.test(event)) {
             // Restore pointer events on elements listening on mouse/pointer/touch events.
-            addStyle(el, { pointerEvents: "auto" });
+            addStyle(el, {pointerEvents: "auto"});
         }
         cleanup.add(() => el.removeEventListener(event, callback, options));
     };
@@ -358,7 +359,7 @@ function pixelValueToNumber(val) {
  * @param {Event} ev
  * @param {{ stop?: boolean }} params
  */
-function safePrevent(ev, { stop } = {}) {
+function safePrevent(ev, {stop} = {}) {
     if (ev.cancelable) {
         ev.preventDefault();
         if (stop) {
@@ -410,9 +411,12 @@ export function makeDraggableHook(hookParams) {
     hookParams = getReturnValue(hookParams);
 
     const hookName = hookParams.name || "useAnonymousDraggable";
-    const { setupHooks } = hookParams;
-    const allAcceptedParams = { ...DEFAULT_ACCEPTED_PARAMS, ...hookParams.acceptedParams };
-    const defaultParams = { ...DEFAULT_DEFAULT_PARAMS, ...hookParams.defaultParams };
+    const {setupHooks} = hookParams;
+    const allAcceptedParams = {
+        ...DEFAULT_ACCEPTED_PARAMS,
+        ...hookParams.acceptedParams,
+    };
+    const defaultParams = {...DEFAULT_DEFAULT_PARAMS, ...hookParams.defaultParams};
 
     /**
      * Computes the current params and converts the params definition
@@ -420,7 +424,7 @@ export function makeDraggableHook(hookParams) {
      * @returns {[string, string | boolean][]}
      */
     const computeParams = (params) => {
-        const computedParams = { enable: () => true };
+        const computedParams = {enable: () => true};
         for (const prop in allAcceptedParams) {
             if (prop in params) {
                 if (prop === "enable") {
@@ -457,7 +461,11 @@ export function makeDraggableHook(hookParams) {
                 if (typeof hookParams[hookHandlerName] !== "function") {
                     return;
                 }
-                const returnValue = hookParams[hookHandlerName]({ ctx, ...helpers, ...arg });
+                const returnValue = hookParams[hookHandlerName]({
+                    ctx,
+                    ...helpers,
+                    ...arg,
+                });
                 if (returnValue) {
                     callHandler(hookHandlerName, returnValue);
                 }
@@ -474,7 +482,7 @@ export function makeDraggableHook(hookParams) {
                     return;
                 }
                 try {
-                    params[handlerName]({ ...dom, ...ctx.pointer, ...arg });
+                    params[handlerName]({...dom, ...ctx.pointer, ...arg});
                 } catch (err) {
                     dragEnd(null, true);
                     throw err;
@@ -488,12 +496,14 @@ export function makeDraggableHook(hookParams) {
             const canStartDrag = () => {
                 const {
                     pointer,
-                    current: { initialPosition },
+                    current: {initialPosition},
                 } = ctx;
                 return (
                     !ctx.tolerance ||
-                    Math.hypot(pointer.x - initialPosition.x, pointer.y - initialPosition.y) >=
-                        ctx.tolerance
+                    Math.hypot(
+                        pointer.x - initialPosition.x,
+                        pointer.y - initialPosition.y
+                    ) >= ctx.tolerance
                 );
             };
 
@@ -506,18 +516,20 @@ export function makeDraggableHook(hookParams) {
 
                 // Compute scrollable parent
                 const isDocumentScrollingElement =
-                    ctx.current.container === ctx.current.container.ownerDocument.scrollingElement;
+                    ctx.current.container ===
+                    ctx.current.container.ownerDocument.scrollingElement;
                 // If the container is the "ownerDocument.scrollingElement",
                 // there is no need to get the scroll parent as it is the
                 // scrollable element itself.
                 // TODO: investigate if "getScrollParents" should not consider
                 // the "ownerDocument.scrollingElement" directly.
-                [ctx.current.scrollParentX, ctx.current.scrollParentY] = isDocumentScrollingElement
-                    ? [ctx.current.container, ctx.current.container]
-                    : getScrollParents(ctx.current.container);
+                [ctx.current.scrollParentX, ctx.current.scrollParentY] =
+                    isDocumentScrollingElement
+                        ? [ctx.current.container, ctx.current.container]
+                        : getScrollParents(ctx.current.container);
 
                 updateRects();
-                const { x, y, width, height } = ctx.current.elementRect;
+                const {x, y, width, height} = ctx.current.elementRect;
 
                 // Adjusts the offset
                 ctx.current.offset = {
@@ -550,7 +562,7 @@ export function makeDraggableHook(hookParams) {
                 // FIXME: adding pe-none and cursor on the same element makes
                 // no sense as pe-none prevents the cursor to be displayed.
                 if (ctx.cursor) {
-                    dom.addStyle(document.body, { cursor: ctx.cursor });
+                    dom.addStyle(document.body, {cursor: ctx.cursor});
                 }
 
                 if (
@@ -581,9 +593,10 @@ export function makeDraggableHook(hookParams) {
                     if (!inErrorState) {
                         if (
                             target &&
-                            (params.allowDisconnected || ctx.current.element.isConnected)
+                            (params.allowDisconnected ||
+                                ctx.current.element.isConnected)
                         ) {
-                            callBuildHandler("onDrop", { target });
+                            callBuildHandler("onDrop", {target});
                         }
                         callBuildHandler("onDragEnd");
                     }
@@ -598,7 +611,7 @@ export function makeDraggableHook(hookParams) {
              */
             const handleEdgeScrolling = (deltaTime) => {
                 updateRects();
-                const { x: pointerX, y: pointerY } = ctx.pointer;
+                const {x: pointerX, y: pointerY} = ctx.pointer;
                 const xRect = ctx.current.scrollParentXRect;
                 const yRect = ctx.current.scrollParentYRect;
 
@@ -607,11 +620,14 @@ export function makeDraggableHook(hookParams) {
                 // scroll position. Only the "document.scrollingElement" element
                 // ("<html>") accounts for scrollTop.
                 const scrollParentYEl = ctx.current.scrollParentY;
-                if (scrollParentYEl === ctx.current.container.ownerDocument.scrollingElement) {
+                if (
+                    scrollParentYEl ===
+                    ctx.current.container.ownerDocument.scrollingElement
+                ) {
                     yRect.y += scrollParentYEl.scrollTop;
                 }
 
-                const { direction, speed, threshold } = ctx.edgeScrolling;
+                const {direction, speed, threshold} = ctx.edgeScrolling;
                 const correctedSpeed = (speed / 16) * deltaTime;
 
                 const diff = {};
@@ -640,10 +656,10 @@ export function makeDraggableHook(hookParams) {
                 const diffToScroll = ([delta, sign]) =>
                     (1 - Math.max(delta, 0) / threshold) * correctedSpeed * sign;
                 if ((!direction || direction === "vertical") && diff.y) {
-                    ctx.current.scrollParentY.scrollBy({ top: diffToScroll(diff.y) });
+                    ctx.current.scrollParentY.scrollBy({top: diffToScroll(diff.y)});
                 }
                 if ((!direction || direction === "horizontal") && diff.x) {
-                    ctx.current.scrollParentX.scrollBy({ left: diffToScroll(diff.x) });
+                    ctx.current.scrollParentX.scrollBy({left: diffToScroll(diff.x)});
                 }
                 callBuildHandler("onDrag");
             };
@@ -655,7 +671,7 @@ export function makeDraggableHook(hookParams) {
              */
             const onClick = (ev) => {
                 if (preventClick) {
-                    safePrevent(ev, { stop: true });
+                    safePrevent(ev, {stop: true});
                 }
             };
 
@@ -668,7 +684,7 @@ export function makeDraggableHook(hookParams) {
                     return;
                 }
                 if (!WHITE_LISTED_KEYS.includes(ev.key)) {
-                    safePrevent(ev, { stop: true });
+                    safePrevent(ev, {stop: true});
 
                     // Cancels drag sequences on every non-whitelisted key down event.
                     dragEnd(null);
@@ -690,7 +706,8 @@ export function makeDraggableHook(hookParams) {
                 preventClick = false;
                 updatePointerPosition(ev);
 
-                const initiationDelay = ev.pointerType === "touch" ? ctx.touchDelay : ctx.delay;
+                const initiationDelay =
+                    ev.pointerType === "touch" ? ctx.touchDelay : ctx.delay;
 
                 // A drag sequence can still be in progress if the pointerup occurred
                 // outside of the window.
@@ -723,8 +740,8 @@ export function makeDraggableHook(hookParams) {
                     activeElement.blur();
                 }
 
-                const { currentTarget, pointerId, target } = ev;
-                ctx.current.initialPosition = { ...ctx.pointer };
+                const {currentTarget, pointerId, target} = ev;
+                ctx.current.initialPosition = {...ctx.pointer};
 
                 if (target.hasPointerCapture(pointerId)) {
                     target.releasePointerCapture(pointerId);
@@ -733,7 +750,10 @@ export function makeDraggableHook(hookParams) {
                 if (initiationDelay) {
                     if (hasTouch()) {
                         if (ev.pointerType === "touch") {
-                            dom.addClass(target.closest(ctx.elementSelector), "o_touch_bounce");
+                            dom.addClass(
+                                target.closest(ctx.elementSelector),
+                                "o_touch_bounce"
+                            );
                         }
                         if (isBrowserFirefox()) {
                             // On Firefox mobile, long-touch events trigger an unpreventable
@@ -750,19 +770,21 @@ export function makeDraggableHook(hookParams) {
                         if (isIOS()) {
                             // On Safari mobile, any image can be dragged regardless
                             // of the 'user-select' property.
-                            for (const image of currentTarget.getElementsByTagName("img")) {
+                            for (const image of currentTarget.getElementsByTagName(
+                                "img"
+                            )) {
                                 dom.setAttribute(image, "draggable", false);
                             }
                         }
                     }
 
                     ctx.current.timeout = browser.setTimeout(() => {
-                        ctx.current.initialPosition = { ...ctx.pointer };
+                        ctx.current.initialPosition = {...ctx.pointer};
 
                         willStartDrag(target);
 
-                        const { x: px, y: py } = ctx.pointer;
-                        const { x, y, width, height } = dom.getRect(ctx.current.element);
+                        const {x: px, y: py} = ctx.pointer;
+                        const {x, y, width, height} = dom.getRect(ctx.current.element);
                         if (px < x || x + width < px || py < y || y + height < py) {
                             // Pointer left the target
                             // Note that the timeout is cleared in dragEnd
@@ -793,7 +815,10 @@ export function makeDraggableHook(hookParams) {
                         return;
                     }
                     dragStart();
-                } else if (!params.allowDisconnected && !ctx.current.element.isConnected) {
+                } else if (
+                    !params.allowDisconnected &&
+                    !ctx.current.element.isConnected
+                ) {
                     return dragEnd(null);
                 }
 
@@ -818,9 +843,9 @@ export function makeDraggableHook(hookParams) {
              * the current pointer position.
              */
             const updateElementPosition = () => {
-                const { containerRect, element, elementRect, offset } = ctx.current;
-                const { width: ew, height: eh } = elementRect;
-                const { x: cx, y: cy, width: cw, height: ch } = containerRect;
+                const {containerRect, element, elementRect, offset} = ctx.current;
+                const {width: ew, height: eh} = elementRect;
+                const {x: cx, y: cy, width: cw, height: ch} = containerRect;
 
                 // Updates the position of the dragged element.
                 dom.addStyle(element, {
@@ -839,10 +864,10 @@ export function makeDraggableHook(hookParams) {
             };
 
             const updateRects = () => {
-                const { current } = ctx;
-                const { container, element, scrollParentX, scrollParentY } = current;
+                const {current} = ctx;
+                const {container, element, scrollParentX, scrollParentY} = current;
                 // Container rect
-                current.containerRect = dom.getRect(container, { adjust: true });
+                current.containerRect = dom.getRect(container, {adjust: true});
                 // If the scrolling element is within an iframe and the draggable
                 // element is outside this iframe, the offsets must be computed taking
                 // into account the iframe.
@@ -850,7 +875,7 @@ export function makeDraggableHook(hookParams) {
                 let iframeOffsetY = 0;
                 const iframeEl = container.ownerDocument.defaultView.frameElement;
                 if (iframeEl && !iframeEl.contentDocument?.contains(element)) {
-                    const { x, y } = dom.getRect(iframeEl);
+                    const {x, y} = dom.getRect(iframeEl);
                     iframeOffsetX = x;
                     iframeOffsetY = y;
                     current.containerRect.x += iframeOffsetX;
@@ -865,7 +890,9 @@ export function makeDraggableHook(hookParams) {
                 if (ctx.edgeScrolling.enabled) {
                     // Adjust container rect according to scrollParents
                     if (scrollParentX) {
-                        current.scrollParentXRect = dom.getRect(scrollParentX, { adjust: true });
+                        current.scrollParentXRect = dom.getRect(scrollParentX, {
+                            adjust: true,
+                        });
                         current.scrollParentXRect.x += iframeOffsetX;
                         current.scrollParentXRect.y += iframeOffsetY;
                         const right = Math.min(
@@ -879,7 +906,9 @@ export function makeDraggableHook(hookParams) {
                         current.containerRect.width = right - current.containerRect.x;
                     }
                     if (scrollParentY) {
-                        current.scrollParentYRect = dom.getRect(scrollParentY, { adjust: true });
+                        current.scrollParentYRect = dom.getRect(scrollParentY, {
+                            adjust: true,
+                        });
                         current.scrollParentYRect.x += iframeOffsetX;
                         current.scrollParentYRect.y += iframeOffsetY;
                         const bottom = Math.min(
@@ -938,12 +967,14 @@ export function makeDraggableHook(hookParams) {
             };
 
             // Component infos
-            const state = setupHooks.wrapState({ dragging: false });
+            const state = setupHooks.wrapState({dragging: false});
 
             // Basic error handling asserting that the parameters are valid.
             for (const prop in allAcceptedParams) {
                 const type = typeof params[prop];
-                const acceptedTypes = allAcceptedParams[prop].map((t) => t.name.toLowerCase());
+                const acceptedTypes = allAcceptedParams[prop].map((t) =>
+                    t.name.toLowerCase()
+                );
                 if (params[prop]) {
                     if (!acceptedTypes.includes(type)) {
                         throw makeError(
@@ -953,7 +984,9 @@ export function makeDraggableHook(hookParams) {
                         );
                     }
                 } else if (MANDATORY_PARAMS.includes(prop) && !defaultParams[prop]) {
-                    throw makeError(`missing required property "${prop}" in parameters`);
+                    throw makeError(
+                        `missing required property "${prop}" in parameters`
+                    );
                 }
             }
 
@@ -966,8 +999,8 @@ export function makeDraggableHook(hookParams) {
                 fullSelector: null,
                 followCursor: true,
                 cursor: null,
-                pointer: { x: 0, y: 0 },
-                edgeScrolling: { enabled: true },
+                pointer: {x: 0, y: 0},
+                edgeScrolling: {enabled: true},
                 get dragging() {
                     return state.dragging;
                 },
@@ -982,7 +1015,10 @@ export function makeDraggableHook(hookParams) {
             setupHooks.setup(
                 (...deps) => {
                     const params = Object.fromEntries(deps);
-                    const actualParams = { ...defaultParams, ...omit(params, "edgeScrolling") };
+                    const actualParams = {
+                        ...defaultParams,
+                        ...omit(params, "edgeScrolling"),
+                    };
                     if (params.edgeScrolling) {
                         actualParams.edgeScrolling = {
                             ...actualParams.edgeScrolling,
@@ -1027,7 +1063,7 @@ export function makeDraggableHook(hookParams) {
                     ctx.touchDelay = actualParams.delay || actualParams.touchDelay;
                     ctx.tolerance = actualParams.tolerance;
 
-                    callBuildHandler("onComputeParams", { params: actualParams });
+                    callBuildHandler("onComputeParams", {params: actualParams});
 
                     // Calls effect cleanup functions when preparing to re-render.
                     return effectCleanup.cleanup;
@@ -1037,15 +1073,16 @@ export function makeDraggableHook(hookParams) {
             // Firefox currently (119.0.1) does not handle our pointer events
             // nicely when they happen from within the iframe. To work around
             // this, we use mouse events instead of pointer events.
-            const useMouseEvents = isBrowserFirefox() && !hasTouch() && params.iframeWindow;
+            const useMouseEvents =
+                isBrowserFirefox() && !hasTouch() && params.iframeWindow;
             // Effect depending on the `ref.el` to add triggering pointer events listener.
             setupHooks.setup(
                 (el) => {
                     if (el) {
-                        const { add, cleanup } = makeCleanupManager();
-                        const { addListener } = makeDOMHelpers({ add });
+                        const {add, cleanup} = makeCleanupManager();
+                        const {addListener} = makeDOMHelpers({add});
                         const event = useMouseEvents ? "mousedown" : "pointerdown";
-                        addListener(el, event, onPointerDown, { noAddedStyle: true });
+                        addListener(el, event, onPointerDown, {noAddedStyle: true});
                         addListener(el, "click", onClick);
                         if (hasTouch()) {
                             addListener(el, "contextmenu", safePrevent);
@@ -1067,7 +1104,12 @@ export function makeDraggableHook(hookParams) {
             );
             const addWindowListener = (type, listener, options) => {
                 if (params.iframeWindow) {
-                    setupHooks.addListener(params.iframeWindow, type, listener, options);
+                    setupHooks.addListener(
+                        params.iframeWindow,
+                        type,
+                        listener,
+                        options
+                    );
                 }
                 setupHooks.addListener(window, type, listener, options);
             };
@@ -1076,11 +1118,11 @@ export function makeDraggableHook(hookParams) {
             addWindowListener(
                 useMouseEvents ? "mousemove" : "pointermove",
                 throttledOnPointerMove,
-                { passive: false }
+                {passive: false}
             );
             addWindowListener(useMouseEvents ? "mouseup" : "pointerup", onPointerUp);
             addWindowListener("pointercancel", onPointerCancel);
-            addWindowListener("keydown", onKeyDown, { capture: true });
+            addWindowListener("keydown", onKeyDown, {capture: true});
             setupHooks.teardown(() => dragEnd(null));
 
             return state;

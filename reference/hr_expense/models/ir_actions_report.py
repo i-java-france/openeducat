@@ -1,7 +1,13 @@
 import io
-from odoo import models, _
+
+from odoo import _, models
 from odoo.tools import pdf
-from odoo.tools.pdf import OdooPdfFileReader, OdooPdfFileWriter, PdfReadError, DependencyError
+from odoo.tools.pdf import (
+    DependencyError,
+    OdooPdfFileReader,
+    OdooPdfFileWriter,
+    PdfReadError,
+)
 
 
 class IrActionsReport(models.Model):

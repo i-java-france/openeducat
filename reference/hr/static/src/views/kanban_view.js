@@ -1,9 +1,9 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
-import { kanbanView } from "@web/views/kanban/kanban_view";
-import { KanbanController } from "@web/views/kanban/kanban_controller";
+import {kanbanView} from "@web/views/kanban/kanban_view";
+import {KanbanController} from "@web/views/kanban/kanban_controller";
 
-import { useArchiveEmployee } from "@hr/views/archive_employee_hook";
+import {useArchiveEmployee} from "@hr/views/archive_employee_hook";
 
 export class EmployeeKanbanController extends KanbanController {
     setup() {
@@ -17,7 +17,7 @@ export class EmployeeKanbanController extends KanbanController {
 
         menuItems.archive.callback = this.archiveEmployee.bind(
             this,
-            selectedRecords.map(({ resId }) => resId)
+            selectedRecords.map(({resId}) => resId)
         );
         return menuItems;
     }

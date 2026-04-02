@@ -1,7 +1,8 @@
-from odoo.addons.point_of_sale.tests.common import CommonPosTest
-from odoo.addons.account_edi.tests.common import AccountTestInvoicingCommon
-from odoo.tests import tagged
 from odoo import fields
+from odoo.tests import tagged
+
+from odoo.addons.account_edi.tests.common import AccountTestInvoicingCommon
+from odoo.addons.point_of_sale.tests.common import CommonPosTest
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')

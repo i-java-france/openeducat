@@ -37,7 +37,10 @@ export const getRow = (el) => el.querySelector(":scope > .row");
  * @returns {HTMLElement} first HTMLElement in order
  */
 export function getFirstItem(columnEls, isMobile) {
-    return (isMobile && [...columnEls].find((el) => el.style.order === "0")) || columnEls[0];
+    return (
+        (isMobile && [...columnEls].find((el) => el.style.order === "0")) ||
+        columnEls[0]
+    );
 }
 /**
  * Adds mobile order and the reset class for large screens.
@@ -89,12 +92,15 @@ export function areColsCustomized(columnEls, isMobile, mobileBreakpoint) {
     //       the 1st item
     // Any other case is custom.
     const allColsSizesEqual = [...columnEls].every(
-        (columnEl) => parseInt(columnEl.className.match(colRegex)?.[1] || 12) === colSize
+        (columnEl) =>
+            parseInt(columnEl.className.match(colRegex)?.[1] || 12) === colSize
     );
     if (!allColsSizesEqual) {
         return true;
     }
-    const offsetRegex = new RegExp(`(?:^|\\s+)offset-${resolutionModifier}[1-9][0-1]?(?!\\S)`);
+    const offsetRegex = new RegExp(
+        `(?:^|\\s+)offset-${resolutionModifier}[1-9][0-1]?(?!\\S)`
+    );
     const nbOffsets = [...columnEls].filter((columnEl) =>
         columnEl.className.match(offsetRegex)
     ).length;
@@ -104,7 +110,9 @@ export function areColsCustomized(columnEls, isMobile, mobileBreakpoint) {
     if (
         nbOffsets === 1 &&
         colSize === 2 &&
-        getFirstItem(columnEls, isMobile).className.match(`offset-${resolutionModifier}1`)
+        getFirstItem(columnEls, isMobile).className.match(
+            `offset-${resolutionModifier}1`
+        )
     ) {
         return false;
     }

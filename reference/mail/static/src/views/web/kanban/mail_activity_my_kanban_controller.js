@@ -1,5 +1,5 @@
-import { useService } from "@web/core/utils/hooks";
-import { KanbanController } from "@web/views/kanban/kanban_controller";
+import {useService} from "@web/core/utils/hooks";
+import {KanbanController} from "@web/views/kanban/kanban_controller";
 
 export class MailActivityMyKanbanController extends KanbanController {
     setup() {

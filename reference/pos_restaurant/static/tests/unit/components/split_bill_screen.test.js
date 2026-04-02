@@ -1,8 +1,8 @@
-import { describe, test, expect } from "@odoo/hoot";
-import { SplitBillScreen } from "@pos_restaurant/app/screens/split_bill_screen/split_bill_screen";
-import { setupPosEnv, getFilledOrder } from "@point_of_sale/../tests/unit/utils";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {describe, expect, test} from "@odoo/hoot";
+import {SplitBillScreen} from "@pos_restaurant/app/screens/split_bill_screen/split_bill_screen";
+import {getFilledOrder, setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
 
 definePosModels();
 
@@ -87,8 +87,8 @@ test("_getOrderName", async () => {
             orderUuid: order.uuid,
         },
     });
-    expect(screen._getOrderName({ table_id: { table_number: 3 } })).toBe("3");
-    expect(screen._getOrderName({ floatingOrderName: "ToGo" })).toBe("ToGo");
+    expect(screen._getOrderName({table_id: {table_number: 3}})).toBe("3");
+    expect(screen._getOrderName({floatingOrderName: "ToGo"})).toBe("ToGo");
     expect(screen._getOrderName({})).toBe("");
 });
 

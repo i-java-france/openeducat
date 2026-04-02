@@ -1,10 +1,10 @@
-import { expect, test } from "@odoo/hoot";
-import { queryRect, queryOne } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, useRef, xml } from "@odoo/owl";
-import { contains, mountWithCleanup } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {queryOne, queryRect} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Component, useRef, xml} from "@odoo/owl";
+import {contains, mountWithCleanup} from "@web/../tests/web_test_helpers";
 
-import { useAutoresize } from "@web/core/utils/autoresize";
+import {useAutoresize} from "@web/core/utils/autoresize";
 
 test(`resizable input`, async () => {
     class ResizableInput extends Component {
@@ -19,7 +19,7 @@ test(`resizable input`, async () => {
     const initialWidth = queryRect(`.resizable-input`).width;
 
     await contains(`.resizable-input`).edit("new value");
-    expect(`.resizable-input`).not.toHaveRect({ width: initialWidth });
+    expect(`.resizable-input`).not.toHaveRect({width: initialWidth});
 });
 
 test(`resizable textarea`, async () => {
@@ -35,7 +35,7 @@ test(`resizable textarea`, async () => {
     const initialHeight = queryRect(`.resizable-textarea`).height;
 
     await contains(`.resizable-textarea`).edit("new value\n".repeat(5));
-    expect(`.resizable-textarea`).not.toHaveRect({ height: initialHeight });
+    expect(`.resizable-textarea`).not.toHaveRect({height: initialHeight});
 });
 
 test(`resizable textarea with minimum height`, async () => {
@@ -44,7 +44,7 @@ test(`resizable textarea with minimum height`, async () => {
         static props = ["*"];
 
         setup() {
-            useAutoresize(useRef("textarea"), { minimumHeight: 100 });
+            useAutoresize(useRef("textarea"), {minimumHeight: 100});
         }
     }
     await mountWithCleanup(ResizableTextArea);
@@ -52,7 +52,7 @@ test(`resizable textarea with minimum height`, async () => {
     expect(initialHeight).toBe(100);
 
     await contains(`.resizable-textarea`).edit("new value\n".repeat(5));
-    expect(`.resizable-textarea`).not.toHaveRect({ height: initialHeight });
+    expect(`.resizable-textarea`).not.toHaveRect({height: initialHeight});
 });
 
 test(`call onResize callback`, async () => {
@@ -75,7 +75,7 @@ test(`call onResize callback`, async () => {
     await mountWithCleanup(ResizableInput);
     expect.verifySteps(["onResize"]);
 
-    await contains(`.resizable-input`).edit("new value", { instantly: true });
+    await contains(`.resizable-input`).edit("new value", {instantly: true});
     expect.verifySteps(["onResize"]);
 });
 

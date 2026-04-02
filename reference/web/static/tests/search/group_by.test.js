@@ -1,10 +1,10 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 
-import { DEFAULT_INTERVAL } from "@web/search/utils/dates";
-import { getGroupBy } from "@web/search/utils/group_by";
+import {DEFAULT_INTERVAL} from "@web/search/utils/dates";
+import {getGroupBy} from "@web/search/utils/group_by";
 
 const fields = {
-    display_name: { string: "Displayed name", type: "char" },
+    display_name: {string: "Displayed name", type: "char"},
     foo: {
         string: "Foo",
         type: "char",
@@ -12,9 +12,9 @@ const fields = {
         store: true,
         sortable: true,
     },
-    date_field: { string: "Date", type: "date", store: true, sortable: true },
-    float_field: { string: "Float", type: "float" },
-    bar: { string: "Bar", type: "many2one", relation: "partner" },
+    date_field: {string: "Date", type: "date", store: true, sortable: true},
+    float_field: {string: "Float", type: "float"},
+    bar: {string: "Bar", type: "many2one", relation: "partner"},
 };
 
 describe("Without field validation", () => {

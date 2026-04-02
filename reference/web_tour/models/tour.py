@@ -1,6 +1,7 @@
-from odoo import api, fields, models, Command
-import json
 import base64
+import json
+
+from odoo import Command, api, fields, models
 
 
 class Web_TourTour(models.Model):

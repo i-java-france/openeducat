@@ -6,12 +6,12 @@ import re
 import time
 from collections import Counter
 
+from odoo import api, fields, http, models, tools
+from odoo.fields import Domain
+from odoo.tools import SQL, escape_psql
+
 from odoo.addons.base.models.ir_http import EXTENSION_TO_WEB_MIMETYPES
 from odoo.addons.website.tools import text_from_html
-from odoo import api, fields, models, tools, http
-from odoo.fields import Domain
-from odoo.tools import escape_psql, SQL
-from odoo.tools.translate import _
 
 logger = logging.getLogger(__name__)
 
@@ -115,7 +115,7 @@ class WebsitePage(models.Model):
         vals_list = super().copy_data(default=default)
         if not default:
             return vals_list
-        for page, vals in zip(self, vals_list):
+        for page, vals in zip(self, vals_list, strict=False):
             if not default.get('view_id'):
                 new_view = page.view_id.copy({'website_id': default.get('website_id')})
                 vals['view_id'] = new_view.id

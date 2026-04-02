@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo.tests import tagged
 
 from odoo.addons.base.tests.common import HttpCaseWithUserDemo
 from odoo.addons.mass_mailing.tests.common import MassMailCommon
-from odoo.tests import tagged
 
 
 @tagged('-at_install', 'post_install')
@@ -11,7 +11,7 @@ class TestMailingUi(MassMailCommon, HttpCaseWithUserDemo):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMailingUi, cls).setUpClass()
+        super().setUpClass()
 
         cls.user_marketing.write({
             'group_ids': [

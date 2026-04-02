@@ -1,4 +1,4 @@
-import { fields, Record } from "@mail/core/common/record";
+import {fields, Record} from "@mail/core/common/record";
 
 /** @typedef {{ thread?: import("models").Thread }} ChatWindowData */
 
@@ -7,14 +7,14 @@ export class ChatWindow extends Record {
 
     actionsDisabled = false;
     bypassCompact = false;
-    thread = fields.One("Thread", { inverse: "chat_window" });
+    thread = fields.One("Thread", {inverse: "chat_window"});
     autofocus = 0;
     jumpToNewMessage = 0;
     hidden = false;
     /** Whether the chat window was created from the messaging menu */
     fromMessagingMenu = false;
-    hubAsOpened = fields.One("ChatHub", { inverse: "opened" });
-    hubAsFolded = fields.One("ChatHub", { inverse: "folded" });
+    hubAsOpened = fields.One("ChatHub", {inverse: "opened"});
+    hubAsFolded = fields.One("ChatHub", {inverse: "folded"});
     hubAsCanShowOpened = fields.One("ChatHub", {
         inverse: "canShowOpened",
         /** @this {import("models").ChatWindow} */
@@ -57,7 +57,7 @@ export class ChatWindow extends Record {
 
     async close(options = {}) {
         await this.store.chatHub.initPromise;
-        const { escape = false } = options;
+        const {escape = false} = options;
         options.notifyState ??= true;
         const chatHub = this.store.chatHub;
         const indexAsOpened = chatHub.opened.findIndex((w) => w.eq(this));
@@ -73,7 +73,7 @@ export class ChatWindow extends Record {
         this.delete();
     }
 
-    focus({ jumpToNewMessage = false } = {}) {
+    focus({jumpToNewMessage = false} = {}) {
         this.autofocus++;
         if (jumpToNewMessage) {
             this.jumpToNewMessage++;
@@ -106,7 +106,7 @@ export class ChatWindow extends Record {
             this.store.chatHub.save();
         }
         if (focus) {
-            this.focus({ jumpToNewMessage });
+            this.focus({jumpToNewMessage});
         }
     }
 

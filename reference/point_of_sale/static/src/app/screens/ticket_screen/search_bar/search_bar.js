@@ -1,5 +1,5 @@
-import { Component, useExternalListener, useState, useEffect } from "@odoo/owl";
-import { useAutofocus, useService } from "@web/core/utils/hooks";
+import {Component, useExternalListener, useState, useEffect} from "@odoo/owl";
+import {useAutofocus, useService} from "@web/core/utils/hooks";
 
 /**
  * This is a simple configurable search bar component. It has search fields
@@ -43,10 +43,12 @@ export class SearchBar extends Component {
         );
         this.state = useState({
             searchInput: this.props.config.defaultSearchDetails.searchTerm || "",
-            selectedSearchFieldId: defaultSearchFieldId == -1 ? 0 : defaultSearchFieldId,
+            selectedSearchFieldId:
+                defaultSearchFieldId == -1 ? 0 : defaultSearchFieldId,
             showSearchFields: false,
             showFilterOptions: false,
-            selectedFilter: this.props.config.defaultFilter || this.filterOptionsList[0],
+            selectedFilter:
+                this.props.config.defaultFilter || this.filterOptionsList[0],
         });
         useEffect(
             () => {
@@ -76,9 +78,14 @@ export class SearchBar extends Component {
         if (["ArrowUp", "ArrowDown"].includes(event.key)) {
             this.state.selectedSearchFieldId = this._fieldIdToSelect(event.key);
         } else if (event.key === "Enter" || this.state.searchInput == "") {
-            this._onClickSearchField(this.searchFieldsList[this.state.selectedSearchFieldId]);
+            this._onClickSearchField(
+                this.searchFieldsList[this.state.selectedSearchFieldId]
+            );
         } else {
-            if (this.state.selectedSearchFieldId === -1 && this.searchFieldsList.length) {
+            if (
+                this.state.selectedSearchFieldId === -1 &&
+                this.searchFieldsList.length
+            ) {
                 this.state.selectedSearchFieldId = 0;
             }
             this.state.showSearchFields = true;
@@ -89,7 +96,7 @@ export class SearchBar extends Component {
      */
     _onClickSearchField(fieldName) {
         this.state.showSearchFields = false;
-        this.props.onSearch({ fieldName, searchTerm: this.state.searchInput });
+        this.props.onSearch({fieldName, searchTerm: this.state.searchInput});
     }
     /**
      * Given an arrow key, return the next selectedSearchFieldId.

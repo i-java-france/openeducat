@@ -1,7 +1,7 @@
-import { expect, test } from "@odoo/hoot";
-import { queryAllTexts } from "@odoo/hoot-dom";
-import { animationFrame, mockFetch, runAllTimers } from "@odoo/hoot-mock";
-import { Component, onMounted, xml } from "@odoo/owl";
+import {expect, test} from "@odoo/hoot";
+import {queryAllTexts} from "@odoo/hoot-dom";
+import {animationFrame, mockFetch, runAllTimers} from "@odoo/hoot-mock";
+import {Component, onMounted, xml} from "@odoo/owl";
 import {
     contains,
     defineActions,
@@ -16,21 +16,21 @@ import {
     webModels,
 } from "@web/../tests/web_test_helpers";
 
-import { registry } from "@web/core/registry";
-import { BooleanField } from "@web/views/fields/boolean/boolean_field";
-import { FormController } from "@web/views/form/form_controller";
-import { WebClient } from "@web/webclient/webclient";
+import {registry} from "@web/core/registry";
+import {BooleanField} from "@web/views/fields/boolean/boolean_field";
+import {FormController} from "@web/views/form/form_controller";
+import {WebClient} from "@web/webclient/webclient";
 
 const actionRegistry = registry.category("actions");
 
-const { ResCompany, ResPartner, ResUsers } = webModels;
+const {ResCompany, ResPartner, ResUsers} = webModels;
 
 class Partner extends models.Model {
     _rec_name = "display_name";
 
     _records = [
-        { id: 1, display_name: "First record" },
-        { id: 2, display_name: "Second record" },
+        {id: 1, display_name: "First record"},
+        {id: 2, display_name: "Second record"},
     ];
     _views = {
         "kanban,1": `
@@ -75,7 +75,10 @@ test("error in a client action (at rendering)", async () => {
     await getService("action").doAction(1);
     expect(".o_kanban_view").toHaveCount(1);
     expect(".o_breadcrumb").toHaveText("Partners Action 1");
-    expect(queryAllTexts(".o_kanban_record span")).toEqual(["First record", "Second record"]);
+    expect(queryAllTexts(".o_kanban_record span")).toEqual([
+        "First record",
+        "Second record",
+    ]);
     expect.verifySteps(["web_search_read"]);
 
     try {
@@ -86,7 +89,10 @@ test("error in a client action (at rendering)", async () => {
     await animationFrame();
     expect(".o_kanban_view").toHaveCount(1);
     expect(".o_breadcrumb").toHaveText("Partners Action 1");
-    expect(queryAllTexts(".o_kanban_record span")).toEqual(["First record", "Second record"]);
+    expect(queryAllTexts(".o_kanban_record span")).toEqual([
+        "First record",
+        "Second record",
+    ]);
     expect.verifySteps(["web_search_read"]);
 });
 
@@ -104,7 +110,7 @@ test("error in a client action (after the first rendering)", async () => {
             this.boom = false;
         }
         get a() {
-            // a bit artificial, but makes the test firefox compliant
+            // A bit artificial, but makes the test firefox compliant
             throw new Error("Cannot read properties of undefined (reading 'b')");
         }
         onClick() {
@@ -137,11 +143,11 @@ test("connection lost when opening form view from kanban", async () => {
     mockFetch((input) => {
         expect.step(input);
         if (input === "/web/webclient/version_info") {
-            // simulate a connection restore at the end of the test, to have no
+            // Simulate a connection restore at the end of the test, to have no
             // impact on other tests (see connectionLostNotifRemove)
             return true;
         }
-        throw new Error(); // simulate a ConnectionLost error
+        throw new Error(); // Simulate a ConnectionLost error
     });
     await contains(".o_kanban_record").click();
     expect(".o_kanban_view").toHaveCount(1);
@@ -154,11 +160,11 @@ test("connection lost when opening form view from kanban", async () => {
         "get_views",
         "web_search_read",
         "has_group",
-        "/web/dataset/call_kw/partner/web_read", // from mockFetch
-        "/web/dataset/call_kw/partner/web_search_read", // from mockFetch
+        "/web/dataset/call_kw/partner/web_read", // From mockFetch
+        "/web/dataset/call_kw/partner/web_search_read", // From mockFetch
     ]);
     await animationFrame();
-    expect.verifySteps([]); // doesn't indefinitely try to reload the list
+    expect.verifySteps([]); // Doesn't indefinitely try to reload the list
 
     // cleanup
     await runAllTimers();
@@ -180,14 +186,14 @@ test("connection lost when coming back to kanban from form", async () => {
                 expect.step(url);
             }
             if (url === "/web/webclient/version_info") {
-                // simulate a connection restore
+                // Simulate a connection restore
                 return true;
             }
             if (offline) {
-                throw new Error(); // simulate a ConnectionLost error
+                throw new Error(); // Simulate a ConnectionLost error
             }
         },
-        { pure: true }
+        {pure: true}
     );
 
     await mountWithCleanup(WebClient);
@@ -216,7 +222,7 @@ test("connection lost when coming back to kanban from form", async () => {
         "/web/dataset/call_kw/partner/web_search_read",
     ]);
     await animationFrame();
-    expect.verifySteps([]); // doesn't indefinitely try to reload the list
+    expect.verifySteps([]); // Doesn't indefinitely try to reload the list
 
     await runAllTimers();
     await animationFrame();
@@ -280,7 +286,7 @@ test("error on onMounted", async () => {
     await contains(".o_kanban_record").click();
     await animationFrame();
     expect(".o_form_view").toHaveCount(0);
-    // check that the action manager is empty
+    // Check that the action manager is empty
     expect(".o_action_manager").toHaveText("");
     expect(".o_error_dialog").toHaveCount(1);
     expect.verifySteps(["web_read"]);

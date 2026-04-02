@@ -1,8 +1,12 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { multiTabSharedWorkerService } from "@bus/multi_tab_shared_worker_service";
-import { makeMockEnv, patchWithCleanup, restoreRegistry } from "@web/../tests/web_test_helpers";
-import { browser } from "@web/core/browser/browser";
-import { registry } from "@web/core/registry";
+import {describe, expect, test} from "@odoo/hoot";
+import {multiTabSharedWorkerService} from "@bus/multi_tab_shared_worker_service";
+import {
+    makeMockEnv,
+    patchWithCleanup,
+    restoreRegistry,
+} from "@web/../tests/web_test_helpers";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
 
 registry.category("services").remove("multi_tab");
 registry.category("services").add("multi_tab", multiTabSharedWorkerService);
@@ -20,7 +24,7 @@ test("main tab service(election worker) elects new main on pagehide", async () =
         },
     });
     restoreRegistry(registry);
-    const secondTabEnv = await makeMockEnv(null, { makeNew: true });
+    const secondTabEnv = await makeMockEnv(null, {makeNew: true});
     expect(await secondTabEnv.services.multi_tab.isOnMainTab()).toBe(false);
     firstTabEnv.services.multi_tab.bus.addEventListener("become_main_tab", () =>
         expect.step("tab1 become_main_tab")
@@ -45,7 +49,7 @@ test("main tab service(election worker) elects new main after unregister main ta
     const firstTabEnv = await makeMockEnv();
     expect(await firstTabEnv.services.multi_tab.isOnMainTab()).toBe(true);
     restoreRegistry(registry);
-    const secondTabEnv = await makeMockEnv(null, { makeNew: true });
+    const secondTabEnv = await makeMockEnv(null, {makeNew: true});
     expect(await secondTabEnv.services.multi_tab.isOnMainTab()).toBe(false);
     firstTabEnv.services.multi_tab.bus.addEventListener("become_main_tab", () =>
         expect.step("tab1 become_main_tab")

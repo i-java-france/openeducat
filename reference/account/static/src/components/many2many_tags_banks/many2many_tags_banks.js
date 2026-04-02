@@ -2,11 +2,11 @@ import {
     many2ManyTagsFieldColorEditable,
     Many2ManyTagsFieldColorEditable,
 } from "@web/views/fields/many2many_tags/many2many_tags_field";
-import { useService } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
-import { TagsList } from "@web/core/tags_list/tags_list";
-import { _t } from "@web/core/l10n/translation";
-import { onMounted } from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {TagsList} from "@web/core/tags_list/tags_list";
+import {_t} from "@web/core/l10n/translation";
+import {onMounted} from "@odoo/owl";
 
 export class FieldMany2ManyTagsBanksTagsList extends TagsList {
     static template = "FieldMany2ManyTagsBanksTagsList";
@@ -69,10 +69,10 @@ export const fieldMany2ManyTagsBanks = {
         ...(many2ManyTagsFieldColorEditable.additionalClasses || []),
         "o_field_many2many_tags",
     ],
-    relatedFields: ({ options }) => {
+    relatedFields: ({options}) => {
         return [
-            ...many2ManyTagsFieldColorEditable.relatedFields({ options }),
-            { name: options.allow_out_payment_field, type: "boolean", readonly: false },
+            ...many2ManyTagsFieldColorEditable.relatedFields({options}),
+            {name: options.allow_out_payment_field, type: "boolean", readonly: false},
         ];
     },
 };

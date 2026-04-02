@@ -1,10 +1,11 @@
 from lxml import etree
 
-from odoo import models, Command, _
+from odoo import Command, _, models
 from odoo.tools import html2plaintext
+
+from odoo.addons.account.tools import dict_to_xml
 from odoo.addons.account_edi_ubl_cii.models.account_edi_common import FloatFmt
 from odoo.addons.account_edi_ubl_cii.tools import Order
-from odoo.addons.account.tools import dict_to_xml
 
 
 class SaleEdiXmlUbl_Bis3(models.AbstractModel):

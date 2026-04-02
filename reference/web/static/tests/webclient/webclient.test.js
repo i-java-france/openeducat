@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, xml } from "@odoo/owl";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Component, xml} from "@odoo/owl";
 
 import {
     contains,
@@ -8,8 +8,8 @@ import {
     mountWithCleanup,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { registry } from "@web/core/registry";
-import { WebClient } from "@web/webclient/webclient";
+import {registry} from "@web/core/registry";
+import {WebClient} from "@web/webclient/webclient";
 
 test("can be rendered", async () => {
     await mountWithCleanup(WebClient);
@@ -24,9 +24,9 @@ test("can render a main component", async () => {
     }
 
     const env = await makeMockEnv();
-    registry.category("main_components").add("mycomponent", { Component: MyComponent });
+    registry.category("main_components").add("mycomponent", {Component: MyComponent});
 
-    await mountWithCleanup(WebClient, { env });
+    await mountWithCleanup(WebClient, {env});
 
     expect(`.chocolate`).toHaveCount(1);
 });
@@ -50,7 +50,7 @@ test("control-click <a href/> in a standalone component", async () => {
     expect.verifySteps([]);
 
     await contains(".MyComponent").click();
-    await contains(".MyComponent").click({ ctrlKey: true });
+    await contains(".MyComponent").click({ctrlKey: true});
 
     expect.verifySteps(["click", "ctrl-click"]);
 });
@@ -88,13 +88,13 @@ test("control-click propagation stopped on <a href/>", async () => {
 
     await mountWithCleanup(WebClient);
 
-    registry.category("main_components").add("mycomponent", { Component: MyComponent });
+    registry.category("main_components").add("mycomponent", {Component: MyComponent});
     await animationFrame();
 
     expect.verifySteps([]);
 
     await contains(".MyComponent").click();
-    await contains(".MyComponent").click({ ctrlKey: true });
+    await contains(".MyComponent").click({ctrlKey: true});
 
     expect.verifySteps(["click"]);
 });

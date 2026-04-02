@@ -1,4 +1,4 @@
-from odoo import api, fields, models,  _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 from .pine_labs_pos_request import call_pine_labs
@@ -25,7 +25,7 @@ class PosPaymentMethod(models.Model):
         Sends a payment request to the Pine Labs POS API.
 
         :param dict data: Contains `amount`, `transactionNumber`, and `sequenceNumber`.
-        :return: On success, returns `responseCode`, `status`, and `plutusTransactionReferenceID`. 
+        :return: On success, returns `responseCode`, `status`, and `plutusTransactionReferenceID`.
                 On failure, returns an error message.
         :rtype: dict
         """
@@ -50,7 +50,7 @@ class PosPaymentMethod(models.Model):
         Fetches payment status from the Pine Labs POS API.
 
         :param dict data: Contains `plutusTransactionReferenceID` for the status request.
-        :return: On success, returns `responseCode`, `status`, `plutusTransactionReferenceID`, and `data` (formatted transaction details). 
+        :return: On success, returns `responseCode`, `status`, `plutusTransactionReferenceID`, and `data` (formatted transaction details).
                 On failure, returns an error message.
         :rtype: dict
         """

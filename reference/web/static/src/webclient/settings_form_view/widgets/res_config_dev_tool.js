@@ -1,11 +1,11 @@
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { SettingsBlock } from "../settings/settings_block";
-import { Setting } from "../../../views/form/setting/setting";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {SettingsBlock} from "../settings/settings_block";
+import {Setting} from "../../../views/form/setting/setting";
 
-import { Component, onWillStart } from "@odoo/owl";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
-import { router } from "@web/core/browser/router";
+import {Component, onWillStart} from "@odoo/owl";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
+import {router} from "@web/core/browser/router";
 
 /**
  * Widget in the settings that handles the "Developer Tools" section.
@@ -36,7 +36,7 @@ export class ResConfigDevTool extends Component {
     }
 
     activateDebug(value) {
-        router.pushState({ debug: value }, { reload: true });
+        router.pushState({debug: value}, {reload: true});
     }
 
     /**

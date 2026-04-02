@@ -1,13 +1,13 @@
-import { CallDropdown } from "@mail/discuss/call/common/call_dropdown";
+import {CallDropdown} from "@mail/discuss/call/common/call_dropdown";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
-import { useService } from "@web/core/utils/hooks";
+import {useService} from "@web/core/utils/hooks";
 
 export class BlurPerformanceWarning extends Component {
     static template = "discuss.BlurPerformanceWarning";
     static props = {};
-    static components = { CallDropdown };
+    static components = {CallDropdown};
 
     setup() {
         this.store = useService("mail.store");

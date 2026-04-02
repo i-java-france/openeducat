@@ -1,21 +1,21 @@
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 import {
+    MockServer,
     defineModels,
     fields,
     getService,
     makeMockEnv,
-    MockServer,
     models,
     mountWithCleanup,
     onRpc,
 } from "@web/../tests/web_test_helpers";
 
-import { Deferred, animationFrame } from "@odoo/hoot-mock";
-import { Component, useState, xml } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
+import {Deferred, animationFrame} from "@odoo/hoot-mock";
+import {Component, useState, xml} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
 
 /**
- * @param {string} resModel
+ * @param {String} resModel
  */
 function getModelInfo(resModel) {
     return {
@@ -25,11 +25,11 @@ function getModelInfo(resModel) {
 }
 
 /**
- * @param {string} resModel
+ * @param {String} resModel
  */
 function getDefinitions(resModel) {
     const fieldDefs = {};
-    for (const record of MockServer.env["species"]) {
+    for (const record of MockServer.env.species) {
         for (const definition of record.definitions) {
             fieldDefs[definition.name] = {
                 is_property: true,
@@ -40,14 +40,14 @@ function getDefinitions(resModel) {
             };
         }
     }
-    return { resModel: resModel || "*", fieldDefs };
+    return {resModel: resModel || "*", fieldDefs};
 }
 
 class Tortoise extends models.Model {
     name = fields.Char();
     age = fields.Integer();
-    location_id = fields.Many2one({ string: "Location", relation: "location" });
-    species = fields.Many2one({ relation: "species" });
+    location_id = fields.Many2one({string: "Location", relation: "location"});
+    species = fields.Many2one({relation: "species"});
     property_field = fields.Properties({
         string: "Properties",
         definition_record: "species",
@@ -57,7 +57,7 @@ class Tortoise extends models.Model {
 
 class Location extends models.Model {
     name = fields.Char();
-    tortoise_ids = fields.One2many({ string: "Turtles", relation: "tortoise" });
+    tortoise_ids = fields.One2many({string: "Turtles", relation: "tortoise"});
 }
 
 class Species extends models.Model {
@@ -86,8 +86,8 @@ class Species extends models.Model {
             id: 2,
             display_name: "Aldabra giant tortoise",
             definitions: [
-                { name: "aldabra_lifespans", string: "Lifespans", type: "integer" },
-                { name: "color", string: "Color", type: "char" },
+                {name: "aldabra_lifespans", string: "Lifespans", type: "integer"},
+                {name: "color", string: "Color", type: "char"},
             ],
         },
     ];
@@ -198,18 +198,18 @@ test("loadPath", async () => {
             },
         },
     ];
-    for (const { resModel, path, expectedResult } of toTest) {
+    for (const {resModel, path, expectedResult} of toTest) {
         const result = await getService("field").loadPath(resModel, path);
         expect(result).toEqual(expectedResult);
     }
 
     const errorToTest = [
-        { resModel: "notAModel" },
-        { resModel: "tortoise", path: {} },
-        { resModel: "tortoise", path: "" },
+        {resModel: "notAModel"},
+        {resModel: "tortoise", path: {}},
+        {resModel: "tortoise", path: ""},
     ];
 
-    for (const { resModel, path } of errorToTest) {
+    for (const {resModel, path} of errorToTest) {
         try {
             await getService("field").loadPath(resModel, path);
         } catch {
@@ -325,18 +325,18 @@ test("loadPath follow relational properties", async () => {
             },
         },
     ];
-    for (const { resModel, path, expectedResult } of toTest) {
+    for (const {resModel, path, expectedResult} of toTest) {
         const result = await getService("field").loadPath(resModel, path, true);
         expect(result).toEqual(expectedResult);
     }
 
     const errorToTest = [
-        { resModel: "notAModel" },
-        { resModel: "tortoise", path: {} },
-        { resModel: "tortoise", path: "" },
+        {resModel: "notAModel"},
+        {resModel: "tortoise", path: {}},
+        {resModel: "tortoise", path: ""},
     ];
 
-    for (const { resModel, path } of errorToTest) {
+    for (const {resModel, path} of errorToTest) {
         try {
             await getService("field").loadPath(resModel, path, true);
         } catch {
@@ -366,8 +366,12 @@ test("does not store loadFields calls in cache when failed", async () => {
     });
 
     await makeMockEnv();
-    await expect(getService("field").loadFields("take.five")).rejects.toThrow(/my little error/);
-    await expect(getService("field").loadFields("take.five")).rejects.toThrow(/my little error/);
+    await expect(getService("field").loadFields("take.five")).rejects.toThrow(
+        /my little error/
+    );
+    await expect(getService("field").loadFields("take.five")).rejects.toThrow(
+        /my little error/
+    );
 
     expect.verifySteps(["fields_get", "fields_get"]);
 });
@@ -390,7 +394,7 @@ test("async method loadFields is protected", async () => {
     }
 
     class Parent extends Component {
-        static components = { Child };
+        static components = {Child};
         static template = xml`
             <t t-if="state.displayChild">
                 <Child />
@@ -398,7 +402,7 @@ test("async method loadFields is protected", async () => {
         `;
         static props = ["*"];
         setup() {
-            this.state = useState({ displayChild: true });
+            this.state = useState({displayChild: true});
         }
     }
 

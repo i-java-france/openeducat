@@ -1,5 +1,5 @@
-import { CalendarCommonRenderer } from "@web/views/calendar/calendar_common/calendar_common_renderer";
-import { AttendeeCalendarCommonPopover } from "@calendar/views/attendee_calendar/common/attendee_calendar_common_popover";
+import {CalendarCommonRenderer} from "@web/views/calendar/calendar_common/calendar_common_renderer";
+import {AttendeeCalendarCommonPopover} from "@calendar/views/attendee_calendar/common/attendee_calendar_common_popover";
 
 export class AttendeeCalendarCommonRenderer extends CalendarCommonRenderer {
     static eventTemplate = "calendar.AttendeeCalendarCommonRenderer.event";
@@ -27,7 +27,7 @@ export class AttendeeCalendarCommonRenderer extends CalendarCommonRenderer {
     /**
      * @override
      */
-    eventClassNames({ el, event }) {
+    eventClassNames({el, event}) {
         const classesToAdd = super.eventClassNames(...arguments);
         const record = this.props.model.records[event.id];
         if (record) {
@@ -46,11 +46,14 @@ export class AttendeeCalendarCommonRenderer extends CalendarCommonRenderer {
     /**
      * @override
      */
-    onEventDidMount({ el, event }) {
+    onEventDidMount({el, event}) {
         super.onEventDidMount(...arguments);
         const record = this.props.model.records[event.id];
         if (record) {
-            if (this.env.searchModel?.context?.default_calendar_event_id === parseInt(event.id)) {
+            if (
+                this.env.searchModel?.context?.default_calendar_event_id ===
+                parseInt(event.id)
+            ) {
                 this.openPopover(el, record);
             }
         }

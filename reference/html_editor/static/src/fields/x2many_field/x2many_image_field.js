@@ -1,8 +1,8 @@
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { ImageField, imageField } from "@web/views/fields/image/image_field";
-import { CustomMediaDialog } from "./custom_media_dialog";
-import { getVideoUrl } from "@html_editor/utils/url";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {ImageField, imageField} from "@web/views/fields/image/image_field";
+import {CustomMediaDialog} from "./custom_media_dialog";
+import {getVideoUrl} from "@html_editor/utils/url";
 
 export class X2ManyImageField extends ImageField {
     static template = "html_editor.ImageField";
@@ -57,7 +57,11 @@ export class X2ManyImageField extends ImageField {
     }
 
     async onVideoSave(videoInfo) {
-        const url = getVideoUrl(videoInfo[0].platform, videoInfo[0].videoId, videoInfo[0].params);
+        const url = getVideoUrl(
+            videoInfo[0].platform,
+            videoInfo[0].videoId,
+            videoInfo[0].params
+        );
         await this.props.record.update({
             video_url: url.href,
             name: videoInfo[0].platform + " - [Video]",

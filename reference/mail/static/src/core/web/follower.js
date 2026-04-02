@@ -1,7 +1,7 @@
-import { useService } from "@web/core/utils/hooks";
-import { Component } from "@odoo/owl";
-import { FollowerSubtypeDialog } from "@mail/core/web/follower_subtype_dialog";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+import {useService} from "@web/core/utils/hooks";
+import {Component} from "@odoo/owl";
+import {FollowerSubtypeDialog} from "@mail/core/web/follower_subtype_dialog";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 
 /**
  * @typedef {Object} Props
@@ -13,7 +13,7 @@ import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 export class Follower extends Component {
     static template = "mail.Follower";
     static props = ["follower", "onFollowerChanged?", "close?"];
-    static components = { DropdownItem };
+    static components = {DropdownItem};
 
     setup() {
         this.store = useService("mail.store");
@@ -22,7 +22,7 @@ export class Follower extends Component {
     onClickDetails() {
         this.store.openDocument({
             id: this.props.follower.partner_id.id,
-            model: "res.partner"
+            model: "res.partner",
         });
         this.props.close?.();
     }

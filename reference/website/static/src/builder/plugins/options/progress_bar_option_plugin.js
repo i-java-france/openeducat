@@ -1,8 +1,8 @@
-import { registry } from "@web/core/registry";
-import { Plugin } from "@html_editor/plugin";
-import { clamp } from "@web/core/utils/numbers";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {registry} from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {clamp} from "@web/core/utils/numbers";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 export class ProgressBarOption extends BaseOptionComponent {
     static template = "website.ProgressBarOption";
@@ -37,7 +37,7 @@ class ProgressBarOptionPlugin extends Plugin {
 
 export class DisplayAction extends BuilderAction {
     static id = "display";
-    apply({ editingElement, params: { mainParam: position } }) {
+    apply({editingElement, params: {mainParam: position}}) {
         // retro-compatibility
         if (editingElement.classList.contains("progress")) {
             editingElement.classList.remove("progress");
@@ -80,7 +80,7 @@ export class DisplayAction extends BuilderAction {
 
 export class ProgressBarValueAction extends BuilderAction {
     static id = "progressBarValue";
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         value = parseInt(value);
         value = clamp(value, 0, 100);
         const progressBarEl = editingElement.querySelector(".progress-bar");
@@ -98,9 +98,11 @@ export class ProgressBarValueAction extends BuilderAction {
         progressMainEl.setAttribute("aria-valuenow", value);
         progressBarEl.style.width = value + "%";
     }
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         return editingElement.querySelector(".progress").getAttribute("aria-valuenow");
     }
 }
 
-registry.category("website-plugins").add(ProgressBarOptionPlugin.id, ProgressBarOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(ProgressBarOptionPlugin.id, ProgressBarOptionPlugin);

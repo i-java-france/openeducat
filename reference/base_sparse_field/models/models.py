@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 
 from collections import defaultdict
 
-from odoo import models, fields, api, _
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 
@@ -36,7 +35,7 @@ class IrModelFields(models.Model):
                 if field.serialization_field_id and (field.name != vals['name']):
                     raise UserError(_('Renaming sparse field "%s" is not allowed', field.name))
 
-        return super(IrModelFields, self).write(vals)
+        return super().write(vals)
 
     def _reflect_fields(self, model_names):
         super()._reflect_fields(model_names)
@@ -82,7 +81,7 @@ class IrModelFields(models.Model):
         self.pool.post_init(records.modified, ['serialization_field_id'])
 
     def _instanciate_attrs(self, field_data):
-        attrs = super(IrModelFields, self)._instanciate_attrs(field_data)
+        attrs = super()._instanciate_attrs(field_data)
         if attrs and field_data.get('serialization_field_id'):
             serialization_record = self.browse(field_data['serialization_field_id'])
             attrs['sparse'] = serialization_record.name

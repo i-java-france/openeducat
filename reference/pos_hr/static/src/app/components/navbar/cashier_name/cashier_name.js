@@ -1,6 +1,6 @@
-import { CashierName } from "@point_of_sale/app/components/navbar/cashier_name/cashier_name";
-import { patch } from "@web/core/utils/patch";
-import { useCashierSelector } from "@pos_hr/app/utils/select_cashier_mixin";
+import {CashierName} from "@point_of_sale/app/components/navbar/cashier_name/cashier_name";
+import {patch} from "@web/core/utils/patch";
+import {useCashierSelector} from "@pos_hr/app/utils/select_cashier_mixin";
 
 patch(CashierName.prototype, {
     setup() {
@@ -23,7 +23,7 @@ patch(CashierName.prototype, {
     //@Override
     get cssClass() {
         if (this.pos.config.module_pos_hr) {
-            return { oe_status: true };
+            return {oe_status: true};
         }
         return super.cssClass;
     },

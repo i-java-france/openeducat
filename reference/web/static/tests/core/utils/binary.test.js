@@ -1,8 +1,8 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { allowTranslations } from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {allowTranslations} from "@web/../tests/web_test_helpers";
 
-import { humanSize } from "@web/core/utils/binary";
-import { resizeBlobImg } from "@web/core/utils/files";
+import {humanSize} from "@web/core/utils/binary";
+import {resizeBlobImg} from "@web/core/utils/files";
 
 describe.current.tags("headless");
 
@@ -40,7 +40,7 @@ test("resize image", async () => {
     const bigBlobImg = await buildblobImage(256, 256);
     const smallBlobImg = await buildblobImage(64, 64);
 
-    const resized = await resizeBlobImg(bigBlobImg, { width: 64, height: 64 });
+    const resized = await resizeBlobImg(bigBlobImg, {width: 64, height: 64});
     const smallBlobImgB64 = await blobTob64(smallBlobImg);
     expect(smallBlobImgB64).not.toBeEmpty();
     expect(await blobTob64(resized)).toBe(smallBlobImgB64);

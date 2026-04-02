@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
 # pylint: disable=bad-whitespace
+from collections import defaultdict
+
 from lxml import etree
 
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo import Command, fields
 from odoo.tests import Form, tagged
-from odoo import fields, Command
 
-from collections import defaultdict
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
 @tagged('post_install', '-at_install')
@@ -132,7 +132,7 @@ class TestAccountMoveInRefundOnchanges(AccountTestInvoicingCommon):
         return super().setup_armageddon_tax(tax_name, company_data, type_tax_use='purchase', **kwargs)
 
     def setUp(self):
-        super(TestAccountMoveInRefundOnchanges, self).setUp()
+        super().setUp()
         self.assertInvoiceValues(self.invoice, [
             self.product_line_vals_1,
             self.product_line_vals_2,

@@ -1,4 +1,4 @@
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 import {
     clickSave,
     contains,
@@ -13,7 +13,7 @@ import {
 class Partner extends models.Model {
     qux = fields.Float();
 
-    _records = [{ id: 1, qux: 9.1 }];
+    _records = [{id: 1, qux: 9.1}];
 }
 
 defineModels([Partner]);
@@ -21,9 +21,11 @@ defineModels([Partner]);
 test("FloatFactorField in form view", async () => {
     expect.assertions(3);
 
-    onRpc("partner", "web_save", ({ args }) => {
+    onRpc("partner", "web_save", ({args}) => {
         // 2.3 / 0.5 = 4.6
-        expect(args[1].qux).toBe(4.6, { message: "the correct float value should be saved" });
+        expect(args[1].qux).toBe(4.6, {
+            message: "the correct float value should be saved",
+        });
     });
     await mountView({
         type: "form",
@@ -51,14 +53,14 @@ test("FloatFactorField in form view", async () => {
 test("FloatFactorField comma as decimal point", async () => {
     expect.assertions(2);
 
-    // patchWithCleanup(localization, { decimalPoint: ",", thousandsSep: "" });
+    // PatchWithCleanup(localization, { decimalPoint: ",", thousandsSep: "" });
     defineParams({
         lang_parameters: {
             decimal_point: ",",
             thousands_sep: "",
         },
     });
-    onRpc("partner", "web_save", ({ args }) => {
+    onRpc("partner", "web_save", ({args}) => {
         // 2.3 / 0.5 = 4.6
         expect(args[1].qux).toBe(4.6);
         expect.step("save");

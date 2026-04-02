@@ -1,8 +1,8 @@
-import { test, expect } from "@odoo/hoot";
-import { setupPosEnv } from "@point_of_sale/../tests/unit/utils";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { FloorScreen } from "@pos_restaurant/app/screens/floor_screen/floor_screen";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {expect, test} from "@odoo/hoot";
+import {setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {FloorScreen} from "@pos_restaurant/app/screens/floor_screen/floor_screen";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
 
 definePosModels();
 
@@ -30,7 +30,7 @@ test("computeFloorSize", async () => {
             scrollLeft: 0,
         },
     };
-    screen.state.floorMapOffset = { x: 0, y: 0 };
+    screen.state.floorMapOffset = {x: 0, y: 0};
     screen.computeFloorSize();
     expect(screen.state.floorWidth).toBe("927px");
     expect(screen.state.floorHeight).toBe("500px");
@@ -39,7 +39,7 @@ test("computeFloorSize", async () => {
 test("resetTable", async () => {
     const store = await setupPosEnv();
     const table = store.models["restaurant.table"].get(1);
-    const order = store.addNewOrder({ table_id: table });
+    const order = store.addNewOrder({table_id: table});
     store.setOrder(order);
     const screen = await mountWithCleanup(FloorScreen, {});
     await screen.resetTable();
@@ -56,8 +56,8 @@ test("pinch gesture computes scale and sets it", async () => {
     };
     const startEvent = {
         touches: [
-            { pageX: 0, pageY: 0 },
-            { pageX: 0, pageY: 100 },
+            {pageX: 0, pageY: 0},
+            {pageX: 0, pageY: 100},
         ],
         currentTarget: {
             style: {
@@ -71,8 +71,8 @@ test("pinch gesture computes scale and sets it", async () => {
     expect(screen.initalScale).toBe(1);
     const moveEvent = {
         touches: [
-            { pageX: 0, pageY: 0 },
-            { pageX: 0, pageY: 200 },
+            {pageX: 0, pageY: 0},
+            {pageX: 0, pageY: 200},
         ],
     };
     screen._computePinchHypo(moveEvent, screen.movePinch.bind(screen));
@@ -100,7 +100,7 @@ test("_getNewTableNumber", async () => {
     const screen = await mountWithCleanup(FloorScreen, {});
     screen.selectFloor(floor);
     const newNumber = screen._getNewTableNumber();
-    expect(newNumber).toBe(5); // max(1,2,4) + 1 = 5
+    expect(newNumber).toBe(5); // Max(1,2,4) + 1 = 5
 });
 
 test("duplicateTable", async () => {

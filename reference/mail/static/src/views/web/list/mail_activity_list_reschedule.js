@@ -1,10 +1,10 @@
-import { Component } from "@odoo/owl";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
-const { DateTime } = luxon;
+import {Component} from "@odoo/owl";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
+const {DateTime} = luxon;
 
 /**
  * This widget displays a small dropdown allowing users to reschedule the
@@ -13,7 +13,7 @@ const { DateTime } = luxon;
 
 // Version of the widget to use on mail.activity lists
 export class MailActivityListRescheduleDropdown extends Component {
-    static components = { Dropdown, DropdownItem };
+    static components = {Dropdown, DropdownItem};
     static props = {
         ...standardWidgetProps,
     };
@@ -29,11 +29,11 @@ export class MailActivityListRescheduleDropdown extends Component {
                 actionName: "action_reschedule_today",
             },
             tomorrow: {
-                displayDay: today.plus({ days: 1 }).weekdayShort,
+                displayDay: today.plus({days: 1}).weekdayShort,
                 actionName: "action_reschedule_tomorrow",
             },
             nextWeek: {
-                displayDay: today.plus({ weeks: 1 }).startOf("week").weekdayShort,
+                displayDay: today.plus({weeks: 1}).startOf("week").weekdayShort,
                 actionName: "action_reschedule_nextweek",
             },
         };

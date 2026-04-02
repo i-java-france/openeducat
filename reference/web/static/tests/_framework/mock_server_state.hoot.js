@@ -1,12 +1,12 @@
 // ! WARNING: this module cannot depend on modules not ending with ".hoot" (except libs) !
 
-import { after, before, beforeEach, createJobScopedGetter } from "@odoo/hoot";
-import { validateType } from "@odoo/owl";
+import {after, before, beforeEach, createJobScopedGetter} from "@odoo/hoot";
+import {validateType} from "@odoo/owl";
 
-const { view_info } = odoo.__session_info__ || {};
+const {view_info} = odoo.__session_info__ || {};
 delete odoo.__session_info__;
 
-const { Settings } = luxon;
+const {Settings} = luxon;
 
 /**
  * @typedef {typeof SERVER_STATE_VALUES} ServerState
@@ -75,23 +75,23 @@ const SERVER_STATE_VALUES = {
 };
 
 const SERVER_STATE_VALUES_SCHEMA = {
-    companies: { type: Array, element: Object },
-    currencies: { type: Array, element: Object },
+    companies: {type: Array, element: Object},
+    currencies: {type: Array, element: Object},
     db: String,
     debug: String,
-    groupId: [Number, { value: false }],
+    groupId: [Number, {value: false}],
     lang: String,
     multiLang: Boolean,
-    odoobotId: [Number, { value: false }],
-    partnerId: [Number, { value: false }],
+    odoobotId: [Number, {value: false}],
+    partnerId: [Number, {value: false}],
     partnerName: String,
-    publicPartnerId: [Number, { value: false }],
+    publicPartnerId: [Number, {value: false}],
     publicPartnerName: String,
     publicUserId: Number,
-    serverVersion: { type: Array, element: [String, Number] },
+    serverVersion: {type: Array, element: [String, Number]},
     timezone: String,
     userContext: Object,
-    userId: [Number, { value: false }],
+    userId: [Number, {value: false}],
     view_info: Object,
 };
 
@@ -107,7 +107,7 @@ const getServerStateValues = createJobScopedGetter(
 const subscriptions = new Map([
     [
         odoo,
-        ({ db, debug, serverVersion }) => ({
+        ({db, debug, serverVersion}) => ({
             ...odoo,
             debug,
             info: {
@@ -146,8 +146,16 @@ export const serverState = new Proxy(SERVER_STATE_VALUES, {
         return Reflect.has(getServerStateValues(), p);
     },
     set(_target, p, newValue) {
-        if (p in SERVER_STATE_VALUES_SCHEMA && newValue !== null && newValue !== undefined) {
-            const errorMessage = validateType(p, newValue, SERVER_STATE_VALUES_SCHEMA[p]);
+        if (
+            p in SERVER_STATE_VALUES_SCHEMA &&
+            newValue !== null &&
+            newValue !== undefined
+        ) {
+            const errorMessage = validateType(
+                p,
+                newValue,
+                SERVER_STATE_VALUES_SCHEMA[p]
+            );
             if (errorMessage) {
                 throw new TypeError(errorMessage);
             }
@@ -160,4 +168,4 @@ export const serverState = new Proxy(SERVER_STATE_VALUES, {
     },
 });
 
-beforeEach(applyDefaults, { global: true });
+beforeEach(applyDefaults, {global: true});

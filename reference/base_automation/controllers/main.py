@@ -1,5 +1,9 @@
-from odoo.http import request, route, Controller
-from odoo.addons.base_automation.models.base_automation import get_webhook_request_payload
+from odoo.http import Controller, request, route
+
+from odoo.addons.base_automation.models.base_automation import (
+    get_webhook_request_payload,
+)
+
 
 class BaseAutomationController(Controller):
 

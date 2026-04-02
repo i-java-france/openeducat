@@ -1,4 +1,4 @@
-import { logPosMessage } from "@point_of_sale/app/utils/pretty_console_log";
+import {logPosMessage} from "@point_of_sale/app/utils/pretty_console_log";
 
 const BATCH_SIZE = 500; // Can be adjusted based on performance testing
 const TRANSACTION_TIMEOUT = 5000; // 5 seconds timeout for transactions
@@ -17,7 +17,10 @@ export default class IndexedDB {
 
     databaseEventListener(whenReady) {
         const indexedDB =
-            window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+            window.indexedDB ||
+            window.mozIndexedDB ||
+            window.webkitIndexedDB ||
+            window.msIndexedDB;
 
         if (!indexedDB) {
             logPosMessage(
@@ -89,7 +92,7 @@ export default class IndexedDB {
         dbInstance.onupgradeneeded = (event) => {
             for (const [id, storeName] of this.dbStores) {
                 if (!event.target.result.objectStoreNames.contains(storeName)) {
-                    event.target.result.createObjectStore(storeName, { keyPath: id });
+                    event.target.result.createObjectStore(storeName, {keyPath: id});
                 }
             }
         };
@@ -191,8 +194,8 @@ export default class IndexedDB {
             });
 
             const result = await batchPromise
-                .then(() => ({ status: "fulfilled" }))
-                .catch((err) => ({ status: "rejected", reason: err }));
+                .then(() => ({status: "fulfilled"}))
+                .catch((err) => ({status: "rejected", reason: err}));
             results.push(result);
         }
 
@@ -235,7 +238,8 @@ export default class IndexedDB {
     }
 
     readAll(store = [], retry = 0) {
-        const storeNames = store.length > 0 ? store : this.dbStores.map((store) => store[1]);
+        const storeNames =
+            store.length > 0 ? store : this.dbStores.map((store) => store[1]);
         const transaction = this.getNewTransaction(storeNames, "readonly");
 
         if (!transaction && retry < 5) {
@@ -271,7 +275,7 @@ export default class IndexedDB {
 
                     const successMethod = (event) => {
                         const result = event.target.result;
-                        resolve({ [store]: result });
+                        resolve({[store]: result});
                     };
 
                     request.onerror = errorMethod;
@@ -283,7 +287,7 @@ export default class IndexedDB {
         return Promise.allSettled(promises).then((results) =>
             results.reduce((acc, result) => {
                 if (result.status === "fulfilled") {
-                    return { ...acc, ...result.value };
+                    return {...acc, ...result.value};
                 } else {
                     return acc;
                 }

@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
-import { rpc } from "@web/core/network/rpc";
-import { user } from "@web/core/user";
-import { Domain } from "@web/core/domain";
+import {registry} from "@web/core/registry";
+import {rpc} from "@web/core/network/rpc";
+import {user} from "@web/core/user";
+import {Domain} from "@web/core/domain";
 
 /**
  * This ORM service is the standard way to interact with the ORM in python from
@@ -105,7 +105,7 @@ export class ORM {
 
     /** @returns {ORM} */
     get silent() {
-        return Object.assign(Object.create(this), { _silent: true });
+        return Object.assign(Object.create(this), {_silent: true});
     }
 
     /**
@@ -113,7 +113,7 @@ export class ORM {
      * @returns {ORM}
      */
     cache(options = {}) {
-        return Object.assign(Object.create(this), { _cache: options });
+        return Object.assign(Object.create(this), {_cache: options});
     }
 
     /**
@@ -127,7 +127,7 @@ export class ORM {
         validateModel(model);
         const url = `/web/dataset/call_kw/${model}/${method}`;
         const fullContext = Object.assign({}, user.context, kwargs.context || {});
-        const fullKwargs = Object.assign({}, kwargs, { context: fullContext });
+        const fullKwargs = Object.assign({}, kwargs, {context: fullContext});
         const params = {
             model,
             method,
@@ -191,7 +191,10 @@ export class ORM {
             ...kwargs,
         }).then((res) => {
             for (const group of res) {
-                group["__domain"] = Domain.and([domain, group["__extra_domain"]]).toList();
+                group["__domain"] = Domain.and([
+                    domain,
+                    group["__extra_domain"],
+                ]).toList();
             }
             return res;
         });
@@ -217,7 +220,10 @@ export class ORM {
         }).then((res) => {
             for (const groups of res) {
                 for (const group of groups) {
-                    group["__domain"] = Domain.and([domain, group["__extra_domain"]]).toList();
+                    group["__domain"] = Domain.and([
+                        domain,
+                        group["__extra_domain"],
+                    ]).toList();
                 }
             }
             return res;
@@ -247,7 +253,7 @@ export class ORM {
         if (fields) {
             validatePrimitiveList("fields", "string", fields);
         }
-        return this.call(model, "search_read", [], { ...kwargs, domain, fields });
+        return this.call(model, "search_read", [], {...kwargs, domain, fields});
     }
 
     /**
@@ -333,7 +339,7 @@ export class ORM {
      */
     webSearchRead(model, domain, kwargs = {}) {
         validateArray("domain", domain);
-        return this.call(model, "web_search_read", [], { ...kwargs, domain });
+        return this.call(model, "web_search_read", [], {...kwargs, domain});
     }
 
     /**

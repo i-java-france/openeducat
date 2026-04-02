@@ -9,19 +9,19 @@ import {
     useRef,
     useState,
 } from "@odoo/owl";
-import { getBundle } from "@web/core/assets";
-import { memoize } from "@web/core/utils/functions";
-import { fillHtmlTransferData } from "@html_editor/utils/clipboard";
-import { fixInvalidHTML, instanceofMarkup } from "@html_editor/utils/sanitize";
-import { HtmlUpgradeManager } from "@html_editor/html_migrations/html_upgrade_manager";
-import { TableOfContentManager } from "@html_editor/others/embedded_components/core/table_of_content/table_of_content_manager";
-import { scrollAndHighlightHeading } from "@html_editor/utils/url";
+import {getBundle} from "@web/core/assets";
+import {memoize} from "@web/core/utils/functions";
+import {fillHtmlTransferData} from "@html_editor/utils/clipboard";
+import {fixInvalidHTML, instanceofMarkup} from "@html_editor/utils/sanitize";
+import {HtmlUpgradeManager} from "@html_editor/html_migrations/html_upgrade_manager";
+import {TableOfContentManager} from "@html_editor/others/embedded_components/core/table_of_content/table_of_content_manager";
+import {scrollAndHighlightHeading} from "@html_editor/utils/url";
 
 export class HtmlViewer extends Component {
     static template = "html_editor.HtmlViewer";
     static props = {
-        config: { type: Object },
-        migrateHTML: { type: Boolean, optional: true },
+        config: {type: Object},
+        migrateHTML: {type: Boolean, optional: true},
     };
     static defaultProps = {
         migrateHTML: true,
@@ -58,7 +58,7 @@ export class HtmlViewer extends Component {
         if (this.showIframe) {
             onMounted(() => {
                 const onLoadIframe = () => this.onLoadIframe(this.state.value);
-                this.iframeRef.el.addEventListener("load", onLoadIframe, { once: true });
+                this.iframeRef.el.addEventListener("load", onLoadIframe, {once: true});
                 // Force the iframe to call the `load` event. Without this line, the
                 // event 'load' might never trigger.
                 this.iframeRef.el.after(this.iframeRef.el);
@@ -74,7 +74,9 @@ export class HtmlViewer extends Component {
         }
 
         onMounted(() => {
-            scrollAndHighlightHeading(this.readonlyElementRef?.el || this.iframeRef?.el);
+            scrollAndHighlightHeading(
+                this.readonlyElementRef?.el || this.iframeRef?.el
+            );
         });
 
         if (this.props.config.cssAssetId) {
@@ -109,7 +111,9 @@ export class HtmlViewer extends Component {
             fn?.call(this, ev);
         };
         target.addEventListener(eventName, handler, capture);
-        this._cleanups.push(() => target.removeEventListener(eventName, handler, capture));
+        this._cleanups.push(() =>
+            target.removeEventListener(eventName, handler, capture)
+        );
     }
 
     get showIframe() {
@@ -228,8 +232,8 @@ export class HtmlViewer extends Component {
     // Embedded Components
     //--------------------------------------------------------------------------
 
-    destroyComponent({ root, host }) {
-        const { getEditableDescendants } = this.getEmbedding(host);
+    destroyComponent({root, host}) {
+        const {getEditableDescendants} = this.getEmbedding(host);
         const editableDescendants = getEditableDescendants?.(host) || {};
         root.destroy();
         this.components.delete(arguments[0]);
@@ -261,10 +265,12 @@ export class HtmlViewer extends Component {
     }
 
     getEmbedding(host) {
-        return this.embeddedComponents(this.props.config.embeddedComponents)[host.dataset.embedded];
+        return this.embeddedComponents(this.props.config.embeddedComponents)[
+            host.dataset.embedded
+        ];
     }
 
-    setupNewComponent({ name, env, props }) {
+    setupNewComponent({name, env, props}) {
         if (name === "tableOfContent") {
             Object.assign(props, {
                 manager: this.tocManager,
@@ -272,7 +278,7 @@ export class HtmlViewer extends Component {
         }
     }
 
-    mountComponent(host, { Component, getEditableDescendants, getProps, name }) {
+    mountComponent(host, {Component, getEditableDescendants, getProps, name}) {
         const props = getProps?.(host) || {};
         // TODO ABD TODO @phoenix: check if there is too much info in the htmlViewer env.
         // i.e.: env has X because of parent component,
@@ -313,8 +319,11 @@ export class HtmlViewer extends Component {
     }
 
     mountComponents() {
-        this.forEachEmbeddedComponentHost(this.readonlyElementRef.el, (host, embedding) => {
-            this.mountComponent(host, embedding);
-        });
+        this.forEachEmbeddedComponentHost(
+            this.readonlyElementRef.el,
+            (host, embedding) => {
+                this.mountComponent(host, embedding);
+            }
+        );
     }
 }

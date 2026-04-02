@@ -1,10 +1,10 @@
-import { addBuilderOption, setupHTMLBuilder } from "@html_builder/../tests/helpers";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { expect, test, describe } from "@odoo/hoot";
-import { queryOne } from "@odoo/hoot-dom";
-import { xml } from "@odoo/owl";
-import { contains } from "@web/../tests/web_test_helpers";
-const { DateTime } = luxon;
+import {addBuilderOption, setupHTMLBuilder} from "@html_builder/../tests/helpers";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryOne} from "@odoo/hoot-dom";
+import {xml} from "@odoo/owl";
+import {contains} from "@web/../tests/web_test_helpers";
+const {DateTime} = luxon;
 
 describe.current.tags("desktop");
 
@@ -16,7 +16,10 @@ function isExpectedDateTime({
     expectedDateTime = DateTime.now(),
     tolerance = TIME_TOLERANCE,
 }) {
-    const actualTimestamp = DateTime.fromFormat(dateString, "MM/dd/yyyy HH:mm:ss").toUnixInteger();
+    const actualTimestamp = DateTime.fromFormat(
+        dateString,
+        "MM/dd/yyyy HH:mm:ss"
+    ).toUnixInteger();
     const expectedTimestamp = expectedDateTime.toUnixInteger();
     const difference = Math.abs(actualTimestamp - expectedTimestamp);
     return difference <= tolerance;
@@ -55,11 +58,11 @@ test("defaults to now if undefined", async () => {
     await contains(":iframe .test-options-target").click();
 
     let dateString = queryOne(".we-bg-options-container input.o-hb-input-base").value;
-    expect(isExpectedDateTime({ dateString })).toBe(true);
+    expect(isExpectedDateTime({dateString})).toBe(true);
 
     await contains(".we-bg-options-container input.form-check-input").click();
     dateString = queryOne(".we-bg-options-container input.o-hb-input-base").value;
-    expect(isExpectedDateTime({ dateString })).toBe(true);
+    expect(isExpectedDateTime({dateString})).toBe(true);
 });
 
 test("defaults to last one when invalid date provided", async () => {
@@ -69,7 +72,9 @@ test("defaults to last one when invalid date provided", async () => {
             static template = xml`<BuilderDateTimePicker dataAttributeAction="'date'"/>`;
         }
     );
-    await setupHTMLBuilder(`<div class="test-options-target" data-date="1554219400">b</div>`);
+    await setupHTMLBuilder(
+        `<div class="test-options-target" data-date="1554219400">b</div>`
+    );
     await contains(":iframe .test-options-target").click();
     expect(".we-bg-options-container input").toHaveValue("04/02/2019 16:36:40");
 
@@ -90,7 +95,9 @@ test("defaults to last one when invalid date provided (date)", async () => {
             static template = xml`<BuilderDateTimePicker type="'date'" dataAttributeAction="'date'"/>`;
         }
     );
-    await setupHTMLBuilder(`<div class="test-options-target" data-date="1554219400">b</div>`);
+    await setupHTMLBuilder(
+        `<div class="test-options-target" data-date="1554219400">b</div>`
+    );
     await contains(":iframe .test-options-target").click();
     expect(".we-bg-options-container input").toHaveValue("04/02/2019");
 
@@ -118,7 +125,7 @@ test("defaults to now when no date is selected", async () => {
 
     await contains(".we-bg-options-container input").edit("");
     const dateString = queryOne(".we-bg-options-container input").value;
-    expect(isExpectedDateTime({ dateString })).toBe(true);
+    expect(isExpectedDateTime({dateString})).toBe(true);
 });
 
 test("defaults to now when clicking on clear button", async () => {
@@ -138,7 +145,7 @@ test("defaults to now when clicking on clear button", async () => {
         await contains(".o_datetime_buttons button .fa-eraser").click();
         await contains(".options-container").click();
         const dateString = queryOne(".we-bg-options-container input").value;
-        expect(isExpectedDateTime({ dateString })).toBe(true);
+        expect(isExpectedDateTime({dateString})).toBe(true);
     }
 });
 
@@ -157,12 +164,16 @@ test("selects a date and properly applies it", async () => {
     await contains(".options-container").click();
 
     const dateString = queryOne(".we-bg-options-container input").value;
-    const expectedDateTime = DateTime.now().plus({ days: 1 });
-    expect(isExpectedDateTime({ dateString, expectedDateTime })).toBe(true);
+    const expectedDateTime = DateTime.now().plus({days: 1});
+    expect(isExpectedDateTime({dateString, expectedDateTime})).toBe(true);
 
     const expectedDateTimestamp = expectedDateTime.toUnixInteger();
-    const dateTimestamp = parseFloat(queryOne(":iframe .test-options-target").dataset.date);
-    expect(Math.abs(expectedDateTimestamp - dateTimestamp)).toBeLessThan(TIME_TOLERANCE);
+    const dateTimestamp = parseFloat(
+        queryOne(":iframe .test-options-target").dataset.date
+    );
+    expect(Math.abs(expectedDateTimestamp - dateTimestamp)).toBeLessThan(
+        TIME_TOLERANCE
+    );
 });
 
 test("selects a date and synchronize the input field, while still in preview", async () => {
@@ -178,12 +189,16 @@ test("selects a date and synchronize the input field, while still in preview", a
     await contains(".o_date_item_cell.o_today + .o_date_item_cell").click();
 
     const dateString = queryOne(".we-bg-options-container input").value;
-    const expectedDateTime = DateTime.now().plus({ days: 1 });
-    expect(isExpectedDateTime({ dateString, expectedDateTime })).toBe(true);
+    const expectedDateTime = DateTime.now().plus({days: 1});
+    expect(isExpectedDateTime({dateString, expectedDateTime})).toBe(true);
 
     const expectedDateTimestamp = expectedDateTime.toUnixInteger();
-    const dateTimestamp = parseFloat(queryOne(":iframe .test-options-target").dataset.date);
-    expect(Math.abs(expectedDateTimestamp - dateTimestamp)).toBeLessThan(TIME_TOLERANCE);
+    const dateTimestamp = parseFloat(
+        queryOne(":iframe .test-options-target").dataset.date
+    );
+    expect(Math.abs(expectedDateTimestamp - dateTimestamp)).toBeLessThan(
+        TIME_TOLERANCE
+    );
 });
 
 test("edit a date with the datetime picker should correctly apply the mutation", async () => {
@@ -205,7 +220,7 @@ test("edit a date with the datetime picker should correctly apply the mutation",
     expect(".we-bg-options-container input").toHaveValue("04/09/2019 16:36:40");
     expect(":iframe .test-options-target").toHaveAttribute("data-date", "1554824200");
 
-    // refresh the Edit tab
+    // Refresh the Edit tab
     await contains(":iframe .another-target").click();
     await contains(":iframe .test-options-target").click();
     expect(".we-bg-options-container input").toHaveValue("04/09/2019 16:36:40");

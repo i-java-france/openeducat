@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="event_track_location5" model="event.track.location">
         <field name="name">Le Foyer du lac</field>
     </record>
@@ -29,5 +28,4 @@
     <record id="event_track_location_online_3" model="event.track.location">
         <field name="name">Live with Customers</field>
     </record>
-
 </odoo>

@@ -1,5 +1,5 @@
-import { patch } from "@web/core/utils/patch";
-import { ProductDocumentKanbanController } from "@product/js/product_document_kanban/product_document_kanban_controller";
+import {patch} from "@web/core/utils/patch";
+import {ProductDocumentKanbanController} from "@product/js/product_document_kanban/product_document_kanban_controller";
 
 patch(ProductDocumentKanbanController.prototype, {
     setup() {

@@ -1,7 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import re
+
 from odoo import _, models
 from odoo.exceptions import UserError
-import re
 
 
 class L10n_LatamDocumentType(models.Model):

@@ -1,5 +1,5 @@
-import { useService } from "@web/core/utils/hooks";
-import { CalendarCommonPopover } from "@web/views/calendar/calendar_common/calendar_common_popover";
+import {useService} from "@web/core/utils/hooks";
+import {CalendarCommonPopover} from "@web/views/calendar/calendar_common/calendar_common_popover";
 
 export class ActivityCalendarCommonPopover extends CalendarCommonPopover {
     static subTemplates = {
@@ -15,7 +15,7 @@ export class ActivityCalendarCommonPopover extends CalendarCommonPopover {
         const action = await this.orm.call("mail.activity", "action_open_document", [
             this.props.record.rawRecord.id,
         ]);
-        this.actionService.doAction(action, { onClose: () => this.props.model.load() });
+        this.actionService.doAction(action, {onClose: () => this.props.model.load()});
         this.props.close();
     }
 }

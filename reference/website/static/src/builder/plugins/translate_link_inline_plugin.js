@@ -1,5 +1,5 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 export class TranslateLinkInlinePlugin extends Plugin {
     static id = "translateLinkInline";
@@ -15,4 +15,6 @@ export class TranslateLinkInlinePlugin extends Plugin {
     };
 }
 
-registry.category("website-plugins").add(TranslateLinkInlinePlugin.id, TranslateLinkInlinePlugin);
+registry
+    .category("website-plugins")
+    .add(TranslateLinkInlinePlugin.id, TranslateLinkInlinePlugin);

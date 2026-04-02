@@ -1,7 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from collections import defaultdict
 import base64
+from collections import defaultdict
+
 from odoo import api, fields, models
 from odoo.tools.misc import file_open
 

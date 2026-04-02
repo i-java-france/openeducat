@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
 
-from odoo import api, fields, models, _, release
-from odoo.addons.iap.tools import iap_tools
+from odoo import _, api, fields, models, release
 from odoo.exceptions import UserError
 from odoo.tools import is_html_empty
+
+from odoo.addons.iap.tools import iap_tools
 
 _logger = logging.getLogger(__name__)
 
@@ -254,7 +254,7 @@ class CrmIapLeadMiningRequest(models.Model):
                 return False
 
             return response['data']
-        except iap_tools.InsufficientCreditError as e:
+        except iap_tools.InsufficientCreditError:
             self.error_type = 'credits'
             self.state = 'error'
             return False

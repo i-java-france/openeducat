@@ -1,4 +1,4 @@
-import { Plugin } from "@html_editor/plugin";
+import {Plugin} from "@html_editor/plugin";
 import {
     ICON_SELECTOR,
     MEDIA_SELECTOR,
@@ -10,14 +10,14 @@ import {
     paragraphRelatedElementsSelector,
     isContentEditable,
 } from "@html_editor/utils/dom_info";
-import { _t } from "@web/core/l10n/translation";
-import { MediaDialog, TABS } from "./media_dialog/media_dialog";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
-import { boundariesOut, rightPos } from "@html_editor/utils/position";
-import { withSequence } from "@html_editor/utils/resource";
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { fuzzyLookup } from "@web/core/utils/search";
-import { FORMATTABLE_TAGS } from "@html_editor/utils/formatting";
+import {_t} from "@web/core/l10n/translation";
+import {MediaDialog, TABS} from "./media_dialog/media_dialog";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
+import {boundariesOut, rightPos} from "@html_editor/utils/position";
+import {withSequence} from "@html_editor/utils/resource";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {fuzzyLookup} from "@web/core/utils/search";
+import {FORMATTABLE_TAGS} from "@html_editor/utils/formatting";
 
 /**
  * @typedef { Object } MediaShared
@@ -71,7 +71,7 @@ export class MediaPlugin extends Plugin {
                 isAvailable: isHtmlContentSupported,
             },
         ],
-        toolbar_groups: withSequence(31, { id: "replace_image", namespaces: ["image"] }),
+        toolbar_groups: withSequence(31, {id: "replace_image", namespaces: ["image"]}),
         toolbar_items: [
             {
                 id: "replace_image",
@@ -79,15 +79,15 @@ export class MediaPlugin extends Plugin {
                 commandId: "replaceImage",
             },
         ],
-        powerbox_categories: withSequence(40, { id: "media", name: _t("Media") }),
+        powerbox_categories: withSequence(40, {id: "media", name: _t("Media")}),
         ...(this.config.allowImage && {
             powerbox_items: this.getInsertMediaPowerboxItem(),
         }),
-        power_buttons: withSequence(1, { commandId: "insertMedia" }),
+        power_buttons: withSequence(1, {commandId: "insertMedia"}),
         closest_savable_providers: withSequence(20, (el) => this.editable),
 
         /** Handlers */
-        clean_for_save_handlers: ({ root }) => this.cleanForSave(root),
+        clean_for_save_handlers: ({root}) => this.cleanForSave(root),
         normalize_handlers: this.normalizeMedia.bind(this),
         selectionchange_handlers: this.selectAroundIcon.bind(this),
 
@@ -139,7 +139,7 @@ export class MediaPlugin extends Plugin {
         const targetedNodes = this.dependencies.selection.getTargetedNodes();
         const node = targetedNodes.find((node) => node.tagName === "IMG");
         if (node) {
-            this.openMediaDialog({ node });
+            this.openMediaDialog({node});
             this.dependencies.history.addStep();
         }
     }
@@ -155,7 +155,9 @@ export class MediaPlugin extends Plugin {
             }
             el.setAttribute(
                 "contenteditable",
-                el.hasAttribute("contenteditable") ? el.getAttribute("contenteditable") : "false"
+                el.hasAttribute("contenteditable")
+                    ? el.getAttribute("contenteditable")
+                    : "false"
             );
             // Do not update the text if it's already OK to avoid recording a
             // mutation on Firefox. (Chrome filters them out.)
@@ -182,7 +184,7 @@ export class MediaPlugin extends Plugin {
         }
     }
 
-    async onSaveMediaDialog(element, { node }) {
+    async onSaveMediaDialog(element, {node}) {
         if (!element) {
             // @todo @phoenix to remove
             throw new Error("Element is required: onSaveMediaDialog");
@@ -200,21 +202,22 @@ export class MediaPlugin extends Plugin {
             } else {
                 node.replaceWith(element);
             }
-            this.dispatchTo("on_replaced_media_handlers", { newMediaEl: element });
+            this.dispatchTo("on_replaced_media_handlers", {newMediaEl: element});
         } else {
             this.dependencies.dom.insert(element);
-            this.dispatchTo("on_added_media_handlers", { newMediaEl: element });
+            this.dispatchTo("on_added_media_handlers", {newMediaEl: element});
         }
         // Collapse selection after the inserted/replaced element.
         const [anchorNode, anchorOffset] = rightPos(element);
-        this.dependencies.selection.setSelection({ anchorNode, anchorOffset });
+        this.dependencies.selection.setSelection({anchorNode, anchorOffset});
         this.dispatchTo("after_save_media_dialog_handlers", element);
         this.dependencies.history.addStep();
     }
 
     openMediaDialog(params = {}, editableEl = null) {
         const oldSave =
-            params.save || ((element) => this.onSaveMediaDialog(element, { node: params.node }));
+            params.save ||
+            ((element) => this.onSaveMediaDialog(element, {node: params.node}));
         params.save = async (...args) => {
             const selection = args[0];
             const elements = selection
@@ -222,33 +225,38 @@ export class MediaPlugin extends Plugin {
                     ? selection
                     : [selection]
                 : [];
-            for (const onMediaDialogSaved of this.getResource("on_media_dialog_saved_handlers")) {
-                await onMediaDialogSaved(elements, { node: params.node });
+            for (const onMediaDialogSaved of this.getResource(
+                "on_media_dialog_saved_handlers"
+            )) {
+                await onMediaDialogSaved(elements, {node: params.node});
             }
             return oldSave(...args);
         };
-        const { resModel, resId, field, type } = this.getRecordInfo(editableEl);
-        const mediaDialogClosedPromise = this.dependencies.dialog.addDialog(MediaDialog, {
-            resModel,
-            resId,
-            useMediaLibrary: !!(
-                field &&
-                ((resModel === "ir.ui.view" && field === "arch") || type === "html")
-            ), // @todo @phoenix: should be removed and moved to config.mediaModalParams
-            media: params.node,
-            onAttachmentChange: this.config.onAttachmentChange || (() => {}),
-            noImages: !this.config.allowImage,
-            extraTabs: this.getResource("media_dialog_extra_tabs"),
-            ...this.config.mediaModalParams,
-            ...params,
-        });
+        const {resModel, resId, field, type} = this.getRecordInfo(editableEl);
+        const mediaDialogClosedPromise = this.dependencies.dialog.addDialog(
+            MediaDialog,
+            {
+                resModel,
+                resId,
+                useMediaLibrary: !!(
+                    field &&
+                    ((resModel === "ir.ui.view" && field === "arch") || type === "html")
+                ), // @todo @phoenix: should be removed and moved to config.mediaModalParams
+                media: params.node,
+                onAttachmentChange: this.config.onAttachmentChange || (() => {}),
+                noImages: !this.config.allowImage,
+                extraTabs: this.getResource("media_dialog_extra_tabs"),
+                ...this.config.mediaModalParams,
+                ...params,
+            }
+        );
         return mediaDialogClosedPromise;
     }
 
     /**
      * @param {import("@html_editor/core/selection_plugin").SelectionData} param0
      */
-    selectAroundIcon({ editableSelection }) {
+    selectAroundIcon({editableSelection}) {
         if (!editableSelection.isCollapsed) {
             return;
         }
@@ -256,8 +264,9 @@ export class MediaPlugin extends Plugin {
         if (!iconEl) {
             return;
         }
-        const [anchorNode, anchorOffset, focusNode, focusOffset] = boundariesOut(iconEl);
-        const iconOuterBoundaries = { anchorNode, anchorOffset, focusNode, focusOffset };
+        const [anchorNode, anchorOffset, focusNode, focusOffset] =
+            boundariesOut(iconEl);
+        const iconOuterBoundaries = {anchorNode, anchorOffset, focusNode, focusOffset};
         this.dependencies.selection.setSelection(iconOuterBoundaries);
     }
 
@@ -269,7 +278,11 @@ export class MediaPlugin extends Plugin {
         if (!searchTerm) {
             return undefined;
         }
-        const matchedTabs = fuzzyLookup(searchTerm, this.availableTabs, (tab) => tab.title);
+        const matchedTabs = fuzzyLookup(
+            searchTerm,
+            this.availableTabs,
+            (tab) => tab.title
+        );
         if (!matchedTabs.length) {
             return undefined;
         }

@@ -1,5 +1,5 @@
-import { Component, xml } from "@odoo/owl";
-import { registry } from "@web/core/registry";
+import {Component, xml} from "@odoo/owl";
+import {registry} from "@web/core/registry";
 
 class Alert extends Component {
     static template = xml`
@@ -22,7 +22,7 @@ class Alert extends Component {
 
 export const alertService = {
     dependencies: ["overlay"],
-    start(env, { overlay }) {
+    start(env, {overlay}) {
         let dismiss = undefined;
 
         const add = (message, options = {}, overlayOptions = {}) => {
@@ -37,7 +37,7 @@ export const alertService = {
             );
         };
 
-        return { add, dismiss: () => dismiss?.() };
+        return {add, dismiss: () => dismiss?.()};
     },
 };
 

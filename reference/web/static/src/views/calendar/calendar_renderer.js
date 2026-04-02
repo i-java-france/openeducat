@@ -1,8 +1,8 @@
-import { ActionSwiper } from "@web/core/action_swiper/action_swiper";
-import { CalendarCommonRenderer } from "./calendar_common/calendar_common_renderer";
-import { CalendarYearRenderer } from "./calendar_year/calendar_year_renderer";
+import {ActionSwiper} from "@web/core/action_swiper/action_swiper";
+import {CalendarCommonRenderer} from "./calendar_common/calendar_common_renderer";
+import {CalendarYearRenderer} from "./calendar_year/calendar_year_renderer";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class CalendarRenderer extends Component {
     static template = "web.CalendarRenderer";
@@ -45,10 +45,10 @@ export class CalendarRenderer extends Component {
     get actionSwiperProps() {
         return {
             onLeftSwipe: this.env.isSmall
-                ? { action: () => this.props.setDate("next") }
+                ? {action: () => this.props.setDate("next")}
                 : undefined,
             onRightSwipe: this.env.isSmall
-                ? { action: () => this.props.setDate("previous") }
+                ? {action: () => this.props.setDate("previous")}
                 : undefined,
             animationOnMove: false,
             animationType: "forwards",

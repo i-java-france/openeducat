@@ -26,7 +26,7 @@ export class PairSet {
     }
 }
 
-import { addLoadingEffect } from "@web/core/utils/ui";
+import {addLoadingEffect} from "@web/core/utils/ui";
 
 export const DEBOUNCE = 400;
 export const BUTTON_HANDLER_SELECTOR =

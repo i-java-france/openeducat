@@ -1,9 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from threading import Event
 import time
+from threading import Event
 
 from odoo.http import request
+
 from odoo.addons.iot_drivers.tools import helpers
 from odoo.addons.iot_drivers.webrtc_client import webrtc_client
 from odoo.addons.iot_drivers.websocket_client import send_to_controller

@@ -1,8 +1,11 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame, click, press, queryAll } from "@odoo/hoot-dom";
-import { advanceTime } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {animationFrame, click, press, queryAll} from "@odoo/hoot-dom";
+import {advanceTime} from "@odoo/hoot-mock";
 
 setupInteractionWhiteList("website.gallery");
 
@@ -33,7 +36,7 @@ const defaultGallery = `
 `;
 
 test("gallery does nothing if there is no non-slideshow s_image_gallery", async () => {
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <div id="wrapwrap">
             <section class="s_image_gallery o_slideshow"/>
         </div>
@@ -41,8 +44,8 @@ test("gallery does nothing if there is no non-slideshow s_image_gallery", async 
     expect(core.interactions).toHaveLength(0);
 });
 
-async function checkLightbox({ next, previous, close }) {
-    const { core } = await startInteractions(defaultGallery);
+async function checkLightbox({next, previous, close}) {
+    const {core} = await startInteractions(defaultGallery);
     expect(core.interactions).toHaveLength(1);
     const imgEls = queryAll("img");
     await click(imgEls[3]);
@@ -56,7 +59,10 @@ async function checkLightbox({ next, previous, close }) {
         await advanceTime(1000);
         const lightboxActiveImgEl = lightboxEl.querySelector(".active img");
         expect(lightboxActiveImgEl).not.toBe(null);
-        expect(imgEls[expectedIndex]).toHaveAttribute("src", lightboxActiveImgEl.dataset.src);
+        expect(imgEls[expectedIndex]).toHaveAttribute(
+            "src",
+            lightboxActiveImgEl.dataset.src
+        );
     }
 
     await checkActiveImage(3);
@@ -78,16 +84,18 @@ async function checkLightbox({ next, previous, close }) {
 
 test("gallery interaction opens lightbox on click, then use keyboard", async () => {
     await checkLightbox({
-        close: async () => await press("Escape", { code: "Escape" }),
-        next: async () => await press("ArrowRight", { code: "ArrowRight" }),
-        previous: async () => await press("ArrowLeft", { code: "ArrowLeft" }),
+        close: async () => await press("Escape", {code: "Escape"}),
+        next: async () => await press("ArrowRight", {code: "ArrowRight"}),
+        previous: async () => await press("ArrowLeft", {code: "ArrowLeft"}),
     });
 });
 
 test("gallery interaction opens lightbox on click, then use mouse", async () => {
     await checkLightbox({
-        close: async (lightboxEl) => await click(lightboxEl.querySelector(".btn-close")),
-        next: async (lightboxEl) => await click(lightboxEl.querySelector(".carousel-control-next")),
+        close: async (lightboxEl) =>
+            await click(lightboxEl.querySelector(".btn-close")),
+        next: async (lightboxEl) =>
+            await click(lightboxEl.querySelector(".carousel-control-next")),
         previous: async (lightboxEl) =>
             await click(lightboxEl.querySelector(".carousel-control-prev")),
     });

@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { contains } from "@web/../tests/utils";
+import {registry} from "@web/core/registry";
+import {contains} from "@web/../tests/utils";
 
 registry.category("web_tour.tours").add("star_message_tour", {
     steps: () => [
@@ -9,7 +9,8 @@ registry.category("web_tour.tours").add("star_message_tour", {
             run: "hover && click #chatterRoot:shadow [title='Add Star']",
         },
         {
-            trigger: "#chatterRoot:shadow .o-mail-Message[data-starred]:contains(Test Message)",
+            trigger:
+                "#chatterRoot:shadow .o-mail-Message[data-starred]:contains(Test Message)",
         },
     ],
 });
@@ -30,7 +31,8 @@ registry.category("web_tour.tours").add("message_actions_tour", {
             run: "edit New message",
         },
         {
-            trigger: "#chatterRoot:shadow .o-mail-Composer button:contains(Send):enabled",
+            trigger:
+                "#chatterRoot:shadow .o-mail-Composer button:contains(Send):enabled",
             run: "click",
         },
         {
@@ -43,11 +45,13 @@ registry.category("web_tour.tours").add("message_actions_tour", {
             },
         },
         {
-            trigger: "#chatterRoot:shadow .o-mail-Message[data-persistent]:contains(New message)",
+            trigger:
+                "#chatterRoot:shadow .o-mail-Message[data-persistent]:contains(New message)",
             run: "hover && click #chatterRoot:shadow button[title='Add a Reaction']",
         },
         {
-            trigger: "#chatterRoot:shadow .o-mail-QuickReactionMenu-emoji span:contains(❤️)",
+            trigger:
+                "#chatterRoot:shadow .o-mail-QuickReactionMenu-emoji span:contains(❤️)",
             run: "click",
         },
         {
@@ -67,7 +71,8 @@ registry.category("web_tour.tours").add("message_actions_tour", {
             run: "click",
         },
         {
-            trigger: "#chatterRoot:shadow .o-mail-Message:contains(Message content changed)",
+            trigger:
+                "#chatterRoot:shadow .o-mail-Message:contains(Message content changed)",
             run: "hover && click #chatterRoot:shadow button[title='Delete']",
         },
         {

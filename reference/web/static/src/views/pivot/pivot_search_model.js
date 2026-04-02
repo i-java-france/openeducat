@@ -1,4 +1,4 @@
-import { SearchModel } from "@web/search/search_model";
+import {SearchModel} from "@web/search/search_model";
 
 export class PivotSearchModel extends SearchModel {
     _getIrFilterDescription() {
@@ -9,8 +9,8 @@ export class PivotSearchModel extends SearchModel {
     }
 
     _getSearchItemGroupBys(activeItem) {
-        const { searchItemId } = activeItem;
-        const { context, type } = this.searchItems[searchItemId];
+        const {searchItemId} = activeItem;
+        const {context, type} = this.searchItems[searchItemId];
         if (
             !this.preparingIrFilterDescription &&
             type === "favorite" &&

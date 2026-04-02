@@ -1,13 +1,13 @@
-import { _t } from "@web/core/l10n/translation";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { DebugMenuBasic } from "@web/core/debug/debug_menu_basic";
-import { useCommand } from "@web/core/commands/command_hook";
-import { useService } from "@web/core/utils/hooks";
-import { useEnvDebugContext } from "./debug_context";
+import {_t} from "@web/core/l10n/translation";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {DebugMenuBasic} from "@web/core/debug/debug_menu_basic";
+import {useCommand} from "@web/core/commands/command_hook";
+import {useService} from "@web/core/utils/hooks";
+import {useEnvDebugContext} from "./debug_context";
 
 export class DebugMenu extends DebugMenuBasic {
-    static components = { Dropdown, DropdownItem };
+    static components = {Dropdown, DropdownItem};
     static props = {};
     setup() {
         super.setup();

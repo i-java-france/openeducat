@@ -1,13 +1,13 @@
-import { serializeDateTime, serializeDate } from "@web/core/l10n/dates";
-import { X2MANY_TYPES, DATE_TIME_TYPE } from "./utils";
+import {serializeDateTime, serializeDate} from "@web/core/l10n/dates";
+import {X2MANY_TYPES, DATE_TIME_TYPE} from "./utils";
 
 const deepSerialization = (
     record,
     opts,
-    { serialized = {}, uuidMapping = {}, parentRelInverseName = null, stack = [] }
+    {serialized = {}, uuidMapping = {}, parentRelInverseName = null, stack = []}
 ) => {
     const result = {};
-    const { fields, name: currentModel } = record.model;
+    const {fields, name: currentModel} = record.model;
     const DYNAMIC_MODELS = opts.dynamicModels;
     const recursiveSerialize = (childRecord, parentRelInverseName) =>
         deepSerialization(childRecord, opts, {
@@ -38,7 +38,7 @@ const deepSerialization = (
             }
         }
         if (DYNAMIC_MODELS.includes(currentModel) && !serialized[currentModel]) {
-            serialized[currentModel] = { [record.uuid]: record.uuid };
+            serialized[currentModel] = {[record.uuid]: record.uuid};
         }
         if (DYNAMIC_MODELS.includes(targetModel) && !uuidMapping[targetModel]) {
             uuidMapping[targetModel] = {};
@@ -96,14 +96,19 @@ const deepSerialization = (
                     });
             }
 
-            if (modelCommands.unlink.has(fieldName) || modelCommands.delete.has(fieldName)) {
+            if (
+                modelCommands.unlink.has(fieldName) ||
+                modelCommands.delete.has(fieldName)
+            ) {
                 result[fieldName] = result[fieldName] || [];
                 const processRecords = (records, cmdCode) => {
-                    for (const { id, parentId } of records) {
-                        const isAlreadyDeleted = serialized[relatedModel]?.["_deleted_" + id];
+                    for (const {id, parentId} of records) {
+                        const isAlreadyDeleted =
+                            serialized[relatedModel]?.["_deleted_" + id];
                         if (parentId === record.id && !isAlreadyDeleted) {
                             const isCascadeDelete =
-                                record.models[relatedModel]?.fields[field.inverse_name]?.ondelete;
+                                record.models[relatedModel]?.fields[field.inverse_name]
+                                    ?.ondelete;
                             if (isCascadeDelete) {
                                 serialized[relatedModel]["_deleted_" + id] = true;
                             }
@@ -117,7 +122,7 @@ const deepSerialization = (
                 for (const commands of [modelCommands.unlink, modelCommands.delete]) {
                     const commandList = commands.get(fieldName) || [];
                     const remainingCommands = commandList.filter(
-                        ({ parentId }) => parentId !== record.id
+                        ({parentId}) => parentId !== record.id
                     );
 
                     if (opts.keepCommands) {
@@ -145,10 +150,12 @@ const deepSerialization = (
                     if (!record[fieldName].isSynced) {
                         //  mapping is only needed for newly created records
                         uuidMapping[targetModel][record.uuid] ??= {};
-                        uuidMapping[targetModel][record.uuid][fieldName] = record[fieldName].uuid;
+                        uuidMapping[targetModel][record.uuid][fieldName] =
+                            record[fieldName].uuid;
                     }
                 }
-                serialized[relatedModel][record[fieldName].uuid] = record[fieldName].uuid;
+                serialized[relatedModel][record[fieldName].uuid] =
+                    record[fieldName].uuid;
             }
             if (typeof recordId === "number" && recordId >= 0) {
                 result[fieldName] = recordId;

@@ -1,6 +1,6 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { useState } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {useState} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
 
 export class ThemeAdvancedOption extends BaseOptionComponent {
     static template = "website.ThemeAdvancedOption";
@@ -11,6 +11,6 @@ export class ThemeAdvancedOption extends BaseOptionComponent {
     }
 
     getGrayTitle(grayCode) {
-        return _t("Gray %(grayCode)s", { grayCode });
+        return _t("Gray %(grayCode)s", {grayCode});
     }
 }

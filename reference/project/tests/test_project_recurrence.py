@@ -1,17 +1,17 @@
-# -*- coding: utf-8 -*-
+
+from datetime import datetime, time
+
+from dateutil.relativedelta import relativedelta
+from freezegun import freeze_time
 
 from odoo import Command, fields
 from odoo.tests import Form, TransactionCase, users
-
-from datetime import datetime, time
-from dateutil.relativedelta import relativedelta
-from freezegun import freeze_time
 
 
 class TestProjectRecurrence(TransactionCase):
     @classmethod
     def setUpClass(cls):
-        super(TestProjectRecurrence, cls).setUpClass()
+        super().setUpClass()
 
         user_group_employee = cls.env.ref('base.group_user')
         user_group_project_user = cls.env.ref('project.group_project_user')

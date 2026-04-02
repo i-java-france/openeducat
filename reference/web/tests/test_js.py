@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
 from contextlib import suppress
 
+from werkzeug.urls import url_quote_plus
+
 import odoo.tests
 from odoo.tools.misc import file_open
-from werkzeug.urls import url_quote_plus
 
 RE_FORBIDDEN_STATEMENTS = re.compile(r'test.*\.(only|debug)\(')
 RE_ONLY = re.compile(r'QUnit\.(only|debug)\(')

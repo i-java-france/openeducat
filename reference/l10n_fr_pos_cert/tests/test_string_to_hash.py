@@ -1,7 +1,10 @@
-from odoo.addons.point_of_sale.tests.common import TestPoSCommon
-from odoo.tests import tagged
-from ..models.pos import ORDER_FIELDS_BEFORE_17_4, ORDER_FIELDS_FROM_17_4, LINE_FIELDS
 from json import dumps
+
+from odoo.tests import tagged
+
+from odoo.addons.point_of_sale.tests.common import TestPoSCommon
+
+from ..models.pos import LINE_FIELDS, ORDER_FIELDS_BEFORE_17_4, ORDER_FIELDS_FROM_17_4
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')

@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -66,7 +65,7 @@ class FleetVehicleLogServices(models.Model):
                 # data as it would result to the creation of a
                 # odometer log with 0, which is to be avoided
                 del data['odometer']
-        return super(FleetVehicleLogServices, self).create(vals_list)
+        return super().create(vals_list)
 
     @api.depends('vehicle_id')
     def _compute_purchaser_id(self):

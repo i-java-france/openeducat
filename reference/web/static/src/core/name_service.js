@@ -1,8 +1,10 @@
-import { registry } from "@web/core/registry";
-import { unique, zip } from "@web/core/utils/arrays";
-import { Deferred } from "@web/core/utils/concurrency";
+import {registry} from "@web/core/registry";
+import {unique, zip} from "@web/core/utils/arrays";
+import {Deferred} from "@web/core/utils/concurrency";
 
-export const ERROR_INACCESSIBLE_OR_MISSING = Symbol("INACCESSIBLE OR MISSING RECORD ID");
+export const ERROR_INACCESSIBLE_OR_MISSING = Symbol(
+    "INACCESSIBLE OR MISSING RECORD ID"
+);
 
 function isId(val) {
     return Number.isInteger(val) && val >= 1;
@@ -15,7 +17,7 @@ function isId(val) {
 export const nameService = {
     dependencies: ["orm"],
     async: ["loadDisplayNames"],
-    start(env, { orm }) {
+    start(env, {orm}) {
         let cache = {};
         const batches = {};
 
@@ -72,13 +74,13 @@ export const nameService = {
                     const idsInBatch = unique(batches[resModel]);
                     delete batches[resModel];
 
-                    const specification = { display_name: {} };
+                    const specification = {display_name: {}};
                     orm.silent
                         .webSearchRead(resModel, [["id", "in", idsInBatch]], {
                             specification,
-                            context: { active_test: false },
+                            context: {active_test: false},
                         })
-                        .then(({ records }) => {
+                        .then(({records}) => {
                             const displayNames = Object.fromEntries(
                                 records.map((rec) => [rec.id, rec.display_name])
                             );
@@ -96,7 +98,7 @@ export const nameService = {
             return Object.fromEntries(zip(resIds, names));
         }
 
-        return { addDisplayNames, clearCache, loadDisplayNames };
+        return {addDisplayNames, clearCache, loadDisplayNames};
     },
 };
 

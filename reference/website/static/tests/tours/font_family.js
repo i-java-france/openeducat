@@ -1,5 +1,5 @@
-import { registerWebsitePreviewTour, goToTheme } from "@website/js/tours/tour_utils";
-import { patch } from "@web/core/utils/patch";
+import {registerWebsitePreviewTour, goToTheme} from "@website/js/tours/tour_utils";
+import {patch} from "@web/core/utils/patch";
 
 registerWebsitePreviewTour(
     "website_font_family",
@@ -21,7 +21,8 @@ registerWebsitePreviewTour(
             run: "click",
         },
         {
-            content: "Verify that the 'Arvo' font family is correctly applied to the heading.",
+            content:
+                "Verify that the 'Arvo' font family is correctly applied to the heading.",
             trigger: "button.dropdown-toggle span[style*='font-family: Arvo;']",
         },
         {
@@ -41,7 +42,9 @@ registerWebsitePreviewTour(
                 )["CustomizeWebsitePlugin"];
                 patch(options.prototype, {
                     async reloadBundles() {
-                        console.error("The font family selector value get reload to its default.");
+                        console.error(
+                            "The font family selector value get reload to its default."
+                        );
                     },
                 });
             },

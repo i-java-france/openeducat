@@ -1,14 +1,16 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import OrderedDict
 from itertools import chain
+
 from lxml import etree
 
 from odoo import Command
-from odoo.addons.hr.tests.common import TestHrCommon
-from odoo.tests import new_test_user, tagged, Form
 from odoo.exceptions import AccessError
+from odoo.tests import Form, new_test_user, tagged
+
+from odoo.addons.hr.tests.common import TestHrCommon
+
 
 @tagged('post_install', '-at_install')
 class TestSelfAccessPreferences(TestHrCommon):
@@ -105,7 +107,7 @@ class TestSelfAccessRights(TestHrCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestSelfAccessRights, cls).setUpClass()
+        super().setUpClass()
         cls.richard = new_test_user(cls.env, login='ric', groups='base.group_user', name='Simple employee', email='ric@example.com')
         cls.richard_emp = cls.env['hr.employee'].create({
             'name': 'Richard',

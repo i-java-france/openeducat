@@ -1,5 +1,5 @@
-import { expect } from "@odoo/hoot";
-import { testEditor } from "./editor";
+import {expect} from "@odoo/hoot";
+import {testEditor} from "./editor";
 
 export const TAB_WIDTH = 40;
 
@@ -93,7 +93,7 @@ function extractWidth(content) {
         widths.push(parseFloat(w));
         return `width: _px;`;
     });
-    return { text, widths };
+    return {text, widths};
 }
 
 /**
@@ -106,8 +106,8 @@ function extractWidth(content) {
  */
 function compare(contentEl, contentSpec, mode) {
     const maxDiff = 0.5;
-    const { text: receivedContent, widths: receivedWidths } = extractWidth(contentEl);
-    const { text: expectedContent, widths: expectedWidths } = extractWidth(contentSpec);
+    const {text: receivedContent, widths: receivedWidths} = extractWidth(contentEl);
+    const {text: expectedContent, widths: expectedWidths} = extractWidth(contentSpec);
 
     expect(receivedContent).toBe(expectedContent, {
         message: `(testEditor) ${mode} should be strictly equal to ${expectedContent}`,
@@ -130,5 +130,5 @@ function compare(contentEl, contentSpec, mode) {
 }
 
 export function testTabulation(params) {
-    return testEditor({ ...params, compareFunction: compare });
+    return testEditor({...params, compareFunction: compare});
 }

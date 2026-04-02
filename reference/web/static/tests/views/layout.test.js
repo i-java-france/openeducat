@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
 import {
     Component,
     onWillStart,
@@ -18,10 +18,10 @@ import {
     mountWithSearch,
 } from "@web/../tests/web_test_helpers";
 
-import { useService } from "@web/core/utils/hooks";
-import { Layout } from "@web/search/layout";
-import { SearchModel } from "@web/search/search_model";
-import { getDefaultConfig } from "@web/views/view";
+import {useService} from "@web/core/utils/hooks";
+import {Layout} from "@web/search/layout";
+import {SearchModel} from "@web/search/search_model";
+import {getDefaultConfig} from "@web/views/view";
 
 class Foo extends models.Model {
     aaa = fields.Selection({
@@ -60,11 +60,11 @@ test(`Simple rendering`, async () => {
                 <div class="toy_content"/>
             </Layout>
         `;
-        static components = { Layout };
+        static components = {Layout};
     }
 
     await mountWithCleanup(ToyComponent, {
-        env: await makeMockEnv({ config: {} }),
+        env: await makeMockEnv({config: {}}),
     });
     expect(`.o_view_sample_data`).toHaveCount(1);
     expect(`.o_control_panel`).toHaveCount(0);
@@ -84,7 +84,7 @@ test(`Simple rendering: with search`, async () => {
                 <div class="toy_content"/>
             </Layout>
         `;
-        static components = { Layout };
+        static components = {Layout};
     }
 
     await mountWithSearch(ToyComponent, {
@@ -105,16 +105,16 @@ test(`Rendering with default ControlPanel and SearchPanel`, async () => {
                 <div class="toy_content"/>
             </Layout>
         `;
-        static components = { Layout };
+        static components = {Layout};
 
         setup() {
             this.searchModel = new SearchModel(this.env, {
                 orm: useService("orm"),
                 view: useService("view"),
             });
-            useSubEnv({ searchModel: this.searchModel });
+            useSubEnv({searchModel: this.searchModel});
             onWillStart(async () => {
-                await this.searchModel.load({ resModel: "foo" , searchViewId: false});
+                await this.searchModel.load({resModel: "foo", searchViewId: false});
             });
         }
     }
@@ -142,7 +142,7 @@ test(`Nested layouts`, async () => {
                 <div class="toy_c_content"/>
             </Layout>
         `;
-        static components = { Layout };
+        static components = {Layout};
 
         get display() {
             return {
@@ -168,7 +168,7 @@ test(`Nested layouts`, async () => {
                 <ToyC/>
             </Layout>
         `;
-        static components = { Layout, ToyC };
+        static components = {Layout, ToyC};
         setup() {
             useChildSubEnv({
                 config: {
@@ -190,7 +190,7 @@ test(`Nested layouts`, async () => {
                 <ToyB display="props.display"/>
             </Layout>
         `;
-        static components = { Layout, ToyB };
+        static components = {Layout, ToyB};
     }
 
     await mountWithSearch(ToyA, {
@@ -215,7 +215,7 @@ test(`Custom control panel`, async () => {
                 <div class="o_toy_content"/>
             </Layout>
         `;
-        static components = { Layout };
+        static components = {Layout};
     }
 
     class ControlPanel extends Component {
@@ -229,7 +229,7 @@ test(`Custom control panel`, async () => {
             resModel: "foo",
             searchViewId: false,
         },
-        { ControlPanel }
+        {ControlPanel}
     );
     expect(`.o_toy_content`).toHaveCount(1);
     expect(`.o_toy_search_panel`).toHaveCount(1);
@@ -244,7 +244,7 @@ test(`Custom search panel`, async () => {
                 <div class="o_toy_content"/>
             </Layout>
         `;
-        static components = { Layout };
+        static components = {Layout};
     }
 
     class SearchPanel extends Component {
@@ -258,7 +258,7 @@ test(`Custom search panel`, async () => {
             resModel: "foo",
             searchViewId: false,
         },
-        { SearchPanel }
+        {SearchPanel}
     );
     expect(`.o_toy_content`).toHaveCount(1);
     expect(`.o_toy_search_panel`).toHaveCount(1);
@@ -266,7 +266,7 @@ test(`Custom search panel`, async () => {
 });
 
 test(`Simple rendering: with dynamically displayed search`, async () => {
-    const state = reactive({ displayLayoutActions: true });
+    const state = reactive({displayLayoutActions: true});
 
     class ToyComponent extends Component {
         static props = ["*"];
@@ -278,7 +278,7 @@ test(`Simple rendering: with dynamically displayed search`, async () => {
                 <div class="toy_content"/>
             </Layout>
         `;
-        static components = { Layout };
+        static components = {Layout};
 
         setup() {
             this.state = useState(state);

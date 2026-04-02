@@ -17,8 +17,13 @@ const replaceAttributes = (template) => {
         for (const prefix of ATTRIBUTE_PREFIXES) {
             const targetAttribute = `${prefix}src`;
             const dataAttribute = `${prefix}data-src`;
-            for (const element of template.querySelectorAll(`${tagName}[${targetAttribute}]`)) {
-                element.setAttribute(dataAttribute, element.getAttribute(targetAttribute));
+            for (const element of template.querySelectorAll(
+                `${tagName}[${targetAttribute}]`
+            )) {
+                element.setAttribute(
+                    dataAttribute,
+                    element.getAttribute(targetAttribute)
+                );
                 if (prefix) {
                     element.removeAttribute(targetAttribute);
                 }
@@ -37,7 +42,7 @@ const SRC_REPLACERS = [
 ];
 const ATTRIBUTE_PREFIXES = ["", "t-att-", "t-attf-"];
 
-const { loader } = odoo;
+const {loader} = odoo;
 
 //-----------------------------------------------------------------------------
 // Exports
@@ -59,7 +64,7 @@ export function makeTemplateFactory(name, factory) {
         const factoryFn = factory.fn;
         factory.fn = (...args) => {
             const exports = factoryFn(...args);
-            const { clearProcessedTemplates, getTemplate } = exports;
+            const {clearProcessedTemplates, getTemplate} = exports;
 
             // Patch "getTemplates" to access local cache
             exports.getTemplate = function mockedGetTemplate(name) {
@@ -68,11 +73,17 @@ export function makeTemplateFactory(name, factory) {
                     return getTemplate(name);
                 }
                 const rawTemplate = getTemplate(name) || this.rawTemplates[name];
-                if (typeof rawTemplate === "function" && !(rawTemplate instanceof Element)) {
+                if (
+                    typeof rawTemplate === "function" &&
+                    !(rawTemplate instanceof Element)
+                ) {
                     return rawTemplate;
                 }
                 if (!compiledTemplates.has(rawTemplate)) {
-                    compiledTemplates.set(rawTemplate, this._compileTemplate(name, rawTemplate));
+                    compiledTemplates.set(
+                        rawTemplate,
+                        this._compileTemplate(name, rawTemplate)
+                    );
                 }
                 return compiledTemplates.get(rawTemplate);
             };

@@ -1,7 +1,7 @@
-import { expect, test } from "@odoo/hoot";
-import { queryOne } from "@odoo/hoot-dom";
-import { xml } from "@odoo/owl";
-import { contains, onRpc } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {queryOne} from "@odoo/hoot-dom";
+import {xml} from "@odoo/owl";
+import {contains, onRpc} from "@web/../tests/web_test_helpers";
 import {
     addOption,
     addPlugin,
@@ -9,9 +9,9 @@ import {
     setupWebsiteBuilder,
     setupWebsiteBuilderWithSnippet,
 } from "./website_helpers";
-import { Plugin } from "@html_editor/plugin";
-import { insertText } from "@html_editor/../tests/_helpers/user_actions";
-import { setSelection } from "@html_editor/../tests/_helpers/selection";
+import {Plugin} from "@html_editor/plugin";
+import {insertText} from "@html_editor/../tests/_helpers/user_actions";
+import {setSelection} from "@html_editor/../tests/_helpers/selection";
 
 defineWebsiteModels();
 
@@ -33,20 +33,22 @@ test("Check contenteditable attribute", async () => {
             </div>
         </section>
     `);
-    expect(":iframe section:not([contenteditable=false]) > .not_a_container_class").toHaveCount(1);
+    expect(
+        ":iframe section:not([contenteditable=false]) > .not_a_container_class"
+    ).toHaveCount(1);
     expect(
         ":iframe section[contenteditable=false] > .o_container_small[contenteditable=true]"
     ).toHaveCount(1);
     expect(
         ":iframe section[contenteditable=false] > .container-fluid[contenteditable=true]"
     ).toHaveCount(1);
-    expect(":iframe section[contenteditable=false] > .container[contenteditable=true]").toHaveCount(
-        1
-    );
+    expect(
+        ":iframe section[contenteditable=false] > .container[contenteditable=true]"
+    ).toHaveCount(1);
     expect(":iframe .o_we_bg_filter[contenteditable=false]").toHaveCount(1);
     expect(":iframe .o_we_shape[contenteditable=false]").toHaveCount(1);
 
-    onRpc("ir.ui.view", "save", ({ args }) => {
+    onRpc("ir.ui.view", "save", ({args}) => {
         // Make sure the content is saved and doesn't contain "contenteditable"
         expect(args[1].includes("<section")).toBe(true);
         expect(args[1].includes("contenteditable")).toBe(false);
@@ -58,7 +60,9 @@ test("Check contenteditable attribute", async () => {
 
 test("Check contenteditable on Parallax snippet", async () => {
     await setupWebsiteBuilderWithSnippet("s_parallax");
-    expect(":iframe section.s_parallax > .oe_structure[contenteditable=false]").toHaveCount(1);
+    expect(
+        ":iframe section.s_parallax > .oe_structure[contenteditable=false]"
+    ).toHaveCount(1);
 });
 
 test("Do not set contenteditable attribute on data-oe-readonly", async () => {
@@ -106,7 +110,7 @@ test("Set contenteditable to false on empty arch field", async () => {
 });
 
 test("feff on links are cleaned up", async () => {
-    onRpc("ir.ui.view", "save", ({ args }) => {
+    onRpc("ir.ui.view", "save", ({args}) => {
         // Check that the saved content has no feff
         expect(args[1]).toBe(
             `<div id="wrap" class="oe_structure oe_empty" data-oe-model="ir.ui.view" data-oe-id="539" data-oe-field="arch"><section class="o_colored_level"><a href="http://test.test">texst</a></section></div>`
@@ -114,11 +118,11 @@ test("feff on links are cleaned up", async () => {
         expect.step("save");
         return true;
     });
-    const { getEditor } = await setupWebsiteBuilder(
+    const {getEditor} = await setupWebsiteBuilder(
         `<section><a href="http://test.test">test</a></section>`
     );
     const link = queryOne(":iframe a");
-    setSelection({ anchorNode: link.childNodes[1], anchorOffset: 2 });
+    setSelection({anchorNode: link.childNodes[1], anchorOffset: 2});
     await insertText(getEditor(), "x");
     expect(link.innerText).toMatch(/\u{FEFF}/u);
     await contains(".o-snippets-top-actions button:contains(Save)").click();

@@ -1,7 +1,7 @@
-import { Plugin } from "@html_editor/plugin";
-import { parseHTML } from "@html_editor/utils/html";
-import { _t } from "@web/core/l10n/translation";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {parseHTML} from "@html_editor/utils/html";
+import {_t} from "@web/core/l10n/translation";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
 
 export class StarPlugin extends Plugin {
     static id = "star";
@@ -25,14 +25,14 @@ export class StarPlugin extends Plugin {
                 categoryId: "widget",
                 icon: "fa-star-o",
                 commandId: "addStars",
-                commandParams: { length: 3 },
+                commandParams: {length: 3},
             },
             {
                 title: _t("5 Stars"),
                 description: _t("Insert a rating over 5 stars"),
                 categoryId: "widget",
                 commandId: "addStars",
-                commandParams: { length: 5 },
+                commandParams: {length: 5},
             },
         ],
         selectors_for_feff_providers: () => ".o_stars",
@@ -46,7 +46,8 @@ export class StarPlugin extends Plugin {
         const node = ev.target;
         const isStar = (node) =>
             node.nodeType === Node.ELEMENT_NODE &&
-            (node.classList.contains("fa-star") || node.classList.contains("fa-star-o"));
+            (node.classList.contains("fa-star") ||
+                node.classList.contains("fa-star-o"));
         if (
             isStar(node) &&
             node.parentElement &&
@@ -75,8 +76,10 @@ export class StarPlugin extends Plugin {
         }
     }
 
-    addStars({ length }) {
-        const stars = Array.from({ length }, () => '<i class="fa fa-star-o"></i>').join("");
+    addStars({length}) {
+        const stars = Array.from({length}, () => '<i class="fa fa-star-o"></i>').join(
+            ""
+        );
         const html = `<span contenteditable="false" class="o_stars">${stars}</span>`;
         this.dependencies.dom.insert(parseHTML(this.document, html));
         this.dependencies.history.addStep();

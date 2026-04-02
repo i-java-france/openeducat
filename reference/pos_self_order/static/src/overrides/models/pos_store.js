@@ -1,5 +1,5 @@
-import { PosStore } from "@point_of_sale/app/services/pos_store";
-import { patch } from "@web/core/utils/patch";
+import {PosStore} from "@point_of_sale/app/services/pos_store";
+import {patch} from "@web/core/utils/patch";
 
 patch(PosStore.prototype, {
     async getServerOrders() {
@@ -21,7 +21,7 @@ patch(PosStore.prototype, {
         return await this.action.doAction({
             type: "ir.actions.client",
             tag: "pos_qr_stands",
-            params: { data: user_data },
+            params: {data: user_data},
         });
     },
 });

@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
-from odoo import api, fields, models, _
+
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -25,7 +25,7 @@ class PrintPrenumberedChecks(models.TransientModel):
         payments.filtered(lambda r: r.state == 'draft').action_post()
         payments.filtered(lambda r: r.state == 'in_process' and not r.is_sent).write({'is_sent': True})
         for payment in payments:
-            payment.check_number = '%0{}d'.format(number_len) % check_number
+            payment.check_number = f'%0{number_len}d' % check_number
             check_number += 1
         checks_action = payments.do_print_checks()
         checks_action.update({'close_on_report_download': True})

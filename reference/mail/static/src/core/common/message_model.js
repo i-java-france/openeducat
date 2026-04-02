@@ -1,6 +1,6 @@
-import { isEmptyBlock } from "@html_editor/utils/dom_info";
+import {isEmptyBlock} from "@html_editor/utils/dom_info";
 
-import { fields, Record } from "@mail/core/common/record";
+import {fields, Record} from "@mail/core/common/record";
 import {
     EMOJI_REGEX,
     convertBrToLineBreak,
@@ -10,18 +10,21 @@ import {
     htmlToTextContentInline,
 } from "@mail/utils/common/format";
 
-import { browser } from "@web/core/browser/browser";
-import { router } from "@web/core/browser/router";
-import { loadEmoji } from "@web/core/emoji_picker/emoji_picker";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { user } from "@web/core/user";
-import { createDocumentFragmentFromContent, createElementWithContent } from "@web/core/utils/html";
-import { url } from "@web/core/utils/urls";
+import {browser} from "@web/core/browser/browser";
+import {router} from "@web/core/browser/router";
+import {loadEmoji} from "@web/core/emoji_picker/emoji_picker";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {user} from "@web/core/user";
+import {
+    createDocumentFragmentFromContent,
+    createElementWithContent,
+} from "@web/core/utils/html";
+import {url} from "@web/core/utils/urls";
 
-import { markup } from "@odoo/owl";
+import {markup} from "@odoo/owl";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 export class Message extends Record {
     static _name = "mail.message";
     static id = "id";
@@ -31,11 +34,12 @@ export class Message extends Record {
         super.update(data);
         if (this.isNotification && !this.notificationType) {
             const htmlBody = createDocumentFragmentFromContent(this.body);
-            this.notificationType = htmlBody.querySelector(".o_mail_notification")?.dataset.oeType;
+            this.notificationType =
+                htmlBody.querySelector(".o_mail_notification")?.dataset.oeType;
         }
     }
 
-    attachment_ids = fields.Many("ir.attachment", { inverse: "message" });
+    attachment_ids = fields.Many("ir.attachment", {inverse: "message"});
     author_id = fields.One("res.partner");
     author_guest_id = fields.One("mail.guest");
     get author() {
@@ -59,8 +63,11 @@ export class Message extends Record {
             return decorateEmojis(this.translationValue) ?? "";
         },
     });
-    composer = fields.One("Composer", { inverse: "message", onDelete: (r) => r.delete() });
-    composerAsReplyToMessage = fields.One("Composer", { inverse: "replyToMessage" });
+    composer = fields.One("Composer", {
+        inverse: "message",
+        onDelete: (r) => r.delete(),
+    });
+    composerAsReplyToMessage = fields.One("Composer", {inverse: "replyToMessage"});
     date = fields.Datetime();
     /** @type {string} */
     default_subject;
@@ -70,7 +77,9 @@ export class Message extends Record {
             return Boolean(
                 // ".o-mail-Message-edited" is the class added by the mail.thread in _message_update_content
                 // when the message is edited
-                createDocumentFragmentFromContent(this.body).querySelector(".o-mail-Message-edited")
+                createDocumentFragmentFromContent(this.body).querySelector(
+                    ".o-mail-Message-edited"
+                )
             );
         },
     });
@@ -106,7 +115,9 @@ export class Message extends Record {
     }
     /** @type {boolean} */
     is_transient;
-    message_link_preview_ids = fields.Many("mail.message.link.preview", { inverse: "message_id" });
+    message_link_preview_ids = fields.Many("mail.message.link.preview", {
+        inverse: "message_id",
+    });
     /** @type {number[]} */
     parent_id = fields.One("mail.message");
     /**
@@ -124,7 +135,7 @@ export class Message extends Record {
          */
         sort: (r1, r2) => r1.sequence - r2.sequence,
     });
-    notification_ids = fields.Many("mail.notification", { inverse: "mail_message_id" });
+    notification_ids = fields.Many("mail.notification", {inverse: "mail_message_id"});
     partner_ids = fields.Many("res.partner");
     subtype_id = fields.One("mail.message.subtype");
     thread = fields.One("Thread");
@@ -146,7 +157,10 @@ export class Message extends Record {
     scheduledDatetime = fields.Datetime();
     onlyEmojis = fields.Attr(false, {
         compute() {
-            const bodyWithoutTags = createElementWithContent("div", this.body).textContent;
+            const bodyWithoutTags = createElementWithContent(
+                "div",
+                this.body
+            ).textContent;
             const withoutEmojis = bodyWithoutTags.replace(EMOJI_REGEX, "");
             return (
                 bodyWithoutTags.length > 0 &&
@@ -224,22 +238,22 @@ export class Message extends Record {
     }
 
     get dateSimpleWithDay() {
-        const userLocale = { locale: user.lang };
+        const userLocale = {locale: user.lang};
         if (this.datetime.hasSame(DateTime.now(), "day")) {
             return this.datetime.toLocaleString(DateTime.TIME_SIMPLE, userLocale);
         }
-        if (this.datetime.hasSame(DateTime.now().minus({ day: 1 }), "day")) {
+        if (this.datetime.hasSame(DateTime.now().minus({day: 1}), "day")) {
             return _t("Yesterday at %(time)s", {
                 time: this.datetime.toLocaleString(DateTime.TIME_SIMPLE, userLocale),
             });
         }
         if (this.datetime?.year === DateTime.now().year) {
             return this.datetime.toLocaleString(
-                { ...DateTime.DATETIME_MED, year: undefined },
+                {...DateTime.DATETIME_MED, year: undefined},
                 userLocale
             );
         }
-        return this.datetime.toLocaleString({ ...DateTime.DATETIME_MED }, userLocale);
+        return this.datetime.toLocaleString({...DateTime.DATETIME_MED}, userLocale);
     }
 
     get datetime() {
@@ -281,7 +295,10 @@ export class Message extends Record {
     }
 
     get isNotification() {
-        return this.message_type === "notification" && this.thread?.model === "discuss.channel";
+        return (
+            this.message_type === "notification" &&
+            this.thread?.model === "discuss.channel"
+        );
     }
 
     get isSubjectSimilarToThreadName() {
@@ -297,7 +314,9 @@ export class Message extends Record {
     get isSubjectDefault() {
         const name = this.thread?.display_name;
         const threadName = name ? name.trim().toLowerCase() : "";
-        const defaultSubject = this.default_subject ? this.default_subject.toLowerCase() : "";
+        const defaultSubject = this.default_subject
+            ? this.default_subject.toLowerCase()
+            : "";
         const candidates = new Set([defaultSubject, threadName]);
         return candidates.has(this.subject?.toLowerCase());
     }
@@ -307,7 +326,9 @@ export class Message extends Record {
     }
 
     get resUrl() {
-        return url(router.stateToUrl({ model: this.thread.model, resId: this.thread.id }));
+        return url(
+            router.stateToUrl({model: this.thread.model, resId: this.thread.id})
+        );
     }
 
     isTranslatable(thread) {
@@ -332,7 +353,9 @@ export class Message extends Record {
     });
     isBodyEmpty = fields.Attr(undefined, {
         compute() {
-            return !this.body || isEmptyBlock(createElementWithContent("div", this.body));
+            return (
+                !this.body || isEmptyBlock(createElementWithContent("div", this.body))
+            );
         },
     });
 
@@ -382,7 +405,7 @@ export class Message extends Record {
         /** @this {import("models").Message} */
         compute() {
             if (this.notificationType === "call") {
-                return _t("%(caller)s started a call", { caller: this.authorName });
+                return _t("%(caller)s started a call", {caller: this.authorName});
             }
             if (this.notificationType === "thread_deletion") {
                 return _t('%(user)s deleted the thread "%(thread_name)s"', {
@@ -392,7 +415,7 @@ export class Message extends Record {
             }
             if (this.notificationType === "channel_rename") {
                 const name = htmlToTextContentInline(this.body);
-                const params = { user: this.authorName, name: markup`<b>${name}</b>` };
+                const params = {user: this.authorName, name: markup`<b>${name}</b>`};
                 return this.thread?.parent_channel_id
                     ? _t("%(user)s changed the thread name to %(name)s", params)
                     : _t("%(user)s changed the channel name to %(name)s", params);
@@ -446,7 +469,7 @@ export class Message extends Record {
             if (!this.hasOnlyAttachments) {
                 return this.inlineBody || this.subtype_id?.description;
             }
-            const { attachment_ids: attachments } = this;
+            const {attachment_ids: attachments} = this;
             if (!attachments || attachments.length === 0) {
                 return "";
             }
@@ -469,7 +492,7 @@ export class Message extends Record {
     });
 
     get previewIcon() {
-        const { attachment_ids: attachments } = this;
+        const {attachment_ids: attachments} = this;
         if (!attachments || attachments.length === 0) {
             return "";
         }
@@ -513,12 +536,14 @@ export class Message extends Record {
         let notification = _t("Message Link Copied!");
         let type = "info";
         try {
-            await browser.navigator.clipboard.writeText(url(`/mail/message/${this.id}`));
+            await browser.navigator.clipboard.writeText(
+                url(`/mail/message/${this.id}`)
+            );
         } catch {
             notification = _t("Message Link Copy Failed (Permission denied?)!");
             type = "danger";
         }
-        this.store.env.services.notification.add(notification, { type });
+        this.store.env.services.notification.add(notification, {type});
     }
 
     async copyMessageText() {
@@ -528,22 +553,25 @@ export class Message extends Record {
         } catch {
             this.store.env.services.notification.add(
                 _t("Message Copy Failed (Permission denied?)!"),
-                { type: "danger" }
+                {type: "danger"}
             );
         }
-        this.store.env.services.notification.add(_t("Message Copied!"), { type: "info" });
+        this.store.env.services.notification.add(_t("Message Copied!"), {type: "info"});
     }
 
     async edit(
         body,
         attachments = [],
-        { mentionedChannels = [], mentionedPartners = [], mentionedRoles = [] } = {}
+        {mentionedChannels = [], mentionedPartners = [], mentionedRoles = []} = {}
     ) {
         const messageBodyEl = createElementWithContent("div", this.body);
         const updatedBodyEl = createElementWithContent("div", body);
         messageBodyEl.querySelector("span.o-mail-Message-edited")?.remove();
         updatedBodyEl.querySelector("span.o-mail-Message-edited")?.remove();
-        if (updatedBodyEl.innerHTML === messageBodyEl.innerHTML && attachments.length === 0) {
+        if (
+            updatedBodyEl.innerHTML === messageBodyEl.innerHTML &&
+            attachments.length === 0
+        ) {
             return;
         }
         const validMentions = this.store.getMentionsFromText(body, {
@@ -572,7 +600,7 @@ export class Message extends Record {
         });
         this.store.insert(data);
         if ((hadLink || this.hasLink) && this.store.hasLinkPreviewFeature) {
-            rpc("/mail/link_preview", { message_id: this.id }, { silent: true });
+            rpc("/mail/link_preview", {message_id: this.id}, {silent: true});
         }
         return data;
     }
@@ -583,9 +611,14 @@ export class Message extends Record {
         const validChannels = (
             await Promise.all(
                 Array.from(
-                    doc.querySelectorAll(".o_channel_redirect[data-oe-model='discuss.channel']")
+                    doc.querySelectorAll(
+                        ".o_channel_redirect[data-oe-model='discuss.channel']"
+                    )
                 ).map(async (el) =>
-                    this.store.Thread.getOrFetch({ id: el.dataset.oeId, model: "discuss.channel" })
+                    this.store.Thread.getOrFetch({
+                        id: el.dataset.oeId,
+                        model: "discuss.channel",
+                    })
                 )
             )
         ).filter((channel) => channel?.exists());
@@ -635,7 +668,7 @@ export class Message extends Record {
 
     async onClickToggleTranslation() {
         if (!this.translationValue) {
-            const { error, lang_name, body } = await rpc("/mail/message/translate", {
+            const {error, lang_name, body} = await rpc("/mail/message/translate", {
                 message_id: this.id,
             });
             this.translationValue = body && markup(body);
@@ -655,12 +688,12 @@ export class Message extends Record {
                     message_id: this.id,
                     ...this.thread.rpcParams,
                 },
-                { silent: true }
+                {silent: true}
             )
         );
     }
 
-    async remove({ removeFromThread = false } = {}) {
+    async remove({removeFromThread = false} = {}) {
         const data = await rpc("/mail/message/update_content", {
             message_id: this.id,
             update_data: this.removeParams,
@@ -668,7 +701,9 @@ export class Message extends Record {
         });
         this.store.insert(data);
         if (this.thread && removeFromThread) {
-            this.thread.messages = this.thread.messages.filter((message) => message.notEq(this));
+            this.thread.messages = this.thread.messages.filter((message) =>
+                message.notEq(this)
+            );
         }
         this.composer = undefined;
         return data;
@@ -684,9 +719,11 @@ export class Message extends Record {
     }
 
     async setDone() {
-        await this.store.env.services.orm.silent.call("mail.message", "set_message_done", [
-            [this.id],
-        ]);
+        await this.store.env.services.orm.silent.call(
+            "mail.message",
+            "set_message_done",
+            [[this.id]]
+        );
     }
 
     async toggleStar() {
@@ -709,13 +746,15 @@ export class Message extends Record {
             _t('You are no longer following "%(thread_name)s".', {
                 thread_name: thread.display_name,
             }),
-            { type: "success" }
+            {type: "success"}
         );
     }
 
     hideAllLinkPreviews() {
         rpc("/mail/link_preview/hide", {
-            message_link_preview_ids: this.message_link_preview_ids.map((lpm) => lpm.id),
+            message_link_preview_ids: this.message_link_preview_ids.map(
+                (lpm) => lpm.id
+            ),
         });
     }
 }

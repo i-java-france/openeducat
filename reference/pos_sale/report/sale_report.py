@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
@@ -112,7 +111,7 @@ class SaleReport(models.Model):
 
     def _from_pos(self):
         currency_table = self.env['res.currency']._get_simple_currency_table(self.env.companies)
-        return """
+        return f"""
             pos_order_line l
             JOIN pos_order pos ON l.order_id = pos.id
             LEFT JOIN res_partner partner ON (pos.partner_id=partner.id OR pos.partner_id = NULL)
@@ -122,10 +121,8 @@ class SaleReport(models.Model):
             LEFT JOIN pos_session session ON session.id = pos.session_id
             LEFT JOIN pos_config config ON config.id = session.config_id
             LEFT JOIN stock_picking_type picking ON picking.id = config.picking_type_id
-            JOIN {currency_table} ON account_currency_table.company_id = pos.company_id
-            """.format(
-            currency_table=self.env.cr.mogrify(currency_table).decode(self.env.cr.connection.encoding),
-            )
+            JOIN {self.env.cr.mogrify(currency_table).decode(self.env.cr.connection.encoding)} ON account_currency_table.company_id = pos.company_id
+            """
 
     def _where_pos(self):
         return """

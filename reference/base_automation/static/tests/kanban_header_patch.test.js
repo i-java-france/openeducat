@@ -1,5 +1,5 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { expect, test } from "@odoo/hoot";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {expect, test} from "@odoo/hoot";
 import {
     contains,
     defineModels,
@@ -56,10 +56,10 @@ test("basic grouped rendering with automations", async () => {
             });
         },
     });
-    onRpc("ir.model", "search", ({ args, kwargs }) => {
+    onRpc("ir.model", "search", ({args, kwargs}) => {
         expect(args).toEqual([[["model", "=", "partner"]]]);
         expect(kwargs.limit).toBe(1);
-        return [42]; // model id
+        return [42]; // Model id
     });
     await mountView({
         type: "kanban",
@@ -85,7 +85,7 @@ test("basic grouped rendering with automations", async () => {
         visible: false,
     }).click();
 
-    // check available actions in kanban header's config dropdown
+    // Check available actions in kanban header's config dropdown
     expect(".o-dropdown--menu .o_kanban_toggle_fold").toHaveCount(1);
     expect(".o-dropdown--menu .o_column_automations").toHaveCount(1);
     expect(".o-dropdown--menu .o_group_edit").toHaveCount(0);

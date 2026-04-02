@@ -1,16 +1,16 @@
-import { Component, onWillRender, toRaw, useEffect, useRef, useState } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
-import { Time } from "@web/core/l10n/time";
-import { _t } from "@web/core/l10n/translation";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { useService } from "@web/core/utils/hooks";
-import { parseXML } from "@web/core/utils/xml";
-import { extractFieldsFromArchInfo } from "@web/model/relational_model/utils";
-import { CallbackRecorder, useSetupAction } from "@web/search/action_hook";
-import { FormArchParser } from "@web/views/form/form_arch_parser";
-import { MultiCreatePopover } from "./multi_create_popover";
+import {Component, onWillRender, toRaw, useEffect, useRef, useState} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
+import {Time} from "@web/core/l10n/time";
+import {_t} from "@web/core/l10n/translation";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {useService} from "@web/core/utils/hooks";
+import {parseXML} from "@web/core/utils/xml";
+import {extractFieldsFromArchInfo} from "@web/model/relational_model/utils";
+import {CallbackRecorder, useSetupAction} from "@web/search/action_hook";
+import {FormArchParser} from "@web/views/form/form_arch_parser";
+import {MultiCreatePopover} from "./multi_create_popover";
 
 export class MultiSelectionButtons extends Component {
     static template = "web.MultiSelectionButtons";
@@ -27,7 +27,7 @@ export class MultiSelectionButtons extends Component {
                 context: Object,
                 showMultiCreateTimeRange: Boolean,
                 visible: Boolean,
-                multiCreateValues: { type: Object, optional: true },
+                multiCreateValues: {type: Object, optional: true},
             },
         },
     };
@@ -38,7 +38,7 @@ export class MultiSelectionButtons extends Component {
     setup() {
         this.viewService = useService("view");
         this.dialogService = useService("dialog");
-        this.state = useState({ isReady: false });
+        this.state = useState({isReady: false});
         onWillRender(() => {
             if (this.props.reactive.visible && !this.state.isReady) {
                 this.loadMultiCreateView().then(() => {
@@ -55,7 +55,7 @@ export class MultiSelectionButtons extends Component {
                 if (multiCreateData) {
                     this.storeMultiCreateData(multiCreateData);
                 }
-                return { multiCreateValues: this.multiCreateValues };
+                return {multiCreateValues: this.multiCreateValues};
             },
         });
 
@@ -76,8 +76,8 @@ export class MultiSelectionButtons extends Component {
                     return;
                 }
                 // @ts-ignore
-                const { width: parentWidth } = el.parentElement.getBoundingClientRect();
-                const { width } = el.getBoundingClientRect();
+                const {width: parentWidth} = el.parentElement.getBoundingClientRect();
+                const {width} = el.getBoundingClientRect();
                 const left = Math.floor((parentWidth - width) / 2);
                 el.style.setProperty("left", `${left}px`);
             },
@@ -103,23 +103,32 @@ export class MultiSelectionButtons extends Component {
 
     async loadMultiCreateView() {
         // todo: accept variable context,... ?
-        const { context, resModel, multiCreateView } = this.props.reactive;
-        const { fields, relatedModels, views } = await this.viewService.loadViews({
-            context: { ...context, form_view_ref: multiCreateView },
+        const {context, resModel, multiCreateView} = this.props.reactive;
+        const {fields, relatedModels, views} = await this.viewService.loadViews({
+            context: {...context, form_view_ref: multiCreateView},
             resModel,
             views: [[false, "form"]],
         });
         const parser = new FormArchParser();
         const arch = views.form.arch;
-        this.multiCreateArchInfo = parser.parse(parseXML(arch), relatedModels, resModel);
-        const { activeFields } = extractFieldsFromArchInfo(this.multiCreateArchInfo, fields);
-        this.multiCreateRecordProps = { resModel, fields, activeFields, context };
+        this.multiCreateArchInfo = parser.parse(
+            parseXML(arch),
+            relatedModels,
+            resModel
+        );
+        const {activeFields} = extractFieldsFromArchInfo(
+            this.multiCreateArchInfo,
+            fields
+        );
+        this.multiCreateRecordProps = {resModel, fields, activeFields, context};
     }
 
     getMultiCreatePopoverProps() {
         return {
-            timeRange: this.props.reactive.showMultiCreateTimeRange ? this.getTimeRange() : null,
-            multiCreateArchInfo: { ...this.multiCreateArchInfo },
+            timeRange: this.props.reactive.showMultiCreateTimeRange
+                ? this.getTimeRange()
+                : null,
+            multiCreateArchInfo: {...this.multiCreateArchInfo},
             multiCreateRecordProps: {
                 ...this.multiCreateRecordProps,
                 values: this.multiCreateValues,
@@ -134,13 +143,17 @@ export class MultiSelectionButtons extends Component {
 
     getTimeRange() {
         return {
-            start: new Time(this.getItemFromStorage("timeRange_start", { hour: 12, minute: 0 })),
-            end: new Time(this.getItemFromStorage("timeRange_end", { hour: 13, minute: 0 })),
+            start: new Time(
+                this.getItemFromStorage("timeRange_start", {hour: 12, minute: 0})
+            ),
+            end: new Time(
+                this.getItemFromStorage("timeRange_end", {hour: 13, minute: 0})
+            ),
         };
     }
 
     generateLocalStorageKey(key) {
-        const { resModel } = this.props.reactive;
+        const {resModel} = this.props.reactive;
         return `multiCreate_${key}_${resModel}`;
     }
 
@@ -154,7 +167,10 @@ export class MultiSelectionButtons extends Component {
     }
 
     setItemInStorage(key, value) {
-        browser.localStorage.setItem(this.generateLocalStorageKey(key), JSON.stringify(value));
+        browser.localStorage.setItem(
+            this.generateLocalStorageKey(key),
+            JSON.stringify(value)
+        );
     }
 
     storeTimeRange(timeRange) {
@@ -170,9 +186,13 @@ export class MultiSelectionButtons extends Component {
         const multiCreateFormRecord = toRaw(record);
         const values = Object.assign({}, multiCreateFormRecord.data);
         for (const [fieldName, data] of Object.entries(multiCreateFormRecord.data)) {
-            if (["one2many", "many2many"].includes(multiCreateFormRecord.fields[fieldName].type)) {
+            if (
+                ["one2many", "many2many"].includes(
+                    multiCreateFormRecord.fields[fieldName].type
+                )
+            ) {
                 values[fieldName] = data.records.map((record) =>
-                    Object.assign({ id: record.resId }, record.data)
+                    Object.assign({id: record.resId}, record.data)
                 );
             }
         }
@@ -183,16 +203,22 @@ export class MultiSelectionButtons extends Component {
         if (this.multiCreatePopover.isOpen) {
             return;
         }
-        this.multiCreatePopover.open(this.addButtonRef.el, this.getMultiCreatePopoverProps());
+        this.multiCreatePopover.open(
+            this.addButtonRef.el,
+            this.getMultiCreatePopoverProps()
+        );
     }
 
     onDelete() {
         const body =
             this.props.reactive.nbSelected === 1
                 ? _t("Are you sure you want to delete the selected record?")
-                : _t("Are you sure you want to delete the %(nbSelected)s selected records?", {
-                      nbSelected: this.props.reactive.nbSelected,
-                  });
+                : _t(
+                      "Are you sure you want to delete the %(nbSelected)s selected records?",
+                      {
+                          nbSelected: this.props.reactive.nbSelected,
+                      }
+                  );
         this.dialogService.add(ConfirmationDialog, {
             body,
             confirm: async () => {

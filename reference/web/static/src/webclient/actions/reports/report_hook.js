@@ -1,4 +1,4 @@
-import { useComponent, useEffect } from "@odoo/owl";
+import {useComponent, useEffect} from "@odoo/owl";
 
 /**
  * Hook used to enrich html and provide automatic links to action.
@@ -44,7 +44,9 @@ function enrich(component, targetElement, selector, isIFrame = false) {
 
     // Search the elements with the selector, update them and bind an action.
     for (const currentTarget of targets) {
-        const elementsToWrap = currentTarget.querySelectorAll("[res-id][res-model][view-type]");
+        const elementsToWrap = currentTarget.querySelectorAll(
+            "[res-id][res-model][view-type]"
+        );
         for (const element of elementsToWrap.values()) {
             const wrapper = doc.createElement("a");
             wrapper.setAttribute("href", "#");
@@ -55,7 +57,12 @@ function enrich(component, targetElement, selector, isIFrame = false) {
                     view_mode: element.getAttribute("view-type"),
                     res_id: Number(element.getAttribute("res-id")),
                     res_model: element.getAttribute("res-model"),
-                    views: [[element.getAttribute("view-id"), element.getAttribute("view-type")]],
+                    views: [
+                        [
+                            element.getAttribute("view-id"),
+                            element.getAttribute("view-type"),
+                        ],
+                    ],
                 });
             });
             element.parentNode.insertBefore(wrapper, element);

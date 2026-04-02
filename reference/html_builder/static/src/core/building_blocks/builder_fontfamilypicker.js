@@ -1,14 +1,14 @@
-import { Component, onWillStart } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+import {Component, onWillStart} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
 import {
     basicContainerBuilderComponentProps,
     useVisibilityObserver,
     useApplyVisibility,
 } from "@html_builder/core/utils";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { BuilderSelect } from "@html_builder/core/building_blocks/builder_select";
-import { BuilderSelectItem } from "@html_builder/core/building_blocks/builder_select_item";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {BuilderSelect} from "@html_builder/core/building_blocks/builder_select";
+import {BuilderSelectItem} from "@html_builder/core/building_blocks/builder_select_item";
 
 export class BuilderFontFamilyPicker extends Component {
     static template = "html_builder.BuilderFontFamilyPicker";
@@ -28,7 +28,9 @@ export class BuilderFontFamilyPicker extends Component {
         this.fonts = [];
         onWillStart(async () => {
             const fontsData = await this.env.editor.shared.builderFont.getFontsData();
-            this.fonts = fontsData._fonts.slice().sort((a, b) => a.string.localeCompare(b.string));
+            this.fonts = fontsData._fonts
+                .slice()
+                .sort((a, b) => a.string.localeCompare(b.string));
         });
     }
     forwardProps(fontValue) {

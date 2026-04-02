@@ -1,5 +1,5 @@
 import base64
-from datetime import datetime, date, timedelta
+from datetime import date, datetime, timedelta
 from xml.etree import ElementTree as et
 
 from odoo import fields

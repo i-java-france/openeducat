@@ -1,5 +1,5 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { useState } from "@odoo/owl";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {useState} from "@odoo/owl";
 
 export class FooterTemplateOption extends BaseOptionComponent {
     static template = "website.FooterTemplateOption";
@@ -10,11 +10,13 @@ export class FooterTemplateOption extends BaseOptionComponent {
 
     setup() {
         super.setup();
-        this.footerTemplates = useState(this.dependencies.footerOption.getFooterTemplates());
+        this.footerTemplates = useState(
+            this.dependencies.footerOption.getFooterTemplates()
+        );
     }
 }
 
 export class FooterTemplateChoice extends BaseOptionComponent {
     static template = "website.FooterTemplateChoice";
-    static props = { title: String, view: String, varName: String, imgSrc: String };
+    static props = {title: String, view: String, varName: String, imgSrc: String};
 }

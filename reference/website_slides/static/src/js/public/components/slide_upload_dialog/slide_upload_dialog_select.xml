@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <!-- Slide Category Selection templates -->
 
@@ -36,17 +36,24 @@
             t-att-data-slide-category="props.slideCategory"
             class="content-type d-flex flex-column align-items-center mb-4 btn rounded border text-600 p-3"
         >
-            <i t-attf-class="fa #{props.categoryData.icon} mb-2 fa-3x"/>
-            <t t-out="props.categoryData.label"/>
+            <i t-attf-class="fa #{props.categoryData.icon} mb-2 fa-3x" />
+            <t t-out="props.categoryData.label" />
         </a>
     </t>
 
     <t t-name="website_slides.ModuleToInstallIcon" owl="1">
-        <a class="w-100 text-center mb-4 btn rounded border text-600 p-3"
-            href="#" t-on-click="() => props.onClickInstallModuleIcon(props.moduleId)"
+        <a
+            class="w-100 text-center mb-4 btn rounded border text-600 p-3"
+            href="#"
+            t-on-click="() => props.onClickInstallModuleIcon(props.moduleId)"
             t-att-title="props.title"
-            t-att-data-module-id="props.moduleId">
-            <i class="fa fa-trophy"/> <t t-out="props.motivational"/><span class="text-primary"> Install the <t t-out="props.title"/> app.</span>
+            t-att-data-module-id="props.moduleId"
+        >
+            <i class="fa fa-trophy" />
+            <t t-out="props.motivational" />
+            <span class="text-primary"> Install the <t
+                t-out="props.title"
+            /> app.</span>
         </a>
     </t>
 </templates>

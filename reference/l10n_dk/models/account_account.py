@@ -1,13 +1,13 @@
 from collections import defaultdict
 
-from odoo import api, models, _
+from odoo import _, api, models
 from odoo.exceptions import UserError
 
 
 class AccountAccount(models.Model):
     _name = 'account.account'
     _inherit = 'account.account'
-    
+
     @api.ondelete(at_uninstall=False)
     def _unlink_bank_cash_accounts(self):
         nb_account_to_delete_per_company = defaultdict(self.env['account.account'].browse)

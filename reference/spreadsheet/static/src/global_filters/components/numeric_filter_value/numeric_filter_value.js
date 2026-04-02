@@ -1,14 +1,14 @@
 /** @ts-check */
 
-import { Component, useRef } from "@odoo/owl";
-import { useNumpadDecimal } from "@web/views/fields/numpad_decimal_hook";
-import { parseFloat } from "@web/views/fields/parsers";
+import {Component, useRef} from "@odoo/owl";
+import {useNumpadDecimal} from "@web/views/fields/numpad_decimal_hook";
+import {parseFloat} from "@web/views/fields/parsers";
 
 export class NumericFilterValue extends Component {
     static template = "spreadsheet.NumericFilterValue";
     static props = {
         onValueChanged: Function,
-        value: { type: [Number, String], optional: true },
+        value: {type: [Number, String], optional: true},
     };
 
     setup() {

@@ -1,25 +1,25 @@
-import { ImStatus } from "@mail/core/common/im_status";
-import { onExternalClick } from "@mail/utils/common/hooks";
-import { markEventHandled, isEventHandled } from "@web/core/utils/misc";
+import {ImStatus} from "@mail/core/common/im_status";
+import {onExternalClick} from "@mail/utils/common/hooks";
+import {markEventHandled, isEventHandled} from "@web/core/utils/misc";
 
-import { Component, useEffect, useExternalListener, useRef, useState } from "@odoo/owl";
+import {Component, useEffect, useExternalListener, useRef, useState} from "@odoo/owl";
 
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { usePosition } from "@web/core/position/position_hook";
-import { useService } from "@web/core/utils/hooks";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {usePosition} from "@web/core/position/position_hook";
+import {useService} from "@web/core/utils/hooks";
 
 export class NavigableList extends Component {
-    static components = { ImStatus };
+    static components = {ImStatus};
     static template = "mail.NavigableList";
     static props = {
-        anchorRef: { optional: true },
-        class: { type: String, optional: true },
-        onSelect: { type: Function },
-        options: { type: Array },
-        optionTemplate: { type: String, optional: true },
-        position: { type: String, optional: true },
-        closeOnSelect: { type: Boolean, optional: true },
-        isLoading: { type: Boolean, optional: true },
+        anchorRef: {optional: true},
+        class: {type: String, optional: true},
+        onSelect: {type: Function},
+        options: {type: Array},
+        optionTemplate: {type: String, optional: true},
+        position: {type: String, optional: true},
+        closeOnSelect: {type: Boolean, optional: true},
+        isLoading: {type: Boolean, optional: true},
     };
     static defaultProps = {
         position: "bottom",
@@ -48,7 +48,9 @@ export class NavigableList extends Component {
             this.close();
         });
         // position and size
-        usePosition("root", () => this.props.anchorRef, { position: this.props.position });
+        usePosition("root", () => this.props.anchorRef, {
+            position: this.props.position,
+        });
         useEffect(
             () => {
                 this.open();
@@ -61,7 +63,10 @@ export class NavigableList extends Component {
                     clearTimeout(this.loadingTimeoutId);
                     this.state.showLoading = false;
                 } else if (!this.loadingTimeoutId) {
-                    this.loadingTimeoutId = setTimeout(() => (this.state.showLoading = true), 2000);
+                    this.loadingTimeoutId = setTimeout(
+                        () => (this.state.showLoading = true),
+                        2000
+                    );
                 }
             },
             () => [this.props.isLoading]
@@ -69,7 +74,9 @@ export class NavigableList extends Component {
     }
 
     get show() {
-        return Boolean(this.state.open && (this.props.isLoading || this.props.options.length));
+        return Boolean(
+            this.state.open && (this.props.isLoading || this.props.options.length)
+        );
     }
 
     get sortedOptions() {
@@ -108,7 +115,8 @@ export class NavigableList extends Component {
         if (this.props.options.length === 0) {
             return;
         }
-        const activeOptionId = this.state.activeIndex !== null ? this.state.activeIndex : 0;
+        const activeOptionId =
+            this.state.activeIndex !== null ? this.state.activeIndex : 0;
         let targetId = undefined;
         switch (direction) {
             case "first":

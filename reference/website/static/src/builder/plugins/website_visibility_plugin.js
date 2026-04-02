@@ -1,7 +1,7 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { DEVICE_VISIBILITY_OPTION_SELECTOR } from "./options/visibility_option_plugin";
-import { VisibilityOption } from "./options/visibility_option";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {DEVICE_VISIBILITY_OPTION_SELECTOR} from "./options/visibility_option_plugin";
+import {VisibilityOption} from "./options/visibility_option";
 
 export class WebsiteVisibilityPlugin extends Plugin {
     static id = "websiteVisibilityPlugin";
@@ -20,7 +20,9 @@ export class WebsiteVisibilityPlugin extends Plugin {
         ) {
             editingEl.classList.remove("o_snippet_override_invisible");
 
-            const isConditionalHidden = editingEl.matches("[data-visibility='conditional']");
+            const isConditionalHidden = editingEl.matches(
+                "[data-visibility='conditional']"
+            );
             if (isConditionalHidden) {
                 editingEl.classList.add("o_conditional_hidden");
             }
@@ -33,9 +35,16 @@ export class WebsiteVisibilityPlugin extends Plugin {
             editingEl.matches(VisibilityOption.selector)
         ) {
             const isMobilePreview = this.config.isMobileView(editingEl);
-            const isMobileHidden = editingEl.classList.contains("o_snippet_mobile_invisible");
-            const isDesktopHidden = editingEl.classList.contains("o_snippet_desktop_invisible");
-            if ((isMobileHidden && isMobilePreview) || (isDesktopHidden && !isMobilePreview)) {
+            const isMobileHidden = editingEl.classList.contains(
+                "o_snippet_mobile_invisible"
+            );
+            const isDesktopHidden = editingEl.classList.contains(
+                "o_snippet_desktop_invisible"
+            );
+            if (
+                (isMobileHidden && isMobilePreview) ||
+                (isDesktopHidden && !isMobilePreview)
+            ) {
                 editingEl.classList.add("o_snippet_override_invisible");
             }
 
@@ -44,4 +53,6 @@ export class WebsiteVisibilityPlugin extends Plugin {
     }
 }
 
-registry.category("website-plugins").add(WebsiteVisibilityPlugin.id, WebsiteVisibilityPlugin);
+registry
+    .category("website-plugins")
+    .add(WebsiteVisibilityPlugin.id, WebsiteVisibilityPlugin);

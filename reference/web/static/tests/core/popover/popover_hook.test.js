@@ -1,8 +1,8 @@
-import { test, expect, getFixture, destroy } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, xml } from "@odoo/owl";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { contains, mountWithCleanup } from "@web/../tests/web_test_helpers";
+import {destroy, expect, getFixture, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Component, xml} from "@odoo/owl";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {contains, mountWithCleanup} from "@web/../tests/web_test_helpers";
 
 test("close popover when component is unmounted", async () => {
     const target = getFixture();
@@ -20,11 +20,11 @@ test("close popover when component is unmounted", async () => {
     }
 
     const comp1 = await mountWithCleanup(CompWithPopover);
-    comp1.popover.open(target, { id: "comp1" });
+    comp1.popover.open(target, {id: "comp1"});
     await animationFrame();
 
-    const comp2 = await mountWithCleanup(CompWithPopover, { noMainContainer: true });
-    comp2.popover.open(target, { id: "comp2" });
+    const comp2 = await mountWithCleanup(CompWithPopover, {noMainContainer: true});
+    comp2.popover.open(target, {id: "comp2"});
     await animationFrame();
 
     expect(".o_popover").toHaveCount(2);

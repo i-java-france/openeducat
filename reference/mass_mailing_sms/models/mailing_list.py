@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
@@ -20,7 +19,7 @@ class MailingList(models.Model):
             }
             return action
         else:
-            return super(MailingList, self).action_view_mailings()
+            return super().action_view_mailings()
 
     def action_view_contacts_sms(self):
         action = self.action_view_contacts()
@@ -49,7 +48,7 @@ class MailingList(models.Model):
         - contact_count_sms:           all valid sms
         - contact_count_blacklisted:   override the dict entry to add SMS blacklist condition """
 
-        values = super(MailingList, self)._get_contact_statistics_fields()
+        values = super()._get_contact_statistics_fields()
         values.update({
             'contact_count_sms': '''
                 SUM(CASE WHEN
@@ -64,7 +63,7 @@ class MailingList(models.Model):
         return values
 
     def _get_contact_statistics_joins(self):
-        return super(MailingList, self)._get_contact_statistics_joins() + '''
+        return super()._get_contact_statistics_joins() + '''
             LEFT JOIN phone_blacklist bl_sms ON c.phone_sanitized = bl_sms.number and bl_sms.active
         '''
 

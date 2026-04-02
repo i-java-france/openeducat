@@ -1,12 +1,12 @@
-import { waitImages } from "@point_of_sale/utils";
+import {waitImages} from "@point_of_sale/utils";
 
-import { Reactive } from "@web/core/utils/reactive";
-import { logPosMessage } from "../utils/pretty_console_log";
+import {Reactive} from "@web/core/utils/reactive";
+import {logPosMessage} from "../utils/pretty_console_log";
 
 export const printerService = {
     dependencies: ["renderer"],
-    start(env, { renderer }) {
-        return new PrinterService(env, { renderer });
+    start(env, {renderer}) {
+        return new PrinterService(env, {renderer});
     },
 };
 export class PrinterService extends Reactive {
@@ -14,10 +14,10 @@ export class PrinterService extends Reactive {
         super(...args);
         this.setup(...args);
     }
-    setup(env, { renderer }) {
+    setup(env, {renderer}) {
         this.renderer = renderer;
         this.device = null;
-        this.state = { isPrinting: false };
+        this.state = {isPrinting: false};
     }
     setPrinter(newDevice) {
         this.device = newDevice;
@@ -32,7 +32,7 @@ export class PrinterService extends Reactive {
         });
         return true;
     }
-    async printHtml(el, { webPrintFallback = false } = {}) {
+    async printHtml(el, {webPrintFallback = false} = {}) {
         if (!this.device) {
             return webPrintFallback && this.printWeb(el);
         }

@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import odoo
 from odoo import fields
+
 from odoo.addons.point_of_sale.tests.common import TestPoSCommon
 from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCommon
 
@@ -11,7 +11,7 @@ from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCom
 class TestPoSSaleReport(TestPoSCommon, TestPointOfSaleHttpCommon):
 
     def setUp(self):
-        super(TestPoSSaleReport, self).setUp()
+        super().setUp()
         self.config = self.basic_config
         self.product0 = self.create_product('Product 0', self.categ_basic, 0.0, 0.0)
         self.partner_1 = self.env['res.partner'].create({'name': 'Test Partner 1'})

@@ -1,11 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from datetime import datetime
+
 from dateutil.relativedelta import relativedelta
 
 from odoo import Command, fields
-from odoo.addons.purchase_stock.tests.common import PurchaseTestCommon
-from odoo.tests import tagged, freeze_time
+from odoo.tests import freeze_time, tagged
 from odoo.tests.common import HttpCase
+
+from odoo.addons.purchase_stock.tests.common import PurchaseTestCommon
 
 
 @freeze_time("2021-01-14 09:12:15")

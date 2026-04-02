@@ -1,5 +1,5 @@
-import { ListRenderer } from "@web/views/list/list_renderer";
-import { useEffect } from "@odoo/owl";
+import {ListRenderer} from "@web/views/list/list_renderer";
+import {useEffect} from "@odoo/owl";
 
 export class SectionListRenderer extends ListRenderer {
     setup() {
@@ -43,7 +43,7 @@ export class SectionListRenderer extends ListRenderer {
         const titleCol = columns.find(
             (col) => col.type === "field" && col.name === this.titleField
         );
-        sectionColumns.push({ ...titleCol, colspan });
+        sectionColumns.push({...titleCol, colspan});
         return sectionColumns;
     }
 

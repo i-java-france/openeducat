@@ -7,7 +7,7 @@ import itertools
 import json
 import logging
 import operator
-from collections import defaultdict, OrderedDict
+from collections import OrderedDict, defaultdict
 
 from werkzeug.exceptions import InternalServerError
 
@@ -15,7 +15,6 @@ from odoo import http
 from odoo.exceptions import UserError
 from odoo.http import content_disposition, request
 from odoo.tools import osutil
-
 
 _logger = logging.getLogger(__name__)
 
@@ -86,7 +85,7 @@ class GroupsTreeNode:
 
         if self.data:
             return aggregate_func(data)
-        return aggregate_func((child.aggregated_values.get(field_name) for child in self.children.values()))
+        return aggregate_func(child.aggregated_values.get(field_name) for child in self.children.values())
 
     def _get_avg_aggregate(self, field_name, data):
         aggregate_func = OPERATOR_MAPPING.get('sum')
@@ -117,7 +116,7 @@ class GroupsTreeNode:
         aggregated_values = {}
 
         # Transpose the data matrix to group all values of each field in one iterable
-        field_values = zip(*self.data)
+        field_values = zip(*self.data, strict=False)
         for field_name in self._export_field_names:
             field_data = self.data and next(field_values) or []
 
@@ -512,7 +511,7 @@ class Export(http.Controller):
         )
 
 
-class ExportFormat(object):
+class ExportFormat:
 
     @property
     def content_type(self):
@@ -602,7 +601,7 @@ class ExportFormat(object):
                     grouped_rows[group_index].extend(rows)
 
             # 3. Insert one leaf per group, providing the group information and its data
-            for group_info, group_rows in zip(groups_data, grouped_rows):
+            for group_info, group_rows in zip(groups_data, grouped_rows, strict=False):
                 tree.insert_leaf(group_info, group_rows)
 
             response_data = self.from_group_data(fields, columns_headers, tree)

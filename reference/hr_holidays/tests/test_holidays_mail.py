@@ -2,14 +2,16 @@
 
 import time
 from datetime import date
+
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
 from odoo import Command
 from odoo.tools import mute_logger
 
-from .common import TestHrHolidaysCommon
 from odoo.addons.mail.tests.common import MailCase
+
+from .common import TestHrHolidaysCommon
 
 
 class TestHolidaysMail(TestHrHolidaysCommon, MailCase):

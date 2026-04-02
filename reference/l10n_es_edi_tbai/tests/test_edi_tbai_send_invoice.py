@@ -1,11 +1,12 @@
+import base64
 from unittest.mock import patch
+
+from lxml import etree
 
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 
 from .common import TestEsEdiTbaiCommonGipuzkoa
-import base64
-from lxml import etree
 
 
 @tagged('post_install', '-at_install', 'post_install_l10n')

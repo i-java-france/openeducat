@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="sms_account_sender_view_form" model="ir.ui.view">
         <field name="name">sms.account.sender.view.form</field>
@@ -14,11 +14,20 @@
                         Note that this is not required, if you don't set a sender name, your SMS will be sent from a short code.
                     </p>
                     <group>
-                        <field name="sender_name" required="1"/>
+                        <field name="sender_name" required="1" />
                     </group>
                     <footer>
-                        <button string="Set sender name" name="action_set_sender_name" type="object" class="btn btn-primary"/>
-                        <button string="Skip for now" class="btn-secondary" special="cancel"/>
+                        <button
+                            string="Set sender name"
+                            name="action_set_sender_name"
+                            type="object"
+                            class="btn btn-primary"
+                        />
+                        <button
+                            string="Skip for now"
+                            class="btn-secondary"
+                            special="cancel"
+                        />
                     </footer>
                 </sheet>
             </form>

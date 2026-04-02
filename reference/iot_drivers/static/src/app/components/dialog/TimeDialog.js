@@ -1,13 +1,13 @@
 /* global owl */
 
 import useStore from "../../hooks/useStore.js";
-import { BootstrapDialog } from "./BootstrapDialog.js";
+import {BootstrapDialog} from "./BootstrapDialog.js";
 
-const { Component, useState, xml } = owl;
+const {Component, useState, xml} = owl;
 
 export class TimeDialog extends Component {
     static props = {};
-    static components = { BootstrapDialog };
+    static components = {BootstrapDialog};
 
     setup() {
         this.store = useStore();
@@ -37,7 +37,8 @@ export class TimeDialog extends Component {
         const minutes = Math.floor(periodInSeconds / 60);
         const seconds = Math.floor(periodInSeconds % 60);
 
-        const formatAmount = (amount, name) => `${amount} ${name}${amount === 1 ? "" : "s"}`;
+        const formatAmount = (amount, name) =>
+            `${amount} ${name}${amount === 1 ? "" : "s"}`;
         const timeParts = [
             formatAmount(days, "day"),
             formatAmount(hours, "hour"),

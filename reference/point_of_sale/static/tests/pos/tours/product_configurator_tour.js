@@ -4,9 +4,9 @@ import * as Chrome from "@point_of_sale/../tests/pos/tours/utils/chrome_util";
 import * as ProductConfigurator from "@point_of_sale/../tests/pos/tours/utils/product_configurator_util";
 import * as combo from "@point_of_sale/../tests/pos/tours/utils/combo_popup_util";
 import * as Order from "@point_of_sale/../tests/generic_helpers/order_widget_util";
-import { inLeftSide } from "@point_of_sale/../tests/pos/tours/utils/common";
-import { registry } from "@web/core/registry";
-import { negateStep } from "@point_of_sale/../tests/generic_helpers/utils";
+import {inLeftSide} from "@point_of_sale/../tests/pos/tours/utils/common";
+import {registry} from "@web/core/registry";
+import {negateStep} from "@point_of_sale/../tests/generic_helpers/utils";
 
 registry.category("web_tour.tours").add("ProductConfiguratorTour", {
     steps: () =>
@@ -115,11 +115,21 @@ registry.category("web_tour.tours").add("PosProductWithDynamicAttributes", {
             ProductScreen.clickDisplayedProduct("Dynamic Product"),
             ProductConfigurator.pickRadio("Test 1"),
             Dialog.confirm(),
-            ProductScreen.selectedOrderlineHas("Dynamic Product", "1", "1.15", "Test 1"),
+            ProductScreen.selectedOrderlineHas(
+                "Dynamic Product",
+                "1",
+                "1.15",
+                "Test 1"
+            ),
             ProductScreen.clickDisplayedProduct("Dynamic Product"),
             ProductConfigurator.pickRadio("Test 2"),
             Dialog.confirm(),
-            ProductScreen.selectedOrderlineHas("Dynamic Product", "1", "12.65", "Test 2"),
+            ProductScreen.selectedOrderlineHas(
+                "Dynamic Product",
+                "1",
+                "12.65",
+                "Test 2"
+            ),
         ].flat(),
 });
 

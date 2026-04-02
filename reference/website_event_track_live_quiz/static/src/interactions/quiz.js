@@ -1,7 +1,7 @@
-import { rpc } from "@web/core/network/rpc";
-import { patch } from "@web/core/utils/patch";
+import {rpc} from "@web/core/network/rpc";
+import {patch} from "@web/core/utils/patch";
 
-import { Quiz } from "@website_event_track_quiz/interactions/quiz";
+import {Quiz} from "@website_event_track_quiz/interactions/quiz";
 
 patch(Quiz.prototype, {
     async willStart() {

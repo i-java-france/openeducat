@@ -1,31 +1,31 @@
-import { parseEmail } from "@mail/utils/common/format";
-import { AutoComplete } from "@web/core/autocomplete/autocomplete";
-import { _t } from "@web/core/l10n/translation";
-import { isEmail } from "@web/core/utils/strings";
-import { useService } from "@web/core/utils/hooks";
-import { useSelectCreate } from "@web/views/fields/relational_utils";
+import {parseEmail} from "@mail/utils/common/format";
+import {AutoComplete} from "@web/core/autocomplete/autocomplete";
+import {_t} from "@web/core/l10n/translation";
+import {isEmail} from "@web/core/utils/strings";
+import {useService} from "@web/core/utils/hooks";
+import {useSelectCreate} from "@web/views/fields/relational_utils";
 
-import { rpc } from "@web/core/network/rpc";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { useTagNavigation } from "@web/core/record_selectors/tag_navigation_hook";
-import { uniqueId } from "@web/core/utils/functions";
-import { RecipientsPopover } from "./recipients_popover";
-import { RecipientsInputTagsList } from "./recipients_input_tags_list";
+import {rpc} from "@web/core/network/rpc";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {useTagNavigation} from "@web/core/record_selectors/tag_navigation_hook";
+import {uniqueId} from "@web/core/utils/functions";
+import {RecipientsPopover} from "./recipients_popover";
+import {RecipientsInputTagsList} from "./recipients_input_tags_list";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class RecipientsInput extends Component {
     static template = "mail.RecipientsInput";
-    static components = { AutoComplete, RecipientsInputTagsList };
+    static components = {AutoComplete, RecipientsInputTagsList};
     static props = {
-        thread: { type: Object },
+        thread: {type: Object},
     };
 
     setup() {
         this.orm = useService("orm");
         this.action = useService("action");
         this.store = useService("mail.store");
-        this.popover = usePopover(RecipientsPopover, { position: "bottom-middle" });
+        this.popover = usePopover(RecipientsPopover, {position: "bottom-middle"});
         useTagNavigation("recipientsInputRef", {
             delete: this.deleteTagByIndex.bind(this),
         });
@@ -89,7 +89,7 @@ export class RecipientsInput extends Component {
                             email ? ["email_normalized", "ilike", email] : [0, "=", 1], // if no email, use a false leaf
                         ],
                         ["display_name", "email", "id", "lang", "name"],
-                        { limit }
+                        {limit}
                     );
 
                     options.push(
@@ -97,7 +97,9 @@ export class RecipientsInput extends Component {
                             label: match.email
                                 ? _t("%(partner_name)s <%(partner_email)s>", {
                                       partner_name:
-                                          match.name || match.display_name || _t("Unnamed"),
+                                          match.name ||
+                                          match.display_name ||
+                                          _t("Unnamed"),
                                       partner_email: match.email,
                                   })
                                 : match.name || match.display_name || _t("Unnamed"),
@@ -115,7 +117,8 @@ export class RecipientsInput extends Component {
                     if (matches.length >= limit) {
                         options.push({
                             label: _t("Search More..."),
-                            cssClass: "o_m2o_dropdown_option o_m2o_dropdown_option_search_more",
+                            cssClass:
+                                "o_m2o_dropdown_option o_m2o_dropdown_option_search_more",
                             onSelect: () => {
                                 this.openListViewToSelectResPartner({});
                             },
@@ -152,7 +155,7 @@ export class RecipientsInput extends Component {
                     } else {
                         createOption.onSelect = async () => {
                             const [partnerId] = await this.orm.create("res.partner", [
-                                { name, email },
+                                {name, email},
                             ]);
                             this.insertAdditionalRecipient({
                                 email,
@@ -180,7 +183,11 @@ export class RecipientsInput extends Component {
                 id: uniqueId("tag_"),
                 resId: recipient.partner_id,
                 canEdit: true,
-                text: recipient.name || recipient.display_name || recipient.email || _t("Unnamed"),
+                text:
+                    recipient.name ||
+                    recipient.display_name ||
+                    recipient.email ||
+                    _t("Unnamed"),
                 name: recipient.name || recipient.display_name || _t("Unnamed"),
                 email: recipient.email,
                 title,
@@ -203,9 +210,12 @@ export class RecipientsInput extends Component {
                     }
                 },
                 onDelete: () => {
-                    this.props.thread[recipientField] = this.props.thread[recipientField].filter(
+                    this.props.thread[recipientField] = this.props.thread[
+                        recipientField
+                    ].filter(
                         (additionalOrSuggestedRecipient) =>
-                            additionalOrSuggestedRecipient.partner_id !== recipient.partner_id ||
+                            additionalOrSuggestedRecipient.partner_id !==
+                                recipient.partner_id ||
                             additionalOrSuggestedRecipient.email !== recipient.email
                     );
                 },
@@ -236,7 +246,9 @@ export class RecipientsInput extends Component {
      * @param {number} recipientPartnerId ID of the partner to update
      */
     async updateRecipient(emailNormalized, recipientPartnerId) {
-        await this.orm.write("res.partner", [recipientPartnerId], { email: emailNormalized });
+        await this.orm.write("res.partner", [recipientPartnerId], {
+            email: emailNormalized,
+        });
         const allRecipients = this.getAllMailThreadRecipients();
         allRecipients.some((oldRecipient) => {
             if (oldRecipient.partner_id === recipientPartnerId) {

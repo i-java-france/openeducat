@@ -9,13 +9,16 @@ import {
     selectNested,
     registerThemeHomepageTour,
 } from "@website/js/tours/tour_utils";
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
 registerThemeHomepageTour("configurator_tour", () => {
     let titleSelector = "#wrap > section:first-child";
     let title = $(titleSelector).find("h1, h2").first();
     if (!title.length) {
-        titleSelector = titleSelector.replace("section:first-child", "section:nth-child(2)");
+        titleSelector = titleSelector.replace(
+            "section:first-child",
+            "section:nth-child(2)"
+        );
         title = $(titleSelector).find("h1, h2").first();
     }
 
@@ -39,7 +42,9 @@ registerThemeHomepageTour("configurator_tour", () => {
         if (!$(backgroundSelector).is($(shapeSelector))) {
             shapeStep.push(...clickOnSnippet(shapeSelector));
         }
-        shapeStep.push(changeOption("BackgroundShape", "we-toggler", _t("Background Shape")));
+        shapeStep.push(
+            changeOption("BackgroundShape", "we-toggler", _t("Background Shape"))
+        );
         shapeStep.push(
             selectNested(
                 "we-select-page",

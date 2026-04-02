@@ -1,5 +1,5 @@
-import { Mutex } from "@web/core/utils/concurrency";
-import { checkFileSize } from "@web/core/utils/files";
+import {Mutex} from "@web/core/utils/concurrency";
+import {checkFileSize} from "@web/core/utils/files";
 
 export class BinaryFileManager {
     constructor(resModel, fields, parameters, context, orm, notificationService) {
@@ -57,7 +57,8 @@ export class BinaryFileManager {
             ...this.context,
             import_file: true,
             tracking_disable: this.parameters.tracking_disable,
-            name_create_enabled_fields: this.parameters.name_create_enabled_fields || {},
+            name_create_enabled_fields:
+                this.parameters.name_create_enabled_fields || {},
             import_set_empty_fields: this.parameters.import_set_empty_fields || [],
             import_skip_records: this.parameters.import_skip_records || [],
         };
@@ -70,7 +71,7 @@ export class BinaryFileManager {
             });
         } catch (error) {
             console.error(error);
-            return { error };
+            return {error};
         }
         return res;
     }

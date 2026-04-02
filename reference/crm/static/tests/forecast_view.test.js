@@ -1,6 +1,6 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { expect, test } from "@odoo/hoot";
-import { mockDate } from "@odoo/hoot-mock";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {mockDate} from "@odoo/hoot-mock";
 import {
     defineModels,
     fields,
@@ -13,10 +13,10 @@ import {
 } from "@web/../tests/web_test_helpers";
 
 class Foo extends models.Model {
-    date_field = fields.Date({ store: true, sortable: true });
-    bar = fields.Many2one({ store: true, relation: "partner", sortable: true });
-    value = fields.Float({ store: true, sortable: true });
-    number = fields.Integer({ store: true, sortable: true });
+    date_field = fields.Date({store: true, sortable: true});
+    bar = fields.Many2one({store: true, relation: "partner", sortable: true});
+    value = fields.Float({store: true, sortable: true});
+    number = fields.Integer({store: true, sortable: true});
 
     _views = {
         "graph,1": `<graph js_class="forecast_graph"/>`,
@@ -39,17 +39,17 @@ test("Forecast graph view", async () => {
     mockDate("2021-09-16 16:54:00");
 
     const expectedDomains = [
-        forecastDomain("2021-09-01"), // month granularity due to no groupby
-        forecastDomain("2021-09-16"), // day granularity due to simple bar groupby
+        forecastDomain("2021-09-01"), // Month granularity due to no groupby
+        forecastDomain("2021-09-16"), // Day granularity due to simple bar groupby
         // quarter granularity due to date field groupby activated with quarter interval option
         forecastDomain("2021-07-01"),
-        // quarter granularity due to date field groupby activated with quarter and year interval option
+        // Quarter granularity due to date field groupby activated with quarter and year interval option
         forecastDomain("2021-01-01"),
-        // forecast filter no more active
+        // Forecast filter no more active
         [],
     ];
 
-    onRpc("formatted_read_group", ({ kwargs }) => {
+    onRpc("formatted_read_group", ({kwargs}) => {
         expect(kwargs.domain).toEqual(expectedDomains.shift());
     });
     await mountView({
@@ -84,7 +84,7 @@ test("forecast filter domain is combined with other domains following the same r
     expect.assertions(1);
     mockDate("2021-09-16 16:54:00");
 
-    onRpc("formatted_read_group", ({ kwargs }) => {
+    onRpc("formatted_read_group", ({kwargs}) => {
         expect(kwargs.domain).toEqual([
             "&",
             ["number", ">", 2],

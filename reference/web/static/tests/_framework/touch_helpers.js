@@ -1,5 +1,5 @@
-import { advanceTime, queryFirst } from "@odoo/hoot";
-import { contains } from "./dom_test_helpers";
+import {advanceTime, queryFirst} from "@odoo/hoot";
+import {contains} from "./dom_test_helpers";
 
 /**
  * @typedef {import("@odoo/hoot").PointerOptions} PointerOptions
@@ -23,13 +23,13 @@ async function swipe(target, direction, dragOptions, moveToOptions) {
         el.scrollLeft = 0;
     }
 
-    const { moveTo, drop } = await contains(el).drag({
-        position: { x: 0, y: 0 },
+    const {moveTo, drop} = await contains(el).drag({
+        position: {x: 0, y: 0},
         ...dragOptions,
     });
 
     await moveTo(el, {
-        position: { x: direction * el.clientWidth },
+        position: {x: direction * el.clientWidth},
         ...moveToOptions,
     });
 

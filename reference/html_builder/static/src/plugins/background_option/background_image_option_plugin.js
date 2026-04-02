@@ -1,13 +1,16 @@
-import { getValueFromVar } from "@html_builder/utils/utils";
-import { getBgImageURLFromEl, isBackgroundImageAttribute } from "@html_builder/utils/utils_css";
-import { Plugin } from "@html_editor/plugin";
-import { removeOnImageChangeAttrs } from "@html_editor/utils/image_processing";
-import { registry } from "@web/core/registry";
-import { convertCSSColorToRgba } from "@web/core/utils/colors";
-import { getBackgroundImageColor } from "./background_image_option";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { StyleAction } from "@html_builder/core/core_builder_action_plugin";
-import { withSequence } from "@html_editor/utils/resource";
+import {getValueFromVar} from "@html_builder/utils/utils";
+import {
+    getBgImageURLFromEl,
+    isBackgroundImageAttribute,
+} from "@html_builder/utils/utils_css";
+import {Plugin} from "@html_editor/plugin";
+import {removeOnImageChangeAttrs} from "@html_editor/utils/image_processing";
+import {registry} from "@web/core/registry";
+import {convertCSSColorToRgba} from "@web/core/utils/colors";
+import {getBackgroundImageColor} from "./background_image_option";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {StyleAction} from "@html_builder/core/core_builder_action_plugin";
+import {withSequence} from "@html_editor/utils/resource";
 
 /**
  * @typedef {((editingElement: HTMLElement) => void)[]} on_bg_image_hide_handlers
@@ -50,9 +53,11 @@ export class BackgroundImageOptionPlugin extends Plugin {
         // background-image and the dataset information relative to this image
         // from the old target to the new one.
         const oldBgURL = getBgImageURLFromEl(oldEditingEl);
-        const isModifiedImage = oldEditingEl.classList.contains("o_modified_image_to_save");
-        const filteredOldDataset = Object.entries(oldEditingEl.dataset).filter(([key]) =>
-            isBackgroundImageAttribute(key)
+        const isModifiedImage = oldEditingEl.classList.contains(
+            "o_modified_image_to_save"
+        );
+        const filteredOldDataset = Object.entries(oldEditingEl.dataset).filter(
+            ([key]) => isBackgroundImageAttribute(key)
         );
         // Delete the dataset information relative to the background-image of
         // the old target.
@@ -62,9 +67,12 @@ export class BackgroundImageOptionPlugin extends Plugin {
         // It is important to delete ".o_modified_image_to_save" from the old
         // target as its image source will be deleted.
         oldEditingEl.classList.remove("o_modified_image_to_save");
-        const filterColorAction = this.dependencies.builderActions.getAction("selectFilterColor");
-        const editingElement = this.getResource("get_target_element_providers")[0](oldEditingEl);
-        const filter = filterColorAction.getValue({ editingElement });
+        const filterColorAction =
+            this.dependencies.builderActions.getAction("selectFilterColor");
+        const editingElement = this.getResource("get_target_element_providers")[0](
+            oldEditingEl
+        );
+        const filter = filterColorAction.getValue({editingElement});
         this.setImageBackground(oldEditingEl, "");
         if (filter) {
             filterColorAction.apply({
@@ -81,7 +89,7 @@ export class BackgroundImageOptionPlugin extends Plugin {
             newEditingEl.classList.toggle("o_modified_image_to_save", isModifiedImage);
         }
     }
-    loadReplaceBackgroundImage({ editingElement }) {
+    loadReplaceBackgroundImage({editingElement}) {
         return new Promise((resolve) => {
             const onClose = this.dependencies.media.openMediaDialog({
                 onlyImages: true,
@@ -96,7 +104,7 @@ export class BackgroundImageOptionPlugin extends Plugin {
     applyReplaceBackgroundImage({
         editingElement,
         loadResult: imageEl,
-        params: { forceClean = false },
+        params: {forceClean = false},
     }) {
         if (!forceClean && !imageEl) {
             // Do nothing: no images has been selected on the media dialog
@@ -121,12 +129,18 @@ export class BackgroundImageOptionPlugin extends Plugin {
      */
     setImageBackground(el, backgroundURL) {
         if (backgroundURL) {
-            el.classList.add("oe_img_bg", "o_bg_img_center", "o_bg_img_origin_border_box");
+            el.classList.add(
+                "oe_img_bg",
+                "o_bg_img_center",
+                "o_bg_img_origin_border_box"
+            );
         } else {
-            const editingElement = this.getResource("get_target_element_providers")[0](el);
+            const editingElement = this.getResource("get_target_element_providers")[0](
+                el
+            );
             this.dependencies.builderActions
                 .getAction("selectFilterColor")
-                .apply({ editingElement });
+                .apply({editingElement});
             el.classList.remove(
                 "oe_img_bg",
                 "o_bg_img_center",
@@ -147,11 +161,11 @@ export class BackgroundImageOptionPlugin extends Plugin {
      * @param {HTMLElement} context.editingElement
      * @param {Object} [context.params]
      */
-    removeBackgroundImage({ editingElement, params }) {
+    removeBackgroundImage({editingElement, params}) {
         this.applyReplaceBackgroundImage({
             editingElement,
             loadResult: "",
-            params: { ...params, forceClean: true },
+            params: {...params, forceClean: true},
         });
         this.dispatchTo("on_bg_image_hide_handlers", editingElement);
     }
@@ -160,7 +174,7 @@ export class BackgroundImageOptionPlugin extends Plugin {
 export class SelectFilterColorAction extends StyleAction {
     static id = "selectFilterColor";
     static dependencies = ["color", "backgroundImageOption", "builderActions"];
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         // Find the filter element.
         let filterEl = editingElement.querySelector(":scope > .o_we_bg_filter");
 
@@ -202,7 +216,7 @@ export class SelectFilterColorAction extends StyleAction {
             value: value,
         });
     }
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         const filterEl = editingElement.querySelector(":scope > .o_we_bg_filter");
         if (!filterEl) {
             return "";
@@ -220,12 +234,16 @@ export class ToggleBgImageAction extends BuilderAction {
     static id = "toggleBgImage";
     static dependencies = ["backgroundImageOption"];
     load(context) {
-        return this.dependencies.backgroundImageOption.loadReplaceBackgroundImage(context);
+        return this.dependencies.backgroundImageOption.loadReplaceBackgroundImage(
+            context
+        );
     }
     apply(context) {
-        return this.dependencies.backgroundImageOption.applyReplaceBackgroundImage(context);
+        return this.dependencies.backgroundImageOption.applyReplaceBackgroundImage(
+            context
+        );
     }
-    isApplied({ editingElement }) {
+    isApplied({editingElement}) {
         return !!getBgImageURLFromEl(editingElement);
     }
     clean(context) {
@@ -245,19 +263,23 @@ export class ReplaceBgImageAction extends BuilderAction {
     static id = "replaceBgImage";
     static dependencies = ["backgroundImageOption"];
     load(context) {
-        return this.dependencies.backgroundImageOption.loadReplaceBackgroundImage(context);
+        return this.dependencies.backgroundImageOption.loadReplaceBackgroundImage(
+            context
+        );
     }
     apply(context) {
-        return this.dependencies.backgroundImageOption.applyReplaceBackgroundImage(context);
+        return this.dependencies.backgroundImageOption.applyReplaceBackgroundImage(
+            context
+        );
     }
 }
 export class DynamicColorAction extends BuilderAction {
     static id = "dynamicColor";
     static dependencies = ["backgroundImageOption"];
-    getValue({ editingElement, params: { mainParam: colorName } }) {
+    getValue({editingElement, params: {mainParam: colorName}}) {
         return getBackgroundImageColor(editingElement, colorName);
     }
-    apply({ editingElement, params: { mainParam: colorName }, value }) {
+    apply({editingElement, params: {mainParam: colorName}, value}) {
         value = getValueFromVar(value);
         const currentSrc = getBgImageURLFromEl(editingElement);
         const newURL = new URL(currentSrc, window.location.origin);

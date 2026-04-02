@@ -1,7 +1,7 @@
-import { mailModels } from "@mail/../tests/mail_test_helpers";
-import { mailDataHelpers } from "@mail/../tests/mock_server/mail_mock_server";
+import {mailModels} from "@mail/../tests/mail_test_helpers";
+import {mailDataHelpers} from "@mail/../tests/mock_server/mail_mock_server";
 
-import { makeKwArgs } from "@web/../tests/web_test_helpers";
+import {makeKwArgs} from "@web/../tests/web_test_helpers";
 
 export class MailMessage extends mailModels.MailMessage {
     _author_to_store(ids, store) {
@@ -13,7 +13,11 @@ export class MailMessage extends mailModels.MailMessage {
         const ResPartner = this.env["res.partner"];
 
         const messages_w_author_livechat = MailMessage.browse(ids).filter((message) => {
-            if (!message.author_id || message.model !== "discuss.channel" || !message.res_id) {
+            if (
+                !message.author_id ||
+                message.model !== "discuss.channel" ||
+                !message.res_id
+            ) {
                 return false;
             }
             const channel = DiscussChannel.browse(message.res_id);
@@ -21,7 +25,10 @@ export class MailMessage extends mailModels.MailMessage {
         });
         super._author_to_store(
             ids.filter(
-                (id) => !messages_w_author_livechat.map((message) => message.id).includes(id)
+                (id) =>
+                    !messages_w_author_livechat
+                        .map((message) => message.id)
+                        .includes(id)
             ),
             store
         );
@@ -30,7 +37,12 @@ export class MailMessage extends mailModels.MailMessage {
                 author_id: mailDataHelpers.Store.one(
                     ResPartner.browse(message.author_id),
                     makeKwArgs({
-                        fields: ["avatar_128", "is_company", "user_livechat_username", "user"],
+                        fields: [
+                            "avatar_128",
+                            "is_company",
+                            "user_livechat_username",
+                            "user",
+                        ],
                     })
                 ),
             });

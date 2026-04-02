@@ -1,14 +1,14 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
 
 export class HrPresenceStatus extends Component {
     static template = "hr.HrPresenceStatus";
     static props = {
         ...standardFieldProps,
-        tag: { type: String, optional: true },
+        tag: {type: String, optional: true},
     };
     static defaultProps = {
         tag: "small",
@@ -22,8 +22,8 @@ export class HrPresenceStatus extends Component {
             "o_button_icon",
             "hr_presence",
             "align-middle",
-            this.color,
-        )
+            this.color
+        );
         return classNames.join(" ");
     }
 
@@ -66,11 +66,11 @@ export const hrPresenceStatus = {
     component: HrPresenceStatus,
     fieldDependencies: [],
     displayName: _t("HR Presence Status"),
-    extractProps({ viewType }, dynamicInfo) {
+    extractProps({viewType}, dynamicInfo) {
         return {
             tag: viewType === "kanban" ? "span" : "small",
         };
     },
 };
 
-registry.category("fields").add("hr_presence_status", hrPresenceStatus)
+registry.category("fields").add("hr_presence_status", hrPresenceStatus);

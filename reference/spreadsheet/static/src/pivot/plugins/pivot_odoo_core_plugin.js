@@ -1,7 +1,7 @@
 // @ts-check
 
-import { Domain } from "@web/core/domain";
-import { OdooCorePlugin } from "@spreadsheet/plugins";
+import {Domain} from "@web/core/domain";
+import {OdooCorePlugin} from "@spreadsheet/plugins";
 
 export class PivotOdooCorePlugin extends OdooCorePlugin {
     handle(cmd) {
@@ -28,7 +28,9 @@ export class PivotOdooCorePlugin extends OdooCorePlugin {
         if (data.pivots) {
             for (const id in data.pivots) {
                 if (data.pivots[id].type === "ODOO") {
-                    data.pivots[id].domain = new Domain(data.pivots[id].domain).toJson();
+                    data.pivots[id].domain = new Domain(
+                        data.pivots[id].domain
+                    ).toJson();
                 }
             }
         }

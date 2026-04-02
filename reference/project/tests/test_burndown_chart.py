@@ -1,10 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from freezegun import freeze_time
 from datetime import datetime
 
+from freezegun import freeze_time
+
 from odoo.fields import Command, Domain
-from odoo.tests.common import tagged, HttpCase
+from odoo.tests.common import HttpCase, tagged
+
 from .test_project_base import TestProjectCommon
 
 
@@ -12,7 +14,7 @@ class TestBurndownChartCommon(TestProjectCommon):
 
     @classmethod
     def set_create_date(cls, table, res_id, create_date):
-        cls.env.cr.execute("UPDATE {} SET create_date=%s WHERE id=%s".format(table), (create_date, res_id))
+        cls.env.cr.execute(f"UPDATE {table} SET create_date=%s WHERE id=%s", (create_date, res_id))
 
     @classmethod
     def setUpClass(cls):

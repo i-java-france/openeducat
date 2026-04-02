@@ -2,11 +2,12 @@ import io
 import logging
 
 from odoo import _, models
-from odoo.addons.account_edi_ubl_cii.models.account_edi_common import (
-    FloatFmt,
-    GST_COUNTRY_CODES,
-)
 from odoo.tools import frozendict, pdf
+
+from odoo.addons.account_edi_ubl_cii.models.account_edi_common import (
+    GST_COUNTRY_CODES,
+    FloatFmt,
+)
 
 _logger = logging.getLogger(__name__)
 

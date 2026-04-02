@@ -1,15 +1,15 @@
-import { AttachmentList } from "@mail/core/common/attachment_list";
-import { Composer } from "@mail/core/common/composer";
-import { ImStatus } from "@mail/core/common/im_status";
-import { MessageInReply } from "@mail/core/common/message_in_reply";
-import { MessageLinkPreviewList } from "@mail/core/common/message_link_preview_list";
-import { MessageNotificationPopover } from "@mail/core/common/message_notification_popover";
-import { MessageReactionMenu } from "@mail/core/common/message_reaction_menu";
-import { MessageReactions } from "@mail/core/common/message_reactions";
-import { RelativeTime } from "@mail/core/common/relative_time";
-import { htmlToTextContentInline } from "@mail/utils/common/format";
-import { isEventHandled, markEventHandled } from "@web/core/utils/misc";
-import { renderToElement } from "@web/core/utils/render";
+import {AttachmentList} from "@mail/core/common/attachment_list";
+import {Composer} from "@mail/core/common/composer";
+import {ImStatus} from "@mail/core/common/im_status";
+import {MessageInReply} from "@mail/core/common/message_in_reply";
+import {MessageLinkPreviewList} from "@mail/core/common/message_link_preview_list";
+import {MessageNotificationPopover} from "@mail/core/common/message_notification_popover";
+import {MessageReactionMenu} from "@mail/core/common/message_reaction_menu";
+import {MessageReactions} from "@mail/core/common/message_reactions";
+import {RelativeTime} from "@mail/core/common/relative_time";
+import {htmlToTextContentInline} from "@mail/utils/common/format";
+import {isEventHandled, markEventHandled} from "@web/core/utils/misc";
+import {renderToElement} from "@web/core/utils/render";
 
 import {
     Component,
@@ -25,21 +25,21 @@ import {
     useSubEnv,
 } from "@odoo/owl";
 
-import { ActionSwiper } from "@web/core/action_swiper/action_swiper";
-import { hasTouch, isMobileOS } from "@web/core/browser/feature_detection";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { _t } from "@web/core/l10n/translation";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { useService } from "@web/core/utils/hooks";
-import { createElementWithContent } from "@web/core/utils/html";
-import { getOrigin, url } from "@web/core/utils/urls";
-import { useMessageActions } from "./message_actions";
-import { discussComponentRegistry } from "./discuss_component_registry";
-import { NotificationMessage } from "./notification_message";
-import { useLongPress } from "@mail/utils/common/hooks";
-import { ActionList } from "@mail/core/common/action_list";
-import { loadCssFromBundle } from "@mail/utils/common/misc";
+import {ActionSwiper} from "@web/core/action_swiper/action_swiper";
+import {hasTouch, isMobileOS} from "@web/core/browser/feature_detection";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {_t} from "@web/core/l10n/translation";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {useService} from "@web/core/utils/hooks";
+import {createElementWithContent} from "@web/core/utils/html";
+import {getOrigin, url} from "@web/core/utils/urls";
+import {useMessageActions} from "./message_actions";
+import {discussComponentRegistry} from "./discuss_component_registry";
+import {NotificationMessage} from "./notification_message";
+import {useLongPress} from "@mail/utils/common/hooks";
+import {ActionList} from "@mail/core/common/action_list";
+import {loadCssFromBundle} from "@mail/utils/common/misc";
 
 /**
  * @typedef {Object} Props
@@ -98,7 +98,9 @@ export class Message extends Component {
     setup() {
         super.setup();
         this.store = useService("mail.store");
-        this.popover = usePopover(this.constructor.components.Popover, { position: "top" });
+        this.popover = usePopover(this.constructor.components.Popover, {
+            position: "top",
+        });
         this.state = useState({
             isHovered: false,
             isClicked: false,
@@ -131,14 +133,14 @@ export class Message extends Component {
         this.ui = useService("ui");
         this.openReactionMenu = this.openReactionMenu.bind(this);
         this.optionsDropdown = useDropdownState();
-        useSubEnv({ inMessage: true });
+        useSubEnv({inMessage: true});
         useChildSubEnv({
             message: this.props.message,
             alignedRight: this.isAlignedRight,
         });
         onMounted(() => {
             if (this.shadowBody.el) {
-                this.shadowRoot = this.shadowBody.el.attachShadow({ mode: "open" });
+                this.shadowRoot = this.shadowBody.el.attachShadow({mode: "open"});
                 const color = this.store.isOdooWhiteTheme ? "dark" : "white";
                 loadCssFromBundle(this.shadowRoot, "mail.assets_message_email");
                 const shadowStyle = document.createElement("style");
@@ -193,8 +195,9 @@ export class Message extends Component {
                         "span",
                         this.message.showTranslation
                             ? this.message.richTranslationValue
-                            : this.props.messageSearch?.highlight(this.message.richBody) ??
+                            : (this.props.messageSearch?.highlight(
                                   this.message.richBody
+                              ) ?? this.message.richBody)
                     );
                     this.prepareMessageBody(bodyEl);
                     this.shadowRoot.appendChild(bodyEl);
@@ -242,8 +245,8 @@ export class Message extends Component {
                           ? "left-end"
                           : "left-start"
                       : this.message.threadAsNewest
-                      ? "right-end"
-                      : "right-start",
+                        ? "right-end"
+                        : "right-start",
                   name: this.expandText,
               })
             : undefined;
@@ -260,11 +263,14 @@ export class Message extends Component {
         return {
             "user-select-none o-isMobileOS": isMobileOS(),
             [this.props.className]: true,
-            "o-card p-2 ps-1 mx-1 mt-1 mb-1 border border-dark rounded-2": this.props.asCard,
+            "o-card p-2 ps-1 mx-1 mt-1 mb-1 border border-dark rounded-2":
+                this.props.asCard,
             "pt-1": !this.props.asCard && !this.props.squashed,
             "o-pt-0_5": !this.props.asCard && this.props.squashed,
             "o-selfAuthored": this.message.isSelfAuthored && !this.env.messageCard,
-            "o-selected": this.props.message.composerAsReplyToMessage?.thread.eq(this.props.thread),
+            "o-selected": this.props.message.composerAsReplyToMessage?.thread.eq(
+                this.props.thread
+            ),
             "o-squashed": this.props.squashed,
             "mt-1":
                 !this.props.squashed &&
@@ -373,11 +379,15 @@ export class Message extends Component {
     }
 
     get translatedFromText() {
-        return _t("(Translated from: %(language)s)", { language: this.message.translationSource });
+        return _t("(Translated from: %(language)s)", {
+            language: this.message.translationSource,
+        });
     }
 
     get translationFailureText() {
-        return _t("(Translation Failure: %(error)s)", { error: this.message.translationErrors });
+        return _t("(Translation Failure: %(error)s)", {
+            error: this.message.translationErrors,
+        });
     }
 
     onMouseenter() {
@@ -429,7 +439,7 @@ export class Message extends Component {
                     () => {
                         this.state.isClicked = false;
                     },
-                    { capture: true, once: true }
+                    {capture: true, once: true}
                 );
             }
         }
@@ -450,14 +460,16 @@ export class Message extends Component {
                 const message = this.store["mail.message"].get(el.dataset.oeId);
                 if (message?.thread?.displayName) {
                     el.classList.add("o_message_redirect_transformed");
-                    el.replaceChildren(renderToElement("mail.Message.messageLink", { message }));
+                    el.replaceChildren(
+                        renderToElement("mail.Message.messageLink", {message})
+                    );
                 }
             }
         }
     }
 
     getAuthorAttClass() {
-        return { "opacity-50": this.message.isPending };
+        return {"opacity-50": this.message.isPending};
     }
 
     getAvatarContainerAttClass() {
@@ -476,7 +488,7 @@ export class Message extends Component {
         if (message.failureNotifications.length > 0) {
             markEventHandled(ev, "Message.ClickFailure");
         }
-        this.popover.open(ev.target, { message });
+        this.popover.open(ev.target, {message});
     }
 
     /** @param {MouseEvent} [ev] */
@@ -492,8 +504,8 @@ export class Message extends Component {
         const message = toRaw(this.props.message);
         this.dialog.add(
             MessageReactionMenu,
-            { message, initialReaction: reaction },
-            { context: this }
+            {message, initialReaction: reaction},
+            {context: this}
         );
     }
 

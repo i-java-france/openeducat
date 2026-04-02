@@ -1,33 +1,33 @@
-import { animationFrame, describe, expect, test } from "@odoo/hoot";
-import { registries } from "@odoo/o-spreadsheet";
-import { createSpreadsheetWithChart } from "@spreadsheet/../tests/helpers/chart";
+import {animationFrame, describe, expect, test} from "@odoo/hoot";
+import {registries} from "@odoo/o-spreadsheet";
+import {createSpreadsheetWithChart} from "@spreadsheet/../tests/helpers/chart";
 import {
+    addChartFigureToCarousel,
     addGlobalFilter,
+    createCarousel,
     setCellContent,
     setCellFormat,
     setCellStyle,
     setGlobalFilterValue,
-    createCarousel,
-    addChartFigureToCarousel,
 } from "@spreadsheet/../tests/helpers/commands";
-import { defineSpreadsheetModels } from "@spreadsheet/../tests/helpers/data";
-import { getCell, getEvaluatedCell } from "@spreadsheet/../tests/helpers/getters";
-import { THIS_YEAR_GLOBAL_FILTER } from "@spreadsheet/../tests/helpers/global_filter";
-import { createModelWithDataSource } from "@spreadsheet/../tests/helpers/model";
-import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/helpers/pivot";
-import { freezeOdooData, waitForDataLoaded } from "@spreadsheet/helpers/model";
-import { OdooPivot, OdooPivotRuntimeDefinition } from "@spreadsheet/pivot/odoo_pivot";
+import {defineSpreadsheetModels} from "@spreadsheet/../tests/helpers/data";
+import {getCell, getEvaluatedCell} from "@spreadsheet/../tests/helpers/getters";
+import {THIS_YEAR_GLOBAL_FILTER} from "@spreadsheet/../tests/helpers/global_filter";
+import {createModelWithDataSource} from "@spreadsheet/../tests/helpers/model";
+import {createSpreadsheetWithPivot} from "@spreadsheet/../tests/helpers/pivot";
+import {freezeOdooData, waitForDataLoaded} from "@spreadsheet/helpers/model";
+import {OdooPivot, OdooPivotRuntimeDefinition} from "@spreadsheet/pivot/odoo_pivot";
 
-const { pivotRegistry } = registries;
+const {pivotRegistry} = registries;
 
-import { getMenuServerData } from "@spreadsheet/../tests/links/menu_data_utils";
-import { createSpreadsheetWithList } from "../helpers/list";
+import {getMenuServerData} from "@spreadsheet/../tests/links/menu_data_utils";
+import {createSpreadsheetWithList} from "../helpers/list";
 
 describe.current.tags("headless");
 defineSpreadsheetModels();
 
 test("odoo pivot functions are replaced with their value", async function () {
-    const { model } = await createSpreadsheetWithPivot({ pivotType: "static" });
+    const {model} = await createSpreadsheetWithPivot({pivotType: "static"});
     expect(getCell(model, "A3").content).toBe('=PIVOT.HEADER(1,"bar",FALSE)');
     expect(getCell(model, "C3").content).toBe(
         '=PIVOT.VALUE(1,"probability:avg","bar",FALSE,"foo",2)'
@@ -36,8 +36,8 @@ test("odoo pivot functions are replaced with their value", async function () {
     expect(getEvaluatedCell(model, "C3").value).toBe(15);
     const data = await freezeOdooData(model);
     const cells = data.sheets[0].cells;
-    expect(cells.A3).toBe("No", { message: "the content is replaced with the value" });
-    expect(cells.C3).toBe("15", { message: "the content is replaced with the value" });
+    expect(cells.A3).toBe("No", {message: "the content is replaced with the value"});
+    expect(cells.C3).toBe("15", {message: "the content is replaced with the value"});
     expect(data.formats[data.sheets[0].formats.C3]).toBe("#,##0.00");
 });
 
@@ -65,7 +65,7 @@ test("Pivot with a type different of ODOO is not converted", async function () {
             },
         },
     };
-    const { model } = await createModelWithDataSource({ spreadsheetData });
+    const {model} = await createModelWithDataSource({spreadsheetData});
     setCellContent(model, "A1", `=PIVOT.VALUE(1, "probability:avg")`);
     setCellContent(model, "A2", `=PIVOT.HEADER(1, "measure", "probability:avg")`);
     const data = await freezeOdooData(model);
@@ -79,7 +79,7 @@ test("Pivot with a type different of ODOO is not converted", async function () {
 });
 
 test("values are not exported formatted", async function () {
-    const { model } = await createSpreadsheetWithPivot({ pivotType: "static" });
+    const {model} = await createSpreadsheetWithPivot({pivotType: "static"});
     expect(getCell(model, "A3").content).toBe('=PIVOT.HEADER(1,"bar",FALSE)');
     expect(getCell(model, "C3").content).toBe(
         '=PIVOT.VALUE(1,"probability:avg","bar",FALSE,"foo",2)'
@@ -91,7 +91,9 @@ test("values are not exported formatted", async function () {
     expect(getEvaluatedCell(model, "C4").value).toBe(46);
     expect(getEvaluatedCell(model, "C4").formattedValue).toBe("February 1900");
     const data = await freezeOdooData(model);
-    const { model: sharedModel } = await createModelWithDataSource({ spreadsheetData: data });
+    const {model: sharedModel} = await createModelWithDataSource({
+        spreadsheetData: data,
+    });
     expect(getEvaluatedCell(sharedModel, "C3").value).toBe(15);
     expect(getEvaluatedCell(sharedModel, "C3").formattedValue).toBe("January 1900");
     expect(getEvaluatedCell(sharedModel, "C4").value).toBe(46);
@@ -99,8 +101,8 @@ test("values are not exported formatted", async function () {
 });
 
 test("invalid expression with pivot function", async function () {
-    const { model } = await createSpreadsheetWithPivot();
-    setCellContent(model, "A1", "=PIVOT.VALUE(1)+"); // invalid expression
+    const {model} = await createSpreadsheetWithPivot();
+    setCellContent(model, "A1", "=PIVOT.VALUE(1)+"); // Invalid expression
     expect(getEvaluatedCell(model, "A1").value).toBe("#BAD_EXPR");
     const data = await freezeOdooData(model);
     const cells = data.sheets[0].cells;
@@ -110,15 +112,15 @@ test("invalid expression with pivot function", async function () {
 });
 
 test("odoo pivot functions detection is not case sensitive", async function () {
-    const { model } = await createSpreadsheetWithPivot();
+    const {model} = await createSpreadsheetWithPivot();
     setCellContent(model, "A1", '=pivot.value(1,"probability:avg")');
     const data = await freezeOdooData(model);
     const A1 = data.sheets[0].cells.A1;
-    expect(A1).toBe("131", { message: "the content is replaced with the value" });
+    expect(A1).toBe("131", {message: "the content is replaced with the value"});
 });
 
 test("computed format is exported", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
               <pivot>
                   <field name="pognon" type="measure"/>
@@ -133,20 +135,22 @@ test("computed format is exported", async function () {
     const formatId = data.sheets[0].formats.A1;
     const format = data.formats[formatId];
     expect(format).toBe("#,##0.00[$€]");
-    const { model: sharedModel } = await createModelWithDataSource({ spreadsheetData: data });
+    const {model: sharedModel} = await createModelWithDataSource({
+        spreadsheetData: data,
+    });
     expect(getCell(sharedModel, "A1").format).toBe("#,##0.00[$€]");
 });
 
 test("odoo charts are replaced with an image", async function () {
-    const { model } = await createSpreadsheetWithChart({ type: "odoo_bar" });
+    const {model} = await createSpreadsheetWithChart({type: "odoo_bar"});
     const data = await freezeOdooData(model);
     expect(data.sheets[0].figures.length).toBe(1);
     expect(data.sheets[0].figures[0].tag).toBe("image");
 });
 
 test("geo charts are replaced with an image", async function () {
-    const { model } = await createSpreadsheetWithList({
-        modelConfig: { external: { geoJsonService: { getAvailableRegions: () => [] } } },
+    const {model} = await createSpreadsheetWithList({
+        modelConfig: {external: {geoJsonService: {getAvailableRegions: () => []}}},
     });
     const sheetId = model.getters.getActiveSheetId();
     model.dispatch("CREATE_CHART", {
@@ -155,7 +159,7 @@ test("geo charts are replaced with an image", async function () {
         chartId: "chartId",
         col: 0,
         row: 0,
-        offset: { x: 0, y: 0 },
+        offset: {x: 0, y: 0},
         definition: {
             type: "geo",
             dataSets: [],
@@ -171,10 +175,10 @@ test("geo charts are replaced with an image", async function () {
 });
 
 test("Carousels figure with odoo data is converted to an image", async function () {
-    const { model } = await createSpreadsheetWithChart({ type: "odoo_bar" });
+    const {model} = await createSpreadsheetWithChart({type: "odoo_bar"});
     const sheetId = model.getters.getActiveSheetId();
     const chartFigureId = model.getters.getFigures(sheetId)[0].id;
-    createCarousel(model, { items: [] }, "carouselId");
+    createCarousel(model, {items: []}, "carouselId");
     addChartFigureToCarousel(model, "carouselId", chartFigureId);
 
     const data = await freezeOdooData(model);
@@ -183,7 +187,7 @@ test("Carousels figure with odoo data is converted to an image", async function 
 });
 
 test("translation function are replaced with their value", async function () {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     setCellContent(model, "A1", `=_t("example")`);
     setCellContent(model, "A2", `=CONCATENATE("for",_t(" example"))`);
     expect(getEvaluatedCell(model, "A1").value).toBe("example");
@@ -194,12 +198,13 @@ test("translation function are replaced with their value", async function () {
         message: "the content is replaced with the value",
     });
     expect(cells.A2).toBe("for example", {
-        message: "the content is replaced with the value even when translation function is nested",
+        message:
+            "the content is replaced with the value even when translation function is nested",
     });
 });
 
 test("a new sheet is added for global filters", async function () {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     await addGlobalFilter(model, THIS_YEAR_GLOBAL_FILTER);
     const data = await freezeOdooData(model);
     expect(data.sheets.length).toBe(2);
@@ -208,7 +213,7 @@ test("a new sheet is added for global filters", async function () {
 });
 
 test("global filters and their display value are exported", async function () {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     await addGlobalFilter(model, THIS_YEAR_GLOBAL_FILTER);
     const year = new Date().getFullYear().toString();
     const data = await freezeOdooData(model);
@@ -218,7 +223,7 @@ test("global filters and their display value are exported", async function () {
 });
 
 test("from/to global filters are exported", async function () {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     await addGlobalFilter(model, {
         id: "42",
         type: "date",
@@ -245,7 +250,7 @@ test("from/to global filters are exported", async function () {
 });
 
 test("from/to global filter without value is exported", async function () {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     await addGlobalFilter(model, {
         id: "42",
         type: "date",
@@ -265,8 +270,8 @@ test("from/to global filter without value is exported", async function () {
 });
 
 test("Empty ODOO.LIST result is frozen to an empty string", async function () {
-    const { model } = await createSpreadsheetWithList();
-    setCellContent(model, "A1", '=ODOO.LIST(1, 9999,"probability")'); // has no record
+    const {model} = await createSpreadsheetWithList();
+    setCellContent(model, "A1", '=ODOO.LIST(1, 9999,"probability")'); // Has no record
     await waitForDataLoaded(model);
     expect(getEvaluatedCell(model, "A1").value).toBe("");
     const frozenData = await freezeOdooData(model);
@@ -296,7 +301,7 @@ test("odoo links are replaced with their label", async function () {
         ],
     };
 
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         spreadsheetData: data,
         serverData: getMenuServerData(),
     });
@@ -305,11 +310,13 @@ test("odoo links are replaced with their label", async function () {
     expect(frozenData.sheets[0].cells.A2).toBe("menu_id");
     expect(frozenData.sheets[0].cells.A3).toBe("odoo_view");
     expect(frozenData.sheets[0].cells.A4).toBe("[external_link](https://odoo.com)");
-    expect(frozenData.sheets[0].cells.A5).toBe("[internal_link](o-spreadsheet://Sheet1)");
+    expect(frozenData.sheets[0].cells.A5).toBe(
+        "[internal_link](o-spreadsheet://Sheet1)"
+    );
 });
 
 test("spilled pivot table", async function () {
-    const { model } = await createSpreadsheetWithPivot({
+    const {model} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
           <pivot>
               <field name="probability" type="measure"/>
@@ -317,7 +324,7 @@ test("spilled pivot table", async function () {
         `,
     });
     setCellContent(model, "A10", "=PIVOT(1)");
-    setCellStyle(model, "B12", { bold: true });
+    setCellStyle(model, "B12", {bold: true});
     const data = await freezeOdooData(model);
     const sheet = data.sheets[0];
     const cells = sheet.cells;
@@ -329,24 +336,24 @@ test("spilled pivot table", async function () {
     expect(cells.B12).toBe("131");
     expect(data.formats[sheet.formats.B12]).toBe("#,##0.00");
     expect(data.pivots).toEqual({});
-    expect(sheet.styles).toEqual({ B12: 1 });
-    expect(data.styles[sheet.styles["B12"]]).toEqual(
-        { bold: true },
-        { message: "style is preserved" }
+    expect(sheet.styles).toEqual({B12: 1});
+    expect(data.styles[sheet.styles.B12]).toEqual(
+        {bold: true},
+        {message: "style is preserved"}
     );
 });
 
-test("empty string computed measure is exported as =\"\"", async function () {
-    const { model } = await createSpreadsheetWithPivot();
+test('empty string computed measure is exported as =""', async function () {
+    const {model} = await createSpreadsheetWithPivot();
     setCellContent(model, "A10", "=PIVOT(1)");
-    expect(getEvaluatedCell(model, "B12").value).toBe(""); // empty value
+    expect(getEvaluatedCell(model, "B12").value).toBe(""); // Empty value
     const data = await freezeOdooData(model);
     const cells = data.sheets[0].cells;
     expect(cells.B12).toBe('=""');
 });
 
 test("Lists are purged from the frozen data", async function () {
-    const { model } = await createSpreadsheetWithList();
+    const {model} = await createSpreadsheetWithList();
     const data = await freezeOdooData(model);
     expect(data.lists).toEqual({});
 });

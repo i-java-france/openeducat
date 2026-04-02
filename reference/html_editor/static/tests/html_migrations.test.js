@@ -1,6 +1,6 @@
-import { HtmlField } from "@html_editor/fields/html_field";
-import { htmlEditorVersions } from "@html_editor/html_migrations/html_migrations_utils";
-import { beforeEach, describe, expect, getFixture, test } from "@odoo/hoot";
+import {HtmlField} from "@html_editor/fields/html_field";
+import {htmlEditorVersions} from "@html_editor/html_migrations/html_migrations_utils";
+import {beforeEach, describe, expect, getFixture, test} from "@odoo/hoot";
 import {
     defineModels,
     fields,
@@ -13,7 +13,7 @@ const VERSIONS = htmlEditorVersions();
 const CURRENT_VERSION = VERSIONS.at(-1);
 
 class Partner extends models.Model {
-    txt = fields.Html({ trim: true });
+    txt = fields.Html({trim: true});
     name = fields.Char();
 
     _records = [
@@ -37,7 +37,7 @@ class Partner extends models.Model {
     ];
 }
 
-async function mountViewWithRecord({ resId, readonly }) {
+async function mountViewWithRecord({resId, readonly}) {
     return mountView({
         type: "form",
         resId,
@@ -64,7 +64,7 @@ describe("test the migration process", () => {
 
     describe("In html field", () => {
         test("Excalidraw EmbeddedComponent is replaced by a link (editable)", async () => {
-            await mountViewWithRecord({ resId: 1 });
+            await mountViewWithRecord({resId: 1});
             expect("[data-embedded='draw']").toHaveCount(0);
             expect("a[href='https://excalidraw.com']").toHaveCount(1);
             expect(htmlFieldComponent.editor.getContent()).toBe(
@@ -72,7 +72,7 @@ describe("test the migration process", () => {
             );
         });
         test("Banner classes are properly updated (editable)", async () => {
-            await mountViewWithRecord({ resId: 2 });
+            await mountViewWithRecord({resId: 2});
             const fixture = getFixture();
             expect(fixture.querySelector(".odoo-editor-editable")).toHaveInnerHTML(
                 `<p>test</p>
@@ -98,12 +98,12 @@ describe("test the migration process", () => {
 
     describe("In html viewer", () => {
         test("Excalidraw EmbeddedComponent is replaced by a link (readonly)", async () => {
-            await mountViewWithRecord({ resId: 1, readonly: true });
+            await mountViewWithRecord({resId: 1, readonly: true});
             expect("[data-embedded='draw']").toHaveCount(0);
             expect("a[href='https://excalidraw.com']").toHaveCount(1);
         });
         test("Banner classes are properly updated (readonly)", async () => {
-            await mountViewWithRecord({ resId: 2, readonly: true });
+            await mountViewWithRecord({resId: 2, readonly: true});
             const fixture = getFixture();
             expect(fixture.querySelector(".o_readonly")).toHaveInnerHTML(
                 `<p>test</p>

@@ -1,10 +1,10 @@
 /** @ts-check */
 
-import { Component, useEffect } from "@odoo/owl";
-import { useChildRef } from "@web/core/utils/hooks";
+import {Component, useEffect} from "@odoo/owl";
+import {useChildRef} from "@web/core/utils/hooks";
 
-import { TagsList } from "@web/core/tags_list/tags_list";
-import { AutoComplete } from "@web/core/autocomplete/autocomplete";
+import {TagsList} from "@web/core/tags_list/tags_list";
+import {AutoComplete} from "@web/core/autocomplete/autocomplete";
 
 export class TextFilterValue extends Component {
     static template = "spreadsheet.TextFilterValue";
@@ -14,12 +14,12 @@ export class TextFilterValue extends Component {
     };
     static props = {
         onValueChanged: Function,
-        value: { type: Array, optional: true },
+        value: {type: Array, optional: true},
         options: {
             type: Array,
             element: {
                 type: Object,
-                shape: { value: String, formattedValue: String },
+                shape: {value: String, formattedValue: String},
                 optional: true,
             },
         },
@@ -48,8 +48,8 @@ export class TextFilterValue extends Component {
         return this.props.value.map((value) => ({
             id: value,
             text:
-                this.props.options.find((option) => option.value === value)?.formattedValue ??
-                value,
+                this.props.options.find((option) => option.value === value)
+                    ?.formattedValue ?? value,
             onDelete: () => {
                 this.props.onValueChanged(this.props.value.filter((v) => v !== value));
             },
@@ -65,13 +65,16 @@ export class TextFilterValue extends Component {
                     .map((option) => ({
                         label: option.formattedValue,
                         onSelect: () =>
-                            this.props.onValueChanged([...this.props.value, option.value]),
+                            this.props.onValueChanged([
+                                ...this.props.value,
+                                option.value,
+                            ]),
                     })),
             },
         ];
     }
 
-    onInputChange({ inputValue }) {
+    onInputChange({inputValue}) {
         const value = inputValue.trim();
         if (value) {
             if (!this.props.value?.includes(value)) {

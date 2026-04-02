@@ -1,10 +1,10 @@
-import { expect, test, describe } from "@odoo/hoot";
-import { uuidv4 } from "@point_of_sale/utils";
-import { getRelatedModelsInstance } from "../data/get_model_definitions";
-import { makeMockServer } from "@web/../tests/web_test_helpers";
-import { definePosModels } from "../data/generate_model_definitions";
+import {describe, expect, test} from "@odoo/hoot";
+import {uuidv4} from "@point_of_sale/utils";
+import {getRelatedModelsInstance} from "../data/get_model_definitions";
+import {makeMockServer} from "@web/../tests/web_test_helpers";
+import {definePosModels} from "../data/generate_model_definitions";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 definePosModels();
 
@@ -15,7 +15,7 @@ describe("Dirty record", () => {
         const order = models["pos.order"].create({});
         expect(order.isDirty()).toBe(true);
         order.amount_total = 23.5;
-        models.serializeForORM(order, { orm: true });
+        models.serializeForORM(order, {orm: true});
 
         // Setting the same value must not mark the record as dirty.
         expect(order.isDirty()).toBe(false);
@@ -23,10 +23,10 @@ describe("Dirty record", () => {
         expect(order.isDirty()).toBe(false);
         order.amount_total = 25;
         expect(order.isDirty()).toBe(true);
-        models.serializeForORM(order, { orm: true });
+        models.serializeForORM(order, {orm: true});
         expect(order.isDirty()).toBe(false);
 
-        order.update({ amount_total: 26 });
+        order.update({amount_total: 26});
         expect(order.isDirty()).toBe(true);
     });
 
@@ -34,7 +34,7 @@ describe("Dirty record", () => {
         // Models created with a numeric ID are not considered dirty by default
         await makeMockServer();
         const models = getRelatedModelsInstance(false);
-        const order = models["pos.order"].create({ id: 12 });
+        const order = models["pos.order"].create({id: 12});
         expect(order.isDirty()).toBe(false);
 
         order.amount_total = 23.5;
@@ -66,11 +66,11 @@ describe("Dirty record", () => {
     test("related record update", async () => {
         await makeMockServer();
         const models = getRelatedModelsInstance(false);
-        const order = models["pos.order"].create({ id: 12 });
+        const order = models["pos.order"].create({id: 12});
         expect(order.isDirty()).toBe(false);
 
         function clearOrder() {
-            models.serializeForORM(order, { orm: true });
+            models.serializeForORM(order, {orm: true});
             expect(order.isDirty()).toBe(false);
         }
 
@@ -85,7 +85,10 @@ describe("Dirty record", () => {
         expect(line.isDirty()).toBe(false);
 
         // Assign a product to the line
-        const sampleProduct = models["product.product"].create({ name: "demo_product", id: 111 });
+        const sampleProduct = models["product.product"].create({
+            name: "demo_product",
+            id: 111,
+        });
         line.product_id = sampleProduct;
         expect(line.isDirty()).toBe(true);
         expect(order.isDirty()).toBe(true);
@@ -116,25 +119,29 @@ describe("Dirty record", () => {
     test("many2many", async () => {
         await makeMockServer();
         const models = getRelatedModelsInstance(false);
-        const order = models["pos.order"].create({ id: 12 });
+        const order = models["pos.order"].create({id: 12});
         function clearOrder() {
-            models.serializeForORM(order, { orm: true });
+            models.serializeForORM(order, {orm: true});
             expect(order.isDirty()).toBe(false);
         }
-        const att1 = models["product.template.attribute.value"].create({ id: 99 });
-        const line = models["pos.order.line"].create({ id: 100, order_id: order, qty: 1 });
-        line.update({ attribute_value_ids: [["link", att1]] });
+        const att1 = models["product.template.attribute.value"].create({id: 99});
+        const line = models["pos.order.line"].create({
+            id: 100,
+            order_id: order,
+            qty: 1,
+        });
+        line.update({attribute_value_ids: [["link", att1]]});
         expect(line.isDirty()).toBe(true);
         expect(order.isDirty()).toBe(true);
 
         clearOrder();
-        const att2 = models["product.template.attribute.value"].create({ id: 999 });
-        line.update({ attribute_value_ids: [["link", att2]] });
+        const att2 = models["product.template.attribute.value"].create({id: 999});
+        line.update({attribute_value_ids: [["link", att2]]});
         expect(line.isDirty()).toBe(true);
         expect(order.isDirty()).toBe(true);
 
         clearOrder();
-        line.update({ attribute_value_ids: [["unlink", att1]] });
+        line.update({attribute_value_ids: [["unlink", att1]]});
         expect(line.isDirty()).toBe(true);
         expect(order.isDirty()).toBe(true);
     });
@@ -142,9 +149,9 @@ describe("Dirty record", () => {
     test("datetime type", async () => {
         await makeMockServer();
         const models = getRelatedModelsInstance(false);
-        const order = models["pos.order"].create({ id: 12 });
+        const order = models["pos.order"].create({id: 12});
         function clearOrder() {
-            models.serializeForORM(order, { orm: true });
+            models.serializeForORM(order, {orm: true});
             expect(order.isDirty()).toBe(false);
         }
         expect(order.isDirty()).toBe(false);

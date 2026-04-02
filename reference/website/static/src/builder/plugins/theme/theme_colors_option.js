@@ -1,6 +1,6 @@
-import { onMounted } from "@odoo/owl";
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { getCSSVariableValue } from "@html_editor/utils/formatting";
+import {onMounted} from "@odoo/owl";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {getCSSVariableValue} from "@html_editor/utils/formatting";
 
 export class ThemeColorsOption extends BaseOptionComponent {
     static template = "website.ThemeColorsOption";
@@ -12,7 +12,8 @@ export class ThemeColorsOption extends BaseOptionComponent {
             presets: this.getPresets(),
         }));
         onMounted(() => {
-            this.iframeDocument = document.querySelector("iframe").contentWindow.document;
+            this.iframeDocument =
+                document.querySelector("iframe").contentWindow.document;
             this.state.presets = this.getPresets();
             this.colorPresetToShow = null;
         });
@@ -30,7 +31,10 @@ export class ThemeColorsOption extends BaseOptionComponent {
                 colors: [],
             };
             [1, 3, 2].forEach((c) => {
-                const color = getCSSVariableValue(`o-palette-${paletteName}-o-color-${c}`, style);
+                const color = getCSSVariableValue(
+                    `o-palette-${paletteName}-o-color-${c}`,
+                    style
+                );
                 palette.colors.push(color);
             });
             palettes.push(palette);

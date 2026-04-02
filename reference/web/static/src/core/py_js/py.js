@@ -1,11 +1,11 @@
-import { evaluate } from "./py_interpreter";
-import { parse } from "./py_parser";
-import { tokenize } from "./py_tokenizer";
+import {evaluate} from "./py_interpreter";
+import {parse} from "./py_parser";
+import {tokenize} from "./py_tokenizer";
 
-export { evaluate } from "./py_interpreter";
-export { parse } from "./py_parser";
-export { tokenize } from "./py_tokenizer";
-export { formatAST } from "./py_utils";
+export {evaluate} from "./py_interpreter";
+export {parse} from "./py_parser";
+export {tokenize} from "./py_tokenizer";
+export {formatAST} from "./py_utils";
 
 /**
  * @typedef { import("./py_tokenizer").Token } Token
@@ -35,12 +35,16 @@ export function evaluateExpr(expr, context = {}) {
     try {
         ast = parseExpr(expr);
     } catch (error) {
-        throw new EvalError(`Can not parse python expression: (${expr})\nError: ${error.message}`);
+        throw new EvalError(
+            `Can not parse python expression: (${expr})\nError: ${error.message}`
+        );
     }
     try {
         return evaluate(ast, context);
     } catch (error) {
-        throw new EvalError(`Can not evaluate python expression: (${expr})\nError: ${error.message}`);
+        throw new EvalError(
+            `Can not evaluate python expression: (${expr})\nError: ${error.message}`
+        );
     }
 }
 
@@ -52,10 +56,10 @@ export function evaluateExpr(expr, context = {}) {
  * @returns {any}
  */
 export function evaluateBooleanExpr(expr, context = {}) {
-    if (!expr || expr === 'False' || expr === '0') {
+    if (!expr || expr === "False" || expr === "0") {
         return false;
     }
-    if (expr === 'True' || expr === '1') {
+    if (expr === "True" || expr === "1") {
         return true;
     }
     return evaluateExpr(`bool(${expr})`, context);

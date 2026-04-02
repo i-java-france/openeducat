@@ -1,13 +1,13 @@
-import { RPCErrorDialog } from "@web/core/errors/error_dialogs";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { user } from "@web/core/user";
+import {RPCErrorDialog} from "@web/core/errors/error_dialogs";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {user} from "@web/core/user";
 
 export class BaseAutomationErrorDialog extends RPCErrorDialog {
     static template = "base_automation.ErrorDialog";
     setup() {
         super.setup(...arguments);
-        const { id, name } = this.props.data.context.base_automation;
+        const {id, name} = this.props.data.context.base_automation;
         this.automationId = id;
         this.automationName = name;
         this.isUserAdmin = user.isAdmin;
@@ -28,7 +28,7 @@ export class BaseAutomationErrorDialog extends RPCErrorDialog {
      * @param {MouseEvent} ev
      */
     async disableAutomation(ev) {
-        await this.orm.write("base.automation", [this.automationId], { active: false });
+        await this.orm.write("base.automation", [this.automationId], {active: false});
         this.props.close();
     }
     /**

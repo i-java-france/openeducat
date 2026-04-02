@@ -1,4 +1,5 @@
-from odoo import api, models, Command
+from odoo import Command, api, models
+
 
 class PosConfig(models.Model):
     _inherit = 'pos.config'

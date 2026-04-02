@@ -1,5 +1,5 @@
-import { reactive } from "@odoo/owl";
-import { registry } from "@web/core/registry";
+import {reactive} from "@odoo/owl";
+import {registry} from "@web/core/registry";
 
 export const composerService = {
     dependencies: ["mail.store", "legacy_multi_tab"],
@@ -8,9 +8,12 @@ export const composerService = {
      * @param {import("@web/env").OdooEnv}
      * @param {Partial<import("services").Services>} services
      */
-    start(env, { legacy_multi_tab }) {
+    start(env, {legacy_multi_tab}) {
         const state = reactive({
-            htmlEnabled: legacy_multi_tab.getSharedValue("mail.html_composer.enabled", false),
+            htmlEnabled: legacy_multi_tab.getSharedValue(
+                "mail.html_composer.enabled",
+                false
+            ),
             setHtmlComposer() {
                 if (state.htmlEnabled) {
                     return;
@@ -27,7 +30,7 @@ export const composerService = {
             },
         });
 
-        legacy_multi_tab.bus.addEventListener("shared_value_updated", ({ detail }) => {
+        legacy_multi_tab.bus.addEventListener("shared_value_updated", ({detail}) => {
             if (detail.key === "mail.html_composer.enabled") {
                 state.htmlEnabled = JSON.parse(detail.newValue);
             }

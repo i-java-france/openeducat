@@ -5,9 +5,9 @@ import {
     start,
     startServer,
 } from "@mail/../tests/mail_test_helpers";
-import { ResPartner } from "@mail/../tests/mock_server/mock_models/res_partner";
-import { describe, test } from "@odoo/hoot";
-import { defineModels, fields, models } from "@web/../tests/web_test_helpers";
+import {ResPartner} from "@mail/../tests/mock_server/mock_models/res_partner";
+import {describe, test} from "@odoo/hoot";
+import {defineModels, fields, models} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 
@@ -16,15 +16,15 @@ test("status bar duration field used in form view", async () => {
         _name = "stage";
         name = fields.Char();
     }
-    ResPartner._fields.stage_id = fields.Many2one({ relation: "stage" });
+    ResPartner._fields.stage_id = fields.Many2one({relation: "stage"});
     ResPartner._fields.duration_tracking = fields.Json();
-    defineModels({ ...mailModels, ResPartner, Stage });
+    defineModels({...mailModels, ResPartner, Stage});
     const pyEnv = await startServer();
-    const stageIds = pyEnv["stage"].create([
-        { name: "New" },
-        { name: "Qualified" },
-        { name: "Proposition" },
-        { name: "Won" },
+    const stageIds = pyEnv.stage.create([
+        {name: "New"},
+        {name: "Qualified"},
+        {name: "Proposition"},
+        {name: "Won"},
     ]);
     const partnerId = pyEnv["res.partner"].create({
         name: "John Doe",
@@ -41,9 +41,11 @@ test("status bar duration field used in form view", async () => {
         arch: `<form><field name="stage_id" widget="statusbar_duration"/></form>`,
     });
     await contains("span[title='7 days, 30 minutes']", {
-        parent: [".o_statusbar_status button", { text: "New" }],
+        parent: [".o_statusbar_status button", {text: "New"}],
     });
-    await contains("span[title='3 hours']", { parent: ["button", { text: "Qualified" }] });
-    await contains("button", { text: "Proposition" });
-    await contains("span[title='2 days, 5 hours']", { parent: ["button", { text: "Won" }] });
+    await contains("span[title='3 hours']", {parent: ["button", {text: "Qualified"}]});
+    await contains("button", {text: "Proposition"});
+    await contains("span[title='2 days, 5 hours']", {
+        parent: ["button", {text: "Won"}],
+    });
 });

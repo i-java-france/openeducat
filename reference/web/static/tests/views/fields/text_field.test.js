@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { press, queryAll, queryOne } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {press, queryAll, queryOne} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 import {
     contains,
     defineModels,
@@ -25,7 +25,7 @@ defineModels([Product]);
 onRpc("has_group", () => true);
 
 test("basic rendering", async () => {
-    Product._records = [{ id: 1, description: "Description as text" }];
+    Product._records = [{id: 1, description: "Description as text"}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -37,7 +37,9 @@ test("basic rendering", async () => {
 });
 
 test("doesn't have a scrollbar with long content", async () => {
-    Product._records = [{ id: 1, description: "L\no\nn\ng\nD\ne\ns\nc\nr\ni\np\nt\ni\no\nn\n" }];
+    Product._records = [
+        {id: 1, description: "L\no\nn\ng\nD\ne\ns\nc\nr\ni\np\nt\ni\no\nn\n"},
+    ];
     await mountView({
         type: "form",
         resModel: "product",
@@ -50,7 +52,7 @@ test("doesn't have a scrollbar with long content", async () => {
 
 test("basic rendering char field", async () => {
     Product._fields.name = fields.Char();
-    Product._records = [{ id: 1, name: "Description\nas\ntext" }];
+    Product._records = [{id: 1, name: "Description\nas\ntext"}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -62,7 +64,7 @@ test("basic rendering char field", async () => {
 });
 
 test("char field with widget='text' trims trailing spaces", async () => {
-    Product._fields.name = fields.Char({ trim: true });
+    Product._fields.name = fields.Char({trim: true});
     await mountView({
         type: "form",
         resModel: "product",
@@ -76,10 +78,10 @@ test("render following an onchange", async () => {
     Product._fields.name = fields.Char({
         onChange: (record) => {
             expect.step("onchange");
-            record.description = "Content ".repeat(100); // long text
+            record.description = "Content ".repeat(100); // Long text
         },
     });
-    Product._records = [{ id: 1, description: "Description as text" }];
+    Product._records = [{id: 1, description: "Description as text"}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -98,7 +100,9 @@ test("render following an onchange", async () => {
 });
 
 test("no scroll bar in editable list", async () => {
-    Product._records = [{ id: 1, description: "L\no\nn\ng\nD\ne\ns\nc\nr\ni\np\nt\ni\no\nn\n" }];
+    Product._records = [
+        {id: 1, description: "L\no\nn\ng\nD\ne\ns\nc\nr\ni\np\nt\ni\no\nn\n"},
+    ];
     await mountView({
         type: "list",
         resModel: "product",
@@ -113,7 +117,7 @@ test("no scroll bar in editable list", async () => {
 });
 
 test("set row on text fields", async () => {
-    Product._records = [{ id: 1, description: "Description as text" }];
+    Product._records = [{id: 1, description: "Description as text"}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -127,7 +131,7 @@ test("set row on text fields", async () => {
 
 test("is translatable", async () => {
     Product._fields.description.translate = true;
-    Product._records = [{ id: 1, description: "Description as text" }];
+    Product._records = [{id: 1, description: "Description as text"}];
 
     serverState.multiLang = true;
 
@@ -137,14 +141,18 @@ test("is translatable", async () => {
     ]);
     onRpc("get_field_translations", () => [
         [
-            { lang: "en_US", source: "Description as text", value: "Description as text" },
+            {
+                lang: "en_US",
+                source: "Description as text",
+                value: "Description as text",
+            },
             {
                 lang: "fr_BE",
                 source: "Description as text",
                 value: "Description sous forme de texte",
             },
         ],
-        { translation_type: "text", translation_show_source: false },
+        {translation_type: "text", translation_show_source: false},
     ]);
     await mountView({
         type: "form",
@@ -161,7 +169,7 @@ test("is translatable", async () => {
 
 test("is translatable on new record", async () => {
     Product._fields.description.translate = true;
-    Product._records = [{ id: 1, description: "Description as text" }];
+    Product._records = [{id: 1, description: "Description as text"}];
 
     serverState.multiLang = true;
 
@@ -174,7 +182,7 @@ test("is translatable on new record", async () => {
 });
 
 test("press enter inside editable list", async () => {
-    Product._records = [{ id: 1, description: "Description as text" }];
+    Product._records = [{id: 1, description: "Description as text"}];
     await mountView({
         type: "list",
         resModel: "product",
@@ -188,7 +196,7 @@ test("press enter inside editable list", async () => {
     expect("textarea.o_input").toHaveValue("Description as text");
     expect("textarea.o_input").toBeFocused();
     expect("textarea.o_input").toHaveValue("Description as text");
-    // clear selection before enter
+    // Clear selection before enter
     await fieldTextArea("description").press(["right", "Enter"]);
     expect("textarea.o_input").toHaveValue("Description as text\n");
     expect("textarea.o_input").toBeFocused();
@@ -196,7 +204,7 @@ test("press enter inside editable list", async () => {
 });
 
 test("in editable list view", async () => {
-    Product._records = [{ id: 1, description: "Description as text" }];
+    Product._records = [{id: 1, description: "Description as text"}];
     await mountView({
         type: "list",
         resModel: "product",
@@ -225,7 +233,7 @@ test.tags("desktop");
 test("with dynamic placeholder", async () => {
     onRpc("mail_allowed_qweb_expressions", () => []);
 
-    Product._fields.placeholder = fields.Char({ default: "product" });
+    Product._fields.placeholder = fields.Char({default: "product"});
     await mountView({
         type: "form",
         resModel: "product",
@@ -255,7 +263,7 @@ test.tags("mobile");
 test("with dynamic placeholder in mobile", async () => {
     onRpc("mail_allowed_qweb_expressions", () => []);
 
-    Product._fields.placeholder = fields.Char({ default: "product" });
+    Product._fields.placeholder = fields.Char({default: "product"});
     await mountView({
         type: "form",
         resModel: "product",
@@ -283,7 +291,7 @@ test("with dynamic placeholder in mobile", async () => {
 });
 
 test("text field without line breaks", async () => {
-    Product._records = [{ id: 1, description: "Description as text" }];
+    Product._records = [{id: 1, description: "Description as text"}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -297,9 +305,9 @@ test("text field without line breaks", async () => {
     await press("Enter");
     expect(".o_field_text textarea").toHaveValue("Description as text");
 
-    await contains(".o_field_text textarea").clear({ confirm: false });
-    await navigator.clipboard.writeText("text\nwith\nline\nbreaks\n"); // copy
-    await press(["ctrl", "v"]); // paste
+    await contains(".o_field_text textarea").clear({confirm: false});
+    await navigator.clipboard.writeText("text\nwith\nline\nbreaks\n"); // Copy
+    await press(["ctrl", "v"]); // Paste
     expect(".o_field_text textarea").toHaveValue("text with line breaks ", {
         message: "no line break should appear",
     });

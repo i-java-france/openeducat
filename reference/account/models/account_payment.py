@@ -1,5 +1,6 @@
 from itertools import zip_longest
-from odoo import models, fields, api, _, Command
+
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import SQL
 
@@ -908,7 +909,7 @@ class AccountPayment(models.Model):
         # This is required because no reconciliation is possible in community, which would prevent the user to reconcile the bank statement with the invoice
         accounting_installed = self.env['account.move']._get_invoice_in_payment_state() == 'in_payment'
 
-        for i, (pay, vals) in enumerate(zip(payments, vals_list)):
+        for i, (pay, vals) in enumerate(zip(payments, vals_list, strict=False)):
             if (not accounting_installed and not pay.outstanding_account_id) or self.env.context.get('force_payment_move'):
                 outstanding_account = pay._get_outstanding_account(pay.payment_type)
                 pay.outstanding_account_id = outstanding_account.id
@@ -970,7 +971,7 @@ class AccountPayment(models.Model):
     def copy_data(self, default=None):
         default = dict(default or {})
         vals_list = super().copy_data(default)
-        for payment, vals in zip(self, vals_list):
+        for payment, vals in zip(self, vals_list, strict=False):
             vals.update({
                 'journal_id': payment.journal_id.id,
                 'payment_method_line_id': payment.payment_method_line_id.id,
@@ -979,7 +980,7 @@ class AccountPayment(models.Model):
         return vals_list
 
     def _message_mail_after_hook(self, mails):
-        for payment, mail in zip(self, mails):
+        for payment, mail in zip(self, mails, strict=False):
             if (
                 not payment.message_main_attachment_id
                 and (attachments_to_link := mail.attachment_ids.filtered(lambda a: a.res_model == 'mail.message'))
@@ -1074,7 +1075,7 @@ class AccountPayment(models.Model):
             for pay in need_move
         ]
         moves = self.env['account.move'].create(move_vals)
-        for pay, move in zip(need_move, moves):
+        for pay, move in zip(need_move, moves, strict=False):
             pay.write({'move_id': move.id, 'state': 'in_process'})
 
     def _generate_move_vals(self, write_off_line_vals=None, force_balance=None, line_ids=None):

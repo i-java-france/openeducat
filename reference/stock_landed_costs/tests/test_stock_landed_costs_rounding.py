@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from unittest import skip
 
 from odoo import Command
-from odoo.addons.stock_landed_costs.tests.common import TestStockLandedCostsCommon
 from odoo.fields import Date
-from odoo.tests import tagged, Form
+from odoo.tests import Form, tagged
+
+from odoo.addons.stock_landed_costs.tests.common import TestStockLandedCostsCommon
 
 
 @tagged('post_install', '-at_install')
@@ -190,7 +190,7 @@ class TestStockLandedCostsRounding(TestStockLandedCostsCommon):
                 'product_id': product.id,
                 'product_qty': qty,
                 'price_unit': product.standard_price,
-            }) for product, qty in zip(products, [6, 6, 3, 6])]
+            }) for product, qty in zip(products, [6, 6, 3, 6], strict=False)]
         })
         po.button_confirm()
 
@@ -321,7 +321,7 @@ class TestStockLandedCostsRounding(TestStockLandedCostsCommon):
         lc.cost_lines.split_method = 'equal'
         lc.button_validate()
         line_costs = lc.valuation_adjustment_lines.mapped('additional_landed_cost')
-        for line_cost, expected_cost in zip(line_costs, [1.14, 1.14, 1.14, 1.14, 1.14, 1.15]):
+        for line_cost, expected_cost in zip(line_costs, [1.14, 1.14, 1.14, 1.14, 1.14, 1.15], strict=False):
             self.assertAlmostEqual(
                 line_cost,
                 expected_cost,

@@ -1,4 +1,4 @@
-import { browser } from "./browser/browser";
+import {browser} from "./browser/browser";
 
 browser.addEventListener("click", (ev) => {
     const href = ev.target.closest("a")?.getAttribute("href");

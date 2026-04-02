@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
     <t t-name="sale_timesheet.SoLineCreateButton">
         <div class="d-flex align-items-center gap-1">
-            <Many2One t-props="m2oProps" cssClass="'w-100'"/>
+            <Many2One t-props="m2oProps" cssClass="'w-100'" />
             <a
                 t-if="!props.readonly and !props.record.data.sale_line_id"
                 type="button"
@@ -14,7 +14,7 @@
                 data-tooltip="Create Sales Order"
                 t-on-click="openSalesOrderDialog"
             >
-                <i class="fa fa-plus"/>
+                <i class="fa fa-plus" />
             </a>
         </div>
     </t>

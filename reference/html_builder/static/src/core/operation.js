@@ -1,4 +1,4 @@
-import { Mutex } from "@web/core/utils/concurrency";
+import {Mutex} from "@web/core/utils/concurrency";
 
 // TODO when making apply async:
 // - check `isDestroyed` instead of `this.editableDocument.defaultView`
@@ -91,7 +91,9 @@ export class Operation {
                 });
             });
 
-        const cancelTimePromise = new Promise((resolve) => setTimeout(resolve, cancelTime));
+        const cancelTimePromise = new Promise((resolve) =>
+            setTimeout(resolve, cancelTime)
+        );
         const cancelLoadPromise = new Promise((resolve) => {
             cancelResolve = resolve;
         });
@@ -148,7 +150,7 @@ export class Operation {
                 }
                 removeLoadingElement();
             }
-            return { hasFailed: hasTimedOut };
+            return {hasFailed: hasTimedOut};
         });
     }
 
@@ -167,7 +169,12 @@ export class Operation {
     addLoadingElement(withLoadingEffect, loadingEffectDelay, shouldInterceptClick) {
         const loadingScreenEl = document.createElement("div");
         loadingScreenEl.classList.add(
-            ...["o_loading_screen", "d-flex", "justify-content-center", "align-items-center"]
+            ...[
+                "o_loading_screen",
+                "d-flex",
+                "justify-content-center",
+                "align-items-center",
+            ]
         );
         const spinnerEl = document.createElement("img");
         spinnerEl.setAttribute("src", "/web/static/img/spin.svg");
@@ -190,7 +197,8 @@ export class Operation {
                 });
             };
             this.editableDocument.addEventListener("click", onClick);
-            removeClickListener = () => this.editableDocument.removeEventListener("click", onClick);
+            removeClickListener = () =>
+                this.editableDocument.removeEventListener("click", onClick);
         }
 
         this.editableDocument.body.appendChild(loadingScreenEl);

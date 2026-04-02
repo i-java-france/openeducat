@@ -1,9 +1,9 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, xml } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { startInteractions } from "@web/../tests/public/helpers";
-import { switchToEditMode } from "../helpers";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Component, xml} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {startInteractions} from "@web/../tests/public/helpers";
+import {switchToEditMode} from "../helpers";
 
 const publicComponentRegistry = registry.category("public_components");
 const publicComponentRegistryEdit = registry.category("public_components.edit");
@@ -22,10 +22,10 @@ test(`owl components are neutered in edit mode`, async () => {
             </div>
     `;
 
-    const { core } = await startInteractions(html);
+    const {core} = await startInteractions(html);
     await animationFrame();
 
-    // components are now mounted
+    // Components are now mounted
     expect(`.test`).toHaveInnerHTML(`
         <owl-component name="my_public_comp">
             <owl-root contenteditable="false" data-oe-protected="true" style="display: contents;">
@@ -37,7 +37,7 @@ test(`owl components are neutered in edit mode`, async () => {
     await switchToEditMode(core);
     await animationFrame();
 
-    // in edit mode, we have pointer-events: none on owl-component
+    // In edit mode, we have pointer-events: none on owl-component
     expect(`.test`).toHaveInnerHTML(`
         <owl-component name="my_public_comp" style="pointer-events: none;">
             <owl-root contenteditable="false" data-oe-protected="true" style="display: contents;">
@@ -62,10 +62,10 @@ test(`edit owl components are not neutered in edit mode`, async () => {
             </div>
     `;
 
-    const { core } = await startInteractions(html);
+    const {core} = await startInteractions(html);
     await animationFrame();
 
-    // components are now mounted
+    // Components are now mounted
     expect(`.test`).toHaveInnerHTML(`
         <owl-component name="my_public_comp" >
             <owl-root contenteditable="false" data-oe-protected="true" style="display: contents;">
@@ -77,7 +77,7 @@ test(`edit owl components are not neutered in edit mode`, async () => {
     await switchToEditMode(core);
     await animationFrame();
 
-    // in edit mode, there should not be a pointer-events: none
+    // In edit mode, there should not be a pointer-events: none
     expect(`.test`).toHaveInnerHTML(`
         <owl-component name="my_public_comp" >
             <owl-root contenteditable="false" data-oe-protected="true" style="display: contents;">

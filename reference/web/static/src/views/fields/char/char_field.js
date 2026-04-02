@@ -1,13 +1,13 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { exprToBoolean } from "@web/core/utils/strings";
-import { useDynamicPlaceholder } from "../dynamic_placeholder_hook";
-import { formatChar } from "../formatters";
-import { useInputField } from "../input_field_hook";
-import { standardFieldProps } from "../standard_field_props";
-import { TranslationButton } from "../translation_button";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {exprToBoolean} from "@web/core/utils/strings";
+import {useDynamicPlaceholder} from "../dynamic_placeholder_hook";
+import {formatChar} from "../formatters";
+import {useInputField} from "../input_field_hook";
+import {standardFieldProps} from "../standard_field_props";
+import {TranslationButton} from "../translation_button";
 
-import { Component, useEffect, useExternalListener, useRef } from "@odoo/owl";
+import {Component, useEffect, useExternalListener, useRef} from "@odoo/owl";
 
 export class CharField extends Component {
     static template = "web.CharField";
@@ -16,13 +16,13 @@ export class CharField extends Component {
     };
     static props = {
         ...standardFieldProps,
-        autocomplete: { type: String, optional: true },
-        isPassword: { type: Boolean, optional: true },
-        placeholder: { type: String, optional: true },
-        dynamicPlaceholder: { type: Boolean, optional: true },
-        dynamicPlaceholderModelReferenceField: { type: String, optional: true },
+        autocomplete: {type: String, optional: true},
+        isPassword: {type: Boolean, optional: true},
+        placeholder: {type: String, optional: true},
+        dynamicPlaceholder: {type: Boolean, optional: true},
+        dynamicPlaceholderModelReferenceField: {type: String, optional: true},
     };
-    static defaultProps = { dynamicPlaceholder: false };
+    static defaultProps = {dynamicPlaceholder: false};
 
     setup() {
         this.input = useRef("input");
@@ -113,7 +113,7 @@ export const charField = {
             ),
         },
     ],
-    extractProps: ({ attrs, options, placeholder }) => ({
+    extractProps: ({attrs, options, placeholder}) => ({
         isPassword: exprToBoolean(attrs.password),
         dynamicPlaceholder: options.dynamic_placeholder || false,
         dynamicPlaceholderModelReferenceField:

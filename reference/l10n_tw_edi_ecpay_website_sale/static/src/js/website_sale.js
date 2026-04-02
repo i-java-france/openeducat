@@ -1,9 +1,9 @@
 /** @odoo-module **/
-import { WarningDialog } from "@web/core/errors/error_dialogs";
-import { _t } from "@web/core/l10n/translation";
-import { debounce } from "@web/core/utils/timing";
+import {WarningDialog} from "@web/core/errors/error_dialogs";
+import {_t} from "@web/core/l10n/translation";
+import {debounce} from "@web/core/utils/timing";
 import publicWidget from "@web/legacy/js/public/public_widget";
-import { rpc } from "@web/core/network/rpc";
+import {rpc} from "@web/core/network/rpc";
 
 publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
     selector: ".o_l10n_tw_edi_invoicing_info",
@@ -25,7 +25,10 @@ publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
             this._onClickValidateCarrierNumber.bind(this),
             500
         );
-        this._onClickValidateLoveCode = debounce(this._onClickValidateLoveCode.bind(this), 500);
+        this._onClickValidateLoveCode = debounce(
+            this._onClickValidateLoveCode.bind(this),
+            500
+        );
     },
 
     start: function () {
@@ -45,18 +48,22 @@ publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
             this.validCarrierNumber = false;
             this.validLoveCode = false;
             this.showValidateCarrierNumber = false;
-            if (
-                document.querySelector("#l10n_tw_edi_carrier_type").value === "3"
-            ) {
+            if (document.querySelector("#l10n_tw_edi_carrier_type").value === "3") {
                 this.showValidateCarrierNumber = true;
-                document.querySelector("#validate_carrier_number").classList.remove("d-none");
+                document
+                    .querySelector("#validate_carrier_number")
+                    .classList.remove("d-none");
             }
             this.showValidateLoveCode = false;
-            if (!document
-                .querySelector("#ecpay_invoice_love_code")
-                .classList.contains("d-none")) {
+            if (
+                !document
+                    .querySelector("#ecpay_invoice_love_code")
+                    .classList.contains("d-none")
+            ) {
                 this.showValidateLoveCode = true;
-                document.querySelector("#validate_love_code").classList.remove("d-none");
+                document
+                    .querySelector("#validate_love_code")
+                    .classList.remove("d-none");
             }
             this.showReenterCarrierNumber = false;
             this.showReenterLoveCode = false;
@@ -68,7 +75,7 @@ publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
         const form = document.getElementById("form_l10n_tw_invoicing_info");
         const saleOrderId = form.getAttribute("date-order-id");
         const accessToken = form.getAttribute("data-access-token");
-        return { saleOrderId, accessToken };
+        return {saleOrderId, accessToken};
     },
 
     showInvoiceItems() {
@@ -95,41 +102,42 @@ publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
         this.showReenterLoveCode = isChecked && this.validLoveCode;
         const loveCodeInput = this.el.querySelector("#l10n_tw_edi_love_code");
         const re = /^([xX]{1}[0-9]{2,6}|[0-9]{3,7})$/;
-        this.el.querySelector("#validate_love_code").disabled = !re.test(loveCodeInput.value);
+        this.el.querySelector("#validate_love_code").disabled = !re.test(
+            loveCodeInput.value
+        );
         this.showCarrierType = !isChecked;
         this.showInvoiceItems();
     },
 
     _onChangeCarrierType(ev) {
         const carrierType = ev.target.value;
-        const carrierNumberField = document.querySelector("#l10n_tw_edi_carrier_number")
+        const carrierNumberField = document.querySelector(
+            "#l10n_tw_edi_carrier_number"
+        );
         carrierNumberField.removeAttribute("readonly");
         if (carrierType === "2") {
-            carrierNumberField.placeholder = _t(
-                "Example: TP03000001234567"
-            );
+            carrierNumberField.placeholder = _t("Example: TP03000001234567");
             this.showCarrier = true;
             this.showCarrier2 = false;
             this.showValidateCarrierNumber = false;
             this.showReenterCarrierNumber = false;
         } else if (carrierType === "3") {
-            carrierNumberField.placeholder = _t(
-                "Example: /ABCD123"
-            );
+            carrierNumberField.placeholder = _t("Example: /ABCD123");
             this.showCarrier = true;
             this.showCarrier2 = false;
             this.showValidateCarrierNumber = !this.validCarrierNumber;
             this.showReenterCarrierNumber = this.validCarrierNumber;
             const re = /^\/[0-9a-zA-Z+-.]{7}$/;
-            this.el.querySelector("#validate_carrier_number").disabled = !re.test(carrierNumberField.value);
+            this.el.querySelector("#validate_carrier_number").disabled = !re.test(
+                carrierNumberField.value
+            );
         } else if (["4", "5"].includes(carrierType)) {
             carrierNumberField.placeholder = "";
             this.showCarrier = true;
             this.showCarrier2 = true;
             this.showValidateCarrierNumber = false;
             this.showReenterCarrierNumber = false;
-            carrierNumberField.placeholder =
-                _t("Card hidden code");
+            carrierNumberField.placeholder = _t("Card hidden code");
             document.querySelector("#l10n_tw_edi_carrier_number_2").placeholder =
                 _t("Card visible code");
         } else {
@@ -149,28 +157,38 @@ publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
             this.validCarrierNumber = re.test(ev.target.value);
         } else if (carrierType === "3") {
             const re = /^\/[0-9a-zA-Z+-.]{7}$/;
-            this.el.querySelector("#validate_carrier_number").disabled = !re.test(ev.target.value);
+            this.el.querySelector("#validate_carrier_number").disabled = !re.test(
+                ev.target.value
+            );
         }
     },
 
     _onInputLoveCode(ev) {
         this.validLoveCode = false;
         const re = /^([xX]{1}[0-9]{2,6}|[0-9]{3,7})$/;
-        this.el.querySelector("#validate_love_code").disabled = !re.test(ev.target.value);
+        this.el.querySelector("#validate_love_code").disabled = !re.test(
+            ev.target.value
+        );
     },
 
     async _onClickValidateCarrierNumber() {
         try {
-            const { saleOrderId, accessToken } = this.getTokenInfo();
-            const result = await rpc("/payment/ecpay/check_mobile_barcode/" + saleOrderId, {
-                access_token: accessToken,
-                carrier_number: this.el.querySelector("#l10n_tw_edi_carrier_number").value,
-            });
+            const {saleOrderId, accessToken} = this.getTokenInfo();
+            const result = await rpc(
+                "/payment/ecpay/check_mobile_barcode/" + saleOrderId,
+                {
+                    access_token: accessToken,
+                    carrier_number: this.el.querySelector("#l10n_tw_edi_carrier_number")
+                        .value,
+                }
+            );
             if (result) {
                 this.validCarrierNumber = true;
                 this.showValidateCarrierNumber = false;
                 this.showReenterCarrierNumber = true;
-                this.el.querySelector("#l10n_tw_edi_carrier_number").setAttribute("readonly", true);
+                this.el
+                    .querySelector("#l10n_tw_edi_carrier_number")
+                    .setAttribute("readonly", true);
             } else {
                 this.call("dialog", "add", WarningDialog, {
                     title: _t("Error"),
@@ -188,7 +206,7 @@ publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
 
     async _onClickValidateLoveCode() {
         try {
-            const { saleOrderId, accessToken } = this.getTokenInfo();
+            const {saleOrderId, accessToken} = this.getTokenInfo();
             const result = await rpc("/payment/ecpay/check_love_code/" + saleOrderId, {
                 access_token: accessToken,
                 love_code: this.el.querySelector("#l10n_tw_edi_love_code").value,
@@ -198,7 +216,9 @@ publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
                 this.validLoveCode = true;
                 this.showValidateLoveCode = false;
                 this.showReenterLoveCode = true;
-                this.el.querySelector("#l10n_tw_edi_love_code").setAttribute("readonly", true);
+                this.el
+                    .querySelector("#l10n_tw_edi_love_code")
+                    .setAttribute("readonly", true);
             } else {
                 this.call("dialog", "add", WarningDialog, {
                     title: _t("Error"),
@@ -218,7 +238,9 @@ publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
         this.validCarrierNumber = false;
         this.showValidateCarrierNumber = true;
         this.showReenterCarrierNumber = false;
-        this.el.querySelector("#l10n_tw_edi_carrier_number").removeAttribute("readonly");
+        this.el
+            .querySelector("#l10n_tw_edi_carrier_number")
+            .removeAttribute("readonly");
         this.showInvoiceItems();
     },
 

@@ -1,6 +1,6 @@
-import { WORKER_STATE } from "@bus/services/worker_service";
-import { patchWithCleanup } from "@web/../tests/helpers/utils";
-import { registry } from "@web/core/registry";
+import {WORKER_STATE} from "@bus/services/worker_service";
+import {patchWithCleanup} from "@web/../tests/helpers/utils";
+import {registry} from "@web/core/registry";
 
 registry.category("web_tour.tours").add("website_livechat.lazy_frontend_bus", {
     url: "/",
@@ -42,13 +42,14 @@ registry.category("web_tour.tours").add("website_livechat.lazy_frontend_bus", {
                 run: "edit Hello, I need help!",
             },
             {
-                trigger: "body:not(.o-bus-service-started):not(.o-worker-service-started)",
+                trigger:
+                    "body:not(.o-bus-service-started):not(.o-worker-service-started)",
             },
             {
                 trigger: ".o-livechat-root:shadow .o-mail-Composer-input",
                 run: "press Enter",
             },
-            { trigger: "body.o-bus-service-started.o-worker-service-started" },
+            {trigger: "body.o-bus-service-started.o-worker-service-started"},
         ];
     },
 });

@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo.tests import TransactionCase
-from odoo.exceptions import UserError
 from unittest.mock import patch
 
 import odoo.tests
+from odoo.exceptions import UserError
+from odoo.tests import TransactionCase
 
 
 @odoo.tests.tagged('external', '-standard')

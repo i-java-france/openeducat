@@ -1,7 +1,9 @@
-from odoo.tests import tagged
-from odoo import Command
-from odoo.addons.base.tests.common import BaseCommon, HttpCase
 from markupsafe import Markup
+
+from odoo import Command
+from odoo.tests import tagged
+
+from odoo.addons.base.tests.common import BaseCommon, HttpCase
 
 
 @tagged('post_install', '-at_install')

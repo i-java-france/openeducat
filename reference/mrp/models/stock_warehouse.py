@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, Command, fields, models, _
-from odoo.exceptions import ValidationError, UserError
+from odoo import Command, _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import split_every
 
 
@@ -68,7 +67,7 @@ class StockWarehouse(models.Model):
         return super()._create_or_update_route()
 
     def get_rules_dict(self):
-        result = super(StockWarehouse, self).get_rules_dict()
+        result = super().get_rules_dict()
         production_location_id = self._get_production_location()
         for warehouse in self:
             result[warehouse.id].update({
@@ -94,7 +93,7 @@ class StockWarehouse(models.Model):
         return location
 
     def _get_routes_values(self):
-        routes = super(StockWarehouse, self)._get_routes_values()
+        routes = super()._get_routes_values()
         routes.update({
             'pbm_route_id': {
                 'routing_key': self.manufacture_steps,
@@ -127,7 +126,7 @@ class StockWarehouse(models.Model):
         if route_type in names:
             return names[route_type]
         else:
-            return super(StockWarehouse, self)._get_route_name(route_type)
+            return super()._get_route_name(route_type)
 
     def _generate_global_route_rules_values(self):
         rules = super()._generate_global_route_rules_values()
@@ -187,7 +186,7 @@ class StockWarehouse(models.Model):
         return rules
 
     def _get_locations_values(self, vals, code=False):
-        values = super(StockWarehouse, self)._get_locations_values(vals, code=code)
+        values = super()._get_locations_values(vals, code=code)
         def_values = self.default_get(['company_id', 'manufacture_steps'])
         manufacture_steps = vals.get('manufacture_steps', def_values['manufacture_steps'])
         code = vals.get('code') or code or ''
@@ -210,7 +209,7 @@ class StockWarehouse(models.Model):
         return values
 
     def _get_sequence_values(self, name=False, code=False):
-        values = super(StockWarehouse, self)._get_sequence_values(name=name, code=code)
+        values = super()._get_sequence_values(name=name, code=code)
         values.update({
             'pbm_type_id': {'name': _('%(name)s Sequence picking before manufacturing', name=self.name), 'prefix': self.code + '/' + (self.pbm_type_id.sequence_code or 'PC') + '/', 'padding': 5, 'company_id': self.company_id.id},
             'sam_type_id': {'name': _('%(name)s Sequence stock after manufacturing', name=self.name), 'prefix': self.code + '/' + (self.sam_type_id.sequence_code or 'SFP') + '/', 'padding': 5, 'company_id': self.company_id.id},
@@ -219,7 +218,7 @@ class StockWarehouse(models.Model):
         return values
 
     def _get_picking_type_create_values(self, max_sequence):
-        data, next_sequence = super(StockWarehouse, self)._get_picking_type_create_values(max_sequence)
+        data, next_sequence = super()._get_picking_type_create_values(max_sequence)
         data.update({
             'pbm_type_id': {
                 'name': _('Pick Components'),
@@ -256,7 +255,7 @@ class StockWarehouse(models.Model):
         return data, max_sequence + 4
 
     def _get_picking_type_update_values(self):
-        data = super(StockWarehouse, self)._get_picking_type_update_values()
+        data = super()._get_picking_type_update_values()
         data.update({
             'pbm_type_id': {
                 'active': self.manufacture_to_resupply and self.manufacture_steps in ('pbm', 'pbm_sam') and self.active,
@@ -286,10 +285,10 @@ class StockWarehouse(models.Model):
         if any(field in vals for field in ('manufacture_steps', 'manufacture_to_resupply')):
             for warehouse in self:
                 warehouse._update_location_manufacture(vals.get('manufacture_steps', warehouse.manufacture_steps))
-        return super(StockWarehouse, self).write(vals)
+        return super().write(vals)
 
     def _get_all_routes(self):
-        routes = super(StockWarehouse, self)._get_all_routes()
+        routes = super()._get_all_routes()
         routes |= self.filtered(lambda self: self.manufacture_to_resupply and self.manufacture_pull_id and self.manufacture_pull_id.route_id).mapped('manufacture_pull_id').mapped('route_id')
         return routes
 
@@ -298,7 +297,7 @@ class StockWarehouse(models.Model):
         self.mapped('sam_loc_id').write({'active': new_manufacture_step == 'pbm_sam'})
 
     def _update_name_and_code(self, name=False, code=False):
-        res = super(StockWarehouse, self)._update_name_and_code(name, code)
+        res = super()._update_name_and_code(name, code)
         # change the manufacture stock rule name
         for warehouse in self:
             if warehouse.manufacture_pull_id and name:

@@ -1,7 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
-import logging
 from collections import defaultdict
 from datetime import timedelta
 from itertools import groupby
@@ -1013,7 +1012,7 @@ class SaleOrder(models.Model):
         default.setdefault('order_line', [])
         vals_list = super().copy_data(default=default)
         if default_has_no_order_line:
-            for order, vals in zip(self, vals_list):
+            for order, vals in zip(self, vals_list, strict=False):
                 vals['order_line'] = [
                     Command.create(line_vals)
                     for line_vals in order._get_copiable_order_lines().copy_data()

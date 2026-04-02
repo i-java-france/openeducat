@@ -1,10 +1,10 @@
-import { CallDropdown } from "@mail/discuss/call/common/call_dropdown";
-import { attClassObjectToString } from "@mail/utils/common/format";
-import { Component, onWillUnmount } from "@odoo/owl";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+import {CallDropdown} from "@mail/discuss/call/common/call_dropdown";
+import {attClassObjectToString} from "@mail/utils/common/format";
+import {Component, onWillUnmount} from "@odoo/owl";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 
-import { useService } from "@web/core/utils/hooks";
+import {useService} from "@web/core/utils/hooks";
 
 const actionListProps = [
     "inline?",
@@ -24,8 +24,8 @@ class Action extends Component {
         "style?",
         ...actionListProps,
     ];
-    static defaultProps = { fw: true };
-    static components = { Action, DropdownItem };
+    static defaultProps = {fw: true};
+    static components = {Action, DropdownItem};
     static template = "mail.Action";
 
     get ActionList() {
@@ -66,11 +66,11 @@ class Action extends Component {
 }
 
 export class ActionList extends Component {
-    static components = { Action };
+    static components = {Action};
     static props = ["actions", "groupClass?", ...actionListProps];
     static template = "mail.ActionList";
 
-    getActionProps(action, group, { index, isFirstInGroup, isLastInGroup } = {}) {
+    getActionProps(action, group, {index, isFirstInGroup, isLastInGroup} = {}) {
         return {
             action,
             group,

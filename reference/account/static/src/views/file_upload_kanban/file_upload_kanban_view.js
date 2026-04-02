@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
-import { kanbanView } from "@web/views/kanban/kanban_view";
-import { FileUploadKanbanController } from "./file_upload_kanban_controller";
-import { FileUploadKanbanRenderer } from "./file_upload_kanban_renderer";
+import {registry} from "@web/core/registry";
+import {kanbanView} from "@web/views/kanban/kanban_view";
+import {FileUploadKanbanController} from "./file_upload_kanban_controller";
+import {FileUploadKanbanRenderer} from "./file_upload_kanban_renderer";
 
 export const fileUploadKanbanView = {
     ...kanbanView,

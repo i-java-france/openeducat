@@ -1,8 +1,8 @@
-import { describe, test } from "@odoo/hoot";
-import { press } from "@odoo/hoot-dom";
-import { testEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
-import { toggleOrderedList } from "../_helpers/user_actions";
+import {describe, test} from "@odoo/hoot";
+import {press} from "@odoo/hoot-dom";
+import {testEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
+import {toggleOrderedList} from "../_helpers/user_actions";
 
 describe("Range collapsed", () => {
     describe("Insert", () => {
@@ -58,7 +58,8 @@ describe("Range collapsed", () => {
 
         test("should turn a checklist without marker into a ordered list", async () => {
             await testEditor({
-                contentBefore: '<ul class="o_checklist"><li class="oe-nested">ab[]cd</li></ul>',
+                contentBefore:
+                    '<ul class="o_checklist"><li class="oe-nested">ab[]cd</li></ul>',
                 stepFunction: toggleOrderedList,
                 contentAfter: "<ol><li>ab[]cd</li></ol>",
             });
@@ -82,7 +83,8 @@ describe("Range collapsed", () => {
 
         test("should turn a paragraph with formats into a list", async () => {
             await testEditor({
-                contentBefore: "<p><span><b>ab</b></span> <span><i>cd</i></span> ef[]gh</p>",
+                contentBefore:
+                    "<p><span><b>ab</b></span> <span><i>cd</i></span> ef[]gh</p>",
                 stepFunction: toggleOrderedList,
                 contentAfter:
                     "<ol><li><span><b>ab</b></span> <span><i>cd</i></span> ef[]gh</li></ol>",
@@ -149,13 +151,15 @@ describe("Range collapsed", () => {
             await testEditor({
                 contentBefore: '<ul><li class="nav-item">a[]b</li></ul>',
                 stepFunction: toggleOrderedList,
-                contentAfter: '<ul><li class="nav-item"><ol><li>a[]b</li></ol></li></ul>',
+                contentAfter:
+                    '<ul><li class="nav-item"><ol><li>a[]b</li></ol></li></ul>',
             });
         });
 
         test("should create a new ordered list if closestBlock is inside a nav-item list", async () => {
             await testEditor({
-                contentBefore: '<ul><li class="nav-item"><div><h1>a[]b</h1></div></li></ul>',
+                contentBefore:
+                    '<ul><li class="nav-item"><div><h1>a[]b</h1></div></li></ul>',
                 stepFunction: toggleOrderedList,
                 contentAfter:
                     '<ul><li class="nav-item"><div><ol><li><h1>a[]b</h1></li></ol></div></li></ul>',
@@ -166,7 +170,8 @@ describe("Range collapsed", () => {
             await testEditor({
                 contentBefore: '<h1 dir="rtl" class="h1">a[]b</h1>',
                 stepFunction: toggleOrderedList,
-                contentAfter: '<ol dir="rtl"><li><h1 dir="rtl" class="h1">a[]b</h1></li></ol>',
+                contentAfter:
+                    '<ol dir="rtl"><li><h1 dir="rtl" class="h1">a[]b</h1></li></ol>',
             });
         });
 
@@ -268,7 +273,8 @@ describe("Range collapsed", () => {
                 contentBefore:
                     "<ol><li><span><b>ab</b></span> <span><i>cd</i></span> ef[]gh</li></ol>",
                 stepFunction: toggleOrderedList,
-                contentAfter: "<p><span><b>ab</b></span> <span><i>cd</i></span> ef[]gh</p>",
+                contentAfter:
+                    "<p><span><b>ab</b></span> <span><i>cd</i></span> ef[]gh</p>",
             });
         });
 
@@ -414,7 +420,8 @@ describe("Range not collapsed", () => {
 
         test("should turn a list item, a paragraph and another list into one list with all three as list items", async () => {
             await testEditor({
-                contentBefore: "<ol><li>ab</li><li>c[d</li></ol><p>ef</p><ol><li>g]h</li></ol>",
+                contentBefore:
+                    "<ol><li>ab</li><li>c[d</li></ol><p>ef</p><ol><li>g]h</li></ol>",
                 stepFunction: toggleOrderedList,
                 contentAfter: "<ol><li>ab</li><li>c[d</li><li>ef</li><li>g]h</li></ol>",
             });
@@ -422,7 +429,8 @@ describe("Range not collapsed", () => {
 
         test("should turn a list, a paragraph and a list item into one list with all three as list items", async () => {
             await testEditor({
-                contentBefore: "<ol><li>a[b</li></ol><p>cd</p><ol><li>e]f</li><li>gh</li></ol>",
+                contentBefore:
+                    "<ol><li>a[b</li></ol><p>cd</p><ol><li>e]f</li><li>gh</li></ol>",
                 stepFunction: toggleOrderedList,
                 contentAfter: "<ol><li>a[b</li><li>cd</li><li>e]f</li><li>gh</li></ol>",
             });

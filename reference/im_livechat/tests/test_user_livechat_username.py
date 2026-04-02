@@ -1,5 +1,6 @@
 from odoo import fields
 from odoo.tests.common import tagged
+
 from odoo.addons.im_livechat.tests.common import TestGetOperatorCommon
 
 

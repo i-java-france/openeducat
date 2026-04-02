@@ -1,8 +1,8 @@
-import { expect, test } from "@odoo/hoot";
-import { press, runAllTimers } from "@odoo/hoot-dom";
+import {expect, test} from "@odoo/hoot";
+import {press, runAllTimers} from "@odoo/hoot-dom";
 import {
-    clickSave,
     Command,
+    clickSave,
     contains,
     defineModels,
     fields,
@@ -12,7 +12,7 @@ import {
     onRpc,
     serverState,
 } from "@web/../tests/web_test_helpers";
-import { saleModels } from "./sale_test_helpers";
+import {saleModels} from "./sale_test_helpers";
 
 class SaleOrderLine extends saleModels.SaleOrderLine {
     product_template_attribute_value_ids = fields.Many2many({
@@ -27,7 +27,7 @@ class ProductTemplateAttributeValue extends models.Model {
     name = fields.Char();
 }
 
-defineModels({ ...saleModels, SaleOrderLine, ProductTemplateAttributeValue });
+defineModels({...saleModels, SaleOrderLine, ProductTemplateAttributeValue});
 
 saleModels.SaleOrder._views.form = /* xml */ `
     <form>
@@ -43,7 +43,7 @@ saleModels.SaleOrder._views.form = /* xml */ `
 
 test.tags("desktop");
 test("pressing tab with incomplete text will create a product", async () => {
-    onRpc(({ method }) => {
+    onRpc(({method}) => {
         expect.step(method);
     });
     await mountView({
@@ -63,7 +63,7 @@ test("pressing tab with incomplete text will create a product", async () => {
                 </form>`,
     });
 
-    // add a line and enter new product name
+    // Add a line and enter new product name
     await contains(".o_field_x2many_list .o_field_x2many_list_row_add a").click();
     await contains("[name='product_template_id'] input").edit("new product");
     await press("tab");
@@ -79,7 +79,7 @@ test("pressing tab with incomplete text will create a product", async () => {
 });
 
 test("Hide product name if its not translated", async () => {
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
     const product = env["product.product"][0];
     const soId = env["sale.order"].create({
         partner_id: serverState.partnerId,
@@ -97,11 +97,13 @@ test("Hide product name if its not translated", async () => {
         resId: soId,
     });
 
-    expect(".o_field_product_label_section_and_note_cell .o_input").toHaveText("A description");
+    expect(".o_field_product_label_section_and_note_cell .o_input").toHaveText(
+        "A description"
+    );
 });
 
 test("If translated product name already in the SOL name, should not hide the translated product name", async () => {
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
     const translatedProductName = "Produit de test";
     const product = env["product.product"][0];
     const soId = env["sale.order"].create({
@@ -126,7 +128,7 @@ test("If translated product name already in the SOL name, should not hide the tr
 });
 
 test("Editing the description shouldn't show the translated product name", async () => {
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
     const translatedProductName = "Produit de test";
     const product = env["product.product"][0];
     const soId = env["sale.order"].create({
@@ -147,15 +149,19 @@ test("Editing the description shouldn't show the translated product name", async
         resId: soId,
     });
     await contains(".o_field_product_label_section_and_note_cell").click();
-    await contains(".o_field_product_label_section_and_note_cell textarea").edit("A description");
+    await contains(".o_field_product_label_section_and_note_cell textarea").edit(
+        "A description"
+    );
     await clickSave();
 
-    expect(".o_field_product_label_section_and_note_cell .o_input").toHaveText("A description");
+    expect(".o_field_product_label_section_and_note_cell .o_input").toHaveText(
+        "A description"
+    );
     expect(sol.name).toBe([translatedProductName, "A description"].join("\n"));
 });
 
 test("No description should be shown if there does not exist one apart from the product name", async () => {
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
     const translatedProductName = "Produit de test";
     const product = env["product.product"][0];
     const soId = env["sale.order"].create({
@@ -178,7 +184,7 @@ test("No description should be shown if there does not exist one apart from the 
 });
 
 test("No description should be shown if there does not exist one apart from the translated product name", async () => {
-    const { env } = await makeMockServer();
+    const {env} = await makeMockServer();
     const translatedProductName = "Produit de test";
     const product = env["product.product"][0];
     const soId = env["sale.order"].create({

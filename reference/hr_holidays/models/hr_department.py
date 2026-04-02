@@ -1,12 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import ast
 from datetime import datetime, timezone
+
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields, models
 from odoo.fields import Domain
-
-import ast
 
 
 class HrDepartment(models.Model):

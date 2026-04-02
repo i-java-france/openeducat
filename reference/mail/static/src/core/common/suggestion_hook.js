@@ -1,23 +1,26 @@
-import { isContentEditable, isTextNode } from "@html_editor/utils/dom_info";
-import { rightPos } from "@html_editor/utils/position";
+import {isContentEditable, isTextNode} from "@html_editor/utils/dom_info";
+import {rightPos} from "@html_editor/utils/position";
 import {
     generatePartnerMentionElement,
     generateRoleMentionElement,
     generateSpecialMentionElement,
     generateThreadMentionElement,
 } from "@mail/utils/common/format";
-import { status, useComponent, useEffect, useState } from "@odoo/owl";
-import { ConnectionAbortedError } from "@web/core/network/rpc";
-import { useService } from "@web/core/utils/hooks";
-import { useDebounced } from "@web/core/utils/timing";
-import { createTextNode } from "@web/core/utils/xml";
+import {status, useComponent, useEffect, useState} from "@odoo/owl";
+import {ConnectionAbortedError} from "@web/core/network/rpc";
+import {useService} from "@web/core/utils/hooks";
+import {useDebounced} from "@web/core/utils/timing";
+import {createTextNode} from "@web/core/utils/xml";
 
 export const DELAY_FETCH = 250;
 
 export class UseSuggestion {
     constructor(comp) {
         this.comp = comp;
-        this.fetchSuggestions = useDebounced(this.fetchSuggestions.bind(this), DELAY_FETCH);
+        this.fetchSuggestions = useDebounced(
+            this.fetchSuggestions.bind(this),
+            DELAY_FETCH
+        );
         useEffect(
             () => {
                 this.update();
@@ -147,12 +150,18 @@ export class UseSuggestion {
 
             const findAppropriateDelimiter = () => {
                 let goodCandidate;
-                for (const [delimiter, allowedPosition, minCharCountAfter] of supportedDelimiters) {
+                for (const [
+                    delimiter,
+                    allowedPosition,
+                    minCharCountAfter,
+                ] of supportedDelimiters) {
                     if (
                         text.substring(candidatePosition).startsWith(delimiter) && // delimiter is used
-                        (allowedPosition === undefined || allowedPosition === candidatePosition) && // delimiter is allowed position
+                        (allowedPosition === undefined ||
+                            allowedPosition === candidatePosition) && // delimiter is allowed position
                         (minCharCountAfter === undefined ||
-                            start - candidatePosition - delimiter.length + 1 > minCharCountAfter) && // delimiter is allowed (enough custom char typed after)
+                            start - candidatePosition - delimiter.length + 1 >
+                                minCharCountAfter) && // delimiter is allowed (enough custom char typed after)
                         (!goodCandidate || delimiter.length > goodCandidate) // delimiter is more specific
                     ) {
                         goodCandidate = delimiter;
@@ -172,7 +181,10 @@ export class UseSuggestion {
             Object.assign(this.search, {
                 delimiter: candidateDelimiter,
                 position: candidatePosition,
-                term: text.substring(candidatePosition + candidateDelimiter.length, start),
+                term: text.substring(
+                    candidatePosition + candidateDelimiter.length,
+                    start
+                ),
             });
             this.state.count++;
             return;
@@ -191,7 +203,7 @@ export class UseSuggestion {
             position = this.search.position;
         }
         if (this.comp.composerService.htmlEnabled) {
-            const { startContainer, endContainer, endOffset } =
+            const {startContainer, endContainer, endOffset} =
                 this.comp.editor.shared.selection.getEditableSelection();
             this.comp.editor.shared.selection.setSelection({
                 anchorNode: startContainer,
@@ -201,18 +213,24 @@ export class UseSuggestion {
             });
         }
         if (option.partner) {
-            this.composer.mentionedPartners.add({ id: option.partner.id });
+            this.composer.mentionedPartners.add({id: option.partner.id});
         } else if (option.role) {
             this.composer.mentionedRoles.add(option.role);
         } else if (option.thread) {
-            this.composer.mentionedChannels.add({ model: "discuss.channel", id: option.thread.id });
+            this.composer.mentionedChannels.add({
+                model: "discuss.channel",
+                id: option.thread.id,
+            });
         } else if (option.cannedResponse) {
             this.composer.cannedResponses.push(option.cannedResponse);
         }
         if (this.comp.composerService.htmlEnabled) {
             let inlineElement;
             if (option.partner) {
-                inlineElement = generatePartnerMentionElement(option.partner, this.thread);
+                inlineElement = generatePartnerMentionElement(
+                    option.partner,
+                    this.thread
+                );
             } else if (option.isSpecial) {
                 inlineElement = generateSpecialMentionElement(option.label);
             } else if (option.role) {
@@ -224,7 +242,7 @@ export class UseSuggestion {
             }
             this.comp.editor.shared.dom.insert(inlineElement);
             const [anchorNode, anchorOffset] = rightPos(inlineElement);
-            this.comp.editor.shared.selection.setSelection({ anchorNode, anchorOffset });
+            this.comp.editor.shared.selection.setSelection({anchorNode, anchorOffset});
             this.comp.editor.shared.dom.insert("\u00A0");
             this.comp.editor.shared.history.addStep();
         } else {
@@ -240,9 +258,12 @@ export class UseSuggestion {
         if (!this.search.delimiter) {
             return;
         }
-        const { type, suggestions } = this.suggestionService.searchSuggestions(this.search, {
-            thread: this.thread,
-        });
+        const {type, suggestions} = this.suggestionService.searchSuggestions(
+            this.search,
+            {
+                thread: this.thread,
+            }
+        );
         if (!suggestions.length) {
             this.state.items = undefined;
             return;
@@ -251,7 +272,7 @@ export class UseSuggestion {
         // ideally a load more mechanism should be introduced
         const limit = 8;
         suggestions.length = Math.min(suggestions.length, limit);
-        this.state.items = { type, suggestions };
+        this.state.items = {type, suggestions};
     }
 
     async fetchSuggestions() {

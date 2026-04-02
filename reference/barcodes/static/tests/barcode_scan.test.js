@@ -1,10 +1,10 @@
 /** @odoo-module **/
 
-import { expect, test } from "@odoo/hoot";
-import { waitFor } from "@odoo/hoot-dom";
-import { Component, xml } from "@odoo/owl";
-import { BarcodeScanner } from "@barcodes/components/barcode_scanner";
-import { contains, mountWithCleanup } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {waitFor} from "@odoo/hoot-dom";
+import {Component, xml} from "@odoo/owl";
+import {BarcodeScanner} from "@barcodes/components/barcode_scanner";
+import {contains, mountWithCleanup} from "@web/../tests/web_test_helpers";
 
 test.tags("desktop");
 test("Display notification for media device permission on barcode scanning", async () => {
@@ -18,7 +18,7 @@ test("Display notification for media device permission on barcode scanning", asy
                 <BarcodeScanner onBarcodeScanned="(ev) => this.onBarcodeScanned(ev)"/>
             </div>
         `;
-        static components = { BarcodeScanner };
+        static components = {BarcodeScanner};
         static props = ["*"];
     }
 

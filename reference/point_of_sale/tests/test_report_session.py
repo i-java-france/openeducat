@@ -1,14 +1,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import odoo
+from odoo.exceptions import UserError
 
 from odoo.addons.point_of_sale.tests.common import TestPoSCommon
-from odoo.exceptions import UserError
+
 
 @odoo.tests.tagged('post_install', '-at_install')
 class TestReportSession(TestPoSCommon):
 
     def setUp(self):
-        super(TestReportSession, self).setUp()
+        super().setUp()
         self.config = self.basic_config
 
     def test_report_session(self):

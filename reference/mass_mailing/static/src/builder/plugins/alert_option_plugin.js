@@ -1,9 +1,9 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { BorderConfigurator } from "@html_builder/plugins/border_configurator_option";
-import { after, WIDTH } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {BorderConfigurator} from "@html_builder/plugins/border_configurator_option";
+import {after, WIDTH} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
 
 export class AlertOption extends BaseOptionComponent {
     static template = "mass_mailing.AlertOption";
@@ -13,7 +13,7 @@ export class AlertOption extends BaseOptionComponent {
 export class BorderOption extends BaseOptionComponent {
     static template = "mass_mailing.BorderOption";
     static selector = ".s_mail_alert .s_alert";
-    static components = { BorderConfigurator };
+    static components = {BorderConfigurator};
 }
 
 class AlertOptionPlugin extends Plugin {

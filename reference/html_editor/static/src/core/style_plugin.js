@@ -1,5 +1,8 @@
-import { Plugin } from "@html_editor/plugin";
-import { backgroundImageCssToParts, backgroundImagePartsToCss } from "@html_editor/utils/image";
+import {Plugin} from "@html_editor/plugin";
+import {
+    backgroundImageCssToParts,
+    backgroundImagePartsToCss,
+} from "@html_editor/utils/image";
 
 /**
  * @typedef { Object } StyleShared

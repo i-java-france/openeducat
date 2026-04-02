@@ -1,6 +1,8 @@
-from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
 import logging
+
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
+
 # from dateutil.relativedelta import relativedelta
 _logger = logging.getLogger(__name__)
 

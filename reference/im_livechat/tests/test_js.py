@@ -1,4 +1,5 @@
 import odoo
+
 from odoo.addons.web.tests.test_js import unit_test_error_checker
 
 

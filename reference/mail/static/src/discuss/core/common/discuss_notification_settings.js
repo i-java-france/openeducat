@@ -1,7 +1,7 @@
-import { MESSAGE_SOUND } from "@mail/core/common/settings_model";
-import { Component, useState } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { useService } from "@web/core/utils/hooks";
+import {MESSAGE_SOUND} from "@mail/core/common/settings_model";
+import {Component, useState} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {useService} from "@web/core/utils/hooks";
 
 export class DiscussNotificationSettings extends Component {
     static props = {};

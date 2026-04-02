@@ -1,16 +1,16 @@
-import { formatDateTime } from "@web/core/l10n/dates";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { selectionField, SelectionField } from "../selection/selection_field";
+import {formatDateTime} from "@web/core/l10n/dates";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {selectionField, SelectionField} from "../selection/selection_field";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class TimezoneMismatchField extends SelectionField {
     static template = "web.TimezoneMismatchField";
     static props = {
         ...super.props,
-        tzOffsetField: { type: String, optional: true },
-        mismatchTitle: { type: String, optional: true },
+        tzOffsetField: {type: String, optional: true},
+        mismatchTitle: {type: String, optional: true},
     };
     static defaultProps = {
         ...super.defaultProps,
@@ -54,7 +54,8 @@ export class TimezoneMismatchField extends SelectionField {
                     /([+-])([0-9]{2})([0-9]{2})/
                 );
                 const sign = offset[1] === "-" ? -1 : 1;
-                const userOffset = sign * (parseInt(offset[2]) * 60 + parseInt(offset[3]));
+                const userOffset =
+                    sign * (parseInt(offset[2]) * 60 + parseInt(offset[3]));
                 const browserOffset = -new Date().getTimezoneOffset();
                 // UTC time of the user's selected timezone.
                 // E.g.
@@ -90,7 +91,7 @@ export const timezoneMismatchField = {
             availableTypes: ["char"],
         },
     ],
-    extractProps({ options }) {
+    extractProps({options}) {
         const props = selectionField.extractProps(...arguments);
         props.tzOffsetField = options.tz_offset_field;
         props.mismatchTitle = options.mismatch_title;

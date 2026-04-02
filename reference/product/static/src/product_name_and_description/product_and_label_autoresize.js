@@ -1,4 +1,4 @@
-import { useAutoresize } from "@web/core/utils/autoresize";
+import {useAutoresize} from "@web/core/utils/autoresize";
 
 /**
  * This overriden version of the resizeTextArea method is specificly done for the product_label_section_and_note widget
@@ -10,8 +10,8 @@ import { useAutoresize } from "@web/core/utils/autoresize";
  * @param {Ref} ref
  */
 export function useProductAndLabelAutoresize(ref, options = {}) {
-    useAutoresize(ref, { 
-        onMounted: productAndLabelResizeTextArea, 
+    useAutoresize(ref, {
+        onMounted: productAndLabelResizeTextArea,
         onResize: productAndLabelResizeTextArea,
         ...options,
     });
@@ -23,10 +23,13 @@ export function productAndLabelResizeTextArea(textarea, options = {}) {
         let target = textarea.parentElement;
         let shouldContinue = true;
         while (target && shouldContinue) {
-            const totalParentHeight = Array.from(target.children).reduce((total, child) => {
-                const childHeight = child.style.height || style.lineHeight;
-                return total + parseFloat(childHeight);
-            }, 0);
+            const totalParentHeight = Array.from(target.children).reduce(
+                (total, child) => {
+                    const childHeight = child.style.height || style.lineHeight;
+                    return total + parseFloat(childHeight);
+                },
+                0
+            );
             target.style.height = `${totalParentHeight}px`;
             if (target.getAttribute("name") === options.targetParentName) {
                 shouldContinue = false;

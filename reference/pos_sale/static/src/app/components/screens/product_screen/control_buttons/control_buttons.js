@@ -1,6 +1,6 @@
-import { patch } from "@web/core/utils/patch";
-import { ControlButtons } from "@point_of_sale/app/screens/product_screen/control_buttons/control_buttons";
-import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog";
+import {patch} from "@web/core/utils/patch";
+import {ControlButtons} from "@point_of_sale/app/screens/product_screen/control_buttons/control_buttons";
+import {SelectCreateDialog} from "@web/views/view_dialogs/select_create_dialog";
 
 patch(ControlButtons.prototype, {
     onClickQuotation() {
@@ -18,7 +18,11 @@ patch(ControlButtons.prototype, {
         if (this.pos.getOrder()?.getPartner()) {
             domain = [
                 ...domain,
-                ["partner_id", "any", [["id", "child_of", [this.pos.getOrder().getPartner().id]]]],
+                [
+                    "partner_id",
+                    "any",
+                    [["id", "child_of", [this.pos.getOrder().getPartner().id]]],
+                ],
             ];
         }
 

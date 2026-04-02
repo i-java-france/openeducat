@@ -1,11 +1,23 @@
-import { expect, test } from "@odoo/hoot";
-import { click, drag, hover, leave, pointerDown, pointerUp, queryOne } from "@odoo/hoot-dom";
-import { advanceTime, animationFrame, mockTouch, runAllTimers } from "@odoo/hoot-mock";
-import { Component, useState, xml } from "@odoo/owl";
-import { makeMockEnv, mockService, mountWithCleanup } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {
+    click,
+    drag,
+    hover,
+    leave,
+    pointerDown,
+    pointerUp,
+    queryOne,
+} from "@odoo/hoot-dom";
+import {advanceTime, animationFrame, mockTouch, runAllTimers} from "@odoo/hoot-mock";
+import {Component, useState, xml} from "@odoo/owl";
+import {
+    makeMockEnv,
+    mockService,
+    mountWithCleanup,
+} from "@web/../tests/web_test_helpers";
 
-import { popoverService } from "@web/core/popover/popover_service";
-import { OPEN_DELAY, SHOW_AFTER_DELAY } from "@web/core/tooltip/tooltip_service";
+import {popoverService} from "@web/core/popover/popover_service";
+import {OPEN_DELAY, SHOW_AFTER_DELAY} from "@web/core/tooltip/tooltip_service";
 
 test.tags("desktop");
 test("basic rendering", async () => {
@@ -64,7 +76,7 @@ test("remove element with opened tooltip", async () => {
                 <button t-if="state.visible" data-tooltip="hello">Action</button>
             </div>`;
         setup() {
-            this.state = useState({ visible: true });
+            this.state = useState({visible: true});
             compState = this.state;
         }
     }
@@ -116,7 +128,7 @@ test("positioning", async () => {
         const popover = popoverService.start(...kargs);
         return {
             add(...args) {
-                const { position } = args[3];
+                const {position} = args[3];
                 if (position) {
                     expect.step(`popover added with position: ${position}`);
                 } else {
@@ -141,35 +153,35 @@ test("positioning", async () => {
 
     await mountWithCleanup(MyComponent);
 
-    // default
+    // Default
     await hover("button.default");
     await runAllTimers();
     expect(".o_popover").toHaveCount(1);
     expect(".o_popover").toHaveText("default");
     expect.verifySteps(["popover added with default positioning"]);
 
-    // top
+    // Top
     await hover("button.top");
     await runAllTimers();
     expect(".o_popover").toHaveCount(1);
     expect(".o_popover").toHaveText("top");
     expect.verifySteps(["popover added with position: top"]);
 
-    // right
+    // Right
     await hover("button.right");
     await runAllTimers();
     expect(".o_popover").toHaveCount(1);
     expect(".o_popover").toHaveText("right");
     expect.verifySteps(["popover added with position: right"]);
 
-    // bottom
+    // Bottom
     await hover("button.bottom");
     await runAllTimers();
     expect(".o_popover").toHaveCount(1);
     expect(".o_popover").toHaveText("bottom");
     expect.verifySteps(["popover added with position: bottom"]);
 
-    // left
+    // Left
     await hover("button.left");
     await runAllTimers();
     expect(".o_popover").toHaveCount(1);
@@ -186,7 +198,7 @@ test("tooltip with a template, no info", async () => {
         `;
     }
 
-    await makeMockEnv({ tooltip_text: "tooltip" });
+    await makeMockEnv({tooltip_text: "tooltip"});
     await mountWithCleanup(MyComponent, {
         templates: {
             my_tooltip_template: /* xml */ `<i t-esc='env.tooltip_text'/>`,
@@ -214,7 +226,7 @@ test("tooltip with a template and info", async () => {
             </button>
         `;
         get info() {
-            return JSON.stringify({ x: 3, y: "abc" });
+            return JSON.stringify({x: 3, y: "abc"});
         }
     }
 
@@ -286,7 +298,7 @@ test("tooltip does not crash with disappearing target", async () => {
     await animationFrame();
     expect(".o_popover").toHaveCount(0);
 
-    // the element disappeared from the DOM during the setTimeout
+    // The element disappeared from the DOM during the setTimeout
     queryOne(".mybtn").remove();
 
     await runAllTimers();

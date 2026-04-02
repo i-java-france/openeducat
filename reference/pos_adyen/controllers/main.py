@@ -1,8 +1,8 @@
-# coding: utf-8
+import json
 import logging
 import pprint
-import json
 from urllib.parse import parse_qs
+
 from odoo import http
 from odoo.http import request
 from odoo.tools import consteq

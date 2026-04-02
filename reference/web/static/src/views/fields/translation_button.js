@@ -1,9 +1,9 @@
-import { localization } from "@web/core/l10n/localization";
-import { useOwnedDialogs } from "@web/core/utils/hooks";
-import { user } from "@web/core/user";
-import { TranslationDialog } from "./translation_dialog";
+import {localization} from "@web/core/l10n/localization";
+import {useOwnedDialogs} from "@web/core/utils/hooks";
+import {user} from "@web/core/user";
+import {TranslationDialog} from "./translation_dialog";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 /**
  * Prepares a function that will open the dialog that allows to edit translation
@@ -16,12 +16,12 @@ import { Component } from "@odoo/owl";
 export function useTranslationDialog() {
     const addDialog = useOwnedDialogs();
 
-    async function openTranslationDialog({ record, fieldName }) {
+    async function openTranslationDialog({record, fieldName}) {
         const saved = await record.save();
         if (!saved) {
             return;
         }
-        const { resModel, resId } = record;
+        const {resModel, resId} = record;
 
         addDialog(TranslationDialog, {
             fieldName: fieldName,
@@ -41,8 +41,8 @@ export function useTranslationDialog() {
 export class TranslationButton extends Component {
     static template = "web.TranslationButton";
     static props = {
-        fieldName: { type: String },
-        record: { type: Object },
+        fieldName: {type: String},
+        record: {type: Object},
     };
 
     setup() {
@@ -57,7 +57,7 @@ export class TranslationButton extends Component {
     }
 
     onClick() {
-        const { fieldName, record } = this.props;
-        this.translationDialog({ fieldName, record });
+        const {fieldName, record} = this.props;
+        this.translationDialog({fieldName, record});
     }
 }

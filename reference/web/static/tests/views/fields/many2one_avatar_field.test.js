@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { queryAll, queryAllTexts } from "@odoo/hoot-dom";
-import { runAllTimers } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {queryAll, queryAllTexts} from "@odoo/hoot-dom";
+import {runAllTimers} from "@odoo/hoot-mock";
 
 import {
     clickFieldDropdown,
@@ -14,23 +14,23 @@ import {
     patchWithCleanup,
     stepAllNetworkCalls,
 } from "@web/../tests/web_test_helpers";
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 class Partner extends models.Model {
     int_field = fields.Integer();
-    user_id = fields.Many2one({ string: "Users", relation: "res.users" });
+    user_id = fields.Many2one({string: "Users", relation: "res.users"});
     _records = [
-        { id: 1, user_id: 1 },
-        { id: 2, user_id: 2 },
-        { id: 3, user_id: 1 },
-        { id: 4, user_id: false },
+        {id: 1, user_id: 1},
+        {id: 2, user_id: 2},
+        {id: 3, user_id: 1},
+        {id: 4, user_id: false},
     ];
 }
 
 class Users extends models.Model {
     _name = "res.users";
     name = fields.Char();
-    partner_ids = fields.One2many({ relation: "partner", relation_field: "user_id" });
+    partner_ids = fields.One2many({relation: "partner", relation_field: "user_id"});
 
     has_group() {
         return true;
@@ -63,25 +63,33 @@ test("basic form view flow", async () => {
     });
 
     expect(".o_field_widget[name=user_id] input").toHaveValue("Aline");
-    expect('.o_m2o_avatar > img[data-src="/web/image/res.users/1/avatar_128"]').toHaveCount(1);
+    expect(
+        '.o_m2o_avatar > img[data-src="/web/image/res.users/1/avatar_128"]'
+    ).toHaveCount(1);
     expect(".o_field_many2one_avatar > div").toHaveCount(1);
 
     expect(".o_input_dropdown").toHaveCount(1);
     expect(".o_input_dropdown input").toHaveValue("Aline");
     expect(".o_external_button").toHaveCount(1);
-    expect('.o_m2o_avatar > img[data-src="/web/image/res.users/1/avatar_128"]').toHaveCount(1);
+    expect(
+        '.o_m2o_avatar > img[data-src="/web/image/res.users/1/avatar_128"]'
+    ).toHaveCount(1);
 
     await clickFieldDropdown("user_id");
     expect(".o_field_many2one_selection .o_avatar_many2x_autocomplete").toHaveCount(2);
     await clickFieldDropdownItem("user_id", "Christine");
 
-    expect('.o_m2o_avatar > img[data-src="/web/image/res.users/2/avatar_128"]').toHaveCount(1);
+    expect(
+        '.o_m2o_avatar > img[data-src="/web/image/res.users/2/avatar_128"]'
+    ).toHaveCount(1);
     await clickSave();
 
     expect(".o_field_widget[name=user_id] input").toHaveValue("Christine");
-    expect('.o_m2o_avatar > img[data-src="/web/image/res.users/2/avatar_128"]').toHaveCount(1);
+    expect(
+        '.o_m2o_avatar > img[data-src="/web/image/res.users/2/avatar_128"]'
+    ).toHaveCount(1);
 
-    await contains('.o_field_widget[name="user_id"] input').clear({ confirm: "blur" });
+    await contains('.o_field_widget[name="user_id"] input').clear({confirm: "blur"});
 
     expect(".o_m2o_avatar > img").toHaveCount(0);
     expect(".o_m2o_avatar > .o_m2o_avatar_empty").toHaveCount(1);
@@ -99,7 +107,7 @@ test("onchange in form view flow", async () => {
             } else if (obj.int_field === 2) {
                 obj.user_id = false;
             } else {
-                obj.user_id = [1, "Aline"]; // default value
+                obj.user_id = [1, "Aline"]; // Default value
             }
         },
     });
@@ -115,12 +123,16 @@ test("onchange in form view flow", async () => {
     });
 
     expect(".o_field_widget[name=user_id]").toHaveText("Aline");
-    expect('.o_m2o_avatar > img[data-src="/web/image/res.users/1/avatar_128"]').toHaveCount(1);
+    expect(
+        '.o_m2o_avatar > img[data-src="/web/image/res.users/1/avatar_128"]'
+    ).toHaveCount(1);
 
     await contains("div[name=int_field] input").edit(1);
 
     expect(".o_field_widget[name=user_id]").toHaveText("Christine");
-    expect('.o_m2o_avatar > img[data-src="/web/image/res.users/2/avatar_128"]').toHaveCount(1);
+    expect(
+        '.o_m2o_avatar > img[data-src="/web/image/res.users/2/avatar_128"]'
+    ).toHaveCount(1);
 
     await contains("div[name=int_field] input").edit(2);
 
@@ -181,7 +193,10 @@ test("Many2OneAvatar with placeholder", async () => {
         arch: '<form><field name="user_id" widget="many2one_avatar" placeholder="Placeholder"/></form>',
     });
 
-    expect(".o_field_widget[name='user_id'] input").toHaveAttribute("placeholder", "Placeholder");
+    expect(".o_field_widget[name='user_id'] input").toHaveAttribute(
+        "placeholder",
+        "Placeholder"
+    );
 });
 
 test.tags("desktop");
@@ -317,7 +332,7 @@ test("cancelling create dialog should clear value in the field", async () => {
     });
 
     await contains(".o_data_cell:eq(0)").click();
-    await contains(".o_field_widget[name=user_id] input").edit("yy", { confirm: false });
+    await contains(".o_field_widget[name=user_id] input").edit("yy", {confirm: false});
     await runAllTimers();
     await clickFieldDropdownItem("user_id", "Create and edit...");
 
@@ -355,12 +370,12 @@ test("widget many2one_avatar in kanban view (load more dialog)", async () => {
             </kanban>`,
     });
 
-    // open popover
+    // Open popover
     await contains(
         ".o_kanban_record:nth-child(4) .o_field_many2one_avatar .o_m2o_avatar > a.o_quick_assign"
     ).click();
 
-    // load more
+    // Load more
     await contains(".o-overlay-container .o_m2o_dropdown_option_search_more").click();
     await contains(".o_dialog .o_list_table .o_data_row .o_data_cell").click();
     expect(
@@ -391,13 +406,13 @@ test("widget many2one_avatar in kanban view", async () => {
     expect(
         ".o_kanban_record:nth-child(4) .o_field_many2one_avatar .o_m2o_avatar > .o_quick_assign"
     ).toHaveCount(1);
-    // open popover
+    // Open popover
     await contains(
         ".o_kanban_record:nth-child(4) .o_field_many2one_avatar .o_m2o_avatar > .o_quick_assign"
     ).click();
     expect(".o-overlay-container input").toBeFocused();
     expect.verifySteps(["web_name_search"]);
-    // select first input
+    // Select first input
     await contains(".o-overlay-container .o-autocomplete--dropdown-item").click();
     expect.verifySteps(["web_save"]);
     expect(

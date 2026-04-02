@@ -1,14 +1,14 @@
-import { append, createElement } from "@web/core/utils/xml";
-import { FormCompiler } from "@web/views/form/form_compiler";
-import { toStringExpression } from "@web/views/utils";
-import { isTextNode } from "@web/views/view_compiler";
+import {append, createElement} from "@web/core/utils/xml";
+import {FormCompiler} from "@web/views/form/form_compiler";
+import {toStringExpression} from "@web/views/utils";
+import {isTextNode} from "@web/views/view_compiler";
 
 export class SettingsFormCompiler extends FormCompiler {
     setup() {
         super.setup();
         this.compilers.push(
-            { selector: "app", fn: this.compileApp },
-            { selector: "block", fn: this.compileBlock }
+            {selector: "app", fn: this.compileApp},
+            {selector: "block", fn: this.compileBlock}
         );
     }
 
@@ -77,7 +77,7 @@ export class SettingsFormCompiler extends FormCompiler {
         params.anchors.push(
             ...[...settingsApp.querySelectorAll("SearchableSetting")]
                 .filter((s) => s.id)
-                .map((s) => ({ app: module.key, settingId: s.id.replaceAll("`", "") }))
+                .map((s) => ({app: module.key, settingId: s.id.replaceAll("`", "")}))
         );
         return settingsApp;
     }
@@ -95,7 +95,9 @@ export class SettingsFormCompiler extends FormCompiler {
 
     compileSetting(el, params) {
         params.componentName =
-            el.getAttribute("type") === "header" ? "SettingHeader" : "SearchableSetting";
+            el.getAttribute("type") === "header"
+                ? "SettingHeader"
+                : "SearchableSetting";
         const res = super.compileSetting(el, params);
         return res;
     }

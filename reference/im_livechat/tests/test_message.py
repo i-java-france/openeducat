@@ -5,10 +5,11 @@ from markupsafe import Markup
 
 from odoo import Command, fields
 from odoo.exceptions import AccessError
-from odoo.tests.common import users, tagged
+from odoo.tests.common import tagged, users
+
+from odoo.addons.im_livechat.tests.chatbot_common import ChatbotCase
 from odoo.addons.mail.tests.common import MailCommon
 from odoo.addons.mail.tools.discuss import Store
-from odoo.addons.im_livechat.tests.chatbot_common import ChatbotCase
 
 
 @tagged('post_install', '-at_install')

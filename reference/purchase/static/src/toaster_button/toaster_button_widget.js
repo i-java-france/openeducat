@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { Component } from "@odoo/owl";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {Component} from "@odoo/owl";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
 
 class ButtonWithNotification extends Component {
     static template = "purchase.ButtonWithNotification";
@@ -16,17 +16,19 @@ class ButtonWithNotification extends Component {
     }
 
     async onClick() {
-        const result = await this.orm.call(this.props.record.resModel, this.props.method, [
-            this.props.record.resId,
-        ]);
+        const result = await this.orm.call(
+            this.props.record.resModel,
+            this.props.method,
+            [this.props.record.resId]
+        );
         const message = result.toast_message;
-        this.notification.add(message, { type: "success" });
+        this.notification.add(message, {type: "success"});
     }
 }
 
 export const buttonWithNotification = {
     component: ButtonWithNotification,
-    extractProps: ({ attrs }) => {
+    extractProps: ({attrs}) => {
         return {
             method: attrs.button_name,
             title: attrs.title,

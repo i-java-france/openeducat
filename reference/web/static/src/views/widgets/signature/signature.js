@@ -1,18 +1,18 @@
-import { registry } from "@web/core/registry";
-import { SignatureDialog } from "@web/core/signature/signature_dialog";
-import { useService } from "@web/core/utils/hooks";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
+import {registry} from "@web/core/registry";
+import {SignatureDialog} from "@web/core/signature/signature_dialog";
+import {useService} from "@web/core/utils/hooks";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class SignatureWidget extends Component {
     static template = "web.SignatureWidget";
     static props = {
         ...standardWidgetProps,
-        fullName: { type: String, optional: true },
-        highlight: { type: Boolean, optional: true },
-        string: { type: String },
-        signatureField: { type: String, optional: true },
+        fullName: {type: String, optional: true},
+        highlight: {type: Boolean, optional: true},
+        string: {type: String},
+        signatureField: {type: String, optional: true},
     };
 
     setup() {
@@ -27,7 +27,7 @@ export class SignatureWidget extends Component {
             signatureType: "signature",
             noInputName: true,
         };
-        const { fullName, record } = this.props;
+        const {fullName, record} = this.props;
         let defaultName = "";
         if (fullName) {
             let signName;
@@ -50,9 +50,9 @@ export class SignatureWidget extends Component {
         this.dialogService.add(SignatureDialog, dialogProps);
     }
 
-    async uploadSignature({ signatureImage }) {
+    async uploadSignature({signatureImage}) {
         const file = signatureImage.split(",")[1];
-        const { model, resModel, resId } = this.props.record;
+        const {model, resModel, resId} = this.props.record;
 
         await this.env.services.orm.write(resModel, [resId], {
             [this.props.signatureField]: file,
@@ -64,8 +64,8 @@ export class SignatureWidget extends Component {
 
 export const signatureWidget = {
     component: SignatureWidget,
-    extractProps: ({ attrs }) => {
-        const { full_name: fullName, highlight, signature_field, string } = attrs;
+    extractProps: ({attrs}) => {
+        const {full_name: fullName, highlight, signature_field, string} = attrs;
         return {
             fullName,
             highlight: !!highlight,

@@ -1,4 +1,5 @@
 import re
+
 from markupsafe import Markup
 
 from odoo import api, models
@@ -24,7 +25,7 @@ class MailComposeMessage(models.TransientModel):
                 (card_from_res_id[res_id], mail_values.get('body_html'))
                 for res_id, mail_values in mail_values_all.items()
             ])
-            for mail_values, body in zip(mail_values_all.values(), processed_bodies):
+            for mail_values, body in zip(mail_values_all.values(), processed_bodies, strict=False):
                 if body is not None:
                     # in a mailing these are the same
                     mail_values['body'] = body

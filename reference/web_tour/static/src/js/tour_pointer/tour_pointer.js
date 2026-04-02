@@ -1,7 +1,7 @@
-import { Component, useEffect, useRef, useState } from "@odoo/owl";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { browser } from "@web/core/browser/browser";
-import { usePosition } from "@web/core/position/position_hook";
+import {Component, useEffect, useRef, useState} from "@odoo/owl";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {browser} from "@web/core/browser/browser";
+import {usePosition} from "@web/core/position/position_hook";
 
 /**
  * @typedef {import("./tour_pointer_state").TourPointerState} TourPointerState
@@ -17,27 +17,27 @@ export class TourPointer extends Component {
         pointerState: {
             type: Object,
             shape: {
-                anchor: { type: HTMLElement, optional: true },
-                content: { type: String, optional: true },
-                isOpen: { type: Boolean, optional: true },
-                isVisible: { type: Boolean, optional: true },
-                isZone: { type: Boolean, optional: true },
-                onClick: { type: [Function, { value: null }], optional: true },
-                onMouseEnter: { type: [Function, { value: null }], optional: true },
-                onMouseLeave: { type: [Function, { value: null }], optional: true },
+                anchor: {type: HTMLElement, optional: true},
+                content: {type: String, optional: true},
+                isOpen: {type: Boolean, optional: true},
+                isVisible: {type: Boolean, optional: true},
+                isZone: {type: Boolean, optional: true},
+                onClick: {type: [Function, {value: null}], optional: true},
+                onMouseEnter: {type: [Function, {value: null}], optional: true},
+                onMouseLeave: {type: [Function, {value: null}], optional: true},
                 position: {
                     type: [
-                        { value: "left" },
-                        { value: "right" },
-                        { value: "top" },
-                        { value: "bottom" },
+                        {value: "left"},
+                        {value: "right"},
+                        {value: "top"},
+                        {value: "bottom"},
                     ],
                     optional: true,
                 },
-                rev: { type: Number, optional: true },
+                rev: {type: Number, optional: true},
             },
         },
-        bounce: { type: Boolean, optional: true },
+        bounce: {type: Boolean, optional: true},
     };
 
     static defaultProps = {
@@ -54,7 +54,7 @@ export class TourPointer extends Component {
             margin: 6,
             onPositioned: (pointer, position) => {
                 const popperRect = pointer.getBoundingClientRect();
-                const { top, left, direction } = position;
+                const {top, left, direction} = position;
                 if (direction === "top") {
                     // position from the bottom instead of the top as it is needed
                     // to ensure the expand animation is properly done
@@ -87,8 +87,8 @@ export class TourPointer extends Component {
         let lastAnchor;
         let [anchorX, anchorY] = [0, 0];
         useEffect(() => {
-            const { el: pointer } = rootRef;
-            const { el: zone } = zoneRef;
+            const {el: pointer} = rootRef;
+            const {el: zone} = zoneRef;
             if (pointer) {
                 const hasContentChanged = lastMeasuredContent !== this.content;
                 const hasOpenStateChanged = lastOpenState !== this.isOpen;
@@ -96,7 +96,7 @@ export class TourPointer extends Component {
 
                 // Check is the pointed element is a zone
                 if (this.props.pointerState.isZone) {
-                    const { anchor } = this.props.pointerState;
+                    const {anchor} = this.props.pointerState;
                     let offsetLeft = 0;
                     let offsetTop = 0;
                     if (document !== anchor.ownerDocument) {
@@ -106,7 +106,7 @@ export class TourPointer extends Component {
                         offsetLeft = iframe.getBoundingClientRect().left;
                         offsetTop = iframe.getBoundingClientRect().top;
                     }
-                    const { left, top, width, height } = anchor.getBoundingClientRect();
+                    const {left, top, width, height} = anchor.getBoundingClientRect();
                     zone.style.minWidth = width + "px";
                     zone.style.minHeight = height + "px";
                     zone.style.left = left + offsetLeft + "px";
@@ -138,9 +138,9 @@ export class TourPointer extends Component {
                 }
 
                 if (!this.isOpen) {
-                    const { anchor } = this.props.pointerState;
+                    const {anchor} = this.props.pointerState;
                     if (anchor === lastAnchor) {
-                        const { x, y, width } = anchor.getBoundingClientRect();
+                        const {x, y, width} = anchor.getBoundingClientRect();
                         const [lastAnchorX, lastAnchorY] = [anchorX, anchorY];
                         [anchorX, anchorY] = [x, y];
                         // Let's just say that the anchor is static if it moved less than 1px.
@@ -151,7 +151,8 @@ export class TourPointer extends Component {
                             position.lock();
                             return;
                         }
-                        const wouldOverflow = window.innerWidth - x - width / 2 < dimensions?.width;
+                        const wouldOverflow =
+                            window.innerWidth - x - width / 2 < dimensions?.width;
                         pointer.classList.toggle("o_expand_left", wouldOverflow);
                     }
                     lastAnchor = anchor;
@@ -166,7 +167,7 @@ export class TourPointer extends Component {
                 dimensions = null;
             }
         });
-        this.state = useState({ triggerBelow: false });
+        this.state = useState({triggerBelow: false});
         const uiService = useService("ui");
         const onActiveElementChanged = () => {
             const activeEl = uiService.activeElement;

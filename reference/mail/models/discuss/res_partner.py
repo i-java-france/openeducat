@@ -1,10 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
-from odoo.fields import Domain
-from odoo.tools import email_normalize, single_email_re, SQL
-from odoo.addons.mail.tools.discuss import Store
 from odoo.exceptions import AccessError
+from odoo.fields import Domain
+from odoo.tools import SQL, email_normalize, single_email_re
+
+from odoo.addons.mail.tools.discuss import Store
 
 
 class ResPartner(models.Model):

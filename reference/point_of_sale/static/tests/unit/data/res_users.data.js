@@ -1,4 +1,4 @@
-import { ResUsers as MailResUsers } from "@mail/../tests/mock_server/mock_models/res_users";
+import {ResUsers as MailResUsers} from "@mail/../tests/mock_server/mock_models/res_users";
 
 export class ResUsers extends MailResUsers {
     _name = "res.users";

@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import namedtuple
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError, RedirectWarning
-from odoo.tools.translate import _, LazyTranslate
+from odoo.exceptions import RedirectWarning, UserError
+from odoo.tools.translate import LazyTranslate, _
 
 _lt = LazyTranslate(__name__)
 
@@ -137,7 +136,7 @@ class StockWarehouse(models.Model):
         # actually create WH
         warehouses = super().create(vals_list)
 
-        for warehouse, vals in zip(warehouses, vals_list):
+        for warehouse, vals in zip(warehouses, vals_list, strict=False):
             # create sequences and operation types
             new_vals = warehouse._create_or_update_sequences_and_picking_types()
             warehouse.write(new_vals)  # TDE FIXME: use super ?
@@ -174,7 +173,7 @@ class StockWarehouse(models.Model):
     def copy_data(self, default=None):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
-        for warehouse, vals in zip(self, vals_list):
+        for warehouse, vals in zip(self, vals_list, strict=False):
             if 'name' not in default:
                 vals['name'] = _("%s (copy)", warehouse.name)
             if 'code' not in default:

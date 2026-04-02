@@ -1,15 +1,21 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
+
 from stdnum.util import clean
 
-from odoo import api, fields, models, _
-from odoo.addons.base.models.res_bank import sanitize_account_number
-from odoo.addons.base_iban.models.res_partner_bank import normalize_iban, pretty_iban, validate_iban, get_iban_part
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools import LazyTranslate, street_split
 from odoo.tools.misc import mod10r
+
+from odoo.addons.base.models.res_bank import sanitize_account_number
+from odoo.addons.base_iban.models.res_partner_bank import (
+    get_iban_part,
+    normalize_iban,
+    pretty_iban,
+    validate_iban,
+)
 
 _lt = LazyTranslate(__name__)
 
@@ -132,7 +138,7 @@ class ResPartnerBank(models.Model):
             '',                                                   # Ultimate Creditor Postal Code
             '',                                                   # Ultimate Creditor Town
             '',                                                   # Ultimate Creditor Country
-            '{:.2f}'.format(amount),                              # Amount
+            f'{amount:.2f}',                              # Amount
             currency.name,                                        # Currency
             'S',                                                  # Ultimate Debtor Address Type
             debtor_partner.commercial_partner_id.name[:70],       # Ultimate Debtor Name

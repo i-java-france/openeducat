@@ -1,14 +1,13 @@
-import { getSectionRecords } from '@account/components/section_and_note_fields_backend/section_and_note_fields_backend';
-import { SaleOrderLineListRenderer } from '@sale/js/sale_order_line_field/sale_order_line_field';
-import { makeContext } from '@web/core/context';
-import { x2ManyCommands } from '@web/core/orm_service';
-import { patch } from '@web/core/utils/patch';
+import {getSectionRecords} from "@account/components/section_and_note_fields_backend/section_and_note_fields_backend";
+import {SaleOrderLineListRenderer} from "@sale/js/sale_order_line_field/sale_order_line_field";
+import {makeContext} from "@web/core/context";
+import {x2ManyCommands} from "@web/core/orm_service";
+import {patch} from "@web/core/utils/patch";
 
 patch(SaleOrderLineListRenderer.prototype, {
-
     setup() {
         super.setup();
-        this.copyFields.push('is_optional');
+        this.copyFields.push("is_optional");
     },
 
     /**
@@ -17,15 +16,15 @@ patch(SaleOrderLineListRenderer.prototype, {
      */
     get disableCompositionButton() {
         return (
-            super.disableCompositionButton
-            || this.shouldCollapse(this.record, 'is_optional', true)
+            super.disableCompositionButton ||
+            this.shouldCollapse(this.record, "is_optional", true)
         );
     },
 
     get disablePricesButton() {
         return (
-            super.disablePricesButton
-            || this.shouldCollapse(this.record, 'is_optional', true)
+            super.disablePricesButton ||
+            this.shouldCollapse(this.record, "is_optional", true)
         );
     },
 
@@ -37,9 +36,9 @@ patch(SaleOrderLineListRenderer.prototype, {
      */
     get disableOptionalButton() {
         return (
-            this.shouldCollapse(this.record, 'is_optional')
-            || this.shouldCollapse(this.record, 'collapse_prices', true)
-            || this.shouldCollapse(this.record, 'collapse_composition', true)
+            this.shouldCollapse(this.record, "is_optional") ||
+            this.shouldCollapse(this.record, "collapse_prices", true) ||
+            this.shouldCollapse(this.record, "collapse_composition", true)
         );
     },
 
@@ -48,7 +47,7 @@ patch(SaleOrderLineListRenderer.prototype, {
 
         return this.shouldCollapse(
             this.props.list.records[this.props.list.records.length - 1],
-            'is_optional',
+            "is_optional",
             true
         );
     },
@@ -57,7 +56,7 @@ patch(SaleOrderLineListRenderer.prototype, {
      * Override to set the default `product_uom_qty` to 0 for new lines created under an optional
      * section.
      */
-    add(params){
+    add(params) {
         params.context = this.getCreateContext(params);
         super.add(params);
     },
@@ -65,8 +64,11 @@ patch(SaleOrderLineListRenderer.prototype, {
     getCreateContext(params) {
         const evaluatedContext = makeContext([params.context]);
         // A falsy context indicates a product line (no `display_type` specified)
-        if(!evaluatedContext[`default_display_type`] && this.isCurrentSectionOptional) {
-            return { ...evaluatedContext, default_product_uom_qty: 0 };
+        if (
+            !evaluatedContext[`default_display_type`] &&
+            this.isCurrentSectionOptional
+        ) {
+            return {...evaluatedContext, default_product_uom_qty: 0};
         }
         return params.context;
     },
@@ -76,10 +78,10 @@ patch(SaleOrderLineListRenderer.prototype, {
      * sections from dropdown.
      */
     getInsertLineContext(record, addSubSection) {
-        if (this.shouldCollapse(record, 'is_optional', true) && !addSubSection) {
+        if (this.shouldCollapse(record, "is_optional", true) && !addSubSection) {
             return {
                 ...super.getInsertLineContext(record, addSubSection),
-                default_product_uom_qty: 0
+                default_product_uom_qty: 0,
             };
         }
         return super.getInsertLineContext(record, addSubSection);
@@ -87,8 +89,8 @@ patch(SaleOrderLineListRenderer.prototype, {
 
     getRowClass(record) {
         let rowClasses = super.getRowClass(record);
-        if (this.shouldCollapse(record, 'is_optional', true)) {
-            rowClasses += ' text-primary';
+        if (this.shouldCollapse(record, "is_optional", true)) {
+            rowClasses += " text-primary";
         }
         return rowClasses;
     },
@@ -106,15 +108,18 @@ patch(SaleOrderLineListRenderer.prototype, {
             for (const sectionRecord of getSectionRecords(this.props.list, record)) {
                 if (this.isSubSection(sectionRecord)) {
                     commands.push(
-                        x2ManyCommands.update(sectionRecord.resId || sectionRecord._virtualId, {
-                            is_optional: false,
-                        })
-                    )
+                        x2ManyCommands.update(
+                            sectionRecord.resId || sectionRecord._virtualId,
+                            {
+                                is_optional: false,
+                            }
+                        )
+                    );
                 }
             }
 
             if (commands.length) {
-                await this.props.list.applyCommands(commands, { sort: true });
+                await this.props.list.applyCommands(commands, {sort: true});
             }
         }
     },
@@ -127,9 +132,11 @@ patch(SaleOrderLineListRenderer.prototype, {
     async toggleIsOptional(record) {
         const setOptional = !record.data.is_optional;
 
-        const commands = [(x2ManyCommands.update(record.resId || record._virtualId, {
-            is_optional: setOptional,
-        }))];
+        const commands = [
+            x2ManyCommands.update(record.resId || record._virtualId, {
+                is_optional: setOptional,
+            }),
+        ];
 
         const proms = [];
         for (const sectionRecord of getSectionRecords(this.props.list, record)) {
@@ -137,9 +144,13 @@ patch(SaleOrderLineListRenderer.prototype, {
 
             if (!sectionRecord.data.display_type) {
                 if (setOptional) {
-                    changes = { product_uom_qty: 0, price_total: 0, price_subtotal: 0 }
+                    changes = {product_uom_qty: 0, price_total: 0, price_subtotal: 0};
                 } else {
-                    proms.push(sectionRecord._update({ product_uom_qty: sectionRecord.data.product_uom_qty || 1 }));
+                    proms.push(
+                        sectionRecord._update({
+                            product_uom_qty: sectionRecord.data.product_uom_qty || 1,
+                        })
+                    );
                 }
             } else if (this.isSubSection(sectionRecord)) {
                 changes = setOptional && {
@@ -158,7 +169,7 @@ patch(SaleOrderLineListRenderer.prototype, {
             }
         }
 
-        await this.props.list.applyCommands(commands, { sort: true });
+        await this.props.list.applyCommands(commands, {sort: true});
         await Promise.all(proms);
     },
 
@@ -172,11 +183,14 @@ patch(SaleOrderLineListRenderer.prototype, {
      *   its quantity is reset to `1`.
      * - Non-product lines (`display_type` set) are ignored.
      */
-    async sortDrop(dataRowId, dataGroupId, { element, previous }) {
-        const record = this.props.list.records.find(r => r.id === dataRowId);
-        const recordMap = this._getRecordsToRecompute(record, previous ? previous.dataset.id : null);
+    async sortDrop(dataRowId, dataGroupId, {element, previous}) {
+        const record = this.props.list.records.find((r) => r.id === dataRowId);
+        const recordMap = this._getRecordsToRecompute(
+            record,
+            previous ? previous.dataset.id : null
+        );
 
-        await super.sortDrop(dataRowId, dataGroupId, { element, previous });
+        await super.sortDrop(dataRowId, dataGroupId, {element, previous});
 
         await this._handleQuantityAdjustment(recordMap);
     },
@@ -195,9 +209,12 @@ patch(SaleOrderLineListRenderer.prototype, {
     _getRecordsToRecompute(record, targetId) {
         const optionalStateMap = new Map();
 
-        if (this.isSection(record)) { // If a section or subsection is moved
+        if (this.isSection(record)) {
+            // If a section or subsection is moved
             let currentIndex = this.props.list.records.indexOf(record);
-            let targetIndex = this.props.list.records.findIndex(r => r.id === targetId);
+            let targetIndex = this.props.list.records.findIndex(
+                (r) => r.id === targetId
+            );
             if (currentIndex > targetIndex) {
                 //When moving up, recompute:
                 // 1. All records under the moved section.
@@ -206,13 +223,22 @@ patch(SaleOrderLineListRenderer.prototype, {
                     if (!this.props.list.records[i].data.display_type) {
                         optionalStateMap.set(
                             this.props.list.records[i].id,
-                            this.shouldCollapse(this.props.list.records[i], 'is_optional')
+                            this.shouldCollapse(
+                                this.props.list.records[i],
+                                "is_optional"
+                            )
                         );
                     }
                 }
-                for (const sectionRecord of getSectionRecords(this.props.list, record)) {
+                for (const sectionRecord of getSectionRecords(
+                    this.props.list,
+                    record
+                )) {
                     if (!sectionRecord.data.display_type) {
-                        optionalStateMap.set(sectionRecord.id, this.shouldCollapse(sectionRecord, 'is_optional'));
+                        optionalStateMap.set(
+                            sectionRecord.id,
+                            this.shouldCollapse(sectionRecord, "is_optional")
+                        );
                     }
                 }
             } else {
@@ -221,14 +247,17 @@ patch(SaleOrderLineListRenderer.prototype, {
                 // 2. All records between the old and new positions (skipping overlaps).
                 for (let i = currentIndex; i <= targetIndex; i++) {
                     if (this.isSection(this.props.list.records[i])) {
-                        for (const sectionRecord of getSectionRecords(this.props.list, this.props.list.records[i])) {
+                        for (const sectionRecord of getSectionRecords(
+                            this.props.list,
+                            this.props.list.records[i]
+                        )) {
                             if (
-                                !optionalStateMap.has(sectionRecord.id)
-                                && !sectionRecord.data.display_type
+                                !optionalStateMap.has(sectionRecord.id) &&
+                                !sectionRecord.data.display_type
                             ) {
                                 optionalStateMap.set(
                                     sectionRecord.id,
-                                    this.shouldCollapse(sectionRecord, 'is_optional')
+                                    this.shouldCollapse(sectionRecord, "is_optional")
                                 );
                             }
                         }
@@ -236,18 +265,22 @@ patch(SaleOrderLineListRenderer.prototype, {
 
                     // we must skip overlapping records
                     if (
-                        !optionalStateMap.has(this.props.list.records[i].id)
-                        && !this.props.list.records[i].data.display_type
+                        !optionalStateMap.has(this.props.list.records[i].id) &&
+                        !this.props.list.records[i].data.display_type
                     ) {
                         optionalStateMap.set(
                             this.props.list.records[i].id,
-                            this.shouldCollapse(this.props.list.records[i], 'is_optional')
+                            this.shouldCollapse(
+                                this.props.list.records[i],
+                                "is_optional"
+                            )
                         );
                     }
                 }
             }
-        } else if (!record.data.display_type) { // If a regular record is moved compute its own optional state
-            optionalStateMap.set(record.id, this.shouldCollapse(record, 'is_optional'));
+        } else if (!record.data.display_type) {
+            // If a regular record is moved compute its own optional state
+            optionalStateMap.set(record.id, this.shouldCollapse(record, "is_optional"));
         }
 
         return optionalStateMap;
@@ -257,21 +290,25 @@ patch(SaleOrderLineListRenderer.prototype, {
         const commands = [];
 
         for (const [recordId, wasOptional] of recordMap.entries()) {
-            const record = this.props.list.records.find(r => r.id === recordId);
-            const isOptional = this.shouldCollapse(record, 'is_optional');
+            const record = this.props.list.records.find((r) => r.id === recordId);
+            const isOptional = this.shouldCollapse(record, "is_optional");
 
             if (wasOptional && !isOptional && !record.data.product_uom_qty) {
-                commands.push(x2ManyCommands.update(
-                    record.resId || record._virtualId, { product_uom_qty: 1 }
-                ));
+                commands.push(
+                    x2ManyCommands.update(record.resId || record._virtualId, {
+                        product_uom_qty: 1,
+                    })
+                );
             } else if (!wasOptional && isOptional) {
-                commands.push(x2ManyCommands.update(
-                    record.resId || record._virtualId, { product_uom_qty: 0 }
-                ));
+                commands.push(
+                    x2ManyCommands.update(record.resId || record._virtualId, {
+                        product_uom_qty: 0,
+                    })
+                );
             }
         }
 
-        await this.props.list.applyCommands(commands, { sort: true });
+        await this.props.list.applyCommands(commands, {sort: true});
     },
 
     /**
@@ -281,34 +318,30 @@ patch(SaleOrderLineListRenderer.prototype, {
      */
     resetOnResequence(record, parentSection) {
         return (
-            super.resetOnResequence(record, parentSection)
-            || (
-                this.isSubSection(record)
-                && parentSection?.data.is_optional
-                && (
-                    record.data.collapse_composition
-                    || record.data.collapse_prices
-                    || record.data.is_optional
-                )
-            )
+            super.resetOnResequence(record, parentSection) ||
+            (this.isSubSection(record) &&
+                parentSection?.data.is_optional &&
+                (record.data.collapse_composition ||
+                    record.data.collapse_prices ||
+                    record.data.is_optional))
         );
     },
 
     fieldsToReset() {
-        return { ...super.fieldsToReset(), is_optional: false };
+        return {...super.fieldsToReset(), is_optional: false};
     },
 
     async moveCombo(record, direction) {
-        const wasOptional = this.shouldCollapse(record, 'is_optional');
+        const wasOptional = this.shouldCollapse(record, "is_optional");
 
         await super.moveCombo(record, direction);
 
-        const isOptional = this.shouldCollapse(record, 'is_optional');
+        const isOptional = this.shouldCollapse(record, "is_optional");
 
         if (wasOptional && !isOptional && !record.data.product_uom_qty) {
-            await record.update({ product_uom_qty: 1 });
+            await record.update({product_uom_qty: 1});
         } else if (!wasOptional && isOptional) {
-            await record.update({ product_uom_qty: 0 });
+            await record.update({product_uom_qty: 0});
         }
-    }
+    },
 });

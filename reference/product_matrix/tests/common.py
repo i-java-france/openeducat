@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo.tests import tagged, common
+from odoo.tests import common
 
 
 class TestMatrixCommon(common.HttpCase):
 
     def setUp(self):
-        super(TestMatrixCommon, self).setUp()
+        super().setUp()
 
         # Prepare relevant test data
         # This is not included in demo data to avoid useless noise

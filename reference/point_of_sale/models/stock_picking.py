@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_is_zero
-
-from itertools import groupby
 from collections import defaultdict
+from itertools import groupby
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class StockPicking(models.Model):
@@ -166,7 +164,7 @@ class StockMove(models.Model):
         return vals
 
     def _key_assign_picking(self):
-        keys = super(StockMove, self)._key_assign_picking()
+        keys = super()._key_assign_picking()
         return keys + (self.reference_ids.pos_order_ids,)
 
     @api.model

@@ -1,14 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import date
-from dateutil.relativedelta import relativedelta
-from dateutil.rrule import DAILY, rrule
 import logging
 import time
+from datetime import date
+
+from dateutil.relativedelta import relativedelta
+from dateutil.rrule import DAILY, rrule
 
 from odoo import Command
-from odoo.tests.common import tagged
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, tagged
 
 _logger = logging.getLogger(__name__)
 

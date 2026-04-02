@@ -1,10 +1,10 @@
-import { describe, test } from "@odoo/hoot";
-import { testEditor } from "./_helpers/editor";
-import { unformat } from "./_helpers/format";
-import { FORMATTABLE_TAGS } from "@html_editor/utils/formatting";
+import {describe, test} from "@odoo/hoot";
+import {testEditor} from "./_helpers/editor";
+import {unformat} from "./_helpers/format";
+import {FORMATTABLE_TAGS} from "@html_editor/utils/formatting";
 
 /**
- * content of the "init" sub suite in editor.test.js
+ * Content of the "init" sub suite in editor.test.js
  */
 
 describe("No orphan inline elements compatibility mode", () => {
@@ -39,7 +39,8 @@ describe("No orphan inline elements compatibility mode", () => {
     test("should keep multiple conecutive <br> if necessary", async () => {
         await testEditor({
             contentBefore: "ab<br><br><br><br>c",
-            contentAfter: "<div>ab</div><div><br></div><div><br></div><div><br></div><div>c</div>",
+            contentAfter:
+                "<div>ab</div><div><br></div><div><br></div><div><br></div><div>c</div>",
         });
     });
 
@@ -83,10 +84,10 @@ describe("No orphan inline elements compatibility mode", () => {
     test("should not transform indentation", async () => {
         await testEditor({
             contentBefore: `
-<p>ab</p>  
+<p>ab</p>
 <p>c</p>`,
             contentAfter: `
-<p>ab</p>  
+<p>ab</p>
 <p>c</p>`,
         });
     });
@@ -122,7 +123,7 @@ describe("allowInlineAtRoot options", () => {
                 contentBefore: "abc",
                 contentAfter: "<div>abc</div>",
             },
-            { allowInlineAtRoot: false }
+            {allowInlineAtRoot: false}
         );
     });
 
@@ -130,7 +131,7 @@ describe("allowInlineAtRoot options", () => {
         await testEditor({
             contentBefore: "abc",
             contentAfter: "abc",
-            config: { allowInlineAtRoot: true },
+            config: {allowInlineAtRoot: true},
         });
     });
 });
@@ -185,7 +186,8 @@ describe("link normalization", () => {
         await testEditor({
             contentBefore:
                 '<p><a href="#" style="color: #008f8c"><font style="color: rgb(255, 0, 0);">test</font></a></p>',
-            contentAfter: '<p><a href="#"><font style="color: rgb(255, 0, 0);">test</font></a></p>',
+            contentAfter:
+                '<p><a href="#"><font style="color: rgb(255, 0, 0);">test</font></a></p>',
         });
     });
 
@@ -308,7 +310,8 @@ describe("color normalization", () => {
 describe("formatting normalization", () => {
     test("should unwrap nested identical bold tags (1)", async () => {
         await testEditor({
-            contentBefore: "<p>a<strong>b<strong>c<strong>d</strong></strong>e</strong>f</p>",
+            contentBefore:
+                "<p>a<strong>b<strong>c<strong>d</strong></strong>e</strong>f</p>",
             contentAfter: "<p>a<strong>bcde</strong>f</p>",
         });
     });
@@ -380,7 +383,7 @@ describe("formatting normalization", () => {
 describe("Editor config initialization", () => {
     test("should replace empty content by a default baseContainer, even if not provided in the config", async () => {
         await testEditor({
-            config: { content: "" },
+            config: {content: ""},
             contentAfter: "<p><br></p>",
         });
     });

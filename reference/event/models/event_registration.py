@@ -1,12 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import logging
 import os
+
 import pytz
 
-from odoo import _, api, fields, models, SUPERUSER_ID
+from odoo import SUPERUSER_ID, _, api, fields, models
+from odoo.exceptions import ValidationError
 from odoo.fields import Domain
 from odoo.tools import email_normalize, format_date, formataddr
-from odoo.exceptions import ValidationError
+
 _logger = logging.getLogger(__name__)
 
 
@@ -114,7 +116,7 @@ class EventRegistration(models.Model):
         if not any(field in utm_fields for field in fields):
             return ret_vals
         utm_mixin_defaults = self.env['utm.mixin'].default_get(utm_mixin_fields)
-        for (mixin_field, field) in zip(utm_mixin_fields, utm_fields):
+        for (mixin_field, field) in zip(utm_mixin_fields, utm_fields, strict=False):
             if field in fields and utm_mixin_defaults.get(mixin_field):
                 ret_vals[field] = utm_mixin_defaults[mixin_field]
         return ret_vals
@@ -435,7 +437,7 @@ class EventRegistration(models.Model):
                 self.search([
                     ('partner_id', '=', False), email_domain, ('state', 'not in', ['cancel']),
                 ]).write({'partner_id': new_partner[0].id})
-        return super(EventRegistration, self)._message_post_after_hook(message, msg_vals)
+        return super()._message_post_after_hook(message, msg_vals)
 
     # ------------------------------------------------------------
     # TOOLS

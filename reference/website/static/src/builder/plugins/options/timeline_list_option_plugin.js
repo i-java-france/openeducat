@@ -1,8 +1,8 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { BEGIN, SNIPPET_SPECIFIC_END } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {BEGIN, SNIPPET_SPECIFIC_END} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
 
 export class TimelineListOption extends BaseOptionComponent {
     static template = "website.TimelineListOption";
@@ -33,8 +33,10 @@ class TimelineListOptionPlugin extends Plugin {
             selector: ".s_timeline_list_row",
             dropNear: ".s_timeline_list_row",
         },
-        is_movable_selector: { selector: ".s_timeline_list_row", direction: "vertical" },
+        is_movable_selector: {selector: ".s_timeline_list_row", direction: "vertical"},
     };
 }
 
-registry.category("website-plugins").add(TimelineListOptionPlugin.id, TimelineListOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(TimelineListOptionPlugin.id, TimelineListOptionPlugin);

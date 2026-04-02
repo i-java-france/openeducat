@@ -1,13 +1,13 @@
-import { useState } from "@odoo/owl";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import {useState} from "@odoo/owl";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
 
 export class InputConfirmationDialog extends ConfirmationDialog {
     static template = "html_builder.InputConfirmationDialog";
 
     static props = {
         ...ConfirmationDialog.props,
-        inputLabel: { type: String, optional: true },
-        defaultValue: { type: String, optional: true },
+        inputLabel: {type: String, optional: true},
+        defaultValue: {type: String, optional: true},
     };
 
     setup() {
@@ -18,6 +18,8 @@ export class InputConfirmationDialog extends ConfirmationDialog {
     }
 
     execButton(callback) {
-        return super.execButton((...args) => callback?.(...args, this.inputState.value));
+        return super.execButton((...args) =>
+            callback?.(...args, this.inputState.value)
+        );
     }
 }

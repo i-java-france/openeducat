@@ -1,21 +1,21 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { keyDown } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {keyDown} from "@odoo/hoot-dom";
 import {
-    makeMockEnv,
     contains,
+    makeMockEnv,
     mountWithCleanup,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { defineSpreadsheetModels } from "@spreadsheet/../tests/helpers/data";
-import { getTemplate } from "@web/core/templates";
-import { NumericFilterValue } from "@spreadsheet/global_filters/components/numeric_filter_value/numeric_filter_value";
-import { localization } from "@web/core/l10n/localization";
+import {defineSpreadsheetModels} from "@spreadsheet/../tests/helpers/data";
+import {getTemplate} from "@web/core/templates";
+import {NumericFilterValue} from "@spreadsheet/global_filters/components/numeric_filter_value/numeric_filter_value";
+import {localization} from "@web/core/l10n/localization";
 
 describe.current.tags("desktop");
 defineSpreadsheetModels();
 
 async function mountNumericFilterValue(env, props) {
-    await mountWithCleanup(NumericFilterValue, { props, env, getTemplate });
+    await mountWithCleanup(NumericFilterValue, {props, env, getTemplate});
 }
 
 test("numeric filter with no default value prop", async function () {
@@ -120,9 +120,9 @@ test("numeric filter input should insert localized decimal separator when numpad
         },
     });
     await contains("input").focus();
-    await keyDown(".", { code: "NumpadDecimal" });
-    await keyDown("1", { code: "Digit1" });
-    await keyDown("2", { code: "Digit2" });
+    await keyDown(".", {code: "NumpadDecimal"});
+    await keyDown("1", {code: "Digit1"});
+    await keyDown("2", {code: "Digit2"});
     expect(".o_input").toHaveValue(",12");
     const input = document.querySelector(".o_input");
     input.dispatchEvent(new Event("change"));

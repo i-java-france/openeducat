@@ -1,9 +1,7 @@
 import pytz
 
-from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
-from odoo.exceptions import AccessError, ValidationError
-from stdnum.in_ import pan, gstin
+from odoo import _, fields, models
+from odoo.exceptions import AccessError
 
 
 class ResCompany(models.Model):
@@ -58,7 +56,7 @@ class ResCompany(models.Model):
                 "/iap/l10n_in_edi/1/authenticate",
                 "l10n_in_edi.endpoint"
             )
-        except AccessError as e:
+        except AccessError:
             return {
                 "error": [{
                     "code": "404",

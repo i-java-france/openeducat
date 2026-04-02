@@ -7,55 +7,55 @@
       "colNumber": 11,
       "rowNumber": 84,
       "rows": {
-        "11": { "size": 36 },
-        "29": { "size": 41 },
-        "48": { "size": 39 },
-        "49": { "size": 36 },
-        "50": { "size": 26 },
-        "51": { "size": 26 },
-        "52": { "size": 26 },
-        "53": { "size": 26 },
-        "54": { "size": 26 },
-        "55": { "size": 26 },
-        "56": { "size": 26 },
-        "57": { "size": 26 },
-        "58": { "size": 26 },
-        "59": { "size": 26 },
-        "60": { "size": 26 },
-        "61": { "size": 26 },
-        "62": { "size": 26 },
-        "63": { "size": 26 },
-        "64": { "size": 26 },
-        "66": { "size": 39 },
-        "67": { "size": 34 },
-        "68": { "size": 26 },
-        "69": { "size": 26 },
-        "70": { "size": 26 },
-        "71": { "size": 26 },
-        "72": { "size": 26 },
-        "73": { "size": 26 },
-        "74": { "size": 26 },
-        "75": { "size": 26 },
-        "76": { "size": 26 },
-        "77": { "size": 26 },
-        "78": { "size": 26 },
-        "79": { "size": 26 },
-        "80": { "size": 26 },
-        "81": { "size": 26 },
-        "82": { "size": 26 }
+        "11": {"size": 36},
+        "29": {"size": 41},
+        "48": {"size": 39},
+        "49": {"size": 36},
+        "50": {"size": 26},
+        "51": {"size": 26},
+        "52": {"size": 26},
+        "53": {"size": 26},
+        "54": {"size": 26},
+        "55": {"size": 26},
+        "56": {"size": 26},
+        "57": {"size": 26},
+        "58": {"size": 26},
+        "59": {"size": 26},
+        "60": {"size": 26},
+        "61": {"size": 26},
+        "62": {"size": 26},
+        "63": {"size": 26},
+        "64": {"size": 26},
+        "66": {"size": 39},
+        "67": {"size": 34},
+        "68": {"size": 26},
+        "69": {"size": 26},
+        "70": {"size": 26},
+        "71": {"size": 26},
+        "72": {"size": 26},
+        "73": {"size": 26},
+        "74": {"size": 26},
+        "75": {"size": 26},
+        "76": {"size": 26},
+        "77": {"size": 26},
+        "78": {"size": 26},
+        "79": {"size": 26},
+        "80": {"size": 26},
+        "81": {"size": 26},
+        "82": {"size": 26}
       },
       "cols": {
-        "0": { "isHidden": true, "size": 40 },
-        "1": { "size": 288 },
-        "2": { "size": 99 },
-        "3": { "size": 76 },
-        "4": { "size": 65 },
-        "5": { "size": 27 },
-        "6": { "isHidden": true, "size": 41 },
-        "7": { "size": 217 },
-        "8": { "size": 92 },
-        "9": { "size": 80 },
-        "10": { "size": 84 }
+        "0": {"isHidden": true, "size": 40},
+        "1": {"size": 288},
+        "2": {"size": 99},
+        "3": {"size": 76},
+        "4": {"size": 65},
+        "5": {"size": 27},
+        "6": {"isHidden": true, "size": 41},
+        "7": {"size": 217},
+        "8": {"size": 92},
+        "9": {"size": 80},
+        "10": {"size": 84}
       },
       "merges": [
         "H68:I68",
@@ -213,25 +213,25 @@
                 "dataRange": "Data!D13:D37",
                 "label": "Average per order",
                 "yAxisId": "y1",
-                "trend": { "type": "polynomial", "order": 2, "display": false },
+                "trend": {"type": "polynomial", "order": 2, "display": false},
                 "type": "line"
               }
             ],
             "legendPosition": "top",
             "labelRange": "Data!A13:A37",
-            "title": { "text": "" },
+            "title": {"text": ""},
             "aggregated": false,
             "axesDesign": {
               "y": {
-                "title": { "text": "Total revenue" }
+                "title": {"text": "Total revenue"}
               },
               "y1": {
-                "title": { "text": "Average revenue per order" }
+                "title": {"text": "Average revenue per order"}
               }
             },
             "showValues": false
           },
-          "offset": { "x": 0, "y": 289 },
+          "offset": {"x": 0, "y": 289},
           "col": 0,
           "row": 0
         },
@@ -244,7 +244,7 @@
             "type": "combo",
             "dataSetsHaveTitle": true,
             "dataSets": [
-              { "dataRange": "Data!H13:H20", "yAxisId": "y", "type": "bar" },
+              {"dataRange": "Data!H13:H20", "yAxisId": "y", "type": "bar"},
               {
                 "dataRange": "Data!J13:J20",
                 "yAxisId": "y1",
@@ -254,18 +254,18 @@
             ],
             "legendPosition": "top",
             "labelRange": "Data!G13:G20",
-            "title": { "text": "" },
+            "title": {"text": ""},
             "aggregated": false,
             "axesDesign": {
               "y": {
-                "title": { "text": "Total revenue" }
+                "title": {"text": "Total revenue"}
               },
               "y1": {
-                "title": { "text": "Average revenue per order" }
+                "title": {"text": "Average revenue per order"}
               }
             }
           },
-          "offset": { "x": 0, "y": 721 },
+          "offset": {"x": 0, "y": 721},
           "col": 0,
           "row": 0
         },
@@ -278,13 +278,13 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "#Orders", "bold": true, "color": "#434343" },
+            "title": {"text": "#Orders", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#EFF6FF",
             "keyValue": "Data!B2",
             "humanize": false
           },
-          "offset": { "x": 620, "y": 10 },
+          "offset": {"x": 620, "y": 10},
           "col": 0,
           "row": 0
         },
@@ -297,13 +297,13 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "Total revenue", "bold": true, "color": "#434343" },
+            "title": {"text": "Total revenue", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!B3",
             "humanize": false
           },
-          "offset": { "x": 0, "y": 127 },
+          "offset": {"x": 0, "y": 127},
           "col": 0,
           "row": 0
         },
@@ -316,13 +316,13 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "Untaxed revenue", "bold": true, "color": "#434343" },
+            "title": {"text": "Untaxed revenue", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!B4",
             "humanize": false
           },
-          "offset": { "x": 0, "y": 10 },
+          "offset": {"x": 0, "y": 10},
           "col": 0,
           "row": 0
         },
@@ -335,13 +335,17 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "Untaxed revenue per order", "bold": true, "color": "#434343" },
+            "title": {
+              "text": "Untaxed revenue per order",
+              "bold": true,
+              "color": "#434343"
+            },
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!B5",
             "humanize": false
           },
-          "offset": { "x": 207, "y": 10 },
+          "offset": {"x": 207, "y": 10},
           "col": 0,
           "row": 0
         },
@@ -354,13 +358,17 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "Untaxed revenue per guest", "bold": true, "color": "#434343" },
+            "title": {
+              "text": "Untaxed revenue per guest",
+              "bold": true,
+              "color": "#434343"
+            },
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!B7",
             "humanize": false
           },
-          "offset": { "x": 414, "y": 10 },
+          "offset": {"x": 414, "y": 10},
           "col": 0,
           "row": 0
         },
@@ -373,13 +381,13 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "Discount Rate", "bold": true, "color": "#434343" },
+            "title": {"text": "Discount Rate", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FEF2F2",
             "keyValue": "Data!B9",
             "humanize": false
           },
-          "offset": { "x": 620, "y": 127 },
+          "offset": {"x": 620, "y": 127},
           "col": 0,
           "row": 0
         },
@@ -392,13 +400,17 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "Avg revenue per order", "bold": true, "color": "#434343" },
+            "title": {
+              "text": "Avg revenue per order",
+              "bold": true,
+              "color": "#434343"
+            },
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!B6",
             "humanize": false
           },
-          "offset": { "x": 207, "y": 127 },
+          "offset": {"x": 207, "y": 127},
           "col": 0,
           "row": 0
         },
@@ -411,13 +423,17 @@
             "baselineColorDown": "#EA6175",
             "baselineColorUp": "#43C5B1",
             "baselineMode": "difference",
-            "title": { "text": "Avg revenue per guest", "bold": true, "color": "#434343" },
+            "title": {
+              "text": "Avg revenue per guest",
+              "bold": true,
+              "color": "#434343"
+            },
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!B8",
             "humanize": false
           },
-          "offset": { "x": 414, "y": 127 },
+          "offset": {"x": 414, "y": 127},
           "col": 0,
           "row": 0
         }
@@ -618,8 +634,8 @@
         "J19": "=RANDBETWEEN(50,200)",
         "J20": "=RANDBETWEEN(50,200)"
       },
-      "styles": { "A1:B1": 7, "A12": 8, "F12": 8 },
-      "formats": { "B3:B9": 1, "B14:B38": 1, "G14:G20": 2 },
+      "styles": {"A1:B1": 7, "A12": 8, "F12": 8},
+      "formats": {"B3:B9": 1, "B14:B38": 1, "G14:G20": 2},
       "borders": {},
       "conditionalFormats": [],
       "dataValidationRules": [],
@@ -666,37 +682,37 @@
     }
   ],
   "styles": {
-    "1": { "textColor": "#434343" },
-    "2": { "textColor": "#434343", "verticalAlign": "middle" },
-    "3": { "fontSize": 16, "textColor": "#01666B", "bold": true },
-    "4": { "textColor": "#434343", "bold": true, "fontSize": 11 },
+    "1": {"textColor": "#434343"},
+    "2": {"textColor": "#434343", "verticalAlign": "middle"},
+    "3": {"fontSize": 16, "textColor": "#01666B", "bold": true},
+    "4": {"textColor": "#434343", "bold": true, "fontSize": 11},
     "5": {
       "textColor": "#434343",
       "bold": true,
       "fontSize": 11,
       "align": "center"
     },
-    "6": { "textColor": "#01666b", "fontSize": 16, "bold": true },
-    "7": { "fillColor": "#01666B", "textColor": "#FFFFFF", "bold": true },
-    "8": { "bold": true, "textColor": "#01666B" }
+    "6": {"textColor": "#01666b", "fontSize": 16, "bold": true},
+    "7": {"fillColor": "#01666B", "textColor": "#FFFFFF", "bold": true},
+    "8": {"bold": true, "textColor": "#01666B"}
   },
-  "formats": { "1": "[$$]#,##0", "2": "dddd d mmmm yyyy" },
+  "formats": {"1": "[$$]#,##0", "2": "dddd d mmmm yyyy"},
   "borders": {
     "1": {
-      "bottom": { "style": "thin", "color": "#CCCCCC" }
+      "bottom": {"style": "thin", "color": "#CCCCCC"}
     },
     "2": {
-      "top": { "style": "thin", "color": "#CCCCCC" }
+      "top": {"style": "thin", "color": "#CCCCCC"}
     },
     "3": {
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     },
     "4": {
-      "top": { "style": "thick", "color": "#FFFFFF" },
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "top": {"style": "thick", "color": "#FFFFFF"},
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     },
     "5": {
-      "top": { "style": "thick", "color": "#FFFFFF" }
+      "top": {"style": "thick", "color": "#FFFFFF"}
     }
   },
   "revisionId": "START_REVISION",

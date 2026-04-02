@@ -1,12 +1,12 @@
-import { test, expect, beforeEach } from "@odoo/hoot";
-import { click, press, queryAll, queryAllTexts, queryOne } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { getService, mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { Dialog } from "@web/core/dialog/dialog";
-import { Component, xml } from "@odoo/owl";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { useAutofocus } from "@web/core/utils/hooks";
-import { MainComponentsContainer } from "@web/core/main_components_container";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {click, press, queryAll, queryAllTexts, queryOne} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {getService, mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {Dialog} from "@web/core/dialog/dialog";
+import {Component, xml} from "@odoo/owl";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {useAutofocus} from "@web/core/utils/hooks";
+import {MainComponentsContainer} from "@web/core/main_components_container";
 
 beforeEach(async () => {
     await mountWithCleanup(MainComponentsContainer);
@@ -14,7 +14,7 @@ beforeEach(async () => {
 
 test("Simple rendering with a single dialog", async () => {
     class CustomDialog extends Component {
-        static components = { Dialog };
+        static components = {Dialog};
         static template = xml`<Dialog title="'Welcome'">content</Dialog>`;
         static props = ["*"];
     }
@@ -30,7 +30,7 @@ test("Simple rendering with a single dialog", async () => {
 
 test("Simple rendering and close a single dialog", async () => {
     class CustomDialog extends Component {
-        static components = { Dialog };
+        static components = {Dialog};
         static template = xml`<Dialog title="'Welcome'">content</Dialog>`;
         static props = ["*"];
     }
@@ -52,17 +52,17 @@ test("Simple rendering and close a single dialog", async () => {
 
 test("rendering with two dialogs", async () => {
     class CustomDialog extends Component {
-        static components = { Dialog };
+        static components = {Dialog};
         static template = xml`<Dialog title="props.title">content</Dialog>`;
         static props = ["*"];
     }
     expect(".o_dialog").toHaveCount(0);
-    getService("dialog").add(CustomDialog, { title: "Hello" });
+    getService("dialog").add(CustomDialog, {title: "Hello"});
     await animationFrame();
     expect(".o_dialog").toHaveCount(1);
     expect("header .modal-title").toHaveText("Hello");
 
-    getService("dialog").add(CustomDialog, { title: "Sauron" });
+    getService("dialog").add(CustomDialog, {title: "Sauron"});
     await animationFrame();
     expect(".o_dialog").toHaveCount(2);
     expect(queryAllTexts("header .modal-title")).toEqual(["Hello", "Sauron"]);
@@ -74,23 +74,23 @@ test("rendering with two dialogs", async () => {
 
 test("multiple dialogs can become the UI active element", async () => {
     class CustomDialog extends Component {
-        static components = { Dialog };
+        static components = {Dialog};
         static template = xml`<Dialog title="props.title">content</Dialog>`;
         static props = ["*"];
     }
-    getService("dialog").add(CustomDialog, { title: "Hello" });
+    getService("dialog").add(CustomDialog, {title: "Hello"});
     await animationFrame();
     expect(queryOne(".o_dialog:not(.o_inactive_modal) .modal")).toBe(
         getService("ui").activeElement
     );
 
-    getService("dialog").add(CustomDialog, { title: "Sauron" });
+    getService("dialog").add(CustomDialog, {title: "Sauron"});
     await animationFrame();
     expect(queryOne(".o_dialog:not(.o_inactive_modal) .modal")).toBe(
         getService("ui").activeElement
     );
 
-    getService("dialog").add(CustomDialog, { title: "Rafiki" });
+    getService("dialog").add(CustomDialog, {title: "Rafiki"});
     await animationFrame();
     expect(queryOne(".o_dialog:not(.o_inactive_modal) .modal")).toBe(
         getService("ui").activeElement
@@ -106,7 +106,7 @@ test("a popover with an autofocus child can become the UI active element", async
         }
     }
     class CustomDialog extends Component {
-        static components = { Dialog };
+        static components = {Dialog};
         static template = xml`<Dialog title="props.title">
             <button class="btn test" t-on-click="showPopover">show</button>
         </Dialog>`;
@@ -122,7 +122,7 @@ test("a popover with an autofocus child can become the UI active element", async
     expect(document).toBe(getService("ui").activeElement);
     expect(document.body).toBeFocused();
 
-    getService("dialog").add(CustomDialog, { title: "Hello" });
+    getService("dialog").add(CustomDialog, {title: "Hello"});
     await animationFrame();
     expect(queryOne(".o_dialog:not(.o_inactive_modal) .modal")).toBe(
         getService("ui").activeElement
@@ -143,20 +143,20 @@ test("Interactions between multiple dialogs", async () => {
             active[i] = !modals[i].classList.contains("o_inactive_modal");
             names[i] = modals[i].querySelector(".modal-title").textContent;
         }
-        return { active, names };
+        return {active, names};
     }
 
     class CustomDialog extends Component {
-        static components = { Dialog };
+        static components = {Dialog};
         static template = xml`<Dialog title="props.title">content</Dialog>`;
         static props = ["*"];
     }
 
-    getService("dialog").add(CustomDialog, { title: "Hello" });
+    getService("dialog").add(CustomDialog, {title: "Hello"});
     await animationFrame();
-    getService("dialog").add(CustomDialog, { title: "Sauron" });
+    getService("dialog").add(CustomDialog, {title: "Sauron"});
     await animationFrame();
-    getService("dialog").add(CustomDialog, { title: "Rafiki" });
+    getService("dialog").add(CustomDialog, {title: "Rafiki"});
     await animationFrame();
 
     expect(".o_dialog").toHaveCount(3);
@@ -164,7 +164,7 @@ test("Interactions between multiple dialogs", async () => {
     expect(res.active).toEqual([false, false, true]);
     expect(res.names).toEqual(["Hello", "Sauron", "Rafiki"]);
 
-    await press("Escape", { bubbles: true });
+    await press("Escape", {bubbles: true});
     await animationFrame();
 
     expect(".o_dialog").toHaveCount(2);
@@ -189,7 +189,7 @@ test("dialog component crashes", async () => {
     expect.errors(1);
 
     class FailingDialog extends Component {
-        static components = { Dialog };
+        static components = {Dialog};
         static template = xml`<Dialog title="'Error'">content</Dialog>`;
         static props = ["*"];
         setup() {
@@ -206,17 +206,17 @@ test("dialog component crashes", async () => {
 
 test("two dialogs, close the first one, closeAll", async () => {
     class CustomDialog extends Component {
-        static components = { Dialog };
+        static components = {Dialog};
         static template = xml`<Dialog title="props.title">content</Dialog>`;
         static props = ["*"];
     }
     expect(".o_dialog").toHaveCount(0);
-    const close = getService("dialog").add(CustomDialog, { title: "Hello" });
+    const close = getService("dialog").add(CustomDialog, {title: "Hello"});
     await animationFrame();
     expect(".o_dialog").toHaveCount(1);
     expect("header .modal-title").toHaveText("Hello");
 
-    getService("dialog").add(CustomDialog, { title: "Sauron" });
+    getService("dialog").add(CustomDialog, {title: "Sauron"});
     await animationFrame();
     expect(".o_dialog").toHaveCount(2);
     expect(queryAllTexts("header .modal-title")).toEqual(["Hello", "Sauron"]);
@@ -233,14 +233,14 @@ test("two dialogs, close the first one, closeAll", async () => {
 
 test("two dialogs, close the first one twice, then closeAll", async () => {
     class CustomDialog extends Component {
-        static components = { Dialog };
+        static components = {Dialog};
         static template = xml`<Dialog title="props.title">content</Dialog>`;
         static props = ["*"];
     }
     expect(".o_dialog").toHaveCount(0);
     getService("dialog").add(
         CustomDialog,
-        { title: "Hello" },
+        {title: "Hello"},
         {
             onClose: () => expect.step("close dialog 1"),
         }
@@ -252,7 +252,7 @@ test("two dialogs, close the first one twice, then closeAll", async () => {
 
     const close = getService("dialog").add(
         CustomDialog,
-        { title: "Sauron" },
+        {title: "Sauron"},
         {
             onClose: () => expect.step("close dialog 2"),
         }

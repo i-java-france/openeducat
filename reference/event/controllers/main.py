@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
+
 from werkzeug.exceptions import NotFound
 
-from odoo import http, _
-from odoo.http import Controller, request, route, content_disposition
+from odoo import _, http
+from odoo.http import Controller, content_disposition, request, route
 from odoo.tools import consteq, format_datetime
 
 
@@ -19,7 +19,7 @@ class EventController(Controller):
         event = event.with_context(lang=lang)
         slot_id = int(kwargs['slot_id']) if kwargs.get('slot_id') else False
         files = event._get_ics_file(slot=request.env['event.slot'].sudo().browse(slot_id))
-        if not event.id in files:
+        if event.id not in files:
             return NotFound()
         content = files[event.id]
         return request.make_response(content, [

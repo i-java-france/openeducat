@@ -1,5 +1,5 @@
-import { parseEmail } from "@mail/utils/common/format";
-import { mailDataHelpers } from "@mail/../tests/mock_server/mail_mock_server";
+import {parseEmail} from "@mail/utils/common/format";
+import {mailDataHelpers} from "@mail/../tests/mock_server/mail_mock_server";
 
 import {
     Command,
@@ -20,7 +20,13 @@ export class MailThread extends models.ServerModel {
      * @param {boolean} [filter_recipients]
      */
     message_get_followers(ids, after, limit, filter_recipients) {
-        const kwargs = getKwArgs(arguments, "ids", "after", "limit", "filter_recipients");
+        const kwargs = getKwArgs(
+            arguments,
+            "ids",
+            "after",
+            "limit",
+            "filter_recipients"
+        );
         ids = kwargs.ids;
         after = kwargs.after || 0;
         limit = kwargs.limit || 100;
@@ -78,12 +84,13 @@ export class MailThread extends models.ServerModel {
         store.add(
             this.browse(ids[0]),
             {
-                [filter_recipients ? "recipients" : "followers"]: mailDataHelpers.Store.many(
-                    followers,
-                    makeKwArgs({ mode: reset ? "REPLACE" : "ADD" })
-                ),
+                [filter_recipients ? "recipients" : "followers"]:
+                    mailDataHelpers.Store.many(
+                        followers,
+                        makeKwArgs({mode: reset ? "REPLACE" : "ADD"})
+                    ),
             },
-            makeKwArgs({ as_thread: true })
+            makeKwArgs({as_thread: true})
         );
     }
 
@@ -123,12 +130,15 @@ export class MailThread extends models.ServerModel {
                 res_id: id,
                 res_model: this._name,
             });
-            kwargs.attachment_ids = attachmentIds.map((attachmentId) => Command.link(attachmentId));
+            kwargs.attachment_ids = attachmentIds.map((attachmentId) =>
+                Command.link(attachmentId)
+            );
         }
         let author_id;
         let email_from;
         const author_guest_id =
-            ResUsers._is_public(this.env.uid) && MailGuest._get_guest_from_context()?.id;
+            ResUsers._is_public(this.env.uid) &&
+            MailGuest._get_guest_from_context()?.id;
         if (!author_guest_id) {
             [author_id, email_from] = MailThread._message_compute_author.call(
                 this,
@@ -160,7 +170,12 @@ export class MailThread extends models.ServerModel {
                 res_partner_id: partnerId,
             });
         }
-        MailThread._notify_thread.call(this, ids, messageId, kwargs.context?.temporary_id);
+        MailThread._notify_thread.call(
+            this,
+            ids,
+            messageId,
+            kwargs.context?.temporary_id
+        );
         return [messageId];
     }
 
@@ -183,7 +198,9 @@ export class MailThread extends models.ServerModel {
 
         for (const id of ids) {
             for (const partner_id of partner_ids) {
-                let followerId = MailFollowers.search([["partner_id", "=", partner_id]])[0];
+                let followerId = MailFollowers.search([
+                    ["partner_id", "=", partner_id],
+                ])[0];
                 if (!followerId) {
                     if (!subtype_ids?.length) {
                         subtype_ids = MailMessageSubtype.search([
@@ -256,12 +273,15 @@ export class MailThread extends models.ServerModel {
             ["notification_status", "in", ["bounce", "exception"]],
         ]).filter((notification) => {
             const [message] = MailMessage.browse(notification.mail_message_id);
-            return message.model === this._name && message.author_id === this.env.user.partner_id;
+            return (
+                message.model === this._name &&
+                message.author_id === this.env.user.partner_id
+            );
         });
         // Update notification status
         MailNotification.write(
             notifications.map((notification) => notification.id),
-            { notification_status: "canceled" }
+            {notification_status: "canceled"}
         );
         // Send bus notifications to update status of notifications in the web client
         const [partner] = ResPartner.read(this.env.user.partner_id);
@@ -282,7 +302,15 @@ export class MailThread extends models.ServerModel {
      * @param {string} reason
      * @param {string} name
      */
-    _message_add_suggested_recipient(id, result, partner, email, lang, reason = "", name) {
+    _message_add_suggested_recipient(
+        id,
+        result,
+        partner,
+        email,
+        lang,
+        reason = "",
+        name
+    ) {
         const kwargs = getKwArgs(
             arguments,
             "id",
@@ -377,7 +405,11 @@ export class MailThread extends models.ServerModel {
     }
 
     /** @param {number[]} ids */
-    _message_get_suggested_recipients(ids, additional_partners = [], primary_email = false) {
+    _message_get_suggested_recipients(
+        ids,
+        additional_partners = [],
+        primary_email = false
+    ) {
         /** @type {import("mock_models").MailThread} */
         const MailThread = this.env["mail.thread"];
         /** @type {import("mock_models").ResFake} */
@@ -459,7 +491,9 @@ export class MailThread extends models.ServerModel {
                         temporary_id,
                     },
                 ]);
-                const memberOfCurrentUser = this._find_or_create_member_for_self(ids[0]);
+                const memberOfCurrentUser = this._find_or_create_member_for_self(
+                    ids[0]
+                );
                 if (memberOfCurrentUser) {
                     this.env["discuss.channel.member"]._set_last_seen_message(
                         [memberOfCurrentUser.id],
@@ -478,7 +512,9 @@ export class MailThread extends models.ServerModel {
             for (const partner_id of message.partner_ids) {
                 const [partner] = ResPartner.search_read([["id", "=", partner_id]]);
                 if (partner.user_ids.length > 0) {
-                    const [user] = ResUsers.search_read([["id", "=", partner.user_ids[0]]]);
+                    const [user] = ResUsers.search_read([
+                        ["id", "=", partner.user_ids[0]],
+                    ]);
                     if (user.notification_type === "inbox") {
                         notifications.push([
                             partner,
@@ -487,7 +523,10 @@ export class MailThread extends models.ServerModel {
                                 message_id: message.id,
                                 store_data: new mailDataHelpers.Store(
                                     MailMessage.browse(message.id),
-                                    makeKwArgs({ for_current_user: true, add_followers: true })
+                                    makeKwArgs({
+                                        for_current_user: true,
+                                        add_followers: true,
+                                    })
                                 ).get_result(),
                             },
                         ]);
@@ -524,7 +563,7 @@ export class MailThread extends models.ServerModel {
             );
         }
         for (const record of model) {
-            const { trackingValueIds, changedFieldNames } = tracking[record.id] || {};
+            const {trackingValueIds, changedFieldNames} = tracking[record.id] || {};
             if (!changedFieldNames || !changedFieldNames.length) {
                 continue;
             }
@@ -533,8 +572,16 @@ export class MailThread extends models.ServerModel {
             for (const fname in changedFieldNames) {
                 changedFieldsInitialValues[fname] = initialFieldValues[fname];
             }
-            const subtype = MailThread._track_subtype.call(this, changedFieldsInitialValues);
-            MailThread.message_post.call(this, [record.id], subtype.id, trackingValueIds);
+            const subtype = MailThread._track_subtype.call(
+                this,
+                changedFieldsInitialValues
+            );
+            MailThread.message_post.call(
+                this,
+                [record.id],
+                subtype.id,
+                trackingValueIds
+            );
         }
         return tracking;
     }
@@ -635,7 +682,7 @@ export class MailThread extends models.ServerModel {
             if (this.env[this._name]._fields.message_main_attachment_id) {
                 res["message_main_attachment_id"] = mailDataHelpers.Store.one(
                     IrAttachment.browse(thread.message_main_attachment_id),
-                    makeKwArgs({ only_id: true })
+                    makeKwArgs({only_id: true})
                 );
             }
         }
@@ -667,7 +714,7 @@ export class MailThread extends models.ServerModel {
                 this,
                 [thread.id],
                 store,
-                makeKwArgs({ reset: true })
+                makeKwArgs({reset: true})
             );
             res["recipientsCount"] = this.env["mail.followers"].search_count([
                 ["res_id", "=", thread.id],
@@ -679,21 +726,21 @@ export class MailThread extends models.ServerModel {
                 this,
                 [thread.id],
                 store,
-                makeKwArgs({ filter_recipients: true, reset: true })
+                makeKwArgs({filter_recipients: true, reset: true})
             );
         }
         if (fields.includes("modelName")) {
             res.modelName = this._description;
         }
         if (request_list.includes("suggestedRecipients")) {
-            res["suggestedRecipients"] = MailThread._message_get_suggested_recipients.call(this, [
-                thread.id,
-            ]);
+            res["suggestedRecipients"] =
+                MailThread._message_get_suggested_recipients.call(this, [thread.id]);
         }
         if (request_list.includes("scheduledMessages")) {
             res["scheduledMessages"] = mailDataHelpers.Store.many(
                 MailScheduledMessage.filter(
-                    (message) => message.model === this._name && message.res_id === thread.id
+                    (message) =>
+                        message.model === this._name && message.res_id === thread.id
                 )
             );
         }

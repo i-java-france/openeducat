@@ -1,11 +1,11 @@
-import { Plugin } from "@html_editor/plugin";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { ScrollButtonOption } from "./scroll_button_option";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { ClassAction } from "@html_builder/core/core_builder_action_plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { SCROLL_BUTTON } from "@website/builder/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {ScrollButtonOption} from "./scroll_button_option";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {ClassAction} from "@html_builder/core/core_builder_action_plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {SCROLL_BUTTON} from "@website/builder/option_sequence";
 
 class ScrollButtonOptionPlugin extends Plugin {
     static id = "scrollButtonOption";
@@ -82,15 +82,15 @@ export class AddScrollButtonAction extends BuilderAction {
         this.manager = scrollButtonManager;
     }
 
-    isApplied({ editingElement }) {
+    isApplied({editingElement}) {
         return this.manager.isButtonPresent(editingElement);
     }
 
-    apply({ editingElement }) {
+    apply({editingElement}) {
         this.manager.attachButton(editingElement);
     }
 
-    clean({ editingElement }) {
+    clean({editingElement}) {
         this.manager.removeButton(editingElement);
     }
 }
@@ -101,7 +101,7 @@ export class ScrollButtonSectionHeightClassAction extends ClassAction {
         this.manager = scrollButtonManager;
     }
 
-    apply({ editingElement, params: { mainParam } }) {
+    apply({editingElement, params: {mainParam}}) {
         super.apply(...arguments);
         if (mainParam) {
             editingElement.classList.replace("d-lg-block", "d-lg-flex");
@@ -109,7 +109,9 @@ export class ScrollButtonSectionHeightClassAction extends ClassAction {
             editingElement.classList.remove("d-lg-flex");
             const style = window.getComputedStyle(editingElement);
             const display = style.getPropertyValue("display");
-            editingElement.classList.add(display === "flex" ? "d-lg-flex" : "d-lg-block");
+            editingElement.classList.add(
+                display === "flex" ? "d-lg-flex" : "d-lg-block"
+            );
         }
     }
 
@@ -121,4 +123,6 @@ export class ScrollButtonSectionHeightClassAction extends ClassAction {
     }
 }
 
-registry.category("website-plugins").add(ScrollButtonOptionPlugin.id, ScrollButtonOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(ScrollButtonOptionPlugin.id, ScrollButtonOptionPlugin);

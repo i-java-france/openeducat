@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { PeerToPeer } from "@mail/discuss/call/common/peer_to_peer";
+import {registry} from "@web/core/registry";
+import {PeerToPeer} from "@mail/discuss/call/common/peer_to_peer";
 
 export const discussP2P = {
     dependencies: ["bus_service"],
@@ -14,7 +14,7 @@ export const discussP2P = {
         });
         services["bus_service"].subscribe(
             "discuss.channel.rtc.session/peer_notification",
-            ({ sender, notifications }) => {
+            ({sender, notifications}) => {
                 for (const content of notifications) {
                     p2p.handleNotification(sender, content);
                 }

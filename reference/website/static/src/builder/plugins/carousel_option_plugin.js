@@ -1,14 +1,17 @@
-import { Plugin } from "@html_editor/plugin";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { CarouselItemHeaderMiddleButtons } from "./carousel_item_header_buttons";
-import { renderToElement } from "@web/core/utils/render";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { withSequence } from "@html_editor/utils/resource";
-import { between } from "@html_builder/utils/option_sequence";
-import { WEBSITE_BACKGROUND_OPTIONS, BOX_BORDER_SHADOW } from "@website/builder/option_sequence";
-import { selectElements } from "@html_editor/utils/dom_traversal";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {Plugin} from "@html_editor/plugin";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {CarouselItemHeaderMiddleButtons} from "./carousel_item_header_buttons";
+import {renderToElement} from "@web/core/utils/render";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {withSequence} from "@html_editor/utils/resource";
+import {between} from "@html_builder/utils/option_sequence";
+import {
+    WEBSITE_BACKGROUND_OPTIONS,
+    BOX_BORDER_SHADOW,
+} from "@website/builder/option_sequence";
+import {selectElements} from "@html_editor/utils/dom_traversal";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 /**
  * @typedef { Object } CarouselOptionShared
@@ -17,7 +20,10 @@ import { BaseOptionComponent } from "@html_builder/core/utils";
  * @property { CarouselOptionPlugin['slideCarousel'] } slideCarousel
  */
 
-export const CAROUSEL_CARDS_SEQUENCE = between(WEBSITE_BACKGROUND_OPTIONS, BOX_BORDER_SHADOW);
+export const CAROUSEL_CARDS_SEQUENCE = between(
+    WEBSITE_BACKGROUND_OPTIONS,
+    BOX_BORDER_SHADOW
+);
 
 const carouselWrapperSelector =
     ".s_carousel_wrapper, .s_carousel_intro_wrapper, .s_carousel_cards_wrapper, .s_quotes_carousel_wrapper";
@@ -76,7 +82,8 @@ export class CarouselOptionPlugin extends Plugin {
         },
         container_title: {
             selector: carouselItemOptionSelector,
-            getTitleExtraInfo: (editingElement) => this.getTitleExtraInfo(editingElement),
+            getTitleExtraInfo: (editingElement) =>
+                this.getTitleExtraInfo(editingElement),
         },
         builder_actions: {
             AddSlideAction,
@@ -102,13 +109,15 @@ export class CarouselOptionPlugin extends Plugin {
                 itemEl.classList.remove("next", "prev", "left", "right");
                 itemEl.classList.toggle("active", i === 0);
             });
-            carouselEl.querySelectorAll(".carousel-indicators > *").forEach((indicatorEl, i) => {
-                indicatorEl.classList.toggle("active", i === 0);
-                indicatorEl.removeAttribute("aria-current");
-                if (i === 0) {
-                    indicatorEl.setAttribute("aria-current", "true");
-                }
-            });
+            carouselEl
+                .querySelectorAll(".carousel-indicators > *")
+                .forEach((indicatorEl, i) => {
+                    indicatorEl.classList.toggle("active", i === 0);
+                    indicatorEl.removeAttribute("aria-current");
+                    if (i === 0) {
+                        indicatorEl.setAttribute("aria-current", "true");
+                    }
+                });
         }
     }
 
@@ -171,7 +180,9 @@ export class CarouselOptionPlugin extends Plugin {
             activeIndicatorEl.remove();
 
             // Hide the controllers if there is only one slide left.
-            const controlEls = editingElement.querySelectorAll(carouselControlsSelector);
+            const controlEls = editingElement.querySelectorAll(
+                carouselControlsSelector
+            );
             controlEls.forEach((controlEl) =>
                 controlEl.classList.toggle("d-none", newLength === 1)
             );
@@ -211,13 +222,17 @@ export class CarouselOptionPlugin extends Plugin {
                     // bootstrap since it emulates the transitionEnd with a
                     // setTimeout. We wait here an extra 20% of the time before
                     // retargeting edition, which should be enough...
-                    const slideDuration = window.performance.now() - this.slideTimestamp;
+                    const slideDuration =
+                        window.performance.now() - this.slideTimestamp;
                     setTimeout(() => {
                         // Setting the active indicator manually, as Bootstrap
                         // could not do it because the `data-bs-slide-to`
                         // attribute is not here in edit mode anymore.
-                        const itemEls = editingElement.querySelectorAll(".carousel-item");
-                        const activeItemEl = editingElement.querySelector(".carousel-item.active");
+                        const itemEls =
+                            editingElement.querySelectorAll(".carousel-item");
+                        const activeItemEl = editingElement.querySelector(
+                            ".carousel-item.active"
+                        );
                         const activeIndex = [...itemEls].indexOf(activeItemEl);
                         const indicatorEls = editingElement.querySelectorAll(
                             ".carousel-indicators > *"
@@ -232,14 +247,17 @@ export class CarouselOptionPlugin extends Plugin {
                         resolve();
                     }, 0.2 * slideDuration);
                 },
-                { once: true }
+                {once: true}
             );
 
-            const carouselInstance = window.Carousel.getOrCreateInstance(editingElement, {
-                ride: false,
-                pause: true,
-                keyboard: false,
-            });
+            const carouselInstance = window.Carousel.getOrCreateInstance(
+                editingElement,
+                {
+                    ride: false,
+                    pause: true,
+                    keyboard: false,
+                }
+            );
             if (typeof direction === "number") {
                 carouselInstance.to(direction);
             } else {
@@ -248,13 +266,13 @@ export class CarouselOptionPlugin extends Plugin {
         });
     }
 
-    onCloned({ cloneEl }) {
+    onCloned({cloneEl}) {
         if (cloneEl.matches(carouselWrapperSelector)) {
             this.assignUniqueID(cloneEl);
         }
     }
 
-    onSnippetDropped({ snippetEl }) {
+    onSnippetDropped({snippetEl}) {
         if (snippetEl.matches(carouselWrapperSelector)) {
             this.assignUniqueID(snippetEl);
         }
@@ -272,13 +290,15 @@ export class CarouselOptionPlugin extends Plugin {
         editingElement.querySelectorAll("[data-bs-target]").forEach((el) => {
             el.setAttribute("data-bs-target", "#" + id);
         });
-        editingElement.querySelectorAll("[data-bs-slide], [data-bs-slide-to]").forEach((el) => {
-            if (el.hasAttribute("data-bs-target")) {
-                el.setAttribute("data-bs-target", "#" + id);
-            } else if (el.hasAttribute("href")) {
-                el.setAttribute("href", "#" + id);
-            }
-        });
+        editingElement
+            .querySelectorAll("[data-bs-slide], [data-bs-slide-to]")
+            .forEach((el) => {
+                if (el.hasAttribute("data-bs-target")) {
+                    el.setAttribute("data-bs-target", "#" + id);
+                } else if (el.hasAttribute("href")) {
+                    el.setAttribute("href", "#" + id);
+                }
+            });
     }
 
     /**
@@ -348,7 +368,7 @@ export class AddSlideAction extends BuilderAction {
     setup() {
         this.preview = false;
     }
-    async apply({ editingElement }) {
+    async apply({editingElement}) {
         return this.dependencies.carouselOption.addSlide(editingElement);
     }
 }
@@ -359,37 +379,42 @@ export class SlideCarouselAction extends BuilderAction {
         this.preview = false;
         this.withLoadingEffect = false;
     }
-    async apply({ editingElement, params: { direction } }) {
+    async apply({editingElement, params: {direction}}) {
         await this.dependencies.carouselOption.slideCarousel(editingElement, direction);
     }
 }
 
 export class ToggleControllersAction extends BuilderAction {
     static id = "toggleControllers";
-    apply({ editingElement }) {
+    apply({editingElement}) {
         const carouselEl = editingElement.closest(".carousel");
         const indicatorsEl = carouselEl.querySelector(".carousel-indicators");
         const areControllersHidden =
             carouselEl.classList.contains("s_carousel_arrows_hidden") &&
             indicatorsEl.classList.contains("s_carousel_indicators_hidden");
-        carouselEl.classList.toggle("s_carousel_controllers_hidden", areControllersHidden);
+        carouselEl.classList.toggle(
+            "s_carousel_controllers_hidden",
+            areControllersHidden
+        );
     }
 }
 export class ToggleCardImgAction extends BuilderAction {
     static id = "toggleCardImg";
-    apply({ editingElement }) {
+    apply({editingElement}) {
         const carouselEl = editingElement.closest(".carousel");
         const cardEls = carouselEl.querySelectorAll(".card");
         for (const cardEl of cardEls) {
-            const imageWrapperEl = renderToElement("website.s_carousel_cards.imageWrapper");
+            const imageWrapperEl = renderToElement(
+                "website.s_carousel_cards.imageWrapper"
+            );
             cardEl.insertAdjacentElement("afterbegin", imageWrapperEl);
         }
     }
-    clean({ editingElement: el }) {
+    clean({editingElement: el}) {
         const carouselEl = el.closest(".carousel");
         carouselEl.querySelectorAll("figure").forEach((el) => el.remove());
     }
-    isApplied({ editingElement }) {
+    isApplied({editingElement}) {
         const carouselEl = editingElement.closest(".carousel");
         const cardImgEl = carouselEl.querySelector(".o_card_img_wrapper");
         return !!cardImgEl;

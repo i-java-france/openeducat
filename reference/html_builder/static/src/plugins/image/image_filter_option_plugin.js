@@ -1,9 +1,9 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { normalizeColor } from "@html_builder/utils/utils_css";
-import { defaultImageFilterOptions } from "@html_editor/main/media/image_post_process_plugin";
-import { Plugin } from "@html_editor/plugin";
-import { getHtmlStyle } from "@html_editor/utils/formatting";
-import { registry } from "@web/core/registry";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {normalizeColor} from "@html_builder/utils/utils_css";
+import {defaultImageFilterOptions} from "@html_editor/main/media/image_post_process_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {getHtmlStyle} from "@html_editor/utils/formatting";
+import {registry} from "@web/core/registry";
 
 class ImageFilterOptionPlugin extends Plugin {
     static id = "ImageFilterOption";
@@ -19,14 +19,14 @@ class ImageFilterOptionPlugin extends Plugin {
 export class GlFilterAction extends BuilderAction {
     static id = "glFilter";
     static dependencies = ["imagePostProcess"];
-    isApplied({ editingElement, params: { mainParam: glFilterName } }) {
+    isApplied({editingElement, params: {mainParam: glFilterName}}) {
         if (glFilterName) {
             return editingElement.dataset.glFilter === glFilterName;
         } else {
             return !editingElement.dataset.glFilter;
         }
     }
-    async load({ editingElement: img, params: { mainParam: glFilterName } }) {
+    async load({editingElement: img, params: {mainParam: glFilterName}}) {
         return await this.dependencies.imagePostProcess.processImage({
             img,
             newDataset: {
@@ -34,25 +34,31 @@ export class GlFilterAction extends BuilderAction {
             },
         });
     }
-    apply({ loadResult: updateImageAttributes }) {
+    apply({loadResult: updateImageAttributes}) {
         updateImageAttributes();
     }
 }
 export class SetCustomFilterAction extends BuilderAction {
     static id = "setCustomFilter";
     static dependencies = ["imagePostProcess"];
-    getValue({ editingElement, params: { mainParam: filterProperty } }) {
+    getValue({editingElement, params: {mainParam: filterProperty}}) {
         const filterOptions = JSON.parse(editingElement.dataset.filterOptions || "{}");
-        return filterOptions[filterProperty] || defaultImageFilterOptions[filterProperty];
+        return (
+            filterOptions[filterProperty] || defaultImageFilterOptions[filterProperty]
+        );
     }
-    isApplied({ editingElement, params: { mainParam: filterProperty }, value: filterValue }) {
+    isApplied({
+        editingElement,
+        params: {mainParam: filterProperty},
+        value: filterValue,
+    }) {
         const filterOptions = JSON.parse(editingElement.dataset.filterOptions || "{}");
         return (
             filterValue ===
             (filterOptions[filterProperty] || defaultImageFilterOptions[filterProperty])
         );
     }
-    async load({ editingElement: img, params: { mainParam: filterProperty }, value }) {
+    async load({editingElement: img, params: {mainParam: filterProperty}, value}) {
         const filterOptions = JSON.parse(img.dataset.filterOptions || "{}");
         filterOptions[filterProperty] =
             filterProperty === "filterColor"
@@ -65,9 +71,11 @@ export class SetCustomFilterAction extends BuilderAction {
             },
         });
     }
-    apply({ loadResult: updateImageAttributes }) {
+    apply({loadResult: updateImageAttributes}) {
         updateImageAttributes();
     }
 }
 
-registry.category("builder-plugins").add(ImageFilterOptionPlugin.id, ImageFilterOptionPlugin);
+registry
+    .category("builder-plugins")
+    .add(ImageFilterOptionPlugin.id, ImageFilterOptionPlugin);

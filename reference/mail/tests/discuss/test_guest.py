@@ -1,6 +1,7 @@
 from odoo import fields
-from odoo.addons.mail.tests.common import MailCase
 from odoo.tests.common import tagged
+
+from odoo.addons.mail.tests.common import MailCase
 
 
 @tagged("post_install", "-at_install")

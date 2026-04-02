@@ -1,21 +1,21 @@
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 import {
     StateSelectionField,
     stateSelectionField,
 } from "@web/views/fields/state_selection/state_selection_field";
-import { useCommand } from "@web/core/commands/command_hook";
-import { formatSelection } from "@web/views/fields/formatters";
+import {useCommand} from "@web/core/commands/command_hook";
+import {formatSelection} from "@web/views/fields/formatters";
 
-import { registry } from "@web/core/registry";
-import { useState } from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {useState} from "@odoo/owl";
 
 export class ProjectTaskStateSelection extends StateSelectionField {
     static template = "project.ProjectTaskStateSelection";
 
     static props = {
         ...stateSelectionField.component.props,
-        isToggleMode: { type: Boolean, optional: true },
-        viewType: { type: String },
+        isToggleMode: {type: Boolean, optional: true},
+        viewType: {type: String},
     };
 
     setup() {
@@ -46,7 +46,7 @@ export class ProjectTaskStateSelection extends StateSelectionField {
             "1_canceled": "btn-outline-danger",
             "04_waiting_normal": "btn-outline-info",
         };
-        if (this.props.viewType != 'form') {
+        if (this.props.viewType != "form") {
             super.setup();
         } else {
             const commandName = _t("Set state as...");
@@ -58,7 +58,7 @@ export class ProjectTaskStateSelection extends StateSelectionField {
                         providers: [
                             {
                                 provide: () =>
-                                    this.options.map(subarr => ({
+                                    this.options.map((subarr) => ({
                                         name: subarr[1],
                                         action: () => {
                                             this.updateRecord(subarr[0]);
@@ -93,7 +93,9 @@ export class ProjectTaskStateSelection extends StateSelectionField {
     }
 
     get label() {
-        const waitOption = super.options.findLast(([state, _]) => state === "04_waiting_normal");
+        const waitOption = super.options.findLast(
+            ([state, _]) => state === "04_waiting_normal"
+        );
         const fullSelection = [...this.options, waitOption];
         return formatSelection(this.currentValue, {
             selection: fullSelection,
@@ -130,17 +132,23 @@ export class ProjectTaskStateSelection extends StateSelectionField {
     }
 
     getDropdownPosition() {
-        if (this.isView(['activity', 'kanban', 'list', 'calendar']) || this.env.isSmall) {
-            return '';
+        if (
+            this.isView(["activity", "kanban", "list", "calendar"]) ||
+            this.env.isSmall
+        ) {
+            return "";
         }
-        return 'bottom-end';
+        return "bottom-end";
     }
 
     getTogglerClass(currentValue) {
-        if (this.isView(['activity', 'kanban', 'list', 'calendar']) || this.env.isSmall) {
-            return 'btn btn-link d-flex p-0';
+        if (
+            this.isView(["activity", "kanban", "list", "calendar"]) ||
+            this.env.isSmall
+        ) {
+            return "btn btn-link d-flex p-0";
         }
-        return 'o_state_button btn rounded-pill ' + this.colorButton[currentValue];
+        return "o_state_button btn rounded-pill " + this.colorButton[currentValue];
     }
 
     async updateRecord(value) {
@@ -171,20 +179,23 @@ export class ProjectTaskStateSelection extends StateSelectionField {
 export const projectTaskStateSelection = {
     ...stateSelectionField,
     component: ProjectTaskStateSelection,
-    fieldDependencies: [{ name: "project_id", type: "many2one" }],
+    fieldDependencies: [{name: "project_id", type: "many2one"}],
     supportedOptions: [
-        ...stateSelectionField.supportedOptions, {
+        ...stateSelectionField.supportedOptions,
+        {
             label: _t("Is toggle mode"),
             name: "is_toggle_mode",
-            type: "boolean"
-        }
+            type: "boolean",
+        },
     ],
-    extractProps({ options, viewType }) {
+    extractProps({options, viewType}) {
         const props = stateSelectionField.extractProps(...arguments);
         props.isToggleMode = Boolean(options.is_toggle_mode);
         props.viewType = viewType;
         return props;
     },
-}
+};
 
-registry.category("fields").add("project_task_state_selection", projectTaskStateSelection);
+registry
+    .category("fields")
+    .add("project_task_state_selection", projectTaskStateSelection);

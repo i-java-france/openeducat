@@ -1,4 +1,4 @@
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
 export const stepUtils = {
     _getHelpMessage(functionName, ...args) {
@@ -22,12 +22,12 @@ export const stepUtils = {
             },
             {
                 trigger,
-                async run({ queryFirst }) {
+                async run({queryFirst}) {
                     const input = queryFirst(trigger);
                     input.focus();
                     input.value = value;
-                    input.dispatchEvent(new Event("input", { bubbles: true }));
-                    input.dispatchEvent(new Event("change", { bubbles: true }));
+                    input.dispatchEvent(new Event("input", {bubbles: true}));
+                    input.dispatchEvent(new Event("change", {bubbles: true}));
                 },
             },
         ];
@@ -69,7 +69,7 @@ export const stepUtils = {
             isActive,
             content: `autoExpandMoreButtons`,
             trigger: ".o-form-buttonbox",
-            async run({ queryFirst, click }) {
+            async run({queryFirst, click}) {
                 const more = queryFirst(".o-form-buttonbox .o_button_more");
                 if (more) {
                     await click(more);
@@ -96,7 +96,10 @@ export const stepUtils = {
                 run: "click",
             },
         ].map((step) =>
-            this.addDebugHelp(this._getHelpMessage("goToApp", dataMenuXmlid, description), step)
+            this.addDebugHelp(
+                this._getHelpMessage("goToApp", dataMenuXmlid, description),
+                step
+            )
         );
     },
 
@@ -112,11 +115,13 @@ export const stepUtils = {
             {
                 isActive: ["auto", "mobile"],
                 trigger: ".o_statusbar_buttons",
-                async run({ queryFirst, click }) {
+                async run({queryFirst, click}) {
                     const buttonOutSideDropdownMenu = queryFirst(
                         `.o_statusbar_buttons button:enabled:contains('${innerTextButton}')`
                     );
-                    const node = queryFirst(".o_statusbar_buttons button:has(.oi-ellipsis-v)");
+                    const node = queryFirst(
+                        ".o_statusbar_buttons button:has(.oi-ellipsis-v)"
+                    );
                     if (!buttonOutSideDropdownMenu && node) {
                         await click(node);
                     }
@@ -131,7 +136,11 @@ export const stepUtils = {
         );
         return steps.map((step) =>
             this.addDebugHelp(
-                this._getHelpMessage("statusbarButtonsSteps", innerTextButton, description),
+                this._getHelpMessage(
+                    "statusbarButtonsSteps",
+                    innerTextButton,
+                    description
+                ),
                 step
             )
         );
@@ -169,7 +178,11 @@ export const stepUtils = {
             },
         ].map((step) =>
             this.addDebugHelp(
-                this._getHelpMessage("mobileKanbanSearchMany2X", modalTitle, valueSearched),
+                this._getHelpMessage(
+                    "mobileKanbanSearchMany2X",
+                    modalTitle,
+                    valueSearched
+                ),
                 step
             )
         );

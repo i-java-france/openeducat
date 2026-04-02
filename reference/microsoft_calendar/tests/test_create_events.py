@@ -1,18 +1,25 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from unittest.mock import patch, call
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
+from unittest.mock import patch
+
 from freezegun import freeze_time
 
 from odoo import Command, fields
+from odoo.exceptions import UserError, ValidationError
+from odoo.tests.common import tagged
 
 from odoo.addons.mail.tests.common import mail_new_test_user
-from odoo.addons.microsoft_calendar.utils.microsoft_calendar import MicrosoftCalendarService
-from odoo.addons.microsoft_calendar.utils.microsoft_event import MicrosoftEvent
 from odoo.addons.microsoft_calendar.models.res_users import ResUsers
-from odoo.addons.microsoft_calendar.tests.common import TestCommon, mock_get_token, _modified_date_in_the_future
-from odoo.exceptions import ValidationError, UserError
-from odoo.tests.common import tagged
+from odoo.addons.microsoft_calendar.tests.common import (
+    TestCommon,
+    _modified_date_in_the_future,
+    mock_get_token,
+)
+from odoo.addons.microsoft_calendar.utils.microsoft_calendar import (
+    MicrosoftCalendarService,
+)
+from odoo.addons.microsoft_calendar.utils.microsoft_event import MicrosoftEvent
 
 
 @tagged('post_install', '-at_install')

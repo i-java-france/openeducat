@@ -1,4 +1,4 @@
-import { closestPath, findNode } from "./dom_traversal";
+import {closestPath, findNode} from "./dom_traversal";
 
 const blockTagNames = [
     "ADDRESS",

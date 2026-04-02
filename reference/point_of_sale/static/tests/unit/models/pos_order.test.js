@@ -1,6 +1,6 @@
-import { test, expect } from "@odoo/hoot";
-import { getFilledOrder, setupPosEnv } from "../utils";
-import { definePosModels } from "../data/generate_model_definitions";
+import {expect, test} from "@odoo/hoot";
+import {getFilledOrder, setupPosEnv} from "../utils";
+import {definePosModels} from "../data/generate_model_definitions";
 
 definePosModels();
 
@@ -56,7 +56,9 @@ test("updateLastOrderChange", async () => {
     order.setGeneralCustomerNote("Customer note");
     order.setInternalNote("Internal note");
     order.updateLastOrderChange();
-    expect(order.last_order_preparation_change.general_customer_note).toBe("Customer note");
+    expect(order.last_order_preparation_change.general_customer_note).toBe(
+        "Customer note"
+    );
     expect(order.last_order_preparation_change.internal_note).toBe("Internal note");
 });
 
@@ -95,7 +97,7 @@ test("getTotalDiscount", async () => {
     expect(taxTotals.total_amount).toBe(17.85);
     expect(taxTotals.tax_amount_currency).toBe(2.85);
 
-    //Compute total of discount on the order
+    // Compute total of discount on the order
     const line1 = order.lines[0];
     const line2 = order.lines[1];
     line1.setDiscount(20);
@@ -171,38 +173,38 @@ test("isCustomerRequired", async () => {
 
     expect(order.isCustomerRequired).toBe(false);
     {
-        // preset - name identification
+        // Preset - name identification
         const namePreset = posStore.models["pos.preset"].get(3);
         order.preset_id = namePreset;
         expect(order.isCustomerRequired).toBe(true);
-        // with floating order name
+        // With floating order name
         order.floating_order_name = "TEST-P";
         expect(order.isCustomerRequired).toBe(false);
         order.floating_order_name = "";
-        // with assigned partner
+        // With assigned partner
         order.partner_id = existingPartner;
         expect(order.isCustomerRequired).toBe(false);
         order.partner_id = false;
     }
     {
-        // preset - address identification
+        // Preset - address identification
         const addressPreset = posStore.models["pos.preset"].get(4);
         order.preset_id = addressPreset;
         expect(order.isCustomerRequired).toBe(true);
-        // with assigned partner
+        // With assigned partner
         order.partner_id = existingPartner;
         expect(order.isCustomerRequired).toBe(false);
         order.partner_id = false;
     }
     {
-        // order invoicing
+        // Order invoicing
         order.preset_id = false;
         order.to_invoice = true;
         expect(order.isCustomerRequired).toBe(true);
         order.to_invoice = false;
     }
     {
-        // split payment (customer account)
+        // Split payment (customer account)
         const customerAccountMethod = posStore.models["pos.payment.method"].get(3);
         order.addPaymentline(customerAccountMethod);
         expect(order.isCustomerRequired).toBe(true);
@@ -260,7 +262,8 @@ test("[get prices] check prices and taxes", async () => {
     expect(orderTaxesWDiscount.tax_amount).toBe(2.45);
 
     // Check first line with a price_unit of 3, 3 qty and 30% discount
-    const line1DataWDiscount = dataWDiscount.baseLineByLineUuids[order.lines[0].uuid].tax_details;
+    const line1DataWDiscount =
+        dataWDiscount.baseLineByLineUuids[order.lines[0].uuid].tax_details;
     expect(line1DataWDiscount.total_excluded).toBe(6.3);
     expect(line1DataWDiscount.total_included).toBe(7.25);
     expect(line1DataWDiscount.taxes_data[0].tax_amount).toBe(0.95);
@@ -277,7 +280,7 @@ test("showChange remains true when change line name is translated", async () => 
     const order = await getFilledOrder(store);
     const cashPaymentMethod = store.models["pos.payment.method"].get(1);
 
-    const { data: paymentLine } = order.addPaymentline(cashPaymentMethod);
+    const {data: paymentLine} = order.addPaymentline(cashPaymentMethod);
     const overpaidAmount = order.totalDue + 5;
     paymentLine.setAmount(overpaidAmount);
 
@@ -315,8 +318,8 @@ test("priceDoesntChangeWhenChangingPreset", async () => {
         {
             product_tmpl_id: template,
             payload: [
-                [{ combo_item_id: comboProduct1, qty: 2 }],
-                [{ combo_item_id: comboProduct2, qty: 2 }],
+                [{combo_item_id: comboProduct1, qty: 2}],
+                [{combo_item_id: comboProduct2, qty: 2}],
             ],
             qty: 1,
         },
@@ -332,7 +335,7 @@ test("priceDoesntChangeWhenChangingPreset", async () => {
     await store.addLineToOrder(
         {
             product_tmpl_id: template,
-            payload: [[{ combo_item_id: comboProduct1, qty: 2 }]],
+            payload: [[{combo_item_id: comboProduct1, qty: 2}]],
             qty: 1,
         },
         order2
@@ -348,8 +351,8 @@ test("priceDoesntChangeWhenChangingPreset", async () => {
         {
             product_tmpl_id: template,
             payload: [
-                [{ combo_item_id: comboProduct1, qty: 2 }],
-                [{ combo_item_id: comboProductExtra, qty: 2 }],
+                [{combo_item_id: comboProduct1, qty: 2}],
+                [{combo_item_id: comboProductExtra, qty: 2}],
             ],
             qty: 1,
         },
@@ -366,8 +369,8 @@ test("priceDoesntChangeWhenChangingPreset", async () => {
         {
             product_tmpl_id: template,
             payload: [
-                [{ combo_item_id: comboProduct1, qty: 2 }],
-                [{ combo_item_id: comboProduct1, qty: 2 }],
+                [{combo_item_id: comboProduct1, qty: 2}],
+                [{combo_item_id: comboProduct1, qty: 2}],
             ],
             qty: 1,
         },

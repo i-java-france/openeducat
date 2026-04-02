@@ -1,8 +1,8 @@
-import { addBuilderOption, setupHTMLBuilder } from "@html_builder/../tests/helpers";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { expect, test, describe } from "@odoo/hoot";
-import { xml } from "@odoo/owl";
-import { contains } from "@web/../tests/web_test_helpers";
+import {addBuilderOption, setupHTMLBuilder} from "@html_builder/../tests/helpers";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {describe, expect, test} from "@odoo/hoot";
+import {xml} from "@odoo/owl";
+import {contains} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 
@@ -13,7 +13,9 @@ test("Click on checkbox", async () => {
             static template = xml`<BuilderCheckbox classAction="'checkbox-action'"/>`;
         }
     );
-    const { getEditableContent } = await setupHTMLBuilder(`<p class="test-options-target">b</p>`);
+    const {getEditableContent} = await setupHTMLBuilder(
+        `<p class="test-options-target">b</p>`
+    );
     const editableContent = getEditableContent();
 
     await contains(":iframe .test-options-target").click();
@@ -23,7 +25,9 @@ test("Click on checkbox", async () => {
 
     await contains(".o-checkbox").click();
     expect(".o-checkbox .form-check-input:checked").toHaveCount(1);
-    expect(editableContent).toHaveInnerHTML(`<p class="test-options-target checkbox-action">b</p>`);
+    expect(editableContent).toHaveInnerHTML(
+        `<p class="test-options-target checkbox-action">b</p>`
+    );
 
     await contains(".o-checkbox").click();
     expect(".o-checkbox .form-check-input:checked").toHaveCount(0);
@@ -42,7 +46,7 @@ test("hide/display base on applyTo", async () => {
             static template = xml`<BuilderCheckbox classAction="'checkbox-action'" applyTo="'.my-custom-class'"/>`;
         }
     );
-    const { getEditableContent } = await setupHTMLBuilder(
+    const {getEditableContent} = await setupHTMLBuilder(
         `<div class="parent-target"><p class="child-target b">b</p></div>`
     );
     const editableContent = getEditableContent();

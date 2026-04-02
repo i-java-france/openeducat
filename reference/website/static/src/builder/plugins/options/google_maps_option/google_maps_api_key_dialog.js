@@ -1,7 +1,7 @@
-import { _t } from "@web/core/l10n/translation";
-import { Dialog } from "@web/core/dialog/dialog";
-import { useChildRef, useService } from "@web/core/utils/hooks";
-import { Component, useState, useRef } from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {Dialog} from "@web/core/dialog/dialog";
+import {useChildRef, useService} from "@web/core/utils/hooks";
+import {Component, useState, useRef} from "@odoo/owl";
 
 /**
  * @typedef {import('./google_map_option_plugin.js').ApiKeyValidation} ApiKeyValidation
@@ -9,7 +9,7 @@ import { Component, useState, useRef } from "@odoo/owl";
 
 export class GoogleMapsApiKeyDialog extends Component {
     static template = "website.GoogleMapsApiKeyDialog";
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
         originalApiKey: String,
         onSave: Function,
@@ -21,7 +21,7 @@ export class GoogleMapsApiKeyDialog extends Component {
         /** @type {{ apiKey?: string, apiKeyValidation: ApiKeyValidation }} */
         this.state = useState({
             apiKey: this.props.originalApiKey,
-            apiKeyValidation: { isValid: false },
+            apiKeyValidation: {isValid: false},
         });
         this.apiKeyInput = useRef("apiKeyInput");
         // @TODO mysterious-egg: the `google_map service` is a duplicate of the

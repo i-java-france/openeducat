@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 from odoo import Command
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
 @tagged('post_install', '-at_install')
@@ -157,7 +157,7 @@ class TaxReportTest(AccountTestInvoicingCommon):
         self.assertEqual(country_1_tags_after_change, country_1_tags_after_copy, "Modifying the country should not have changed the tags in the original country.")
         self.assertEqual(len(country_2_tags_after_change), len(country_2_tags_before_change) + len(copied_report_1.line_ids), "Modifying the country should have created a tag in the new country for each tax_tags expression of the report.")
 
-        for original, copy in zip(self.tax_report_1.line_ids, copied_report_1.line_ids):
+        for original, copy in zip(self.tax_report_1.line_ids, copied_report_1.line_ids, strict=False):
             original_tags = original.expression_ids._get_matching_tags()
             copy_tags = copy.expression_ids._get_matching_tags()
 

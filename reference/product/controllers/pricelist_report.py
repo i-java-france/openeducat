@@ -5,7 +5,7 @@ import io
 import json
 
 from odoo import _
-from odoo.http import Controller, request, route, content_disposition
+from odoo.http import Controller, content_disposition, request, route
 
 
 class ProductPricelistExportController(Controller):

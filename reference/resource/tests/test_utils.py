@@ -2,9 +2,10 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo.fields import Datetime, Domain
-from odoo.tests.common import TransactionCase
-from odoo.addons.resource.models import utils
 from odoo.tests import Form
+from odoo.tests.common import TransactionCase
+
+from odoo.addons.resource.models import utils
 
 
 class TestExpression(TransactionCase):

@@ -1,18 +1,18 @@
-import { Action, ACTION_TAGS } from "@mail/core/common/action";
-import { ActionList } from "@mail/core/common/action_list";
+import {Action, ACTION_TAGS} from "@mail/core/common/action";
+import {ActionList} from "@mail/core/common/action_list";
 import {
     cameraOnAction,
     muteAction,
     quickActionSettings,
     quickVideoSettings,
 } from "@mail/discuss/call/common/call_actions";
-import { CallPermissionDialog } from "@mail/discuss/call/common/call_permission_dialog";
-import { closeStream, onChange } from "@mail/utils/common/misc";
+import {CallPermissionDialog} from "@mail/discuss/call/common/call_permission_dialog";
+import {closeStream, onChange} from "@mail/utils/common/misc";
 
-import { Component, onWillDestroy, status, useEffect, useRef, useState } from "@odoo/owl";
+import {Component, onWillDestroy, status, useEffect, useRef, useState} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
 
 /**
  * @typedef {Object} Props
@@ -24,14 +24,18 @@ import { useService } from "@web/core/utils/hooks";
 export class CallPreview extends Component {
     static template = "mail.CallPreview";
     static props = ["activateCamera?", "activateMicrophone?", "onSettingsChanged?"];
-    static components = { ActionList };
+    static components = {ActionList};
 
     setup() {
         this.dialog = useService("dialog");
         this.notification = useService("notification");
         this.rtc = useService("discuss.rtc");
         this.store = useService("mail.store");
-        this.state = useState({ audioStream: null, blurManager: null, videoStream: null });
+        this.state = useState({
+            audioStream: null,
+            blurManager: null,
+            videoStream: null,
+        });
         this.audioRef = useRef("audio");
         this.videoRef = useRef("video");
         useEffect(
@@ -84,13 +88,18 @@ export class CallPreview extends Component {
                     this.disableBlur();
                 }
             });
-            onChange(this.store.settings, ["edgeBlurAmount", "backgroundBlurAmount"], () => {
-                if (this.state.blurManager) {
-                    this.state.blurManager.edgeBlur = this.store.settings.edgeBlurAmount;
-                    this.state.blurManager.backgroundBlur =
-                        this.store.settings.backgroundBlurAmount;
+            onChange(
+                this.store.settings,
+                ["edgeBlurAmount", "backgroundBlurAmount"],
+                () => {
+                    if (this.state.blurManager) {
+                        this.state.blurManager.edgeBlur =
+                            this.store.settings.edgeBlurAmount;
+                        this.state.blurManager.backgroundBlur =
+                            this.store.settings.backgroundBlurAmount;
+                    }
                 }
-            });
+            );
             onWillDestroy(() => {
                 closeStream(this.state.audioStream);
                 closeStream(this.state.videoStream);
@@ -116,14 +125,17 @@ export class CallPreview extends Component {
 
     get hasRtcSupport() {
         return Boolean(
-            navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaStream
+            navigator.mediaDevices &&
+                navigator.mediaDevices.getUserMedia &&
+                window.MediaStream
         );
     }
 
     get actions() {
         const cameraOnActionUpdated = {
             ...cameraOnAction,
-            name: () => (this.state.videoStream ? _t("Stop camera") : _t("Turn camera on")),
+            name: () =>
+                this.state.videoStream ? _t("Stop camera") : _t("Turn camera on"),
             isActive: () => this.state.videoStream,
             onSelected: () => this.toggleCamera(),
             tags: (...args) => {
@@ -137,7 +149,7 @@ export class CallPreview extends Component {
         const muteActionUpdated = {
             ...muteAction,
             isActive: () => !this.state.audioStream,
-            name: ({ action }) => (action.isActive ? _t("Unmute") : _t("Mute")),
+            name: ({action}) => (action.isActive ? _t("Unmute") : _t("Mute")),
             onSelected: () => this.toggleMic(),
         };
         return [
@@ -175,7 +187,7 @@ export class CallPreview extends Component {
     async enableMicrophone() {
         if (
             this.rtc.microphonePermission !== "granted" &&
-            !(await this.rtc.askForBrowserPermission({ audio: true }))
+            !(await this.rtc.askForBrowserPermission({audio: true}))
         ) {
             return;
         }
@@ -189,7 +201,7 @@ export class CallPreview extends Component {
         if (this.audioRef.el) {
             this.audioRef.el.srcObject = this.state.audioStream;
         }
-        this.props.onSettingsChanged?.({ microphone: true });
+        this.props.onSettingsChanged?.({microphone: true});
     }
 
     disableMicrophone() {
@@ -198,7 +210,7 @@ export class CallPreview extends Component {
         if (this.audioRef.el) {
             this.audioRef.el.srcObject = null;
         }
-        this.props.onSettingsChanged?.({ microphone: false });
+        this.props.onSettingsChanged?.({microphone: false});
     }
 
     async toggleMic() {
@@ -220,7 +232,7 @@ export class CallPreview extends Component {
     async enableCamera() {
         if (
             this.rtc.cameraPermission !== "granted" &&
-            !(await this.rtc.askForBrowserPermission({ video: true }))
+            !(await this.rtc.askForBrowserPermission({video: true}))
         ) {
             return;
         }
@@ -237,7 +249,7 @@ export class CallPreview extends Component {
         if (this.videoRef.el) {
             this.videoRef.el.srcObject = this.state.videoStream;
         }
-        this.props.onSettingsChanged?.({ camera: true });
+        this.props.onSettingsChanged?.({camera: true});
         if (this.store.settings.useBlur) {
             await this.enableBlur();
         }
@@ -251,7 +263,7 @@ export class CallPreview extends Component {
         if (this.videoRef.el) {
             this.videoRef.el.srcObject = null;
         }
-        this.props.onSettingsChanged?.({ camera: false });
+        this.props.onSettingsChanged?.({camera: false});
     }
 
     async toggleCamera() {
@@ -276,10 +288,12 @@ export class CallPreview extends Component {
             return;
         }
         try {
-            this.state.blurManager = await this.rtc.applyBlurEffect(this.state.videoStream);
+            this.state.blurManager = await this.rtc.applyBlurEffect(
+                this.state.videoStream
+            );
             this.videoRef.el.srcObject = await this.state.blurManager.stream;
         } catch (_e) {
-            this.notification.add(_e.message, { type: "warning" });
+            this.notification.add(_e.message, {type: "warning"});
             this.disableBlur();
         }
     }

@@ -1,7 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, modules, _
-from odoo.tools import config
+from odoo import _, api, fields, models, modules
 
 
 class ResPartner(models.Model):

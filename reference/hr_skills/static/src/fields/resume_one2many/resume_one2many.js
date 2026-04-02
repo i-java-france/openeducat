@@ -1,11 +1,11 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { onMounted, onPatched, useRef } from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {onMounted, onPatched, useRef} from "@odoo/owl";
 
-import { formatDate } from "@web/core/l10n/dates";
+import {formatDate} from "@web/core/l10n/dates";
 
-import { SkillsX2ManyField, skillsX2ManyField } from "../skills_one2many/skills_one2many";
-import { CommonSkillsListRenderer } from "../../views/skills_list_renderer";
+import {SkillsX2ManyField, skillsX2ManyField} from "../skills_one2many/skills_one2many";
+import {CommonSkillsListRenderer} from "../../views/skills_list_renderer";
 
 export class ResumeListRenderer extends CommonSkillsListRenderer {
     static template = "hr_skills.ResumeListRenderer";
@@ -38,11 +38,11 @@ export class ResumeListRenderer extends CommonSkillsListRenderer {
         const resumeLines = this.linkRef.el;
 
         // Find all links within the resume description and set target to "_blank"
-        if (resumeLines){
-            const links = resumeLines.querySelectorAll('a');
+        if (resumeLines) {
+            const links = resumeLines.querySelectorAll("a");
 
-            links.forEach(link => {
-                link.setAttribute('target', '_blank'); // Set target="_blank" to open links in new tab
+            links.forEach((link) => {
+                link.setAttribute("target", "_blank"); // Set target="_blank" to open links in new tab
             });
         }
     }

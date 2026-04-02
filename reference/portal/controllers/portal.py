@@ -8,7 +8,13 @@ from werkzeug import urls
 from werkzeug.exceptions import Forbidden
 
 from odoo import SUPERUSER_ID, _, http
-from odoo.exceptions import AccessDenied, AccessError, MissingError, UserError, ValidationError
+from odoo.exceptions import (
+    AccessDenied,
+    AccessError,
+    MissingError,
+    UserError,
+    ValidationError,
+)
 from odoo.http import Controller, content_disposition, request, route
 from odoo.tools import clean_context, consteq, single_email_re, str2bool
 from odoo.tools.translate import LazyTranslate
@@ -939,7 +945,7 @@ class CustomerPortal(Controller):
         """
         try:
             attachment_sudo = self._document_check_access('ir.attachment', int(attachment_id), access_token=access_token)
-        except (AccessError, MissingError) as e:
+        except (AccessError, MissingError):
             raise UserError(_("The attachment does not exist or you do not have the rights to access it."))
 
         if attachment_sudo.res_model != 'mail.compose.message' or attachment_sudo.res_id != 0:

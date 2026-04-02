@@ -1,13 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import logging
 from datetime import datetime
 
-import logging
 import pytz
 
 from odoo import api, fields, models
 from odoo.fields import Domain
-from odoo.tools import partition, SQL
+from odoo.tools import SQL, partition
 
 _logger = logging.getLogger(__name__)
 

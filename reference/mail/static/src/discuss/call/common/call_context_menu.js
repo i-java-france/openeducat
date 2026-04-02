@@ -1,12 +1,12 @@
-import { Component, onMounted, onWillUnmount, useState } from "@odoo/owl";
+import {Component, onMounted, onWillUnmount, useState} from "@odoo/owl";
 
-import { browser } from "@web/core/browser/browser";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+import {browser} from "@web/core/browser/browser";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
 
-import { CONNECTION_TYPES } from "@mail/discuss/call/common/rtc_service";
+import {CONNECTION_TYPES} from "@mail/discuss/call/common/rtc_service";
 
-const PROTOCOLS_TEXT = { host: "HOST", srflx: "STUN", prflx: "STUN", relay: "TURN" };
+const PROTOCOLS_TEXT = {host: "HOST", srflx: "STUN", prflx: "STUN", relay: "TURN"};
 
 export class CallContextMenu extends Component {
     static props = ["rtcSession", "close?"];
@@ -31,7 +31,10 @@ export class CallContextMenu extends Component {
                 return;
             }
             this.updateStats();
-            this.updateStatsTimeout = browser.setInterval(() => this.updateStats(), 3000);
+            this.updateStatsTimeout = browser.setInterval(
+                () => this.updateStats(),
+                3000
+            );
         });
         onWillUnmount(() => browser.clearInterval(this.updateStatsTimeout));
     }
@@ -77,7 +80,7 @@ export class CallContextMenu extends Component {
     async updateStats() {
         if (this.rtc.localSession?.eq(this.props.rtcSession)) {
             if (this.rtc.sfuClient) {
-                const { uploadStats, downloadStats, ...producerStats } =
+                const {uploadStats, downloadStats, ...producerStats} =
                     await this.rtc.sfuClient.getStats();
                 if (!uploadStats || !downloadStats) {
                     return;
@@ -88,7 +91,8 @@ export class CallContextMenu extends Component {
                         case "candidate-pair":
                             if (value.state === "succeeded" && value.localCandidateId) {
                                 formattedUploadStats.localCandidateType =
-                                    uploadStats.get(value.localCandidateId)?.candidateType || "";
+                                    uploadStats.get(value.localCandidateId)
+                                        ?.candidateType || "";
                                 formattedUploadStats.availableOutgoingBitrate =
                                     value.availableOutgoingBitrate;
                             }
@@ -106,13 +110,15 @@ export class CallContextMenu extends Component {
                         case "candidate-pair":
                             if (value.state === "succeeded" && value.localCandidateId) {
                                 formattedDownloadStats.remoteCandidateType =
-                                    downloadStats.get(value.remoteCandidateId)?.candidateType || "";
+                                    downloadStats.get(value.remoteCandidateId)
+                                        ?.candidateType || "";
                             }
                             break;
                         case "transport":
                             formattedDownloadStats.dtlsState = value.dtlsState;
                             formattedDownloadStats.iceState = value.iceState;
-                            formattedDownloadStats.packetsReceived = value.packetsReceived;
+                            formattedDownloadStats.packetsReceived =
+                                value.packetsReceived;
                             break;
                     }
                 }

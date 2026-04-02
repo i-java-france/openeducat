@@ -1,8 +1,8 @@
-import { Component, useState, markup } from "@odoo/owl";
-import { DocRequest } from "@api_doc/components/doc_request";
-import { DocTable, TABLE_TYPES } from "@api_doc/components/doc_table";
-import { getParameterDefaultValue } from "@api_doc/utils/doc_model_utils";
-import { useDocUI } from "@api_doc/utils/doc_ui_store";
+import {Component, useState, markup} from "@odoo/owl";
+import {DocRequest} from "@api_doc/components/doc_request";
+import {DocTable, TABLE_TYPES} from "@api_doc/components/doc_table";
+import {getParameterDefaultValue} from "@api_doc/utils/doc_model_utils";
+import {useDocUI} from "@api_doc/utils/doc_ui_store";
 
 export class DocMethod extends Component {
     static template = "web.DocMethod";
@@ -17,17 +17,17 @@ export class DocMethod extends Component {
 
     setup() {
         this.ui = useDocUI();
-        this.state = useState({ open: true });
+        this.state = useState({open: true});
         this.parametersData = {
             headers: ["Name", "Type", "Default Value", "Description"],
             items: Object.entries(this.method.parameters).map(([name, options]) => [
-                { type: TABLE_TYPES.Code, value: name },
+                {type: TABLE_TYPES.Code, value: name},
                 {
                     type: TABLE_TYPES.Code,
                     value: "annotation" in options ? options.annotation : "-",
                 },
-                { type: TABLE_TYPES.Code, value: this.getDefaultValue(options) },
-                { type: TABLE_TYPES.Tooltip, value: markup(options.doc) || "" },
+                {type: TABLE_TYPES.Code, value: this.getDefaultValue(options)},
+                {type: TABLE_TYPES.Tooltip, value: markup(options.doc) || ""},
             ]),
         };
     }
@@ -50,7 +50,9 @@ export class DocMethod extends Component {
 
     getDefaultValue(param) {
         if ("default" in param) {
-            return typeof param.default === "string" ? `"${param.default}"` : param.default;
+            return typeof param.default === "string"
+                ? `"${param.default}"`
+                : param.default;
         } else {
             return "-";
         }

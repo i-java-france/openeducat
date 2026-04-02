@@ -1,8 +1,8 @@
-import { parseFloat as oParseFloat } from "@web/views/fields/parsers";
-import { barcodeService } from "@barcodes/barcode_service";
-import { registry } from "@web/core/registry";
-import { EventBus, onWillDestroy, useComponent } from "@odoo/owl";
-import { session } from "@web/session";
+import {parseFloat as oParseFloat} from "@web/views/fields/parsers";
+import {barcodeService} from "@barcodes/barcode_service";
+import {registry} from "@web/core/registry";
+import {EventBus, onWillDestroy, useComponent} from "@odoo/owl";
+import {session} from "@web/session";
 
 const INPUT_KEYS = new Set(
     ["Delete", "Backspace", "+1", "+2", "+5", "+10", "+20", "+50"].concat(
@@ -133,7 +133,7 @@ class NumberBuffer extends EventBus {
 
         this.bufferHolderStack.push({
             component: currentComponent,
-            state: config.state ? config.state : { buffer: "", toStartOver: false },
+            state: config.state ? config.state : {buffer: "", toStartOver: false},
             config,
         });
         this._setUp();
@@ -153,7 +153,7 @@ class NumberBuffer extends EventBus {
         if (!this._currentBufferHolder) {
             return;
         }
-        const { component, state, config } = this._currentBufferHolder;
+        const {component, state, config} = this._currentBufferHolder;
         this.component = component;
         this.state = state;
         this.config = config;
@@ -166,7 +166,9 @@ class NumberBuffer extends EventBus {
         const overlays = Object.values(this.overlay.overlays);
         if (
             overlays.length &&
-            !overlays.some((overlay) => overlay.props.subComponent?.name === "NumberPopup")
+            !overlays.some(
+                (overlay) => overlay.props.subComponent?.name === "NumberPopup"
+            )
         ) {
             return;
         }
@@ -181,13 +183,16 @@ class NumberBuffer extends EventBus {
                 key: key,
             },
         });
-        Object.defineProperty(event, "target", { value: {} });
+        Object.defineProperty(event, "target", {value: {}});
 
         return this._bufferEvents(this._onInput((event) => event.detail.key))(event);
     }
     _bufferEvents(handler) {
         return (event) => {
-            if (["INPUT", "TEXTAREA"].includes(event.target.tagName) || !this.eventsBuffer) {
+            if (
+                ["INPUT", "TEXTAREA"].includes(event.target.tagName) ||
+                !this.eventsBuffer
+            ) {
                 return;
             }
             // Ignore any input if combined with Ctrl, Cmd, or Alt
@@ -285,18 +290,25 @@ class NumberBuffer extends EventBus {
             if (isEmpty(buffer)) {
                 this.state.buffer = null;
             } else {
-                const nCharToRemove = buffer[buffer.length - 1] === this.decimalPoint ? 2 : 1;
+                const nCharToRemove =
+                    buffer[buffer.length - 1] === this.decimalPoint ? 2 : 1;
                 this.state.buffer = buffer.substring(0, buffer.length - nCharToRemove);
             }
         } else if (input === "+") {
             if (this.state.buffer[0] === "-") {
-                this.state.buffer = this.state.buffer.substring(1, this.state.buffer.length);
+                this.state.buffer = this.state.buffer.substring(
+                    1,
+                    this.state.buffer.length
+                );
             }
         } else if (input === "-") {
             if (isFirstInput) {
                 this.state.buffer = "-0";
             } else if (this.state.buffer[0] === "-") {
-                this.state.buffer = this.state.buffer.substring(1, this.state.buffer.length);
+                this.state.buffer = this.state.buffer.substring(
+                    1,
+                    this.state.buffer.length
+                );
             } else {
                 this.state.buffer = "-" + this.state.buffer;
             }

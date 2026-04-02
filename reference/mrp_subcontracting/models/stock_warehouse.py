@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.fields import Command
 
 
@@ -64,7 +63,7 @@ class StockWarehouse(models.Model):
             self.route_ids = [Command.link(route_id.id)]
 
     def _get_routes_values(self):
-        routes = super(StockWarehouse, self)._get_routes_values()
+        routes = super()._get_routes_values()
         routes.update({
             'subcontracting_route_id': {
                 'routing_key': 'subcontract',
@@ -130,7 +129,7 @@ class StockWarehouse(models.Model):
         return rules
 
     def _get_picking_type_create_values(self, max_sequence):
-        data, next_sequence = super(StockWarehouse, self)._get_picking_type_create_values(max_sequence)
+        data, next_sequence = super()._get_picking_type_create_values(max_sequence)
         data.update({
             'subcontracting_type_id': {
                 'name': _('Subcontracting'),
@@ -155,7 +154,7 @@ class StockWarehouse(models.Model):
         return data, max_sequence + 4
 
     def _get_sequence_values(self, name=False, code=False):
-        values = super(StockWarehouse, self)._get_sequence_values(name=name, code=code)
+        values = super()._get_sequence_values(name=name, code=code)
         count = self.env['ir.sequence'].search_count([('prefix', '=like', self.code + '/SBC%/%')])
         values.update({
             'subcontracting_type_id': {
@@ -174,7 +173,7 @@ class StockWarehouse(models.Model):
         return values
 
     def _get_picking_type_update_values(self):
-        data = super(StockWarehouse, self)._get_picking_type_update_values()
+        data = super()._get_picking_type_update_values()
         subcontract_location_id = self._get_subcontracting_location()
         production_location_id = self._get_production_location()
         data.update({

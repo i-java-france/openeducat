@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="sale.ProductList">
-        <div t-att-class="this.props.areProductsOptional ? 'o_sale_optional_products m-n3 p-3 border-top' : ''">
+        <div
+            t-att-class="this.props.areProductsOptional ? 'o_sale_optional_products m-n3 p-3 border-top' : ''"
+        >
             <span
                 name="sale_product_configurator_list_title"
                 class="d-inline-block mb-3 h4"
@@ -18,8 +20,15 @@
                     </tr>
                 </thead>
                 <tbody class="border-top-0">
-                    <tr t-foreach="this.props.products" t-as="product" t-key="product.product_tmpl_id">
-                        <Product t-props="product" optional="this.props.areProductsOptional"/>
+                    <tr
+                        t-foreach="this.props.products"
+                        t-as="product"
+                        t-key="product.product_tmpl_id"
+                    >
+                        <Product
+                            t-props="product"
+                            optional="this.props.areProductsOptional"
+                        />
                     </tr>
                 </tbody>
             </table>

@@ -1,10 +1,10 @@
-import { browser } from "@web/core/browser/browser";
-import { rpcBus } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { useBus } from "@web/core/utils/hooks";
-import { Transition } from "@web/core/transition";
+import {browser} from "@web/core/browser/browser";
+import {rpcBus} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {useBus} from "@web/core/utils/hooks";
+import {Transition} from "@web/core/transition";
 
-import { Component, useState } from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 
 /**
  * Loading Indicator
@@ -18,7 +18,7 @@ import { Component, useState } from "@odoo/owl";
  */
 export class LoadingIndicator extends Component {
     static template = "web.LoadingIndicator";
-    static components = { Transition };
+    static components = {Transition};
     static props = {};
 
     setup() {
@@ -32,7 +32,7 @@ export class LoadingIndicator extends Component {
         useBus(rpcBus, "RPC:RESPONSE", this.responseCall);
     }
 
-    requestCall({ detail }) {
+    requestCall({detail}) {
         if (detail.settings.silent) {
             return;
         }
@@ -48,7 +48,7 @@ export class LoadingIndicator extends Component {
         this.state.count++;
     }
 
-    responseCall({ detail }) {
+    responseCall({detail}) {
         if (detail.settings.silent) {
             return;
         }

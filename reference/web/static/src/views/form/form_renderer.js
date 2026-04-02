@@ -1,19 +1,19 @@
-import { evaluateBooleanExpr } from "@web/core/py_js/py";
-import { Notebook } from "@web/core/notebook/notebook";
-import { Setting } from "./setting/setting";
-import { Field } from "@web/views/fields/field";
-import { browser } from "@web/core/browser/browser";
-import { hasTouch } from "@web/core/browser/feature_detection";
-import { useService } from "@web/core/utils/hooks";
-import { useDebounced, useThrottleForAnimation } from "@web/core/utils/timing";
-import { ButtonBox } from "@web/views/form/button_box/button_box";
-import { InnerGroup, OuterGroup } from "@web/views/form/form_group/form_group";
-import { ViewButton } from "@web/views/view_button/view_button";
-import { useViewCompiler } from "@web/views/view_compiler";
-import { Widget } from "@web/views/widgets/widget";
-import { FormCompiler } from "./form_compiler";
-import { FormLabel } from "./form_label";
-import { StatusBarButtons } from "./status_bar_buttons/status_bar_buttons";
+import {evaluateBooleanExpr} from "@web/core/py_js/py";
+import {Notebook} from "@web/core/notebook/notebook";
+import {Setting} from "./setting/setting";
+import {Field} from "@web/views/fields/field";
+import {browser} from "@web/core/browser/browser";
+import {hasTouch} from "@web/core/browser/feature_detection";
+import {useService} from "@web/core/utils/hooks";
+import {useDebounced, useThrottleForAnimation} from "@web/core/utils/timing";
+import {ButtonBox} from "@web/views/form/button_box/button_box";
+import {InnerGroup, OuterGroup} from "@web/views/form/form_group/form_group";
+import {ViewButton} from "@web/views/view_button/view_button";
+import {useViewCompiler} from "@web/views/view_compiler";
+import {Widget} from "@web/views/widgets/widget";
+import {FormCompiler} from "./form_compiler";
+import {FormLabel} from "./form_label";
+import {StatusBarButtons} from "./status_bar_buttons/status_bar_buttons";
 
 import {
     Component,
@@ -42,17 +42,17 @@ export class FormRenderer extends Component {
     };
     static props = {
         archInfo: Object,
-        Compiler: { type: Function, optional: true },
+        Compiler: {type: Function, optional: true},
         record: Object,
         // Template props : added by the FormCompiler
-        class: { type: String, optional: 1 },
-        translateAlert: { type: [Object, { value: null }], optional: true },
-        onNotebookPageChange: { type: Function, optional: true },
-        activeNotebookPages: { type: Object, optional: true },
-        readonly: { type: Boolean, optional: true },
-        saveRecord: { type: Function, optional: true },
-        setFieldAsDirty: { type: Function, optional: true },
-        slots: { type: Object, optional: true },
+        class: {type: String, optional: 1},
+        translateAlert: {type: [Object, {value: null}], optional: true},
+        onNotebookPageChange: {type: Function, optional: true},
+        activeNotebookPages: {type: Object, optional: true},
+        readonly: {type: Boolean, optional: true},
+        saveRecord: {type: Function, optional: true},
+        setFieldAsDirty: {type: Function, optional: true},
+        slots: {type: Object, optional: true},
     };
     static defaultProps = {
         activeNotebookPages: {},
@@ -61,18 +61,18 @@ export class FormRenderer extends Component {
 
     setup() {
         this.evaluateBooleanExpr = evaluateBooleanExpr;
-        const { archInfo, Compiler, record } = this.props;
-        const templates = { FormRenderer: archInfo.xmlDoc };
+        const {archInfo, Compiler, record} = this.props;
+        const templates = {FormRenderer: archInfo.xmlDoc};
         this.state = useState({}); // Used by Form Compiler
         this.templates = useViewCompiler(Compiler || FormCompiler, templates);
-        useSubEnv({ model: record.model });
+        useSubEnv({model: record.model});
         this.uiService = useService("ui");
         this.onResize = useDebounced(this.render, 200);
         this.onScrollThrottled = useThrottleForAnimation(this.onScroll);
         onMounted(() => browser.addEventListener("resize", this.onResize));
         onWillUnmount(() => browser.removeEventListener("resize", this.onResize));
 
-        const { autofocusFieldIds } = archInfo;
+        const {autofocusFieldIds} = archInfo;
         const rootRef = useRef("compiled_view_root");
         if (this.shouldAutoFocus) {
             useEffect(

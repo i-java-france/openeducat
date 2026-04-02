@@ -1,5 +1,5 @@
-import { useDomState } from "@html_builder/core/utils";
-import { onWillStart, useEnv } from "@odoo/owl";
+import {useDomState} from "@html_builder/core/utils";
+import {onWillStart, useEnv} from "@odoo/owl";
 
 export function useDynamicSnippetOption(modelNameFilter, contextualFilterDomain = []) {
     const env = useEnv();
@@ -48,24 +48,32 @@ export function useDynamicSnippetOption(modelNameFilter, contextualFilterDomain 
         const defaultTemplatePerModel = {};
         for (const modelName of uniqueModelName) {
             for (const template of fetchedDynamicFilterTemplates) {
-                if (dynamicSnippetUtils.isModelSnippetTemplate(template.key, modelName)) {
+                if (
+                    dynamicSnippetUtils.isModelSnippetTemplate(template.key, modelName)
+                ) {
                     defaultTemplatePerModel[modelName] = template;
                     break;
                 }
             }
         }
         for (const dynamicFilter of fetchedDynamicFilters) {
-            dynamicFilter.defaultTemplate = defaultTemplatePerModel[dynamicFilter.model_name];
+            dynamicFilter.defaultTemplate =
+                defaultTemplatePerModel[dynamicFilter.model_name];
         }
     }
     function getFilteredTemplates() {
         if (!Object.values(dynamicFilterTemplates).length) {
             return [];
         }
-        const snippetModel = domState.snippetModel || dynamicFilters[domState.filterId].model_name;
-        return Object.values(dynamicFilterTemplates).filter(({ key }) => {
-            const isModelTemplate = dynamicSnippetUtils.isModelSnippetTemplate(key, snippetModel);
-            const isSingleModeTemplate = dynamicSnippetUtils.isSingleModeSnippetTemplate(key);
+        const snippetModel =
+            domState.snippetModel || dynamicFilters[domState.filterId].model_name;
+        return Object.values(dynamicFilterTemplates).filter(({key}) => {
+            const isModelTemplate = dynamicSnippetUtils.isModelSnippetTemplate(
+                key,
+                snippetModel
+            );
+            const isSingleModeTemplate =
+                dynamicSnippetUtils.isSingleModeSnippetTemplate(key);
             return (
                 isModelTemplate &&
                 (domState.isSingleMode ? isSingleModeTemplate : !isSingleModeTemplate)

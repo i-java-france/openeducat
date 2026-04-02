@@ -1,23 +1,30 @@
-import { Dialog } from "@web/core/dialog/dialog";
-import { Notebook } from "@web/core/notebook/notebook";
-import { formatDateTime } from "@web/core/l10n/dates";
-import { useService } from "@web/core/utils/hooks";
-import { memoize } from "@web/core/utils/functions";
-import { Component, onMounted, useState, markup, onWillStart, onWillDestroy } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { user } from "@web/core/user";
-import { HtmlViewer } from "@html_editor/components/html_viewer/html_viewer";
-import { READONLY_MAIN_EMBEDDINGS } from "@html_editor/others/embedded_components/embedding_sets";
-import { browser } from "@web/core/browser/browser";
-import { cookie } from "@web/core/browser/cookie";
-import { loadBundle } from "@web/core/assets";
-import { htmlReplaceAll } from "@web/core/utils/html";
+import {Dialog} from "@web/core/dialog/dialog";
+import {Notebook} from "@web/core/notebook/notebook";
+import {formatDateTime} from "@web/core/l10n/dates";
+import {useService} from "@web/core/utils/hooks";
+import {memoize} from "@web/core/utils/functions";
+import {
+    Component,
+    onMounted,
+    useState,
+    markup,
+    onWillStart,
+    onWillDestroy,
+} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {user} from "@web/core/user";
+import {HtmlViewer} from "@html_editor/components/html_viewer/html_viewer";
+import {READONLY_MAIN_EMBEDDINGS} from "@html_editor/others/embedded_components/embedding_sets";
+import {browser} from "@web/core/browser/browser";
+import {cookie} from "@web/core/browser/cookie";
+import {loadBundle} from "@web/core/assets";
+import {htmlReplaceAll} from "@web/core/utils/html";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class HistoryDialog extends Component {
     static template = "html_editor.HistoryDialog";
-    static components = { Dialog, HtmlViewer, Notebook };
+    static components = {Dialog, HtmlViewer, Notebook};
     static props = {
         recordId: Number,
         recordModel: String,
@@ -25,9 +32,9 @@ export class HistoryDialog extends Component {
         restoreRequested: Function,
         historyMetadata: Array,
         versionedFieldName: String,
-        title: { String, optional: true },
-        noContentHelper: { String, optional: true }, //Markup
-        embeddedComponents: { Array, optional: true },
+        title: {String, optional: true},
+        noContentHelper: {String, optional: true}, //Markup
+        embeddedComponents: {Array, optional: true},
     };
 
     DEFAULT_AVATAR = "/mail/static/src/img/smiley/avatar.jpg";
@@ -61,7 +68,7 @@ export class HistoryDialog extends Component {
             let revisionId = -1;
             const revisionData = [];
             for (const metadata of this.props.historyMetadata) {
-                revisionData.push({ ...metadata, revision_id: revisionId });
+                revisionData.push({...metadata, revision_id: revisionId});
                 revisionId = metadata["revision_id"];
             }
             // add the initial revision data based on the record creation date and user
@@ -91,9 +98,12 @@ export class HistoryDialog extends Component {
     }
 
     resize() {
-        const dialogContainer = document.querySelector(".html-history-dialog-container");
+        const dialogContainer = document.querySelector(
+            ".html-history-dialog-container"
+        );
         const computedStyle = getComputedStyle(dialogContainer);
-        this.state.cssMaxHeight = parseInt(computedStyle.height.replace("px", "")) - 160;
+        this.state.cssMaxHeight =
+            parseInt(computedStyle.height.replace("px", "")) - 160;
     }
 
     getConfig(value) {
@@ -120,7 +130,8 @@ export class HistoryDialog extends Component {
         this.state.revisionId = revisionId;
         this.state.revisionContent = await this.getRevisionContent(revisionId);
         this.state.revisionComparison = await this.getRevisionComparison(revisionId);
-        this.state.revisionComparisonSplit = await this.getRevisionComparisonSplit(revisionId);
+        this.state.revisionComparisonSplit =
+            await this.getRevisionComparisonSplit(revisionId);
         this.state.revisionLoading = false;
     }
 
@@ -150,7 +161,8 @@ export class HistoryDialog extends Component {
             );
             // Remove unnecessary linebreaks
             unifiedDiffString = unifiedDiffString.replace(/^\s*[\r\n]/gm, "");
-            const colorScheme = cookie.get("color_scheme") === "dark" ? "dark" : "light";
+            const colorScheme =
+                cookie.get("color_scheme") === "dark" ? "dark" : "light";
             // eslint-disable-next-line no-undef
             const diffHtml = Diff2Html.html(unifiedDiffString, {
                 drawFileList: false,
@@ -210,8 +222,8 @@ export class HistoryDialog extends Component {
         }
         const userTZ = user.tz || "local";
         return formatDateTime(
-            DateTime.fromISO(revision["create_date"], { zone: "utc" }).setZone(userTZ),
-            { showSeconds: false }
+            DateTime.fromISO(revision["create_date"], {zone: "utc"}).setZone(userTZ),
+            {showSeconds: false}
         );
     }
     getRevisionClasses(revision) {
@@ -219,7 +231,8 @@ export class HistoryDialog extends Component {
 
         if (
             this.state.revisionId !== -1 &&
-            (this.state.revisionId < revision.revision_id || revision.revision_id === -1)
+            (this.state.revisionId < revision.revision_id ||
+                revision.revision_id === -1)
         ) {
             classesStr += " targeted";
         } else if (this.state.revisionId === revision.revision_id) {
@@ -237,6 +250,8 @@ export class HistoryDialog extends Component {
 
     get currentRevision() {
         const id = this.state?.revisionId || this.state.revisionsData[0]["revision_id"];
-        return this.state.revisionsData.find((revision) => revision["revision_id"] === id);
+        return this.state.revisionsData.find(
+            (revision) => revision["revision_id"] === id
+        );
     }
 }

@@ -4,15 +4,15 @@ import {
     formatDate,
     formatDateTime,
 } from "@web/core/l10n/dates";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { getOperatorLabel } from "@web/core/tree_editor/tree_editor_operator_editor";
-import { unique, zip } from "@web/core/utils/arrays";
-import { condition, Expression, isTree, normalizeValue } from "./condition_tree";
-import { constructTreeFromDomain } from "./construct_tree_from_domain";
-import { disambiguate, getResModel, isId } from "./utils";
-import { introduceVirtualOperators } from "./virtual_operators";
-import { InRange } from "./tree_editor_components";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {getOperatorLabel} from "@web/core/tree_editor/tree_editor_operator_editor";
+import {unique, zip} from "@web/core/utils/arrays";
+import {condition, Expression, isTree, normalizeValue} from "./condition_tree";
+import {constructTreeFromDomain} from "./construct_tree_from_domain";
+import {disambiguate, getResModel, isId} from "./utils";
+import {introduceVirtualOperators} from "./virtual_operators";
+import {InRange} from "./tree_editor_components";
 
 /**
  * @param {import("@web/core/tree_editor/condition_tree").Value} val
@@ -79,7 +79,7 @@ function simplifyTree(tree) {
     }
     const processedChildren = tree.children.map(simplifyTree);
     if (tree.value === "&") {
-        return { ...tree, children: processedChildren };
+        return {...tree, children: processedChildren};
     }
     const children = [];
     const childrenByPath = {};
@@ -93,7 +93,7 @@ function simplifyTree(tree) {
             children.push(child);
         } else {
             if (!childrenByPath[child.path]) {
-                childrenByPath[child.path] = { elems: [], index };
+                childrenByPath[child.path] = {elems: [], index};
                 children.push(child); // will be replaced if necessary
             }
             childrenByPath[child.path].elems.push(child);
@@ -111,12 +111,16 @@ function simplifyTree(tree) {
                 value.push(...child.value);
             }
         }
-        children[childrenByPath[path].index] = condition(path, "in", normalizeValue(unique(value)));
+        children[childrenByPath[path].index] = condition(
+            path,
+            "in",
+            normalizeValue(unique(value))
+        );
     }
     if (children.length === 1) {
-        return { ...children[0] };
+        return {...children[0]};
     }
-    return { ...tree, children };
+    return {...tree, children};
 }
 
 function _extractIdsRecursive(tree, getFieldDef, idsByModel) {
@@ -162,7 +166,7 @@ export const treeProcessorService = {
         "makeGetFieldDef",
         "treeFromDomain",
     ],
-    start(_, { field: fieldService, name: nameService }) {
+    start(_, {field: fieldService, name: nameService}) {
         async function getDisplayNames(tree, getFieldDef) {
             const resIdsByModel = extractIdsFromTree(tree, getFieldDef);
             const proms = [];
@@ -180,14 +184,16 @@ export const treeProcessorService = {
             const pathDescriptions = new Map();
             for (const path of paths) {
                 promises.push(
-                    fieldService.loadPathDescription(resModel, path).then(({ displayNames }) => {
-                        pathDescriptions.set(
-                            path,
-                            `${displayNames.slice(0, limit).join(" \u2794 ")}${
-                                displayNames.length > limit ? "..." : ""
-                            }`
-                        );
-                    })
+                    fieldService
+                        .loadPathDescription(resModel, path)
+                        .then(({displayNames}) => {
+                            pathDescriptions.set(
+                                path,
+                                `${displayNames.slice(0, limit).join(" \u2794 ")}${
+                                    displayNames.length > limit ? "..." : ""
+                                }`
+                            );
+                        })
                 );
             }
             await Promise.all(promises);
@@ -218,7 +224,7 @@ export const treeProcessorService = {
             displayNames,
             limit = 5
         ) {
-            let { operator, negate, value, path } = node;
+            let {operator, negate, value, path} = node;
             if (operator === "in range" && value[1] === "custom range") {
                 operator = "between";
                 value = value.slice(2);
@@ -227,20 +233,25 @@ export const treeProcessorService = {
                 operator = operator === "=" ? "not set" : "set";
             }
             const fieldDef = getFieldDef(path);
-            const operatorLabel = getOperatorLabel(operator, fieldDef?.type, negate, (operator) => {
-                switch (operator) {
-                    case "=":
-                    case "in":
-                        return "=";
-                    case "!=":
-                    case "not in":
-                        return _t("not =");
-                    case "any":
-                        return ":";
-                    case "not any":
-                        return _t(": not");
+            const operatorLabel = getOperatorLabel(
+                operator,
+                fieldDef?.type,
+                negate,
+                (operator) => {
+                    switch (operator) {
+                        case "=":
+                        case "in":
+                            return "=";
+                        case "!=":
+                        case "not in":
+                            return _t("not =");
+                        case "any":
+                            return ":";
+                        case "not any":
+                            return _t(": not");
+                    }
                 }
-            });
+            );
 
             const pathDescription = getPathDescription(path);
             const description = {
@@ -290,7 +301,7 @@ export const treeProcessorService = {
                 default:
                     join = _t("or");
             }
-            description.valueDescription = { values, join, addParenthesis };
+            description.valueDescription = {values, join, addParenthesis};
             return description;
         }
 
@@ -325,13 +336,15 @@ export const treeProcessorService = {
                 limit,
                 pathLimit
             );
-            const { pathDescription, operatorDescription, valueDescription } =
+            const {pathDescription, operatorDescription, valueDescription} =
                 getConditionDescription(tree);
             const stringDescription = [pathDescription, operatorDescription];
             if (valueDescription) {
-                const { values, join, addParenthesis } = valueDescription;
+                const {values, join, addParenthesis} = valueDescription;
                 const jointedValues = values.join(` ${join} `);
-                stringDescription.push(addParenthesis ? `( ${jointedValues} )` : jointedValues);
+                stringDescription.push(
+                    addParenthesis ? `( ${jointedValues} )` : jointedValues
+                );
             } else if (isTree(tree.value)) {
                 const _fieldDef = getFieldDef(tree.path);
                 const _resModel = getResModel(_fieldDef);
@@ -353,20 +366,28 @@ export const treeProcessorService = {
                 }
                 connector = `${tabs}${connector}`;
                 const childrenTooltipLines = await Promise.all(
-                    tree.children.map((node) => getTooltipLines(resModel, node, depth + 1))
+                    tree.children.map((node) =>
+                        getTooltipLines(resModel, node, depth + 1)
+                    )
                 );
                 return [connector, ...childrenTooltipLines].flat();
             }
             const getFieldDef = await makeGetFieldDef(resModel, tree);
-            const getConditionDescription = await makeGetConditionDescription(resModel, tree, 20);
-            const { pathDescription, operatorDescription, valueDescription } =
+            const getConditionDescription = await makeGetConditionDescription(
+                resModel,
+                tree,
+                20
+            );
+            const {pathDescription, operatorDescription, valueDescription} =
                 getConditionDescription(tree);
             const descr = [];
             const stringDescriptions = [pathDescription, operatorDescription];
             if (valueDescription) {
-                const { values, join, addParenthesis } = valueDescription;
+                const {values, join, addParenthesis} = valueDescription;
                 const jointedValues = values.join(` ${join} `);
-                stringDescriptions.push(addParenthesis ? `( ${jointedValues} )` : jointedValues);
+                stringDescriptions.push(
+                    addParenthesis ? `( ${jointedValues} )` : jointedValues
+                );
             }
             descr.push(`${tabs}${stringDescriptions.join(" ")}`);
             if (isTree(tree.value)) {
@@ -390,7 +411,7 @@ export const treeProcessorService = {
             const fieldDefs = {};
             for (const path of paths) {
                 promises.push(
-                    fieldService.loadFieldInfo(resModel, path).then(({ fieldDef }) => {
+                    fieldService.loadFieldInfo(resModel, path).then(({fieldDef}) => {
                         fieldDefs[path] = fieldDef;
                     })
                 );
@@ -407,7 +428,7 @@ export const treeProcessorService = {
         async function treeFromDomain(resModel, domain, distributeNot = true) {
             const tree = constructTreeFromDomain(domain, distributeNot);
             const getFieldDef = await makeGetFieldDef(resModel, tree);
-            return introduceVirtualOperators(tree, { getFieldDef });
+            return introduceVirtualOperators(tree, {getFieldDef});
         }
 
         return {

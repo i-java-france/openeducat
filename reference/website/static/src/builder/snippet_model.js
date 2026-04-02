@@ -1,8 +1,8 @@
-import { SnippetModel } from "@html_builder/snippets/snippet_service";
-import { applyTextHighlight } from "@website/js/highlight_utils";
-import { registry } from "@web/core/registry";
-import { patch } from "@web/core/utils/patch";
-import { _t } from "@web/core/l10n/translation";
+import {SnippetModel} from "@html_builder/snippets/snippet_service";
+import {applyTextHighlight} from "@website/js/highlight_utils";
+import {registry} from "@web/core/registry";
+import {patch} from "@web/core/utils/patch";
+import {_t} from "@web/core/l10n/translation";
 
 patch(SnippetModel.prototype, {
     /**
@@ -40,7 +40,8 @@ patch(SnippetModel.prototype, {
             // that if a label is already set, we do not change it.
             if (
                 !label &&
-                (contentEl.matches(".parallax") || !!contentEl.querySelector(".parallax"))
+                (contentEl.matches(".parallax") ||
+                    !!contentEl.querySelector(".parallax"))
             ) {
                 label = parallaxLabel;
             }

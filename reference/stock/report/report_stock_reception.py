@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from collections import defaultdict, OrderedDict
+from collections import OrderedDict, defaultdict
 
 from odoo import _, api, models
-from odoo.tools import float_compare, float_is_zero, format_date
+from odoo.tools import format_date
 
 
 class ReportStockReport_Reception(models.AbstractModel):
@@ -220,7 +219,7 @@ class ReportStockReport_Reception(models.AbstractModel):
         # We do this first so we can create their split moves in batch
         out_to_new_out = OrderedDict()
         new_move_vals = []
-        for out, qty_to_link in zip(outs, qtys):
+        for out, qty_to_link in zip(outs, qtys, strict=False):
             if out.product_id.uom_id.compare(out.product_qty, qty_to_link) == 1:
                 new_move = out._split(out.product_qty - qty_to_link)
                 if new_move:
@@ -233,7 +232,7 @@ class ReportStockReport_Reception(models.AbstractModel):
         for i, k in enumerate(out_to_new_out.keys()):
             out_to_new_out[k] = new_outs[i]
 
-        for out, qty_to_link, ins in zip(outs, qtys, in_ids):
+        for out, qty_to_link, ins in zip(outs, qtys, in_ids, strict=False):
             potential_ins = self.env['stock.move'].browse(ins)
             if out.id in out_to_new_out:
                 new_out = out_to_new_out[out.id]

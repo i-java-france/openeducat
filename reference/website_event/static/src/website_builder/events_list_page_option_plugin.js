@@ -1,8 +1,8 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { DEFAULT } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {DEFAULT} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
 
 export class EventsListPageOption extends BaseOptionComponent {
     static template = "website_event.EventsListPageOption";
@@ -14,10 +14,10 @@ export class EventsListPageOption extends BaseOptionComponent {
 class EventsListPageOptionPlugin extends Plugin {
     static id = "eventsListPageOption";
     resources = {
-        builder_options: [
-            withSequence(DEFAULT, EventsListPageOption),
-        ],
+        builder_options: [withSequence(DEFAULT, EventsListPageOption)],
     };
 }
 
-registry.category("website-plugins").add(EventsListPageOptionPlugin.id, EventsListPageOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(EventsListPageOptionPlugin.id, EventsListPageOptionPlugin);

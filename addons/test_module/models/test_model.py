@@ -1,8 +1,9 @@
-from odoo import models, fields
+from odoo import fields, models
+
 
 class TestModel(models.Model):
-    _name = 'test.model'
-    _description = 'Test Model'
+    _name = "test.model"
+    _description = "Test Model"
 
-    name = fields.Char(string='Name', required=True)
-    description = fields.Text(string='Description')
+    name = fields.Char(required=True)
+    description = fields.Text()

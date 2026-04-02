@@ -1,22 +1,21 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from lxml import etree
 
-from odoo import fields, Command
-from odoo.addons.survey.tests import common
-from odoo.addons.mail.tests.common import MailCase
+from odoo import Command, fields
 from odoo.exceptions import UserError
 from odoo.tests import Form
 from odoo.tests.common import users
+
+from odoo.addons.mail.tests.common import MailCase
+from odoo.addons.survey.tests import common
 
 
 class TestSurveyInvite(common.TestSurveyCommon, MailCase):
 
     def setUp(self):
-        res = super(TestSurveyInvite, self).setUp()
+        res = super().setUp()
         # by default signup not allowed
         self.env["ir.config_parameter"].set_param('auth_signup.invitation_scope', 'b2b')
         view = self.env.ref('survey.survey_invite_view_form').sudo()

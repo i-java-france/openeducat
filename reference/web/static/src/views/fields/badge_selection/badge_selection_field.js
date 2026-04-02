@@ -1,15 +1,15 @@
-import { Component } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { getFieldDomain } from "@web/model/relational_model/utils";
-import { useSpecialData } from "@web/views/fields/relational_utils";
-import { standardFieldProps } from "../standard_field_props";
+import {Component} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {getFieldDomain} from "@web/model/relational_model/utils";
+import {useSpecialData} from "@web/views/fields/relational_utils";
+import {standardFieldProps} from "../standard_field_props";
 
 export class BadgeSelectionField extends Component {
     static template = "web.BadgeSelectionField";
     static props = {
         ...standardFieldProps,
-        domain: { type: [Array, Function], optional: true },
+        domain: {type: [Array, Function], optional: true},
         size: {
             type: String,
             optional: true,
@@ -23,7 +23,7 @@ export class BadgeSelectionField extends Component {
         if (this.type === "many2one") {
             this.specialData = useSpecialData((orm, props) => {
                 const domain = getFieldDomain(props.record, props.name, props.domain);
-                const { relation } = props.record.fields[props.name];
+                const {relation} = props.record.fields[props.name];
                 return orm.call(relation, "name_search", ["", domain]);
             });
         }
@@ -48,7 +48,9 @@ export class BadgeSelectionField extends Component {
                     : "";
             case "selection":
                 return this.props.record.data[this.props.name] !== false
-                    ? this.options.find((o) => o[0] === this.props.record.data[this.props.name])[1]
+                    ? this.options.find(
+                          (o) => o[0] === this.props.record.data[this.props.name]
+                      )[1]
                     : "";
             default:
                 return "";
@@ -70,22 +72,22 @@ export class BadgeSelectionField extends Component {
         switch (this.type) {
             case "many2one":
                 if (value === false) {
-                    this.props.record.update({ [this.props.name]: false });
+                    this.props.record.update({[this.props.name]: false});
                 } else {
                     const option = this.options.find((option) => option[0] === value);
                     this.props.record.update({
-                        [this.props.name]: { id: option[0], display_name: option[1] },
+                        [this.props.name]: {id: option[0], display_name: option[1]},
                     });
                 }
                 break;
             case "selection":
                 if (value === this.value) {
-                    const { required } = this.props.record.fields[this.props.name];
+                    const {required} = this.props.record.fields[this.props.name];
                     if (!required) {
-                        this.props.record.update({ [this.props.name]: false });
+                        this.props.record.update({[this.props.name]: false});
                     }
                 } else {
-                    this.props.record.update({ [this.props.name]: value });
+                    this.props.record.update({[this.props.name]: value});
                 }
                 break;
         }
@@ -102,9 +104,9 @@ export const badgeSelectionField = {
             name: "size",
             type: "selection",
             choices: [
-                { label: "Small", value: "sm" },
-                { label: "Medium", value: "md" },
-                { label: "Large", value: "lg" },
+                {label: "Small", value: "sm"},
+                {label: "Medium", value: "md"},
+                {label: "Large", value: "lg"},
             ],
             default: "md",
         },

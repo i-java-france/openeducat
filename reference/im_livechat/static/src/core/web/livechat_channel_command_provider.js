@@ -1,5 +1,5 @@
-import { Component } from "@odoo/owl";
-import { registry } from "@web/core/registry";
+import {Component} from "@odoo/owl";
+import {registry} from "@web/core/registry";
 
 class LivechatChannelCommand extends Component {
     static template = "im_livechat.LivechatChannelCommand";

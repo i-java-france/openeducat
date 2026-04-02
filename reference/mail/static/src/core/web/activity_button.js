@@ -1,19 +1,19 @@
-import { ActivityListPopover } from "@mail/core/web/activity_list_popover";
+import {ActivityListPopover} from "@mail/core/web/activity_list_popover";
 
-import { Component, useEnv, useRef } from "@odoo/owl";
+import {Component, useEnv, useRef} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
-import { usePopover } from "@web/core/popover/popover_hook";
+import {_t} from "@web/core/l10n/translation";
+import {usePopover} from "@web/core/popover/popover_hook";
 
 export class ActivityButton extends Component {
     static props = {
-        record: { type: Object },
+        record: {type: Object},
     };
     static template = "mail.ActivityButton";
 
     setup() {
         super.setup();
-        this.popover = usePopover(ActivityListPopover, { position: "bottom-start" });
+        this.popover = usePopover(ActivityListPopover, {position: "bottom-start"});
         this.buttonRef = useRef("button");
         this.env = useEnv();
         this.defaultActivityStateClass = "text-muted";
@@ -48,7 +48,7 @@ export class ActivityButton extends Component {
                 classes.push(this.props.record.data.activity_exception_icon);
                 break;
             default: {
-                const { activity_ids, activity_type_icon } = this.props.record.data;
+                const {activity_ids, activity_type_icon} = this.props.record.data;
                 if (activity_ids.records.length) {
                     classes.push(activity_type_icon || "fa-tasks");
                     break;
@@ -82,7 +82,9 @@ export class ActivityButton extends Component {
             const selectedIds = selectedRecords.map((r) => r.resId);
             // If the current record is not selected, ignore the selection
             const resIds =
-                selectedIds.includes(resId) && selectedIds.length > 1 ? selectedIds : undefined;
+                selectedIds.includes(resId) && selectedIds.length > 1
+                    ? selectedIds
+                    : undefined;
             this.popover.open(this.buttonRef.el, {
                 activityIds: this.props.record.data.activity_ids.currentIds,
                 onActivityChanged: (thread) => {

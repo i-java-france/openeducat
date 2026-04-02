@@ -1,6 +1,9 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
-import { describe, expect, test } from "@odoo/hoot";
-import { click, queryOne } from "@odoo/hoot-dom";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {click, queryOne} from "@odoo/hoot-dom";
 
 setupInteractionWhiteList("web.show_password");
 
@@ -16,7 +19,7 @@ const template = `
 `;
 
 test("show_password is started when there is a .o_show_password", async () => {
-    const { core } = await startInteractions(template);
+    const {core} = await startInteractions(template);
     expect(core.interactions).toHaveLength(1);
 });
 

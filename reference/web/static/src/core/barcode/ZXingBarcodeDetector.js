@@ -61,7 +61,10 @@ export function buildZXingBarcodeDetector(ZXing) {
                 );
             }
             if (!isVideoElementReady(video)) {
-                throw new DOMException("HTMLVideoElement is not ready", "InvalidStateError");
+                throw new DOMException(
+                    "HTMLVideoElement is not ready",
+                    "InvalidStateError"
+                );
             }
             const canvas = document.createElement("canvas");
 
@@ -94,14 +97,19 @@ export function buildZXingBarcodeDetector(ZXing) {
             );
 
             const luminanceSource = new ZXing.HTMLCanvasElementLuminanceSource(canvas);
-            const binaryBitmap = new ZXing.BinaryBitmap(new ZXing.HybridBinarizer(luminanceSource));
+            const binaryBitmap = new ZXing.BinaryBitmap(
+                new ZXing.HybridBinarizer(luminanceSource)
+            );
             try {
                 const result = this.reader.decodeWithState(binaryBitmap);
-                const { resultPoints } = result;
+                const {resultPoints} = result;
                 const boundingBox = DOMRectReadOnly.fromRect({
                     x: resultPoints[0].x,
                     y: resultPoints[0].y,
-                    height: Math.max(1, Math.abs(resultPoints[1].y - resultPoints[0].y)),
+                    height: Math.max(
+                        1,
+                        Math.abs(resultPoints[1].y - resultPoints[0].y)
+                    ),
                     width: Math.max(1, Math.abs(resultPoints[1].x - resultPoints[0].x)),
                 });
                 const cornerPoints = resultPoints;

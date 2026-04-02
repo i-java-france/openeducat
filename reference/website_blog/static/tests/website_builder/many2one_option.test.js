@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { contains, onRpc } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {contains, onRpc} from "@web/../tests/web_test_helpers";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
@@ -11,7 +11,7 @@ test("Change contact oe-many2one-id of a blog author changes other instance of s
     onRpc(
         "ir.qweb.field.contact",
         "get_record_to_html",
-        ({ args: [[id]], kwargs }) => `<span>The ${kwargs.options.option} of ${id}</span>`
+        ({args: [[id]], kwargs}) => `<span>The ${kwargs.options.option} of ${id}</span>`
     );
 
     await setupWebsiteBuilder(`
@@ -38,7 +38,10 @@ test("Change contact oe-many2one-id of a blog author changes other instance of s
     await contains("span.o-dropdown-item.dropdown-item").click();
     expect(":iframe span.span-1 > span").toHaveText("The Name of 1");
     expect(":iframe span.span-2 > span").toHaveText("The Address of 1");
-    expect(":iframe span.span-3 > span").toHaveText("The Address of 3"); // author of other post is not changed
+    expect(":iframe span.span-3 > span").toHaveText("The Address of 3"); // Author of other post is not changed
     expect(":iframe span.span-4").toHaveText("Hermit");
-    expect(":iframe div > img").toHaveAttribute("src", "/web/image/res.partner/1/avatar_1024");
+    expect(":iframe div > img").toHaveAttribute(
+        "src",
+        "/web/image/res.partner/1/avatar_1024"
+    );
 });

@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, _
+from odoo import _, fields, models
 
 
 class AccountMove(models.Model):
@@ -24,7 +24,7 @@ class AccountMove(models.Model):
             val_list.append(val)
             log_list.append(log)
         log_service_ids = self.env['fleet.vehicle.log.services'].create(val_list)
-        for log_service_id, log in zip(log_service_ids, log_list):
+        for log_service_id, log in zip(log_service_ids, log_list, strict=False):
             log_service_id.message_post(body=log)
         return posted
 

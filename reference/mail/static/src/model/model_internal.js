@@ -1,4 +1,4 @@
-import { ATTR_SYM, MANY_SYM, ONE_SYM } from "./misc";
+import {ATTR_SYM, MANY_SYM, ONE_SYM} from "./misc";
 
 export class ModelInternal {
     /** @type {Map<string, boolean>} */

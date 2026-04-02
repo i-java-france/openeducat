@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { BinaryField, binaryField } from "@web/views/fields/binary/binary_field";
+import {registry} from "@web/core/registry";
+import {BinaryField, binaryField} from "@web/views/fields/binary/binary_field";
 
 export class SettingsBinaryField extends BinaryField {
     static template = "web.SettingsBinaryField";
@@ -12,9 +12,8 @@ export class SettingsBinaryField extends BinaryField {
             model: this.props.record.fields[fieldName].relation,
             field: relatedFieldName ?? fieldName,
             id: this.props.record.data[fieldName].id,
-        }
+        };
     }
-
 }
 
 const settingsBinaryField = {

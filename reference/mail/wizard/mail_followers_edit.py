@@ -1,5 +1,6 @@
 from odoo import fields, models
 from odoo.exceptions import UserError
+
 from odoo.addons.mail.tools.parser import parse_res_ids
 
 

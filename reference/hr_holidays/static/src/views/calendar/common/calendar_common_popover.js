@@ -1,5 +1,5 @@
-import { CalendarCommonPopover } from "@web/views/calendar/calendar_common/calendar_common_popover";
-import { useService } from "@web/core/utils/hooks";
+import {CalendarCommonPopover} from "@web/views/calendar/calendar_common/calendar_common_popover";
+import {useService} from "@web/core/utils/hooks";
 
 export class TimeOffCalendarCommonPopover extends CalendarCommonPopover {
     static subTemplates = {
@@ -15,7 +15,7 @@ export class TimeOffCalendarCommonPopover extends CalendarCommonPopover {
     }
 
     onEditEvent() {
-        this.props.close()
+        this.props.close();
         this.actionService.doAction({
             name: this.record.display_name,
             type: "ir.actions.act_window",

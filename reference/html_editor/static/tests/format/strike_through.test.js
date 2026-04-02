@@ -1,17 +1,17 @@
-import { expect, test } from "@odoo/hoot";
-import { tick } from "@odoo/hoot-mock";
-import { press } from "@odoo/hoot-dom";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { getContent, setSelection } from "../_helpers/selection";
+import {expect, test} from "@odoo/hoot";
+import {tick} from "@odoo/hoot-mock";
+import {press} from "@odoo/hoot-dom";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {getContent, setSelection} from "../_helpers/selection";
 import {
     insertText,
+    simulateArrowKeyPress,
     strikeThrough,
     tripleClick,
-    simulateArrowKeyPress,
     undo,
 } from "../_helpers/user_actions";
-import { unformat } from "../_helpers/format";
+import {unformat} from "../_helpers/format";
 
 test("should make a few characters strikeThrough", async () => {
     await testEditor({
@@ -125,7 +125,7 @@ test("should make a whole heading strikeThrough after a triple click", async () 
 
 test.tags("desktop");
 test("should make a whole heading not strikeThrough after a triple click", async () => {
-    const { el, editor } = await setupEditor(`<h1><s>ab</s></h1><p>cd</p>`);
+    const {el, editor} = await setupEditor(`<h1><s>ab</s></h1><p>cd</p>`);
     await tripleClick(el.querySelector("h1"));
     strikeThrough(editor);
     expect(getContent(el)).toBe(`<h1>[ab]</h1><p>cd</p>`);
@@ -258,27 +258,31 @@ test("should make a few characters strikeThrough inside table (strikeThrough)", 
 });
 
 test("should remove empty strikeThrough when changing selection", async () => {
-    const { editor, el } = await setupEditor("<p>ab[]cd</p>");
+    const {editor, el} = await setupEditor("<p>ab[]cd</p>");
 
     strikeThrough(editor);
     await tick();
-    expect(getContent(el)).toBe(`<p>ab<s data-oe-zws-empty-inline="">[]\u200B</s>cd</p>`);
+    expect(getContent(el)).toBe(
+        `<p>ab<s data-oe-zws-empty-inline="">[]\u200B</s>cd</p>`
+    );
 
     await simulateArrowKeyPress(editor, "ArrowLeft");
-    await tick(); // await selectionchange
+    await tick(); // Await selectionchange
     expect(getContent(el)).toBe(`<p>a[]bcd</p>`);
 });
 
 test("should not add history step for strikethrough on collapsed selection", async () => {
-    const { editor, el } = await setupEditor("<p>abcd[]</p>");
+    const {editor, el} = await setupEditor("<p>abcd[]</p>");
 
-    patchWithCleanup(console, { warn: () => {} });
+    patchWithCleanup(console, {warn: () => {}});
 
     // Collapsed formatting shortcuts (e.g. Ctrl+5) shouldn’t create a history
     // step. The empty inline tag is temporary: auto-cleaned if unused. We want
     // to avoid having a phantom step in the history.
     await press(["ctrl", "5"]);
-    expect(getContent(el)).toBe(`<p>abcd<s data-oe-zws-empty-inline="">[]\u200B</s></p>`);
+    expect(getContent(el)).toBe(
+        `<p>abcd<s data-oe-zws-empty-inline="">[]\u200B</s></p>`
+    );
 
     await insertText(editor, "A");
     expect(getContent(el)).toBe(`<p>abcd<s>A[]</s></p>`);

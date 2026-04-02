@@ -1,5 +1,5 @@
-import { Countdown } from "./countdown";
-import { registry } from "@web/core/registry";
+import {Countdown} from "./countdown";
+import {registry} from "@web/core/registry";
 
 const CountdownEdit = (I) =>
     class extends I {

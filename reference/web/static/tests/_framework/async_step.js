@@ -1,4 +1,4 @@
-import { expect } from "@odoo/hoot";
+import {expect} from "@odoo/hoot";
 
 /**
  * Use `expect.step` instead

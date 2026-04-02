@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
@@ -6,22 +5,31 @@ import contextlib
 import email
 import email.policy
 import json
-import re
 import logging
+import re
 import time
-
 from ast import literal_eval
 from contextlib import contextmanager
 from datetime import timedelta
-from freezegun import freeze_time
 from functools import partial
-from lxml import html
-from markupsafe import Markup
 from random import randint
 from unittest.mock import patch
-from urllib.parse import urlparse, urlencode, parse_qsl
+from urllib.parse import parse_qsl, urlencode, urlparse
 
-from odoo import tools, fields
+from freezegun import freeze_time
+from lxml import html
+from markupsafe import Markup
+
+from odoo import fields, tools
+from odoo.tests import RecordCapturer, common, new_test_user
+from odoo.tools import mute_logger
+from odoo.tools.mail import (
+    email_normalize,
+    email_split_and_format_normalize,
+    formataddr,
+)
+from odoo.tools.translate import code_translations
+
 from odoo.addons.base.models.ir_mail_server import IrMail_Server
 from odoo.addons.base.tests.common import MockSmtplibCase
 from odoo.addons.bus.models.bus import BusBus, json_dump
@@ -32,12 +40,6 @@ from odoo.addons.mail.models.mail_message import MailMessage
 from odoo.addons.mail.models.mail_notification import MailNotification
 from odoo.addons.mail.models.res_users import ResUsers
 from odoo.addons.mail.tools.discuss import Store
-from odoo.tests import common, RecordCapturer, new_test_user
-from odoo.tools import mute_logger
-from odoo.tools.mail import (
-    email_normalize, email_normalize_all, email_split, email_split_and_format_normalize, formataddr
-)
-from odoo.tools.translate import code_translations
 
 _logger = logging.getLogger(__name__)
 
@@ -58,7 +60,7 @@ class MockEmail(common.BaseCase, MockSmtplibCase):
 
     @classmethod
     def setUpClass(cls):
-        super(MockEmail, cls).setUpClass()
+        super().setUpClass()
         cls._mc_enabled = False
 
     # ------------------------------------------------------------
@@ -1222,7 +1224,7 @@ class MailCase(common.TransactionCase, MockEmail, BusCase):
                 'country_id': country_id,
                 'phone': '047500%02d%02d' % (idx, idx)
             } for idx in range(count)])
-            for values, partner in zip(base_values, partners):
+            for values, partner in zip(base_values, partners, strict=False):
                 values[partner_fname] = partner.id
 
         records = cls.env[model].with_context(**cls._test_context).create(base_values)
@@ -1788,7 +1790,7 @@ class MailCommon(MailCase):
 
     @classmethod
     def setUpClass(cls):
-        super(MailCommon, cls).setUpClass()
+        super().setUpClass()
         # ensure admin configuration
         cls.user_admin = cls.env.ref('base.user_admin')
         cls.partner_admin = cls.env.ref('base.partner_admin')

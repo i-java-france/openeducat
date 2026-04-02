@@ -1,11 +1,11 @@
-import { markup } from "@odoo/owl";
+import {markup} from "@odoo/owl";
 import {
     compareVersions,
     VERSION_SELECTOR,
     htmlEditorVersions,
 } from "@html_editor/html_migrations/html_migrations_utils";
-import { registry } from "@web/core/registry";
-import { fixInvalidHTML } from "@html_editor/utils/sanitize";
+import {registry} from "@web/core/registry";
+import {fixInvalidHTML} from "@html_editor/utils/sanitize";
 
 /**
  * Handle HTML transformations dependent on the current implementation of the
@@ -46,7 +46,7 @@ export class HtmlUpgradeManager {
         return this.upgradedValue;
     }
 
-    processForUpgrade(value, { containsComplexHTML, env } = {}) {
+    processForUpgrade(value, {containsComplexHTML, env} = {}) {
         this.env = env || {};
         this.containsComplexHTML = containsComplexHTML;
         const strValue = value.toString();
@@ -94,6 +94,8 @@ export class HtmlUpgradeManager {
                 migrate(this.element, this.env);
             }
         }
-        return markup(this.element[this.containsComplexHTML ? "outerHTML" : "innerHTML"]);
+        return markup(
+            this.element[this.containsComplexHTML ? "outerHTML" : "innerHTML"]
+        );
     }
 }

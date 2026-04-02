@@ -1,10 +1,10 @@
-import { Component, EventBus, onWillDestroy, onWillStart, useState } from "@odoo/owl";
-import { Dialog } from "@web/core/dialog/dialog";
-import { rpc, RPCError } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { redirect } from "@web/core/utils/urls";
-import { session } from "@web/session";
+import {Component, EventBus, onWillDestroy, onWillStart, useState} from "@odoo/owl";
+import {Dialog} from "@web/core/dialog/dialog";
+import {rpc, RPCError} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {redirect} from "@web/core/utils/urls";
+import {session} from "@web/session";
 
 import * as passkeyLib from "@auth_passkey/../lib/simplewebauthn";
 
@@ -23,8 +23,8 @@ import * as passkeyLib from "@auth_passkey/../lib/simplewebauthn";
 export class CheckIdentityForm extends Component {
     static template = "auth_timeout.CheckIdentityForm";
     static props = {
-        redirect: { type: String, optional: true },
-        close: { type: Function, optional: true },
+        redirect: {type: String, optional: true},
+        close: {type: Function, optional: true},
     };
     static authMethodTemplates = {
         password: {
@@ -85,11 +85,14 @@ export class CheckIdentityForm extends Component {
         const form = ev.target;
         if (form.querySelector('input[name="type"]').value === "webauthn") {
             const serverOptions = await rpc("/auth/passkey/start-auth");
-            const auth = await passkeyLib.startAuthentication(serverOptions).catch((e) => console.log(e));
+            const auth = await passkeyLib
+                .startAuthentication(serverOptions)
+                .catch((e) => console.log(e));
             if (!auth) {
                 return false;
             }
-            form.querySelector('input[name="webauthn_response"]').value = JSON.stringify(auth);
+            form.querySelector('input[name="webauthn_response"]').value =
+                JSON.stringify(auth);
         }
         const formData = new FormData(form);
         const formValues = Object.fromEntries(formData.entries());
@@ -145,7 +148,7 @@ export class CheckIdentityForm extends Component {
  */
 export class CheckIdentityDialog extends Component {
     static template = "auth_timeout.CheckIdentityDialog";
-    static components = { Dialog, CheckIdentityForm };
+    static components = {Dialog, CheckIdentityForm};
     static props = {
         close: Function, // prop added by the Dialog service
     };
@@ -186,16 +189,23 @@ export const checkIdentityService = {
      *
      * @returns {Promise<void>} Resolves when the user completes the check.
      */
-    start(env, { bus_service, dialog, presence }) {
+    start(env, {bus_service, dialog, presence}) {
         const channel = new BroadcastChannel("check_identity");
         const bus = this.eventBus;
         let started = false;
         let inactivityTimer;
 
         const check = async (credential) => {
-            const result = await rpc("/auth-timeout/session/check-identity", credential);
+            const result = await rpc(
+                "/auth-timeout/session/check-identity",
+                credential
+            );
             if (result?.mfa) {
-                return { success: false, mfa: result.mfa, auth_methods: result.auth_methods };
+                return {
+                    success: false,
+                    mfa: result.mfa,
+                    auth_methods: result.auth_methods,
+                };
             }
             bus.trigger("identityChecked");
             channel.postMessage("identityChecked");
@@ -209,7 +219,11 @@ export const checkIdentityService = {
             // not even inspecting the dom or through the console using Javascript.
             env.services.action && env.bus.trigger("ACTION_MANAGER:UPDATE", {});
             await new Promise((resolve) => {
-                checkIdentityService.eventBus.addEventListener("identityChecked", resolve, { once: true });
+                checkIdentityService.eventBus.addEventListener(
+                    "identityChecked",
+                    resolve,
+                    {once: true}
+                );
             });
             // Reload the view to display back the data that was displayed before.
             env.services.action && env.services.action.doAction("soft_reload");
@@ -238,14 +252,21 @@ export const checkIdentityService = {
             // Start the bus to be able to send inactivities / presences
             bus_service.start();
             const updatePresence = () => {
-                bus_service.send("update_presence", { inactivity_period: presence.getInactivityPeriod() });
+                bus_service.send("update_presence", {
+                    inactivity_period: presence.getInactivityPeriod(),
+                });
             };
             // Immediately send a presence on bus connect
-            bus_service.addEventListener("connect", () => updatePresence(), { once: true });
+            bus_service.addEventListener("connect", () => updatePresence(), {
+                once: true,
+            });
             const startInactivityTimer = () => {
                 inactivityTimer = setTimeout(
                     async () => {
-                        if (presence.getInactivityPeriod() >= session.lock_timeout_inactivity * 1000) {
+                        if (
+                            presence.getInactivityPeriod() >=
+                            session.lock_timeout_inactivity * 1000
+                        ) {
                             // Send the fact the user is away to the server.
                             updatePresence();
                             // Display the check identity dialog
@@ -253,7 +274,8 @@ export const checkIdentityService = {
                         }
                         startInactivityTimer();
                     },
-                    session.lock_timeout_inactivity * 1000 - presence.getInactivityPeriod(),
+                    session.lock_timeout_inactivity * 1000 -
+                        presence.getInactivityPeriod()
                 );
             };
 
@@ -269,13 +291,18 @@ export const checkIdentityService = {
 
         const checkIdentityErrorHandler = (env, error, originalError) => {
             if (originalError instanceof RPCError) {
-                if (originalError.data.name === "odoo.addons.auth_timeout.models.ir_http.CheckIdentityException") {
+                if (
+                    originalError.data.name ===
+                    "odoo.addons.auth_timeout.models.ir_http.CheckIdentityException"
+                ) {
                     run();
                     return true;
                 }
             }
         };
-        registry.category("error_handlers").add("checkIdentityErrorHandler", checkIdentityErrorHandler);
+        registry
+            .category("error_handlers")
+            .add("checkIdentityErrorHandler", checkIdentityErrorHandler);
 
         return {
             bus,
@@ -285,5 +312,7 @@ export const checkIdentityService = {
     },
 };
 
-registry.category("public_components").add("auth_timeout.check_identity_form", CheckIdentityForm);
+registry
+    .category("public_components")
+    .add("auth_timeout.check_identity_form", CheckIdentityForm);
 registry.category("services").add("check_identity", checkIdentityService);

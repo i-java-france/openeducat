@@ -1,11 +1,11 @@
-import { browser } from "@web/core/browser/browser";
-import { registry } from "@web/core/registry";
-import { _t, translationIsReady } from "@web/core/l10n/translation";
-import { getOrigin } from "@web/core/utils/urls";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
+import {_t, translationIsReady} from "@web/core/l10n/translation";
+import {getOrigin} from "@web/core/utils/urls";
 
 const scssErrorNotificationService = {
     dependencies: ["notification"],
-    start(env, { notification }) {
+    start(env, {notification}) {
         const origin = getOrigin();
         // Iframe with src "about:blank" origin isn't a valid base URL.
         if (browser.location.origin === "null") {

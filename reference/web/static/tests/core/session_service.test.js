@@ -1,6 +1,6 @@
-import { Component, onMounted, onWillStart, xml } from "@odoo/owl";
-import { expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
+import {Component, onMounted, onWillStart, xml} from "@odoo/owl";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
 import {
     getService,
     mountWithCleanup,
@@ -8,9 +8,9 @@ import {
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 
-import { registry } from "@web/core/registry";
-import { WebClient } from "@web/webclient/webclient";
-import { useService } from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {WebClient} from "@web/webclient/webclient";
+import {useService} from "@web/core/utils/hooks";
 
 test("Only call once session info data when services calls lazy session", async () => {
     patchWithCleanup(WebClient.prototype, {
@@ -21,13 +21,13 @@ test("Only call once session info data when services calls lazy session", async 
     });
     onRpc("lazy_session_info", () => {
         expect.step("load_session_info");
-        return { a: "a", b: "b" };
+        return {a: "a", b: "b"};
     });
 
     const serviceRegistry = registry.category("services");
     serviceRegistry.add("fake_a", {
         dependencies: ["lazy_session"],
-        start(env, { lazy_session }) {
+        start(env, {lazy_session}) {
             expect.step("service_a_before");
             lazy_session.getValue("a", (value) => {
                 expect(value).toBe("a");
@@ -38,7 +38,7 @@ test("Only call once session info data when services calls lazy session", async 
     });
     serviceRegistry.add("fake_b", {
         dependencies: ["lazy_session"],
-        start(env, { lazy_session }) {
+        start(env, {lazy_session}) {
             expect.step("service_b_before");
             lazy_session.getValue("b", (value) => {
                 expect(value).toBe("b");
@@ -71,7 +71,7 @@ test("Only call once lazy session info data on action", async () => {
     });
     onRpc("lazy_session_info", () => {
         expect.step("load_session_info");
-        return { a: "a" };
+        return {a: "a"};
     });
     const actionRegistry = registry.category("actions");
     class TestClientAction extends Component {
@@ -124,12 +124,12 @@ test("Call lazy session info after webclient init with action and service", asyn
     });
     onRpc("lazy_session_info", () => {
         expect.step("load_session_info");
-        return { a: "a", b: "b" };
+        return {a: "a", b: "b"};
     });
     const serviceRegistry = registry.category("services");
     serviceRegistry.add("fake_a", {
         dependencies: ["lazy_session"],
-        start(env, { lazy_session }) {
+        start(env, {lazy_session}) {
             expect.step("service_before");
             lazy_session.getValue("a", (value) => {
                 expect(value).toBe("a");

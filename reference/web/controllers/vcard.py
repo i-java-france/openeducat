@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import importlib.util
@@ -6,9 +5,8 @@ import io
 import zipfile
 
 import odoo.http as http
-
 from odoo.exceptions import UserError
-from odoo.http import request, content_disposition
+from odoo.http import content_disposition, request
 
 
 class Partner(http.Controller):

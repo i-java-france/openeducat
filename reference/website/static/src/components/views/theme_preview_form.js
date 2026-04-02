@@ -1,10 +1,10 @@
-import { ControlPanel } from "@web/search/control_panel/control_panel";
-import { FormController } from "@web/views/form/form_controller";
-import { formView } from "@web/views/form/form_view";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { ViewButton } from "@web/views/view_button/view_button";
-import { useSubEnv, onMounted, useEnv } from "@odoo/owl";
+import {ControlPanel} from "@web/search/control_panel/control_panel";
+import {FormController} from "@web/views/form/form_controller";
+import {formView} from "@web/views/form/form_view";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {ViewButton} from "@web/views/view_button/view_button";
+import {useSubEnv, onMounted, useEnv} from "@odoo/owl";
 
 /*
  * Common code for theme installation/update handler.
@@ -22,7 +22,7 @@ export function useLoaderOnClick() {
             const name = params.clickParams.name;
             if (["button_refresh_theme", "button_choose_theme"].includes(name)) {
                 website.invalidateSnippetCache = true;
-                website.showLoader({ showTips: name !== "button_refresh_theme" });
+                website.showLoader({showTips: name !== "button_refresh_theme"});
                 try {
                     const resParams = params.getResParams();
                     const callback = await orm.silent.call(resParams.resModel, name, [
@@ -51,7 +51,7 @@ export function useLoaderOnClick() {
 }
 
 class ThemePreviewFormController extends FormController {
-    static components = { ...FormController.components, ViewButton };
+    static components = {...FormController.components, ViewButton};
     static template = "website.ThemePreviewFormController";
     /**
      * @override
@@ -72,7 +72,7 @@ class ThemePreviewFormController extends FormController {
      * @override
      */
     get className() {
-        return { ...super.className, o_view_form_theme_preview_controller: true };
+        return {...super.className, o_view_form_theme_preview_controller: true};
     }
     /**
      * Handler called when user click on 'Choose another theme' button.
@@ -89,13 +89,13 @@ class ThemePreviewFormControlPanel extends ControlPanel {
      * @see {FieldIframePreview} for the event handler.
      */
     onMobileClick() {
-        this.env.bus.trigger("THEME_PREVIEW:SWITCH_MODE", { mode: "mobile" });
+        this.env.bus.trigger("THEME_PREVIEW:SWITCH_MODE", {mode: "mobile"});
     }
     /**
      * @see {onMobileClick}
      */
     onDesktopClick() {
-        this.env.bus.trigger("THEME_PREVIEW:SWITCH_MODE", { mode: "desktop" });
+        this.env.bus.trigger("THEME_PREVIEW:SWITCH_MODE", {mode: "desktop"});
     }
     /**
      * Handler called when user click on Go Back button.

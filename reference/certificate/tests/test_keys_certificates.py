@@ -1,9 +1,9 @@
 import base64
+from datetime import datetime, timedelta, timezone
 
 from cryptography import x509
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import ec, ed25519, rsa
-from datetime import datetime, timedelta, timezone
 
 from odoo.exceptions import UserError
 from odoo.tests import TransactionCase, tagged

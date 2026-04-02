@@ -1,9 +1,9 @@
-import { _t } from "@web/core/l10n/translation";
-import { PaymentInterface } from "@point_of_sale/app/utils/payment/payment_interface";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { roundPrecision } from "@web/core/utils/numbers";
-import { uuidv4 } from "@point_of_sale/utils";
-import { register_payment_method } from "@point_of_sale/app/services/pos_store";
+import {_t} from "@web/core/l10n/translation";
+import {PaymentInterface} from "@point_of_sale/app/utils/payment/payment_interface";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {roundPrecision} from "@web/core/utils/numbers";
+import {uuidv4} from "@point_of_sale/utils";
+import {register_payment_method} from "@point_of_sale/app/services/pos_store";
 
 // Due to consistency issues with the webhook, we also poll
 // the status of the payment periodically as a fallback.
@@ -85,7 +85,9 @@ export class PaymentVivaCom extends PaymentInterface {
         };
 
         const action =
-            line.amount < 0 ? "viva_com_send_refund_request" : "viva_com_send_payment_request";
+            line.amount < 0
+                ? "viva_com_send_refund_request"
+                : "viva_com_send_payment_request";
 
         return this._call_viva_com(data, action, line).then((data) =>
             this._viva_com_handle_response(data, line)
@@ -99,12 +101,14 @@ export class PaymentVivaCom extends PaymentInterface {
             sessionId: line.uiState.vivaSessionId,
             cashRegisterId: this.pos.getCashier().name,
         };
-        return this._call_viva_com(data, "viva_com_send_payment_cancel", line).then((data) => {
-            if (data.error) {
-                this._show_error(data.error);
+        return this._call_viva_com(data, "viva_com_send_payment_cancel", line).then(
+            (data) => {
+                if (data.error) {
+                    this._show_error(data.error);
+                }
+                return true;
             }
-            return true;
-        });
+        );
     }
 
     /**
@@ -166,7 +170,9 @@ export class PaymentVivaCom extends PaymentInterface {
                         this.handleSuccessResponse(paymentLine, result);
                         resolve(true);
                     } else {
-                        this._show_error(_t("Message from Viva.com: %s", result.message));
+                        this._show_error(
+                            _t("Message from Viva.com: %s", result.message)
+                        );
                         resolve(false);
                     }
                     this.paymentLineResolvers[paymentLine.uuid] = null;

@@ -1,4 +1,4 @@
-import { onMounted, onWillUnmount } from "@odoo/owl";
+import {onMounted, onWillUnmount} from "@odoo/owl";
 
 /**
  * Detects when a category section becomes visible within a scrollable container.
@@ -47,15 +47,17 @@ export function useCategoryScrollSpy(
     }
 
     function scrollToCategory(categoryId) {
-        const section = categorySections.find((el) => el.dataset.category === "" + categoryId);
-        const { el: scrollEl } = productScrollContainerRef;
+        const section = categorySections.find(
+            (el) => el.dataset.category === "" + categoryId
+        );
+        const {el: scrollEl} = productScrollContainerRef;
 
         if (section) {
             const containerTop = scrollEl.getBoundingClientRect().top;
             const sectionTop = section.getBoundingClientRect().top;
             const scrollOffset =
                 sectionTop - containerTop + scrollEl.scrollTop + productScrollOffsetTop;
-            scrollEl.scrollTo({ top: scrollOffset });
+            scrollEl.scrollTo({top: scrollOffset});
         }
 
         //Ensure the category is correctly selected and visible

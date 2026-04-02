@@ -1,4 +1,4 @@
-import { ProductTemplateAttributeLine } from './product_template_attribute_line';
+import {ProductTemplateAttributeLine} from "./product_template_attribute_line";
 
 export class ProductProduct {
     /**
@@ -20,7 +20,7 @@ export class ProductProduct {
         this.id = id;
         this.product_tmpl_id = product_tmpl_id;
         this.display_name = display_name;
-        this.ptals = ptals.map(ptal => new ProductTemplateAttributeLine(ptal));
+        this.ptals = ptals.map((ptal) => new ProductTemplateAttributeLine(ptal));
         this.image_src = image_src;
         this.description = description;
     }
@@ -31,7 +31,7 @@ export class ProductProduct {
      * @return {ProductTemplateAttributeLine[]} The `no_variant` PTALs.
      */
     get noVariantPtals() {
-        return this.ptals.filter(ptal => ptal.create_variant === 'no_variant');
+        return this.ptals.filter((ptal) => ptal.create_variant === "no_variant");
     }
 
     /**
@@ -40,7 +40,10 @@ export class ProductProduct {
      * @return {Number} The extra price of the selected `no_variant` PTAVs.
      */
     get selectedNoVariantPtavsPriceExtra() {
-        return this.noVariantPtals.reduce((price, ptal) => price + ptal.selectedPtavsPriceExtra, 0);
+        return this.noVariantPtals.reduce(
+            (price, ptal) => price + ptal.selectedPtavsPriceExtra,
+            0
+        );
     }
 
     /**
@@ -49,7 +52,7 @@ export class ProductProduct {
      * @return {Number[]} The selected PTAV ids.
      */
     get selectedPtavIds() {
-        return this.ptals.flatMap(ptal => ptal.selected_ptavs).map(ptav => ptav.id);
+        return this.ptals.flatMap((ptal) => ptal.selected_ptavs).map((ptav) => ptav.id);
     }
 
     /**
@@ -58,7 +61,9 @@ export class ProductProduct {
      * @return {Number[]} The selected `no_variant` PTAV ids.
      */
     get selectedNoVariantPtavIds() {
-        return this.noVariantPtals.flatMap(ptal => ptal.selected_ptavs).map(ptav => ptav.id);
+        return this.noVariantPtals
+            .flatMap((ptal) => ptal.selected_ptavs)
+            .map((ptav) => ptav.id);
     }
 
     /**
@@ -67,11 +72,12 @@ export class ProductProduct {
      * @return {{id: Number, value: String}[]} The selected custom PTAVs.
      */
     get selectedCustomPtavs() {
-        return this.ptals.filter(ptal => ptal.hasSelectedCustomPtav).flatMap(
-            ptal => ptal.selected_ptavs
-        ).map(ptav => ({
-            'id': ptav.id,
-            'value': ptav.custom_value,
-        }));
+        return this.ptals
+            .filter((ptal) => ptal.hasSelectedCustomPtav)
+            .flatMap((ptal) => ptal.selected_ptavs)
+            .map((ptav) => ({
+                id: ptav.id,
+                value: ptav.custom_value,
+            }));
     }
 }

@@ -1,4 +1,5 @@
 from odoo.tests import tagged
+
 from odoo.addons.pos_hr.tests.test_frontend import TestPosHrHttpCommon
 from odoo.addons.pos_restaurant.tests.test_frontend import TestFrontendCommon
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+import datetime
 import itertools
 import json
 import typing
@@ -9,19 +10,32 @@ from typing import Any
 
 import babel
 import babel.dates
-import datetime
 import pytz
 
 from odoo import api, models
-from odoo.fields import Command, Date, Domain
 from odoo.api import NewId
-from odoo.models import regex_order, READ_GROUP_DISPLAY_FORMAT, READ_GROUP_NUMBER_GRANULARITY, READ_GROUP_TIME_GRANULARITY, BaseModel
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, date_utils, get_lang, unique, OrderedSet
 from odoo.exceptions import AccessError, UserError
+from odoo.fields import Command, Date, Domain
+from odoo.models import (
+    READ_GROUP_DISPLAY_FORMAT,
+    READ_GROUP_NUMBER_GRANULARITY,
+    READ_GROUP_TIME_GRANULARITY,
+    BaseModel,
+    regex_order,
+)
+from odoo.tools import (
+    DEFAULT_SERVER_DATE_FORMAT,
+    DEFAULT_SERVER_DATETIME_FORMAT,
+    OrderedSet,
+    date_utils,
+    get_lang,
+    unique,
+)
 from odoo.tools.translate import LazyTranslate
 
 if typing.TYPE_CHECKING:
     from collections.abc import Sequence
+
     from odoo.orm.types import DomainType
 
 _lt = LazyTranslate(__name__)
@@ -96,7 +110,7 @@ class Base(models.AbstractModel):
         if len(self) != len(vals_list):
             raise ValueError("Each record must have a corresponding vals entry.")
 
-        for record, val in zip(self, vals_list):
+        for record, val in zip(self, vals_list, strict=False):
             record.write(val)
 
         return self.with_context(bin_size=True).web_read(specification)
@@ -738,7 +752,7 @@ class Base(models.AbstractModel):
 
         return [
             self._web_read_group_format(groupby, aggregates, groups)
-            for groupby, groups in zip(grouping_sets, groups_list)
+            for groupby, groups in zip(grouping_sets, groups_list, strict=False)
         ]
 
     @api.model
@@ -1082,9 +1096,9 @@ class Base(models.AbstractModel):
         result = [{'__extra_domains': []} for __ in groups]
         if not groups:
             return result
-        column_iterator = zip(*groups)
+        column_iterator = zip(*groups, strict=False)
 
-        for groupby_spec, values in zip(groupby, column_iterator):
+        for groupby_spec, values in zip(groupby, column_iterator, strict=False):
             formatter = self._web_read_group_groupby_formatter(groupby_spec, values)
             for value, dict_group in zip(values, result, strict=True):
                 dict_group[groupby_spec], additional_domain = formatter(value)
@@ -1096,7 +1110,7 @@ class Base(models.AbstractModel):
                 fold_name = model._fold_name
                 if fold_name not in model._fields:
                     continue
-                for value, dict_group in zip(values, result):
+                for value, dict_group in zip(values, result, strict=False):
                     dict_group['__fold'] = value.sudo()[fold_name]
 
         # Reconstruct groups domain part
@@ -1998,7 +2012,7 @@ class Base(models.AbstractModel):
                 new_lines = lines.browse(map(NewId, line_ids))
                 for field_name in sub_fields_spec:
                     field = lines._fields[field_name]
-                    for new_line, line in zip(new_lines, lines):
+                    for new_line, line in zip(new_lines, lines, strict=False):
                         line_value = field.convert_to_cache(line[field_name], new_line, validate=False)
                         field._update_cache(new_line, line_value)
 
@@ -2200,7 +2214,7 @@ class RecordSnapshot(dict):
             for name in fields_spec:
                 self.fetch(name)
 
-    def __eq__(self, other: 'RecordSnapshot'):
+    def __eq__(self, other: RecordSnapshot):
         return self.record == other.record and super().__eq__(other)
 
     def fetch(self, field_name):
@@ -2227,7 +2241,7 @@ class RecordSnapshot(dict):
             for subname in self.fields_spec[field_name].get('fields') or {}
         )
 
-    def diff(self, other: 'RecordSnapshot', force=False):
+    def diff(self, other: RecordSnapshot, force=False):
         """ Return the values in ``self`` that differ from ``other``. """
 
         # determine fields to return

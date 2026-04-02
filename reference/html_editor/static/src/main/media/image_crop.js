@@ -4,8 +4,8 @@ import {
     loadImageInfo,
     cropperDataFieldsWithAspectRatio,
 } from "@html_editor/utils/image_processing";
-import { IMAGE_SHAPES } from "./image_plugin";
-import { _t } from "@web/core/l10n/translation";
+import {IMAGE_SHAPES} from "./image_plugin";
+import {_t} from "@web/core/l10n/translation";
 import {
     Component,
     useRef,
@@ -15,24 +15,24 @@ import {
     useExternalListener,
     status,
 } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
-import { scrollTo, closestScrollableY } from "@web/core/utils/scrolling";
+import {useService} from "@web/core/utils/hooks";
+import {scrollTo, closestScrollableY} from "@web/core/utils/scrolling";
 
 export const cropperAspectRatios = {
-    "0/0": { label: _t("Flexible"), value: 0 },
-    "16/9": { label: "16:9", value: 16 / 9 },
-    "4/3": { label: "4:3", value: 4 / 3 },
-    "1/1": { label: "1:1", value: 1 },
-    "2/3": { label: "2:3", value: 2 / 3 },
+    "0/0": {label: _t("Flexible"), value: 0},
+    "16/9": {label: "16:9", value: 16 / 9},
+    "4/3": {label: "4:3", value: 4 / 3},
+    "1/1": {label: "1:1", value: 1},
+    "2/3": {label: "2:3", value: 2 / 3},
 };
 
 export class ImageCrop extends Component {
     static template = "html_editor.ImageCrop";
     static props = {
-        document: { validate: (p) => p.nodeType === Node.DOCUMENT_NODE },
-        media: { optional: true },
-        onClose: { type: Function, optional: true },
-        onSave: { type: Function, optional: true },
+        document: {validate: (p) => p.nodeType === Node.DOCUMENT_NODE},
+        media: {optional: true},
+        onClose: {type: Function, optional: true},
+        onSave: {type: Function, optional: true},
     };
 
     setup() {
@@ -68,11 +68,13 @@ export class ImageCrop extends Component {
                     this.closeCropper();
                 }
             },
-            { capture: true }
+            {capture: true}
         );
 
         onMounted(() => {
-            this.hasModifiedImageClass = this.media.classList.contains("o_modified_image_to_save");
+            this.hasModifiedImageClass = this.media.classList.contains(
+                "o_modified_image_to_save"
+            );
             if (this.hasModifiedImageClass) {
                 this.media.classList.remove("o_modified_image_to_save");
             }
@@ -105,7 +107,9 @@ export class ImageCrop extends Component {
             this.cropper.reset();
             if (this.aspectRatio !== "0/0") {
                 this.aspectRatio = "0/0";
-                this.cropper.setAspectRatio(cropperAspectRatios[this.aspectRatio].value);
+                this.cropper.setAspectRatio(
+                    cropperAspectRatios[this.aspectRatio].value
+                );
             }
             await this.save();
         }
@@ -117,7 +121,7 @@ export class ImageCrop extends Component {
         }
         // key: ratio identifier, label: displayed to user, value: used by cropper lib
         const src = this.media.getAttribute("src");
-        const data = { ...this.media.dataset };
+        const data = {...this.media.dataset};
         this.initialSrc = src;
         this.aspectRatio = data.aspectRatio || "0/0";
 
@@ -171,7 +175,7 @@ export class ImageCrop extends Component {
         // Overlaying the cropper image over the real image
         let offset = undefined;
         if (!this.media.getClientRects().length) {
-            offset = { top: 0, left: 0 };
+            offset = {top: 0, left: 0};
         } else {
             const rect = this.media.getBoundingClientRect();
             offset = {
@@ -204,7 +208,9 @@ export class ImageCrop extends Component {
         );
 
         this.cropper.element.addEventListener("ready", () => {
-            const cropperMove = this.cropperWrapper.el.querySelector(".cropper-face.cropper-move");
+            const cropperMove = this.cropperWrapper.el.querySelector(
+                ".cropper-face.cropper-move"
+            );
             for (const shape of IMAGE_SHAPES) {
                 if (this.media.classList.contains(shape)) {
                     cropperMove.classList.add(shape);
@@ -214,7 +220,7 @@ export class ImageCrop extends Component {
             }
         });
         this.isCropperActive = true;
-        this.applyButtonRef.el?.focus({ preventScroll: true });
+        this.applyButtonRef.el?.focus({preventScroll: true});
     }
     /**
      * Updates the DOM image with cropped data and associates required
@@ -261,7 +267,7 @@ export class ImageCrop extends Component {
         if (rect.top < viewportTop || viewportBottom - rect.bottom < 100) {
             await scrollTo(this.media, {
                 behavior: "smooth",
-                ...(scrollable && { scrollable }),
+                ...(scrollable && {scrollable}),
             });
         }
     }

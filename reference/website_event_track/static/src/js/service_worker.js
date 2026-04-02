@@ -1,5 +1,5 @@
 /* eslint-env serviceworker */
-/* eslint-disable no-restricted-globals */
+
 /* global idbKeyval */
 importScripts("/website_event_track/static/lib/idb-keyval/idb-keyval.js");
 
@@ -11,19 +11,23 @@ const MAX_CACHE_QUOTA = 0.5;
 // eslint-disable-next-line no-undef
 const CDN_URL = __ODOO_CDN_URL__; // {string|undefined} the cdn_url configured for the website if activated
 
-const { Store, set, get } = idbKeyval;
+const {Store, set, get} = idbKeyval;
 const pendingRequestsQueueName = `${PREFIX}-pending-requests`;
 const cacheName = `${PREFIX}-cache`;
 const syncStore = new Store(`${PREFIX}-sync-db`, `${PREFIX}-sync-store`);
 const cacheStore = new Store(`${PREFIX}-cache-db`, `${PREFIX}-cache-store`);
 const offlineRoute = `${self.registration.scope}/offline`;
 const scopeURL = new URL(self.registration.scope);
-const cdnURL = CDN_URL ? (CDN_URL.startsWith("http") ? new URL(CDN_URL) : new URL(`http:${CDN_URL}`)) : undefined;
+const cdnURL = CDN_URL
+    ? CDN_URL.startsWith("http")
+        ? new URL(CDN_URL)
+        : new URL(`http:${CDN_URL}`)
+    : undefined;
 
 /**
  *
- * @param {string} url
- * @returns {string}
+ * @param {String} url
+ * @returns {String}
  */
 const urlPathname = (url) => new URL(url).pathname;
 
@@ -37,7 +41,7 @@ const canHandleRoutes = (whitelist) => (url) => whitelist.includes(urlPathname(u
 /**
  *
  * @param {Request} request
- * @returns {boolean}
+ * @returns {Boolean}
  */
 const isGET = (request) => request.method === "GET";
 
@@ -55,14 +59,14 @@ const isCachableURL = canHandleRoutes(CACHABLE_ROUTES);
 
 /**
  *
- * @returns {boolean} true if navigator has a quota we can read and we reached it
+ * @returns {Boolean} true if navigator has a quota we can read and we reached it
  */
 const isCacheFull = async () => {
     if (!("storage" in navigator && "estimate" in navigator.storage)) {
         return false;
     }
     try {
-        const { usage, quota } = await navigator.storage.estimate();
+        const {usage, quota} = await navigator.storage.estimate();
         return usage / quota > MAX_CACHE_QUOTA || usage > MAX_CACHE_SIZE;
     } catch (error) {
         console.error(`call to storage.estimate failed`, error);
@@ -72,9 +76,10 @@ const isCacheFull = async () => {
 
 /**
  *
- * @return {Promise}
+ * @returns {Promise}
  */
-const fetchToCacheOfflinePage = () => caches.open(cacheName).then((cache) => cache.add(offlineRoute));
+const fetchToCacheOfflinePage = () =>
+    caches.open(cacheName).then((cache) => cache.add(offlineRoute));
 
 /**
  *
@@ -100,7 +105,7 @@ const serializeRequest = async (req) => ({
  * @returns {Request}
  */
 const deserializeRequest = (requestData) => {
-    const { url } = requestData;
+    const {url} = requestData;
     delete requestData.url;
     return new Request(url, requestData);
 };
@@ -123,7 +128,7 @@ const serializeResponse = async (res) => ({
  * @returns {Response}
  */
 const deserializeResponse = (responseData) => {
-    const { body } = responseData;
+    const {body} = responseData;
     delete responseData.body;
     return new Response(body, responseData);
 };
@@ -131,9 +136,9 @@ const deserializeResponse = (responseData) => {
 /**
  *
  * @param {Object} serializedRequest
- * @returns {string}
+ * @returns {String}
  */
-const buildCacheKey = ({ url, body: { method, params } }) =>
+const buildCacheKey = ({url, body: {method, params}}) =>
     JSON.stringify({
         url,
         method,
@@ -150,7 +155,8 @@ const uniqueRequestId = () => Math.floor(Math.random() * 1000 * 1000 * 1000);
  *
  * @returns {Response}
  */
-const buildEmptyResponse = () => new Response(JSON.stringify({ jsonrpc: "2.0", id: uniqueRequestId(), result: {} }));
+const buildEmptyResponse = () =>
+    new Response(JSON.stringify({jsonrpc: "2.0", id: uniqueRequestId(), result: {}}));
 
 /**
  *
@@ -159,24 +165,31 @@ const buildEmptyResponse = () => new Response(JSON.stringify({ jsonrpc: "2.0", i
  * @returns {Promise}
  */
 const cacheRequest = async (request, response) => {
-    // only attempts to cache local or cdn delivered urls
+    // Only attempts to cache local or cdn delivered urls
     const url = new URL(request.url);
-    if (url.hostname !== scopeURL.hostname && (!cdnURL || url.hostname !== cdnURL.hostname)) {
-        console.error(`ignoring cache for ${request.url} => ${url.hostname}, local: ${scopeURL.hostname}, cdn: ${cdnURL ? cdnURL.hostname : cdnURL}`);
+    if (
+        url.hostname !== scopeURL.hostname &&
+        (!cdnURL || url.hostname !== cdnURL.hostname)
+    ) {
+        console.error(
+            `ignoring cache for ${request.url} => ${url.hostname}, local: ${scopeURL.hostname}, cdn: ${cdnURL ? cdnURL.hostname : cdnURL}`
+        );
         return;
     }
 
-    // don't even attempt to cache:
+    // Don't even attempt to cache:
     //  - error pages (why cache that?)
     //  - non-"basic" response types, which include tracker 1-time opaque requests
     //    that are consuming cache space for no reason (namely due to padding MBs accounted for
     //    each opaque request)
     if (!response || !response.ok || response.type !== "basic") {
-        console.error(`ignoring cache for ${request.url} => ${response.type}, mode: ${request.mode}, cache: ${request.cache}`);
+        console.error(
+            `ignoring cache for ${request.url} => ${response.type}, mode: ${request.mode}, cache: ${request.cache}`
+        );
         return;
     }
 
-    // never blow up cache quota, as it will break things, and the space
+    // Never blow up cache quota, as it will break things, and the space
     // is shared with cookies and localStorage
     if (await isCacheFull()) {
         // TODO: clear some part of the cache to free older/less-relevant content
@@ -199,7 +212,7 @@ const cacheRequest = async (request, response) => {
 /**
  *
  * @param {Request} request
- * @returns {boolean}
+ * @returns {Boolean}
  */
 const isCachableRequest = (request) => isGET(request) || isCachableURL(request.url);
 
@@ -207,14 +220,18 @@ const isCachableRequest = (request) => isGET(request) || isCachableURL(request.u
  *
  * @param request
  * @param requestError
- * @return {boolean}
+ * @returns {Boolean}
  */
 const isOfflineDocumentRequest = (request, requestError) =>
-    request && requestError && requestError.message === 'Failed to fetch' && (
-        (isGET(request) && request.mode === 'navigate' && request.destination === 'document') ||
-        // request.mode = navigate isn't supported in all browsers => check for http header accept:text/html
-        (request.method === 'GET' && request.headers.get('accept').includes('text/html'))
-    );
+    request &&
+    requestError &&
+    requestError.message === "Failed to fetch" &&
+    ((isGET(request) &&
+        request.mode === "navigate" &&
+        request.destination === "document") ||
+        // Request.mode = navigate isn't supported in all browsers => check for http header accept:text/html
+        (request.method === "GET" &&
+            request.headers.get("accept").includes("text/html")));
 
 /**
  *
@@ -242,7 +259,7 @@ const matchCache = async (request) => {
 /**
  *
  * @param {Request} request
- * @param {object} [options]
+ * @param {Object} [options]
  * @param {Boolean} [options.disableTracking] whether adding a header preventing the server to track the request
  * @returns {Promise<Response>}
  */
@@ -251,7 +268,7 @@ const processFetchRequest = async (request, options) => {
     let response;
     try {
         if (options && options.disableTracking) {
-            response = await fetch(request, { headers: { 'X-Disable-Tracking': '1' } });
+            response = await fetch(request, {headers: {"X-Disable-Tracking": "1"}});
         } else {
             response = await fetch(request);
         }
@@ -264,18 +281,28 @@ const processFetchRequest = async (request, options) => {
                 console.warn("An error occurs when reading the cache request", err);
             }
         } else if (isSyncableURL(requestCopy.url)) {
-            const pendingRequests = (await get(pendingRequestsQueueName, syncStore)) || [];
+            const pendingRequests =
+                (await get(pendingRequestsQueueName, syncStore)) || [];
             const serializedRequest = await serializeRequest(requestCopy);
-            await set(pendingRequestsQueueName, [...pendingRequests, serializedRequest], syncStore);
+            await set(
+                pendingRequestsQueueName,
+                [...pendingRequests, serializedRequest],
+                syncStore
+            );
             if (self.registration.sync) {
-                await self.registration.sync.register(pendingRequestsQueueName).catch((err) => {
-                    console.warn("Cannot use BackgroundSync", err);
-                    throw requestError;
-                });
+                await self.registration.sync
+                    .register(pendingRequestsQueueName)
+                    .catch((err) => {
+                        console.warn("Cannot use BackgroundSync", err);
+                        throw requestError;
+                    });
             }
             return buildEmptyResponse();
         } else {
-            console.warn(`Offline ${requestCopy.method} request currently not supported`, requestCopy);
+            console.warn(
+                `Offline ${requestCopy.method} request currently not supported`,
+                requestCopy
+            );
         }
 
         if (!response) {
@@ -314,12 +341,12 @@ const processPendingRequests = async () => {
 const prefetchUrls = async (urls = []) => {
     const cache = await caches.open(cacheName);
     const uniqUrls = new Set(urls);
-    for (let url of uniqUrls) {
+    for (const url of uniqUrls) {
         if (await cache.match(url)) {
             continue;
         }
         try {
-            await processFetchRequest(new Request(url), { disableTracking: true });
+            await processFetchRequest(new Request(url), {disableTracking: true});
         } catch (error) {
             console.error(`fail to prefetch ${url} : ${error}`);
         }
@@ -335,23 +362,25 @@ const prefetchUrls = async (urls = []) => {
  * - prefetch-assets: add {Array} urls to the Cache (if not already present).
  *
  * @param {Object} data
- * @param {string} data.action action's name
+ * @param {String} data.action action's name
  * @param {*} data.* action's parameter(s)
  * @returns {Promise}
  */
 const processMessage = (data) => {
-    const { action } = data;
+    const {action} = data;
     switch (action) {
         case "prefetch-pages":
-            const { urls: pagesUrls } = data;
+            const {urls: pagesUrls} = data;
             // To prevent redirection cached by the browser (cf. 301 Permanently Moved) from breaking the offline cache
             // we also add alternative urls with the following rule:
             // * if original url has a trailing "/", adds url with striped trailing "/"
             // * if original url doesn't end with "/", adds url without the trailing "/"
-            const maybeRedirectedUrl = pagesUrls.map((url) => (url.endsWith("/") ? url.slice(0, -1) : url));
+            const maybeRedirectedUrl = pagesUrls.map((url) =>
+                url.endsWith("/") ? url.slice(0, -1) : url
+            );
             return prefetchUrls([...pagesUrls, ...maybeRedirectedUrl]);
         case "prefetch-assets":
-            const { urls: assetsUrls } = data;
+            const {urls: assetsUrls} = data;
             return prefetchUrls(assetsUrls);
     }
     throw new Error(`Action '${action}' not found.`);
@@ -373,6 +402,6 @@ self.addEventListener("message", (event) => {
 });
 
 // Precache static resources here. Like offline page
-self.addEventListener('install', (event) => {
+self.addEventListener("install", (event) => {
     event.waitUntil(fetchToCacheOfflinePage());
 });

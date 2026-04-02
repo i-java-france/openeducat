@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, tools, _
+from odoo import _, fields, models, tools
 
 
 class LunchCashmoveReport(models.Model):

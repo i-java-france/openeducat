@@ -1,8 +1,8 @@
-import { DateSection } from "@mail/core/common/date_section";
-import { Message } from "@mail/core/common/message";
-import { NotificationMessage } from "./notification_message";
-import { Record } from "@mail/core/common/record";
-import { useVisible } from "@mail/utils/common/hooks";
+import {DateSection} from "@mail/core/common/date_section";
+import {Message} from "@mail/core/common/message";
+import {NotificationMessage} from "./notification_message";
+import {Record} from "@mail/core/common/record";
+import {useVisible} from "@mail/utils/common/hooks";
 
 import {
     Component,
@@ -19,13 +19,13 @@ import {
     useRef,
     useState,
 } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
+import {browser} from "@web/core/browser/browser";
 
-import { _t } from "@web/core/l10n/translation";
-import { Transition } from "@web/core/transition";
-import { Deferred } from "@web/core/utils/concurrency";
-import { useBus, useRefListener, useService } from "@web/core/utils/hooks";
-import { escape } from "@web/core/utils/strings";
+import {_t} from "@web/core/l10n/translation";
+import {Transition} from "@web/core/transition";
+import {Deferred} from "@web/core/utils/concurrency";
+import {useBus, useRefListener, useService} from "@web/core/utils/hooks";
+import {escape} from "@web/core/utils/strings";
 
 export const PRESENT_VIEWPORT_THRESHOLD = 1;
 /**
@@ -40,7 +40,7 @@ export const PRESENT_VIEWPORT_THRESHOLD = 1;
  * @extends {Component<Props, Env>}
  */
 export class Thread extends Component {
-    static components = { Message, NotificationMessage, Transition, DateSection };
+    static components = {Message, NotificationMessage, Transition, DateSection};
     static props = [
         "autofocus?",
         "showDates?",
@@ -132,7 +132,7 @@ export class Thread extends Component {
                     toRaw(this.props.thread).fetchMoreMessages();
                 }
             },
-            { ready: false }
+            {ready: false}
         );
         this.loadNewerState = useVisible(
             "load-newer",
@@ -145,7 +145,7 @@ export class Thread extends Component {
                     toRaw(this.props.thread).fetchMoreMessages("newer");
                 }
             },
-            { ready: false }
+            {ready: false}
         );
         this.presentThresholdState = useVisible("present-treshold", () =>
             this.updateShowJumpPresent()
@@ -157,7 +157,10 @@ export class Thread extends Component {
                     this.root.el.focus();
                 }
             },
-            () => [this.props.autofocus + this.props.thread.autofocus, this.state.mountedAndLoaded]
+            () => [
+                this.props.autofocus + this.props.thread.autofocus,
+                this.state.mountedAndLoaded,
+            ]
         );
         useEffect(
             () => {
@@ -172,7 +175,7 @@ export class Thread extends Component {
         useEffect(
             () => {
                 if (this.props.jumpPresent !== this.lastJumpPresent) {
-                    this.jumpToPresent({ immediate: true });
+                    this.jumpToPresent({immediate: true});
                 }
             },
             () => [this.props.jumpPresent]
@@ -239,8 +242,8 @@ export class Thread extends Component {
             },
             () => [this.props.jumpToNewMessage]
         );
-        useBus(this.env.bus, "MAIL:RELOAD-THREAD", ({ detail }) => {
-            const { model, id } = this.props.thread;
+        useBus(this.env.bus, "MAIL:RELOAD-THREAD", ({detail}) => {
+            const {model, id} = this.props.thread;
             if (detail.model === model && detail.id === id) {
                 toRaw(this.props.thread).fetchNewMessages();
             }
@@ -415,8 +418,10 @@ export class Thread extends Component {
 
     /** @param {import("models").Thread} thread */
     applyScrollContextually(thread) {
-        const olderMessages = thread.oldestPersistentMessage?.id < this.oldestPersistentMessage?.id;
-        const newerMessages = thread.newestPersistentMessage?.id > this.newestPersistentMessage?.id;
+        const olderMessages =
+            thread.oldestPersistentMessage?.id < this.oldestPersistentMessage?.id;
+        const newerMessages =
+            thread.newestPersistentMessage?.id > this.newestPersistentMessage?.id;
         const messagesAtTop =
             (this.props.order === "asc" && olderMessages) ||
             (this.props.order === "desc" && newerMessages);
@@ -440,10 +445,14 @@ export class Thread extends Component {
             thread.scrollTop !== undefined
         ) {
             let value;
-            if (typeof thread.scrollTop === "string" && thread.scrollTop?.includes("bottom")) {
+            if (
+                typeof thread.scrollTop === "string" &&
+                thread.scrollTop?.includes("bottom")
+            ) {
                 value =
                     this.props.order === "asc"
-                        ? this.scrollableRef.el.scrollHeight - this.scrollableRef.el.clientHeight
+                        ? this.scrollableRef.el.scrollHeight -
+                          this.scrollableRef.el.clientHeight
                         : 0;
             } else {
                 value =
@@ -454,7 +463,8 @@ export class Thread extends Component {
                           this.scrollableRef.el.clientHeight;
             }
             if (
-                (this.lastSetValue === undefined || Math.abs(this.lastSetValue - value) > 1) &&
+                (this.lastSetValue === undefined ||
+                    Math.abs(this.lastSetValue - value) > 1) &&
                 !this.isSmoothScrolling
             ) {
                 this.setScroll(value, {
@@ -481,14 +491,16 @@ export class Thread extends Component {
     }
 
     get PRESENT_THRESHOLD() {
-        const threshold = (this.viewportEl?.clientHeight ?? 0) * PRESENT_VIEWPORT_THRESHOLD;
+        const threshold =
+            (this.viewportEl?.clientHeight ?? 0) * PRESENT_VIEWPORT_THRESHOLD;
         return this.state.showJumpPresent ? threshold - 200 : threshold;
     }
 
     updateShowJumpPresent() {
         this.state.showJumpPresent =
             this.visibleState.isVisible &&
-            (this.props.thread.loadNewer || this.presentThresholdState.isVisible === false);
+            (this.props.thread.loadNewer ||
+                this.presentThresholdState.isVisible === false);
     }
 
     onClickLoadOlder() {
@@ -505,7 +517,11 @@ export class Thread extends Component {
         this.state.isFocused = true;
         this.props.thread.isFocusedCounter++;
         const thread = toRaw(this.props.thread);
-        if (thread?.scrollTop === "bottom" && !thread.scrollUnread && !thread.markedAsUnread) {
+        if (
+            thread?.scrollTop === "bottom" &&
+            !thread.scrollUnread &&
+            !thread.markedAsUnread
+        ) {
             thread?.markAsRead();
         }
     }
@@ -516,12 +532,13 @@ export class Thread extends Component {
     }
 
     getMessageClassName(message) {
-        return !message.isNotification && this.messageHighlight?.highlightedMessageId === message.id
+        return !message.isNotification &&
+            this.messageHighlight?.highlightedMessageId === message.id
             ? "o-highlighted bg-view shadow-lg pb-1"
             : "";
     }
 
-    async jumpToPresent({ immediate = false } = {}) {
+    async jumpToPresent({immediate = false} = {}) {
         this.messageHighlight?.clear();
         if (!immediate || this.props.thread.loadNewer) {
             await this.props.thread.loadAround();
@@ -618,7 +635,9 @@ export class Thread extends Component {
         if (!this.messageHighlight?.highlightedMessageId || this.scrollingToHighlight) {
             return;
         }
-        const el = this.refByMessageId.get(this.messageHighlight.highlightedMessageId)?.el;
+        const el = this.refByMessageId.get(
+            this.messageHighlight.highlightedMessageId
+        )?.el;
         if (el) {
             this.scrollingToHighlight = true;
 
@@ -647,7 +666,7 @@ export class Thread extends Component {
         );
     }
 
-    setScroll(value, { smooth = false } = {}) {
+    setScroll(value, {smooth = false} = {}) {
         if (smooth) {
             clearTimeout(this.smoothScrollingTimeout);
             this.isSmoothScrolling = true;
@@ -667,7 +686,10 @@ export class Thread extends Component {
                 this.smoothScrollingTimeout = setTimeout(onSmoothScrollingEnd, 250);
             }
         }
-        this.scrollableRef.el.scrollTo({ behavior: smooth ? "smooth" : undefined, top: value });
+        this.scrollableRef.el.scrollTo({
+            behavior: smooth ? "smooth" : undefined,
+            top: value,
+        });
         this.lastSetValue = value;
         this.messageHighlight?.startupDeferred?.resolve();
         this.saveScroll();
@@ -686,18 +708,18 @@ export class Thread extends Component {
             return channelName;
         }
         if (this.props.thread.channel_type === "channel") {
-            return _t("Welcome to #%(channelName)s!", { channelName });
+            return _t("Welcome to #%(channelName)s!", {channelName});
         }
         return this.props.thread.displayName;
     }
 
     get startMessageSubtitle() {
         if (this.props.thread.parent_channel_id) {
-            const authorName = Object.values(this.store["res.partner"].records).find((partner) =>
-                partner.main_user_id?.eq(this.props.thread.create_uid)
+            const authorName = Object.values(this.store["res.partner"].records).find(
+                (partner) => partner.main_user_id?.eq(this.props.thread.create_uid)
             )?.name;
             if (authorName) {
-                return _t("Started by %(authorName)s", { authorName });
+                return _t("Started by %(authorName)s", {authorName});
             }
         }
         if (this.props.thread.channel_type === "channel") {

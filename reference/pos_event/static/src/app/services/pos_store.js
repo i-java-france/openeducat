@@ -1,6 +1,6 @@
 // Part of Odoo. See LICENSE file for full copyright and licensing details.
-import { patch } from "@web/core/utils/patch";
-import { PosStore } from "@point_of_sale/app/services/pos_store";
+import {patch} from "@web/core/utils/patch";
+import {PosStore} from "@point_of_sale/app/services/pos_store";
 
 patch(PosStore.prototype, {
     async setup() {
@@ -15,7 +15,9 @@ patch(PosStore.prototype, {
                 }
 
                 for (const ticket of ev.event_ticket_ids) {
-                    const eventTicket = this.models["event.event.ticket"].get(ticket.ticket_id);
+                    const eventTicket = this.models["event.event.ticket"].get(
+                        ticket.ticket_id
+                    );
                     if (eventTicket) {
                         eventTicket.seats_available = ticket.seats_available;
                     }
@@ -43,11 +45,15 @@ patch(PosStore.prototype, {
                 continue;
             }
 
-            const lowestPrice = eventTicketWithProduct.sort((a, b) => a.price - b.price)[0];
+            const lowestPrice = eventTicketWithProduct.sort(
+                (a, b) => a.price - b.price
+            )[0];
             const categIds = eventTicketWithProduct.flatMap(
                 (ticket) => ticket.product_id.pos_categ_ids
             );
-            const taxeIds = eventTicketWithProduct.flatMap((ticket) => ticket.product_id.taxes_id);
+            const taxeIds = eventTicketWithProduct.flatMap(
+                (ticket) => ticket.product_id.taxes_id
+            );
             this.models["product.template"].create({
                 id: `dummy_${event.id}`,
                 available_in_pos: true,

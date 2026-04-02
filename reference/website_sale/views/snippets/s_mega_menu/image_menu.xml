@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <template
         id="website_sale.s_mega_menu_menu_image_menu"
         name="eCommerce: Menu - Image - Menu"
@@ -25,8 +24,10 @@
                                 />
                             </h4>
                             <nav class="nav flex-column">
-                                <t t-foreach="category.child_id.filtered('has_published_products')"
-                                   t-as="sub_category">
+                                <t
+                                    t-foreach="category.child_id.filtered('has_published_products')"
+                                    t-as="sub_category"
+                                >
                                     <a
                                         t-att-href="'/shop/category/%s' % sub_category.id"
                                         class="nav-link"
@@ -35,7 +36,10 @@
                                 </t>
                             </nav>
                         </div>
-                        <div t-if="not category_last" class="col-12 col-lg-4 py-2 text-center">
+                        <div
+                            t-if="not category_last"
+                            class="col-12 col-lg-4 py-2 text-center"
+                        >
                             <img
                                 class="img-fluid"
                                 src="/web/image/website.s_mega_menu_menu_image_menu_default_image"
@@ -47,5 +51,4 @@
             </div>
         </section>
     </template>
-
 </odoo>

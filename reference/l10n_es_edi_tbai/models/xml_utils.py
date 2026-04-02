@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import hashlib
@@ -6,8 +5,8 @@ import re
 from base64 import b64encode
 
 from lxml import etree
-from odoo.tools.xml_utils import cleanup_xml_node
 
+from odoo.tools.xml_utils import cleanup_xml_node
 
 # Utility Methods for Basque Country's TicketBAI XML-related stuff.
 
@@ -70,8 +69,7 @@ def get_uri(uri, reference, base_uri):
         if len(results) == 1:
             return canonicalize_node(results[0])
         if len(results) > 1:
-            raise Exception("Ambiguous reference URI {} resolved to {} nodes".format(
-                uri, len(results)))
+            raise Exception(f"Ambiguous reference URI {uri} resolved to {len(results)} nodes")
 
     raise Exception(f"URI {uri!r} not found")
 

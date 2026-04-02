@@ -1,10 +1,11 @@
-import { patchWithCleanup } from "@web/../tests/helpers/utils";
-import { contains } from "@web/../tests/utils";
-import { registry } from "@web/core/registry";
-import { Deferred } from "@web/core/utils/concurrency";
-import { Chatbot } from "@im_livechat/core/common/chatbot_model";
+import {patchWithCleanup} from "@web/../tests/helpers/utils";
+import {contains} from "@web/../tests/utils";
+import {registry} from "@web/core/registry";
+import {Deferred} from "@web/core/utils/concurrency";
+import {Chatbot} from "@im_livechat/core/common/chatbot_model";
 
-const messagesContain = (text) => `.o-livechat-root:shadow .o-mail-Message:contains("${text}")`;
+const messagesContain = (text) =>
+    `.o-livechat-root:shadow .o-mail-Message:contains("${text}")`;
 let chatbotDelayProcessingDef;
 
 registry.category("web_tour.tours").add("website_livechat_chatbot_flow_tour", {
@@ -44,7 +45,8 @@ registry.category("web_tour.tours").add("website_livechat_chatbot_flow_tour", {
                 },
             },
             {
-                trigger: '.o-livechat-root:shadow button:contains("I\'d like to buy the software")',
+                trigger:
+                    '.o-livechat-root:shadow button:contains("I\'d like to buy the software")',
                 run: "click",
             },
             {
@@ -54,7 +56,10 @@ registry.category("web_tour.tours").add("website_livechat_chatbot_flow_tour", {
                 async run() {
                     await contains(".o-mail-Message-actions [title='Add a Reaction']", {
                         target: this.anchor.getRootNode(),
-                        parent: [".o-mail-Message", { text: "I'd like to buy the software" }],
+                        parent: [
+                            ".o-mail-Message",
+                            {text: "I'd like to buy the software"},
+                        ],
                     });
                 },
             },
@@ -90,7 +95,9 @@ registry.category("web_tour.tours").add("website_livechat_chatbot_flow_tour", {
             },
             {
                 // should ask for website now
-                trigger: messagesContain("Would you mind providing your website address?"),
+                trigger: messagesContain(
+                    "Would you mind providing your website address?"
+                ),
             },
             {
                 trigger: ".o-livechat-root:shadow .o-mail-Composer-input",
@@ -195,11 +202,15 @@ registry.category("web_tour.tours").add("website_livechat_chatbot_flow_tour", {
             },
             {
                 // the path should now go towards 'Pricing Question (second part)'
-                trigger: messagesContain("We will reach back to you as soon as we can!"),
+                trigger: messagesContain(
+                    "We will reach back to you as soon as we can!"
+                ),
             },
             {
                 // should ask for website now
-                trigger: messagesContain("Would you mind providing your website address?"),
+                trigger: messagesContain(
+                    "Would you mind providing your website address?"
+                ),
             },
             {
                 trigger: ".o-livechat-root:shadow .o-mail-Composer-input",

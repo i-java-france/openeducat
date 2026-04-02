@@ -1,21 +1,21 @@
-import { defineTestMailModels } from "@test_mail/../tests/test_mail_test_helpers";
-import { beforeEach, describe, test, expect } from "@odoo/hoot";
-import { queryOne, waitUntil } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {defineTestMailModels} from "@test_mail/../tests/test_mail_test_helpers";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {queryOne, waitUntil} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 import {
+    SIZES,
     click,
     contains,
+    dragenterFiles,
+    dropFiles,
     openFormView,
+    patchUiSize,
     registerArchs,
     start,
     startServer,
-    patchUiSize,
-    SIZES,
-    dragenterFiles,
-    dropFiles,
 } from "@mail/../tests/mail_test_helpers";
-import { browser } from "@web/core/browser/browser";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {browser} from "@web/core/browser/browser";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 defineTestMailModels();
@@ -111,7 +111,7 @@ test("Attachment view popout controls test", async () => {
                 </form>`,
     });
 
-    patchUiSize({ size: SIZES.XXL });
+    patchUiSize({size: SIZES.XXL});
     await start();
     await openFormView("mail.test.simple.main.attachment", recordId);
     await click(".o_attachment_preview .o_attachment_control");
@@ -135,19 +135,21 @@ test("Attachment view popout controls test", async () => {
 
 test("Chatter main attachment: can change from non-viewable to viewable", async () => {
     const pyEnv = await startServer();
-    const recordId = pyEnv['mail.test.simple.main.attachment'].create({});
-    const irAttachmentId = pyEnv['ir.attachment'].create({
-        mimetype: 'text/plain',
+    const recordId = pyEnv["mail.test.simple.main.attachment"].create({});
+    const irAttachmentId = pyEnv["ir.attachment"].create({
+        mimetype: "text/plain",
         name: "Blah.txt",
         res_id: recordId,
-        res_model: 'mail.test.simple.main.attachment',
+        res_model: "mail.test.simple.main.attachment",
     });
-    pyEnv['mail.message'].create({
+    pyEnv["mail.message"].create({
         attachment_ids: [irAttachmentId],
-        model: 'mail.test.simple.main.attachment',
+        model: "mail.test.simple.main.attachment",
         res_id: recordId,
     });
-    pyEnv['mail.test.simple.main.attachment'].write([recordId], {message_main_attachment_id : irAttachmentId});
+    pyEnv["mail.test.simple.main.attachment"].write([recordId], {
+        message_main_attachment_id: irAttachmentId,
+    });
 
     registerArchs({
         "mail.test.simple.main.attachment,false,form": `
@@ -159,16 +161,18 @@ test("Chatter main attachment: can change from non-viewable to viewable", async 
                 <chatter/>
             </form>`,
     });
-    patchUiSize({ size: SIZES.XXL });
+    patchUiSize({size: SIZES.XXL});
     await start();
     await openFormView("mail.test.simple.main.attachment", recordId);
 
     // Add a PDF file
-    const pdfFile = new File([new Uint8Array(1)], "text.pdf", { type: "application/pdf" });
+    const pdfFile = new File([new Uint8Array(1)], "text.pdf", {
+        type: "application/pdf",
+    });
     await dragenterFiles(".o-mail-Chatter", [pdfFile]);
     await dropFiles(".o-Dropzone", [pdfFile]);
     await contains(".o_attachment_preview");
-    await contains(".o-mail-Attachment > iframe", { count: 0 }); // The viewer tries to display the text file not the PDF
+    await contains(".o-mail-Attachment > iframe", {count: 0}); // The viewer tries to display the text file not the PDF
 
     // Switch to the PDF file in the viewer
     await click(".o_move_next");
@@ -176,7 +180,7 @@ test("Chatter main attachment: can change from non-viewable to viewable", async 
 });
 
 test.skip("Attachment view / chatter popout across multiple records test", async () => {
-    // skip because test has race conditions: https://runbot.odoo.com/odoo/runbot.build.error/109795
+    // Skip because test has race conditions: https://runbot.odoo.com/odoo/runbot.build.error/109795
     const pyEnv = await startServer();
     const recordIds = pyEnv["mail.test.simple.main.attachment"].create([
         {
@@ -237,7 +241,7 @@ test.skip("Attachment view / chatter popout across multiple records test", async
         await contains(".o_attachment_preview:not(.d-none)");
     }
 
-    patchUiSize({ size: SIZES.XXL });
+    patchUiSize({size: SIZES.XXL});
     await start();
     await openFormView("mail.test.simple.main.attachment", recordIds[0], {
         resIds: recordIds,

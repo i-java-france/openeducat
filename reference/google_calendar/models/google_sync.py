@@ -3,20 +3,21 @@
 import logging
 from contextlib import contextmanager
 from functools import wraps
-from requests import HTTPError
+
 import pytz
 from dateutil.parser import parse
 from markupsafe import Markup
+from requests import HTTPError
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.fields import Domain
 from odoo.modules.registry import Registry
-from odoo.tools import email_normalize
 from odoo.sql_db import BaseCursor
+from odoo.tools import email_normalize
 
-from odoo.addons.google_calendar.utils.google_event import GoogleEvent
-from odoo.addons.google_calendar.utils.google_calendar import GoogleCalendarService
 from odoo.addons.google_account.models.google_service import TIMEOUT
+from odoo.addons.google_calendar.utils.google_calendar import GoogleCalendarService
+from odoo.addons.google_calendar.utils.google_event import GoogleEvent
 
 _logger = logging.getLogger(__name__)
 
@@ -234,7 +235,7 @@ class GoogleCalendarSync(models.AbstractModel):
                 name = event.name
                 # prevent to sync other events
                 self.calendar_event_ids.need_sync = False
-                error_log = "Error while syncing recurrence [{id} - {name} - {rrule}]: ".format(id=self.id, name=self.name, rrule=self.rrule)
+                error_log = f"Error while syncing recurrence [{self.id} - {self.name} - {self.rrule}]: "
 
             # We don't have right access on the event or the request paramaters were bad.
             # https://developers.google.com/calendar/v3/errors#403_forbidden_for_non-organizer

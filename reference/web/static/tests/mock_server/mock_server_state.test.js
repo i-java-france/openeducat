@@ -1,21 +1,21 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { serverState } from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {serverState} from "@web/../tests/web_test_helpers";
 
-import { user } from "@web/core/user";
-import { session } from "@web/session";
+import {user} from "@web/core/user";
+import {session} from "@web/session";
 
 describe.current.tags("headless");
 
 test("default state", () => {
     expect(odoo.debug).toBe("");
-    const s = { ...serverState };
+    const s = {...serverState};
     expect(s).toInclude("view_info");
     delete s.view_info;
     expect(s).toEqual({
-        companies: [{ id: 1, name: "Hermit", currency_id: 1 }],
+        companies: [{id: 1, name: "Hermit", currency_id: 1}],
         currencies: [
-            { id: 1, name: "USD", position: "before", symbol: "$" },
-            { id: 2, name: "EUR", position: "after", symbol: "€" },
+            {id: 1, name: "USD", position: "before", symbol: "$"},
+            {id: 2, name: "EUR", position: "after", symbol: "€"},
         ],
         db: "test",
         debug: "",
@@ -39,7 +39,7 @@ test("default state", () => {
 test("state changes should be reflected on user and session", () => {
     expect(serverState.userId).toBe(7);
     expect(user.userId).toBe(7);
-    expect(session.uid).toBe(undefined); // deleted by `user.js`
+    expect(session.uid).toBe(undefined); // Deleted by `user.js`
 
     serverState.userId = 42;
 

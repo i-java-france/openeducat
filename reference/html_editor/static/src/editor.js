@@ -1,10 +1,13 @@
-import { MAIN_PLUGINS } from "./plugin_sets";
-import { createBaseContainer, SUPPORTED_BASE_CONTAINER_NAMES } from "./utils/base_container";
-import { fillShrunkPhrasingParent, removeClass } from "./utils/dom";
-import { isEmpty } from "./utils/dom_info";
-import { resourceSequenceSymbol, withSequence } from "./utils/resource";
-import { fixInvalidHTML, initElementForEdition } from "./utils/sanitize";
-import { setElementContent } from "@web/core/utils/html";
+import {MAIN_PLUGINS} from "./plugin_sets";
+import {
+    createBaseContainer,
+    SUPPORTED_BASE_CONTAINER_NAMES,
+} from "./utils/base_container";
+import {fillShrunkPhrasingParent, removeClass} from "./utils/dom";
+import {isEmpty} from "./utils/dom_info";
+import {resourceSequenceSymbol, withSequence} from "./utils/resource";
+import {fixInvalidHTML, initElementForEdition} from "./utils/sanitize";
+import {setElementContent} from "@web/core/utils/html";
 
 /** @typedef {import("plugins").EditorResources} EditorResources */
 /** @typedef {import("plugins").GlobalResources} GlobalResources */
@@ -139,7 +142,9 @@ export class Editor {
         }
         editable.setAttribute("contenteditable", true);
         editable.setAttribute("translate", "no");
-        initElementForEdition(editable, { allowInlineAtRoot: !!this.config.allowInlineAtRoot });
+        initElementForEdition(editable, {
+            allowInlineAtRoot: !!this.config.allowInlineAtRoot,
+        });
         editable.classList.add("odoo-editor-editable");
         if (this.config.classList) {
             editable.classList.add(...this.config.classList);
@@ -165,7 +170,11 @@ export class Editor {
 
     preparePlugins() {
         const Plugins = sortPlugins(this.config.Plugins || MAIN_PLUGINS);
-        this.config = Object.assign({}, ...Plugins.map((P) => P.defaultConfig), this.config);
+        this.config = Object.assign(
+            {},
+            ...Plugins.map((P) => P.defaultConfig),
+            this.config
+        );
         this.pluginsMap = new Map();
         for (const P of Plugins) {
             if (P.id === "") {
@@ -181,7 +190,9 @@ export class Editor {
             const exports = {};
             for (const h of P.shared) {
                 if (!(h in plugin)) {
-                    throw new Error(`Missing helper implementation: ${h} in plugin ${P.id}`);
+                    throw new Error(
+                        `Missing helper implementation: ${h} in plugin ${P.id}`
+                    );
                 }
                 exports[h] = plugin[h].bind(plugin);
             }
@@ -238,7 +249,9 @@ export class Editor {
                 .flat()
                 .map((r) => {
                     const isObjectWithSequence =
-                        typeof r === "object" && r !== null && resourceSequenceSymbol in r;
+                        typeof r === "object" &&
+                        r !== null &&
+                        resourceSequenceSymbol in r;
                     return isObjectWithSequence ? r : withSequence(10, r);
                 })
                 .sort((a, b) => a[resourceSequenceSymbol] - b[resourceSequenceSymbol])
@@ -332,7 +345,7 @@ export class Editor {
 
     getElContent() {
         const el = this.editable.cloneNode(true);
-        this.resources["clean_for_save_handlers"].forEach((cb) => cb({ root: el }));
+        this.resources["clean_for_save_handlers"].forEach((cb) => cb({root: el}));
         return el;
     }
 

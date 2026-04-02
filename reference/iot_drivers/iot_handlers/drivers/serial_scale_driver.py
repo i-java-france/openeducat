@@ -2,15 +2,20 @@
 
 import logging
 import re
-import serial
 import threading
 import time
 
+import serial
+
 from odoo import http
+
 from odoo.addons.iot_drivers.controllers.proxy import proxy_drivers
 from odoo.addons.iot_drivers.event_manager import event_manager
-from odoo.addons.iot_drivers.iot_handlers.drivers.serial_base_driver import SerialDriver, SerialProtocol, serial_connection
-
+from odoo.addons.iot_drivers.iot_handlers.drivers.serial_base_driver import (
+    SerialDriver,
+    SerialProtocol,
+    serial_connection,
+)
 
 _logger = logging.getLogger(__name__)
 

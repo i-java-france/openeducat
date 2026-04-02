@@ -1,4 +1,4 @@
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
 
 export function makeAwaitable(dialog, comp, props, options) {
     return new Promise((resolve) => {

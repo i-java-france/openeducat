@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 const requestChatSteps = [
     {
@@ -26,7 +26,8 @@ registry.category("web_tour.tours").add("im_livechat_request_chat_and_send_messa
             run: "press Enter",
         },
         {
-            trigger: ".o-livechat-root:shadow .o-mail-Message:contains('Hello, I need help')",
+            trigger:
+                ".o-livechat-root:shadow .o-mail-Message:contains('Hello, I need help')",
         },
     ],
 });

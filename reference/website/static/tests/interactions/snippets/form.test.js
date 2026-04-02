@@ -1,10 +1,20 @@
-import { setupInteractionWhiteList, startInteractions } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame, clear, click, fill, queryOne, setInputFiles } from "@odoo/hoot-dom";
-import { advanceTime, Deferred } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {
+    animationFrame,
+    clear,
+    click,
+    fill,
+    queryOne,
+    setInputFiles,
+} from "@odoo/hoot-dom";
+import {Deferred, advanceTime} from "@odoo/hoot-mock";
 
-import { contains, onRpc } from "@web/../tests/web_test_helpers";
+import {contains, onRpc} from "@web/../tests/web_test_helpers";
 
 setupInteractionWhiteList(["website.form", "website.post_link"]);
 
@@ -12,7 +22,9 @@ describe.current.tags("interaction_dev");
 
 function checkField(inputEl, isVisible, hasError) {
     const fieldEl = inputEl.closest(".s_website_form_field");
-    isVisible ? expect(fieldEl).not.toHaveClass("d-none") : expect(fieldEl).toHaveClass("d-none");
+    isVisible
+        ? expect(fieldEl).not.toHaveClass("d-none")
+        : expect(fieldEl).toHaveClass("d-none");
     // Inputs required for the model are never disabled.
     if (!fieldEl.matches(".s_website_form_model_required")) {
         isVisible ? expect(inputEl).toBeEnabled() : expect(inputEl).not.toBeEnabled();
@@ -221,7 +233,7 @@ const formWithVisibilityRulesTemplate = /* html */ `
 // TODO Split in distinct tests.
 
 test("form checks fields", async () => {
-    const { core } = await startInteractions(formTemplate);
+    const {core} = await startInteractions(formTemplate);
     expect(core.interactions).toHaveLength(1);
     expect(queryOne("form input[name=name]")).toHaveValue("Mitchell Admin");
     expect(queryOne("form input[name=email_from]")).toHaveValue("");
@@ -268,7 +280,7 @@ test("(name) form checks conditions", async () => {
 test("max file upload limit = 1", async () => {
     const fileUploadForm = createFileUploadForm();
     await startInteractions(fileUploadForm);
-    const file = new File(["fake_file"], "fake_file.pdf", { type: "application/pdf" });
+    const file = new File(["fake_file"], "fake_file.pdf", {type: "application/pdf"});
     await contains(".s_website_form input[type='file']").click();
     await setInputFiles([file]);
     await animationFrame();
@@ -278,7 +290,7 @@ test("max file upload limit = 1", async () => {
 test("max file upload limit > 1", async () => {
     const fileUploadFormMultiple = createFileUploadForm(10);
     await startInteractions(fileUploadFormMultiple);
-    const file = new File(["fake_file"], "fake_file.pdf", { type: "application/pdf" });
+    const file = new File(["fake_file"], "fake_file.pdf", {type: "application/pdf"});
     await contains(".s_website_form input[type='file']").click();
     await setInputFiles([file]);
     await animationFrame();
@@ -421,7 +433,7 @@ test("(rpc) form checks conditions", async () => {
 });
 
 test("form submit result cleaned but not removed on stop", async () => {
-    const { core } = await startInteractions(formTemplate);
+    const {core} = await startInteractions(formTemplate);
     expect(core.interactions).toHaveLength(1);
     expect(queryOne("#s_website_form_result").children.length).toEqual(0);
     await click("a.s_website_form_send");
@@ -431,14 +443,14 @@ test("form submit result cleaned but not removed on stop", async () => {
 });
 
 test("form prefilled conditional", async () => {
-    onRpc("res.users", "read", ({ parent }) => {
+    onRpc("res.users", "read", ({parent}) => {
         const result = parent();
         result[0].phone = "+1-555-5555";
         return result;
     });
 
     // Phone number is only visible if name is filled.
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <div id="wrapwrap">
             <section class="s_website_form pt16 pb16" data-vcss="001" data-snippet="s_website_form" data-name="Form">
                 <div class="container-fluid">

@@ -1,4 +1,4 @@
-import { isBlock } from "@html_editor/utils/blocks";
+import {isBlock} from "@html_editor/utils/blocks";
 import {
     ancestors,
     closestElement,
@@ -7,12 +7,12 @@ import {
     getAdjacentNextSiblings,
     getAdjacentPreviousSiblings,
     getAdjacents,
-    lastLeaf,
     getCommonAncestor,
+    lastLeaf,
 } from "@html_editor/utils/dom_traversal";
-import { describe, expect, getFixture, test } from "@odoo/hoot";
-import { insertTestHtml } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
+import {describe, expect, getFixture, test} from "@odoo/hoot";
+import {insertTestHtml} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
 
 describe("closestElement", () => {
     test("should find the closest element to a text node", () => {
@@ -154,7 +154,9 @@ describe("firstLeaf", () => {
 
 describe("getAdjacentPreviousSiblings", () => {
     test("should find the adjacent previous siblings of a deeply nested node", () => {
-        const [p] = insertTestHtml("<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>");
+        const [p] = insertTestHtml(
+            "<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>"
+        );
         const gh = p.firstChild.childNodes[1].childNodes[2];
         const u = gh.previousSibling;
         const cd = u.previousSibling;
@@ -163,14 +165,18 @@ describe("getAdjacentPreviousSiblings", () => {
     });
 
     test("should find no adjacent previous siblings of a deeply nested node", () => {
-        const [p] = insertTestHtml("<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>");
+        const [p] = insertTestHtml(
+            "<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>"
+        );
         const ij = p.firstChild.childNodes[1].childNodes[3].firstChild;
         const result = getAdjacentPreviousSiblings(ij);
         expect(result).toEqual([]);
     });
 
     test("should find only the adjacent previous siblings of a deeply nested node that are elements", () => {
-        const [p] = insertTestHtml("<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>");
+        const [p] = insertTestHtml(
+            "<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>"
+        );
         const gh = p.firstChild.childNodes[1].childNodes[2];
         const u = gh.previousSibling;
         const result = getAdjacentPreviousSiblings(
@@ -181,16 +187,23 @@ describe("getAdjacentPreviousSiblings", () => {
     });
 
     test("should find only the adjacent previous siblings of a deeply nested node that are text nodes (none)", () => {
-        const [p] = insertTestHtml("<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>");
+        const [p] = insertTestHtml(
+            "<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>"
+        );
         const gh = p.firstChild.childNodes[1].childNodes[2];
-        const result = getAdjacentPreviousSiblings(gh, (node) => node.nodeType === Node.TEXT_NODE);
+        const result = getAdjacentPreviousSiblings(
+            gh,
+            (node) => node.nodeType === Node.TEXT_NODE
+        );
         expect(result).toEqual([]);
     });
 });
 
 describe("getAdjacentNextSiblings", () => {
     test("should find the adjacent next siblings of a deeply nested node", () => {
-        const [p] = insertTestHtml("<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>");
+        const [p] = insertTestHtml(
+            "<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>"
+        );
         const gh = p.firstChild.childNodes[1].childNodes[2];
         const span = gh.nextSibling;
         const kl = span.nextSibling;
@@ -199,31 +212,45 @@ describe("getAdjacentNextSiblings", () => {
     });
 
     test("should find no adjacent next siblings of a deeply nested node", () => {
-        const [p] = insertTestHtml("<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>");
+        const [p] = insertTestHtml(
+            "<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>"
+        );
         const ij = p.firstChild.childNodes[1].childNodes[3].firstChild;
         const result = getAdjacentNextSiblings(ij);
         expect(result).toEqual([]);
     });
 
     test("should find only the adjacent next siblings of a deeply nested node that are elements", () => {
-        const [p] = insertTestHtml("<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>");
+        const [p] = insertTestHtml(
+            "<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>"
+        );
         const gh = p.firstChild.childNodes[1].childNodes[2];
         const span = gh.nextSibling;
-        const result = getAdjacentNextSiblings(gh, (node) => node.nodeType === Node.ELEMENT_NODE);
+        const result = getAdjacentNextSiblings(
+            gh,
+            (node) => node.nodeType === Node.ELEMENT_NODE
+        );
         expect(result).toEqual([span]);
     });
 
     test("should find only the adjacent next siblings of a deeply nested node that are text nodes (none)", () => {
-        const [p] = insertTestHtml("<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>");
+        const [p] = insertTestHtml(
+            "<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>"
+        );
         const gh = p.firstChild.childNodes[1].childNodes[2];
-        const result = getAdjacentNextSiblings(gh, (node) => node.nodeType === Node.TEXT_NODE);
+        const result = getAdjacentNextSiblings(
+            gh,
+            (node) => node.nodeType === Node.TEXT_NODE
+        );
         expect(result).toEqual([]);
     });
 });
 
 describe("getAdjacents", () => {
     test("should find the adjacent siblings of a deeply nested node", () => {
-        const [p] = insertTestHtml("<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>");
+        const [p] = insertTestHtml(
+            "<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>"
+        );
         const gh = p.firstChild.childNodes[1].childNodes[2];
         const u = gh.previousSibling;
         const cd = u.previousSibling;
@@ -234,7 +261,9 @@ describe("getAdjacents", () => {
     });
 
     test("should find no adjacent siblings of a deeply nested node", () => {
-        const [p] = insertTestHtml("<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>");
+        const [p] = insertTestHtml(
+            "<p><b>ab<i>cd<u>ef</u>gh<span>ij</span>kl</i>mn</b>op</p>"
+        );
         const ij = p.firstChild.childNodes[1].childNodes[3].firstChild;
         const result = getAdjacents(ij);
         expect(result).toEqual([ij]);

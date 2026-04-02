@@ -1,7 +1,7 @@
-import { humanNumber } from "@web/core/utils/numbers";
-import { useService } from "@web/core/utils/hooks";
-import { session } from "@web/session";
-import { _t } from "@web/core/l10n/translation";
+import {humanNumber} from "@web/core/utils/numbers";
+import {useService} from "@web/core/utils/hooks";
+import {session} from "@web/session";
+import {_t} from "@web/core/l10n/translation";
 
 export const DEFAULT_MAX_FILE_SIZE = 128 * 1024 * 1024;
 
@@ -17,7 +17,7 @@ export function checkFileSize(fileSize, notificationService) {
         notificationService.add(
             _t(
                 "The selected file (%(size)sB) is larger than the maximum allowed file size (%(maxSize)sB).",
-                { size: humanNumber(fileSize), maxSize: humanNumber(maxUploadSize) }
+                {size: humanNumber(fileSize), maxSize: humanNumber(maxUploadSize)}
             ),
             {
                 type: "danger",
@@ -57,9 +57,11 @@ export function useFileUploader() {
 
 export function resizeBlobImg(blob, params = {}) {
     if (!blob.type || !blob.type.startsWith("image/")) {
-        return Promise.reject(new Error(_t("The file is not an image, resizing is not possible")));
+        return Promise.reject(
+            new Error(_t("The file is not an image, resizing is not possible"))
+        );
     }
-    const { width, height, offsetX, offsetY } = {
+    const {width, height, offsetX, offsetY} = {
         width: 256,
         height: 256,
         offsetX: 0.5,
@@ -91,7 +93,17 @@ export function resizeBlobImg(blob, params = {}) {
                 const dx = Math.round((width - dWidth) * offsetX);
                 const dy = Math.round((height - dHeight) * offsetY);
 
-                ctx.drawImage(img, 0, 0, img.width, img.height, dx, dy, dWidth, dHeight);
+                ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    img.width,
+                    img.height,
+                    dx,
+                    dy,
+                    dWidth,
+                    dHeight
+                );
                 canvas.toBlob(resolve);
             } else {
                 resolve(blob);

@@ -1,5 +1,7 @@
-export function makeWeekColumn({ el, showWeek, weekColumn, weekText }) {
-    const firstRows = el.querySelectorAll(".fc-col-header-cell:nth-child(1), .fc-day:nth-child(1)");
+export function makeWeekColumn({el, showWeek, weekColumn, weekText}) {
+    const firstRows = el.querySelectorAll(
+        ".fc-col-header-cell:nth-child(1), .fc-day:nth-child(1)"
+    );
     for (const element of firstRows) {
         const newElement = document.createElement("th");
         if (element.classList.contains("fc-col-header-cell")) {

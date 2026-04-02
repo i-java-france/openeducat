@@ -7,40 +7,40 @@
       "colNumber": 7,
       "rowNumber": 56,
       "rows": {
-        "6": { "size": 40 },
-        "22": { "size": 40 },
-        "23": { "size": 40 },
-        "24": { "size": 30 },
-        "25": { "size": 30 },
-        "26": { "size": 30 },
-        "27": { "size": 30 },
-        "28": { "size": 30 },
-        "29": { "size": 30 },
-        "30": { "size": 30 },
-        "31": { "size": 30 },
-        "32": { "size": 30 },
-        "33": { "size": 30 },
-        "35": { "size": 40 },
-        "36": { "size": 40 },
-        "37": { "size": 30 },
-        "38": { "size": 30 },
-        "39": { "size": 30 },
-        "40": { "size": 30 },
-        "41": { "size": 30 },
-        "42": { "size": 30 },
-        "43": { "size": 30 },
-        "44": { "size": 30 },
-        "45": { "size": 30 },
-        "46": { "size": 30 }
+        "6": {"size": 40},
+        "22": {"size": 40},
+        "23": {"size": 40},
+        "24": {"size": 30},
+        "25": {"size": 30},
+        "26": {"size": 30},
+        "27": {"size": 30},
+        "28": {"size": 30},
+        "29": {"size": 30},
+        "30": {"size": 30},
+        "31": {"size": 30},
+        "32": {"size": 30},
+        "33": {"size": 30},
+        "35": {"size": 40},
+        "36": {"size": 40},
+        "37": {"size": 30},
+        "38": {"size": 30},
+        "39": {"size": 30},
+        "40": {"size": 30},
+        "41": {"size": 30},
+        "42": {"size": 30},
+        "43": {"size": 30},
+        "44": {"size": 30},
+        "45": {"size": 30},
+        "46": {"size": 30}
       },
       "cols": {
-        "0": { "size": 276 },
-        "1": { "size": 95 },
-        "2": { "size": 100 },
-        "3": { "size": 50 },
-        "4": { "size": 295 },
-        "5": { "size": 85 },
-        "6": { "size": 100 }
+        "0": {"size": 276},
+        "1": {"size": 95},
+        "2": {"size": 100},
+        "3": {"size": 50},
+        "4": {"size": 295},
+        "5": {"size": 85},
+        "6": {"size": 100}
       },
       "merges": [],
       "cells": {
@@ -133,22 +133,22 @@
       },
       "conditionalFormats": [
         {
-          "rule": { "type": "DataBarRule", "color": 15531509, "rangeValues": "C25:C34" },
+          "rule": {"type": "DataBarRule", "color": 15531509, "rangeValues": "C25:C34"},
           "id": "654f3347-970c-4863-93f4-5f554c14c8b0",
           "ranges": ["A25:A34"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 16708338, "rangeValues": "G25:G34" },
+          "rule": {"type": "DataBarRule", "color": 16708338, "rangeValues": "G25:G34"},
           "id": "8c6b3de6-87ef-4fbd-bd19-166ad83a3f63",
           "ranges": ["E25:E34"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 15726335, "rangeValues": "C38:C46" },
+          "rule": {"type": "DataBarRule", "color": 15726335, "rangeValues": "C38:C46"},
           "id": "1e2225c3-23cb-4ee2-953f-6b7c8e9b8356",
           "ranges": ["A38:A46"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 16775149, "rangeValues": "G38:G46" },
+          "rule": {"type": "DataBarRule", "color": 16775149, "rangeValues": "G38:G46"},
           "id": "9c227427-7a05-4464-b5ca-4c89c4123030",
           "ranges": ["E38:E46"]
         }
@@ -161,7 +161,7 @@
           "height": 344,
           "tag": "chart",
           "data": {
-            "title": { "text": "" },
+            "title": {"text": ""},
             "background": "#FFFFFF",
             "legendPosition": "top",
             "metaData": {
@@ -179,21 +179,31 @@
               "orderBy": []
             },
             "type": "odoo_bar",
-            "dataSets": [
-              {},
-              {}
-            ],
+            "dataSets": [{}, {}],
             "verticalAxisPosition": "left",
             "stacked": true,
             "chartId": "6ce637db-4068-457f-91a4-ce83736932ff",
             "fieldMatching": {
-              "54e94f8d-739d-4a02-8205-c25be895720e": { "chain": "date", "type": "date", "offset": 0 },
-              "0e80d79f-8175-422a-bdda-f5e491a6a201": { "chain": "product_id", "type": "many2one" },
-              "e1b40389-7f46-44c0-acee-52033634fc5f": { "chain": "sale_order_id", "type": "many2one" },
-              "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": { "chain": "employee_id", "type": "many2one" }
+              "54e94f8d-739d-4a02-8205-c25be895720e": {
+                "chain": "date",
+                "type": "date",
+                "offset": 0
+              },
+              "0e80d79f-8175-422a-bdda-f5e491a6a201": {
+                "chain": "product_id",
+                "type": "many2one"
+              },
+              "e1b40389-7f46-44c0-acee-52033634fc5f": {
+                "chain": "sale_order_id",
+                "type": "many2one"
+              },
+              "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": {
+                "chain": "employee_id",
+                "type": "many2one"
+              }
             }
           },
-          "offset": { "x": 0, "y": 178 },
+          "offset": {"x": 0, "y": 178},
           "col": 0,
           "row": 0
         },
@@ -206,14 +216,14 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "difference",
-            "title": { "text": "Expenses", "bold": true, "color": "#434343" },
+            "title": {"text": "Expenses", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#EFF6FF",
             "keyValue": "Data!C1",
             "humanize": false,
             "chartId": "34d7af0c-d66d-46f5-9b4f-91a8f26be506"
           },
-          "offset": { "x": 0, "y": 12 },
+          "offset": {"x": 0, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -226,14 +236,14 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "difference",
-            "title": { "text": "To report", "bold": true, "color": "#434343" },
+            "title": {"text": "To report", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!C2",
             "humanize": false,
             "chartId": "64e233df-0643-4205-86c8-d051c45326a4"
           },
-          "offset": { "x": 210, "y": 12 },
+          "offset": {"x": 210, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -246,14 +256,14 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "difference",
-            "title": { "text": "To validate", "bold": true, "color": "#434343" },
+            "title": {"text": "To validate", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!C3",
             "humanize": false,
             "chartId": "62c97109-f819-42a7-929d-e76a1204be62"
           },
-          "offset": { "x": 420, "y": 12 },
+          "offset": {"x": 420, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -266,14 +276,14 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "difference",
-            "title": { "text": "To reimburse", "bold": true, "color": "#434343" },
+            "title": {"text": "To reimburse", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FFF7ED",
             "keyValue": "Data!C4",
             "humanize": false,
             "chartId": "a84056d3-f845-4555-9bd9-3281b8b1c872"
           },
-          "offset": { "x": 629, "y": 12 },
+          "offset": {"x": 629, "y": 12},
           "col": 0,
           "row": 0
         },
@@ -281,7 +291,7 @@
           "id": "a0aa4a67-4762",
           "col": 3,
           "row": 22,
-          "offset": { "x": 48, "y": 7 },
+          "offset": {"x": 48, "y": 7},
           "width": 481,
           "height": 393,
           "tag": "carousel",
@@ -306,14 +316,12 @@
                 },
                 "type": "odoo_treemap",
                 "actionXmlId": "hr_expense.hr_expense_actions_all",
-                "dataSets": [
-                  {}
-                ]
+                "dataSets": [{}]
               }
             },
             "items": [
-              { "type": "chart", "chartId": "8b782675-b8ac" },
-              { "type": "carouselDataView", "title": "Top 10" }
+              {"type": "chart", "chartId": "8b782675-b8ac"},
+              {"type": "carouselDataView", "title": "Top 10"}
             ],
             "title": {
               "text": "Top Categories",
@@ -323,10 +331,22 @@
             },
             "fieldMatching": {
               "8b782675-b8ac": {
-                "54e94f8d-739d-4a02-8205-c25be895720e": { "chain": "date", "type": "date" },
-                "0e80d79f-8175-422a-bdda-f5e491a6a201": { "chain": "product_id", "type": "many2one" },
-                "e1b40389-7f46-44c0-acee-52033634fc5f": { "chain": "sale_order_id", "type": "many2one" },
-                "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": { "chain": "employee_id", "type": "many2one" }
+                "54e94f8d-739d-4a02-8205-c25be895720e": {
+                  "chain": "date",
+                  "type": "date"
+                },
+                "0e80d79f-8175-422a-bdda-f5e491a6a201": {
+                  "chain": "product_id",
+                  "type": "many2one"
+                },
+                "e1b40389-7f46-44c0-acee-52033634fc5f": {
+                  "chain": "sale_order_id",
+                  "type": "many2one"
+                },
+                "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": {
+                  "chain": "employee_id",
+                  "type": "many2one"
+                }
               }
             }
           }
@@ -409,17 +429,17 @@
       "rowNumber": 98,
       "rows": {},
       "cols": {
-        "0": { "size": 117 },
-        "1": { "size": 94 },
-        "2": { "size": 93 },
-        "3": { "size": 147 },
-        "4": { "size": 61 },
-        "5": { "size": 192 },
-        "6": { "size": 175 },
-        "7": { "size": 146 },
-        "8": { "size": 53 },
-        "9": { "size": 105 },
-        "10": { "size": 65 }
+        "0": {"size": 117},
+        "1": {"size": 94},
+        "2": {"size": 93},
+        "3": {"size": 147},
+        "4": {"size": 61},
+        "5": {"size": 192},
+        "6": {"size": 175},
+        "7": {"size": 146},
+        "8": {"size": 53},
+        "9": {"size": 105},
+        "10": {"size": 65}
       },
       "merges": [],
       "cells": {
@@ -436,7 +456,7 @@
         "C3": "=FORMAT.LARGE.NUMBER(B3)",
         "C4": "=FORMAT.LARGE.NUMBER(B4)"
       },
-      "styles": { "C1:C4": 6 },
+      "styles": {"C1:C4": 6},
       "formats": {},
       "borders": {},
       "conditionalFormats": [],
@@ -453,35 +473,35 @@
     }
   ],
   "styles": {
-    "1": { "textColor": "#01666b", "bold": true, "fontSize": 16 },
-    "2": { "textColor": "#434343", "fontSize": 11, "bold": true },
-    "3": { "textColor": "#01666B", "verticalAlign": "middle" },
-    "4": { "textColor": "#434343", "verticalAlign": "middle" },
+    "1": {"textColor": "#01666b", "bold": true, "fontSize": 16},
+    "2": {"textColor": "#434343", "fontSize": 11, "bold": true},
+    "3": {"textColor": "#01666B", "verticalAlign": "middle"},
+    "4": {"textColor": "#434343", "verticalAlign": "middle"},
     "5": {
       "textColor": "#434343",
       "fontSize": 11,
       "bold": true,
       "align": "center"
     },
-    "6": { "fillColor": "#f8f9fa" }
+    "6": {"fillColor": "#f8f9fa"}
   },
   "formats": {},
   "borders": {
     "1": {
-      "bottom": { "style": "thin", "color": "#B7B7B7" }
+      "bottom": {"style": "thin", "color": "#B7B7B7"}
     },
     "2": {
-      "top": { "style": "thin", "color": "#B7B7B7" }
+      "top": {"style": "thin", "color": "#B7B7B7"}
     },
     "3": {
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     },
     "4": {
-      "top": { "style": "thick", "color": "#FFFFFF" },
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "top": {"style": "thick", "color": "#FFFFFF"},
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     },
     "5": {
-      "top": { "style": "thick", "color": "#FFFFFF" }
+      "top": {"style": "thick", "color": "#FFFFFF"}
     }
   },
   "revisionId": "START_REVISION",
@@ -502,15 +522,26 @@
     "1": {
       "type": "ODOO",
       "fieldMatching": {
-        "54e94f8d-739d-4a02-8205-c25be895720e": { "chain": "date", "type": "date", "offset": 0 },
-        "0e80d79f-8175-422a-bdda-f5e491a6a201": { "chain": "product_id", "type": "many2one" },
-        "e1b40389-7f46-44c0-acee-52033634fc5f": { "chain": "sale_order_id", "type": "many2one" },
-        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": { "chain": "employee_id", "type": "many2one" }
+        "54e94f8d-739d-4a02-8205-c25be895720e": {
+          "chain": "date",
+          "type": "date",
+          "offset": 0
+        },
+        "0e80d79f-8175-422a-bdda-f5e491a6a201": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "e1b40389-7f46-44c0-acee-52033634fc5f": {
+          "chain": "sale_order_id",
+          "type": "many2one"
+        },
+        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": {
+          "chain": "employee_id",
+          "type": "many2one"
+        }
       },
       "context": {},
-      "domain": [
-        ["product_id", "!=", false]
-      ],
+      "domain": [["product_id", "!=", false]],
       "id": "1",
       "measures": [
         {
@@ -533,22 +564,31 @@
       },
       "formulaId": "1",
       "columns": [],
-      "rows": [
-        { "fieldName": "product_id" }
-      ]
+      "rows": [{"fieldName": "product_id"}]
     },
     "4": {
       "type": "ODOO",
       "fieldMatching": {
-        "54e94f8d-739d-4a02-8205-c25be895720e": { "chain": "date", "type": "date", "offset": 0 },
-        "0e80d79f-8175-422a-bdda-f5e491a6a201": { "chain": "product_id", "type": "many2one" },
-        "e1b40389-7f46-44c0-acee-52033634fc5f": { "chain": "sale_order_id", "type": "many2one" },
-        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": { "chain": "employee_id", "type": "many2one" }
+        "54e94f8d-739d-4a02-8205-c25be895720e": {
+          "chain": "date",
+          "type": "date",
+          "offset": 0
+        },
+        "0e80d79f-8175-422a-bdda-f5e491a6a201": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "e1b40389-7f46-44c0-acee-52033634fc5f": {
+          "chain": "sale_order_id",
+          "type": "many2one"
+        },
+        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": {
+          "chain": "employee_id",
+          "type": "many2one"
+        }
       },
       "context": {},
-      "domain": [
-        ["employee_id", "!=", false]
-      ],
+      "domain": [["employee_id", "!=", false]],
       "id": "4",
       "measures": [
         {
@@ -571,24 +611,33 @@
       },
       "formulaId": "4",
       "columns": [],
-      "rows": [
-        { "fieldName": "employee_id" }
-      ]
+      "rows": [{"fieldName": "employee_id"}]
     },
     "5": {
       "type": "ODOO",
       "fieldMatching": {
-        "54e94f8d-739d-4a02-8205-c25be895720e": { "chain": "date", "type": "date", "offset": 0 },
-        "0e80d79f-8175-422a-bdda-f5e491a6a201": { "chain": "product_id", "type": "many2one" },
-        "e1b40389-7f46-44c0-acee-52033634fc5f": { "chain": "sale_order_id", "type": "many2one" },
-        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": { "chain": "employee_id", "type": "many2one" }
+        "54e94f8d-739d-4a02-8205-c25be895720e": {
+          "chain": "date",
+          "type": "date",
+          "offset": 0
+        },
+        "0e80d79f-8175-422a-bdda-f5e491a6a201": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "e1b40389-7f46-44c0-acee-52033634fc5f": {
+          "chain": "sale_order_id",
+          "type": "many2one"
+        },
+        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": {
+          "chain": "employee_id",
+          "type": "many2one"
+        }
       },
       "context": {},
       "domain": [],
       "id": "5",
-      "measures": [
-        { "id": "__count", "fieldName": "__count" }
-      ],
+      "measures": [{"id": "__count", "fieldName": "__count"}],
       "model": "hr.expense",
       "name": "KPI - Expenses",
       "formulaId": "5",
@@ -598,19 +647,28 @@
     "6": {
       "type": "ODOO",
       "fieldMatching": {
-        "54e94f8d-739d-4a02-8205-c25be895720e": { "chain": "date", "type": "date", "offset": 0 },
-        "0e80d79f-8175-422a-bdda-f5e491a6a201": { "chain": "product_id", "type": "many2one" },
-        "e1b40389-7f46-44c0-acee-52033634fc5f": { "chain": "sale_order_id", "type": "many2one" },
-        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": { "chain": "employee_id", "type": "many2one" }
+        "54e94f8d-739d-4a02-8205-c25be895720e": {
+          "chain": "date",
+          "type": "date",
+          "offset": 0
+        },
+        "0e80d79f-8175-422a-bdda-f5e491a6a201": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "e1b40389-7f46-44c0-acee-52033634fc5f": {
+          "chain": "sale_order_id",
+          "type": "many2one"
+        },
+        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": {
+          "chain": "employee_id",
+          "type": "many2one"
+        }
       },
       "context": {},
-      "domain": [
-        ["state", "=", "draft"]
-      ],
+      "domain": [["state", "=", "draft"]],
       "id": "6",
-      "measures": [
-        { "id": "total_amount", "fieldName": "total_amount" }
-      ],
+      "measures": [{"id": "total_amount", "fieldName": "total_amount"}],
       "model": "hr.expense",
       "name": "KPI - To report",
       "sortedColumn": {
@@ -625,19 +683,28 @@
     "7": {
       "type": "ODOO",
       "fieldMatching": {
-        "54e94f8d-739d-4a02-8205-c25be895720e": { "chain": "date", "type": "date", "offset": 0 },
-        "0e80d79f-8175-422a-bdda-f5e491a6a201": { "chain": "product_id", "type": "many2one" },
-        "e1b40389-7f46-44c0-acee-52033634fc5f": { "chain": "sale_order_id", "type": "many2one" },
-        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": { "chain": "employee_id", "type": "many2one" }
+        "54e94f8d-739d-4a02-8205-c25be895720e": {
+          "chain": "date",
+          "type": "date",
+          "offset": 0
+        },
+        "0e80d79f-8175-422a-bdda-f5e491a6a201": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "e1b40389-7f46-44c0-acee-52033634fc5f": {
+          "chain": "sale_order_id",
+          "type": "many2one"
+        },
+        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": {
+          "chain": "employee_id",
+          "type": "many2one"
+        }
       },
       "context": {},
-      "domain": [
-        ["state", "=", "reported"]
-      ],
+      "domain": [["state", "=", "reported"]],
       "id": "7",
-      "measures": [
-        { "id": "total_amount", "fieldName": "total_amount" }
-      ],
+      "measures": [{"id": "total_amount", "fieldName": "total_amount"}],
       "model": "hr.expense",
       "name": "KPI - To validate",
       "sortedColumn": {
@@ -652,19 +719,28 @@
     "8": {
       "type": "ODOO",
       "fieldMatching": {
-        "54e94f8d-739d-4a02-8205-c25be895720e": { "chain": "date", "type": "date", "offset": 0 },
-        "0e80d79f-8175-422a-bdda-f5e491a6a201": { "chain": "product_id", "type": "many2one" },
-        "e1b40389-7f46-44c0-acee-52033634fc5f": { "chain": "sale_order_id", "type": "many2one" },
-        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": { "chain": "employee_id", "type": "many2one" }
+        "54e94f8d-739d-4a02-8205-c25be895720e": {
+          "chain": "date",
+          "type": "date",
+          "offset": 0
+        },
+        "0e80d79f-8175-422a-bdda-f5e491a6a201": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "e1b40389-7f46-44c0-acee-52033634fc5f": {
+          "chain": "sale_order_id",
+          "type": "many2one"
+        },
+        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": {
+          "chain": "employee_id",
+          "type": "many2one"
+        }
       },
       "context": {},
-      "domain": [
-        ["state", "=", "approved"]
-      ],
+      "domain": [["state", "=", "approved"]],
       "id": "8",
-      "measures": [
-        { "id": "total_amount", "fieldName": "total_amount" }
-      ],
+      "measures": [{"id": "total_amount", "fieldName": "total_amount"}],
       "model": "hr.expense",
       "name": "KPI - To reimburse",
       "sortedColumn": {
@@ -679,10 +755,23 @@
     "9": {
       "type": "ODOO",
       "fieldMatching": {
-        "0e80d79f-8175-422a-bdda-f5e491a6a201": { "chain": "product_id", "type": "many2one" },
-        "e1b40389-7f46-44c0-acee-52033634fc5f": { "chain": "sale_order_id", "type": "many2one" },
-        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": { "chain": "employee_id", "type": "many2one" },
-        "54e94f8d-739d-4a02-8205-c25be895720e": { "chain": "date", "type": "date", "offset": 0 }
+        "0e80d79f-8175-422a-bdda-f5e491a6a201": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "e1b40389-7f46-44c0-acee-52033634fc5f": {
+          "chain": "sale_order_id",
+          "type": "many2one"
+        },
+        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": {
+          "chain": "employee_id",
+          "type": "many2one"
+        },
+        "54e94f8d-739d-4a02-8205-c25be895720e": {
+          "chain": "date",
+          "type": "date",
+          "offset": 0
+        }
       },
       "context": {
         "params": {
@@ -693,9 +782,7 @@
           "cids": 1
         }
       },
-      "domain": [
-        ["sale_order_id", "!=", false]
-      ],
+      "domain": [["sale_order_id", "!=", false]],
       "id": "9",
       "measures": [
         {
@@ -718,9 +805,7 @@
       },
       "formulaId": "9",
       "columns": [],
-      "rows": [
-        { "fieldName": "sale_order_id" }
-      ]
+      "rows": [{"fieldName": "sale_order_id"}]
     }
   },
   "pivotNextId": 10,
@@ -770,16 +855,27 @@
       "domain": [],
       "model": "hr.expense",
       "context": {},
-      "orderBy": [
-        { "name": "total_amount", "asc": false }
-      ],
+      "orderBy": [{"name": "total_amount", "asc": false}],
       "id": "1",
       "name": "Top Expenses",
       "fieldMatching": {
-        "54e94f8d-739d-4a02-8205-c25be895720e": { "chain": "date", "type": "date", "offset": 0 },
-        "0e80d79f-8175-422a-bdda-f5e491a6a201": { "chain": "product_id", "type": "many2one" },
-        "e1b40389-7f46-44c0-acee-52033634fc5f": { "chain": "sale_order_id", "type": "many2one" },
-        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": { "chain": "employee_id", "type": "many2one" }
+        "54e94f8d-739d-4a02-8205-c25be895720e": {
+          "chain": "date",
+          "type": "date",
+          "offset": 0
+        },
+        "0e80d79f-8175-422a-bdda-f5e491a6a201": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "e1b40389-7f46-44c0-acee-52033634fc5f": {
+          "chain": "sale_order_id",
+          "type": "many2one"
+        },
+        "88fbcc54-dcb5-42ec-86e9-1676c4c73c6e": {
+          "chain": "employee_id",
+          "type": "many2one"
+        }
       }
     }
   },

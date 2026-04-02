@@ -26,7 +26,7 @@ export function jsToPyLocale(locale) {
         return "";
     }
     try {
-        var { language, script, region } = new Intl.Locale(locale);
+        var {language, script, region} = new Intl.Locale(locale);
         // new Intl.Locale("tl-PH") produces fil-PH, which one might not expect
         if (language === "fil") {
             language = "tl";

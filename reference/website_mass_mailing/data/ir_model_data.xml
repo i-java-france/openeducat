@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
         <record id="mass_mailing.model_mailing_contact" model="ir.model">
@@ -9,7 +9,8 @@
 
         <function model="ir.model.fields" name="formbuilder_whitelist">
             <value>mailing.contact</value>
-            <value eval="[
+            <value
+                eval="[
                 'name',
                 'first_name',
                 'last_name',
@@ -18,7 +19,8 @@
                 'list_ids',
                 'country_id',
                 'tag_ids',
-            ]"/>
+            ]"
+            />
         </function>
     </data>
 </odoo>

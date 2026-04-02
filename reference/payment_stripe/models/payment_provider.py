@@ -15,7 +15,6 @@ from odoo.addons.payment_stripe import utils as stripe_utils
 from odoo.addons.payment_stripe.controllers.main import StripeController
 from odoo.addons.payment_stripe.controllers.onboarding import OnboardingController
 
-
 _logger = get_payment_logger(__name__, const.SENSITIVE_KEYS)
 
 

@@ -1,6 +1,6 @@
-import { test, expect } from "@odoo/hoot";
-import { mountView, models, defineModels } from "@web/../tests/web_test_helpers";
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {defineModels, models, mountView} from "@web/../tests/web_test_helpers";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
 
 class HrEmployee extends models.ServerModel {
     _name = "hr.employee";
@@ -31,6 +31,9 @@ test("Show Time Off before Work Location", async () => {
     });
     expect("small.fa-building").toHaveCount(0);
     expect("small.fa-plane").toBeVisible();
-    expect("div.o_field_hr_presence_status>div").toHaveAttribute("title", "On leave, back on Jan 6, 2025");
+    expect("div.o_field_hr_presence_status>div").toHaveAttribute(
+        "title",
+        "On leave, back on Jan 6, 2025"
+    );
     expect("div.o_field_hr_presence_status>div").toHaveClass("btn-outline-warning");
 });

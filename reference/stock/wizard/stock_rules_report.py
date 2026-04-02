@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
@@ -16,7 +15,7 @@ class StockRulesReport(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        res = super(StockRulesReport, self).default_get(fields)
+        res = super().default_get(fields)
         product_tmpl_id = self.env['product.template']
         if 'product_id' in fields:
             if self.env.context.get('default_product_id'):

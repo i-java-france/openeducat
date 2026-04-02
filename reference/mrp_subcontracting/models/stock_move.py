@@ -2,9 +2,8 @@
 
 from collections import defaultdict
 
-from odoo import fields, models, api, _
+from odoo import _, api, fields, models
 from odoo.exceptions import AccessError
-from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 from odoo.tools.misc import OrderedSet
 
 
@@ -48,7 +47,7 @@ class StockMove(models.Model):
     def copy_data(self, default=None):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
-        for move, vals in zip(self, vals_list):
+        for move, vals in zip(self, vals_list, strict=False):
             if 'location_id' in default or not move.is_subcontract:
                 continue
             vals['location_id'] = move.picking_id.location_id.id
@@ -185,7 +184,7 @@ class StockMove(models.Model):
         return self.filtered(lambda m: m.is_subcontract).move_orig_ids.production_id
 
     def _prepare_move_split_vals(self, qty):
-        vals = super(StockMove, self)._prepare_move_split_vals(qty)
+        vals = super()._prepare_move_split_vals(qty)
         vals['location_id'] = self.location_id.id
         return vals
 
@@ -270,7 +269,7 @@ class StockMove(models.Model):
                         production_to_split: [production_to_split.product_qty] + list(mos_to_create.values())
                     }, cancel_remaining_qty=True)[1:]
                     mos_to_assign |= new_mos
-                    for mo, lot_id in zip(new_mos, mos_to_create.keys()):
+                    for mo, lot_id in zip(new_mos, mos_to_create.keys(), strict=False):
                         mo.lot_producing_ids = lot_id
 
                 # 3. Delete 'orphan' MOs with lot not linked to any move line

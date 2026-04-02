@@ -1,11 +1,11 @@
-import { _t } from "@web/core/l10n/translation";
-import { browser } from "@web/core/browser/browser";
-import { useService } from "@web/core/utils/hooks";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { session } from "@web/session";
-import { Component } from "@odoo/owl";
-import { isHTTPSorNakedDomainRedirection } from "./utils";
+import {_t} from "@web/core/l10n/translation";
+import {browser} from "@web/core/browser/browser";
+import {useService} from "@web/core/utils/hooks";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {session} from "@web/session";
+import {Component} from "@odoo/owl";
+import {isHTTPSorNakedDomainRedirection} from "./utils";
 
 export class WebsiteSwitcherSystrayItem extends Component {
     static template = "website.WebsiteSwitcherSystrayItem";
@@ -32,7 +32,9 @@ export class WebsiteSwitcherSystrayItem extends Component {
                 website.domain
                     ? {}
                     : {
-                          "data-tooltip": _t("This website does not have a domain configured."),
+                          "data-tooltip": _t(
+                              "This website does not have a domain configured."
+                          ),
                           "data-tooltip-position": "left",
                       }
             ),
@@ -40,10 +42,13 @@ export class WebsiteSwitcherSystrayItem extends Component {
                 if (
                     !session.website_bypass_domain_redirect && // Used by the Odoo support (bugs to be expected)
                     website.domain &&
-                    !isHTTPSorNakedDomainRedirection(website.domain, window.location.origin)
+                    !isHTTPSorNakedDomainRedirection(
+                        website.domain,
+                        window.location.origin
+                    )
                 ) {
                     const {
-                        location: { pathname, search, hash },
+                        location: {pathname, search, hash},
                     } = this.websiteService.contentWindow;
                     const path = pathname + search + hash;
                     // Automatically converts Unicode domains (e.g. düsseldorf.com) to

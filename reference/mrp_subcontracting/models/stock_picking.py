@@ -1,13 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from collections import defaultdict
 from datetime import timedelta
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError
-from odoo.fields import Command
-from odoo.tools.float_utils import float_compare
 from dateutil.relativedelta import relativedelta
+
+from odoo import _, api, fields, models
+from odoo.fields import Command
 
 
 class StockPicking(models.Model):
@@ -43,7 +41,7 @@ class StockPicking(models.Model):
     # Action methods
     # -------------------------------------------------------------------------
     def _action_done(self):
-        res = super(StockPicking, self)._action_done()
+        res = super()._action_done()
         for picking in self:
             productions_to_done = picking._get_subcontract_production().sudo()
             productions_to_done.button_mark_done()
@@ -171,7 +169,7 @@ class StockPicking(models.Model):
             vals_list, moves = group
             grouped_mo = self.env['mrp.production'].with_company(company).create(vals_list)
             grouped_mo.with_context(self._get_subcontract_mo_confirmation_ctx()).action_confirm()
-            for mo, move in zip(grouped_mo, moves):
+            for mo, move in zip(grouped_mo, moves, strict=False):
                 mo.date_finished = move.date
                 finished_move = mo.move_finished_ids.filtered(lambda m: m.product_id == move.product_id)
                 finished_move.move_dest_ids = [Command.link(move.id)]

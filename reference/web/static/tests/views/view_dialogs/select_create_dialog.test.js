@@ -1,11 +1,11 @@
-import { renderToMarkup } from "@web/core/utils/render";
-import { useSetupAction } from "@web/search/action_hook";
-import { listView } from "@web/views/list/list_view";
-import { kanbanView } from "@web/views/kanban/kanban_view";
-import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog";
-import { WebClient } from "@web/webclient/webclient";
+import {renderToMarkup} from "@web/core/utils/render";
+import {useSetupAction} from "@web/search/action_hook";
+import {listView} from "@web/views/list/list_view";
+import {kanbanView} from "@web/views/kanban/kanban_view";
+import {SelectCreateDialog} from "@web/views/view_dialogs/select_create_dialog";
+import {WebClient} from "@web/webclient/webclient";
 
-import { xml } from "@odoo/owl";
+import {xml} from "@odoo/owl";
 
 import {
     clickModalButton,
@@ -15,8 +15,8 @@ import {
     editFavoriteName,
     fields,
     getService,
-    models,
     mockService,
+    models,
     mountView,
     mountWithCleanup,
     onRpc,
@@ -28,25 +28,25 @@ import {
     toggleSearchBarMenu,
 } from "@web/../tests/web_test_helpers";
 
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { click, queryOne } from "@odoo/hoot-dom";
-import { animationFrame, runAllTimers } from "@odoo/hoot-mock";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {click, queryOne} from "@odoo/hoot-dom";
+import {animationFrame, runAllTimers} from "@odoo/hoot-mock";
 
 class Partner extends models.Model {
-    name = fields.Char({ string: "Displayed name" });
-    foo = fields.Char({ string: "Foo" });
-    bar = fields.Boolean({ string: "Bar" });
-    instrument = fields.Many2one({ string: "Instrument", relation: "instrument" });
+    name = fields.Char({string: "Displayed name"});
+    foo = fields.Char({string: "Foo"});
+    bar = fields.Boolean({string: "Bar"});
+    instrument = fields.Many2one({string: "Instrument", relation: "instrument"});
 
     _records = [
-        { id: 1, foo: "blip", name: "blipblip", bar: true },
-        { id: 2, foo: "ta tata ta ta", name: "macgyver", bar: false },
-        { id: 3, foo: "piou piou", name: "Jack O'Neill", bar: true },
+        {id: 1, foo: "blip", name: "blipblip", bar: true},
+        {id: 2, foo: "ta tata ta ta", name: "macgyver", bar: false},
+        {id: 3, foo: "piou piou", name: "Jack O'Neill", bar: true},
     ];
 }
 
 class Instrument extends models.Model {
-    name = fields.Char({ string: "name" });
+    name = fields.Char({string: "name"});
     badassery = fields.Many2many({
         string: "level",
         relation: "badassery",
@@ -55,22 +55,22 @@ class Instrument extends models.Model {
 }
 
 class Badassery extends models.Model {
-    level = fields.Char({ string: "level" });
+    level = fields.Char({string: "level"});
 
-    _records = [{ id: 1, level: "Awsome" }];
+    _records = [{id: 1, level: "Awsome"}];
 }
 
 class Product extends models.Model {
-    name = fields.Char({ string: "name" });
-    partner = fields.One2many({ string: "Doors", relation: "partner" });
+    name = fields.Char({string: "name"});
+    partner = fields.One2many({string: "Doors", relation: "partner"});
 
-    _records = [{ id: 1, name: "The end" }];
+    _records = [{id: 1, name: "The end"}];
 }
 
 class SaleOrderLine extends models.Model {
     _name = "sale_order_line";
 
-    product_id = fields.Many2one({ string: "product_id", relation: "product" });
+    product_id = fields.Many2one({string: "product_id", relation: "product"});
     linked_sale_order_line = fields.Many2many({
         string: "linked_sale_order_line",
         relation: "sale_order_line",
@@ -84,13 +84,13 @@ beforeEach(() => onRpc("has_group", () => true));
 test.tags("desktop");
 test("SelectCreateDialog use domain, group_by and search default on desktop", async () => {
     expect.assertions(4);
-    Partner._views["list"] = /* xml */ `
+    Partner._views.list = /* xml */ `
         <list string="Partner">
             <field name="name"/>
             <field name="foo"/>
         </list>
     `;
-    Partner._views["search"] = /* xml */ `
+    Partner._views.search = /* xml */ `
         <search>
             <field name="foo" filter_domain="[('name','ilike',self), ('foo','ilike',self)]"/>
             <group expand="0" string="Group By">
@@ -99,7 +99,7 @@ test("SelectCreateDialog use domain, group_by and search default on desktop", as
         </search>
     `;
     let search = 0;
-    onRpc("web_read_group", ({ kwargs }) => {
+    onRpc("web_read_group", ({kwargs}) => {
         expect(kwargs.domain).toEqual([
             "&",
             ["name", "like", "a"],
@@ -109,7 +109,7 @@ test("SelectCreateDialog use domain, group_by and search default on desktop", as
         ]);
         expect(kwargs.groupby).toEqual(["bar"]);
     });
-    onRpc("web_search_read", ({ kwargs }) => {
+    onRpc("web_search_read", ({kwargs}) => {
         if (search === 0) {
             expect(kwargs).toMatchObject(
                 {
@@ -120,7 +120,7 @@ test("SelectCreateDialog use domain, group_by and search default on desktop", as
                         ["name", "ilike", "piou"],
                         ["foo", "ilike", "piou"],
                     ],
-                    specification: { name: {}, foo: {} },
+                    specification: {name: {}, foo: {}},
                     limit: 80,
                     offset: 0,
                     order: "",
@@ -134,7 +134,7 @@ test("SelectCreateDialog use domain, group_by and search default on desktop", as
             expect(kwargs).toMatchObject(
                 {
                     domain: [["name", "like", "a"]],
-                    specification: { name: {}, foo: {} },
+                    specification: {name: {}, foo: {}},
                     limit: 80,
                     offset: 0,
                     order: "",
@@ -165,7 +165,7 @@ test("SelectCreateDialog use domain, group_by and search default on desktop", as
 test.tags("mobile");
 test("SelectCreateDialog use domain, group_by and search default on mobile", async () => {
     expect.assertions(4);
-    Partner._views["search"] = /* xml */ `
+    Partner._views.search = /* xml */ `
         <search>
             <field name="foo" filter_domain="[('name','ilike',self), ('foo','ilike',self)]"/>
             <group expand="0" string="Group By">
@@ -173,11 +173,10 @@ test("SelectCreateDialog use domain, group_by and search default on mobile", asy
             </group>
         </search>
     `;
-    Partner._views[
-        "kanban"
-    ] = /* xml */ `<kanban><templates><t t-name="card"><field name="name"/><field name="foo"/></t></templates></kanban>`;
+    Partner._views.kanban =
+        /* Xml */ `<kanban><templates><t t-name="card"><field name="name"/><field name="foo"/></t></templates></kanban>`;
     let search = 0;
-    onRpc("web_read_group", ({ kwargs }) => {
+    onRpc("web_read_group", ({kwargs}) => {
         expect(kwargs.domain).toEqual([
             "&",
             ["name", "like", "a"],
@@ -187,7 +186,7 @@ test("SelectCreateDialog use domain, group_by and search default on mobile", asy
         ]);
         expect(kwargs.groupby).toEqual(["bar"]);
     });
-    onRpc("web_search_read", ({ kwargs }) => {
+    onRpc("web_search_read", ({kwargs}) => {
         if (search === 0) {
             expect(kwargs).toMatchObject(
                 {
@@ -198,25 +197,25 @@ test("SelectCreateDialog use domain, group_by and search default on mobile", asy
                         ["name", "ilike", "piou"],
                         ["foo", "ilike", "piou"],
                     ],
-                    specification: { name: {}, foo: {} },
+                    specification: {name: {}, foo: {}},
                     limit: 40,
                     offset: 0,
                     order: "",
                     count_limit: 10001,
                 },
-                { message: "should search with the complete domain (domain + search)" }
+                {message: "should search with the complete domain (domain + search)"}
             );
         } else if (search === 1) {
             expect(kwargs).toMatchObject(
                 {
                     domain: [["name", "like", "a"]],
-                    specification: { name: {}, foo: {} },
+                    specification: {name: {}, foo: {}},
                     limit: 40,
                     offset: 0,
                     order: "",
                     count_limit: 10001,
                 },
-                { message: "should search with the domain" }
+                {message: "should search with the domain"}
             );
         }
         search++;
@@ -239,17 +238,16 @@ test("SelectCreateDialog use domain, group_by and search default on mobile", asy
 test("SelectCreateDialog correctly evaluates domains", async () => {
     expect.assertions(1);
 
-    Partner._views["list"] = /* xml */ `
+    Partner._views.list = /* xml */ `
         <list string="Partner">
             <field name="name"/>
             <field name="foo"/>
         </list>
     `;
-    Partner._views["search"] = /* xml */ `<search><field name="foo"/></search>`;
-    Partner._views[
-        "kanban"
-    ] = /* xml */ `<kanban><templates><t t-name="card"><field name="name"/><field name="foo"/></t></templates></kanban>`;
-    onRpc("web_search_read", ({ kwargs }) => {
+    Partner._views.search = /* xml */ `<search><field name="foo"/></search>`;
+    Partner._views.kanban =
+        /* Xml */ `<kanban><templates><t t-name="card"><field name="name"/><field name="foo"/></t></templates></kanban>`;
+    onRpc("web_search_read", ({kwargs}) => {
         expect(kwargs.domain).toEqual([["id", "=", 2]], {
             message: "should have correctly evaluated the domain",
         });
@@ -266,7 +264,7 @@ test("SelectCreateDialog correctly evaluates domains", async () => {
 test.tags("desktop");
 test("SelectCreateDialog list view is readonly", async () => {
     Partner._fields.sequence = fields.Integer();
-    Partner._views["list"] = /* xml */ `
+    Partner._views.list = /* xml */ `
         <list string="Partner" editable="bottom" multi_edit="1">
             <field name="sequence" widget="handle"/>
             <field name="name"/>
@@ -280,10 +278,10 @@ test("SelectCreateDialog list view is readonly", async () => {
         resModel: "partner",
     });
     await animationFrame();
-    // select first row
+    // Select first row
     await contains(".o_list_view tbody tr td:first").click();
     expect(".o_data_row_selected").toHaveCount(1);
-    // click on it to see if the list is editable
+    // Click on it to see if the list is editable
     await contains(".o_list_view tbody tr:first .o_list_char").click();
     expect(".o_data_row_selected").toHaveCount(0);
     expect(".o_selected_row").toHaveCount(0);
@@ -330,13 +328,13 @@ test.tags("desktop");
 test("SelectCreateDialog cascade x2many in create mode on desktop", async () => {
     expect.assertions(5);
 
-    Partner._views["form"] = /* xml */ `
+    Partner._views.form = /* xml */ `
         <form>
             <field name="name"/>
             <field name="instrument" widget="one2many" mode="list"/>
         </form>
     `;
-    Instrument._views["form"] = /* xml */ `
+    Instrument._views.form = /* xml */ `
         <form>
             <field name="name"/>
             <field name="badassery">
@@ -346,18 +344,19 @@ test("SelectCreateDialog cascade x2many in create mode on desktop", async () => 
             </field>
         </form>
     `;
-    Badassery._views["list"] = /* xml */ `<list><field name="level"/></list>`;
-    Badassery._views["search"] = /* xml */ `<search><field name="level"/></search>`;
+    Badassery._views.list = /* xml */ `<list><field name="level"/></list>`;
+    Badassery._views.search = /* xml */ `<search><field name="level"/></search>`;
 
     onRpc(["partner", "instrument"], "get_formview_id", () => false);
-    onRpc("instrument", "web_save", ({ args }) => {
+    onRpc("instrument", "web_save", ({args}) => {
         expect(args[1]).toEqual(
-            { badassery: [[4, 1]], name: "ABC" },
+            {badassery: [[4, 1]], name: "ABC"},
             {
-                message: "The method create should have been called with the right arguments",
+                message:
+                    "The method create should have been called with the right arguments",
             }
         );
-        return [{ id: 90 }];
+        return [{id: 90}];
     });
 
     await mountView({
@@ -378,7 +377,9 @@ test("SelectCreateDialog cascade x2many in create mode on desktop", async () => 
     });
 
     await contains(".o_field_x2many_list_row_add a").click();
-    await contains(".o_field_widget[name=instrument] input").edit("ABC", { confirm: false });
+    await contains(".o_field_widget[name=instrument] input").edit("ABC", {
+        confirm: false,
+    });
     await runAllTimers();
     await contains(
         `[name="instrument"] .dropdown .dropdown-menu li:contains("Create and edit...")`
@@ -391,26 +392,26 @@ test("SelectCreateDialog cascade x2many in create mode on desktop", async () => 
     expect(".modal .modal-lg").toHaveCount(2);
 
     await contains(".modal .o_data_row input[type=checkbox]").check();
-    await clickModalButton({ text: "Select" });
+    await clickModalButton({text: "Select"});
 
     expect(".modal .modal-lg").toHaveCount(1);
     expect(".modal .o_data_cell").toHaveText("Awsome");
 
-    // click on modal save button
-    await clickSave({ index: 1 });
+    // Click on modal save button
+    await clickSave({index: 1});
 });
 
 test.tags("mobile");
 test("SelectCreateDialog cascade x2many in create mode on mobile", async () => {
     expect.assertions(5);
 
-    Partner._views["form"] = /* xml */ `
+    Partner._views.form = /* xml */ `
         <form>
             <field name="name"/>
             <field name="instrument" widget="one2many" mode="list"/>
         </form>
     `;
-    Instrument._views["form"] = /* xml */ `
+    Instrument._views.form = /* xml */ `
         <form>
             <field name="name"/>
             <field name="badassery">
@@ -420,22 +421,23 @@ test("SelectCreateDialog cascade x2many in create mode on mobile", async () => {
             </field>
         </form>
     `;
-    Instrument._views["search"] = /* xml */ `<search/>`;
-    Instrument._views[
-        "kanban"
-    ] = /* xml */ `<kanban><templates><t t-name="card"><field name="name"/></t></templates></kanban>`;
-    Badassery._views["search"] = /* xml */ `<search/>`;
-    Badassery._views[
-        "kanban"
-    ] = /* xml */ `<kanban><templates><t t-name="card"><field name="level"/></t></templates></kanban>`;
+    Instrument._views.search = /* xml */ `<search/>`;
+    Instrument._views.kanban =
+        /* Xml */ `<kanban><templates><t t-name="card"><field name="name"/></t></templates></kanban>`;
+    Badassery._views.search = /* xml */ `<search/>`;
+    Badassery._views.kanban =
+        /* Xml */ `<kanban><templates><t t-name="card"><field name="level"/></t></templates></kanban>`;
 
     onRpc(["partner", "instrument"], "get_formview_id", () => false);
-    onRpc("instrument", "web_save", ({ args }) => {
+    onRpc("instrument", "web_save", ({args}) => {
         expect(args[1]).toEqual(
-            { badassery: [[4, 1]], name: "ABC" },
-            { message: "The method create should have been called with the right arguments" }
+            {badassery: [[4, 1]], name: "ABC"},
+            {
+                message:
+                    "The method create should have been called with the right arguments",
+            }
         );
-        return [{ id: 90 }];
+        return [{id: 90}];
     });
     await mountView({
         type: "form",
@@ -474,64 +476,65 @@ test("SelectCreateDialog cascade x2many in create mode on mobile", async () => {
     expect(".modal .modal-lg").toHaveCount(2);
     expect(".modal .o_data_cell").toHaveText("Awsome");
 
-    // click on modal save button
-    await clickSave({ index: 1 });
+    // Click on modal save button
+    await clickSave({index: 1});
 });
 
 test.tags("desktop");
 test("SelectCreateDialog: save current search on desktop", async () => {
     expect.assertions(5);
-    Partner._views["list"] = /* xml */ `<list><field name="name"/> </list>`;
-    Partner._views[
-        "search"
-    ] = /* xml */ `<search><filter name="bar" help="Bar" domain="[('bar', '=', True)]"/></search>`;
+    Partner._views.list = /* xml */ `<list><field name="name"/> </list>`;
+    Partner._views.search =
+        /* Xml */ `<search><filter name="bar" help="Bar" domain="[('bar', '=', True)]"/></search>`;
 
     patchWithCleanup(listView.Controller.prototype, {
         setup() {
             super.setup(...arguments);
             useSetupAction({
-                getContext: () => ({ shouldBeInFilterContext: true }),
+                getContext: () => ({shouldBeInFilterContext: true}),
             });
         },
     });
 
-    onRpc("get_views", ({ kwargs }) => {
-        expect(kwargs.options.load_filters).toBe(true, { message: "Missing load_filters option" });
+    onRpc("get_views", ({kwargs}) => {
+        expect(kwargs.options.load_filters).toBe(true, {
+            message: "Missing load_filters option",
+        });
     });
-    onRpc("create_filter", ({ model, args }) => {
+    onRpc("create_filter", ({model, args}) => {
         if (model === "ir.filters") {
             const irFilter = args[0];
             expect(irFilter.domain).toBe(`[("bar", "=", True)]`, {
                 message: "should save the correct domain",
             });
             const expectedContext = {
-                group_by: [], // default groupby is an empty list
+                group_by: [], // Default groupby is an empty list
                 shouldBeInFilterContext: true,
             };
             expect(irFilter.context).toEqual(expectedContext, {
                 message: "should save the correct context",
             });
-            return [7]; // fake serverSideId
+            return [7]; // Fake serverSideId
         }
     });
 
     await mountWithCleanup(WebClient);
 
     getService("dialog").add(SelectCreateDialog, {
-        context: { shouldNotBeInFilterContext: false },
+        context: {shouldNotBeInFilterContext: false},
         resModel: "partner",
     });
     await animationFrame();
 
-    expect(".o_data_row").toHaveCount(3, { message: "should contain 3 records" });
+    expect(".o_data_row").toHaveCount(3, {message: "should contain 3 records"});
 
-    // filter on bar
+    // Filter on bar
     await toggleSearchBarMenu();
     await toggleMenuItem("Bar");
 
-    expect(".o_data_row").toHaveCount(2, { message: "should contain 2 records" });
+    expect(".o_data_row").toHaveCount(2, {message: "should contain 2 records"});
 
-    // save filter
+    // Save filter
     await toggleSaveFavorite();
     await editFavoriteName("some name");
     await saveFavorite();
@@ -540,59 +543,63 @@ test("SelectCreateDialog: save current search on desktop", async () => {
 test.tags("mobile");
 test("SelectCreateDialog: save current search on mobile", async () => {
     expect.assertions(5);
-    Partner._views[
-        "kanban"
-    ] = /* xml */ `<kanban><templates><t t-name="card"><field name="name"/></t></templates></kanban>`;
-    Partner._views[
-        "search"
-    ] = /* xml */ `<search><filter name="bar" help="Bar" domain="[('bar', '=', True)]"/></search>`;
+    Partner._views.kanban =
+        /* Xml */ `<kanban><templates><t t-name="card"><field name="name"/></t></templates></kanban>`;
+    Partner._views.search =
+        /* Xml */ `<search><filter name="bar" help="Bar" domain="[('bar', '=', True)]"/></search>`;
 
     patchWithCleanup(kanbanView.Controller.prototype, {
         setup() {
             super.setup(...arguments);
             useSetupAction({
-                getContext: () => ({ shouldBeInFilterContext: true }),
+                getContext: () => ({shouldBeInFilterContext: true}),
             });
         },
     });
 
-    onRpc("get_views", ({ kwargs }) => {
-        expect(kwargs.options.load_filters).toBe(true, { message: "Missing load_filters option" });
+    onRpc("get_views", ({kwargs}) => {
+        expect(kwargs.options.load_filters).toBe(true, {
+            message: "Missing load_filters option",
+        });
     });
-    onRpc("create_filter", ({ model, args }) => {
+    onRpc("create_filter", ({model, args}) => {
         if (model === "ir.filters") {
             const irFilter = args[0];
             expect(irFilter.domain).toBe(`[("bar", "=", True)]`, {
                 message: "should save the correct domain",
             });
             const expectedContext = {
-                group_by: [], // default groupby is an empty list
+                group_by: [], // Default groupby is an empty list
                 shouldBeInFilterContext: true,
             };
             expect(irFilter.context).toEqual(expectedContext, {
                 message: "should save the correct context",
             });
-            return 7; // fake serverSideId
+            return 7; // Fake serverSideId
         }
     });
 
     await mountWithCleanup(WebClient);
 
     getService("dialog").add(SelectCreateDialog, {
-        context: { shouldNotBeInFilterContext: false },
+        context: {shouldNotBeInFilterContext: false},
         resModel: "partner",
     });
     await animationFrame();
 
-    expect(".o_kanban_record[data-id]").toHaveCount(3, { message: "should contain 3 records" });
+    expect(".o_kanban_record[data-id]").toHaveCount(3, {
+        message: "should contain 3 records",
+    });
 
-    // filter on bar
+    // Filter on bar
     await toggleSearchBarMenu();
     await toggleMenuItem("Bar");
 
-    expect(".o_kanban_record[data-id]").toHaveCount(2, { message: "should contain 2 records" });
+    expect(".o_kanban_record[data-id]").toHaveCount(2, {
+        message: "should contain 2 records",
+    });
 
-    // save filter
+    // Save filter
     await toggleSaveFavorite();
     await editFavoriteName("some name");
     await saveFavorite();
@@ -602,13 +609,13 @@ test.tags("desktop");
 test("SelectCreateDialog calls on_selected with every record matching the domain", async () => {
     expect.assertions(1);
 
-    Partner._views["list"] = /* xml */ `
+    Partner._views.list = /* xml */ `
         <list limit="2" string="Partner">
             <field name="name"/>
             <field name="foo"/>
         </list>
     `;
-    Partner._views["search"] = /* xml */ `<search><field name="foo"/></search>`;
+    Partner._views.search = /* xml */ `<search><field name="foo"/></search>`;
 
     await mountWithCleanup(WebClient);
     getService("dialog").add(SelectCreateDialog, {
@@ -619,19 +626,19 @@ test("SelectCreateDialog calls on_selected with every record matching the domain
 
     await contains("thead .o_list_record_selector input").click();
     await contains(".o_selection_box .o_select_domain").click();
-    await clickModalButton({ text: "Select" });
+    await clickModalButton({text: "Select"});
 });
 
 test.tags("desktop");
 test("SelectCreateDialog calls on_selected with every record matching without selecting a domain", async () => {
     expect.assertions(1);
-    Partner._views["list"] = /* xml */ `
+    Partner._views.list = /* xml */ `
         <list limit="2" string="Partner">
             <field name="name"/>
             <field name="foo"/>
         </list>
     `;
-    Partner._views["search"] = /* xml */ `<search><field name="foo"/></search>`;
+    Partner._views.search = /* xml */ `<search><field name="foo"/></search>`;
 
     await mountWithCleanup(WebClient);
 
@@ -643,13 +650,13 @@ test("SelectCreateDialog calls on_selected with every record matching without se
 
     await contains("thead .o_list_record_selector input").click();
     await contains(".o_selection_box").click();
-    await clickModalButton({ text: "Select", index: 1 });
+    await clickModalButton({text: "Select", index: 1});
 });
 
 test.tags("desktop");
 test("SelectCreateDialog: multiple clicks on record", async () => {
-    Partner._views["list"] = /* xml */ `<list><field name="name"/></list>`;
-    Partner._views["search"] = /* xml */ `<search><field name="foo"/></search>`;
+    Partner._views.list = /* xml */ `<list><field name="name"/></list>`;
+    Partner._views.search = /* xml */ `<search><field name="foo"/></search>`;
 
     await mountWithCleanup(WebClient);
     getService("dialog").add(SelectCreateDialog, {
@@ -663,19 +670,19 @@ test("SelectCreateDialog: multiple clicks on record", async () => {
     await click(".modal .o_data_row .o_data_cell");
     await click(".modal .o_data_row .o_data_cell");
     await animationFrame();
-    // should have called onSelected only once
+    // Should have called onSelected only once
     expect.verifySteps(["select record 1"]);
 });
 
 test.tags("desktop");
 test("SelectCreateDialog: default props, create a record on desktop", async () => {
-    Partner._views["list"] = /* xml */ `<list><field name="name"/></list>`;
-    Partner._views["search"] = /* xml */ `
+    Partner._views.list = /* xml */ `<list><field name="name"/></list>`;
+    Partner._views.search = /* xml */ `
         <search>
             <filter name="bar" help="Bar" domain="[('bar', '=', True)]"/>
         </search>
     `;
-    Partner._views["form"] = /* xml */ `<form><field name="name"/></form>`;
+    Partner._views.form = /* xml */ `<form><field name="name"/></form>`;
     await mountWithCleanup(WebClient);
 
     getService("dialog").add(SelectCreateDialog, {
@@ -706,8 +713,8 @@ test("SelectCreateDialog: default props, create a record on desktop", async () =
 
 test.tags("desktop");
 test("SelectCreateDialog: click on row once in selection", async () => {
-    Partner._views["list"] = `<list multi_edit="1"><field name="name"/></list>`;
-    Partner._views["search"] = `
+    Partner._views.list = `<list multi_edit="1"><field name="name"/></list>`;
+    Partner._views.search = `
         <search>
             <filter name="bar" help="Bar" domain="[('bar', '=', True)]"/>
         </search>`;
@@ -740,14 +747,14 @@ test("SelectCreateDialog: click on row once in selection", async () => {
 
 test.tags("mobile");
 test("SelectCreateDialog: default props, create a record on mobile", async () => {
-    Partner._views["search"] = /* xml */ `
+    Partner._views.search = /* xml */ `
         <search>
             <filter name="bar" help="Bar" domain="[('bar', '=', True)]"/>
         </search>
     `;
-    Partner._views["kanban"] = /* xml */ `
+    Partner._views.kanban = /* xml */ `
         <kanban><templates><t t-name="card"><field name="name"/></t></templates></kanban>`;
-    Partner._views["form"] = /* xml */ `<form><field name="name"/></form>`;
+    Partner._views.form = /* xml */ `<form><field name="name"/></form>`;
     await mountWithCleanup(WebClient);
 
     getService("dialog").add(SelectCreateDialog, {
@@ -779,14 +786,14 @@ test("SelectCreateDialog: default props, create a record on mobile", async () =>
 test.tags("desktop");
 test("SelectCreateDialog empty list, default no content helper", async () => {
     Partner._records = [];
-    Partner._views["list"] = /* xml */ `
+    Partner._views.list = /* xml */ `
         <list>
             <field name="name"/>
             <field name="foo"/>
         </list>
     `;
     await mountWithCleanup(WebClient);
-    getService("dialog").add(SelectCreateDialog, { resModel: "partner" });
+    getService("dialog").add(SelectCreateDialog, {resModel: "partner"});
     await animationFrame();
     expect(".o_dialog .o_list_view").toHaveCount(1);
     expect(".o_dialog .o_list_view .o_data_row").toHaveCount(0);
@@ -801,12 +808,11 @@ test("SelectCreateDialog empty list, default no content helper", async () => {
 test.tags("mobile");
 test("SelectCreateDialog empty kanban, default no content helper", async () => {
     Partner._records = [];
-    Partner._views[
-        "kanban"
-    ] = /* xml */ `<kanban><templates><t t-name="card"><field name="name"/></t></templates></kanban>`;
-    Partner._views["search"] = /* xml */ `<search/>`;
+    Partner._views.kanban =
+        /* Xml */ `<kanban><templates><t t-name="card"><field name="name"/></t></templates></kanban>`;
+    Partner._views.search = /* xml */ `<search/>`;
     await mountWithCleanup(WebClient);
-    getService("dialog").add(SelectCreateDialog, { resModel: "partner" });
+    getService("dialog").add(SelectCreateDialog, {resModel: "partner"});
     await animationFrame();
     expect(".o_dialog .o_kanban_view").toHaveCount(1);
     expect(".o_dialog .o_kanban_view .o_kanban_record[data-id]").toHaveCount(0);
@@ -822,7 +828,7 @@ test("SelectCreateDialog empty kanban, default no content helper", async () => {
 test.tags("desktop");
 test("SelectCreateDialog empty list, noContentHelp props", async () => {
     Partner._records = [];
-    Partner._views["list"] = /* xml */ `
+    Partner._views.list = /* xml */ `
         <list>
             <field name="name"/>
             <field name="foo"/>
@@ -862,11 +868,11 @@ test("SelectCreateDialog with open action", async () => {
     }
     mockService("action", {
         doActionButton(params) {
-            const { name } = params;
+            const {name} = params;
             expect.step(`execute_action: ${name}`, params);
         },
     });
-    Instrument._views["list"] = /* xml */ `
+    Instrument._views.list = /* xml */ `
         <list action="test_action" type="object">
             <field name="name"/>
         </list>
@@ -882,7 +888,9 @@ test("SelectCreateDialog with open action", async () => {
         `,
     });
     await contains(`.o_field_widget[name="instrument"] .dropdown input`).click();
-    await contains(`.o_field_widget[name="instrument"] .o_m2o_dropdown_option_search_more`).click();
+    await contains(
+        `.o_field_widget[name="instrument"] .o_m2o_dropdown_option_search_more`
+    ).click();
     await contains(
         `.o_list_renderer .o_data_row .o_field_cell.o_list_char[data-tooltip="Instrument 10"]`
     ).click();
@@ -893,10 +901,9 @@ test("SelectCreateDialog with open action", async () => {
 test.tags("mobile");
 test("SelectCreateDialog empty kanban, noContentHelp props", async () => {
     Partner._records = [];
-    Partner._views[
-        "kanban"
-    ] = /* xml */ `<kanban><templates><t t-name="card"><field name="name"/></t></templates></kanban>`;
-    Partner._views["search"] = /* xml */ `<search/>`;
+    Partner._views.kanban =
+        /* Xml */ `<kanban><templates><t t-name="card"><field name="name"/></t></templates></kanban>`;
+    Partner._views.search = /* xml */ `<search/>`;
 
     await mountWithCleanup(WebClient);
     const template = xml`
@@ -920,15 +927,13 @@ test("SelectCreateDialog empty kanban, noContentHelp props", async () => {
 test.tags("mobile");
 test("SelectCreateDialog: clear selection on mobile", async () => {
     expect.assertions(3);
-    SaleOrderLine._views[
-        "kanban"
-    ] = /* xml */ `<kanban><templates><t t-name="card"><field name="id"/></t></templates></kanban>`;
-    Product._views[
-        "kanban"
-    ] = /* xml */ `<kanban><templates><t t-name="card"><field name="id"/><field name="name"/></t></templates></kanban>`;
-    Product._views["search"] = /* xml */ `<search/>`;
+    SaleOrderLine._views.kanban =
+        /* Xml */ `<kanban><templates><t t-name="card"><field name="id"/></t></templates></kanban>`;
+    Product._views.kanban =
+        /* Xml */ `<kanban><templates><t t-name="card"><field name="id"/><field name="name"/></t></templates></kanban>`;
+    Product._views.search = /* xml */ `<search/>`;
 
-    onRpc("web_save", ({ model, args }) => {
+    onRpc("web_save", ({model, args}) => {
         if (model === "sale_order_line") {
             expect(args[1].product_id).toBe(false, {
                 message: `there should be no product selected`,
@@ -954,7 +959,9 @@ test("SelectCreateDialog: clear selection on mobile", async () => {
 
     // Select a product
     await contains('.o_field_widget[name="product_id"] input').click();
-    await contains(".modal-dialog.modal-lg:eq(0) .o_kanban_record:nth-child(1)").click();
+    await contains(
+        ".modal-dialog.modal-lg:eq(0) .o_kanban_record:nth-child(1)"
+    ).click();
 
     // Remove the product
     await contains('.o_field_widget[name="product_id"] input').click();
@@ -969,7 +976,7 @@ test("SelectCreateDialog: clear selection on mobile", async () => {
 test.tags("mobile");
 test("SelectCreateDialog: selection_mode should be true", async () => {
     expect.assertions(3);
-    Product._views["kanban"] = /* xml */ `
+    Product._views.kanban = /* xml */ `
             <kanban>
                 <templates>
                     <t t-name="card">
@@ -984,9 +991,9 @@ test("SelectCreateDialog: selection_mode should be true", async () => {
                     </t>
                 </templates>
             </kanban>`;
-    Product._views["search"] = /* xml */ `<search/>`;
+    Product._views.search = /* xml */ `<search/>`;
 
-    onRpc("web_save", ({ model, args }) => {
+    onRpc("web_save", ({model, args}) => {
         if (model === "sale_order_line") {
             expect(args[1].product_id).toBe(1, {
                 message: `the product should be selected`,
@@ -1004,7 +1011,9 @@ test("SelectCreateDialog: selection_mode should be true", async () => {
     });
 
     await contains('.o_field_widget[name="product_id"] input').click();
-    await contains(".modal-dialog.modal-lg .o_kanban_record:nth-child(1) .o_primary span").click();
+    await contains(
+        ".modal-dialog.modal-lg .o_kanban_record:nth-child(1) .o_primary span"
+    ).click();
     expect(".modal-dialog.modal-lg").toHaveCount(0);
     await clickSave();
     expect.verifySteps([]);
@@ -1012,11 +1021,10 @@ test("SelectCreateDialog: selection_mode should be true", async () => {
 
 test.tags("mobile");
 test("SelectCreateDialog: default props, create a record", async () => {
-    Product._views["form"] = /* xml */ `<form><field name="name"/></form>`;
-    Product._views[
-        "kanban"
-    ] = /* xml */ `<kanban><templates><t t-name="card"><field name="id"/><field name="name"/></t></templates></kanban>`;
-    Product._views["search"] = /* xml */ `<search/>`;
+    Product._views.form = /* xml */ `<form><field name="name"/></form>`;
+    Product._views.kanban =
+        /* Xml */ `<kanban><templates><t t-name="card"><field name="id"/><field name="name"/></t></templates></kanban>`;
+    Product._views.search = /* xml */ `<search/>`;
 
     await mountView({
         type: "form",
@@ -1030,11 +1038,15 @@ test("SelectCreateDialog: default props, create a record", async () => {
 
     await contains('.o_field_widget[name="product_id"] input').click();
     expect(".o_dialog").toHaveCount(1);
-    expect(".o_dialog .o_kanban_view .o_kanban_record:not(.o_kanban_ghost)").toHaveCount(1);
+    expect(
+        ".o_dialog .o_kanban_view .o_kanban_record:not(.o_kanban_ghost)"
+    ).toHaveCount(1);
     expect(".o_dialog footer button").toHaveCount(2);
     expect(".o_dialog footer button.o_create_button").toHaveCount(1);
     expect(".o_dialog footer button.o_form_button_cancel").toHaveCount(1);
-    expect(".o_dialog .o_control_panel_main_buttons .o-kanban-button-new").toHaveCount(0);
+    expect(".o_dialog .o_control_panel_main_buttons .o-kanban-button-new").toHaveCount(
+        0
+    );
 
     await contains(".o_dialog footer button.o_create_button:eq(0)").click();
 

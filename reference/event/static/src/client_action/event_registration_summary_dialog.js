@@ -1,17 +1,17 @@
-import { Component, onMounted, useState, useRef } from "@odoo/owl";
-import { isBarcodeScannerSupported } from "@web/core/barcode/barcode_video_scanner";
-import { Dialog } from "@web/core/dialog/dialog";
-import { useService } from "@web/core/utils/hooks";
+import {Component, onMounted, useState, useRef} from "@odoo/owl";
+import {isBarcodeScannerSupported} from "@web/core/barcode/barcode_video_scanner";
+import {Dialog} from "@web/core/dialog/dialog";
+import {useService} from "@web/core/utils/hooks";
 
 export class EventRegistrationSummaryDialog extends Component {
     static template = "event.EventRegistrationSummaryDialog";
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
         close: Function,
-        doNextScan: { type: Function, optional: true },
-        model: { type: Object, optional: true },
-        playSound: { type: Function, optional: true },
-        registration: { type: Object },
+        doNextScan: {type: Function, optional: true},
+        model: {type: Object, optional: true},
+        playSound: {type: Function, optional: true},
+        registration: {type: Object},
     };
 
     setup() {
@@ -25,9 +25,19 @@ export class EventRegistrationSummaryDialog extends Component {
         this.registrationStatus = useState({value: this.registration.status});
 
         onMounted(() => {
-            if (['already_registered', 'need_manual_confirmation'].includes(this.props.registration.status) && this.props.playSound) {
+            if (
+                ["already_registered", "need_manual_confirmation"].includes(
+                    this.props.registration.status
+                ) &&
+                this.props.playSound
+            ) {
                 this.props.playSound("notify");
-            } else if (['not_ongoing_event', 'canceled_registration'].includes(this.props.registration.status) && this.props.playSound) {
+            } else if (
+                ["not_ongoing_event", "canceled_registration"].includes(
+                    this.props.registration.status
+                ) &&
+                this.props.playSound
+            ) {
                 this.props.playSound("error");
             }
             // Without this, repeat barcode scans don't work as focus is lost
@@ -45,8 +55,10 @@ export class EventRegistrationSummaryDialog extends Component {
 
     async onRegistrationConfirm() {
         if (this.registrationStatus.value !== "confirmed_registration") {
-            this.button.enabled = false
-            await this.orm.call("event.registration", "action_set_done", [this.registration.id]).catch(() => this.button.enabled = true);
+            this.button.enabled = false;
+            await this.orm
+                .call("event.registration", "action_set_done", [this.registration.id])
+                .catch(() => (this.button.enabled = true));
             this.registrationStatus.value = "confirmed_registration";
         }
         this.props.close();
@@ -59,10 +71,18 @@ export class EventRegistrationSummaryDialog extends Component {
     }
 
     async undoRegistration() {
-        if (["confirmed_registration", "already_registered"].includes(this.registrationStatus.value)) {
-            await this.orm.call("event.registration", "action_confirm", [this.registration.id]);
+        if (
+            ["confirmed_registration", "already_registered"].includes(
+                this.registrationStatus.value
+            )
+        ) {
+            await this.orm.call("event.registration", "action_confirm", [
+                this.registration.id,
+            ]);
         } else if (this.registrationStatus.value == "unconfirmed_registration") {
-            await this.orm.call("event.registration", "action_set_draft", [this.registration.id]);
+            await this.orm.call("event.registration", "action_set_draft", [
+                this.registration.id,
+            ]);
         }
         this.props.close();
         if (this.props.model) {

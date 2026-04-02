@@ -1,16 +1,16 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, timedelta
+
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
 from odoo import fields
-from odoo.addons.mail.tests.common import mail_new_test_user
-from odoo.addons.mail.tests.common_activity import ActivityScheduleCase
 from odoo.exceptions import UserError, ValidationError
 from odoo.tests import Form, tagged, users
-from odoo.tools.misc import format_date
+
+from odoo.addons.mail.tests.common import mail_new_test_user
+from odoo.addons.mail.tests.common_activity import ActivityScheduleCase
 
 
 @tagged('mail_activity', 'mail_activity_plan')
@@ -270,7 +270,7 @@ class TestActivitySchedule(ActivityScheduleCase):
                 {'description': 'TestAct3', 'deadline': datetime(2023, 9, 30).date()},
                 {'description': 'TestAct3', 'deadline': datetime(2023, 9, 30).date()},
             ]
-            for line, expected in zip(form.plan_schedule_line_ids._records, expected_values):
+            for line, expected in zip(form.plan_schedule_line_ids._records, expected_values, strict=False):
                 with self.subTest(line=line, expected_values=expected):
                     self.assertEqual(line['line_description'], expected['description'])
                     self.assertEqual(line['line_date_deadline'], expected['deadline'])
@@ -291,7 +291,7 @@ class TestActivitySchedule(ActivityScheduleCase):
                     {'description': 'Plan training', 'deadline': datetime(2023, 9, 27).date()},
                     {'description': 'Training', 'deadline': datetime(2023, 10, 14).date()},
                 ]
-                for line, expected in zip(form.plan_schedule_line_ids._records, expected_values):
+                for line, expected in zip(form.plan_schedule_line_ids._records, expected_values, strict=False):
                     self.assertEqual(line['line_description'], expected['description'])
                     self.assertEqual(line['line_date_deadline'], expected['deadline'])
                 self.assertTrue(form._get_modifier('plan_on_demand_user_id', 'invisible'))
@@ -300,7 +300,7 @@ class TestActivitySchedule(ActivityScheduleCase):
                     {'description': 'Book a place', 'deadline': datetime(2023, 9, 29).date()},
                     {'description': 'Invite special guest', 'deadline': datetime(2023, 10, 7).date()},
                 ]
-                for line, expected in zip(form.plan_schedule_line_ids._records, expected_values):
+                for line, expected in zip(form.plan_schedule_line_ids._records, expected_values, strict=False):
                     self.assertEqual(line['line_description'], expected['description'])
                     self.assertEqual(line['line_date_deadline'], expected['deadline'])
                 self.assertFalse(form._get_modifier('plan_on_demand_user_id', 'invisible'))
@@ -330,7 +330,7 @@ class TestActivitySchedule(ActivityScheduleCase):
                     {'description': 'Book a place', 'deadline': deadline_1},
                     {'description': 'Invite special guest', 'deadline': deadline_2},
                 ]
-                for line, expected in zip(form.plan_schedule_line_ids._records, expected_values):
+                for line, expected in zip(form.plan_schedule_line_ids._records, expected_values, strict=False):
                     self.assertEqual(line['line_description'], expected['description'])
                     self.assertEqual(line['line_date_deadline'], expected['deadline'])
                 with self._mock_activities():

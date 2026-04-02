@@ -1,7 +1,7 @@
-import { renderToFragment } from "@web/core/utils/render";
-import { debounce, throttleForAnimation } from "@web/core/utils/timing";
-import { INITIAL_VALUE, SKIP_IMPLICIT_UPDATE } from "./colibri";
-import { makeAsyncHandler, makeButtonHandler } from "./utils";
+import {renderToFragment} from "@web/core/utils/render";
+import {debounce, throttleForAnimation} from "@web/core/utils/timing";
+import {INITIAL_VALUE, SKIP_IMPLICIT_UPDATE} from "./colibri";
+import {makeAsyncHandler, makeButtonHandler} from "./utils";
 
 /**
  * This is the base class to describe interactions. The Interaction class
@@ -243,7 +243,11 @@ export class Interaction {
      * @return {Function} protected function
      */
     protectSyncAfterAsync(fn) {
-        return this.__colibri__.protectSyncAfterAsync(this, "protectSyncAfterAsync", fn);
+        return this.__colibri__.protectSyncAfterAsync(
+            this,
+            "protectSyncAfterAsync",
+            fn
+        );
     }
 
     /**
@@ -369,8 +373,14 @@ export class Interaction {
         } else {
             nodes = target[Symbol.iterator] ? target : [target];
         }
-        const [ev, handler, opts] = this.__colibri__.addListener(nodes, event, fn, options);
-        return () => nodes.forEach((node) => node.removeEventListener(ev, handler, opts));
+        const [ev, handler, opts] = this.__colibri__.addListener(
+            nodes,
+            event,
+            fn,
+            options
+        );
+        return () =>
+            nodes.forEach((node) => node.removeEventListener(ev, handler, opts));
     }
 
     /**

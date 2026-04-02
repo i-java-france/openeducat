@@ -2,21 +2,23 @@
 
 import base64
 from collections import defaultdict
+from datetime import timedelta
 from hashlib import sha512
 from secrets import choice
-from markupsafe import Markup
-from datetime import timedelta
 
-from odoo import _, api, fields, models, tools, Command
+from markupsafe import Markup
+
+from odoo import Command, _, api, fields, models, tools
+from odoo.exceptions import AccessError, UserError, ValidationError
+from odoo.fields import Domain
+from odoo.tools import email_normalize, format_list, html_escape
+from odoo.tools.misc import OrderedSet, hash_sign
+from odoo.tools.sql import SQL
+
 from odoo.addons.base.models.avatar_mixin import get_hsl_from_seed
 from odoo.addons.base.models.ir_mail_server import MailDeliveryException
 from odoo.addons.mail.tools.discuss import Store
 from odoo.addons.mail.tools.web_push import PUSH_NOTIFICATION_TYPE
-from odoo.exceptions import AccessError, UserError, ValidationError
-from odoo.fields import Domain
-from odoo.tools import format_list, email_normalize, html_escape
-from odoo.tools.misc import hash_sign, OrderedSet
-from odoo.tools.sql import SQL
 
 channel_avatar = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 530.06 530.06">
 <rect width="530.06" height="530.06" fill="#875a7b"/>
@@ -1059,7 +1061,7 @@ class DiscussChannel(models.Model):
         # Create voice metadata from meta information
         attachments = super()._create_attachments_for_post(values_list, extra_list)
         voice = attachments.env['ir.attachment']  # keep env, notably for potential sudo
-        for attachment, (_cid, _name, _token, info) in zip(attachments, extra_list):
+        for attachment, (_cid, _name, _token, info) in zip(attachments, extra_list, strict=False):
             if info.get('voice'):
                 voice += attachment
         if voice:

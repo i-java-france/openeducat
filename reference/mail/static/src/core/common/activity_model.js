@@ -1,5 +1,5 @@
-import { fields, Record } from "@mail/core/common/record";
-import { assignDefined } from "@mail/utils/common/misc";
+import {fields, Record} from "@mail/core/common/record";
+import {assignDefined} from "@mail/utils/common/misc";
 
 export class Activity extends Record {
     static _name = "mail.activity";
@@ -10,7 +10,7 @@ export class Activity extends Record {
      * @param {boolean} param1.broadcast
      * @returns {import("models").Activity}
      */
-    static _insert(data, { broadcast = true } = {}) {
+    static _insert(data, {broadcast = true} = {}) {
         /** @type {import("models").Activity} */
         const activity = this.preinsert(data);
         assignDefined(activity, data);

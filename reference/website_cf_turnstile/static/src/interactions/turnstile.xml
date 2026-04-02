@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <templates id="template" xml:space="preserve">
     <t t-name="website_cf_turnstile.turnstile_container">
         <div
@@ -11,9 +11,13 @@
             data-response-field-name="turnstile_captcha"
             t-att-data-sitekey="sitekey"
             t-att-style="style"
-        ></div>
+        />
     </t>
     <t t-name="website_cf_turnstile.turnstile_remote_script">
-        <script id="s_turnstile_remote_script" class="s_turnstile" t-att-src="remoteScriptUrl"></script>
+        <script
+            id="s_turnstile_remote_script"
+            class="s_turnstile"
+            t-att-src="remoteScriptUrl"
+        />
     </t>
 </templates>

@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { Cache } from "@web/core/utils/cache";
-import { ModelEdit } from "./cached_model_utils";
+import {Plugin} from "@html_editor/plugin";
+import {Cache} from "@web/core/utils/cache";
+import {ModelEdit} from "./cached_model_utils";
 
 /**
  * @typedef { Object } CachedModelShared
@@ -19,15 +19,17 @@ export class CachedModelPlugin extends Plugin {
     };
     setup() {
         this.ormReadCache = new Cache(
-            ({ model, ids, fields }) => this.services.orm.read(model, ids, fields),
+            ({model, ids, fields}) => this.services.orm.read(model, ids, fields),
             JSON.stringify
         );
         this.ormSearchReadCache = new Cache(
-            ({ model, domain, fields }) => this.services.orm.searchRead(model, domain, fields),
+            ({model, domain, fields}) =>
+                this.services.orm.searchRead(model, domain, fields),
             JSON.stringify
         );
         this.modelEditCache = new Cache(
-            ({ model, recordId }) => new ModelEdit(this.dependencies.history, model, recordId),
+            ({model, recordId}) =>
+                new ModelEdit(this.dependencies.history, model, recordId),
             JSON.stringify
         );
     }
@@ -39,13 +41,13 @@ export class CachedModelPlugin extends Plugin {
     ormRead(model, ids, fields) {
         const SAFE_NULL = -1;
         const newIds = ids.map((id) => (id === null ? SAFE_NULL : id));
-        return this.ormReadCache.read({ model, ids: newIds, fields });
+        return this.ormReadCache.read({model, ids: newIds, fields});
     }
     ormSearchRead(model, domain, fields) {
-        return this.ormSearchReadCache.read({ model, domain, fields });
+        return this.ormSearchReadCache.read({model, domain, fields});
     }
-    useModelEdit({ model, recordId, field }) {
-        const modelEdit = this.modelEditCache.read({ model, recordId, field });
+    useModelEdit({model, recordId, field}) {
+        const modelEdit = this.modelEditCache.read({model, recordId, field});
         // track el ?
         return modelEdit;
     }
@@ -62,7 +64,7 @@ export class CachedModelPlugin extends Plugin {
                     const proms = value
                         .filter((value) => typeof value.id === "string")
                         .map((value) =>
-                            this.services.orm.create(value.model, [{ name: value.name }])
+                            this.services.orm.create(value.model, [{name: value.name}])
                         );
                     const createdIDs = (await Promise.all(proms)).flat();
                     const ids = value

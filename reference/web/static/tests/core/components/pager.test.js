@@ -1,17 +1,21 @@
-import { test, expect } from "@odoo/hoot";
-import { Deferred, animationFrame, runAllTimers } from "@odoo/hoot-mock";
-import { click, press } from "@odoo/hoot-dom";
-import { Pager } from "@web/core/pager/pager";
-import { Component, useState, xml } from "@odoo/owl";
-import { contains, mountWithCleanup, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { config as transitionConfig } from "@web/core/transition";
+import {expect, test} from "@odoo/hoot";
+import {Deferred, animationFrame, runAllTimers} from "@odoo/hoot-mock";
+import {click, press} from "@odoo/hoot-dom";
+import {Pager} from "@web/core/pager/pager";
+import {Component, useState, xml} from "@odoo/owl";
+import {
+    contains,
+    mountWithCleanup,
+    patchWithCleanup,
+} from "@web/../tests/web_test_helpers";
+import {config as transitionConfig} from "@web/core/transition";
 
 class PagerController extends Component {
     static template = xml`<Pager t-props="state" />`;
-    static components = { Pager };
+    static components = {Pager};
     static props = ["*"];
     setup() {
-        this.state = useState({ ...this.props });
+        this.state = useState({...this.props});
     }
     async updateProps(nextProps) {
         Object.assign(this.state, nextProps);
@@ -61,7 +65,7 @@ test("basic interactions on desktop", async () => {
 
 test.tags("mobile");
 test("basic interactions on mobile", async () => {
-    patchWithCleanup(transitionConfig, { disabled: true });
+    patchWithCleanup(transitionConfig, {disabled: true});
     const pager = await mountWithCleanup(PagerController, {
         props: {
             offset: 0,
@@ -77,7 +81,7 @@ test("basic interactions on mobile", async () => {
 
     await click(".o_pager button.o_pager_next");
     await animationFrame();
-    await animationFrame(); // transition
+    await animationFrame(); // Transition
 
     expect(".o_pager_indicator").toHaveCount(1);
     expect(".o_pager_indicator .o_pager_value").toHaveText("5-8");
@@ -88,7 +92,7 @@ test("basic interactions on mobile", async () => {
 
     await click(".o_pager button.o_pager_previous");
     await animationFrame();
-    await animationFrame(); // transition
+    await animationFrame(); // Transition
 
     expect(".o_pager_indicator").toHaveCount(1);
     expect(".o_pager_indicator .o_pager_value").toHaveText("1-4");
@@ -295,7 +299,7 @@ test("updateTotal props: click on total", async () => {
             total: 10,
             onUpdate() {},
             async updateTotal() {
-                await pager.updateProps({ total: 25, updateTotal: undefined });
+                await pager.updateProps({total: 25, updateTotal: undefined});
             },
         },
     });
@@ -321,8 +325,11 @@ test("updateTotal props: click next", async () => {
             limit: 5,
             total: tempTotal,
             async onUpdate(data) {
-                tempTotal = Math.min(realTotal, Math.max(tempTotal, data.offset + data.limit));
-                const nextProps = { ...data, total: tempTotal };
+                tempTotal = Math.min(
+                    realTotal,
+                    Math.max(tempTotal, data.offset + data.limit)
+                );
+                const nextProps = {...data, total: tempTotal};
                 if (tempTotal === realTotal) {
                     nextProps.updateTotal = undefined;
                 }
@@ -365,8 +372,11 @@ test("updateTotal props: edit input", async () => {
             limit: 5,
             total: tempTotal,
             async onUpdate(data) {
-                tempTotal = Math.min(realTotal, Math.max(tempTotal, data.offset + data.limit));
-                const nextProps = { ...data, total: tempTotal };
+                tempTotal = Math.min(
+                    realTotal,
+                    Math.max(tempTotal, data.offset + data.limit)
+                );
+                const nextProps = {...data, total: tempTotal};
                 if (tempTotal === realTotal) {
                     nextProps.updateTotal = undefined;
                 }
@@ -410,7 +420,7 @@ test("updateTotal props: can use next even if single page", async () => {
             limit: 5,
             total: 5,
             async onUpdate(data) {
-                await pager.updateProps({ ...data, total: 10 });
+                await pager.updateProps({...data, total: 10});
             },
             updateTotal() {},
         },
@@ -440,7 +450,7 @@ test("updateTotal props: click previous", async () => {
             },
             async updateTotal() {
                 const total = 23;
-                await pager.updateProps({ total, updateTotal: undefined });
+                await pager.updateProps({total, updateTotal: undefined});
                 return total;
             },
         },
@@ -452,7 +462,7 @@ test("updateTotal props: click previous", async () => {
 
     await click(".o_pager_previous");
     await animationFrame();
-    await animationFrame(); // double call to updateProps
+    await animationFrame(); // Double call to updateProps
 
     expect(".o_pager_value").toHaveText("21-23");
     expect(".o_pager_limit").toHaveText("23");

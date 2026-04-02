@@ -1,10 +1,10 @@
-import { findInSelection } from "@html_editor/utils/selection";
-import { describe, expect, test } from "@odoo/hoot";
-import { press } from "@odoo/hoot-dom";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
-import { undo } from "../_helpers/user_actions";
-import { getContent } from "../_helpers/selection";
+import {findInSelection} from "@html_editor/utils/selection";
+import {describe, expect, test} from "@odoo/hoot";
+import {press} from "@odoo/hoot-dom";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
+import {undo} from "../_helpers/user_actions";
+import {getContent} from "../_helpers/selection";
 
 function addRow(position) {
     return (editor) => {
@@ -555,7 +555,7 @@ describe("column", () => {
                     '<td style="width: 29px;">ab</td>' +
                     '<td style="width: 36px;">cd</td>' +
                     '<td style="width: 41px;">ef[]</td>' +
-                    // size was slightly adjusted to
+                    // Size was slightly adjusted to
                     // preserve table width in view on
                     // fractional division results
                     '<td style="width: 43px;"><p><br></p></td>' +
@@ -740,7 +740,7 @@ describe("tab", () => {
                     <td>ef[]</td>
                 </tr>
             </tbody></table>`);
-        const { el, editor } = await setupEditor(contentBefore);
+        const {el, editor} = await setupEditor(contentBefore);
 
         await press("Tab");
 

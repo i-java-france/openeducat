@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { queryAllTexts } from "@odoo/hoot-dom";
-import { onMounted } from "@odoo/owl";
+import {expect, test} from "@odoo/hoot";
+import {queryAllTexts} from "@odoo/hoot-dom";
+import {onMounted} from "@odoo/owl";
 import {
     defineModels,
     fields,
@@ -8,15 +8,15 @@ import {
     mountView,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { GaugeField } from "@web/views/fields/gauge/gauge_field";
-import { setupChartJsForTests } from "../graph/graph_test_helpers";
+import {GaugeField} from "@web/views/fields/gauge/gauge_field";
+import {setupChartJsForTests} from "../graph/graph_test_helpers";
 
 class Partner extends models.Model {
-    int_field = fields.Integer({ string: "int_field" });
-    another_int_field = fields.Integer({ string: "another_int_field" });
+    int_field = fields.Integer({string: "int_field"});
+    another_int_field = fields.Integer({string: "another_int_field"});
     _records = [
-        { id: 1, int_field: 10, another_int_field: 45 },
-        { id: 2, int_field: 4, another_int_field: 10 },
+        {id: 1, int_field: 10, another_int_field: 45},
+        {id: 2, int_field: 4, another_int_field: 10},
     ];
 }
 
@@ -57,9 +57,9 @@ test("GaugeValue supports max_value option", async () => {
             super.setup();
             onMounted(() => {
                 expect.step("gauge mounted");
-                expect(this.chart.config.options.plugins.tooltip.callbacks.label({})).toBe(
-                    "Max: 120"
-                );
+                expect(
+                    this.chart.config.options.plugins.tooltip.callbacks.label({})
+                ).toBe("Max: 120");
             });
         },
     });

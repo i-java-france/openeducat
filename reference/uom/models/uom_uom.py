@@ -222,7 +222,7 @@ class UomUom(models.Model):
         self_path = self.parent_path.split('/')
         other_path = other_uom.parent_path.split('/')
         common_path = []
-        for self_parent, other_parent in zip(self_path, other_path):
+        for self_parent, other_parent in zip(self_path, other_path, strict=False):
             if self_parent == other_parent:
                 common_path.append(self_parent)
             else:

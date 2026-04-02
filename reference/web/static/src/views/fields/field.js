@@ -1,13 +1,13 @@
-import { Domain } from "@web/core/domain";
-import { evaluateBooleanExpr, evaluateExpr } from "@web/core/py_js/py";
-import { registry } from "@web/core/registry";
-import { utils } from "@web/core/ui/ui_service";
-import { exprToBoolean } from "@web/core/utils/strings";
-import { getFieldContext } from "@web/model/relational_model/utils";
-import { X2M_TYPES, getClassNameFromDecoration } from "@web/views/utils";
-import { getTooltipInfo } from "./field_tooltip";
+import {Domain} from "@web/core/domain";
+import {evaluateBooleanExpr, evaluateExpr} from "@web/core/py_js/py";
+import {registry} from "@web/core/registry";
+import {utils} from "@web/core/ui/ui_service";
+import {exprToBoolean} from "@web/core/utils/strings";
+import {getFieldContext} from "@web/model/relational_model/utils";
+import {X2M_TYPES, getClassNameFromDecoration} from "@web/views/utils";
+import {getTooltipInfo} from "./field_tooltip";
 
-import { Component, xml } from "@odoo/owl";
+import {Component, xml} from "@odoo/owl";
 
 const isSmall = utils.isSmall;
 
@@ -43,13 +43,13 @@ const supportedInfoValidation = {
         label: String,
         name: String,
         type: String,
-        availableTypes: { type: Array, element: String, optional: true },
-        default: { type: String, optional: true },
-        help: { type: String, optional: true },
+        availableTypes: {type: Array, element: String, optional: true},
+        default: {type: String, optional: true},
+        help: {type: String, optional: true},
         choices: /* choices if type == selection */ {
             type: Array,
             element: Object,
-            shape: { label: String, value: String },
+            shape: {label: String, value: String},
             optional: true,
         },
         /**
@@ -57,14 +57,14 @@ const supportedInfoValidation = {
          * e.g.: the field is a relational one like many2many_tags, so
          * property 'field' will search on the relation.
          * */
-        isRelationalField: { type: Boolean, optional: false },
+        isRelationalField: {type: Boolean, optional: false},
     },
     optional: true,
 };
 
 fieldRegistry.addValidation({
-    component: { validate: (c) => c.prototype instanceof Component },
-    displayName: { type: String, optional: true },
+    component: {validate: (c) => c.prototype instanceof Component},
+    displayName: {type: String, optional: true},
     supportedAttributes: supportedInfoValidation,
     supportedOptions: supportedInfoValidation,
     supportedTypes: {
@@ -73,12 +73,15 @@ fieldRegistry.addValidation({
         optional: true,
         validate: (array) => array.every((x) => validFieldTypes.includes(x)),
     },
-    extractProps: { type: Function, optional: true },
-    isEmpty: { type: Function, optional: true },
-    isValid: { type: Function, optional: true }, // Override the validation for the validation visual feedbacks
-    additionalClasses: { type: Array, element: String, optional: true },
+    extractProps: {type: Function, optional: true},
+    isEmpty: {type: Function, optional: true},
+    isValid: {type: Function, optional: true}, // Override the validation for the validation visual feedbacks
+    additionalClasses: {type: Array, element: String, optional: true},
     fieldDependencies: {
-        type: [Function, { type: Array, element: Object, shape: { name: String, type: String } }],
+        type: [
+            Function,
+            {type: Array, element: Object, shape: {name: String, type: String}},
+        ],
         optional: true,
     },
     relatedFields: {
@@ -90,16 +93,16 @@ fieldRegistry.addValidation({
                 shape: {
                     name: String,
                     type: String,
-                    readonly: { type: Boolean, optional: true },
-                    selection: { type: Array, element: { type: Array, element: String } },
+                    readonly: {type: Boolean, optional: true},
+                    selection: {type: Array, element: {type: Array, element: String}},
                     optional: true,
                 },
             },
         ],
         optional: true,
     },
-    useSubView: { type: Boolean, optional: true },
-    label: { type: [String, { value: false }], optional: true },
+    useSubView: {type: Boolean, optional: true},
+    label: {type: [String, {value: false}], optional: true},
     listViewWidth: {
         type: [
             Number,
@@ -133,18 +136,26 @@ export function getFieldFromRegistry(fieldType, widget, viewType, jsClass) {
         const field = findInRegistry(widget);
         if (field) {
             if (field.supportedTypes && !field.supportedTypes?.includes(fieldType)) {
-                console.warn(`The widget: ${widget} don't support the type ${fieldType}`);
+                console.warn(
+                    `The widget: ${widget} don't support the type ${fieldType}`
+                );
             }
             return field;
         }
         console.warn(`Missing widget: ${widget} for field of type ${fieldType}`);
     }
-    return findInRegistry(fieldType) || { component: DefaultField };
+    return findInRegistry(fieldType) || {component: DefaultField};
 }
 
 export function fieldVisualFeedback(field, record, fieldName, fieldInfo) {
-    const readonly = evaluateBooleanExpr(fieldInfo.readonly, record.evalContextWithVirtualIds);
-    const required = evaluateBooleanExpr(fieldInfo.required, record.evalContextWithVirtualIds);
+    const readonly = evaluateBooleanExpr(
+        fieldInfo.readonly,
+        record.evalContextWithVirtualIds
+    );
+    const required = evaluateBooleanExpr(
+        fieldInfo.required,
+        record.evalContextWithVirtualIds
+    );
     const inEdit = record.isInEdition;
 
     let empty = !record.isNew;
@@ -165,7 +176,7 @@ export function fieldVisualFeedback(field, record, fieldName, fieldInfo) {
 }
 
 export function getPropertyFieldInfo(propertyField) {
-    const { name, relatedPropertyField, string, type, widget } = propertyField;
+    const {name, relatedPropertyField, string, type, widget} = propertyField;
 
     const fieldInfo = {
         name,
@@ -190,15 +201,18 @@ export function getPropertyFieldInfo(propertyField) {
     };
 
     if (type === "many2one" || type === "many2many") {
-        const { domain, relation } = propertyField;
+        const {domain, relation} = propertyField;
         fieldInfo.relation = relation;
         fieldInfo.domain = domain;
 
         if (relation === "res.users" || relation === "res.partner") {
             fieldInfo.widget =
-                propertyField.type === "many2one" ? "many2one_avatar" : "many2many_tags_avatar";
+                propertyField.type === "many2one"
+                    ? "many2one_avatar"
+                    : "many2many_tags_avatar";
         } else {
-            fieldInfo.widget = propertyField.type === "many2one" ? type : "many2many_tags";
+            fieldInfo.widget =
+                propertyField.type === "many2one" ? type : "many2many_tags";
         }
     } else if (type === "tags") {
         fieldInfo.tags = propertyField.tags;
@@ -208,12 +222,14 @@ export function getPropertyFieldInfo(propertyField) {
     }
 
     fieldInfo.field = getFieldFromRegistry(propertyField.type, fieldInfo.widget);
-    let { relatedFields } = fieldInfo.field;
+    let {relatedFields} = fieldInfo.field;
     if (relatedFields) {
         if (relatedFields instanceof Function) {
-            relatedFields = relatedFields({ options: {}, attrs: {} });
+            relatedFields = relatedFields({options: {}, attrs: {}});
         }
-        fieldInfo.relatedFields = Object.fromEntries(relatedFields.map((f) => [f.name, f]));
+        fieldInfo.relatedFields = Object.fromEntries(
+            relatedFields.map((f) => [f.name, f])
+        );
     }
 
     return fieldInfo;
@@ -228,7 +244,12 @@ export class Field extends Component {
         if (!fields[name]) {
             throw new Error(`"${modelName}"."${name}" field is undefined.`);
         }
-        const field = getFieldFromRegistry(fields[name].type, widget, viewType, jsClass);
+        const field = getFieldFromRegistry(
+            fields[name].type,
+            widget,
+            viewType,
+            jsClass
+        );
         const fieldInfo = {
             name,
             type: fields[name].type,
@@ -257,7 +278,7 @@ export class Field extends Component {
             }
         }
 
-        for (const { name, value } of node.attributes) {
+        for (const {name, value} of node.attributes) {
             if (["name", "widget"].includes(name)) {
                 // avoid adding name and widget to attrs
                 continue;
@@ -298,19 +319,25 @@ export class Field extends Component {
                         relatedField.readonly = true;
                     }
                 }
-                relatedFields = Object.fromEntries(relatedFields.map((f) => [f.name, f]));
-                views.default = { fieldNodes: relatedFields, fields: relatedFields };
+                relatedFields = Object.fromEntries(
+                    relatedFields.map((f) => [f.name, f])
+                );
+                views.default = {fieldNodes: relatedFields, fields: relatedFields};
                 if (!fieldInfo.field.useSubView) {
                     fieldInfo.viewMode = "default";
                 }
             }
             for (const child of node.children) {
                 const viewType = child.tagName;
-                const { ArchParser } = viewRegistry.get(viewType);
+                const {ArchParser} = viewRegistry.get(viewType);
                 // We copy and hence isolate the subview from the main view's tree
                 // This way, the subview's tree is autonomous and CSS selectors will work normally
                 const childCopy = child.cloneNode(true);
-                const archInfo = new ArchParser().parse(childCopy, models, fields[name].relation);
+                const archInfo = new ArchParser().parse(
+                    childCopy,
+                    models,
+                    fields[name].relation
+                );
                 views[viewType] = {
                     ...archInfo,
                     limit: archInfo.limit || 40,
@@ -343,10 +370,12 @@ export class Field extends Component {
         if (["many2one", "many2one_reference"].includes(fields[name].type)) {
             let relatedFields = fieldInfo.field.relatedFields;
             if (relatedFields) {
-                relatedFields = Object.fromEntries(relatedFields.map((f) => [f.name, f]));
+                relatedFields = Object.fromEntries(
+                    relatedFields.map((f) => [f.name, f])
+                );
                 fieldInfo.viewMode = "default";
                 fieldInfo.views = {
-                    default: { fieldNodes: relatedFields, fields: relatedFields },
+                    default: {fieldNodes: relatedFields, fields: relatedFields},
                 };
             }
         }
@@ -364,8 +393,8 @@ export class Field extends Component {
     }
 
     get classNames() {
-        const { class: _class, fieldInfo, name, record } = this.props;
-        const { readonly, required, invalid, empty } = fieldVisualFeedback(
+        const {class: _class, fieldInfo, name, record} = this.props;
+        const {readonly, required, invalid, empty} = fieldVisualFeedback(
             this.field,
             record,
             name,
@@ -390,7 +419,7 @@ export class Field extends Component {
         // have been defined in an attribute, e.g. decoration-danger="other_field = 5")
         // only handle the text-decoration.
         if (fieldInfo && fieldInfo.decorations) {
-            const { decorations } = fieldInfo;
+            const {decorations} = fieldInfo;
             for (const decoName in decorations) {
                 const value = evaluateBooleanExpr(
                     decorations[decoName],
@@ -416,16 +445,22 @@ export class Field extends Component {
             let fieldInfo = this.props.fieldInfo;
             readonly =
                 readonly ||
-                evaluateBooleanExpr(fieldInfo.readonly, record.evalContextWithVirtualIds);
+                evaluateBooleanExpr(
+                    fieldInfo.readonly,
+                    record.evalContextWithVirtualIds
+                );
 
             if (this.field.extractProps) {
                 if (this.props.attrs) {
                     fieldInfo = {
                         ...fieldInfo,
-                        attrs: { ...fieldInfo.attrs, ...this.props.attrs },
+                        attrs: {...fieldInfo.attrs, ...this.props.attrs},
                     };
                 }
-                if (fieldInfo.attrs.placeholder || fieldInfo.options.placeholder_field) {
+                if (
+                    fieldInfo.attrs.placeholder ||
+                    fieldInfo.options.placeholder_field
+                ) {
                     fieldInfo.placeholder =
                         record.data[fieldInfo.options.placeholder_field] ||
                         fieldInfo.attrs.placeholder;
@@ -433,12 +468,18 @@ export class Field extends Component {
 
                 const dynamicInfo = {
                     get context() {
-                        return getFieldContext(record, fieldInfo.name, fieldInfo.context);
+                        return getFieldContext(
+                            record,
+                            fieldInfo.name,
+                            fieldInfo.context
+                        );
                     },
                     domain() {
                         const evalContext = record.evalContext;
                         if (fieldInfo.domain) {
-                            return new Domain(evaluateExpr(fieldInfo.domain, evalContext)).toList();
+                            return new Domain(
+                                evaluateExpr(fieldInfo.domain, evalContext)
+                            ).toList();
                         }
                     },
                     required: evaluateBooleanExpr(
@@ -451,7 +492,7 @@ export class Field extends Component {
             }
         }
 
-        const props = { ...this.props };
+        const props = {...this.props};
         delete props.style;
         delete props.class;
         delete props.showTooltip;

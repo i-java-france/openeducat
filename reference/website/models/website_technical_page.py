@@ -1,6 +1,7 @@
-from odoo import models, fields
-from odoo.tools import ormcache, SQL
 import re
+
+from odoo import fields, models
+from odoo.tools import SQL, ormcache
 
 
 class WebsiteTechnicalPage(models.Model):

@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
-import { Macro } from "@web/core/macro";
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { advanceTime, animationFrame, press } from "@odoo/hoot-dom";
+import {Macro} from "@web/core/macro";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {advanceTime, animationFrame, press} from "@odoo/hoot-dom";
 import {
     contains,
     defineModels,
@@ -21,13 +21,13 @@ async function simulateBarCode(chars) {
 }
 
 class Product extends models.Model {
-    name = fields.Char({ string: "Product name" });
-    int_field = fields.Integer({ string: "Integer" });
-    int_field_2 = fields.Integer({ string: "Integer" });
-    barcode = fields.Char({ string: "Barcode" });
+    name = fields.Char({string: "Product name"});
+    int_field = fields.Integer({string: "Integer"});
+    int_field_2 = fields.Integer({string: "Integer"});
+    barcode = fields.Char({string: "Barcode"});
     _records = [
-        { id: 1, name: "Large Cabinet", barcode: "1234567890" },
-        { id: 2, name: "Cabinet with Doors", barcode: "0987654321" },
+        {id: 1, name: "Large Cabinet", barcode: "1234567890"},
+        {id: 2, name: "Cabinet with Doors", barcode: "0987654321"},
     ];
 }
 
@@ -122,8 +122,8 @@ test("edit, save and cancel buttons", async () => {
 
     // OCDEDIT
     await simulateBarCode(["O", "C", "D", "E", "D", "I", "T", "Enter"]);
-    // dummy change to check that it actually saves
-    await contains(".o_field_widget input").edit("test", { confirm: "blur" });
+    // Dummy change to check that it actually saves
+    await contains(".o_field_widget input").edit("test", {confirm: "blur"});
 
     // OCDSAVE
     await simulateBarCode(["O", "C", "D", "S", "A", "V", "E", "Enter"]);
@@ -131,8 +131,8 @@ test("edit, save and cancel buttons", async () => {
 
     // OCDEDIT
     await simulateBarCode(["O", "C", "D", "E", "D", "I", "T", "Enter"]);
-    // dummy change to check that it correctly discards
-    await contains(".o_field_widget input").edit("test", { confirm: "blur" });
+    // Dummy change to check that it correctly discards
+    await contains(".o_field_widget input").edit("test", {confirm: "blur"});
     // OCDDISC
     await simulateBarCode(["O", "C", "D", "D", "I", "S", "C", "Enter"]);
     expect.verifySteps([]);
@@ -160,8 +160,22 @@ test("pager buttons", async () => {
     expect(".o_field_widget input").toHaveValue("Large Cabinet");
 
     // OCDPAGERLAST
-    await simulateBarCode(["O", "C", "D", "P", "A", "G", "E", "R", "L", "A", "S", "T", "Enter"]);
-    // need to await 2 macro steps
+    await simulateBarCode([
+        "O",
+        "C",
+        "D",
+        "P",
+        "A",
+        "G",
+        "E",
+        "R",
+        "L",
+        "A",
+        "S",
+        "T",
+        "Enter",
+    ]);
+    // Need to await 2 macro steps
     await macroIsComplete();
     await animationFrame();
     expect(".o_field_widget input").toHaveValue("Cabinet with Doors");
@@ -183,7 +197,7 @@ test("pager buttons", async () => {
         "T",
         "Enter",
     ]);
-    // need to await 2 macro steps
+    // Need to await 2 macro steps
     await macroIsComplete();
     await animationFrame();
     expect(".o_field_widget input").toHaveValue("Large Cabinet");

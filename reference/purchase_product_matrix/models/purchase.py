@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import json
-from odoo import api, fields, models, _
+
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -166,7 +166,7 @@ class PurchaseOrderLine(models.Model):
     product_no_variant_attribute_value_ids = fields.Many2many('product.template.attribute.value', string='Product attribute values that do not create variants', ondelete='restrict')
 
     def _get_product_purchase_description(self, product):
-        name = super(PurchaseOrderLine, self)._get_product_purchase_description(product)
+        name = super()._get_product_purchase_description(product)
         product_lang_no_variant_attribute_value_ids = self.with_context(product.env.context).product_no_variant_attribute_value_ids
         for no_variant_attribute_value in product_lang_no_variant_attribute_value_ids:
             name += "\n" + no_variant_attribute_value.attribute_id.name + ': ' + no_variant_attribute_value.name

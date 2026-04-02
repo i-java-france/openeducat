@@ -2,8 +2,9 @@
 
 import ipaddress
 
-from odoo import _, SUPERUSER_ID
+from odoo import SUPERUSER_ID, _
 from odoo.http import request
+
 from odoo.addons.web.controllers.home import Home as WebHome
 
 

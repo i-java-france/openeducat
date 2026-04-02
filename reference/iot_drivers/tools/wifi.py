@@ -3,17 +3,18 @@ NetworkManager and ``nmcli`` tool.
 """
 
 import base64
-from io import BytesIO
 import logging
-import qrcode
 import re
 import secrets
 import subprocess
 import time
-from pathlib import Path
 from functools import cache
+from io import BytesIO
+from pathlib import Path
 
-from .helpers import get_ip, get_identifier, get_conf
+import qrcode
+
+from .helpers import get_conf, get_identifier, get_ip
 
 _logger = logging.getLogger(__name__)
 

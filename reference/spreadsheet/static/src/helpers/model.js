@@ -1,11 +1,11 @@
 // @ts-check
 
-import { parse, helpers, iterateAstNodes } from "@odoo/o-spreadsheet";
-import { isLoadingError } from "@spreadsheet/o_spreadsheet/errors";
-import { OdooSpreadsheetModel } from "@spreadsheet/model";
-import { OdooDataProvider } from "@spreadsheet/data_sources/odoo_data_provider";
+import {parse, helpers, iterateAstNodes} from "@odoo/o-spreadsheet";
+import {isLoadingError} from "@spreadsheet/o_spreadsheet/errors";
+import {OdooSpreadsheetModel} from "@spreadsheet/model";
+import {OdooDataProvider} from "@spreadsheet/data_sources/odoo_data_provider";
 
-const { formatValue, isDefined, toCartesian, toXC } = helpers;
+const {formatValue, isDefined, toCartesian, toXC} = helpers;
 import {
     isMarkdownViewUrl,
     isMarkdownIrMenuIdUrl,
@@ -17,15 +17,19 @@ import {
  */
 
 export async function fetchSpreadsheetModel(env, resModel, resId) {
-    const { data, revisions } = await env.services.http.get(
+    const {data, revisions} = await env.services.http.get(
         `/spreadsheet/data/${resModel}/${resId}`
     );
-    return createSpreadsheetModel({ env, data, revisions });
+    return createSpreadsheetModel({env, data, revisions});
 }
 
-export function createSpreadsheetModel({ env, data, revisions }) {
+export function createSpreadsheetModel({env, data, revisions}) {
     const odooDataProvider = new OdooDataProvider(env);
-    const model = new OdooSpreadsheetModel(data, { custom: { env, odooDataProvider } }, revisions);
+    const model = new OdooSpreadsheetModel(
+        data,
+        {custom: {env, odooDataProvider}},
+        revisions
+    );
     return model;
 }
 
@@ -39,7 +43,10 @@ export async function waitForOdooSources(model) {
     promises.push(
         ...model.getters
             .getPivotIds()
-            .filter((pivotId) => model.getters.getPivotCoreDefinition(pivotId).type === "ODOO")
+            .filter(
+                (pivotId) =>
+                    model.getters.getPivotCoreDefinition(pivotId).type === "ODOO"
+            )
             .map((pivotId) => model.getters.getPivot(pivotId))
             .map((pivot) => pivot.load())
     );
@@ -96,13 +103,16 @@ export async function freezeOdooData(model) {
     for (const sheet of Object.values(data.sheets)) {
         sheet.formats ??= {};
         for (const [xc, content] of Object.entries(sheet.cells)) {
-            const { col, row } = toCartesian(xc);
+            const {col, row} = toCartesian(xc);
             const sheetId = sheet.id;
-            const position = { sheetId, col, row };
+            const position = {sheetId, col, row};
             const evaluatedCell = model.getters.getEvaluatedCell(position);
             if (containsOdooFunction(content)) {
                 const pivotId = model.getters.getPivotIdFromPosition(position);
-                if (pivotId && model.getters.getPivotCoreDefinition(pivotId).type !== "ODOO") {
+                if (
+                    pivotId &&
+                    model.getters.getPivotCoreDefinition(pivotId).type !== "ODOO"
+                ) {
                     continue;
                 }
                 sheet.cells[xc] = toFrozenContent(evaluatedCell);
@@ -111,7 +121,7 @@ export async function freezeOdooData(model) {
                 }
                 const spreadZone = model.getters.getSpreadZone(position);
                 if (spreadZone) {
-                    const { left, right, top, bottom } = spreadZone;
+                    const {left, right, top, bottom} = spreadZone;
                     for (let row = top; row <= bottom; row++) {
                         for (let col = left; col <= right; col++) {
                             const xc = toXC(col, row);
@@ -122,7 +132,10 @@ export async function freezeOdooData(model) {
                             });
                             sheet.cells[xc] = toFrozenContent(evaluatedCell);
                             if (evaluatedCell.format) {
-                                sheet.formats[xc] = getItemId(evaluatedCell.format, data.formats);
+                                sheet.formats[xc] = getItemId(
+                                    evaluatedCell.format,
+                                    data.formats
+                                );
                             }
                         }
                     }
@@ -141,24 +154,29 @@ export async function freezeOdooData(model) {
                 figure.tag = "image";
                 figure.data = {
                     path: img,
-                    size: { width: figure.width, height: figure.height },
+                    size: {width: figure.width, height: figure.height},
                 };
             } else if (figure.tag === "carousel") {
                 const hasImageChart = figure.data.items.some((item) => {
                     if (item.type !== "chart") {
                         return false;
                     }
-                    const chartDefinition = model.getters.getChartDefinition(item.chartId);
+                    const chartDefinition = model.getters.getChartDefinition(
+                        item.chartId
+                    );
                     return (
-                        chartDefinition.type.startsWith("odoo_") || chartDefinition.type === "geo"
+                        chartDefinition.type.startsWith("odoo_") ||
+                        chartDefinition.type === "geo"
                     );
                 });
                 if (hasImageChart) {
-                    const chartId = figure.data.items.find((item) => item.type === "chart").chartId;
+                    const chartId = figure.data.items.find(
+                        (item) => item.type === "chart"
+                    ).chartId;
                     figure.tag = "image";
                     figure.data = {
                         path: odooChartToImage(model, figure, chartId),
-                        size: { width: figure.width, height: figure.height },
+                        size: {width: figure.width, height: figure.height},
                     };
                 }
             }
@@ -194,7 +212,7 @@ function exportGlobalFiltersToSheet(model, data) {
         filter["value"] = content
             .flat()
             .filter(isDefined)
-            .map(({ value, format }) => formatValue(value, { format, locale }))
+            .map(({value, format}) => formatValue(value, {format, locale}))
             .filter((formattedValue) => formattedValue !== "")
             .join(", ");
     }
@@ -304,7 +322,7 @@ function odooChartToImage(model, figure, chartId) {
 const backgroundColorPlugin = {
     id: "customCanvasBackgroundColor",
     beforeDraw: (chart, args, options) => {
-        const { ctx } = chart;
+        const {ctx} = chart;
         ctx.save();
         ctx.globalCompositeOperation = "destination-over";
         ctx.fillStyle = "#ffffff";

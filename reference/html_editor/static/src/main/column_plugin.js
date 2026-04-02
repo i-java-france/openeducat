@@ -1,16 +1,17 @@
-import { _t } from "@web/core/l10n/translation";
-import { Plugin } from "@html_editor/plugin";
-import { closestBlock } from "@html_editor/utils/blocks";
-import { unwrapContents } from "@html_editor/utils/dom";
-import { closestElement, firstLeaf } from "@html_editor/utils/dom_traversal";
-import { baseContainerGlobalSelector } from "@html_editor/utils/base_container";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
+import {_t} from "@web/core/l10n/translation";
+import {Plugin} from "@html_editor/plugin";
+import {closestBlock} from "@html_editor/utils/blocks";
+import {unwrapContents} from "@html_editor/utils/dom";
+import {closestElement, firstLeaf} from "@html_editor/utils/dom_traversal";
+import {baseContainerGlobalSelector} from "@html_editor/utils/base_container";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
 
 const REGEX_BOOTSTRAP_COLUMN = /(^| )col(-[a-zA-Z]+)?(-\d+)?(?= |$)/;
 
 function isUnremovableColumn(node, root) {
     const isColumnInnerStructure =
-        node.nodeName === "DIV" && [...node.classList].some((cls) => /^row$|^col$|^col-/.test(cls));
+        node.nodeName === "DIV" &&
+        [...node.classList].some((cls) => /^row$|^col$|^col-/.test(cls));
 
     if (!isColumnInnerStructure) {
         return false;
@@ -87,7 +88,7 @@ export class ColumnPlugin extends Plugin {
             },
         ],
         unremovable_node_predicates: isUnremovableColumn,
-        power_buttons_visibility_predicates: ({ anchorNode }) =>
+        power_buttons_visibility_predicates: ({anchorNode}) =>
             !closestElement(anchorNode, ".o_text_columns"),
         move_node_whitelist_selectors: ".o_text_columns",
         move_node_blacklist_selectors: ".o_text_columns *",
@@ -105,7 +106,9 @@ export class ColumnPlugin extends Plugin {
             return [...columnContainer.querySelectorAll("div[class*='col-']")]
                 .map((column) => {
                     const block = closestBlock(firstLeaf(column));
-                    return column === closestColumn && block !== closestBlockEl ? null : block;
+                    return column === closestColumn && block !== closestBlockEl
+                        ? null
+                        : block;
                 })
                 .filter(Boolean);
         },
@@ -191,7 +194,8 @@ export class ColumnPlugin extends Plugin {
             for (let i = 0; i < diff; i++) {
                 const column = this.document.createElement("div");
                 column.classList.add(`col-${columnSize}`, "o-contenteditable-true");
-                const baseContainer = this.dependencies.baseContainer.createBaseContainer();
+                const baseContainer =
+                    this.dependencies.baseContainer.createBaseContainer();
                 baseContainer.append(this.document.createElement("br"));
                 column.append(baseContainer);
                 lastColumn.after(column);

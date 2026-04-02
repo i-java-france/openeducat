@@ -1,5 +1,7 @@
+from odoo.addons.account_edi_ubl_cii.models.account_edi_xml_ubl_bis3 import (
+    CHORUS_PRO_PEPPOL_ID,
+)
 from odoo.addons.account_edi_ubl_cii.tests.common import TestUblCiiCommon
-from odoo.addons.account_edi_ubl_cii.models.account_edi_xml_ubl_bis3 import CHORUS_PRO_PEPPOL_ID
 
 
 class TestUblCiiCommonChorusPro(TestUblCiiCommon):

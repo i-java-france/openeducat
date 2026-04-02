@@ -1,6 +1,7 @@
 import logging
 
 from odoo import api, fields, models
+
 from odoo.addons.point_of_sale.models.pos_config import format_epson_certified_domain
 
 _logger = logging.getLogger(__name__)
@@ -169,7 +170,7 @@ class ResConfigSettings(models.TransientModel):
                     #   2. _field starts with 'pos_' -- meaning, the _field is a pos field.
                     if field.name.startswith('pos_') and val is not None:
                         pos_config_field_name = field.name[4:]
-                        if not pos_config_field_name in self.env['pos.config']._fields:
+                        if pos_config_field_name not in self.env['pos.config']._fields:
                             _logger.warning("The value of '%s' is not properly saved to the pos_config_id field because the destination"
                                 " field '%s' is not a valid field in the pos.config model.", field.name, pos_config_field_name)
                         else:
@@ -190,7 +191,7 @@ class ResConfigSettings(models.TransientModel):
         return result
 
     def set_values(self):
-        super(ResConfigSettings, self).set_values()
+        super().set_values()
         if not self.group_product_pricelist:
             self.env['pos.config'].search([
                 ('use_pricelist', '=', True)

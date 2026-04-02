@@ -1,16 +1,16 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
-import requests
-
-from pytz import timezone
 from datetime import date, datetime
 from unittest.mock import Mock
+
+import requests
 from dateutil.relativedelta import relativedelta
+from pytz import timezone
 
 from odoo import fields
 from odoo.tools import file_open
+
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.addons.account.tests.test_account_move_send import TestAccountMoveSendCommon
 

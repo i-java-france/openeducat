@@ -1,9 +1,12 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { queryFirst, queryOne } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryFirst, queryOne} from "@odoo/hoot-dom";
 
-import { setupTest, simpleScroll, doubleScroll } from "./helpers";
+import {doubleScroll, setupTest, simpleScroll} from "./helpers";
 
 setupInteractionWhiteList([
     "website.header_standard",
@@ -87,13 +90,13 @@ const SCROLLS = [0, 40, 250, 400, 250, 40, 0];
 const SCROLLS_SPECIAL = [0, 40, 400, 40, 0];
 
 test("faq_horizontal is started when there is an element .s_faq_horizontal", async () => {
-    const { core } = await startInteractions(getTemplate(""));
+    const {core} = await startInteractions(getTemplate(""));
     expect(core.interactions).toHaveLength(1);
 });
 
 test.tags("desktop");
 test("faq_horizontal updates titles position with a o_header_standard", async () => {
-    const { core } = await startInteractions(getTemplate("o_header_standard"));
+    const {core} = await startInteractions(getTemplate("o_header_standard"));
     expect(core.interactions).toHaveLength(2);
     const wrapwrap = queryOne("#wrapwrap");
     const title = queryFirst(".s_faq_horizontal_entry_title");
@@ -104,13 +107,15 @@ test("faq_horizontal updates titles position with a o_header_standard", async ()
         const isHeaderVisible = target < HEADER_SIZE || target > 300;
         // We compensate the scroll since the header does not move in Hoot.
         const correctedTop = isHeaderVisible ? calculatedTop + target : calculatedTop;
-        expect(correctedTop).toBe(isHeaderVisible ? HEADER_SIZE + DEFAULT_OFFSET : DEFAULT_OFFSET);
+        expect(correctedTop).toBe(
+            isHeaderVisible ? HEADER_SIZE + DEFAULT_OFFSET : DEFAULT_OFFSET
+        );
     }
 });
 
 test.tags("desktop");
 test("faq_horizontal updates titles position with a o_header_fixed", async () => {
-    const { core } = await startInteractions(getTemplate("o_header_fixed"));
+    const {core} = await startInteractions(getTemplate("o_header_fixed"));
     expect(core.interactions).toHaveLength(2);
     // We force the header to never be consider "atTop", so that its
     // position is properly computed.
@@ -121,13 +126,15 @@ test("faq_horizontal updates titles position with a o_header_fixed", async () =>
     for (const target of SCROLLS_SPECIAL) {
         await simpleScroll(wrapwrap, target);
         // There is no need to compensate the scroll here
-        expect(Math.round(parseFloat(title.style.top))).toBe(HEADER_SIZE + DEFAULT_OFFSET);
+        expect(Math.round(parseFloat(title.style.top))).toBe(
+            HEADER_SIZE + DEFAULT_OFFSET
+        );
     }
 });
 
 test.tags("desktop");
 test("faq_horizontal updates titles position with a o_header_disappears", async () => {
-    const { core } = await startInteractions(getTemplate("o_header_disappears"));
+    const {core} = await startInteractions(getTemplate("o_header_disappears"));
     expect(core.interactions).toHaveLength(2);
     const wrapwrap = queryOne("#wrapwrap");
     const title = queryFirst(".s_faq_horizontal_entry_title");
@@ -140,13 +147,15 @@ test("faq_horizontal updates titles position with a o_header_disappears", async 
         const isHeaderVisible = target < 300;
         // We compensate the scroll since the header does not move in Hoot.
         const correctedTop = isHeaderVisible ? calculatedTop + target : calculatedTop;
-        expect(correctedTop).toBe(isHeaderVisible ? HEADER_SIZE + DEFAULT_OFFSET : DEFAULT_OFFSET);
+        expect(correctedTop).toBe(
+            isHeaderVisible ? HEADER_SIZE + DEFAULT_OFFSET : DEFAULT_OFFSET
+        );
     }
 });
 
 test.tags("desktop");
 test("faq_horizontal updates titles position with a o_header_fade_out", async () => {
-    const { core } = await startInteractions(getTemplate("o_header_fade_out"));
+    const {core} = await startInteractions(getTemplate("o_header_fade_out"));
     expect(core.interactions).toHaveLength(2);
     const wrapwrap = queryOne("#wrapwrap");
     const title = queryFirst(".s_faq_horizontal_entry_title");
@@ -159,6 +168,8 @@ test("faq_horizontal updates titles position with a o_header_fade_out", async ()
         const isHeaderVisible = target < 300;
         // We compensate the scroll since the header does not move in Hoot.
         const correctedTop = isHeaderVisible ? calculatedTop + target : calculatedTop;
-        expect(correctedTop).toBe(isHeaderVisible ? HEADER_SIZE + DEFAULT_OFFSET : DEFAULT_OFFSET);
+        expect(correctedTop).toBe(
+            isHeaderVisible ? HEADER_SIZE + DEFAULT_OFFSET : DEFAULT_OFFSET
+        );
     }
 });

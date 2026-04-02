@@ -1,4 +1,4 @@
-import { expect, test, describe } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 
 import {
     defineModels,
@@ -15,7 +15,7 @@ class IrUiView extends models.Model {
     _name = "ir.ui.view";
     _rec_name = "name";
 
-    name = fields.Char({ required: true });
+    name = fields.Char({required: true});
     arch = fields.Text({});
     invalid_locators = fields.Json();
 

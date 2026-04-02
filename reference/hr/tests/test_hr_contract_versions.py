@@ -50,12 +50,12 @@ class TestHrContractVersions(TransactionCase):
     def assert_get_contract_versions(self, date_start, date_end, versions_per_contract_expected):
         versions_per_contract = self.employee._get_contract_versions(date_start, date_end)[self.employee.id]
         self.assertEqual(len(versions_per_contract), len(versions_per_contract_expected), "%s contract should be found" % len(versions_per_contract_expected))
-        for vpc, vpc_e in zip(versions_per_contract.values(), versions_per_contract_expected):
+        for vpc, vpc_e in zip(versions_per_contract.values(), versions_per_contract_expected, strict=False):
             self.assertEqual(vpc, vpc_e, "invalid number of versions (%s instead of %s) for this contract : contract_date_start : %s" % (len(vpc), len(vpc_e), vpc_e[0].contract_date_start))
 
     def assert_get_contracts(self, date_start, date_end, use_latest_version, contracts_expected):
         contracts = self.employee._get_contracts(date_start, date_end, use_latest_version)[self.employee.id]
-        for c, c_e in zip(contracts, contracts_expected):
+        for c, c_e in zip(contracts, contracts_expected, strict=False):
             self.assertEqual(c, c_e, "invalid contracts")
 
     def test_0contract_1version(self):

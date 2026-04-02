@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.mail.tests.common import mail_new_test_user, MailCase
+from odoo.addons.mail.tests.common import MailCase, mail_new_test_user
 
 
 class SlidesCase(MailCase):
 
     @classmethod
     def setUpClass(cls):
-        super(SlidesCase, cls).setUpClass()
+        super().setUpClass()
 
         cls.env.ref('base.user_admin').write({
             'email': 'mitchell.admin@example.com',

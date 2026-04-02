@@ -1,11 +1,11 @@
-import { Component, useEffect, useState } from "@odoo/owl";
+import {Component, useEffect, useState} from "@odoo/owl";
 
 export class ImportDataProgress extends Component {
     static template = "ImportDataProgress";
     static props = {
-        importProgress: { type: Object },
-        stopImport: { type: Function },
-        totalSteps: { type: Number },
+        importProgress: {type: Object},
+        stopImport: {type: Function},
+        totalSteps: {type: Number},
     };
 
     setup() {
@@ -46,7 +46,8 @@ export class ImportDataProgress extends Component {
         }
         this.state.timeLeft =
             ((Date.now() - this.timeStart) *
-                ((100 - this.props.importProgress.value) / this.props.importProgress.value)) /
+                ((100 - this.props.importProgress.value) /
+                    this.props.importProgress.value)) /
             60000;
         this.timer = setInterval(() => this.updateTimer(), 1000);
     }

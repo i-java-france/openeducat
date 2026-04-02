@@ -1,11 +1,13 @@
-import { unmockedOrm } from "@web/../tests/_framework/module_set.hoot";
+import {unmockedOrm} from "@web/../tests/_framework/module_set.hoot";
 
 function removeImageSrc(xmlString) {
     const doc = new DOMParser().parseFromString(xmlString, "text/html");
     for (const img of doc.getElementsByTagName("img")) {
         img.removeAttribute("src");
     }
-    const elementsWithBackgroundImage = doc.querySelectorAll('[style*="background-image"]');
+    const elementsWithBackgroundImage = doc.querySelectorAll(
+        '[style*="background-image"]'
+    );
     for (const el of elementsWithBackgroundImage) {
         const style = el.getAttribute("style");
         const newStyle = style.replace(/background-image\s*:\s*url\([^)]+\);?/g, ""); // Remove background-image rule

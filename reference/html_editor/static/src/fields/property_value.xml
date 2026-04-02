@@ -6,13 +6,15 @@
                 <HtmlViewer
                     t-if="this.props.readonly"
                     config="getReadonlyConfig()"
-                    migrateHTML="false"/>
+                    migrateHTML="false"
+                />
                 <Wysiwyg
                     t-else=""
                     config="this.getConfig()"
                     onLoad.bind="onEditorLoad"
                     onBlur.bind="onEditorBlur"
-                    t-key="htmlState.key"/>
+                    t-key="htmlState.key"
+                />
             </t>
         </xpath>
     </t>

@@ -1,18 +1,21 @@
-import { testEditor } from "../_helpers/editor";
-import { test, before } from "@odoo/hoot";
+import {testEditor} from "../_helpers/editor";
+import {before, test} from "@odoo/hoot";
 import {
     setFontSize,
     splitBlock,
     toggleOrderedList,
     toggleUnorderedList,
 } from "../_helpers/user_actions";
-import { execCommand } from "../_helpers/userCommands";
-import { unformat } from "../_helpers/format";
+import {execCommand} from "../_helpers/userCommands";
+import {unformat} from "../_helpers/format";
 
 before(
     () =>
         document.fonts.add(
-            new FontFace("Roboto", "url(/web/static/fonts/google/Roboto/Roboto-Regular.ttf)")
+            new FontFace(
+                "Roboto",
+                "url(/web/static/fonts/google/Roboto/Roboto-Regular.ttf)"
+            )
         ).ready
 );
 
@@ -58,7 +61,7 @@ test("should apply font-size to completely selected multiple list items", async 
     await testEditor({
         contentBefore: "<ul><li>[abc</li><li>def]</li></ul>",
         stepFunction: (editor) =>
-            execCommand(editor, "formatFontSizeClassName", { className: "h2-fs" }),
+            execCommand(editor, "formatFontSizeClassName", {className: "h2-fs"}),
         contentAfter: '<ul><li class="h2-fs">[abc</li><li class="h2-fs">def]</li></ul>',
     });
 });
@@ -76,7 +79,7 @@ test("should apply font-size to completely selected list items and paragraph tag
     await testEditor({
         contentBefore: "<ul><li>[abc</li><li>def</li></ul><p>ghi]</p>",
         stepFunction: (editor) =>
-            execCommand(editor, "formatFontSizeClassName", { className: "h2-fs" }),
+            execCommand(editor, "formatFontSizeClassName", {className: "h2-fs"}),
         contentAfter: `<ul><li class="h2-fs">[abc</li><li class="h2-fs">def</li></ul><p><span class="h2-fs">ghi]</span></p>`,
     });
 });
@@ -129,7 +132,8 @@ test("should carry font-size of list item to paragraph", async () => {
     await testEditor({
         contentBefore: '<ol><li style="font-size: 18px;">[]abc</li><li>def</li></ol>',
         stepFunction: toggleOrderedList,
-        contentAfter: '<p><span style="font-size: 18px;">[]abc</span></p><ol><li>def</li></ol>',
+        contentAfter:
+            '<p><span style="font-size: 18px;">[]abc</span></p><ol><li>def</li></ol>',
     });
 });
 
@@ -144,7 +148,8 @@ test("should carry font-size of list item to paragraph (2)", async () => {
 
 test("should carry font-size of list item to paragraph (3)", async () => {
     await testEditor({
-        contentBefore: '<ol><li style="font-size: 18px;">abc</li><li>[]def</li><li>ghi</li></ol>',
+        contentBefore:
+            '<ol><li style="font-size: 18px;">abc</li><li>[]def</li><li>ghi</li></ol>',
         stepFunction: toggleOrderedList,
         contentAfter:
             '<ol><li style="font-size: 18px;">abc</li></ol><p>[]def</p><ol><li>ghi</li></ol>',
@@ -219,7 +224,8 @@ test("should pad list based on font-size", async () => {
     const className = "h2-fs";
     await testEditor({
         contentBefore: "<ol><li>[a]</li></ol>",
-        stepFunction: (editor) => execCommand(editor, "formatFontSizeClassName", { className }),
+        stepFunction: (editor) =>
+            execCommand(editor, "formatFontSizeClassName", {className}),
         contentAfter: `<ol><li class="${className}">[a]</li></ol>`,
     });
 });

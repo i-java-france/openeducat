@@ -1,7 +1,7 @@
-import { evaluateExpr } from "@web/core/py_js/py";
-import { exprToBoolean } from "@web/core/utils/strings";
-import { visitXML } from "@web/core/utils/xml";
-import { Field } from "@web/views/fields/field";
+import {evaluateExpr} from "@web/core/py_js/py";
+import {exprToBoolean} from "@web/core/utils/strings";
+import {visitXML} from "@web/core/utils/xml";
+import {Field} from "@web/views/fields/field";
 
 const FIELD_ATTRIBUTE_NAMES = [
     "date_start",
@@ -54,12 +54,20 @@ export class CalendarArchParser {
         const isDateHidden = exprToBoolean(xmlDoc.getAttribute("hide_date"));
         const isTimeHidden = exprToBoolean(xmlDoc.getAttribute("hide_time"));
         const jsClass = xmlDoc.getAttribute("js_class") || null;
-        const monthOverflow = exprToBoolean(xmlDoc.getAttribute("month_overflow"), true);
+        const monthOverflow = exprToBoolean(
+            xmlDoc.getAttribute("month_overflow"),
+            true
+        );
         const multiCreateView = xmlDoc.getAttribute("multi_create_view");
         const quickCreate = exprToBoolean(xmlDoc.getAttribute("quick_create"), true);
         const quickCreateViewId =
-            (quickCreate && parseInt(xmlDoc.getAttribute("quick_create_view_id"), 10)) || null;
-        const showDatePicker = exprToBoolean(xmlDoc.getAttribute("show_date_picker"), true);
+            (quickCreate &&
+                parseInt(xmlDoc.getAttribute("quick_create_view_id"), 10)) ||
+            null;
+        const showDatePicker = exprToBoolean(
+            xmlDoc.getAttribute("show_date_picker"),
+            true
+        );
         const showUnusualDays = exprToBoolean(xmlDoc.getAttribute("show_unusual_days"));
 
         const popoverFieldNodes = {};
@@ -79,7 +87,10 @@ export class CalendarArchParser {
                     );
                     popoverFieldNodes[fieldName] = fieldInfo;
 
-                    if (!node.hasAttribute("invisible") || node.hasAttribute("filters")) {
+                    if (
+                        !node.hasAttribute("invisible") ||
+                        node.hasAttribute("filters")
+                    ) {
                         if (
                             node.hasAttribute("avatar_field") ||
                             node.hasAttribute("write_model") ||
@@ -100,13 +111,18 @@ export class CalendarArchParser {
                                 writeResModel: null,
                             };
                             const filterInfo = filtersInfo[fieldName];
-                            filterInfo.avatarFieldName = node.getAttribute("avatar_field") || null;
+                            filterInfo.avatarFieldName =
+                                node.getAttribute("avatar_field") || null;
                             filterInfo.colorFieldName =
-                                (node.hasAttribute("filters") && node.getAttribute("color")) ||
+                                (node.hasAttribute("filters") &&
+                                    node.getAttribute("color")) ||
                                 null;
-                            filterInfo.filterFieldName = node.getAttribute("filter_field") || null;
-                            filterInfo.writeFieldName = node.getAttribute("write_field") || null;
-                            filterInfo.writeResModel = node.getAttribute("write_model") || null;
+                            filterInfo.filterFieldName =
+                                node.getAttribute("filter_field") || null;
+                            filterInfo.writeFieldName =
+                                node.getAttribute("write_field") || null;
+                            filterInfo.writeResModel =
+                                node.getAttribute("write_model") || null;
                         }
                     }
                     break;
@@ -115,13 +131,19 @@ export class CalendarArchParser {
         });
 
         if (!fieldMapping.date_start) {
-            throw new CalendarParseArchError(`Calendar view must define "date_start" attribute.`);
+            throw new CalendarParseArchError(
+                `Calendar view must define "date_start" attribute.`
+            );
         }
         if (!scales.includes(scale)) {
-            throw new CalendarParseArchError(`Calendar view cannot display mode: ${scale}`);
+            throw new CalendarParseArchError(
+                `Calendar view cannot display mode: ${scale}`
+            );
         }
         if (!Number.isInteger(eventLimit)) {
-            throw new CalendarParseArchError(`Calendar view's event limit should be a number`);
+            throw new CalendarParseArchError(
+                `Calendar view's event limit should be a number`
+            );
         }
 
         return {

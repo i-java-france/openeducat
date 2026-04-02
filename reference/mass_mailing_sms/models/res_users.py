@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
 
-from odoo import api, fields, models, modules, _
+from odoo import _, api, fields, models, modules
 
 
 class ResUsers(models.Model):
@@ -11,7 +10,7 @@ class ResUsers(models.Model):
 
     @api.model
     def _get_activity_groups(self):
-        """ Split mass_mailing and mass_mailing_sms activities in systray by 
+        """ Split mass_mailing and mass_mailing_sms activities in systray by
             removing the single mailing.mailing activity represented and
             doing a new query to split them by mailing_type.
         """

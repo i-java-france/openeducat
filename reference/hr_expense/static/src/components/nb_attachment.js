@@ -1,6 +1,6 @@
-import { registry } from "@web/core/registry";
-import { Component } from "@odoo/owl";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+import {registry} from "@web/core/registry";
+import {Component} from "@odoo/owl";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
 
 class AttachmentNumber extends Component {
     static template = "hr_expense.AttachmentNumber";
@@ -8,7 +8,7 @@ class AttachmentNumber extends Component {
 
     setup() {
         super.setup();
-        this.nb_attachment = this.props.record.data.nb_attachment
+        this.nb_attachment = this.props.record.data.nb_attachment;
     }
 }
 

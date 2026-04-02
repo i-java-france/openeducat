@@ -1,4 +1,4 @@
-import { negate } from "@point_of_sale/../tests/generic_helpers/utils";
+import {negate} from "@point_of_sale/../tests/generic_helpers/utils";
 /**
  * @typedef {{
  * withClass?: string, // ex: withClass: ".selected.blue"
@@ -40,7 +40,8 @@ export function hasLine({
         trigger += `:has(.product-name:contains("${productName}"))`;
     }
     if (quantity) {
-        quantity = parseFloat(quantity) % 1 === 0 ? parseInt(quantity).toString() : quantity;
+        quantity =
+            parseFloat(quantity) % 1 === 0 ? parseInt(quantity).toString() : quantity;
         trigger += `:has(.qty:contains("${quantity}"))`;
     }
     if (price) {
@@ -82,7 +83,7 @@ export function hasLine({
  */
 export function doesNotHaveLine(options = {}) {
     const step = hasLine(options)[0];
-    return [{ ...step, trigger: negate(step.trigger) }];
+    return [{...step, trigger: negate(step.trigger)}];
 }
 
 // TODO: there are instances where we have no selected orderline. Fix those instances

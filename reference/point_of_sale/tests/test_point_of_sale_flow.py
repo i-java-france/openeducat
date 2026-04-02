@@ -1,13 +1,15 @@
-import odoo
+from datetime import datetime, timedelta
+from unittest.mock import patch
 
 from freezegun import freeze_time
-from unittest.mock import patch
+
+import odoo
 from odoo import fields
+from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Command
 from odoo.tests import Form
-from datetime import datetime, timedelta
+
 from odoo.addons.point_of_sale.tests.common import CommonPosTest
-from odoo.exceptions import ValidationError, UserError
 
 
 @odoo.tests.tagged('post_install', '-at_install')
@@ -375,11 +377,11 @@ class TestPointOfSaleFlow(CommonPosTest):
         debit_lines = current_session.move_id.mapped('line_ids.debit')
         credit_lines = current_session.move_id.mapped('line_ids.credit')
         amount_currency_lines = current_session.move_id.mapped('line_ids.amount_currency')
-        for a, b in zip(sorted(debit_lines), [0.0, 15.0]):
+        for a, b in zip(sorted(debit_lines), [0.0, 15.0], strict=False):
             self.assertAlmostEqual(a, b)
-        for a, b in zip(sorted(credit_lines), [0.0, 15.0]):
+        for a, b in zip(sorted(credit_lines), [0.0, 15.0], strict=False):
             self.assertAlmostEqual(a, b)
-        for a, b in zip(sorted(amount_currency_lines), [-30, 30]):
+        for a, b in zip(sorted(amount_currency_lines), [-30, 30], strict=False):
             self.assertAlmostEqual(a, b)
 
     def test_order_to_invoice_no_tax(self):

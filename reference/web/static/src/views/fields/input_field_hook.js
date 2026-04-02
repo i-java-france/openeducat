@@ -1,7 +1,7 @@
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { useBus } from "@web/core/utils/hooks";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {useBus} from "@web/core/utils/hooks";
 
-import { useComponent, useEffect, useRef } from "@odoo/owl";
+import {useComponent, useEffect, useRef} from "@odoo/owl";
 
 /**
  * This hook is meant to be used by field components that use an input or
@@ -82,7 +82,10 @@ export function useInputField(params) {
                 if (val !== component.props.record.data[fieldName]) {
                     lastSetValue = inputRef.el.value;
                     pendingUpdate = true;
-                    await component.props.record.update({ [fieldName]: val }, { save: shouldSave() });
+                    await component.props.record.update(
+                        {[fieldName]: val},
+                        {save: shouldSave()}
+                    );
                     pendingUpdate = false;
                     component.props.record.model.bus.trigger("FIELD_IS_DIRTY", isDirty);
                 } else {
@@ -142,9 +145,11 @@ export function useInputField(params) {
         }
     });
 
-    const { model } = component.props.record;
+    const {model} = component.props.record;
     useBus(model.bus, "WILL_SAVE_URGENTLY", () => commitChanges(true));
-    useBus(model.bus, "NEED_LOCAL_CHANGES", (ev) => ev.detail.proms.push(commitChanges()));
+    useBus(model.bus, "NEED_LOCAL_CHANGES", (ev) =>
+        ev.detail.proms.push(commitChanges())
+    );
 
     /**
      * Roughly the same as onChange, but called at more specific / critical times. (See bus events)
@@ -178,7 +183,10 @@ export function useInputField(params) {
 
             if ((val || false) !== (component.props.record.data[fieldName] || false)) {
                 lastSetValue = inputRef.el.value;
-                await component.props.record.update({ [fieldName]: val }, { save: shouldSave() });
+                await component.props.record.update(
+                    {[fieldName]: val},
+                    {save: shouldSave()}
+                );
                 component.props.record.model.bus.trigger("FIELD_IS_DIRTY", false);
             } else {
                 inputRef.el.value = params.getValue();

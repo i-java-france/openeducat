@@ -1,5 +1,5 @@
-import { _t } from "@web/core/l10n/translation";
-import { download } from "@web/core/network/download";
+import {_t} from "@web/core/l10n/translation";
+import {download} from "@web/core/network/download";
 
 /**
  * Generates the report url given a report action.
@@ -32,19 +32,20 @@ export function getReportUrl(action, type, userContext) {
 
 // messages that might be shown to the user dependening on the state of wkhtmltopdf
 function getWKHTMLTOPDF_MESSAGES(status) {
-    const link = '<br><br><a href="http://wkhtmltopdf.org/" target="_blank">wkhtmltopdf.org</a>'; // FIXME missing markup
+    const link =
+        '<br><br><a href="http://wkhtmltopdf.org/" target="_blank">wkhtmltopdf.org</a>'; // FIXME missing markup
     const _status = {
         broken: _t(
             "Your installation of Wkhtmltopdf seems to be broken. The report will be shown in html.%(link)s",
-            { link }
+            {link}
         ),
         install: _t(
             "Unable to find Wkhtmltopdf on this system. The report will be shown in html.%(link)s",
-            { link }
+            {link}
         ),
         upgrade: _t(
             "You should upgrade your version of Wkhtmltopdf to at least 0.12.0 in order to get a correct display of headers and footers as well as support for table-breaking between pages.%(link)s",
-            { link }
+            {link}
         ),
         workers: _t(
             "You need to start Odoo with at least two workers to print a pdf version of the reports."
@@ -71,7 +72,7 @@ export async function downloadReport(rpc, action, type, userContext) {
         const status = await downloadReport.wkhtmltopdfStatusProm;
         message = getWKHTMLTOPDF_MESSAGES(status);
         if (!["upgrade", "ok"].includes(status)) {
-            return { success: false, message };
+            return {success: false, message};
         }
     }
     const url = getReportUrl(action, type);
@@ -82,5 +83,5 @@ export async function downloadReport(rpc, action, type, userContext) {
             context: JSON.stringify(userContext),
         },
     });
-    return { success: true, message };
+    return {success: true, message};
 }

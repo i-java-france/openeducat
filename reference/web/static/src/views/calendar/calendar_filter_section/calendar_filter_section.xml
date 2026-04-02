@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
     <t t-name="web.CalendarFilterSection">
-        <div t-if="section.filters.length gt 0 or section.canAddFilter"
-             class="o_calendar_filter d-flex flex-column gap-1 mt-3 mb-2"
-             t-att-data-name="section.fieldName"
+        <div
+            t-if="section.filters.length gt 0 or section.canAddFilter"
+            class="o_calendar_filter d-flex flex-column gap-1 mt-3 mb-2"
+            t-att-data-name="section.fieldName"
         >
             <t t-if="section.label">
                 <div
@@ -25,7 +26,10 @@
                         type="button"
                         t-on-click.stop.prevent="() => this.toggleSection(ev)"
                     >
-                        <span class="o_cw_filter_label fw-bolder text-truncate flex-grow-1" t-esc="section.label"/>
+                        <span
+                            class="o_cw_filter_label fw-bolder text-truncate flex-grow-1"
+                            t-esc="section.label"
+                        />
                         <i
                             class="o_cw_filter_collapse_icon fa ms-1"
                             t-attf-class="fa-caret-{{ state.collapsed ? 'left' : 'down' }}"
@@ -35,15 +39,22 @@
             </t>
             <t t-if="!state.collapsed">
                 <div class="o_calendar_filter_items d-flex flex-column gap-1">
-                    <t t-foreach="getSortedFilters()" t-as="filter" t-key="filter.value">
-                        <t t-set="filterId" t-value="nextFilterId"/>
-                        <t t-call="{{ constructor.subTemplates.filter }}"/>
+                    <t
+                        t-foreach="getSortedFilters()"
+                        t-as="filter"
+                        t-key="filter.value"
+                    >
+                        <t t-set="filterId" t-value="nextFilterId" />
+                        <t t-call="{{ constructor.subTemplates.filter }}" />
                     </t>
                 </div>
                 <AutoComplete t-if="section.canAddFilter" t-props="autoCompleteProps">
                     <t t-set-slot="option" t-slot-scope="optionScope">
                         <t t-if="optionScope.data.id and section.avatar.field">
-                            <img class="rounded me-1 o_avatar" t-attf-src="/web/image/{{ section.avatar.model }}/{{ optionScope.data.id }}/{{ section.avatar.field }}"/>
+                            <img
+                                class="rounded me-1 o_avatar"
+                                t-attf-src="/web/image/{{ section.avatar.model }}/{{ optionScope.data.id }}/{{ section.avatar.field }}"
+                            />
                         </t>
                         <t t-esc="optionScope.label" />
                     </t>
@@ -82,7 +93,7 @@
                     class="o_cw_filter_title flex-grow-1 text-truncate lh-base"
                     t-esc="filter.label"
                 />
-                <span t-if="filter.aggregatedValue" t-esc="filter.aggregatedValue"/>
+                <span t-if="filter.aggregatedValue" t-esc="filter.aggregatedValue" />
             </label>
             <t t-if="filter.canRemove">
                 <button
@@ -92,7 +103,7 @@
                     aria-label="Remove this favorite from the list"
                     t-on-click="(ev) => this.onFilterRemoveBtnClick(filter, ev)"
                 >
-                    <i class="oi oi-close"/>
+                    <i class="oi oi-close" />
                 </button>
             </t>
         </div>

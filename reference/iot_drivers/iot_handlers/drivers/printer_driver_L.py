@@ -1,21 +1,33 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import logging
+import time
 from base64 import b64decode
 from threading import Lock
-from cups import IPPError, IPP_JOB_COMPLETED, IPP_JOB_PROCESSING, IPP_JOB_PENDING, CUPS_FORMAT_AUTO, Connection
+
+import escpos.exceptions
+import netifaces as ni
+from cups import (
+    CUPS_FORMAT_AUTO,
+    IPP_JOB_COMPLETED,
+    IPP_JOB_PENDING,
+    IPP_JOB_PROCESSING,
+    Connection,
+    IPPError,
+)
 from escpos import printer
 from escpos.escpos import EscposIO
-import escpos.exceptions
-import logging
-import netifaces as ni
-import time
 
 from odoo import http
+
 from odoo.addons.iot_drivers.connection_manager import connection_manager
 from odoo.addons.iot_drivers.controllers.proxy import proxy_drivers
-from odoo.addons.iot_drivers.iot_handlers.drivers.printer_driver_base import EscposNotAvailableError, PrinterDriverBase
+from odoo.addons.iot_drivers.iot_handlers.drivers.printer_driver_base import (
+    EscposNotAvailableError,
+    PrinterDriverBase,
+)
 from odoo.addons.iot_drivers.main import iot_devices
-from odoo.addons.iot_drivers.tools import helpers, wifi, route
+from odoo.addons.iot_drivers.tools import helpers, route, wifi
 
 _logger = logging.getLogger(__name__)
 

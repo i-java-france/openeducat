@@ -1,6 +1,6 @@
-import { isBlock } from "./blocks";
-import { CTGROUPS, CTYPES, ctypeToString } from "./content_types";
-import { isInPre, isVisible, isWhitespace, whitespace } from "./dom_info";
+import {isBlock} from "./blocks";
+import {CTGROUPS, CTYPES, ctypeToString} from "./content_types";
+import {isInPre, isVisible, isWhitespace, whitespace} from "./dom_info";
 import {
     PATH_END_REASONS,
     ancestors,
@@ -8,7 +8,7 @@ import {
     closestPath,
     createDOMPathGenerator,
 } from "./dom_traversal";
-import { DIRECTIONS, leftPos, rightPos } from "./position";
+import {DIRECTIONS, leftPos, rightPos} from "./position";
 
 const prepareUpdateLockedEditables = new Set();
 /**
@@ -40,8 +40,11 @@ const prepareUpdateLockedEditables = new Set();
 export function prepareUpdate(...args) {
     const closestRoot =
         args.length &&
-        ancestors(args[0]).find((ancestor) => ancestor.classList.contains("odoo-editor-editable"));
-    const isPrepareUpdateLocked = closestRoot && prepareUpdateLockedEditables.has(closestRoot);
+        ancestors(args[0]).find((ancestor) =>
+            ancestor.classList.contains("odoo-editor-editable")
+        );
+    const isPrepareUpdateLocked =
+        closestRoot && prepareUpdateLockedEditables.has(closestRoot);
     const hash = (Math.random() + 1).toString(36).substring(7);
     const options = {
         allowReenter: true,
@@ -94,7 +97,10 @@ export function prepareUpdate(...args) {
         if (options.debug) {
             const editable = el && closestElement(el, ".odoo-editor-editable");
             const oldEditableHTML =
-                (editable && editable.innerHTML.replaceAll(" ", "_").replaceAll("\u200B", "ZWS")) ||
+                (editable &&
+                    editable.innerHTML
+                        .replaceAll(" ", "_")
+                        .replaceAll("\u200B", "ZWS")) ||
                 "";
             left.oldEditableHTML = oldEditableHTML;
             right.oldEditableHTML = oldEditableHTML;
@@ -194,9 +200,11 @@ export function getState(el, offset, direction, leftCType) {
                     } else {
                         const rightLeaf = rightLeafOnlyNotBlockPath(node).next().value;
                         const hasContentRight =
-                            rightLeaf && !whitespaceAtStartRegex.test(rightLeaf.textContent);
+                            rightLeaf &&
+                            !whitespaceAtStartRegex.test(rightLeaf.textContent);
                         cType =
-                            !hasContentRight && whitespaceAtEndRegex.test(node.textContent)
+                            !hasContentRight &&
+                            whitespaceAtEndRegex.test(node.textContent)
                                 ? CTYPES.SPACE
                                 : CTYPES.CONTENT;
                     }
@@ -258,54 +266,54 @@ const priorityRestoreStateRules = [
     [
         // Replace a space by &nbsp; when it was not collapsed before and now is
         // collapsed (one-letter word removal for example).
-        { cType1: CTYPES.CONTENT, cType2: CTYPES.SPACE | CTGROUPS.BLOCK },
-        { spaceVisibility: true },
+        {cType1: CTYPES.CONTENT, cType2: CTYPES.SPACE | CTGROUPS.BLOCK},
+        {spaceVisibility: true},
     ],
     [
         // Replace a space by &nbsp; when it was content before and now it is
         // a BR.
-        { direction: DIRECTIONS.LEFT, cType1: CTGROUPS.INLINE, cType2: CTGROUPS.BR },
-        { spaceVisibility: true },
+        {direction: DIRECTIONS.LEFT, cType1: CTGROUPS.INLINE, cType2: CTGROUPS.BR},
+        {spaceVisibility: true},
     ],
     [
         // Replace a space by &nbsp; when it was content before and now it is
         // a BR (removal of last character before a BR for example).
-        { direction: DIRECTIONS.RIGHT, cType1: CTGROUPS.CONTENT, cType2: CTGROUPS.BR },
-        { spaceVisibility: true },
+        {direction: DIRECTIONS.RIGHT, cType1: CTGROUPS.CONTENT, cType2: CTGROUPS.BR},
+        {spaceVisibility: true},
     ],
     [
         // Replace a space by &nbsp; when it was visible thanks to a BR which
         // is now gone.
-        { direction: DIRECTIONS.RIGHT, cType1: CTGROUPS.BR, cType2: CTYPES.SPACE },
-        { spaceVisibility: true },
+        {direction: DIRECTIONS.RIGHT, cType1: CTGROUPS.BR, cType2: CTYPES.SPACE},
+        {spaceVisibility: true},
     ],
     [
         // Replace a space by &nbsp; when it was visible thanks to a BR which
         // is now gone and duplicate a BR which was visible thanks to a second
         // BR which is now gone.
-        { direction: DIRECTIONS.RIGHT, cType1: CTGROUPS.BR, cType2: CTGROUPS.BLOCK },
-        { spaceVisibility: true, brVisibility: true },
+        {direction: DIRECTIONS.RIGHT, cType1: CTGROUPS.BR, cType2: CTGROUPS.BLOCK},
+        {spaceVisibility: true, brVisibility: true},
     ],
     [
         // Remove all collapsed spaces when a space is removed.
-        { cType1: CTYPES.SPACE },
-        { spaceVisibility: false },
+        {cType1: CTYPES.SPACE},
+        {spaceVisibility: false},
     ],
     [
         // Remove spaces once the preceeding BR is removed
-        { direction: DIRECTIONS.LEFT, cType1: CTGROUPS.BR },
-        { spaceVisibility: false },
+        {direction: DIRECTIONS.LEFT, cType1: CTGROUPS.BR},
+        {spaceVisibility: false},
     ],
     [
         // Remove space before block once content is put after it (otherwise it
         // would become visible).
-        { cType1: CTGROUPS.BLOCK, cType2: CTGROUPS.INLINE | CTGROUPS.BR },
-        { spaceVisibility: false },
+        {cType1: CTGROUPS.BLOCK, cType2: CTGROUPS.INLINE | CTGROUPS.BR},
+        {spaceVisibility: false},
     ],
     [
         // Duplicate a BR once the content afterwards disappears
-        { direction: DIRECTIONS.RIGHT, cType1: CTGROUPS.INLINE, cType2: CTGROUPS.BLOCK },
-        { brVisibility: true },
+        {direction: DIRECTIONS.RIGHT, cType1: CTGROUPS.INLINE, cType2: CTGROUPS.BLOCK},
+        {brVisibility: true},
     ],
     [
         // Remove a BR at the end of a block once inline content is put after
@@ -315,7 +323,7 @@ const priorityRestoreStateRules = [
             cType1: CTGROUPS.BLOCK,
             cType2: CTGROUPS.INLINE | CTGROUPS.BR,
         },
-        { brVisibility: false },
+        {brVisibility: false},
     ],
     [
         // Remove a BR once the BR that preceeds it is now replaced by
@@ -326,7 +334,10 @@ const priorityRestoreStateRules = [
             cType1: CTGROUPS.BR | CTGROUPS.BLOCK,
             cType2: CTGROUPS.INLINE,
         },
-        { brVisibility: false, extraBRRemovalCondition: (brNode) => isFakeLineBreak(brNode) },
+        {
+            brVisibility: false,
+            extraBRRemovalCondition: (brNode) => isFakeLineBreak(brNode),
+        },
     ],
 ];
 function restoreStateRuleHashCode(direction, cType1, cType2) {
@@ -339,7 +350,7 @@ const allRestoreStateRules = (function () {
     for (const direction of Object.values(DIRECTIONS)) {
         for (const cType1 of Object.values(CTYPES)) {
             for (const cType2 of Object.values(CTYPES)) {
-                const rule = { direction: direction, cType1: cType1, cType2: cType2 };
+                const rule = {direction: direction, cType1: cType1, cType2: cType2};
 
                 // Search for the rules which match whatever their priority
                 const matchedRules = [];
@@ -397,7 +408,7 @@ const allRestoreStateRules = (function () {
  *     if any, for testing purposes.
  */
 export function restoreState(prevStateData, debug = false) {
-    const { node, direction, cType: cType1, oldEditableHTML } = prevStateData;
+    const {node, direction, cType: cType1, oldEditableHTML} = prevStateData;
     if (!node || !node.parentNode) {
         // FIXME sometimes we want to restore the state starting from a node
         // which has been removed by another restoreState call... Not sure if
@@ -405,7 +416,7 @@ export function restoreState(prevStateData, debug = false) {
         return;
     }
     const [el, offset] = direction === DIRECTIONS.LEFT ? leftPos(node) : rightPos(node);
-    const { cType: cType2 } = getState(el, offset, direction);
+    const {cType: cType2} = getState(el, offset, direction);
 
     /**
      * Knowing the old state data and the new state data, we know if we have to
@@ -435,7 +446,9 @@ export function restoreState(prevStateData, debug = false) {
                 "%c" +
                 "AFTER:  " +
                 (editable
-                    ? editable.innerHTML.replaceAll(" ", "_").replaceAll("\u200B", "ZWS")
+                    ? editable.innerHTML
+                          .replaceAll(" ", "_")
+                          .replaceAll("\u200B", "ZWS")
                     : "(unavailable)") +
                 "\n",
             "color: white; display: block; width: 100%;",
@@ -450,7 +463,8 @@ export function restoreState(prevStateData, debug = false) {
         );
     }
     if (Object.values(rule).filter((x) => x !== undefined).length) {
-        const inverseDirection = direction === DIRECTIONS.LEFT ? DIRECTIONS.RIGHT : DIRECTIONS.LEFT;
+        const inverseDirection =
+            direction === DIRECTIONS.LEFT ? DIRECTIONS.RIGHT : DIRECTIONS.LEFT;
         enforceWhitespace(el, offset, inverseDirection, rule);
     }
     return rule;
@@ -466,7 +480,10 @@ export function restoreState(prevStateData, debug = false) {
  * @returns {boolean}
  */
 export function isFakeLineBreak(brEl) {
-    return !(getState(...rightPos(brEl), DIRECTIONS.RIGHT).cType & (CTYPES.CONTENT | CTGROUPS.BR));
+    return !(
+        getState(...rightPos(brEl), DIRECTIONS.RIGHT).cType &
+        (CTYPES.CONTENT | CTGROUPS.BR)
+    );
 }
 
 /**
@@ -501,7 +518,10 @@ export function enforceWhitespace(el, offset, direction, rule) {
             if (rule.brVisibility) {
                 node.before(document.createElement("br"));
             } else {
-                if (!rule.extraBRRemovalCondition || rule.extraBRRemovalCondition(node)) {
+                if (
+                    !rule.extraBRRemovalCondition ||
+                    rule.extraBRRemovalCondition(node)
+                ) {
                     node.remove();
                 }
             }

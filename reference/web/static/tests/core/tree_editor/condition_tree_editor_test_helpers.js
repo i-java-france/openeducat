@@ -1,8 +1,8 @@
-import { queryAll, queryAllTexts, queryOne, queryText, queryValue } from "@odoo/hoot-dom";
-import { contains, fields, models } from "@web/../tests/web_test_helpers";
+import {queryAll, queryAllTexts, queryOne, queryText, queryValue} from "@odoo/hoot-dom";
+import {contains, fields, models} from "@web/../tests/web_test_helpers";
 
-import { Domain } from "@web/core/domain";
-import { formatAST, parseExpr } from "@web/core/py_js/py";
+import {Domain} from "@web/core/domain";
+import {formatAST, parseExpr} from "@web/core/py_js/py";
 
 export function label(operator, fieldType) {
     switch (operator) {
@@ -74,7 +74,9 @@ function getValue(root) {
     if (!root) {
         return null;
     }
-    const el = queryOne("input,select,span:not(.o_tag):not(.o_dropdown_button)", { root });
+    const el = queryOne("input,select,span:not(.o_tag):not(.o_dropdown_button)", {
+        root,
+    });
     switch (el.tagName) {
         case "INPUT":
             return queryValue(el);
@@ -91,18 +93,18 @@ function getValue(root) {
  * @param {Target} [root]
  */
 function queryAt(selector, index, root) {
-    return queryAll(selector, { root }).at(index || 0);
+    return queryAll(selector, {root}).at(index || 0);
 }
 
 export class Partner extends models.Model {
     foo = fields.Char();
     bar = fields.Boolean();
-    name = fields.Char({ string: "Partner Name" });
-    product_id = fields.Many2one({ relation: "product" });
+    name = fields.Char({string: "Partner Name"});
+    product_id = fields.Many2one({relation: "product"});
     int = fields.Integer();
     date = fields.Date();
     datetime = fields.Datetime();
-    json_field = fields.Json({ string: "Json Field" });
+    json_field = fields.Json({string: "Json Field"});
     state = fields.Selection({
         selection: [
             ["abc", "ABC"],
@@ -112,15 +114,15 @@ export class Partner extends models.Model {
     });
 
     _records = [
-        { id: 1, foo: "yop", bar: true, product_id: 37, name: "first record" },
-        { id: 2, foo: "blip", bar: true, product_id: false, name: "second record" },
-        { id: 4, foo: "abc", bar: false, product_id: 41, name: "aaa" },
+        {id: 1, foo: "yop", bar: true, product_id: 37, name: "first record"},
+        {id: 2, foo: "blip", bar: true, product_id: false, name: "second record"},
+        {id: 4, foo: "abc", bar: false, product_id: 41, name: "aaa"},
     ];
 }
 
 export class Product extends models.Model {
-    name = fields.Char({ string: "Product Name" });
-    bar = fields.Boolean({ string: "Product Bar" });
+    name = fields.Char({string: "Product Name"});
+    bar = fields.Boolean({string: "Product Bar"});
     team_id = fields.Many2one({
         string: "Product Team",
         relation: "team",
@@ -128,33 +130,33 @@ export class Product extends models.Model {
     });
 
     _records = [
-        { id: 37, name: "xphone" },
-        { id: 41, name: "xpad" },
+        {id: 37, name: "xphone"},
+        {id: 41, name: "xpad"},
     ];
 }
 
 export class Team extends models.Model {
-    name = fields.Char({ string: "Team Name", searchable: true });
-    player_ids = fields.One2many({ relation: "player", string: "Players" });
+    name = fields.Char({string: "Team Name", searchable: true});
+    player_ids = fields.One2many({relation: "player", string: "Players"});
 
     _records = [
-        { id: 1, display_name: "Mancester City" },
-        { id: 2, display_name: "Arsenal" },
+        {id: 1, display_name: "Mancester City"},
+        {id: 2, display_name: "Arsenal"},
     ];
 }
 
 export class Player extends models.Model {
-    name = fields.Char({ string: "Player Name", searchable: true });
-    country_id = fields.Many2one({ string: "Country", relation: "country" });
+    name = fields.Char({string: "Player Name", searchable: true});
+    country_id = fields.Many2one({string: "Country", relation: "country"});
     _records = [
-        { id: 1, name: "Kevin De Bruyne" },
-        { id: 2, name: "Jeremy Doku" },
+        {id: 1, name: "Kevin De Bruyne"},
+        {id: 2, name: "Jeremy Doku"},
     ];
 }
 
 export class Country extends models.Model {
     foo = fields.Char();
-    stage_id = fields.Many2one({ relation: "stage" });
+    stage_id = fields.Many2one({relation: "stage"});
 }
 
 export class Stage extends models.Model {
@@ -167,12 +169,16 @@ export const SELECTORS = {
     tree: ".o_tree_editor > .o_tree_editor_node",
     connector: ".o_tree_editor_connector",
     connectorValue: ".o_tree_editor_connector .o_tree_editor_connector_value",
-    connectorToggler: ".o_tree_editor_connector .o_tree_editor_connector_value button.o-dropdown",
+    connectorToggler:
+        ".o_tree_editor_connector .o_tree_editor_connector_value button.o-dropdown",
     condition: ".o_tree_editor_condition",
     addNewRule: ".o_tree_editor_row > a",
-    buttonAddNewRule: ".o_tree_editor_node_control_panel > button[data-tooltip='Add rule']",
-    buttonAddBranch: ".o_tree_editor_node_control_panel > button[data-tooltip='Add nested rule']",
-    buttonDeleteNode: ".o_tree_editor_node_control_panel > button[data-tooltip='Delete rule']",
+    buttonAddNewRule:
+        ".o_tree_editor_node_control_panel > button[data-tooltip='Add rule']",
+    buttonAddBranch:
+        ".o_tree_editor_node_control_panel > button[data-tooltip='Add nested rule']",
+    buttonDeleteNode:
+        ".o_tree_editor_node_control_panel > button[data-tooltip='Delete rule']",
     pathEditor: ".o_tree_editor_condition > .o_tree_editor_editor:nth-child(1)",
     operatorEditor: ".o_tree_editor_condition > .o_tree_editor_editor:nth-child(2)",
     valueEditor: ".o_tree_editor_condition > .o_tree_editor_editor:nth-child(3)",
@@ -196,7 +202,7 @@ export function getTreeEditorContent() {
         const parent = node.parentElement.closest(SELECTORS.node);
         const level = parent ? mapping.get(parent) + 1 : 0;
         mapping.set(node, level);
-        const nodeValue = { level };
+        const nodeValue = {level};
         const associatedNode = node.querySelector(CHILD_SELECTOR);
         const className = associatedNode.className;
         if (className.includes("connector")) {
@@ -242,7 +248,7 @@ export function getCurrentValue(index, target) {
     const valueEditor = queryAt(SELECTORS.valueEditor, index, target);
     const value = getValue(valueEditor);
     if (valueEditor) {
-        const texts = queryAllTexts(`.o_tag`, { root: valueEditor });
+        const texts = queryAllTexts(`.o_tag`, {root: valueEditor});
         if (texts.length) {
             if (value) {
                 texts.push(value);
@@ -260,7 +266,7 @@ export function getCurrentValue(index, target) {
 export function getOperatorOptions(index, target) {
     const el = queryAt(SELECTORS.operatorEditor, index, target);
     if (el) {
-        return queryAll(`select:only option`, { root: el }).map((o) => o.label);
+        return queryAll(`select:only option`, {root: el}).map((o) => o.label);
     }
 }
 
@@ -271,7 +277,7 @@ export function getOperatorOptions(index, target) {
 export function getValueOptions(index, target) {
     const el = queryAt(SELECTORS.valueEditor, index, target);
     if (el) {
-        return queryAll(`select:only option`, { root: el }).map((o) => o.label);
+        return queryAll(`select:only option`, {root: el}).map((o) => o.label);
     }
 }
 
@@ -313,7 +319,7 @@ function getCurrentCondition(index, target) {
 function getCurrentConnector(index, target) {
     const connectorText = queryAllTexts(
         `${SELECTORS.connector} > div > span > strong, ${SELECTORS.connectorValue}`,
-        { root: target }
+        {root: target}
     ).at(index);
     return connectorText.includes("all") ? "all" : connectorText;
 }
@@ -326,7 +332,7 @@ function getCurrentConnector(index, target) {
  */
 export function isNotSupportedPath(index, target) {
     const pathEditor = queryAt(SELECTORS.pathEditor, index, target);
-    return Boolean(queryOne(SELECTORS.clearNotSupported, { root: pathEditor }));
+    return Boolean(queryOne(SELECTORS.clearNotSupported, {root: pathEditor}));
 }
 
 /**
@@ -335,7 +341,7 @@ export function isNotSupportedPath(index, target) {
  */
 export function isNotSupportedOperator(index, target) {
     const operatorEditor = queryAt(SELECTORS.operatorEditor, index, target);
-    return Boolean(queryOne(SELECTORS.clearNotSupported, { root: operatorEditor }));
+    return Boolean(queryOne(SELECTORS.clearNotSupported, {root: operatorEditor}));
 }
 
 /**
@@ -344,7 +350,7 @@ export function isNotSupportedOperator(index, target) {
  */
 export function isNotSupportedValue(index, target) {
     const valueEditor = queryAt(SELECTORS.valueEditor, index, target);
-    return Boolean(queryOne(SELECTORS.clearNotSupported, { root: valueEditor }));
+    return Boolean(queryOne(SELECTORS.clearNotSupported, {root: valueEditor}));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -363,9 +369,9 @@ export async function toggleConnector(index, target) {
  * @param {Target} [target]
  */
 export async function selectOperator(operator, index, target) {
-    await contains(`${SELECTORS.operatorEditor}:eq(${index || 0}) select`, { root: target }).select(
-        JSON.stringify(operator)
-    );
+    await contains(`${SELECTORS.operatorEditor}:eq(${index || 0}) select`, {
+        root: target,
+    }).select(JSON.stringify(operator));
 }
 
 /**
@@ -374,9 +380,9 @@ export async function selectOperator(operator, index, target) {
  * @param {Target} [target]
  */
 export async function selectValue(value, index, target) {
-    await contains(`${SELECTORS.valueEditor}:eq(${index || 0}) select`, { root: target }).select(
-        JSON.stringify(value)
-    );
+    await contains(`${SELECTORS.valueEditor}:eq(${index || 0}) select`, {
+        root: target,
+    }).select(JSON.stringify(value));
 }
 
 /**
@@ -386,10 +392,9 @@ export async function selectValue(value, index, target) {
  * @param {Target} [target]
  */
 export async function editValue(value, options, index, target) {
-    await contains(`${SELECTORS.valueEditor}:eq(${index || 0}) input`, { root: target }).edit(
-        value,
-        options
-    );
+    await contains(`${SELECTORS.valueEditor}:eq(${index || 0}) input`, {
+        root: target,
+    }).edit(value, options);
 }
 
 /**
@@ -442,7 +447,7 @@ export async function openModelFieldSelectorPopover(index = 0) {
 }
 
 export function getModelFieldSelectorValues(root) {
-    return queryAllTexts("span.o_model_field_selector_chain_part", { root });
+    return queryAllTexts("span.o_model_field_selector_chain_part", {root});
 }
 
 export function getDisplayedFieldNames() {
@@ -450,7 +455,9 @@ export function getDisplayedFieldNames() {
 }
 
 export function getTitle() {
-    return queryText(".o_model_field_selector_popover .o_model_field_selector_popover_title");
+    return queryText(
+        ".o_model_field_selector_popover .o_model_field_selector_popover_title"
+    );
 }
 
 export async function clickPrev() {
@@ -462,7 +469,9 @@ export async function clickPrev() {
  * @param {Target} [target]
  */
 export async function followRelation(index, target) {
-    await contains(queryAt(".o_model_field_selector_popover_item_relation", index, target)).click();
+    await contains(
+        queryAt(".o_model_field_selector_popover_item_relation", index, target)
+    ).click();
 }
 
 export function getFocusedFieldName() {

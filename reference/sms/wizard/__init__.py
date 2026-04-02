@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 from . import sms_account_code
 from . import sms_account_phone

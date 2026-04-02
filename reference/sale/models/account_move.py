@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import _, api, fields, models
-from odoo.tools import groupby, OrderedSet
+from odoo.tools import OrderedSet, groupby
 
 
 class AccountMove(models.Model):
@@ -25,7 +25,7 @@ class AccountMove(models.Model):
 
     def unlink(self):
         downpayment_lines = self.mapped('line_ids.sale_line_ids').filtered(lambda line: line.is_downpayment and line.invoice_lines <= self.mapped('line_ids'))
-        res = super(AccountMove, self).unlink()
+        res = super().unlink()
         if downpayment_lines:
             downpayment_lines.unlink()
         return res
@@ -72,7 +72,7 @@ class AccountMove(models.Model):
         # OVERRIDE
         if not default_values_list:
             default_values_list = [{} for move in self]
-        for move, default_values in zip(self, default_values_list):
+        for move, default_values in zip(self, default_values_list, strict=False):
             default_values.update({
                 'campaign_id': move.campaign_id.id,
                 'medium_id': move.medium_id.id,
@@ -82,7 +82,7 @@ class AccountMove(models.Model):
 
     def action_post(self):
         # inherit of the function from account.move to validate a new tax and the priceunit of a downpayment
-        res = super(AccountMove, self).action_post()
+        res = super().action_post()
 
         # We cannot change lines content on locked SO, changes on invoices are not forwarded to the SO if the SO is locked
         dp_lines = self.line_ids.sale_line_ids.filtered(lambda l: l.is_downpayment and not l.display_type)
@@ -127,7 +127,7 @@ class AccountMove(models.Model):
 
     def _invoice_paid_hook(self):
         # OVERRIDE
-        res = super(AccountMove, self)._invoice_paid_hook()
+        res = super()._invoice_paid_hook()
         todo = set()
         for invoice in self.filtered(lambda move: move.is_invoice()):
             for line in invoice.invoice_line_ids:

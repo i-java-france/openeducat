@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+import logging
 
 from odoo.exceptions import UserError
 from odoo.tools import LazyTranslate
-
-import logging
 
 _lt = LazyTranslate(__name__, default_lang='en_US')  # TODO pass env to functions and remove _lt
 _logger = logging.getLogger(__name__)

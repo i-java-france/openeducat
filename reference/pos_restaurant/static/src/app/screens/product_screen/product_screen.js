@@ -1,9 +1,9 @@
-import { onWillDestroy } from "@odoo/owl";
-import { SWITCHSIGN, DECIMAL } from "@point_of_sale/app/components/numpad/numpad";
-import { ProductScreen } from "@point_of_sale/app/screens/product_screen/product_screen";
-import { useBus } from "@web/core/utils/hooks";
-import { patch } from "@web/core/utils/patch";
-import { useTrackedAsync } from "@point_of_sale/app/hooks/hooks";
+import {onWillDestroy} from "@odoo/owl";
+import {SWITCHSIGN, DECIMAL} from "@point_of_sale/app/components/numpad/numpad";
+import {ProductScreen} from "@point_of_sale/app/screens/product_screen/product_screen";
+import {useBus} from "@web/core/utils/hooks";
+import {patch} from "@web/core/utils/patch";
+import {useTrackedAsync} from "@point_of_sale/app/hooks/hooks";
 
 patch(ProductScreen.prototype, {
     /**
@@ -15,7 +15,7 @@ patch(ProductScreen.prototype, {
         this.state.isValidBuffer = true;
         this.doSubmitOrder = useTrackedAsync(() => this.pos.submitOrder());
         this.doReprintOrder = useTrackedAsync(() => this.pos.reprintOrder());
-        useBus(this.numberBuffer, "buffer-update", ({ detail: value }) => {
+        useBus(this.numberBuffer, "buffer-update", ({detail: value}) => {
             this.checkIsValid(value);
         });
 
@@ -27,7 +27,10 @@ patch(ProductScreen.prototype, {
         return this.pos.getOrderChanges().nbrOfChanges;
     },
     get swapButton() {
-        return this.pos.config.module_pos_restaurant && this.pos.config.preparationCategories.size;
+        return (
+            this.pos.config.module_pos_restaurant &&
+            this.pos.config.preparationCategories.size
+        );
     },
     get displayCategoryCount() {
         return this.pos.categoryCount.slice(0, 3);
@@ -41,13 +44,20 @@ patch(ProductScreen.prototype, {
     },
     get primaryOrderButton() {
         return (
-            this.pos.getOrderChanges().nbrOfChanges !== 0 && this.pos.config.module_pos_restaurant
+            this.pos.getOrderChanges().nbrOfChanges !== 0 &&
+            this.pos.config.module_pos_restaurant
         );
     },
     getNumpadButtons() {
         let buttons = super.getNumpadButtons();
         if (this.pos.numpadMode === "table") {
-            const toDisable = ["quantity", "discount", "price", SWITCHSIGN.value, DECIMAL.value];
+            const toDisable = [
+                "quantity",
+                "discount",
+                "price",
+                SWITCHSIGN.value,
+                DECIMAL.value,
+            ];
             buttons = buttons.map((button) => ({
                 ...button,
                 class: `

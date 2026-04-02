@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
     Terms to translate for the Gmail plugin.
     Named string format is supported (e.g: %(param)s)
@@ -41,12 +41,14 @@
     <string>Company Created.</string>
     <string>Error during enrichment</string>
     <string>Our IAP server is down, please come back later.</string>
-    <string>Oops, looks like you have exhausted your free enrichment requests. Please log in to try again.</string>
+    <string
+    >Oops, looks like you have exhausted your free enrichment requests. Please log in to try again.</string>
     <string>No insights found for this address.</string>
     <string>Something bad happened. Please, try again later.</string>
     <string>Invalid URL</string>
     <string>No company attached to this contact.</string>
-    <string>Attachments could not be logged in Odoo because their total size exceeded the allowed maximum.</string>
+    <string
+    >Attachments could not be logged in Odoo because their total size exceeded the allowed maximum.</string>
     <string>Logged from</string>
     <string>Gmail Inbox</string>
     <string>From:</string>

@@ -1,15 +1,25 @@
 //@ts-check
 
-import { _t } from "@web/core/l10n/translation";
-import { Domain } from "@web/core/domain";
-import { PivotModel } from "@web/views/pivot/pivot_model";
+import {_t} from "@web/core/l10n/translation";
+import {Domain} from "@web/core/domain";
+import {PivotModel} from "@web/views/pivot/pivot_model";
 
-import { helpers, constants, EvaluationError, SpreadsheetPivotTable } from "@odoo/o-spreadsheet";
-import { parseGroupField } from "./pivot_helpers";
+import {
+    helpers,
+    constants,
+    EvaluationError,
+    SpreadsheetPivotTable,
+} from "@odoo/o-spreadsheet";
+import {parseGroupField} from "./pivot_helpers";
 
-const { toNormalizedPivotValue, toNumber, isDateOrDatetimeField, pivotTimeAdapter, deepEquals } =
-    helpers;
-const { DEFAULT_LOCALE } = constants;
+const {
+    toNormalizedPivotValue,
+    toNumber,
+    isDateOrDatetimeField,
+    pivotTimeAdapter,
+    deepEquals,
+} = helpers;
+const {DEFAULT_LOCALE} = constants;
 
 /**
  * @typedef {import("@odoo/o-spreadsheet").PivotTableColumn} PivotTableColumn
@@ -215,7 +225,8 @@ export class OdooPivotModel extends PivotModel {
     async load(searchParams) {
         if (
             this.metaData.activeMeasures.find(
-                (fieldName) => fieldName !== "__count" && !this.metaData.fields[fieldName]
+                (fieldName) =>
+                    fieldName !== "__count" && !this.metaData.fields[fieldName]
             )
         ) {
             throw new Error(
@@ -245,7 +256,7 @@ export class OdooPivotModel extends PivotModel {
         if (domain.some((node) => node.value === NO_RECORD_AT_THIS_POSITION)) {
             return "";
         }
-        const { cols, rows } = this._getColsRowsValuesFromDomain(domain);
+        const {cols, rows} = this._getColsRowsValuesFromDomain(domain);
         const group = JSON.stringify([rows, cols]);
         const values = this.data.measurements[group];
         const measurementId = this._getAggregateSpec(measure);
@@ -270,7 +281,7 @@ export class OdooPivotModel extends PivotModel {
         if (groupValueString === NO_RECORD_AT_THIS_POSITION) {
             return "";
         }
-        const { field, granularity, dimensionWithGranularity } =
+        const {field, granularity, dimensionWithGranularity} =
             this.parseGroupField(groupFieldString);
         const dimension = this.definition.getDimension(dimensionWithGranularity);
         const value = toNormalizedPivotValue(dimension, groupValueString);
@@ -310,11 +321,14 @@ export class OdooPivotModel extends PivotModel {
             throw new Error("Domain size should be at least 1");
         }
         if (lastNode.field.startsWith("#")) {
-            if (domain.filter((node) => node.value === NO_RECORD_AT_THIS_POSITION).length) {
+            if (
+                domain.filter((node) => node.value === NO_RECORD_AT_THIS_POSITION)
+                    .length
+            ) {
                 return NO_RECORD_AT_THIS_POSITION;
             }
-            const { dimensionWithGranularity } = this.parseGroupField(lastNode.field);
-            const { cols, rows } = this._getColsRowsValuesFromDomain(domain);
+            const {dimensionWithGranularity} = this.parseGroupField(lastNode.field);
+            const {cols, rows} = this._getColsRowsValuesFromDomain(domain);
             return this._isCol(dimensionWithGranularity) ? cols.at(-1) : rows.at(-1);
         }
         return lastNode.value;
@@ -332,7 +346,7 @@ export class OdooPivotModel extends PivotModel {
         if (domain.some((node) => node.value === NO_RECORD_AT_THIS_POSITION)) {
             return undefined;
         }
-        const { cols, rows } = this._getColsRowsValuesFromDomain(domain);
+        const {cols, rows} = this._getColsRowsValuesFromDomain(domain);
         const key = JSON.stringify([rows, cols]);
         return this.data.groupDomains[key] || Domain.FALSE.toList();
     }
@@ -372,7 +386,7 @@ export class OdooPivotModel extends PivotModel {
             (d) => d.nameWithGranularity === dimension.nameWithGranularity
         );
         const visitTree = (tree) => {
-            const { values, labels } = tree.root;
+            const {values, labels} = tree.root;
             const value = values[groupByIndex];
             if (value !== undefined && !valuesUniqueness.has(value)) {
                 valuesUniqueness.add(value);
@@ -411,7 +425,13 @@ export class OdooPivotModel extends PivotModel {
         }
         const collapsedDomains =
             mode === "collapsed" ? this.getDefinition().collapsedDomains : undefined;
-        return new SpreadsheetPivotTable(cols, rows, measures, fieldsType, collapsedDomains);
+        return new SpreadsheetPivotTable(
+            cols,
+            rows,
+            measures,
+            fieldsType,
+            collapsedDomains
+        );
     }
 
     //--------------------------------------------------------------------------
@@ -435,9 +455,13 @@ export class OdooPivotModel extends PivotModel {
             const group = tree.root;
             if (!tree.directSubTrees.size) {
                 for (let i = 0; i < group.values.length; i++) {
-                    const { field } = this.parseGroupField(groupBys[i]);
+                    const {field} = this.parseGroupField(groupBys[i]);
                     if (!field.relation) {
-                        this._registerDisplayLabel(field.name, group.values[i], group.labels[i]);
+                        this._registerDisplayLabel(
+                            field.name,
+                            group.values[i],
+                            group.labels[i]
+                        );
                     } else {
                         const id = group.values[i];
                         const displayName = group.labels[i];
@@ -471,10 +495,14 @@ export class OdooPivotModel extends PivotModel {
     _getRelationalDisplayName(resModel, resId) {
         const displayName =
             this._displayNames[resModel]?.[resId] ||
-            this.serverData.batch.get("spreadsheet.mixin", "get_display_names_for_spreadsheet", {
-                model: resModel,
-                id: resId,
-            });
+            this.serverData.batch.get(
+                "spreadsheet.mixin",
+                "get_display_names_for_spreadsheet",
+                {
+                    model: resModel,
+                    id: resId,
+                }
+            );
         if (!displayName) {
             throw new EvaluationError(
                 _t("Unable to fetch the label of %(id)s of model %(model)s", {
@@ -501,7 +529,7 @@ export class OdooPivotModel extends PivotModel {
     _getGroupValues(group, groupBys) {
         return groupBys.map((gb) => {
             const groupBy = this._normalize(gb);
-            const { field, granularity } = this.parseGroupField(gb);
+            const {field, granularity} = this.parseGroupField(gb);
             if (isDateOrDatetimeField(field)) {
                 return pivotTimeAdapter(granularity).normalizeServerValue(
                     groupBy,
@@ -518,7 +546,7 @@ export class OdooPivotModel extends PivotModel {
      * @override
      */
     _sanitizeLabel(value, groupBy, config) {
-        const { metaData } = config;
+        const {metaData} = config;
         const fieldName = groupBy.split(":")[0];
         if (fieldName && metaData.fields[fieldName]) {
             const fields = fieldName.split(".");
@@ -554,7 +582,12 @@ export class OdooPivotModel extends PivotModel {
      * @private
      * @returns {number | boolean | string}
      */
-    _parsePivotFormulaWithPosition(dimensionWithGranularity, groupValueString, cols, rows) {
+    _parsePivotFormulaWithPosition(
+        dimensionWithGranularity,
+        groupValueString,
+        cols,
+        rows
+    ) {
         const position = toNumber(groupValueString, DEFAULT_LOCALE) - 1;
         const table = this.getExpandedTableStructure();
         let tree;
@@ -587,7 +620,9 @@ export class OdooPivotModel extends PivotModel {
         const rows = [];
         const cols = [];
         for (const node of domain) {
-            const { isPositional, dimensionWithGranularity } = this.parseGroupField(node.field);
+            const {isPositional, dimensionWithGranularity} = this.parseGroupField(
+                node.field
+            );
             let value;
             if (isPositional) {
                 value = this._parsePivotFormulaWithPosition(
@@ -597,7 +632,9 @@ export class OdooPivotModel extends PivotModel {
                     rows
                 );
             } else {
-                const dimension = this.definition.getDimension(dimensionWithGranularity);
+                const dimension = this.definition.getDimension(
+                    dimensionWithGranularity
+                );
                 value = toNormalizedPivotValue(dimension, node.value);
             }
             if (this._isCol(dimensionWithGranularity)) {
@@ -610,7 +647,7 @@ export class OdooPivotModel extends PivotModel {
                 );
             }
         }
-        return { rows, cols };
+        return {rows, cols};
     }
 
     /**
@@ -645,7 +682,9 @@ export class OdooPivotModel extends PivotModel {
     _getSpreadsheetCols() {
         const colGroupBys = this.metaData.fullColGroupBys;
         const height = colGroupBys.length;
-        const measures = this.getDefinition().measures.filter((measure) => !measure.isHidden);
+        const measures = this.getDefinition().measures.filter(
+            (measure) => !measure.isHidden
+        );
         const measureCount = measures.length;
         const leafCounts = this._getLeafCounts(this.data.colGroupTree);
 
@@ -727,7 +766,9 @@ export class OdooPivotModel extends PivotModel {
         }
         const field = this.metaData.fields[measure.fieldName];
         if (!field.aggregator) {
-            throw new Error(`Field ${measure.fieldName} doesn't have a default aggregator`);
+            throw new Error(
+                `Field ${measure.fieldName} doesn't have a default aggregator`
+            );
         }
         return `${measure.fieldName}:${field.aggregator}`;
     }
@@ -749,7 +790,7 @@ export class OdooPivotModel extends PivotModel {
     async _getGroupsSubdivision(params, groupInfo) {
         const customFields = this.definition.customFields || {};
 
-        const { columns, rows } = this.getDefinition();
+        const {columns, rows} = this.getDefinition();
         const allGroupBys = params.groupingSets.flat();
         const order = columns
             .concat(rows)
@@ -765,8 +806,12 @@ export class OdooPivotModel extends PivotModel {
         const hasCustomField = allGroupBys.some((gb) => customFields[gb] !== undefined);
         if (!hasCustomField) {
             return await super._getGroupsSubdivision(params, groupInfo);
-        } else if (params.measureSpecs.some((measure) => measure.endsWith(":count_distinct"))) {
-            throw new Error(_t('Cannot use custom pivot groups with "Count Distinct" measure'));
+        } else if (
+            params.measureSpecs.some((measure) => measure.endsWith(":count_distinct"))
+        ) {
+            throw new Error(
+                _t('Cannot use custom pivot groups with "Count Distinct" measure')
+            );
         } else {
             return this._doCustomGroupSubdivision(params, groupInfo);
         }
@@ -776,13 +821,16 @@ export class OdooPivotModel extends PivotModel {
         if (subGroups.length === 1) {
             return subGroups[0];
         }
-        const subGroup = { ...subGroups[0] };
+        const subGroup = {...subGroups[0]};
         for (const measure of measures) {
             const aggregator = measure.split(":")[1];
             switch (aggregator) {
                 case "sum":
                 case "count":
-                    subGroup[measure] = subGroups.reduce((sum, sg) => sum + sg[measure], 0);
+                    subGroup[measure] = subGroups.reduce(
+                        (sum, sg) => sum + sg[measure],
+                        0
+                    );
                     break;
                 case "min":
                     subGroup[measure] = Math.min(...subGroups.map((sg) => sg[measure]));
@@ -791,13 +839,18 @@ export class OdooPivotModel extends PivotModel {
                     subGroup[measure] = Math.max(...subGroups.map((sg) => sg[measure]));
                     break;
                 case "avg": {
-                    const totalCount = subGroups.reduce((sum, sg) => sum + (sg.__count || 0), 0);
+                    const totalCount = subGroups.reduce(
+                        (sum, sg) => sum + (sg.__count || 0),
+                        0
+                    );
                     if (totalCount === 0) {
                         subGroup[measure] = 0;
                     } else {
                         subGroup[measure] =
-                            subGroups.reduce((sum, sg) => sum + sg[measure] * sg.__count, 0) /
-                            totalCount;
+                            subGroups.reduce(
+                                (sum, sg) => sum + sg[measure] * sg.__count,
+                                0
+                            ) / totalCount;
                     }
                     break;
                 }
@@ -837,9 +890,15 @@ export class OdooPivotModel extends PivotModel {
                 return order === "asc" ? -1 : 1;
             }
 
-            const aLabel = (Array.isArray(aValue) ? aValue[1] : String(aValue)).toLowerCase();
-            const bLabel = (Array.isArray(bValue) ? bValue[1] : String(bValue)).toLowerCase();
-            return order === "asc" ? aLabel.localeCompare(bLabel) : bLabel.localeCompare(aLabel);
+            const aLabel = (
+                Array.isArray(aValue) ? aValue[1] : String(aValue)
+            ).toLowerCase();
+            const bLabel = (
+                Array.isArray(bValue) ? bValue[1] : String(bValue)
+            ).toLowerCase();
+            return order === "asc"
+                ? aLabel.localeCompare(bLabel)
+                : bLabel.localeCompare(aLabel);
         };
 
         const sortSubGroups = (groupBys, subGroups) => {
@@ -889,8 +948,12 @@ export class OdooPivotModel extends PivotModel {
 
         const mockGroupInfo = groupInfo.map((info) => ({
             ...info,
-            rowGroupBy: info.rowGroupBy.map((gb) => customFields[gb]?.parentField || gb),
-            colGroupBy: info.colGroupBy.map((gb) => customFields[gb]?.parentField || gb),
+            rowGroupBy: info.rowGroupBy.map(
+                (gb) => customFields[gb]?.parentField || gb
+            ),
+            colGroupBy: info.colGroupBy.map(
+                (gb) => customFields[gb]?.parentField || gb
+            ),
         }));
 
         // Grouping sets need to be unique, but with custom groups some might be duplicated. It happens when we do
@@ -898,8 +961,10 @@ export class OdooPivotModel extends PivotModel {
         const groupInfoKeysSet = new Set();
         const uniqueGroupInfo = [];
         for (const info of mockGroupInfo) {
-            const { rowGroupBy, colGroupBy } = info;
-            const uniqueGroups = [...new Set([...rowGroupBy, ...colGroupBy].sort())].join(",");
+            const {rowGroupBy, colGroupBy} = info;
+            const uniqueGroups = [
+                ...new Set([...rowGroupBy, ...colGroupBy].sort()),
+            ].join(",");
             if (!groupInfoKeysSet.has(uniqueGroups)) {
                 uniqueGroupInfo.push({
                     ...info,
@@ -927,7 +992,7 @@ export class OdooPivotModel extends PivotModel {
         }
 
         const result = await super._getGroupsSubdivision(
-            { ...params, groupingSets: uniqueGroupingSets },
+            {...params, groupingSets: uniqueGroupingSets},
             uniqueGroupInfo
         );
 
@@ -944,11 +1009,15 @@ export class OdooPivotModel extends PivotModel {
             const subGroups = result[resultIndex].subGroups;
 
             const groupBys = [...info.rowGroupBy, ...info.colGroupBy];
-            const hasCustomField = groupBys.some((gb) => customFields[gb] !== undefined);
+            const hasCustomField = groupBys.some(
+                (gb) => customFields[gb] !== undefined
+            );
             if (hasCustomField) {
-                resultWithCustomGroups.push(this._addCustomGroupsToGroup(params, info, subGroups));
+                resultWithCustomGroups.push(
+                    this._addCustomGroupsToGroup(params, info, subGroups)
+                );
             } else {
-                resultWithCustomGroups.push({ ...info, subGroups });
+                resultWithCustomGroups.push({...info, subGroups});
             }
         }
         return resultWithCustomGroups;
@@ -956,7 +1025,7 @@ export class OdooPivotModel extends PivotModel {
 
     _addCustomGroupsToGroup(params, groupInfo, subGroups) {
         const customFields = this.definition.customFields || {};
-        const { rowGroupBy, colGroupBy } = groupInfo;
+        const {rowGroupBy, colGroupBy} = groupInfo;
         const groupBys = [...rowGroupBy, ...colGroupBy];
 
         for (const groupBy of groupBys) {
@@ -981,15 +1050,19 @@ export class OdooPivotModel extends PivotModel {
         // Note: we need to preserve the order of the subGroups from the server. Object.groupBy() has no guarantee
         // on the order of keys, but its implementation in major browsers does seem to preserve the order. We'll use
         // Object.groupBy() until we find practical issues with it.
-        const getKey = (subGroup) => JSON.stringify(groupBys.map((groupBy) => subGroup[groupBy]));
+        const getKey = (subGroup) =>
+            JSON.stringify(groupBys.map((groupBy) => subGroup[groupBy]));
         const groupedSubgroups = Object.groupBy(subGroups, getKey);
 
         const aggregatedSubgroups = Object.values(groupedSubgroups).map((subGroups) =>
             this._aggregateSubGroups(subGroups, params.measureSpecs)
         );
-        const sortedSubGroups = this._sortCustomFieldsInSubGroups(groupBys, aggregatedSubgroups);
+        const sortedSubGroups = this._sortCustomFieldsInSubGroups(
+            groupBys,
+            aggregatedSubgroups
+        );
 
-        return { ...groupInfo, subGroups: sortedSubGroups };
+        return {...groupInfo, subGroups: sortedSubGroups};
     }
 
     /**
@@ -1021,7 +1094,9 @@ export class OdooPivotModel extends PivotModel {
      * @override
      */
     _getCellValue(groupId, measureName, config) {
-        const measure = this.getDefinition().measures.find((m) => m.fieldName === measureName);
+        const measure = this.getDefinition().measures.find(
+            (m) => m.fieldName === measureName
+        );
         const measurementId = this._getAggregateSpec(measure);
         var key = JSON.stringify(groupId);
         if (!config.data.measurements[key]) {

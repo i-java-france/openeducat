@@ -1,9 +1,9 @@
-import { registries, chartHelpers } from "@odoo/o-spreadsheet";
-import { _t } from "@web/core/l10n/translation";
-import { OdooChart } from "./odoo_chart";
-import { onOdooChartItemClick, onOdooChartItemHover } from "./odoo_chart_helpers";
+import {registries, chartHelpers} from "@odoo/o-spreadsheet";
+import {_t} from "@web/core/l10n/translation";
+import {OdooChart} from "./odoo_chart";
+import {onOdooChartItemClick, onOdooChartItemHover} from "./odoo_chart_helpers";
 
-const { chartRegistry } = registries;
+const {chartRegistry} = registries;
 
 const {
     getLineChartDatasets,
@@ -49,18 +49,20 @@ export class OdooLineChart extends OdooChart {
 
 chartRegistry.add("odoo_line", {
     match: (type) => type === "odoo_line",
-    createChart: (definition, sheetId, getters) => new OdooLineChart(definition, sheetId, getters),
+    createChart: (definition, sheetId, getters) =>
+        new OdooLineChart(definition, sheetId, getters),
     getChartRuntime: createOdooChartRuntime,
     validateChartDefinition: (validator, definition) =>
         OdooLineChart.validateChartDefinition(validator, definition),
     transformDefinition: (definition) => OdooLineChart.transformDefinition(definition),
-    getChartDefinitionFromContextCreation: () => OdooLineChart.getDefinitionFromContextCreation(),
+    getChartDefinitionFromContextCreation: () =>
+        OdooLineChart.getDefinitionFromContextCreation(),
     name: _t("Line"),
 });
 
 function createOdooChartRuntime(chart, getters) {
     const background = chart.background || "#FFFFFF";
-    let { datasets, labels } = chart.dataSource.getData();
+    let {datasets, labels} = chart.dataSource.getData();
     datasets = computeCumulatedDatasets(chart, datasets);
 
     const definition = chart.getDefinition();
@@ -70,12 +72,18 @@ function createOdooChartRuntime(chart, getters) {
         const trend = definition.dataSets[index]?.trend;
         return !trend?.display
             ? undefined
-            : getTrendDatasetForLineChart(trend, dataset.data, labels, "category", locale);
+            : getTrendDatasetForLineChart(
+                  trend,
+                  dataset.data,
+                  labels,
+                  "category",
+                  locale
+              );
     });
 
     const chartData = {
         labels,
-        dataSetsValues: datasets.map((ds) => ({ data: ds.data, label: ds.label })),
+        dataSetsValues: datasets.map((ds) => ({data: ds.data, label: ds.label})),
         locale,
         trendDataSetsValues,
         topPadding: getTopPaddingForDashboard(definition, getters),
@@ -104,7 +112,7 @@ function createOdooChartRuntime(chart, getters) {
         },
     };
 
-    return { background, chartJsConfig: config };
+    return {background, chartJsConfig: config};
 }
 
 function computeCumulatedDatasets(chart, datasets) {
@@ -116,7 +124,7 @@ function computeCumulatedDatasets(chart, datasets) {
                 accumulator += value;
                 return accumulator;
             });
-            cumulatedDatasets.push({ ...dataset, data });
+            cumulatedDatasets.push({...dataset, data});
         } else {
             cumulatedDatasets.push(dataset);
         }

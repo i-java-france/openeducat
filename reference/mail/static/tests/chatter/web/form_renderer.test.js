@@ -10,8 +10,8 @@ import {
     start,
     startServer,
 } from "@mail/../tests/mail_test_helpers";
-import { describe, expect, test } from "@odoo/hoot";
-import { mockService, serverState } from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {mockService, serverState} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 defineMailModels();
@@ -38,7 +38,7 @@ test.skip("Form view not scrolled when switching record", async () => {
         };
     });
     pyEnv["mail.message"].create(messages);
-    patchUiSize({ size: SIZES.LG });
+    patchUiSize({size: SIZES.LG});
     await start();
     await openFormView("res.partner", partnerId_1, {
         arch: `
@@ -51,16 +51,16 @@ test.skip("Form view not scrolled when switching record", async () => {
             </form>`,
         resIds: [partnerId_1, partnerId_2],
     });
-    await contains(".o-mail-Message", { count: 29 });
-    await contains(".o_content", { scroll: 0 });
+    await contains(".o-mail-Message", {count: 29});
+    await contains(".o_content", {scroll: 0});
     await scroll(".o_content", 150);
     await click(".o_pager_next");
-    await contains(".o-mail-Message", { count: 30 });
-    await contains(".o_content", { scroll: 150 });
+    await contains(".o-mail-Message", {count: 30});
+    await contains(".o_content", {scroll: 150});
     await scroll(".o_content", 0);
     await click(".o_pager_previous");
-    await contains(".o-mail-Message", { count: 29 });
-    await contains(".o_content", { scroll: 0 });
+    await contains(".o-mail-Message", {count: 29});
+    await contains(".o_content", {scroll: 0});
 });
 
 test("Attachments that have been unlinked from server should be visually unlinked from record", async () => {
@@ -69,8 +69,8 @@ test("Attachments that have been unlinked from server should be visually unlinke
     // partner accesses this record again.
     const pyEnv = await startServer();
     const [partnerId_1, partnerId_2] = pyEnv["res.partner"].create([
-        { display_name: "Partner1" },
-        { display_name: "Partner2" },
+        {display_name: "Partner1"},
+        {display_name: "Partner2"},
     ]);
     const [attachmentId_1] = pyEnv["ir.attachment"].create([
         {
@@ -96,15 +96,15 @@ test("Attachments that have been unlinked from server should be visually unlinke
         resId: partnerId_1,
         resIds: [partnerId_1, partnerId_2],
     });
-    await contains("button[aria-label='Attach files']", { text: "2" });
+    await contains("button[aria-label='Attach files']", {text: "2"});
     // The attachment links are updated on (re)load,
     // so using pager is a way to reload the record "Partner1".
     await click(".o_pager_next");
     await contains("button[aria-label='Attach files']:not(:has(sup))");
     // Simulate unlinking attachment 1 from Partner 1.
-    pyEnv["ir.attachment"].write([attachmentId_1], { res_id: 0 });
+    pyEnv["ir.attachment"].write([attachmentId_1], {res_id: 0});
     await click(".o_pager_previous");
-    await contains("button[aria-label='Attach files']", { text: "1" });
+    await contains("button[aria-label='Attach files']", {text: "1"});
 });
 
 test("ellipsis button is not duplicated when switching from read to edit mode", async () => {
@@ -143,7 +143,7 @@ test("ellipsis button is not duplicated when switching from read to edit mode", 
 });
 
 test("[TECHNICAL] unfolded ellipsis button should not fold on message click besides that button", async () => {
-    // message click triggers a re-render. Before writing of this test, the
+    // Message click triggers a re-render. Before writing of this test, the
     // insertion of ellipsis button were done during render. This meant
     // any re-render would re-insert the ellipsis button. If some buttons
     // were unfolded, any re-render would fold them again.
@@ -152,7 +152,7 @@ test("[TECHNICAL] unfolded ellipsis button should not fold on message click besi
     // such as inability to copy/paste unfolded message content due to click
     // from text selection automatically folding all ellipsis buttons.
     const pyEnv = await startServer();
-    const partnerId = pyEnv["res.partner"].create({ display_name: "Someone" });
+    const partnerId = pyEnv["res.partner"].create({display_name: "Someone"});
     pyEnv["mail.message"].create({
         author_id: partnerId,
         // "data-o-mail-quote" added by server is intended to be compacted in ellipsis block
@@ -182,7 +182,7 @@ test("[TECHNICAL] unfolded ellipsis button should not fold on message click besi
     });
     expect(".o-mail-Message-body span").toHaveCount(0);
     await click(".o-mail-ellipsis");
-    expect(".o-mail-Message-body span").toHaveText('--\nSystem')
+    expect(".o-mail-Message-body span").toHaveText("--\nSystem");
     await click(".o-mail-Message");
     expect(".o-mail-Message-body span").toHaveCount(1);
 });
@@ -226,7 +226,7 @@ test("read more/less should appear only once for the signature", async () => {
     const partnerId = pyEnv["res.partner"].create({});
 
     mockService("action", {
-        doAction(action, { onClose }) {
+        doAction(action, {onClose}) {
             if (action.name === "Compose Email") {
                 // Simulate message post of full composer
                 pyEnv["mail.message"].create({
@@ -263,6 +263,8 @@ test("read more/less should appear only once for the signature", async () => {
     await click(".o-mail-Chatter-sendMessage");
     await insertText(".o-mail-Composer-input", "Example Body");
     await click("[name='open-full-composer']");
-    await contains(".o-mail-Message-body", { text: "Example Body", count: 1 });
-    expect(".o-mail-Message .o-signature-container button.o-mail-ellipsis").toHaveCount(1);
+    await contains(".o-mail-Message-body", {text: "Example Body", count: 1});
+    expect(".o-mail-Message .o-signature-container button.o-mail-ellipsis").toHaveCount(
+        1
+    );
 });

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
@@ -17,7 +16,7 @@ class LinkTrackerClick(models.Model):
     mass_mailing_id = fields.Many2one('mailing.mailing', string='Mass Mailing', index='btree_not_null')
 
     def _prepare_click_values_from_route(self, **route_values):
-        click_values = super(LinkTrackerClick, self)._prepare_click_values_from_route(**route_values)
+        click_values = super()._prepare_click_values_from_route(**route_values)
 
         if click_values.get('mailing_trace_id'):
             trace_sudo = self.env['mailing.trace'].sudo().browse(route_values['mailing_trace_id']).exists()
@@ -33,7 +32,7 @@ class LinkTrackerClick(models.Model):
 
     @api.model
     def add_click(self, code, **route_values):
-        click = super(LinkTrackerClick, self).add_click(code, **route_values)
+        click = super().add_click(code, **route_values)
 
         if click and click.mailing_trace_id:
             click.mailing_trace_id.set_opened()

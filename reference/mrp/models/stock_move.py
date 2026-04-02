@@ -1,9 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
-from odoo import _, api, Command, fields, models
-from odoo.tools import OrderedSet, float_is_zero
+
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.tools import OrderedSet, float_is_zero
 
 
 class StockMove(models.Model):
@@ -143,7 +144,7 @@ class StockMove(models.Model):
 
     @api.depends('raw_material_production_id.is_locked', 'production_id.is_locked')
     def _compute_is_locked(self):
-        super(StockMove, self)._compute_is_locked()
+        super()._compute_is_locked()
         for move in self:
             if move.raw_material_production_id:
                 move.is_locked = move.raw_material_production_id.is_locked
@@ -340,7 +341,7 @@ class StockMove(models.Model):
             self.env['stock.rule'].run(procurements)
 
     def _action_assign(self, force_qty=False):
-        res = super(StockMove, self)._action_assign(force_qty=force_qty)
+        res = super()._action_assign(force_qty=force_qty)
         for move in self.filtered(lambda x: x.production_id or x.raw_material_production_id):
             if move.move_line_ids:
                 move.move_line_ids.write({'production_id': move.raw_material_production_id.id,
@@ -423,8 +424,8 @@ class StockMove(models.Model):
         return mo.with_context(child_field='move_byproduct_ids').action_add_from_catalog()
 
     def _action_cancel(self):
-        res = super(StockMove, self)._action_cancel()
-        if not 'skip_mo_check' in self.env.context:
+        res = super()._action_cancel()
+        if 'skip_mo_check' not in self.env.context:
             mo_to_cancel = self.mapped('raw_material_production_id').filtered(lambda p: all(m.state == 'cancel' for m in p.move_raw_ids))
             if mo_to_cancel:
                 mo_to_cancel._action_cancel()
@@ -498,15 +499,15 @@ class StockMove(models.Model):
         if self.production_id and self.production_id.state not in ('done', 'cancel'):
             return [(self.production_id, self.production_id.user_id, visited)]
         else:
-            return super(StockMove, self)._get_upstream_documents_and_responsibles(visited)
+            return super()._get_upstream_documents_and_responsibles(visited)
 
     def _delay_alert_get_documents(self):
-        res = super(StockMove, self)._delay_alert_get_documents()
+        res = super()._delay_alert_get_documents()
         productions = self.raw_material_production_id | self.production_id
         return res + list(productions)
 
     def _should_be_assigned(self):
-        res = super(StockMove, self)._should_be_assigned()
+        res = super()._should_be_assigned()
         return bool(res and not (self.production_id or self.raw_material_production_id))
 
     def _should_bypass_set_qty_producing(self):
@@ -524,7 +525,7 @@ class StockMove(models.Model):
         return vals
 
     def _key_assign_picking(self):
-        keys = super(StockMove, self)._key_assign_picking()
+        keys = super()._key_assign_picking()
         return keys + (self.created_production_id,)
 
     @api.model

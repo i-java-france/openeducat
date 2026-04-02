@@ -1,8 +1,9 @@
 import datetime
 
-from odoo import fields, Command
-from odoo.tests import tagged, Form
+from odoo import Command, fields
 from odoo.exceptions import ValidationError
+from odoo.tests import Form, tagged
+
 from odoo.addons.l10n_it_edi.tests.common import TestItEdi
 
 

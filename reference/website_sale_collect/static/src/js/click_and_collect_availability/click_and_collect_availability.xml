@@ -9,7 +9,7 @@
                 class="cursor-pointer"
             >
                 <h6>
-                    <i class="fa fa-fw fa-map-marker text-muted"/>
+                    <i class="fa fa-fw fa-map-marker text-muted" />
                     <t
                         t-if="this.state.selectedLocationData.id"
                         t-out="this.state.selectedLocationData.name"
@@ -22,19 +22,23 @@
                             t-if="this.state.inStoreStockData.show_quantity &amp;&amp; this.state.selectedLocationData.id"
                             class="text-muted"
                         >
-                            <i class="fa fa-fw fa-circle text-warning"/>
-                            Only <t t-out="this.state.inStoreStockData.quantity"/> available
+                            <i class="fa fa-fw fa-circle text-warning" />
+                            Only <t
+                            t-out="this.state.inStoreStockData.quantity"
+                        /> available
                         </div>
                         <div t-else="" class="text-muted">
-                            <i class="fa fa-fw fa-circle text-success"/> Available
+                            <i class="fa fa-fw fa-circle text-success" /> Available
                         </div>
                     </t>
                     <div t-else="" class="text-muted">
-                        <i class="fa fa-fw fa-circle text-danger"/> Not available
+                        <i class="fa fa-fw fa-circle text-danger" /> Not available
                     </div>
                     <a t-if="this.props.showSelectStoreButton" role="button" href="#">
                         <t t-if="this.state.selectedLocationData.id">Change store</t>
-                        <t t-elif="this.state.inStoreStockData.in_stock">Select store</t>
+                        <t
+                            t-elif="this.state.inStoreStockData.in_stock"
+                        >Select store</t>
                     </a>
                 </div>
             </div>
@@ -43,30 +47,32 @@
                 t-if="Object.keys(this.state.deliveryStockData || {}).length !== 0"
                 class="flex-row"
             >
-                <hr/>
+                <hr />
                 <h6>
-                    <i class="fa fa-fw fa-truck text-muted"/>
+                    <i class="fa fa-fw fa-truck text-muted" />
                     Delivery
                     <i
-                        class="fa fa-info-circle cursor-pointer ms-1"
-                        data-tooltip="Restrictions may apply"
-                        data-tooltip-delay="0"
-                    />
+                    class="fa fa-info-circle cursor-pointer ms-1"
+                    data-tooltip="Restrictions may apply"
+                    data-tooltip-delay="0"
+                />
                 </h6>
                 <div t-if="this.state.deliveryStockData.in_stock">
                     <div
                         t-if="this.state.deliveryStockData.show_quantity"
                         class="text-muted"
                     >
-                        <i class="fa fa-fw fa-circle text-warning"/>
-                        Only <t t-out="this.state.deliveryStockData.quantity"/> available
+                        <i class="fa fa-fw fa-circle text-warning" />
+                        Only <t
+                        t-out="this.state.deliveryStockData.quantity"
+                    /> available
                     </div>
                     <div t-else="" class="text-muted">
-                        <i class="fa fa-fw fa-circle text-success"/> Available
+                        <i class="fa fa-fw fa-circle text-success" /> Available
                     </div>
                 </div>
                 <div t-else="" class="text-muted">
-                    <i class="fa fa-fw fa-circle text-danger"/> Not available
+                    <i class="fa fa-fw fa-circle text-danger" /> Not available
                 </div>
             </div>
         </div>

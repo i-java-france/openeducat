@@ -1,5 +1,5 @@
-import { Component } from "@odoo/owl";
-import { getColor } from "../utils";
+import {Component} from "@odoo/owl";
+import {getColor} from "../utils";
 
 export class CalendarMobileFilterPanel extends Component {
     static components = {};
@@ -33,7 +33,10 @@ export class CalendarMobileFilterPanel extends Component {
                     ignorePunctuation: true,
                 });
             } else {
-                return this.getFilterTypePriority(a.type) - this.getFilterTypePriority(b.type);
+                return (
+                    this.getFilterTypePriority(a.type) -
+                    this.getFilterTypePriority(b.type)
+                );
             }
         });
     }

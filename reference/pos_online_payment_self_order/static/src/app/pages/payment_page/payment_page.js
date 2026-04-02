@@ -1,7 +1,7 @@
-import { patch } from "@web/core/utils/patch";
-import { PaymentPage } from "@pos_self_order/app/pages/payment_page/payment_page";
-import { _t } from "@web/core/l10n/translation";
-import { generateQRCodeDataUrl } from "@point_of_sale/utils";
+import {patch} from "@web/core/utils/patch";
+import {PaymentPage} from "@pos_self_order/app/pages/payment_page/payment_page";
+import {_t} from "@web/core/l10n/translation";
+import {generateQRCodeDataUrl} from "@point_of_sale/utils";
 
 patch(PaymentPage.prototype, {
     async startPayment() {
@@ -36,7 +36,7 @@ patch(PaymentPage.prototype, {
         } else {
             this.selfOrder.notification.add(
                 _t("The current order cannot be paid (maybe it is already paid)."),
-                { type: "danger" }
+                {type: "danger"}
             );
         }
     },

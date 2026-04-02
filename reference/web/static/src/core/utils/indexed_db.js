@@ -1,4 +1,4 @@
-import { Mutex } from "./concurrency";
+import {Mutex} from "./concurrency";
 
 const VERSION_TABLE = "__DBVersion__";
 const VERSION_KEY = "__version__";
@@ -68,7 +68,10 @@ export class IndexedDB {
     async invalidate(tables = null) {
         return this.execute((db) => {
             if (db) {
-                return this._invalidate(db, typeof tables === "string" ? [tables] : tables);
+                return this._invalidate(
+                    db,
+                    typeof tables === "string" ? [tables] : tables
+                );
             }
         });
     }
@@ -159,7 +162,7 @@ export class IndexedDB {
                     .then(resolve)
                     .catch(async (e) => {
                         if (e.name === "QuotaExceededError") {
-                            const { quota, usage } = await navigator.storage.estimate();
+                            const {quota, usage} = await navigator.storage.estimate();
                             console.error(
                                 `IndexedDB error: Quota Exceeded (${formatStorageSize(
                                     usage
@@ -185,7 +188,9 @@ export class IndexedDB {
             // Relaxed durability improves the write performances
             // https://nolanlawson.com/2021/08/22/speeding-up-indexeddb-reads-and-writes/
             // https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction/durability
-            const transaction = db.transaction(table, "readwrite", { durability: "relaxed" });
+            const transaction = db.transaction(table, "readwrite", {
+                durability: "relaxed",
+            });
             transaction.objectStore(table).put(record, key); // put to allow updates
             transaction.onerror = (ev) => reject(ev.target.error); // firefox (DOMException)
             transaction.onabort = (ev) => reject(ev.target.error); // chrome (QuotaExceededError)
@@ -202,7 +207,9 @@ export class IndexedDB {
             const objectStoreNames = [...db.objectStoreNames].filter(
                 (table) => table !== VERSION_TABLE
             );
-            tables = tables ? objectStoreNames.filter((t) => tables.includes(t)) : objectStoreNames;
+            tables = tables
+                ? objectStoreNames.filter((t) => tables.includes(t))
+                : objectStoreNames;
 
             if (tables.length === 0) {
                 return resolve();
@@ -210,7 +217,9 @@ export class IndexedDB {
             // Relaxed durability improves the write performances
             // https://nolanlawson.com/2021/08/22/speeding-up-indexeddb-reads-and-writes/
             // https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction/durability
-            const transaction = db.transaction(tables, "readwrite", { durability: "relaxed" });
+            const transaction = db.transaction(tables, "readwrite", {
+                durability: "relaxed",
+            });
             const proms = tables.map(
                 (table) =>
                     new Promise((resolve) => {

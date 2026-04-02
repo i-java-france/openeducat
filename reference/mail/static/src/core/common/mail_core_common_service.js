@@ -1,6 +1,6 @@
-import { reactive } from "@odoo/owl";
+import {reactive} from "@odoo/owl";
 
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 export class MailCoreCommon {
     /**
@@ -15,20 +15,20 @@ export class MailCoreCommon {
 
     setup() {
         this.busService.subscribe("ir.attachment/delete", (payload) => {
-            const { id: attachmentId, message: messageData } = payload;
+            const {id: attachmentId, message: messageData} = payload;
             if (messageData) {
                 this.store["mail.message"].insert(messageData);
             }
             const attachment = this.store["ir.attachment"].get(attachmentId);
             attachment?.delete();
         });
-        this.busService.subscribe("mail.message/delete", (payload, { id: notifId }) => {
+        this.busService.subscribe("mail.message/delete", (payload, {id: notifId}) => {
             for (const messageId of payload.message_ids) {
                 const message = this.store["mail.message"].get(messageId);
                 if (!message) {
                     continue;
                 }
-                this.env.bus.trigger("mail.message/delete", { message, notifId });
+                this.env.bus.trigger("mail.message/delete", {message, notifId});
                 message.delete();
             }
         });
@@ -46,8 +46,8 @@ export class MailCoreCommon {
     }
 
     _handleNotificationToggleStar(payload, metadata) {
-        const { message_ids: messageIds, starred } = payload;
-        this.store["mail.message"].insert(messageIds.map((id) => ({ id, starred })));
+        const {message_ids: messageIds, starred} = payload;
+        this.store["mail.message"].insert(messageIds.map((id) => ({id, starred})));
     }
 }
 

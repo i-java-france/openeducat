@@ -1,10 +1,10 @@
-import { mailDataHelpers } from "@mail/../tests/mock_server/mail_mock_server";
-import { fields, models, serverState } from "@web/../tests/web_test_helpers";
+import {mailDataHelpers} from "@mail/../tests/mock_server/mail_mock_server";
+import {fields, models, serverState} from "@web/../tests/web_test_helpers";
 
 export class MailScheduledMessage extends models.ServerModel {
     _inherit = "mail.scheduled.message";
 
-    author_id = fields.Generic({ default: () => serverState.partnerId });
+    author_id = fields.Generic({default: () => serverState.partnerId});
 
     _to_store(store) {
         /** @type {import("mock_models").IrAttachment} */
@@ -17,7 +17,9 @@ export class MailScheduledMessage extends models.ServerModel {
                 attachment_ids: mailDataHelpers.Store.many(
                     IrAttachment.browse(message.attachment_ids)
                 ),
-                author_id: mailDataHelpers.Store.one(ResPartner.browse(message.author_id)),
+                author_id: mailDataHelpers.Store.one(
+                    ResPartner.browse(message.author_id)
+                ),
                 body: ["markup", message.body],
                 id: message.id,
                 scheduled_date: message.scheduled_date,

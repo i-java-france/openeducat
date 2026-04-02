@@ -1,18 +1,18 @@
-import { ThreadIcon } from "@mail/core/common/thread_icon";
-import { discussSidebarItemsRegistry } from "@mail/core/public_web/discuss_sidebar";
-import { useHover } from "@mail/utils/common/hooks";
+import {ThreadIcon} from "@mail/core/common/thread_icon";
+import {discussSidebarItemsRegistry} from "@mail/core/public_web/discuss_sidebar";
+import {useHover} from "@mail/utils/common/hooks";
 
-import { Component, useRef } from "@odoo/owl";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
+import {Component, useRef} from "@odoo/owl";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
 
-import { useService } from "@web/core/utils/hooks";
-import { markEventHandled } from "@web/core/utils/misc";
+import {useService} from "@web/core/utils/hooks";
+import {markEventHandled} from "@web/core/utils/misc";
 
 export class Mailbox extends Component {
     static template = "mail.Mailbox";
     static props = ["mailbox"];
-    static components = { Dropdown, ThreadIcon };
+    static components = {Dropdown, ThreadIcon};
 
     setup() {
         super.setup();
@@ -52,7 +52,7 @@ export class Mailbox extends Component {
 export class DiscussSidebarMailboxes extends Component {
     static template = "mail.DiscussSidebarMailboxes";
     static props = {};
-    static components = { Mailbox };
+    static components = {Mailbox};
 
     setup() {
         super.setup();
@@ -60,4 +60,4 @@ export class DiscussSidebarMailboxes extends Component {
     }
 }
 
-discussSidebarItemsRegistry.add("mailbox", DiscussSidebarMailboxes, { sequence: 20 });
+discussSidebarItemsRegistry.add("mailbox", DiscussSidebarMailboxes, {sequence: 20});

@@ -1,14 +1,14 @@
 /** @odoo-module **/
 
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { patch } from "@web/core/utils/patch";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {patch} from "@web/core/utils/patch";
 
-import { SmsWidget } from "@sms/components/sms_widget/fields_sms_widget";
+import {SmsWidget} from "@sms/components/sms_widget/fields_sms_widget";
 
-import { onWillStart } from "@odoo/owl";
+import {onWillStart} from "@odoo/owl";
 
-const TEXT_URL_REGEX = /https?:\/\/[\w@:%.+&~#=/-]+(?:\?\S+)?/g;  // from tools.mail.TEXT_URL_REGEX
+const TEXT_URL_REGEX = /https?:\/\/[\w@:%.+&~#=/-]+(?:\?\S+)?/g; // from tools.mail.TEXT_URL_REGEX
 
 /**
  * Patch to provide extra characters count information to
@@ -25,15 +25,15 @@ patch(SmsWidget.prototype, {
 
         onWillStart(async () => {
             if (this.props.record.resModel === "mailing.mailing") {
-                const { unsubscribe, link } = await this.orm.call(
-                    'mailing.mailing',
-                    'get_sms_link_replacements_placeholders',
-                    [this.res_id],
+                const {unsubscribe, link} = await this.orm.call(
+                    "mailing.mailing",
+                    "get_sms_link_replacements_placeholders",
+                    [this.res_id]
                 );
-                this.linkReplacementsPlaceholders = { unsubscribe, link };
+                this.linkReplacementsPlaceholders = {unsubscribe, link};
                 this.noticeLinksReplaced = false;
             }
-        })
+        });
     },
     /**
      * @override
@@ -65,7 +65,10 @@ patch(SmsWidget.prototype, {
     _getValueForSmsCounts(value) {
         let res = super._getValueForSmsCounts(...arguments);
         if (this.linkReplacementsPlaceholders) {
-            const replaced = res.replaceAll(TEXT_URL_REGEX, this.linkReplacementsPlaceholders.link);
+            const replaced = res.replaceAll(
+                TEXT_URL_REGEX,
+                this.linkReplacementsPlaceholders.link
+            );
             this.noticeLinksReplaced = replaced !== res;
             return replaced;
         }

@@ -1,5 +1,5 @@
-import { localization } from "@web/core/l10n/localization";
-import { translatedTermsGlobal } from "@web/core/l10n/translation";
+import {localization} from "@web/core/l10n/localization";
+import {translatedTermsGlobal} from "@web/core/l10n/translation";
 import {
     clickOnEditAndWaitEditMode,
     clickOnEditAndWaitEditModeInTranslatedPage,
@@ -8,7 +8,7 @@ import {
     registerWebsitePreviewTour,
     testSwitchWebsite,
 } from "@website/js/tours/tour_utils";
-import { stepUtils } from "@web_tour/tour_utils";
+import {stepUtils} from "@web_tour/tour_utils";
 
 registerWebsitePreviewTour(
     "snippet_translation",
@@ -18,7 +18,8 @@ registerWebsitePreviewTour(
     () => [
         {
             content: "Wait for website preview and check language",
-            trigger: ":iframe html:has(body:contains(welcome to your)):has(.o_top_fixed_element)",
+            trigger:
+                ":iframe html:has(body:contains(welcome to your)):has(.o_top_fixed_element)",
             run: () => {
                 if (localization.code !== "fu_GB") {
                     console.error("the user language is not properly set");
@@ -28,7 +29,7 @@ registerWebsitePreviewTour(
             },
         },
         ...clickOnEditAndWaitEditMode(),
-        ...insertSnippet({ id: "s_cover", name: "Cover", groupName: "Intro" }),
+        ...insertSnippet({id: "s_cover", name: "Cover", groupName: "Intro"}),
         {
             content: "Check that contact us contain Parseltongue",
             trigger:
@@ -54,7 +55,8 @@ registerWebsitePreviewTour(
         },
         {
             content: "Select the language to Parseltongue",
-            trigger: ":iframe .js_language_selector .js_change_lang[data-url_code=pa_GB]",
+            trigger:
+                ":iframe .js_language_selector .js_change_lang[data-url_code=pa_GB]",
             run: "click",
         },
         {
@@ -92,7 +94,7 @@ registerWebsitePreviewTour(
         },
         ...clickOnSave(),
         ...clickOnEditAndWaitEditModeInTranslatedPage(),
-        ...insertSnippet({ name: "Cover", id: "s_cover", groupName: "Intro" }),
+        ...insertSnippet({name: "Cover", id: "s_cover", groupName: "Intro"}),
         {
             content: "Check that contact us contain Parseltongue",
             trigger:
@@ -107,7 +109,7 @@ registerWebsitePreviewTour(
     },
     () => [
         ...clickOnEditAndWaitEditModeInTranslatedPage(),
-        ...insertSnippet({ id: "s_cover", name: "Cover", groupName: "Intro" }),
+        ...insertSnippet({id: "s_cover", name: "Cover", groupName: "Intro"}),
         {
             content: "Check that contact us contain Parseltongue",
             trigger:
@@ -116,10 +118,11 @@ registerWebsitePreviewTour(
         ...clickOnSave(),
         ...testSwitchWebsite("website fu_GB"),
         ...clickOnEditAndWaitEditMode(),
-        ...insertSnippet({ id: "s_cover", name: "Cover", groupName: "Intro" }),
+        ...insertSnippet({id: "s_cover", name: "Cover", groupName: "Intro"}),
         {
             content: "Check that contact us contain Fake User Lang",
-            trigger: ":iframe .s_cover .btn-outline-secondary:contains('Fake User Lang')",
+            trigger:
+                ":iframe .s_cover .btn-outline-secondary:contains('Fake User Lang')",
         },
     ]
 );

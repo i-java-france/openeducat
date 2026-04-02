@@ -1,8 +1,8 @@
-import { useSequential } from "@mail/utils/common/hooks";
-import { useState, onWillUnmount, markup } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
-import { createDocumentFragmentFromContent } from "@web/core/utils/html";
-import { escapeRegExp } from "@web/core/utils/strings";
+import {useSequential} from "@mail/utils/common/hooks";
+import {useState, onWillUnmount, markup} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {createDocumentFragmentFromContent} from "@web/core/utils/html";
+import {escapeRegExp} from "@web/core/utils/strings";
 
 export const HIGHLIGHT_CLASS = "o-mail-Message-searchHighlight";
 
@@ -50,7 +50,9 @@ export function searchHighlight(searchTerm, target) {
                         newNode.push(span);
                         curIndex = match.index + match[0].length;
                     }
-                    const end = htmlDoc.createTextNode(node.textContent.slice(curIndex));
+                    const end = htmlDoc.createTextNode(
+                        node.textContent.slice(curIndex)
+                    );
                     newNode.push(end);
                 } else {
                     newNode.push(node);
@@ -82,7 +84,7 @@ export function useMessageSearch(thread) {
                 if (!data) {
                     return;
                 }
-                const { count, loadMore, messages } = data;
+                const {count, loadMore, messages} = data;
                 this.searched = true;
                 this.searching = false;
                 this.count = count;

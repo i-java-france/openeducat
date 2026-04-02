@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { click, queryAllTexts } from "@odoo/hoot-dom";
-import { tick } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {click, queryAllTexts} from "@odoo/hoot-dom";
+import {tick} from "@odoo/hoot-mock";
 import {
     defineModels,
     fields,
@@ -10,9 +10,9 @@ import {
     patchWithCleanup,
     serverState,
 } from "@web/../tests/web_test_helpers";
-import { browser } from "@web/core/browser/browser";
-import { router } from "@web/core/browser/router";
-import { redirect } from "@web/core/utils/urls";
+import {browser} from "@web/core/browser/browser";
+import {router} from "@web/core/browser/router";
+import {redirect} from "@web/core/utils/urls";
 
 class ResConfigSettings extends models.Model {
     _name = "res.config.settings";
@@ -68,7 +68,7 @@ test("Activate the developer mode", async () => {
     expect(router.current).toEqual({});
     await click("a:contains('Activate the developer mode')");
     await tick();
-    expect(router.current).toEqual({ debug: 1 });
+    expect(router.current).toEqual({debug: 1});
     expect.verifySteps(["location reload"]);
 });
 
@@ -95,7 +95,7 @@ test("Activate the developer mode (with assets)", async () => {
     expect(router.current).toEqual({});
     await click("a:contains('Activate the developer mode (with assets)')");
     await tick();
-    expect(router.current).toEqual({ debug: "assets" });
+    expect(router.current).toEqual({debug: "assets"});
     expect.verifySteps(["location reload"]);
 });
 
@@ -123,7 +123,7 @@ test("Activate the developer mode (with tests assets)", async () => {
 
     await click("a:contains('Activate the developer mode (with tests assets)')");
     await tick();
-    expect(router.current).toEqual({ debug: "assets,tests" });
+    expect(router.current).toEqual({debug: "assets,tests"});
     expect.verifySteps(["location reload"]);
 });
 
@@ -148,7 +148,7 @@ test("Activate the developer modeddd (with tests assets)", async () => {
             </form>`,
         resModel: "res.config.settings",
     });
-    expect(router.current).toEqual({ debug: "assets,tests" });
+    expect(router.current).toEqual({debug: "assets,tests"});
 
     expect(queryAllTexts`#developer_tool .o_setting_right_pane .d-block`).toEqual([
         "Deactivate the developer mode",
@@ -156,6 +156,6 @@ test("Activate the developer modeddd (with tests assets)", async () => {
 
     await click("a:contains('Deactivate the developer mode')");
     await tick();
-    expect(router.current).toEqual({ debug: 0 });
+    expect(router.current).toEqual({debug: 0});
     expect.verifySteps(["location reload"]);
 });

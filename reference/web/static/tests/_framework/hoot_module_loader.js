@@ -11,7 +11,12 @@
     const name = `${odoo.define.name} (hoot)`;
     odoo.define = {
         [name](name, dependencies, factory) {
-            return odoo.loader.define(name, dependencies, factory, !name.endsWith(".hoot"));
+            return odoo.loader.define(
+                name,
+                dependencies,
+                factory,
+                !name.endsWith(".hoot")
+            );
         },
     }[name];
 })(globalThis.odoo);

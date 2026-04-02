@@ -11,7 +11,6 @@ from odoo.addons.payment.logging import get_payment_logger
 from odoo.addons.payment_paypal import const
 from odoo.addons.payment_paypal.controllers.main import PaypalController
 
-
 _logger = get_payment_logger(__name__)
 
 

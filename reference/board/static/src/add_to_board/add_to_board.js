@@ -1,9 +1,9 @@
-import { _t } from "@web/core/l10n/translation";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { useAutofocus, useService } from "@web/core/utils/hooks";
-import { Component, useState } from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {useAutofocus, useService} from "@web/core/utils/hooks";
+import {Component, useState} from "@odoo/owl";
 
 const cogMenuRegistry = registry.category("cogMenu");
 
@@ -22,12 +22,12 @@ const cogMenuRegistry = registry.category("cogMenu");
  */
 export class AddToBoard extends Component {
     static template = "board.AddToBoard";
-    static components = { Dropdown };
+    static components = {Dropdown};
     static props = {};
 
     setup() {
         this.notification = useService("notification");
-        this.state = useState({ name: this.env.config.getDisplayName() });
+        this.state = useState({name: this.env.config.getDisplayName()});
 
         useAutofocus();
     }
@@ -37,8 +37,9 @@ export class AddToBoard extends Component {
     //---------------------------------------------------------------------
 
     async addToBoard() {
-        const { domain, globalContext } = this.env.searchModel;
-        const { context, groupBys, orderBy } = this.env.searchModel.getPreFavoriteValues();
+        const {domain, globalContext} = this.env.searchModel;
+        const {context, groupBys, orderBy} =
+            this.env.searchModel.getPreFavoriteValues();
         const contextToSave = {
             ...Object.fromEntries(
                 Object.entries(globalContext).filter(
@@ -93,10 +94,12 @@ export class AddToBoard extends Component {
 export const addToBoardItem = {
     Component: AddToBoard,
     groupNumber: 20,
-    isDisplayed: ({ config }) => {
-        const { actionType, actionId, viewType } = config;
-        return actionType === "ir.actions.act_window" && actionId && viewType !== "form";
+    isDisplayed: ({config}) => {
+        const {actionType, actionId, viewType} = config;
+        return (
+            actionType === "ir.actions.act_window" && actionId && viewType !== "form"
+        );
     },
 };
 
-cogMenuRegistry.add("add-to-board", addToBoardItem, { sequence: 10 });
+cogMenuRegistry.add("add-to-board", addToBoardItem, {sequence: 10});

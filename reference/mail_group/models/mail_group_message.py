@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
@@ -8,7 +7,7 @@ from markupsafe import Markup
 from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError
 from odoo.fields import Domain
-from odoo.tools.mail import email_normalize, append_content_to_html
+from odoo.tools.mail import append_content_to_html, email_normalize
 
 _logger = logging.getLogger(__name__)
 
@@ -104,7 +103,7 @@ class MailGroupMessage(models.Model):
 
     def copy_data(self, default=None):
         vals_list = super().copy_data(default)
-        for message, vals in zip(self, vals_list):
+        for message, vals in zip(self, vals_list, strict=False):
             vals['mail_message_id'] = message.mail_message_id.copy().id
         return vals_list
 

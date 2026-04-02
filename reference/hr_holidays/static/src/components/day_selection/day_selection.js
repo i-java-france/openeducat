@@ -1,5 +1,8 @@
-import { registry } from "@web/core/registry";
-import { SelectionField, selectionField } from "@web/views/fields/selection/selection_field";
+import {registry} from "@web/core/registry";
+import {
+    SelectionField,
+    selectionField,
+} from "@web/views/fields/selection/selection_field";
 
 export class DaySelectionField extends SelectionField {
     static props = {
@@ -24,13 +27,13 @@ export class DaySelectionField extends SelectionField {
 export const daySelectionField = {
     ...selectionField,
     component: DaySelectionField,
-    extractProps({ attrs }) {
+    extractProps({attrs}) {
         return {
             ...selectionField.extractProps(...arguments),
             monthField: attrs.month_field,
         };
     },
-    fieldDependencies: ({ attrs }) => [
+    fieldDependencies: ({attrs}) => [
         {
             name: attrs.month_field,
             type: "selection",

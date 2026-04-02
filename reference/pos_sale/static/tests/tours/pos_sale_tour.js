@@ -7,7 +7,7 @@ import * as PosSale from "@pos_sale/../tests/tours/utils/pos_sale_utils";
 import * as Dialog from "@point_of_sale/../tests/generic_helpers/dialog_util";
 import * as Order from "@point_of_sale/../tests/generic_helpers/order_widget_util";
 import * as Utils from "@point_of_sale/../tests/generic_helpers/utils";
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 registry.category("web_tour.tours").add("PosSettleOrder", {
     steps: () =>
@@ -57,7 +57,7 @@ registry.category("web_tour.tours").add("PosSettleOrder2", {
             ProductScreen.clickNumpad("Qty", "0"),
             ProductScreen.selectedOrderlineHas("Product B", "0"),
             ProductScreen.clickPayButton(),
-            PaymentScreen.clickPaymentMethod("Bank", true, { remaining: "0.0" }),
+            PaymentScreen.clickPaymentMethod("Bank", true, {remaining: "0.0"}),
             PaymentScreen.clickValidate(),
             ReceiptScreen.isShown(),
         ].flat(),
@@ -113,7 +113,7 @@ registry.category("web_tour.tours").add("PosSettleOrder3", {
             PosSale.settleNthOrder(1),
             ProductScreen.selectedOrderlineHas("Product A", "1"),
             ProductScreen.clickPayButton(),
-            PaymentScreen.clickPaymentMethod("Bank", true, { remaining: "0.0" }),
+            PaymentScreen.clickPaymentMethod("Bank", true, {remaining: "0.0"}),
             PaymentScreen.clickValidate(),
             ReceiptScreen.isShown(),
         ].flat(),
@@ -137,7 +137,7 @@ registry.category("web_tour.tours").add("test_import_lot_groupable_and_non_group
         [
             Chrome.startPoS(),
             Dialog.confirm("Open Register"),
-            PosSale.settleNthOrder(1, { loadSN: true }),
+            PosSale.settleNthOrder(1, {loadSN: true}),
             PosSale.selectedOrderLinesHasLots("Groupable Product", []),
             ProductScreen.checkOrderlinesNumber(5),
             ProductScreen.totalAmountIs(60),
@@ -501,7 +501,7 @@ registry.category("web_tour.tours").add("test_settle_order_with_lot", {
         [
             Chrome.startPoS(),
             Dialog.confirm("Open Register"),
-            PosSale.settleNthOrder(1, { loadSN: true }),
+            PosSale.settleNthOrder(1, {loadSN: true}),
             PosSale.selectedOrderLinesHasLots("Product A", ["1001", "1002"]),
         ].flat(),
 });
@@ -525,29 +525,31 @@ registry.category("web_tour.tours").add("test_down_payment_displayed", {
         ].flat(),
 });
 
-registry.category("web_tour.tours").add("test_sale_order_fp_different_from_partner_one", {
-    steps: () =>
-        [
-            Chrome.startPoS(),
-            Dialog.confirm("Open Register"),
-            PosSale.settleSaleOrderByPrice("20.00"),
-            ProductScreen.checkTaxAmount("10.00"),
-            ProductScreen.checkFiscalPosition("Partner FP"),
-            ProductScreen.clickPayButton(),
-            PaymentScreen.clickPaymentMethod("Bank"),
-            PaymentScreen.clickValidate(),
-            ReceiptScreen.receiptIsThere(),
-            ReceiptScreen.clickNextOrder(),
-            PosSale.settleSaleOrderByPrice("10.00"),
-            ProductScreen.checkTaxAmount("0.00"),
-            ProductScreen.checkFiscalPosition("Sale Order FP"),
-            ProductScreen.clickPayButton(),
-            PaymentScreen.clickPaymentMethod("Bank"),
-            PaymentScreen.clickValidate(),
-            ReceiptScreen.receiptIsThere(),
-            ReceiptScreen.clickNextOrder(),
-        ].flat(),
-});
+registry
+    .category("web_tour.tours")
+    .add("test_sale_order_fp_different_from_partner_one", {
+        steps: () =>
+            [
+                Chrome.startPoS(),
+                Dialog.confirm("Open Register"),
+                PosSale.settleSaleOrderByPrice("20.00"),
+                ProductScreen.checkTaxAmount("10.00"),
+                ProductScreen.checkFiscalPosition("Partner FP"),
+                ProductScreen.clickPayButton(),
+                PaymentScreen.clickPaymentMethod("Bank"),
+                PaymentScreen.clickValidate(),
+                ReceiptScreen.receiptIsThere(),
+                ReceiptScreen.clickNextOrder(),
+                PosSale.settleSaleOrderByPrice("10.00"),
+                ProductScreen.checkTaxAmount("0.00"),
+                ProductScreen.checkFiscalPosition("Sale Order FP"),
+                ProductScreen.clickPayButton(),
+                PaymentScreen.clickPaymentMethod("Bank"),
+                PaymentScreen.clickValidate(),
+                ReceiptScreen.receiptIsThere(),
+                ReceiptScreen.clickNextOrder(),
+            ].flat(),
+    });
 
 registry.category("web_tour.tours").add("test_quantity_updated_settle", {
     steps: () =>
@@ -556,7 +558,7 @@ registry.category("web_tour.tours").add("test_quantity_updated_settle", {
             Dialog.confirm("Open Register"),
             PosSale.settleNthOrder(1),
             ProductScreen.clickNumpad("2"),
-            Order.hasLine({ productName: "Product A", quantity: "2.0" }),
+            Order.hasLine({productName: "Product A", quantity: "2.0"}),
             ProductScreen.clickPayButton(),
             PaymentScreen.clickPaymentMethod("Bank"),
             PaymentScreen.clickValidate(),
@@ -576,7 +578,7 @@ registry.category("web_tour.tours").add("test_multiple_lots_sale_order_1", {
             Chrome.startPoS(),
             Dialog.confirm("Open Register"),
             PosSale.settleNthOrder(1),
-            Order.hasLine({ productName: "Product", quantity: "3.0" }),
+            Order.hasLine({productName: "Product", quantity: "3.0"}),
         ].flat(),
 });
 
@@ -584,8 +586,8 @@ registry.category("web_tour.tours").add("test_multiple_lots_sale_order_2", {
     steps: () =>
         [
             Chrome.startPoS(),
-            PosSale.settleNthOrder(1, { loadSN: false }),
-            Order.hasLine({ productName: "Product", quantity: "3.0" }),
+            PosSale.settleNthOrder(1, {loadSN: false}),
+            Order.hasLine({productName: "Product", quantity: "3.0"}),
             {
                 content: "Check that the line-lot-icon has text-danger class",
                 trigger: `.order-container .orderline:has(.product-name:contains("Product")) .line-lot-icon.text-danger`,
@@ -597,7 +599,7 @@ registry.category("web_tour.tours").add("test_multiple_lots_sale_order_3", {
     steps: () =>
         [
             Chrome.startPoS(),
-            PosSale.settleNthOrder(1, { loadSN: true }),
+            PosSale.settleNthOrder(1, {loadSN: true}),
             PosSale.selectedOrderLinesHasLots("Product", ["1002"]),
             Utils.negateStep(...PosSale.selectedOrderLinesHasLots("Product", ["1001"])),
             ProductScreen.selectedOrderlineHas("Product", "2.00"),
@@ -656,7 +658,7 @@ registry.category("web_tour.tours").add("test_settle_groupable_lot_total_amount"
         [
             Chrome.startPoS(),
             Dialog.confirm("Open Register"),
-            PosSale.settleNthOrder(1, { loadSN: true }),
+            PosSale.settleNthOrder(1, {loadSN: true}),
             Order.hasTotal("12.00"),
         ].flat(),
 });

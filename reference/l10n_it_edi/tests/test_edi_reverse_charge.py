@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from collections import namedtuple
 
 from odoo import Command, fields
 from odoo.tests import tagged
+
 from odoo.addons.l10n_it_edi.tests.common import TestItEdi
 
 

@@ -1,8 +1,8 @@
-import { Store } from "@mail/core/common/store_service";
-import { useSequential } from "@mail/utils/common/hooks";
-import { rpc } from "@web/core/network/rpc";
+import {Store} from "@mail/core/common/store_service";
+import {useSequential} from "@mail/utils/common/hooks";
+import {rpc} from "@web/core/network/rpc";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {import("models").Store} */
 const StorePatch = {
@@ -14,7 +14,7 @@ const StorePatch = {
     /** @param {string} searchValue */
     async searchConversations(searchValue) {
         const data = await this.fetchSsearchConversationsSequential(async () => {
-            const data = await rpc("/discuss/search", { term: searchValue });
+            const data = await rpc("/discuss/search", {term: searchValue});
             return data;
         });
         this.insert(data);

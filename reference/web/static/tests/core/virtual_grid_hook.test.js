@@ -1,10 +1,10 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { resize, scroll } from "@odoo/hoot-dom";
-import { animationFrame, runAllTimers } from "@odoo/hoot-mock";
-import { Component, useRef, xml } from "@odoo/owl";
-import { mountWithCleanup, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { localization } from "@web/core/l10n/localization";
-import { useVirtualGrid } from "@web/core/virtual_grid_hook";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {resize, scroll} from "@odoo/hoot-dom";
+import {animationFrame, runAllTimers} from "@odoo/hoot-mock";
+import {Component, useRef, xml} from "@odoo/owl";
+import {mountWithCleanup, patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {localization} from "@web/core/l10n/localization";
+import {useVirtualGrid} from "@web/core/virtual_grid_hook";
 
 function objectToStyle(obj) {
     return Object.entries(obj)
@@ -57,7 +57,7 @@ function getTestComponent(virtualGridParams) {
 
     class TestComponent extends Component {
         static props = [];
-        static components = { Item };
+        static components = {Item};
         static template = xml`
             <div class="scrollable" t-ref="scrollable" style="${CONTAINER_STYLE}" dir="${localization.direction}">
                 <div class="inner" t-att-style="innerStyle">
@@ -75,9 +75,11 @@ function getTestComponent(virtualGridParams) {
                 scrollableRef,
                 ...virtualGridParams,
             });
-            this.virtualGrid.setRowsHeights(Array.from({ length: ROW_COUNT }, () => ITEM_HEIGHT));
+            this.virtualGrid.setRowsHeights(
+                Array.from({length: ROW_COUNT}, () => ITEM_HEIGHT)
+            );
             this.virtualGrid.setColumnsWidths(
-                Array.from({ length: COLUMN_COUNT }, () => ITEM_WIDTH)
+                Array.from({length: COLUMN_COUNT}, () => ITEM_WIDTH)
             );
         }
         get innerStyle() {
@@ -85,14 +87,14 @@ function getTestComponent(virtualGridParams) {
         }
         get virtualRows() {
             const [rowStart, rowEnd] = this.virtualGrid.rowsIndexes;
-            return Array.from({ length: ROW_COUNT }, (_, i) => ({ id: i + 1 })).slice(
+            return Array.from({length: ROW_COUNT}, (_, i) => ({id: i + 1})).slice(
                 rowStart,
                 rowEnd + 1
             );
         }
         get virtualColumns() {
             const [colStart, colEnd] = this.virtualGrid.columnsIndexes;
-            return Array.from({ length: COLUMN_COUNT }, (_, i) => ({ id: i + 1 })).slice(
+            return Array.from({length: COLUMN_COUNT}, (_, i) => ({id: i + 1})).slice(
                 colStart,
                 colEnd + 1
             );
@@ -102,12 +104,12 @@ function getTestComponent(virtualGridParams) {
 }
 
 beforeEach(async () => {
-    patchWithCleanup(localization, { direction: "ltr" });
+    patchWithCleanup(localization, {direction: "ltr"});
 
     // In this test suite, we trick the hook by setting the window size to the size
     // of the scrollable, so that it is a measurable size and this suite can run
     // in a window of any size.
-    await resize({ height: CONTAINER_HEIGHT, width: CONTAINER_WIDTH });
+    await resize({height: CONTAINER_HEIGHT, width: CONTAINER_WIDTH});
 });
 
 test("basic usage", async () => {
@@ -115,14 +117,14 @@ test("basic usage", async () => {
     expect(comp.virtualGrid.rowsIndexes).toEqual([0, 9]);
     expect(comp.virtualGrid.columnsIndexes).toEqual([0, 19]);
 
-    // scroll to the middle
-    await scroll(".scrollable", { top: MAX_SCROLL_TOP / 2, left: MAX_SCROLL_LEFT / 2 });
+    // Scroll to the middle
+    await scroll(".scrollable", {top: MAX_SCROLL_TOP / 2, left: MAX_SCROLL_LEFT / 2});
     await animationFrame();
     expect(comp.virtualGrid.rowsIndexes).toEqual([92, 107]);
     expect(comp.virtualGrid.columnsIndexes).toEqual([85, 114]);
 
     // // scroll to bottom right
-    await scroll(".scrollable", { top: MAX_SCROLL_TOP, left: MAX_SCROLL_LEFT });
+    await scroll(".scrollable", {top: MAX_SCROLL_TOP, left: MAX_SCROLL_LEFT});
     await animationFrame();
     expect(comp.virtualGrid.rowsIndexes).toEqual([190, 199]);
     expect(comp.virtualGrid.columnsIndexes).toEqual([180, 199]);
@@ -133,29 +135,29 @@ test("updates on resize", async () => {
     expect(comp.virtualGrid.rowsIndexes).toEqual([0, 9]);
     expect(comp.virtualGrid.columnsIndexes).toEqual([0, 19]);
 
-    // resize the window
-    await resize({ height: CONTAINER_HEIGHT / 2, width: CONTAINER_WIDTH / 2 });
+    // Resize the window
+    await resize({height: CONTAINER_HEIGHT / 2, width: CONTAINER_WIDTH / 2});
     await runAllTimers();
     expect(comp.virtualGrid.rowsIndexes).toEqual([0, 4]);
     expect(comp.virtualGrid.columnsIndexes).toEqual([0, 9]);
 
-    // resize the window
-    await resize({ height: CONTAINER_HEIGHT * 2, width: CONTAINER_WIDTH * 2 });
+    // Resize the window
+    await resize({height: CONTAINER_HEIGHT * 2, width: CONTAINER_WIDTH * 2});
     await runAllTimers();
     expect(comp.virtualGrid.rowsIndexes).toEqual([0, 19]);
     expect(comp.virtualGrid.columnsIndexes).toEqual([0, 39]);
 });
 
 test("initialScroll: middle", async () => {
-    const initialScroll = { top: MAX_SCROLL_TOP / 2, left: MAX_SCROLL_LEFT / 2 };
-    const comp = await mountWithCleanup(getTestComponent({ initialScroll }));
+    const initialScroll = {top: MAX_SCROLL_TOP / 2, left: MAX_SCROLL_LEFT / 2};
+    const comp = await mountWithCleanup(getTestComponent({initialScroll}));
     expect(comp.virtualGrid.rowsIndexes).toEqual([92, 107]);
     expect(comp.virtualGrid.columnsIndexes).toEqual([85, 114]);
 });
 
 test("initialScroll: bottom right", async () => {
-    const initialScroll = { top: MAX_SCROLL_TOP, left: MAX_SCROLL_LEFT };
-    const comp = await mountWithCleanup(getTestComponent({ initialScroll }));
+    const initialScroll = {top: MAX_SCROLL_TOP, left: MAX_SCROLL_LEFT};
+    const comp = await mountWithCleanup(getTestComponent({initialScroll}));
     expect(comp.virtualGrid.rowsIndexes).toEqual([190, 199]);
     expect(comp.virtualGrid.columnsIndexes).toEqual([180, 199]);
 });
@@ -166,7 +168,7 @@ test("required params only", async () => {
         static props = [];
         setup() {
             const scrollableRef = useRef("pseudoScrollable");
-            this.virtualGrid = useVirtualGrid({ scrollableRef });
+            this.virtualGrid = useVirtualGrid({scrollableRef});
         }
     }
     const comp = await mountWithCleanup(C);
@@ -182,7 +184,7 @@ test("with empty rows and columns", async () => {
         static props = [];
         setup() {
             const scrollableRef = useRef("pseudoScrollable");
-            this.virtualGrid = useVirtualGrid({ scrollableRef });
+            this.virtualGrid = useVirtualGrid({scrollableRef});
             this.virtualGrid.setRowsHeights([]);
             this.virtualGrid.setColumnsWidths([]);
         }
@@ -200,7 +202,7 @@ test("with 1 row and 1 column", async () => {
         static props = [];
         setup() {
             const scrollableRef = useRef("pseudoScrollable");
-            this.virtualGrid = useVirtualGrid({ scrollableRef });
+            this.virtualGrid = useVirtualGrid({scrollableRef});
             this.virtualGrid.setRowsHeights([1]);
             this.virtualGrid.setColumnsWidths([1]);
         }
@@ -218,8 +220,8 @@ test("with columns only", async () => {
         static props = [];
         setup() {
             const scrollableRef = useRef("pseudoScrollable");
-            this.virtualGrid = useVirtualGrid({ scrollableRef });
-            this.virtualGrid.setColumnsWidths(Array.from({ length: 100 }, () => 1));
+            this.virtualGrid = useVirtualGrid({scrollableRef});
+            this.virtualGrid.setColumnsWidths(Array.from({length: 100}, () => 1));
         }
     }
     const comp = await mountWithCleanup(C);
@@ -235,8 +237,8 @@ test("with rows only", async () => {
         static props = [];
         setup() {
             const scrollableRef = useRef("pseudoScrollable");
-            this.virtualGrid = useVirtualGrid({ scrollableRef });
-            this.virtualGrid.setRowsHeights(Array.from({ length: 100 }, () => 1));
+            this.virtualGrid = useVirtualGrid({scrollableRef});
+            this.virtualGrid.setRowsHeights(Array.from({length: 100}, () => 1));
         }
     }
     const comp = await mountWithCleanup(C);
@@ -253,49 +255,51 @@ test("onChange", async () => {
     const comp = await mountWithCleanup(C);
     expect.verifySteps([]);
 
-    // onChange is called on scroll
-    await scroll(".scrollable", { top: MAX_SCROLL_TOP / 2, left: MAX_SCROLL_LEFT / 2 });
+    // OnChange is called on scroll
+    await scroll(".scrollable", {top: MAX_SCROLL_TOP / 2, left: MAX_SCROLL_LEFT / 2});
     await animationFrame();
-    expect.verifySteps([{ columnsIndexes: [85, 114], rowsIndexes: [92, 107] }]);
-    // but it is not if the scroll is too small
+    expect.verifySteps([{columnsIndexes: [85, 114], rowsIndexes: [92, 107]}]);
+    // But it is not if the scroll is too small
     await scroll(".scrollable", {
         top: MAX_SCROLL_TOP / 2 + Number.EPSILON,
         left: MAX_SCROLL_LEFT / 2 + Number.EPSILON,
     });
     await animationFrame();
     expect.verifySteps([]);
-    // it can also receive the changed indexes of a single direction
-    await scroll(".scrollable", { top: MAX_SCROLL_TOP });
+    // It can also receive the changed indexes of a single direction
+    await scroll(".scrollable", {top: MAX_SCROLL_TOP});
     await animationFrame();
-    expect.verifySteps([{ rowsIndexes: [190, 199] }]);
+    expect.verifySteps([{rowsIndexes: [190, 199]}]);
 
-    // onChange is called on resize
-    await resize({ height: CONTAINER_HEIGHT / 2, width: CONTAINER_WIDTH / 2 });
+    // OnChange is called on resize
+    await resize({height: CONTAINER_HEIGHT / 2, width: CONTAINER_WIDTH / 2});
     await runAllTimers();
-    expect.verifySteps([{ columnsIndexes: [90, 104], rowsIndexes: [192, 199] }]);
-    // but it is not if the resize is too small
+    expect.verifySteps([{columnsIndexes: [90, 104], rowsIndexes: [192, 199]}]);
+    // But it is not if the resize is too small
     await resize({
         height: CONTAINER_HEIGHT / 2 + Number.EPSILON,
         width: CONTAINER_WIDTH / 2 + Number.EPSILON,
     });
     await runAllTimers();
     expect.verifySteps([]);
-    // it can also receive the changed indexes of a single direction
-    await resize({ width: CONTAINER_WIDTH * 2 });
+    // It can also receive the changed indexes of a single direction
+    await resize({width: CONTAINER_WIDTH * 2});
     await runAllTimers();
-    expect.verifySteps([{ columnsIndexes: [75, 134] }]);
+    expect.verifySteps([{columnsIndexes: [75, 134]}]);
 
-    // onChange is not called when setting rows or columns sizes
+    // OnChange is not called when setting rows or columns sizes
     const actualGrid = [comp.virtualGrid.rowsIndexes, comp.virtualGrid.columnsIndexes];
     comp.virtualGrid.setRowsHeights([1, 2, 3]);
     comp.virtualGrid.setColumnsWidths([1, 2, 3]);
     expect.verifySteps([]);
-    expect([comp.virtualGrid.rowsIndexes, comp.virtualGrid.columnsIndexes]).not.toEqual(actualGrid);
+    expect([comp.virtualGrid.rowsIndexes, comp.virtualGrid.columnsIndexes]).not.toEqual(
+        actualGrid
+    );
 });
 
 test("when scrolling to the bottom right then updating to smaller rows and columns", async () => {
     const comp = await mountWithCleanup(getTestComponent());
-    await scroll(".scrollable", { top: MAX_SCROLL_TOP, left: MAX_SCROLL_LEFT });
+    await scroll(".scrollable", {top: MAX_SCROLL_TOP, left: MAX_SCROLL_LEFT});
     await animationFrame();
     expect(comp.virtualGrid.rowsIndexes).toEqual([190, 199]);
     expect(comp.virtualGrid.columnsIndexes).toEqual([180, 199]);
@@ -310,17 +314,17 @@ test("horizontal scroll in RTL", async () => {
     // Please note that if you debug this test, the applied style of elements
     // is not adapted to RTL. The test is still valid because we only want to
     // assert the returned indexes of the virtual grid.
-    patchWithCleanup(localization, { direction: "rtl" });
+    patchWithCleanup(localization, {direction: "rtl"});
     const comp = await mountWithCleanup(getTestComponent());
     expect(comp.virtualGrid.columnsIndexes).toEqual([0, 19]);
 
-    // scroll to the middle
-    await scroll(".scrollable", { left: -MAX_SCROLL_LEFT / 2 });
+    // Scroll to the middle
+    await scroll(".scrollable", {left: -MAX_SCROLL_LEFT / 2});
     await animationFrame();
     expect(comp.virtualGrid.columnsIndexes).toEqual([85, 114]);
 
-    // scroll to left
-    await scroll(".scrollable", { left: -MAX_SCROLL_LEFT });
+    // Scroll to left
+    await scroll(".scrollable", {left: -MAX_SCROLL_LEFT});
     await animationFrame();
     expect(comp.virtualGrid.columnsIndexes).toEqual([180, 199]);
 });

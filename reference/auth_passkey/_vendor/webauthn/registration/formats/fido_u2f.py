@@ -1,5 +1,4 @@
 import hashlib
-from typing import List
 
 from cryptography import x509
 from cryptography.exceptions import InvalidSignature
@@ -34,7 +33,7 @@ def verify_fido_u2f(
     credential_id: bytes,
     credential_public_key: bytes,
     aaguid: bytes,
-    pem_root_certs_bytes: List[bytes],
+    pem_root_certs_bytes: list[bytes],
 ) -> bool:
     """Verify a "fido-u2f" attestation statement
 

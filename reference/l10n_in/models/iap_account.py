@@ -1,4 +1,5 @@
 from odoo import api, models
+
 from odoo.addons.iap import jsonrpc
 
 DEFAULT_IAP_ENDPOINT = "https://l10n-in-edi.api.odoo.com"

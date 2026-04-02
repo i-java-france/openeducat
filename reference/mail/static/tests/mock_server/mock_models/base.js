@@ -1,5 +1,5 @@
-import { getKwArgs, models } from "@web/../tests/web_test_helpers";
-import { patch } from "@web/core/utils/patch";
+import {getKwArgs, models} from "@web/../tests/web_test_helpers";
+import {patch} from "@web/core/utils/patch";
 
 patch(models.ServerModel.prototype, {
     /**
@@ -61,6 +61,6 @@ export class Base extends models.ServerModel {
                 changedFieldNames.push(fname);
             }
         }
-        return { changedFieldNames, trackingValueIds };
+        return {changedFieldNames, trackingValueIds};
     }
 }

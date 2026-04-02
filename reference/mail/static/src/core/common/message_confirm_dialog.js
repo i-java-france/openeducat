@@ -1,11 +1,11 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
-import { Dialog } from "@web/core/dialog/dialog";
-import { _t } from "@web/core/l10n/translation";
-import { discussComponentRegistry } from "./discuss_component_registry";
+import {Dialog} from "@web/core/dialog/dialog";
+import {_t} from "@web/core/l10n/translation";
+import {discussComponentRegistry} from "./discuss_component_registry";
 
 export class MessageConfirmDialog extends Component {
-    static components = { Dialog };
+    static components = {Dialog};
     static props = [
         "close",
         "confirmColor?",

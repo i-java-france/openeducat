@@ -1,6 +1,6 @@
-import { DiscussCoreCommon } from "@mail/discuss/core/common/discuss_core_common_service";
+import {DiscussCoreCommon} from "@mail/discuss/core/common/discuss_core_common_service";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {DiscussCoreCommon} */
 const discussCoreCommon = {

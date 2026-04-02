@@ -1,20 +1,28 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
-import pytz
 from collections import OrderedDict, defaultdict
 from datetime import datetime, timedelta
+
+import pytz
 from markupsafe import Markup
 
 from odoo import api, fields, models, modules, tools
+from odoo.exceptions import AccessError, UserError, ValidationError
+from odoo.fields import Domain
+from odoo.tools import (
+    SQL,
+    email_normalize_all,
+    groupby,
+    is_html_empty,
+    parse_contact_from_email,
+)
+from odoo.tools.misc import get_lang
+from odoo.tools.translate import _
+
 from odoo.addons.iap.tools import iap_tools
 from odoo.addons.mail.tools import mail_validation
 from odoo.addons.phone_validation.tools import phone_validation
-from odoo.exceptions import UserError, AccessError, ValidationError
-from odoo.fields import Domain
-from odoo.tools.translate import _
-from odoo.tools import date_utils, email_normalize_all, is_html_empty, groupby, parse_contact_from_email, SQL
-from odoo.tools.misc import get_lang
 
 from . import crm_stage
 
@@ -857,7 +865,7 @@ class CrmLead(models.Model):
             vals['date_closed'] = fields.Datetime.now()
         elif vals.get('probability', 0) > 0:
             vals['date_closed'] = False
-        elif stage_updated and not stage_is_won and not 'probability' in vals:
+        elif stage_updated and not stage_is_won and 'probability' not in vals:
             vals['date_closed'] = False
 
         update_frequencies = any(field in ['active', 'stage_id', 'probability'] for field in vals)
@@ -1029,7 +1037,7 @@ class CrmLead(models.Model):
             default['recurring_plan'] = False
         vals_list = super().copy_data(default=default)
         now = self.env.cr.now()
-        for lead, vals in zip(self, vals_list):
+        for lead, vals in zip(self, vals_list, strict=False):
             vals.setdefault('type', lead.type)
             vals.setdefault('team_id', lead.team_id.id)
             vals['date_open'] = now if lead.type == 'opportunity' and lead.user_id.active else False
@@ -2311,7 +2319,7 @@ class CrmLead(models.Model):
         for lead_id, lead_values in leads_values_dict.items():
             # if stage_id is null, return 0 and bypass computation
             lead_fields = [value[0] for value in lead_values.get('values', [])]
-            if not 'stage_id' in lead_fields:
+            if 'stage_id' not in lead_fields:
                 lead_probabilities[lead_id] = 0
                 continue
             # if lead stage is won, return 100

@@ -1,30 +1,30 @@
-import { AttachmentUploadService } from "@mail/core/common/attachment_upload_service";
+import {AttachmentUploadService} from "@mail/core/common/attachment_upload_service";
 
-import { patch } from "@web/core/utils/patch";
-import { session } from "@web/session";
-import { _t } from "@web/core/l10n/translation";
+import {patch} from "@web/core/utils/patch";
+import {session} from "@web/session";
+import {_t} from "@web/core/l10n/translation";
 
 patch(AttachmentUploadService.prototype, {
     setup(env, services) {
         super.setup(env, services);
         this.uploadingCloudFiles = new Map();
-        window.addEventListener('beforeunload', () =>
-            this.abortByAttachmentId.forEach(abort => abort())
+        window.addEventListener("beforeunload", () =>
+            this.abortByAttachmentId.forEach((abort) => abort())
         );
     },
 
-    _processLoaded(thread, composer, { data, upload_info }, tmpId, def) {
+    _processLoaded(thread, composer, {data, upload_info}, tmpId, def) {
         if (!upload_info) {
             super._processLoaded(...arguments);
             return;
         }
         const removeAttachment = () => {
-            const { store_data, attachment_id } = data;
+            const {store_data, attachment_id} = data;
             this.store.insert(store_data);
             /** @type {import("models").Attachment} */
             const attachment = this.store["ir.attachment"].get(attachment_id);
             attachment.remove();
-        }
+        };
         const xhr = new window.XMLHttpRequest();
         this.abortByAttachmentId.set(tmpId, xhr.abort.bind(xhr));
         const file = this.uploadingCloudFiles.get(tmpId);
@@ -42,7 +42,7 @@ patch(AttachmentUploadService.prototype, {
                 // usually it is because the token of the server for the cloud storage is expired
                 this.notificationService.add(
                     _t("You are not allowed to upload file to the cloud storage"),
-                    { type: "danger" }
+                    {type: "danger"}
                 );
                 removeAttachment();
                 def.resolve();
@@ -51,7 +51,9 @@ patch(AttachmentUploadService.prototype, {
             }
             // google returns 200, azure returns 201
             if (xhr.status !== upload_info.response_status) {
-                this.notificationService.add(_t("Cloud storage error"), { type: "danger" });
+                this.notificationService.add(_t("Cloud storage error"), {
+                    type: "danger",
+                });
                 removeAttachment();
                 def.resolve();
                 this._cleanupUploading(tmpId);
@@ -65,7 +67,7 @@ patch(AttachmentUploadService.prototype, {
                 return;
             }
             // usually it is because the CORS config for PUT is disallowed for the cloud storage
-            this.notificationService.add(_t("Cloud storage error"), { type: "danger" });
+            this.notificationService.add(_t("Cloud storage error"), {type: "danger"});
             removeAttachment();
             this._cleanupUploading(tmpId);
         };
@@ -93,8 +95,10 @@ patch(AttachmentUploadService.prototype, {
             this.uploadingCloudFiles.set(tmpId, file);
             // replace the file to a dummy file with the same name and type
             // and send the dummy file to the server without real content overhead
-            file = new File([new Blob([])], file.name, { type: file.type });
-            options = options ? { ...options, cloud_storage: true } : { cloud_storage: true };
+            file = new File([new Blob([])], file.name, {type: file.type});
+            options = options
+                ? {...options, cloud_storage: true}
+                : {cloud_storage: true};
         }
         return super._upload(thread, composer, file, options, tmpId, tmpURL);
     },

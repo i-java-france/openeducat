@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from datetime import datetime, timedelta
 
 from odoo import Command
-from odoo.addons.mrp.tests.common import TestMrpCommon
 from odoo.tests import Form
 from odoo.tests.common import TransactionCase, freeze_time
+
+from odoo.addons.mrp.tests.common import TestMrpCommon
 
 
 class TestMrpProductionBackorder(TestMrpCommon):
@@ -951,7 +951,7 @@ class TestMrpProductionBackorder(TestMrpCommon):
 class TestMrpWorkorderBackorder(TransactionCase):
     @classmethod
     def setUpClass(cls):
-        super(TestMrpWorkorderBackorder, cls).setUpClass()
+        super().setUpClass()
         cls.uom_unit = cls.env.ref('uom.product_uom_unit')
         cls.finished1 = cls.env['product.product'].create({
             'name': 'finished1',

@@ -1,13 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
+from datetime import datetime
+
+from dateutil.relativedelta import relativedelta
+from requests import PreparedRequest, Response, Session
+
 import odoo.tests
 
-from requests import Session, PreparedRequest, Response
-
-from datetime import datetime
 from odoo.addons.base.tests.common import HttpCaseWithUserDemo
-from dateutil.relativedelta import relativedelta
 
 _logger = logging.getLogger(__name__)
 

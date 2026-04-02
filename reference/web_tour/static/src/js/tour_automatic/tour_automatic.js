@@ -1,17 +1,19 @@
 import * as hootDom from "@odoo/hoot-dom";
-import { enableEventLogs, setupEventActions } from "@web/../lib/hoot-dom/helpers/events";
-import { browser } from "@web/core/browser/browser";
-import { Macro } from "@web/core/macro";
-import { config as transitionConfig } from "@web/core/transition";
-import { TourStepAutomatic } from "@web_tour/js/tour_automatic/tour_step_automatic";
-import { tourState } from "@web_tour/js/tour_state";
+import {enableEventLogs, setupEventActions} from "@web/../lib/hoot-dom/helpers/events";
+import {browser} from "@web/core/browser/browser";
+import {Macro} from "@web/core/macro";
+import {config as transitionConfig} from "@web/core/transition";
+import {TourStepAutomatic} from "@web_tour/js/tour_automatic/tour_step_automatic";
+import {tourState} from "@web_tour/js/tour_state";
 
 export class TourAutomatic {
     mode = "auto";
     allowUnload = true;
     constructor(data) {
         Object.assign(this, data);
-        this.steps = this.steps.map((step, index) => new TourStepAutomatic(step, this, index));
+        this.steps = this.steps.map(
+            (step, index) => new TourStepAutomatic(step, this, index)
+        );
         this.config = tourState.getCurrentConfig() || {};
     }
 
@@ -28,9 +30,9 @@ export class TourAutomatic {
     }
 
     start() {
-        setupEventActions(document.createElement("div"), { allowSubmit: true });
+        setupEventActions(document.createElement("div"), {allowSubmit: true});
         enableEventLogs(this.debugMode);
-        const { delayToCheckUndeterminisms, stepDelay } = this.config;
+        const {delayToCheckUndeterminisms, stepDelay} = this.config;
         const macroSteps = this.steps
             .filter((step) => step.index >= this.currentIndex)
             .flatMap((step) => [
@@ -59,7 +61,10 @@ export class TourAutomatic {
                             : step.timeout || this.timeout || 10000,
                     action: async (trigger) => {
                         if (delayToCheckUndeterminisms > 0) {
-                            await step.checkForUndeterminisms(trigger, delayToCheckUndeterminisms);
+                            await step.checkForUndeterminisms(
+                                trigger,
+                                delayToCheckUndeterminisms
+                            );
                         }
                         this.allowUnload = false;
                         if (!step.skipped && step.expectUnloadPage) {
@@ -119,9 +124,12 @@ export class TourAutomatic {
         this.macro = new Macro({
             name: this.name,
             steps: macroSteps,
-            onError: ({ error }) => {
+            onError: ({error}) => {
                 if (error.type === "Timeout") {
-                    this.throwError(...this.currentStep.describeWhyIFailed, error.message);
+                    this.throwError(
+                        ...this.currentStep.describeWhyIFailed,
+                        error.message
+                    );
                 } else {
                     this.throwError(error.message);
                 }
@@ -190,7 +198,9 @@ export class TourAutomatic {
         console.groupEnd();
         tourState.setCurrentTourOnError();
         // console.error notifies the test runner that the tour failed.
-        browser.console.error([`FAILED: ${this.currentStep.describeMe}.`, ...args].join("\n"));
+        browser.console.error(
+            [`FAILED: ${this.currentStep.describeMe}.`, ...args].join("\n")
+        );
         // The logged text shows the relative position of the failed step.
         // Useful for finding the failed step.
         browser.console.dir(this.describeWhereIFailed);

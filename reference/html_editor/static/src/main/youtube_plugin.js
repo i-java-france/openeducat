@@ -1,7 +1,7 @@
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { Plugin } from "../plugin";
-import { VideoSelector } from "./media/media_dialog/video_selector";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {Plugin} from "../plugin";
+import {VideoSelector} from "./media/media_dialog/video_selector";
 
 export const YOUTUBE_URL_GET_VIDEO_ID =
     /^(?:(?:https?:)?\/\/)?(?:(?:www|m)\.)?(?:youtube\.com|youtu\.be)(?:\/(?:[\w-]+\?v=|embed\/|v\/)?)([^\s?&#]+)(?:\S+)?$/i;
@@ -15,7 +15,8 @@ export class YoutubePlugin extends Plugin {
     /** @type {import("plugins").EditorResources} */
     resources = {
         ...(this.config.allowVideo && {
-            paste_media_url_command_providers: this.getCommandForVideoUrlPaste.bind(this),
+            paste_media_url_command_providers:
+                this.getCommandForVideoUrlPaste.bind(this),
         }),
     };
     /**
@@ -30,7 +31,9 @@ export class YoutubePlugin extends Plugin {
                 description: _t("Embed the youtube video in the document."),
                 icon: "fa-youtube-play",
                 run: async () => {
-                    const videoElement = await this.getYoutubeVideoElement(youtubeUrl[0]);
+                    const videoElement = await this.getYoutubeVideoElement(
+                        youtubeUrl[0]
+                    );
                     this.dependencies.dom.insert(videoElement);
                     this.dependencies.history.addStep();
                 },
@@ -70,6 +73,6 @@ export class YoutubePlugin extends Plugin {
     }
 
     createVideoElement(videoData) {
-        return VideoSelector.createElements([{ src: videoData.embed_url }])[0];
+        return VideoSelector.createElements([{src: videoData.embed_url}])[0];
     }
 }

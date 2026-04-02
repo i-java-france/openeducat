@@ -1,6 +1,6 @@
-import { Base } from "./base";
-import { RAW_SYMBOL } from "./utils";
-import { reactive } from "@odoo/owl";
+import {Base} from "./base";
+import {RAW_SYMBOL} from "./utils";
+import {reactive} from "@odoo/owl";
 
 export class RecordStore {
     /**
@@ -14,7 +14,10 @@ export class RecordStore {
         models.forEach((model) => {
             const modelMap = new Map();
             this.records.set(model, modelMap);
-            const indexKeys = new Set([...(indexes[model] || []).filter((s) => s), "id"]);
+            const indexKeys = new Set([
+                ...(indexes[model] || []).filter((s) => s),
+                "id",
+            ]);
             this.indexes[model] = indexKeys;
             for (const key of indexKeys) {
                 modelMap.set(key, new Map());
@@ -121,7 +124,10 @@ export class RecordStore {
     getRecordsByIds(model, index = "id") {
         const indexMap = this.getRecordsMap(model, index);
         //Check if the index is multivalued
-        if (index !== "id" && indexMap.get(indexMap.keys().next().value) instanceof Map) {
+        if (
+            index !== "id" &&
+            indexMap.get(indexMap.keys().next().value) instanceof Map
+        ) {
             return Object.fromEntries(
                 [...indexMap].map(([key, value]) => [key, Array.from(value.values())])
             );

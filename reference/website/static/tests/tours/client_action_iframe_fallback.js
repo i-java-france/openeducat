@@ -1,4 +1,4 @@
-import { registerWebsitePreviewTour } from "@website/js/tours/tour_utils";
+import {registerWebsitePreviewTour} from "@website/js/tours/tour_utils";
 
 registerWebsitePreviewTour(
     "client_action_iframe_fallback",

@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, timedelta
 
 from odoo import fields, tools
+
 from odoo.addons.crm.tests.common import TestCrmCommon
 from odoo.addons.event.tests.common import EventCase
 
@@ -12,7 +12,7 @@ class EventCrmCase(TestCrmCommon, EventCase):
 
     @classmethod
     def setUpClass(cls):
-        super(EventCrmCase, cls).setUpClass()
+        super().setUpClass()
 
         # avoid clash with existing rules
         cls.env['event.lead.rule'].search([]).write({'active': False})
@@ -129,7 +129,7 @@ class TestEventCrmCommon(EventCrmCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestEventCrmCommon, cls).setUpClass()
+        super().setUpClass()
 
         cls.event_0 = cls.env['event.event'].create({
             'name': 'TestEvent',

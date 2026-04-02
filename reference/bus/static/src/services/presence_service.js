@@ -1,6 +1,6 @@
-import { EventBus } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { registry } from "@web/core/registry";
+import {EventBus} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
 
 export const presenceService = {
     start(env) {
@@ -13,7 +13,10 @@ export const presenceService = {
 
         function onPresence() {
             lastPresenceTime = luxon.DateTime.now().ts;
-            browser.localStorage.setItem(`${LOCAL_STORAGE_PREFIX}.lastPresence`, lastPresenceTime);
+            browser.localStorage.setItem(
+                `${LOCAL_STORAGE_PREFIX}.lastPresence`,
+                lastPresenceTime
+            );
             bus.trigger("presence");
         }
 
@@ -24,14 +27,17 @@ export const presenceService = {
                 // noop
             }
             isOdooFocused = isFocused;
-            browser.localStorage.setItem(`${LOCAL_STORAGE_PREFIX}.focus`, isOdooFocused);
+            browser.localStorage.setItem(
+                `${LOCAL_STORAGE_PREFIX}.focus`,
+                isOdooFocused
+            );
             if (isOdooFocused) {
                 lastPresenceTime = luxon.DateTime.now().ts;
                 env.bus.trigger("window_focus", isOdooFocused);
             }
         }
 
-        function onStorage({ key, newValue }) {
+        function onStorage({key, newValue}) {
             if (key === `${LOCAL_STORAGE_PREFIX}.focus`) {
                 isOdooFocused = JSON.parse(newValue);
                 env.bus.trigger("window_focus", newValue);

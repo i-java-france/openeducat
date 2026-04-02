@@ -1,23 +1,23 @@
-import { Component, onWillStart, onWillUpdateProps } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { TagsList } from "@web/core/tags_list/tags_list";
-import { isId } from "@web/core/tree_editor/utils";
-import { useService } from "@web/core/utils/hooks";
-import { imageUrl } from "@web/core/utils/urls";
-import { RecordAutocomplete } from "./record_autocomplete";
-import { useTagNavigation } from "./tag_navigation_hook";
+import {Component, onWillStart, onWillUpdateProps} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {TagsList} from "@web/core/tags_list/tags_list";
+import {isId} from "@web/core/tree_editor/utils";
+import {useService} from "@web/core/utils/hooks";
+import {imageUrl} from "@web/core/utils/urls";
+import {RecordAutocomplete} from "./record_autocomplete";
+import {useTagNavigation} from "./tag_navigation_hook";
 
 export class MultiRecordSelector extends Component {
     static props = {
-        resIds: { type: Array, element: Number },
+        resIds: {type: Array, element: Number},
         resModel: String,
         update: Function,
-        domain: { type: Array, optional: true },
-        context: { type: Object, optional: true },
-        fieldString: { type: String, optional: true },
-        placeholder: { type: String, optional: true },
+        domain: {type: Array, optional: true},
+        context: {type: Object, optional: true},
+        fieldString: {type: String, optional: true},
+        placeholder: {type: String, optional: true},
     };
-    static components = { RecordAutocomplete, TagsList };
+    static components = {RecordAutocomplete, TagsList};
     static template = "web.MultiRecordSelector";
 
     setup() {
@@ -31,9 +31,12 @@ export class MultiRecordSelector extends Component {
 
     get isAvatarModel() {
         // bof
-        return ["res.partner", "res.users", "hr.employee", "hr.employee.public"].includes(
-            this.props.resModel
-        );
+        return [
+            "res.partner",
+            "res.users",
+            "hr.employee",
+            "hr.employee.public",
+        ].includes(this.props.resModel);
     }
 
     async computeDerivedParams(props = this.props) {

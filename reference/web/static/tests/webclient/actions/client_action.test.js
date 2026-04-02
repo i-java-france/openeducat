@@ -1,6 +1,6 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { animationFrame, runAllTimers } from "@odoo/hoot-mock";
-import { Component, onMounted, xml } from "@odoo/owl";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {animationFrame, runAllTimers} from "@odoo/hoot-mock";
+import {Component, onMounted, xml} from "@odoo/owl";
 import {
     contains,
     defineActions,
@@ -14,12 +14,12 @@ import {
     webModels,
 } from "@web/../tests/web_test_helpers";
 
-import { browser } from "@web/core/browser/browser";
-import { registry } from "@web/core/registry";
-import { redirect } from "@web/core/utils/urls";
-import { WebClient } from "@web/webclient/webclient";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
+import {redirect} from "@web/core/utils/urls";
+import {WebClient} from "@web/webclient/webclient";
 
-const { ResCompany, ResPartner, ResUsers } = webModels;
+const {ResCompany, ResPartner, ResUsers} = webModels;
 const actionRegistry = registry.category("actions");
 
 class TestClientAction extends Component {
@@ -29,7 +29,9 @@ class TestClientAction extends Component {
         </div>`;
     static props = ["*"];
     setup() {
-        onMounted(() => this.env.config.setDisplayName(`Client action ${this.props.action.id}`));
+        onMounted(() =>
+            this.env.config.setDisplayName(`Client action ${this.props.action.id}`)
+        );
     }
 }
 
@@ -37,8 +39,8 @@ class Partner extends models.Model {
     _rec_name = "display_name";
 
     _records = [
-        { id: 1, display_name: "First record" },
-        { id: 2, display_name: "Second record" },
+        {id: 1, display_name: "First record"},
+        {id: 2, display_name: "Second record"},
     ];
     _views = {
         form: /* xml */ `
@@ -156,7 +158,7 @@ test("dialog no header", async () => {
         target: "new",
         tag: "__test__client__action__",
         type: "ir.actions.client",
-        context: { header: false },
+        context: {header: false},
     });
 
     expect(".modal .test_client_action").toHaveCount(1);
@@ -176,7 +178,7 @@ test("soft_reload will refresh data", async () => {
 });
 
 test("soft_reload a form view", async () => {
-    onRpc("web_read", ({ args }) => {
+    onRpc("web_read", ({args}) => {
         expect.step(`read ${args[0][0]}`);
     });
     await mountWithCleanup(WebClient);
@@ -223,7 +225,7 @@ test("can execute client actions from tag name", async () => {
 test("async client action (function) returning another action", async () => {
     actionRegistry.add("my_action", async () => {
         await Promise.resolve();
-        return 1; // execute action 1
+        return 1; // Execute action 1
     });
     await mountWithCleanup(WebClient);
     await getService("action").doAction("my_action");
@@ -253,7 +255,7 @@ test("ClientAction receives breadcrumbs and exports title", async () => {
         static props = ["*"];
         setup() {
             this.breadcrumbTitle = "myAction";
-            const { breadcrumbs } = this.env.config;
+            const {breadcrumbs} = this.env.config;
             expect(breadcrumbs).toHaveLength(2);
             expect(breadcrumbs[0].name).toBe("Partners Action 1");
             onMounted(() => {
@@ -288,7 +290,7 @@ test("ClientAction receives arbitrary props from doAction", async () => {
     actionRegistry.add("SomeClientAction", ClientAction);
     await mountWithCleanup(WebClient);
     await getService("action").doAction("SomeClientAction", {
-        props: { division: "bell" },
+        props: {division: "bell"},
     });
 });
 
@@ -308,7 +310,7 @@ test("ClientAction with extractProps", async () => {
         static template = xml`<div class="my_client_action" t-esc="props.myProp"/>`;
         static props = ["*"];
         static extractProps(action) {
-            return { myProp: action.params.my_prop };
+            return {myProp: action.params.my_prop};
         }
     }
     actionRegistry.add("SomeClientAction", ClientAction);
@@ -330,9 +332,11 @@ test("test display_notification client action", async () => {
             sticky: true,
         },
     });
-    await animationFrame(); // wait for the notification to be displayed
+    await animationFrame(); // Wait for the notification to be displayed
     expect(".o_notification_manager .o_notification").toHaveCount(1);
-    expect(".o_notification_manager .o_notification .o_notification_content").toHaveText("message");
+    expect(
+        ".o_notification_manager .o_notification .o_notification_content"
+    ).toHaveText("message");
     expect(".o_kanban_view").toHaveCount(1);
     await contains(".o_notification_close").click();
     expect(".o_notification_manager .o_notification").toHaveCount(0);
@@ -357,16 +361,16 @@ test("test display_notification client action with links", async () => {
             ],
         },
     });
-    await animationFrame(); // wait for the notification to be displayed
+    await animationFrame(); // Wait for the notification to be displayed
     expect(".o_notification_manager .o_notification").toHaveCount(1);
-    expect(".o_notification_manager .o_notification .o_notification_content").toHaveText(
-        "message test <R&D> <R&D>"
-    );
+    expect(
+        ".o_notification_manager .o_notification .o_notification_content"
+    ).toHaveText("message test <R&D> <R&D>");
     expect(".o_kanban_view").toHaveCount(1);
     await contains(".o_notification_close").click();
     expect(".o_notification_manager .o_notification").toHaveCount(0);
 
-    // display_notification without title
+    // Display_notification without title
     await getService("action").doAction({
         type: "ir.actions.client",
         tag: "display_notification",
@@ -381,9 +385,11 @@ test("test display_notification client action with links", async () => {
             ],
         },
     });
-    await animationFrame(); // wait for the notification to be displayed
+    await animationFrame(); // Wait for the notification to be displayed
     expect(".o_notification_manager .o_notification").toHaveCount(1);
-    expect(".o_notification_manager .o_notification .o_notification_title").toHaveCount(0);
+    expect(".o_notification_manager .o_notification .o_notification_title").toHaveCount(
+        0
+    );
 });
 
 test("test next action on display_notification client action", async () => {
@@ -408,7 +414,7 @@ test("test next action on display_notification client action", async () => {
         },
         options
     );
-    await animationFrame(); // wait for the notification to be displayed
+    await animationFrame(); // Wait for the notification to be displayed
     expect(".o_notification_manager .o_notification").toHaveCount(1);
     expect.verifySteps(["onClose"]);
 });

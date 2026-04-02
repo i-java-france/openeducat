@@ -1,15 +1,15 @@
-import { getWebSocketWorker } from "@bus/../tests/mock_websocket";
-import { advanceTime, describe, expect, test } from "@odoo/hoot";
-import { runAllTimers } from "@odoo/hoot-dom";
+import {getWebSocketWorker} from "@bus/../tests/mock_websocket";
+import {advanceTime, describe, expect, test} from "@odoo/hoot";
+import {runAllTimers} from "@odoo/hoot-dom";
 import {
+    MockServer,
     asyncStep,
     makeMockServer,
-    MockServer,
     patchWithCleanup,
     waitForSteps,
 } from "@web/../tests/web_test_helpers";
 
-import { WEBSOCKET_CLOSE_CODES, WebsocketWorker } from "@bus/workers/websocket_worker";
+import {WEBSOCKET_CLOSE_CODES, WebsocketWorker} from "@bus/workers/websocket_worker";
 
 describe.current.tags("headless");
 
@@ -138,14 +138,17 @@ test("check connection health during inactivity", async () => {
             expect.step(`broadcast ${type}`);
         }
     });
-    await expect.waitForSteps(["broadcast BUS:CONNECT", "_restartConnectionCheckInterval"]);
+    await expect.waitForSteps([
+        "broadcast BUS:CONNECT",
+        "_restartConnectionCheckInterval",
+    ]);
     worker.websocket.dispatchEvent(
         new MessageEvent("message", {
-            data: JSON.stringify([{ id: 70, message: { type: "foo" } }]),
+            data: JSON.stringify([{id: 70, message: {type: "foo"}}]),
         })
     );
     await expect.waitForSteps(["_restartConnectionCheckInterval"]);
-    worker._sendToServer({ event_name: "foo" });
+    worker._sendToServer({event_name: "foo"});
     await expect.waitForSteps(["_restartConnectionCheckInterval"]);
     await advanceTime(worker.CONNECTION_CHECK_DELAY + 1000);
     await expect.waitForSteps(["check_connection_health_sent"]);

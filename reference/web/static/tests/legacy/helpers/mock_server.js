@@ -1,8 +1,8 @@
 /** @odoo-module alias=@web/../tests/helpers/mock_server default=false */
 
-import { assets } from "@web/core/assets";
-import { browser } from "@web/core/browser/browser";
-import { Domain } from "@web/core/domain";
+import {assets} from "@web/core/assets";
+import {browser} from "@web/core/browser/browser";
+import {Domain} from "@web/core/domain";
 import {
     deserializeDate,
     deserializeDateTime,
@@ -10,13 +10,13 @@ import {
     serializeDate,
     serializeDateTime,
 } from "@web/core/l10n/dates";
-import { registry } from "@web/core/registry";
-import { intersection, unique } from "@web/core/utils/arrays";
-import { deepCopy, pick } from "@web/core/utils/objects";
-import { patchRPCWithCleanup, makeMockFetch } from "./mock_services";
-import { patchWithCleanup } from "./utils";
-import { makeErrorFromResponse } from "@web/core/network/rpc";
-import { registerCleanup } from "./cleanup";
+import {registry} from "@web/core/registry";
+import {intersection, unique} from "@web/core/utils/arrays";
+import {deepCopy, pick} from "@web/core/utils/objects";
+import {patchRPCWithCleanup, makeMockFetch} from "./mock_services";
+import {patchWithCleanup} from "./utils";
+import {makeErrorFromResponse} from "@web/core/network/rpc";
+import {registerCleanup} from "./cleanup";
 
 const domParser = new DOMParser();
 const xmlSerializer = new XMLSerializer();
@@ -115,7 +115,7 @@ function makeLogger(prefix, title) {
     const id = logId++;
     let hasCalledRequest = false;
 
-    return { request, response };
+    return {request, response};
 }
 
 export function makeServerError({
@@ -170,10 +170,10 @@ export class MockServer {
         this.debug = options.debug || false;
         Object.entries(this.models).forEach(([modelName, model]) => {
             model.fields = {
-                id: { string: "ID", type: "integer" },
-                display_name: { string: "Display Name", type: "char" },
-                name: { string: "Name", type: "char", default: "name" },
-                write_date: { string: "Last Modified on", type: "datetime" },
+                id: {string: "ID", type: "integer"},
+                display_name: {string: "Display Name", type: "char"},
+                name: {string: "Name", type: "char", default: "name"},
+                write_date: {string: "Last Modified on", type: "datetime"},
                 ...model.fields,
             };
             for (const fieldName in model.fields) {
@@ -185,12 +185,13 @@ export class MockServer {
             for (var i = 0; i < model.records.length; i++) {
                 const values = model.records[i];
                 // add potentially missing id
-                const id = values.id === undefined ? this.getUnusedID(modelName) : values.id;
+                const id =
+                    values.id === undefined ? this.getUnusedID(modelName) : values.id;
                 // create a clean object, initial values are passed to write
-                model.records[i] = { id };
+                model.records[i] = {id};
                 // ensure initial data goes through proper conversion (x2m, ...)
                 this.applyDefaults(model, values);
-                this.writeRecord(modelName, values, id, { ensureIntegrity: false });
+                this.writeRecord(modelName, values, id, {ensureIntegrity: false});
             }
             model.onchanges = model.onchanges || {};
             model.methods = model.methods || {};
@@ -202,7 +203,9 @@ export class MockServer {
             if (!Array.isArray(this.models[modelName].records)) {
                 continue;
             }
-            records.forEach((record) => this.updateComodelRelationalFields(modelName, record));
+            records.forEach((record) =>
+                this.updateComodelRelationalFields(modelName, record)
+            );
         }
     }
 
@@ -233,7 +236,9 @@ export class MockServer {
         //   );
         //   return Promise.reject({ message: errorString, event });
         // }
-        const actualResult = JSON.parse(JSON.stringify(result !== undefined ? result : false));
+        const actualResult = JSON.parse(
+            JSON.stringify(result !== undefined ? result : false)
+        );
         if (this.debug) {
             logger.response(actualResult);
         }
@@ -259,13 +264,17 @@ export class MockServer {
         } else if (viewType === "search") {
             models[modelName] = Object.keys(this.models[modelName].fields);
         } else if (viewType === "graph") {
-            for (const [fieldName, field] of Object.entries(this.models[modelName].fields)) {
+            for (const [fieldName, field] of Object.entries(
+                this.models[modelName].fields
+            )) {
                 if (["integer", "float"].includes(field.type)) {
                     models[modelName].add(fieldName);
                 }
             }
         } else if (viewType === "pivot") {
-            for (const [fieldName, field] of Object.entries(this.models[modelName].fields)) {
+            for (const [fieldName, field] of Object.entries(
+                this.models[modelName].fields
+            )) {
                 if (
                     [
                         "many2one",
@@ -335,7 +344,7 @@ export class MockServer {
 
     _getView(params) {
         const processedNodes = params.processedNodes || [];
-        const { arch, context, modelName } = params;
+        const {arch, context, modelName} = params;
         const level = params.level || 0;
         const editable = params.editable || true;
         const fields = deepCopy(params.fields);
@@ -345,7 +354,7 @@ export class MockServer {
         const onchanges = params.models[modelName].onchanges || {};
         const fieldNodes = {};
         const groupbyNodes = {};
-        const relatedModels = { [modelName]: new Set() };
+        const relatedModels = {[modelName]: new Set()};
         let doc;
         if (typeof arch === "string") {
             doc = domParser.parseFromString(arch, "text/xml").documentElement;
@@ -360,12 +369,14 @@ export class MockServer {
             if (node.nodeType === Node.TEXT_NODE) {
                 return false;
             }
-            ["required", "readonly", "invisible", "column_invisible"].forEach((attr) => {
-                const value = node.getAttribute(attr);
-                if (value === "1" || value === "true") {
-                    node.setAttribute(attr, "True");
+            ["required", "readonly", "invisible", "column_invisible"].forEach(
+                (attr) => {
+                    const value = node.getAttribute(attr);
+                    if (value === "1" || value === "true") {
+                        node.setAttribute(attr, "True");
+                    }
                 }
-            });
+            );
             const isField = node.tagName === "field";
             const isGroupby = node.tagName === "groupby";
             if (isField) {
@@ -381,7 +392,7 @@ export class MockServer {
                 }
             } else if (isGroupby && !isNodeProcessed(node)) {
                 const groupbyName = node.getAttribute("name");
-                fieldNodes[groupbyName] = { node };
+                fieldNodes[groupbyName] = {node};
                 groupbyNodes[groupbyName] = node;
             }
             if (isGroupby && !isNodeProcessed(node)) {
@@ -391,67 +402,93 @@ export class MockServer {
         });
         Object.keys(fieldNodes).forEach((field) => relatedModels[modelName].add(field));
         let relModel, relFields;
-        Object.entries(fieldNodes).forEach(([name, { node, isInvisible, isEditable }]) => {
-            const field = fields[name];
-            if (isEditable && (field.type === "many2one" || field.type === "many2many")) {
-                const canCreate = node.getAttribute("can_create");
-                node.setAttribute("can_create", canCreate || "true");
-                const canWrite = node.getAttribute("can_write");
-                node.setAttribute("can_write", canWrite || "true");
-            }
-            if (field.type === "one2many" || field.type === "many2many") {
-                relModel = field.relation;
-                // inline subviews: in forms if field is visible and has no widget (1st level only)
-                if (inFormView && level === 0 && !node.getAttribute("widget") && !isInvisible) {
-                    const inlineViewTypes = Array.from(node.children).map((c) => c.tagName);
-                    const missingViewtypes = [];
-                    const mode = node.getAttribute("mode") || "kanban,list";
-                    if (!intersection(inlineViewTypes, mode.split(",")).length) {
-                        // TODO: use a kanban view by default in mobile
-                        missingViewtypes.push((node.getAttribute("mode") || "list").split(",")[0]);
-                    }
-                    for (const type of missingViewtypes) {
-                        let key = `${field.relation},false,${type}`;
-                        if (!this.archs[key]) {
-                            const regexp = new RegExp(`${field.relation},[a-z._0-9]+,${type}`);
-                            key = Object.keys(this.archs).find((k) => regexp.test(k));
-                        }
-                        // in a lot of tests, we don't need the form view, so it doesn't even exist
-                        const arch = this.archs[key] || (type === "form" ? "<form/>" : null);
-                        if (!arch) {
-                            throw new Error(`Can't find ${type} view to inline`);
-                        }
-                        node.appendChild(
-                            domParser.parseFromString(arch, "text/xml").documentElement
-                        );
-                    }
+        Object.entries(fieldNodes).forEach(
+            ([name, {node, isInvisible, isEditable}]) => {
+                const field = fields[name];
+                if (
+                    isEditable &&
+                    (field.type === "many2one" || field.type === "many2many")
+                ) {
+                    const canCreate = node.getAttribute("can_create");
+                    node.setAttribute("can_create", canCreate || "true");
+                    const canWrite = node.getAttribute("can_write");
+                    node.setAttribute("can_write", canWrite || "true");
                 }
-                Array.from(node.children).forEach((childNode) => {
-                    if (childNode.tagName) {
-                        relFields = Object.assign({}, params.models[relModel].fields);
-                        // this is hackhish, but _getView modifies the subview document in place
-                        const { models } = this._getView({
-                            models: params.models,
-                            arch: childNode,
-                            modelName: relModel,
-                            fields: relFields,
-                            context,
-                            processedNodes,
-                            level: level + 1,
-                            editable: editableView,
-                        });
-                        Object.entries(models).forEach(([modelName, fields]) => {
-                            relatedModels[modelName] = relatedModels[modelName] || new Set();
-                            fields.forEach((field) => relatedModels[modelName].add(field));
-                        });
+                if (field.type === "one2many" || field.type === "many2many") {
+                    relModel = field.relation;
+                    // inline subviews: in forms if field is visible and has no widget (1st level only)
+                    if (
+                        inFormView &&
+                        level === 0 &&
+                        !node.getAttribute("widget") &&
+                        !isInvisible
+                    ) {
+                        const inlineViewTypes = Array.from(node.children).map(
+                            (c) => c.tagName
+                        );
+                        const missingViewtypes = [];
+                        const mode = node.getAttribute("mode") || "kanban,list";
+                        if (!intersection(inlineViewTypes, mode.split(",")).length) {
+                            // TODO: use a kanban view by default in mobile
+                            missingViewtypes.push(
+                                (node.getAttribute("mode") || "list").split(",")[0]
+                            );
+                        }
+                        for (const type of missingViewtypes) {
+                            let key = `${field.relation},false,${type}`;
+                            if (!this.archs[key]) {
+                                const regexp = new RegExp(
+                                    `${field.relation},[a-z._0-9]+,${type}`
+                                );
+                                key = Object.keys(this.archs).find((k) =>
+                                    regexp.test(k)
+                                );
+                            }
+                            // in a lot of tests, we don't need the form view, so it doesn't even exist
+                            const arch =
+                                this.archs[key] || (type === "form" ? "<form/>" : null);
+                            if (!arch) {
+                                throw new Error(`Can't find ${type} view to inline`);
+                            }
+                            node.appendChild(
+                                domParser.parseFromString(arch, "text/xml")
+                                    .documentElement
+                            );
+                        }
                     }
-                });
+                    Array.from(node.children).forEach((childNode) => {
+                        if (childNode.tagName) {
+                            relFields = Object.assign(
+                                {},
+                                params.models[relModel].fields
+                            );
+                            // this is hackhish, but _getView modifies the subview document in place
+                            const {models} = this._getView({
+                                models: params.models,
+                                arch: childNode,
+                                modelName: relModel,
+                                fields: relFields,
+                                context,
+                                processedNodes,
+                                level: level + 1,
+                                editable: editableView,
+                            });
+                            Object.entries(models).forEach(([modelName, fields]) => {
+                                relatedModels[modelName] =
+                                    relatedModels[modelName] || new Set();
+                                fields.forEach((field) =>
+                                    relatedModels[modelName].add(field)
+                                );
+                            });
+                        }
+                    });
+                }
+                // add onchanges
+                if (onchangeAbleView && name in onchanges) {
+                    node.setAttribute("on_change", "1");
+                }
             }
-            // add onchanges
-            if (onchangeAbleView && name in onchanges) {
-                node.setAttribute("on_change", "1");
-            }
-        });
+        );
         Object.entries(groupbyNodes).forEach(([name, node]) => {
             const field = fields[name];
             if (field.type !== "many2one") {
@@ -462,7 +499,7 @@ export class MockServer {
             relFields = Object.assign({}, params.models[relModel].fields);
             processedNodes.push(node);
             // postprocess simulation
-            const { models } = this._getView({
+            const {models} = this._getView({
                 models: params.models,
                 arch: node,
                 modelName: relModel,
@@ -567,7 +604,7 @@ export class MockServer {
                     });
                     values[fname] = {
                         ...result[0],
-                        id: { id, model },
+                        id: {id, model},
                     };
                 }
             }
@@ -607,9 +644,9 @@ export class MockServer {
                 return true;
             }
             case "action_archive":
-                return this.mockWrite(args.model, [args.args[0], { active: false }]);
+                return this.mockWrite(args.model, [args.args[0], {active: false}]);
             case "action_unarchive":
-                return this.mockWrite(args.model, [args.args[0], { active: true }]);
+                return this.mockWrite(args.model, [args.args[0], {active: true}]);
             case "copy":
                 return this.mockCopy(args.model, args.args, args.kwargs);
             case "create":
@@ -631,9 +668,17 @@ export class MockServer {
             case "search_count":
                 return this.mockSearchCount(args.model, args.args, args.kwargs);
             case "search_panel_select_range":
-                return this.mockSearchPanelSelectRange(args.model, args.args, args.kwargs);
+                return this.mockSearchPanelSelectRange(
+                    args.model,
+                    args.args,
+                    args.kwargs
+                );
             case "search_panel_select_multi_range":
-                return this.mockSearchPanelSelectMultiRange(args.model, args.args, args.kwargs);
+                return this.mockSearchPanelSelectMultiRange(
+                    args.model,
+                    args.args,
+                    args.kwargs
+                );
             case "search_read":
                 return this.mockSearchRead(args.model, args.args, args.kwargs);
             case "unlink":
@@ -678,7 +723,7 @@ export class MockServer {
         for (const id of ids) {
             const newID = this.getUnusedID(modelName);
             const originalRecord = model.records.find((record) => record.id === id);
-            const duplicatedRecord = { ...originalRecord, ...kwargs.default, id: newID };
+            const duplicatedRecord = {...originalRecord, ...kwargs.default, id: newID};
             duplicatedRecord.display_name = `${originalRecord.display_name} (copy)`;
             model.records.push(duplicatedRecord);
             newIDs.push(newID);
@@ -700,7 +745,7 @@ export class MockServer {
             }
             const id = this.getUnusedID(modelName);
             ids.push(id);
-            const record = { id };
+            const record = {id};
             model.records.push(record);
             this.applyDefaults(model, values, kwargs.context);
             this.writeRecord(modelName, values, id);
@@ -768,7 +813,7 @@ export class MockServer {
         return fields;
     }
 
-    mockLoadAction({ action_id } = {}) {
+    mockLoadAction({action_id} = {}) {
         const action =
             this.actions[action_id] ||
             Object.values(this.actions).find((action) => action.xml_id === action_id) ||
@@ -782,24 +827,30 @@ export class MockServer {
         return action;
     }
 
-    mockLoadBreadcrumbs({ actions }) {
-        return actions.map(({ action: action_id, model, resId }) => {
+    mockLoadBreadcrumbs({actions}) {
+        return actions.map(({action: action_id, model, resId}) => {
             if (action_id) {
-                const act = this.mockLoadAction({ action_id });
+                const act = this.mockLoadAction({action_id});
                 if (resId) {
                     return {
-                        display_name: this.mockRead(act.res_model, [[resId], ["display_name"]])[0]
-                            .display_name,
+                        display_name: this.mockRead(act.res_model, [
+                            [resId],
+                            ["display_name"],
+                        ])[0].display_name,
                     };
                 }
-                return { display_name: act.name };
+                return {display_name: act.name};
             } else if (model) {
                 if (resId) {
-                    return { display_name: this.models[model].records[resId].display_name };
+                    return {
+                        display_name: this.models[model].records[resId].display_name,
+                    };
                 }
                 throw new Error("Actions with a model should also have a resId");
             }
-            throw new Error("Actions should have either an action (id or path) or a model");
+            throw new Error(
+                "Actions should have either an action (id or path) or a model"
+            );
         });
     }
 
@@ -807,8 +858,8 @@ export class MockServer {
         let menus = this.menus;
         if (!menus) {
             menus = {
-                root: { id: "root", children: [1], name: "root", appID: "root" },
-                1: { id: 1, children: [], name: "App0", appID: 1 },
+                root: {id: "root", children: [1], name: "root", appID: "root"},
+                1: {id: 1, children: [], name: "App0", appID: 1},
             };
         }
         return menus;
@@ -832,13 +883,13 @@ export class MockServer {
 
         // For each model, fetch the information of the fields used in the views only
         Object.entries(modelFields).forEach(([modelName, fields]) => {
-            models[modelName] = { fields: this.mockFieldsGet(modelName, [...fields]) };
+            models[modelName] = {fields: this.mockFieldsGet(modelName, [...fields])};
         });
 
         if (kwargs.options.load_filters && "search" in views) {
             views["search"].filters = this.models[modelName].filters || [];
         }
-        return { models, views };
+        return {models, views};
     }
 
     /**
@@ -875,11 +926,14 @@ export class MockServer {
         const str = args && typeof args[0] === "string" ? args[0] : kwargs.name;
         const limit = kwargs.limit || 100;
         const domain = (args && args[1]) || kwargs.domain || [];
-        const { records } = this.models[model];
+        const {records} = this.models[model];
         const result = [];
         for (const r of records) {
             const isInDomain = this.evaluateDomain(domain, r);
-            if (isInDomain && (!str.length || (r.display_name && r.display_name.includes(str)))) {
+            if (
+                isInDomain &&
+                (!str.length || (r.display_name && r.display_name.includes(str)))
+            ) {
                 result.push([r.id, r.display_name]);
             }
         }
@@ -907,24 +961,38 @@ export class MockServer {
             }
         }
         if (resId) {
-            serverValues = this.mockRead(modelName, [args[0], [...fieldsFromView]], kwargs)[0];
+            serverValues = this.mockRead(
+                modelName,
+                [args[0], [...fieldsFromView]],
+                kwargs
+            )[0];
         } else if (firstOnChange) {
             // It is the new semantics: no field in arguments means we are in
             // a default_get + onchange situation
             fields = [...fieldsFromView];
             fields
-                .filter((fName) => !Object.keys(serverValues).includes(fName) && fName !== "id")
+                .filter(
+                    (fName) =>
+                        !Object.keys(serverValues).includes(fName) && fName !== "id"
+                )
                 .forEach((fName) => {
                     onchangeValues[fName] = false;
                 });
-            const defaultValues = this.mockDefaultGet(modelName, [[...fieldsFromView]], kwargs);
+            const defaultValues = this.mockDefaultGet(
+                modelName,
+                [[...fieldsFromView]],
+                kwargs
+            );
             for (const fieldName in defaultValues) {
                 const fieldType = this.models[modelName].fields[fieldName].type;
                 if (["one2many", "many2many"].includes(fieldType)) {
                     const subSpec = specification[fieldName];
                     for (const command of defaultValues[fieldName]) {
                         if (command[0] === 0 || command[0] === 1) {
-                            command[2] = pick(command[2], ...Object.keys(subSpec.fields));
+                            command[2] = pick(
+                                command[2],
+                                ...Object.keys(subSpec.fields)
+                            );
                         }
                     }
                 }
@@ -980,7 +1048,7 @@ export class MockServer {
             if (!field) {
                 continue; // the field doesn't exist on the model, so skip it
             }
-            const { relation, type } = field;
+            const {relation, type} = field;
             if (type === "many2one" && !modelMap[relation]) {
                 modelMap[relation] = {};
                 for (const record of this.models[relation].records) {
@@ -999,7 +1067,7 @@ export class MockServer {
             if (!record) {
                 continue;
             }
-            const result = { id: record.id };
+            const result = {id: record.id};
             for (const fieldName of fields) {
                 const field = model.fields[fieldName];
                 if (!field) {
@@ -1018,7 +1086,8 @@ export class MockServer {
                 } else if (field.type === "one2many" || field.type === "many2many") {
                     result[fieldName] = record[fieldName] || [];
                 } else {
-                    result[fieldName] = record[fieldName] !== undefined ? record[fieldName] : false;
+                    result[fieldName] =
+                        record[fieldName] !== undefined ? record[fieldName] : false;
                 }
             }
             records.push(result);
@@ -1030,7 +1099,7 @@ export class MockServer {
     mockFormattedReadGroup(modelName, kwargs) {
         const fields = this.models[modelName].fields;
         const aggregateFields = (group, records) => {
-            for (const { fieldName, func, name } of aggregatedFields) {
+            for (const {fieldName, func, name} of aggregatedFields) {
                 if (["sum", "avg"].includes(func)) {
                     if (!records.length) {
                         group[name] = false;
@@ -1045,26 +1114,32 @@ export class MockServer {
                     if (fields[fieldName].type === "many2one") {
                         group[name] = records.map((r) => r[fieldName] || null);
                     } else {
-                        group[name] = records.map((r) => (fieldName in r ? r[fieldName] : null));
+                        group[name] = records.map((r) =>
+                            fieldName in r ? r[fieldName] : null
+                        );
                     }
                 } else if (func === "__count") {
                     group[name] = records.length;
                 } else if (func === "count_distinct") {
-                    group[name] = unique(records.map((r) => r[fieldName])).filter(Boolean).length;
+                    group[name] = unique(records.map((r) => r[fieldName])).filter(
+                        Boolean
+                    ).length;
                 } else if (func === "bool_or") {
                     group[name] = records.some((r) => Boolean(r[fieldName]));
                 } else if (func === "bool_and") {
                     group[name] = records.every((r) => Boolean(r[fieldName]));
                 } else {
-                    throw new Error(`Aggregate "${func}" not implemented in MockServer`);
+                    throw new Error(
+                        `Aggregate "${func}" not implemented in MockServer`
+                    );
                 }
             }
         };
-        const { domain, groupby, aggregates, offset, limit, order } = kwargs;
+        const {domain, groupby, aggregates, offset, limit, order} = kwargs;
         const records = this.getRecords(modelName, domain);
         const aggregatedFields = aggregates.map((fspec) => {
             if (fspec === "__count") {
-                return { fieldName: "__count", func: "__count", name: "__count" };
+                return {fieldName: "__count", func: "__count", name: "__count"};
             }
             const [, fieldName, func] = fspec.match(regex_field_agg);
             if (func && !VALID_AGGREGATE_FUNCTIONS.includes(func)) {
@@ -1073,11 +1148,11 @@ export class MockServer {
             if (!fields[fieldName]) {
                 throw new Error(`invalid field in "${fspec}"`);
             }
-            return { fieldName, func, name: fspec };
+            return {fieldName, func, name: fspec};
         });
 
         if (!groupby.length) {
-            const group = { __extra_domain: [] };
+            const group = {__extra_domain: []};
             aggregateFields(group, records);
             return [group];
         }
@@ -1087,9 +1162,10 @@ export class MockServer {
                 return false;
             }
             const [fieldName, aggregateFunction] = groupByField.split(":");
-            const { type } = fields[fieldName];
+            const {type} = fields[fieldName];
             if (["date", "datetime"].includes(type)) {
-                const date = type === "date" ? deserializeDate(val) : deserializeDateTime(val);
+                const date =
+                    type === "date" ? deserializeDate(val) : deserializeDateTime(val);
                 let format = null;
                 switch (aggregateFunction) {
                     // The year is added to the format because is needed to correctly compute the
@@ -1136,9 +1212,11 @@ export class MockServer {
                         throw new Error(`Unknown granularity: ${aggregateFunction}`);
                 }
                 const label = date.toFormat(format);
-                const start_date = parseDateTime(label, { format });
+                const start_date = parseDateTime(label, {format});
                 const raw_value =
-                    type === "date" ? serializeDate(start_date) : serializeDateTime(start_date);
+                    type === "date"
+                        ? serializeDate(start_date)
+                        : serializeDateTime(start_date);
                 return [raw_value, label];
             } else {
                 return val;
@@ -1160,7 +1238,7 @@ export class MockServer {
                             if (index == 0) {
                                 group[groupbySpec] = id;
                             } else {
-                                const new_group = { ...group };
+                                const new_group = {...group};
                                 new_group[groupbySpec] = id;
                                 recordGroupsValues.push(new_group);
                             }
@@ -1191,11 +1269,11 @@ export class MockServer {
                 const value = Number.isInteger(group[groupbySpec])
                     ? group[groupbySpec]
                     : group[groupbySpec] || false;
-                const { relation, type } = fields[fieldName];
+                const {relation, type} = fields[fieldName];
 
                 if (relation && !Array.isArray(value)) {
                     const relatedRecord = this.models[relation].records.find(
-                        ({ id }) => id === value
+                        ({id}) => id === value
                     );
                     if (relatedRecord) {
                         group[groupbySpec] = [value, relatedRecord.display_name];
@@ -1215,35 +1293,36 @@ export class MockServer {
                             let label = value[1];
                             switch (granularity) {
                                 case "hour": {
-                                    endDate = startDate.plus({ hours: 1 });
+                                    endDate = startDate.plus({hours: 1});
                                     // Remove the year from the result value of the group. It was needed
                                     // to compute the startDate and endDate.
                                     label = startDate.toFormat("HH:00 dd MMM");
                                     break;
                                 }
                                 case "day": {
-                                    endDate = startDate.plus({ days: 1 });
+                                    endDate = startDate.plus({days: 1});
                                     break;
                                 }
                                 case "week": {
-                                    endDate = startDate.plus({ weeks: 1 });
+                                    endDate = startDate.plus({weeks: 1});
                                     break;
                                 }
                                 case "quarter": {
-                                    endDate = startDate.plus({ quarters: 1 });
+                                    endDate = startDate.plus({quarters: 1});
                                     break;
                                 }
                                 case "year": {
-                                    endDate = startDate.plus({ years: 1 });
+                                    endDate = startDate.plus({years: 1});
                                     break;
                                 }
                                 case "month":
                                 default: {
-                                    endDate = startDate.plus({ months: 1 });
+                                    endDate = startDate.plus({months: 1});
                                     break;
                                 }
                             }
-                            const serialize = type === "date" ? serializeDate : serializeDateTime;
+                            const serialize =
+                                type === "date" ? serializeDate : serializeDateTime;
                             const from = serialize(startDate);
                             const to = serialize(endDate);
                             group.__extra_domain = [
@@ -1259,10 +1338,16 @@ export class MockServer {
                             ];
                         }
                     } else {
-                        group.__extra_domain = [[fieldName, "=", value], ...group.__extra_domain];
+                        group.__extra_domain = [
+                            [fieldName, "=", value],
+                            ...group.__extra_domain,
+                        ];
                     }
                 } else {
-                    group.__extra_domain = [[fieldName, "=", value], ...group.__extra_domain];
+                    group.__extra_domain = [
+                        [fieldName, "=", value],
+                        ...group.__extra_domain,
+                    ];
                 }
             }
             aggregateFields(group, groupRecords);
@@ -1292,12 +1377,14 @@ export class MockServer {
         );
 
         // update value of relationnal fields pointing to the deleted records
-        for (const { fields, records } of Object.values(this.models)) {
+        for (const {fields, records} of Object.values(this.models)) {
             for (const [fieldName, field] of Object.entries(fields)) {
                 if (field.relation === modelName) {
                     for (const record of records) {
                         if (Array.isArray(record[fieldName])) {
-                            record[fieldName] = record[fieldName].filter((id) => !ids.includes(id));
+                            record[fieldName] = record[fieldName].filter(
+                                (id) => !ids.includes(id)
+                            );
                         } else if (ids.includes(record[fieldName])) {
                             record[fieldName] = false;
                         }
@@ -1310,7 +1397,7 @@ export class MockServer {
     }
 
     mockReadProgressBar(modelName, kwargs) {
-        const { domain, group_by: groupBy, progress_bar: progressBar } = kwargs;
+        const {domain, group_by: groupBy, progress_bar: progressBar} = kwargs;
         const groups = this.mockFormattedReadGroup(modelName, {
             domain,
             groupby: [groupBy, progressBar.field],
@@ -1402,7 +1489,13 @@ export class MockServer {
      * @param {boolean} setCount
      * @returns {Map}
      */
-    mockSearchPanelDomainImage(model, fieldName, domain, setCount = false, limit = false) {
+    mockSearchPanelDomainImage(
+        model,
+        fieldName,
+        domain,
+        setCount = false,
+        limit = false
+    ) {
         const field = this.models[model].fields[fieldName];
         let groupIdName;
         if (field.type === "many2one") {
@@ -1411,7 +1504,8 @@ export class MockServer {
             // in the domain defined below !!!
         } else if (field.type === "selection") {
             const selection = {};
-            for (const [value, label] of this.models[model].fields[fieldName].selection) {
+            for (const [value, label] of this.models[model].fields[fieldName]
+                .selection) {
                 selection[value] = label;
             }
             groupIdName = (value) => [value, selection[value]];
@@ -1426,7 +1520,7 @@ export class MockServer {
         const domainImage = new Map();
         for (const group of groups) {
             const [id, display_name] = groupIdName(group[fieldName]);
-            const values = { id, display_name };
+            const values = {id, display_name};
             if (setCount) {
                 values.__count = group.__count;
             }
@@ -1442,7 +1536,9 @@ export class MockServer {
      * @param {(string|boolean)} parentName 'parent_id' or false
      */
     mockSearchPanelGlobalCounters(valuesRange, parentName) {
-        const localCounters = [...valuesRange.keys()].map((id) => valuesRange.get(id).__count);
+        const localCounters = [...valuesRange.keys()].map(
+            (id) => valuesRange.get(id).__count
+        );
         for (let [id, values] of valuesRange.entries()) {
             const count = localCounters[id];
             if (count) {
@@ -1525,7 +1621,9 @@ export class MockServer {
                 display_name: label,
             };
             if (enableCounters) {
-                values.__count = domainImage.get(value) ? domainImage.get(value).__count : 0;
+                values.__count = domainImage.get(value)
+                    ? domainImage.get(value).__count
+                    : 0;
             }
             selectionRange.push(values);
         }
@@ -1605,7 +1703,7 @@ export class MockServer {
         }
         if (!expand && !hierarchize && !comodelDomain.length) {
             if (limit && domainImage.size === limit) {
-                return { error_msg: "Too many items to display." };
+                return {error_msg: "Too many items to display."};
             }
             return {
                 parent_field: parentName,
@@ -1634,9 +1732,13 @@ export class MockServer {
             }
             comodelDomain = new Domain([...comodelDomain, condition]).toList();
         }
-        let comodelRecords = this.mockSearchRead(field.relation, [comodelDomain, fieldNames], {
-            limit,
-        });
+        let comodelRecords = this.mockSearchRead(
+            field.relation,
+            [comodelDomain, fieldNames],
+            {
+                limit,
+            }
+        );
 
         if (hierarchize) {
             const ids = expand ? comodelRecords.map((rec) => rec.id) : imageElementIds;
@@ -1648,7 +1750,7 @@ export class MockServer {
         }
 
         if (limit && comodelRecords.length === limit) {
-            return { error_msg: "Too many items to display." };
+            return {error_msg: "Too many items to display."};
         }
         // A map is used to keep the initial order.
         const fieldRange = new Map();
@@ -1754,7 +1856,7 @@ export class MockServer {
                 }
             );
             if (expand && limit && comodelRecords.length === limit) {
-                return { error_msg: "Too many items to display." };
+                return {error_msg: "Too many items to display."};
             }
 
             const groupDomain = kwargs.group_domain;
@@ -1792,10 +1894,15 @@ export class MockServer {
                         count = this.mockSearchCount(model, [searchCountDomain]);
                     }
                     if (!expand) {
-                        if (enableCounters && JSON.stringify(localExtraDomain) === "[]") {
+                        if (
+                            enableCounters &&
+                            JSON.stringify(localExtraDomain) === "[]"
+                        ) {
                             inImage = count;
                         } else {
-                            inImage = this.mockSearch(model, [searchDomain], { limit: 1 }).length;
+                            inImage = this.mockSearch(model, [searchDomain], {
+                                limit: 1,
+                            }).length;
                         }
                     }
                 }
@@ -1808,30 +1915,40 @@ export class MockServer {
             }
 
             if (!expand && limit && fieldRange.length === limit) {
-                return { error_msg: "Too many items to display." };
+                return {error_msg: "Too many items to display."};
             }
 
-            return { values: fieldRange };
+            return {values: fieldRange};
         }
 
         if (field.type === "many2one") {
             let domainImage;
             if (enableCounters || !expand) {
-                extraDomain = new Domain([...extraDomain, ...(kwargs.group_domain || [])]).toList();
-                modelDomain = new Domain([...modelDomain, ...(kwargs.group_domain || [])]).toList();
+                extraDomain = new Domain([
+                    ...extraDomain,
+                    ...(kwargs.group_domain || []),
+                ]).toList();
+                modelDomain = new Domain([
+                    ...modelDomain,
+                    ...(kwargs.group_domain || []),
+                ]).toList();
                 const newKwargs = Object.assign({}, kwargs, {
                     model_domain: modelDomain,
                     extra_domain: extraDomain,
                     only_counters: expand,
                     set_limit: limit && !(expand || groupBy || comodelDomain),
                 });
-                domainImage = this.mockSearchPanelFieldImage(model, fieldName, newKwargs);
+                domainImage = this.mockSearchPanelFieldImage(
+                    model,
+                    fieldName,
+                    newKwargs
+                );
             }
             if (!expand && !groupBy && !comodelDomain.length) {
                 if (limit && domainImage.size === limit) {
-                    return { error_msg: "Too many items to display." };
+                    return {error_msg: "Too many items to display."};
                 }
-                return { values: [...domainImage.values()] };
+                return {values: [...domainImage.values()]};
             }
             if (!expand) {
                 const imageElementIds = [...domainImage.keys()].map(Number);
@@ -1848,7 +1965,7 @@ export class MockServer {
                 }
             );
             if (limit && comodelRecords.length === limit) {
-                return { error_msg: "Too many items to display." };
+                return {error_msg: "Too many items to display."};
             }
 
             const fieldRange = [];
@@ -1869,7 +1986,7 @@ export class MockServer {
                 }
                 fieldRange.push(values);
             }
-            return { values: fieldRange };
+            return {values: fieldRange};
         }
     }
 
@@ -1901,7 +2018,7 @@ export class MockServer {
     }
 
     mockSearchRead(modelName, args, kwargs) {
-        const { fieldNames, records } = this.mockSearchController({
+        const {fieldNames, records} = this.mockSearchController({
             model: modelName,
             domain: kwargs.domain || args[0],
             fields: kwargs.fields || args[1],
@@ -1919,7 +2036,11 @@ export class MockServer {
             Object.keys(kwargs.specification).length === 1 &&
             "display_name" in kwargs.specification
         ) {
-            return idNamePairs.map(([id, name]) => ({ id, display_name: name, __formatted_display_name: name }));
+            return idNamePairs.map(([id, name]) => ({
+                id,
+                display_name: name,
+                __formatted_display_name: name,
+            }));
         }
         const ids = idNamePairs.map(([id]) => id);
         return this.mockWebRead(modelName, [ids], kwargs);
@@ -1956,7 +2077,7 @@ export class MockServer {
         if (!_fieldNames.length) {
             _fieldNames = ["id"];
         }
-        const { fieldNames, length, records } = this.mockSearchController({
+        const {fieldNames, length, records} = this.mockSearchController({
             model: modelName,
             fields: _fieldNames,
             domain: kwargs.domain,
@@ -1985,16 +2106,20 @@ export class MockServer {
             fieldNames = Object.keys(model.fields);
         }
         fieldNames = [...new Set(fieldNames.concat(["id"]))];
-        const { context } = params;
-        const active_test = context && "active_test" in context ? context.active_test : true;
+        const {context} = params;
+        const active_test =
+            context && "active_test" in context ? context.active_test : true;
         let records = this.getRecords(
             params.model,
             params.domain || [],
-            Object.assign({}, params.context, { active_test })
+            Object.assign({}, params.context, {active_test})
         );
         this.sortByField(records, params.model, params.sort);
         const nbRecords = records.length;
-        records = records.slice(offset, params.limit ? offset + params.limit : nbRecords);
+        records = records.slice(
+            offset,
+            params.limit ? offset + params.limit : nbRecords
+        );
         return {
             fieldNames,
             length: nbRecords,
@@ -2004,10 +2129,20 @@ export class MockServer {
 
     mockWrite(modelName, args) {
         args[0].forEach((id) => {
-            const [originalRecord] = this.mockSearchRead(modelName, [[["id", "=", id]]], {});
+            const [originalRecord] = this.mockSearchRead(
+                modelName,
+                [[["id", "=", id]]],
+                {}
+            );
             this.writeRecord(modelName, args[1], id);
-            const updatedRecord = this.models[modelName].records.find((record) => record.id === id);
-            this.updateComodelRelationalFields(modelName, updatedRecord, originalRecord);
+            const updatedRecord = this.models[modelName].records.find(
+                (record) => record.id === id
+            );
+            this.updateComodelRelationalFields(
+                modelName,
+                updatedRecord,
+                originalRecord
+            );
         });
         return true;
     }
@@ -2029,13 +2164,17 @@ export class MockServer {
             const field = this.models[modelName].fields[fname];
             const comodelName = field.relation || record[field.model_name_ref_fname];
             const inverseFieldName =
-                field.inverse_fname_by_model_name && field.inverse_fname_by_model_name[comodelName];
+                field.inverse_fname_by_model_name &&
+                field.inverse_fname_by_model_name[comodelName];
             if (!inverseFieldName) {
                 // field has no inverse, skip it.
                 continue;
             }
-            const relatedRecordIds = Array.isArray(record[fname]) ? record[fname] : [record[fname]];
-            const comodel_inverse_field = this.models[comodelName].fields[inverseFieldName];
+            const relatedRecordIds = Array.isArray(record[fname])
+                ? record[fname]
+                : [record[fname]];
+            const comodel_inverse_field =
+                this.models[comodelName].fields[inverseFieldName];
             // we only want to set a value for comodel inverse field if the model field has a value.
             if (record[fname]) {
                 for (const relatedRecordId of relatedRecordIds) {
@@ -2043,11 +2182,13 @@ export class MockServer {
                     const relatedRecord = this.models[comodelName].records.find(
                         (record) => record.id === relatedRecordId
                     );
-                    const relatedFieldValue = relatedRecord && relatedRecord[inverseFieldName];
+                    const relatedFieldValue =
+                        relatedRecord && relatedRecord[inverseFieldName];
                     if (
                         relatedFieldValue === undefined ||
                         relatedFieldValue === record.id ||
-                        (field.type !== "one2many" && relatedFieldValue.includes(record.id))
+                        (field.type !== "one2many" &&
+                            relatedFieldValue.includes(record.id))
                     ) {
                         // related record does not exist or the related value is already up to date.
                         continue;
@@ -2055,7 +2196,7 @@ export class MockServer {
                     if (Array.isArray(relatedFieldValue)) {
                         inverseFieldNewValue = [...relatedFieldValue, record.id];
                     }
-                    const data = { [inverseFieldName]: inverseFieldNewValue };
+                    const data = {[inverseFieldName]: inverseFieldNewValue};
                     if (comodel_inverse_field.type === "many2one_reference") {
                         data[comodel_inverse_field.model_name_ref_fname] = modelName;
                     }
@@ -2065,7 +2206,7 @@ export class MockServer {
                 // we need to clean the many2one_field as well.
                 const model_many2one_field =
                     comodel_inverse_field.inverse_fname_by_model_name[modelName];
-                this.writeRecord(modelName, { [model_many2one_field]: false }, record.id);
+                this.writeRecord(modelName, {[model_many2one_field]: false}, record.id);
             }
             // it's an update, get the records that were originally referenced but are not
             // anymore and update their relational fields.
@@ -2075,7 +2216,9 @@ export class MockServer {
                     : [originalRecord[fname]];
                 // search read returns [id, name], let's ensure the removedRecordIds are integers.
                 const removedRecordIds = originalRecordIds.filter(
-                    (recordId) => Number.isInteger(recordId) && !relatedRecordIds.includes(recordId)
+                    (recordId) =>
+                        Number.isInteger(recordId) &&
+                        !relatedRecordIds.includes(recordId)
                 );
                 for (const removedRecordId of removedRecordIds) {
                     const removedRecord = this.models[comodelName].records.find(
@@ -2118,7 +2261,7 @@ export class MockServer {
      * @returns {Object}
      */
     getOrderByField(modelName, fieldNameSpec) {
-        const { fields } = this.models[modelName];
+        const {fields} = this.models[modelName];
         const fieldName =
             fieldNameSpec?.split(":")[0] || ("sequence" in fields ? "sequence" : "id");
         if (!(fieldName in fields)) {
@@ -2158,14 +2301,16 @@ export class MockServer {
      * that if we have an 'active' field, we implicitely add active = true in
      * the domain.
      */
-    getRecords(modelName, domain, { active_test = true } = {}) {
+    getRecords(modelName, domain, {active_test = true} = {}) {
         if (!Array.isArray(domain)) {
             throw new Error("MockServer._getRecords: given domain has to be an array.");
         }
         const model = this.models[modelName];
         // add ['active', '=', true] to the domain if 'active' is not yet present in domain
         if (active_test && "active" in model.fields) {
-            const activeInDomain = domain.some((subDomain) => subDomain[0] === "active");
+            const activeInDomain = domain.some(
+                (subDomain) => subDomain[0] === "active"
+            );
             if (!activeInDomain) {
                 domain = domain.concat([["active", "=", true]]);
             }
@@ -2308,7 +2453,7 @@ export class MockServer {
         return sortedRecords;
     }
 
-    writeRecord(modelName, values, id, { ensureIntegrity = true } = {}) {
+    writeRecord(modelName, values, id, {ensureIntegrity = true} = {}) {
         const model = this.models[modelName];
         const record = model.records.find((r) => r.id === id);
         for (const fieldName in values) {
@@ -2327,7 +2472,10 @@ export class MockServer {
                 // take into account that the value can be a empty list of commands.
                 if (Array.isArray(value) && value.length) {
                     if (
-                        value.reduce((hasOnlyInt, val) => hasOnlyInt && Number.isInteger(val), true)
+                        value.reduce(
+                            (hasOnlyInt, val) => hasOnlyInt && Number.isInteger(val),
+                            true
+                        )
                     ) {
                         // fallback to command 6 when given a simple list of ids
                         value = [[6, 0, value]];
@@ -2421,8 +2569,11 @@ export class MockServer {
                     record[fieldName] = context[`default_${fieldName}`];
                 } else if ("default" in model.fields[fieldName]) {
                     const def = model.fields[fieldName].default;
-                    record[fieldName] = typeof def === "function" ? def.call(this) : def;
-                } else if (["one2many", "many2many"].includes(model.fields[fieldName].type)) {
+                    record[fieldName] =
+                        typeof def === "function" ? def.call(this) : def;
+                } else if (
+                    ["one2many", "many2many"].includes(model.fields[fieldName].type)
+                ) {
                     record[fieldName] = [];
                 } else {
                     record[fieldName] = false;
@@ -2451,7 +2602,7 @@ export class MockServer {
                             });
                             record[fieldName] = result[0];
                         }
-                        record[fieldName].id = { id, model };
+                        record[fieldName].id = {id, model};
                     }
                     break;
                 }
@@ -2494,16 +2645,22 @@ export class MockServer {
                         for (const relRecord of result) {
                             allRelRecords[relRecord.id] = relRecord;
                         }
-                        const { limit, order } = spec[fieldName];
+                        const {limit, order} = spec[fieldName];
                         for (const record of records) {
                             const relResIds = record[fieldName];
-                            let relRecords = relResIds.map((resId) => allRelRecords[resId]);
+                            let relRecords = relResIds.map(
+                                (resId) => allRelRecords[resId]
+                            );
                             if (order) {
-                                relRecords = this.sortByField(relRecords, field.relation, order);
+                                relRecords = this.sortByField(
+                                    relRecords,
+                                    field.relation,
+                                    order
+                                );
                             }
                             if (limit) {
                                 relRecords = relRecords.map((r, i) =>
-                                    i < limit ? r : { id: r.id }
+                                    i < limit ? r : {id: r.id}
                                 );
                             }
                             record[fieldName] = relRecords;
@@ -2574,7 +2731,7 @@ export async function makeMockServer(serverData, mockRPC) {
     });
     patchRPCWithCleanup(_mockRPC);
     if (mockRPC) {
-        const { loadJS, loadCSS } = assets;
+        const {loadJS, loadCSS} = assets;
         patchWithCleanup(assets, {
             async loadJS(resource) {
                 if (resource === "/web/static/lib/stacktracejs/stacktrace.js") {

@@ -32,7 +32,7 @@ export async function fadeOut(els, duration, afterFadeOutCallback) {
     els = normalizeToArray(els);
     const promises = [];
     for (const el of els) {
-        promises.push(animate(el, [{ opacity: 0 }], duration));
+        promises.push(animate(el, [{opacity: 0}], duration));
     }
     await Promise.all(promises);
     for (const el of els) {
@@ -46,7 +46,7 @@ export async function fadeIn(els, duration, afterFadeInCallback) {
     const promises = [];
     for (const el of els) {
         el.classList.remove("d-none");
-        promises.push(animate(el, [{ opacity: 1 }], duration));
+        promises.push(animate(el, [{opacity: 1}], duration));
     }
     await Promise.all(promises);
     afterFadeInCallback?.();

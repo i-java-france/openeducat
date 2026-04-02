@@ -1,8 +1,9 @@
-from odoo import http, fields
+from werkzeug.exceptions import BadRequest, NotFound, Unauthorized
+
+from odoo import fields, http
+from odoo.exceptions import MissingError
 from odoo.fields import Domain
 from odoo.http import request
-from werkzeug.exceptions import NotFound, BadRequest, Unauthorized
-from odoo.exceptions import MissingError
 from odoo.tools import consteq
 
 

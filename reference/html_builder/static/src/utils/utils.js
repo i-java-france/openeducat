@@ -1,6 +1,6 @@
-import { DependencyManager } from "../core/dependency_manager";
-import { useSubEnv } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
+import {DependencyManager} from "../core/dependency_manager";
+import {useSubEnv} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
 
 /**
  * Retrieves the default name corresponding to the edited element (to display it
@@ -76,7 +76,12 @@ export function isVisible(el) {
  * @param {String} applyTo
  * @returns {Array}
  */
-export function getElementsWithOption(rootEl, selector, exclude = false, applyTo = false) {
+export function getElementsWithOption(
+    rootEl,
+    selector,
+    exclude = false,
+    applyTo = false
+) {
     let matchingEls = [...rootEl.querySelectorAll(selector)];
     if (rootEl.matches(selector)) {
         matchingEls.unshift(rootEl);
@@ -85,7 +90,9 @@ export function getElementsWithOption(rootEl, selector, exclude = false, applyTo
         matchingEls = matchingEls.filter((editingEl) => !editingEl.matches(exclude));
     }
     if (applyTo) {
-        matchingEls = matchingEls.flatMap((editingEl) => [...editingEl.querySelectorAll(applyTo)]);
+        matchingEls = matchingEls.flatMap((editingEl) => [
+            ...editingEl.querySelectorAll(applyTo),
+        ]);
     }
     return matchingEls;
 }
@@ -114,7 +121,8 @@ export function getValueFromVar(value) {
  */
 export function toRatio(value) {
     const inputValueAsNumber = Number(value);
-    const ratio = inputValueAsNumber >= 0 ? 1 + inputValueAsNumber : 1 / (1 - inputValueAsNumber);
+    const ratio =
+        inputValueAsNumber >= 0 ? 1 + inputValueAsNumber : 1 / (1 - inputValueAsNumber);
     return `${ratio.toFixed(2)}x`;
 }
 

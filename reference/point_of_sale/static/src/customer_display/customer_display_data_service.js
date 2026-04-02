@@ -1,12 +1,12 @@
-import { reactive } from "@odoo/owl";
-import { getOnNotified } from "@point_of_sale/utils";
-import { registry } from "@web/core/registry";
-import { session } from "@web/session";
-import { _t } from "@web/core/l10n/translation";
+import {reactive} from "@odoo/owl";
+import {getOnNotified} from "@point_of_sale/utils";
+import {registry} from "@web/core/registry";
+import {session} from "@web/session";
+import {_t} from "@web/core/l10n/translation";
 
 export const CustomerDisplayDataService = {
     dependencies: ["bus_service", "notification"],
-    async start(env, { bus_service, notification }) {
+    async start(env, {bus_service, notification}) {
         const data = reactive({});
         if (session.proxy_ip) {
             const intervalId = setInterval(async () => {
@@ -38,7 +38,10 @@ export const CustomerDisplayDataService = {
                             type: "danger",
                         }
                     );
-                    console.error("Error fetching data for the IoT customer display: %s", error);
+                    console.error(
+                        "Error fetching data for the IoT customer display: %s",
+                        error
+                    );
                     clearInterval(intervalId);
                 }
             }, 1000);

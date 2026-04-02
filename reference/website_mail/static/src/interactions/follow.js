@@ -1,15 +1,15 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { rpc } from "@web/core/network/rpc";
-import { ReCaptcha } from "@google_recaptcha/js/recaptcha";
+import {rpc} from "@web/core/network/rpc";
+import {ReCaptcha} from "@google_recaptcha/js/recaptcha";
 
 export class Follow extends Interaction {
     static selector = "#wrapwrap";
     static selectorHas = ".js_follow";
     dynamicContent = {
         ".js_follow > .d-none": {
-            "t-att-class": () => ({ "d-none": false }),
+            "t-att-class": () => ({"d-none": false}),
         },
         ".js_follow_btn, .js_unfollow_btn": {
             "t-on-click.prevent.withTarget": this.onToggleFollowClick,
@@ -34,7 +34,7 @@ export class Follow extends Interaction {
         }
 
         const promises = [
-            rpc("/website_mail/is_follower", { records: records }),
+            rpc("/website_mail/is_follower", {records: records}),
             this.recaptcha.loadLibs(),
         ];
         const [data] = await this.waitFor(Promise.all(promises));
@@ -43,7 +43,9 @@ export class Follow extends Interaction {
         for (const jsFollowEl of jsFollowEls) {
             const model = this.el.dataset.object;
             const email = data[0].email;
-            const needToEnable = model in data[1] && data[1][model].includes(parseInt(this.el.dataset.id));
+            const needToEnable =
+                model in data[1] &&
+                data[1][model].includes(parseInt(this.el.dataset.id));
             this.toggleSubscription(needToEnable, email, jsFollowEl);
             jsFollowEl.classList.remove("d-none");
         }
@@ -57,7 +59,11 @@ export class Follow extends Interaction {
      * @param {HTMLElement} jsFollowEl
      */
     toggleSubscription(follow, email, jsFollowEl) {
-        this.updateSubscriptionDOM(follow || !email && jsFollowEl.dataset.unsubscribe, email, jsFollowEl);
+        this.updateSubscriptionDOM(
+            follow || (!email && jsFollowEl.dataset.unsubscribe),
+            email,
+            jsFollowEl
+        );
     }
 
     /**
@@ -73,9 +79,9 @@ export class Follow extends Interaction {
         if (jsFollowEmailEl) {
             jsFollowEmailEl.setAttribute("value", email || "");
             if (email && (follow || this.isUser)) {
-                jsFollowEmailEl.setAttribute("disabled", true)
+                jsFollowEmailEl.setAttribute("disabled", true);
             } else {
-                jsFollowEmailEl.removeAttribute("disabled")
+                jsFollowEmailEl.removeAttribute("disabled");
             }
         }
         jsFollowEl.dataset.follow = follow ? "on" : "off";
@@ -86,8 +92,8 @@ export class Follow extends Interaction {
      * @param {boolean} status
      */
     toggleEmailError(jsFollowEl, status) {
-        jsFollowEl.classList.toggle("o_has_error", status)
-        const formEls = jsFollowEl.querySelectorAll(".form-control, .form-select")
+        jsFollowEl.classList.toggle("o_has_error", status);
+        const formEls = jsFollowEl.querySelectorAll(".form-control, .form-select");
         for (const formEl of formEls) {
             formEl.classList.toggle("is-invalid", status);
         }
@@ -120,24 +126,25 @@ export class Follow extends Interaction {
                 return false;
             }
 
-            const turnstileCaptcha = document.querySelector("input[name='turnstile_captcha']");
+            const turnstileCaptcha = document.querySelector(
+                "input[name='turnstile_captcha']"
+            );
             const turnstile = turnstileCaptcha ? turnstileCaptcha.value : "";
 
-            const data = await this.waitFor(rpc("/website_mail/follow", {
-                "id": parseInt(jsFollowEl.dataset.id),
-                "object": jsFollowEl.dataset.object,
-                "message_is_follower": jsFollowEl.dataset.follow || "off",
-                "email": email,
-                ...(token ? { "recaptcha_token_response": token } : {}),
-                "turnstile_captcha": turnstile,
-            }));
+            const data = await this.waitFor(
+                rpc("/website_mail/follow", {
+                    id: parseInt(jsFollowEl.dataset.id),
+                    object: jsFollowEl.dataset.object,
+                    message_is_follower: jsFollowEl.dataset.follow || "off",
+                    email: email,
+                    ...(token ? {recaptcha_token_response: token} : {}),
+                    turnstile_captcha: turnstile,
+                })
+            );
 
             this.toggleSubscription(data, email, jsFollowEl);
         }
-
     }
 }
 
-registry
-    .category("public.interactions")
-    .add("website_mail.follow", Follow);
+registry.category("public.interactions").add("website_mail.follow", Follow);

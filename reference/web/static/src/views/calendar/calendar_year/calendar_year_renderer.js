@@ -1,12 +1,12 @@
-import { getLocalYearAndWeek } from "@web/core/l10n/dates";
-import { localization } from "@web/core/l10n/localization";
-import { convertRecordToEvent, getColor } from "@web/views/calendar/utils";
-import { useCalendarPopover } from "@web/views/calendar/hooks/calendar_popover_hook";
-import { useFullCalendar } from "@web/views/calendar/hooks/full_calendar_hook";
-import { makeWeekColumn } from "@web/views/calendar/calendar_common/calendar_common_week_column";
-import { CalendarYearPopover } from "@web/views/calendar/calendar_year/calendar_year_popover";
+import {getLocalYearAndWeek} from "@web/core/l10n/dates";
+import {localization} from "@web/core/l10n/localization";
+import {convertRecordToEvent, getColor} from "@web/views/calendar/utils";
+import {useCalendarPopover} from "@web/views/calendar/hooks/calendar_popover_hook";
+import {useFullCalendar} from "@web/views/calendar/hooks/full_calendar_hook";
+import {makeWeekColumn} from "@web/views/calendar/calendar_common/calendar_common_week_column";
+import {CalendarYearPopover} from "@web/views/calendar/calendar_year/calendar_year_popover";
 
-import { Component, useEffect, useRef } from "@odoo/owl";
+import {Component, useEffect, useRef} from "@odoo/owl";
 
 export class CalendarYearRenderer extends Component {
     static components = {
@@ -18,7 +18,7 @@ export class CalendarYearRenderer extends Component {
         createRecord: Function,
         editRecord: Function,
         deleteRecord: Function,
-        isWeekendVisible: { type: Boolean, optional: true },
+        isWeekendVisible: {type: Boolean, optional: true},
     };
 
     setup() {
@@ -54,7 +54,7 @@ export class CalendarYearRenderer extends Component {
             eventResizableFromStart: true,
             events: (_, successCb) => successCb(this.mapRecordsToEvents()),
             firstDay: this.props.model.firstDayOfWeek,
-            headerToolbar: { start: false, center: "title", end: false },
+            headerToolbar: {start: false, center: "title", end: false},
             height: "auto",
             locale: luxon.Settings.defaultLocale,
             longPressDelay: 500,
@@ -66,11 +66,11 @@ export class CalendarYearRenderer extends Component {
             selectable: this.props.model.canCreate,
             showNonCurrentDates: false,
             timeZone: luxon.Settings.defaultZone.name,
-            titleFormat: { month: "long", year: "numeric" },
+            titleFormat: {month: "long", year: "numeric"},
             unselectAuto: false,
             weekNumberCalculation: (date) => getLocalYearAndWeek(date).week,
             weekNumbers: false,
-            weekNumberFormat: { week: "numeric" },
+            weekNumberFormat: {week: "numeric"},
             windowResize: this.onWindowResize,
             eventContent: this.onEventContent,
             viewDidMount: this.viewDidMount,
@@ -85,17 +85,19 @@ export class CalendarYearRenderer extends Component {
         };
     }
 
-    viewDidMount({ el, view }) {
+    viewDidMount({el, view}) {
         const showWeek = view.calendar.currentData.options.weekNumbers;
         const weekText = view.calendar.currentData.options.weekText;
         const weekColumn = !this.customOptions.weekNumbersWithinDays;
         if (showWeek && weekColumn) {
-            makeWeekColumn({ el, weekText });
+            makeWeekColumn({el, weekText});
         }
     }
 
     mapRecordsToEvents() {
-        return Object.values(this.props.model.records).map((r) => this.convertRecordToEvent(r));
+        return Object.values(this.props.model.records).map((r) =>
+            this.convertRecordToEvent(r)
+        );
     }
     convertRecordToEvent(record) {
         return {
@@ -104,7 +106,9 @@ export class CalendarYearRenderer extends Component {
         };
     }
     getDateWithMonth(month) {
-        return this.props.model.date.set({ month: this.months.indexOf(month) + 1 }).toISO();
+        return this.props.model.date
+            .set({month: this.months.indexOf(month) + 1})
+            .toISO();
     }
     getOptionsForMonth(month) {
         return {
@@ -147,7 +151,10 @@ export class CalendarYearRenderer extends Component {
         // With date value we don't want to change the time, we need the exact date
         const date = luxon.DateTime.fromISO(info.dateStr);
         const records = Object.values(this.props.model.records).filter((r) =>
-            luxon.Interval.fromDateTimes(r.start.startOf("day"), r.end.endOf("day")).contains(date)
+            luxon.Interval.fromDateTimes(
+                r.start.startOf("day"),
+                r.end.endOf("day")
+            ).contains(date)
         );
 
         this.popover.close();
@@ -169,7 +176,7 @@ export class CalendarYearRenderer extends Component {
         }
         return [];
     }
-    eventClassNames({ event }) {
+    eventClassNames({event}) {
         const classesToAdd = [];
         classesToAdd.push("o_event");
         const record = this.props.model.records[event.id];
@@ -191,7 +198,7 @@ export class CalendarYearRenderer extends Component {
         return classesToAdd;
     }
     onEventDidMount(info) {
-        const { el, event } = info;
+        const {el, event} = info;
         el.dataset.eventId = event.id;
         const record = this.props.model.records[event.id];
         if (record) {
@@ -206,7 +213,7 @@ export class CalendarYearRenderer extends Component {
         await this.props.createRecord({
             // With date value we don't want to change the time, we need the exact date
             start: luxon.DateTime.fromISO(info.startStr),
-            end: luxon.DateTime.fromISO(info.endStr).minus({ days: 1 }),
+            end: luxon.DateTime.fromISO(info.endStr).minus({days: 1}),
             isAllDay: true,
         });
         this.unselect();

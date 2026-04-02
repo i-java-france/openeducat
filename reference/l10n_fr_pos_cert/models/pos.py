@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from hashlib import sha256
-from json import dumps, loads
 import logging
 from collections import defaultdict
+from hashlib import sha256
+from json import dumps, loads
 
-from odoo import models, api, fields, release, _
+from odoo import _, api, fields, models, release
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
@@ -231,4 +230,4 @@ class PosOrderLine(models.Model):
         if set(vals).intersection(LINE_FIELDS):
             if any(l.company_id._is_accounting_unalterable() and (l.order_id.account_move or l.order_id.state == 'done') for l in self):
                 raise UserError(_('According to the French law, you cannot modify a point of sale order line. Forbidden fields: %s.') % ', '.join(LINE_FIELDS))
-        return super(PosOrderLine, self).write(vals)
+        return super().write(vals)

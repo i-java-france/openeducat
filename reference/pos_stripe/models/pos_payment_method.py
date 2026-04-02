@@ -1,10 +1,8 @@
-# coding: utf-8
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import werkzeug
 
-from odoo import fields, models, api, _
-from odoo.exceptions import ValidationError, UserError, AccessError
-
+from odoo import _, api, fields, models
+from odoo.exceptions import AccessError, UserError, ValidationError
 
 
 class PosPaymentMethod(models.Model):
@@ -49,7 +47,7 @@ class PosPaymentMethod(models.Model):
     def stripe_connection_token(self):
         if not self.env.user.has_group('point_of_sale.group_pos_user'):
             raise AccessError(_("Do not have access to fetch token from Stripe"))
-        
+
         return self.sudo()._get_stripe_payment_provider()._send_api_request('POST', 'terminal/connection_tokens')
 
     def _stripe_calculate_amount(self, amount):

@@ -1,19 +1,23 @@
-import { expect, test } from "@odoo/hoot";
-import { click, queryFirst } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {click, queryFirst} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 import {
+    MockServer,
     defineModels,
     fields,
-    MockServer,
     models,
     mountView,
     onRpc,
 } from "@web/../tests/web_test_helpers";
 
 class Partner extends models.Model {
-    display_name = fields.Char({ string: "Displayed name", searchable: true });
-    p = fields.One2many({ string: "one2many field", relation: "partner", searchable: true });
-    sequence = fields.Integer({ string: "Sequence", searchable: true });
+    display_name = fields.Char({string: "Displayed name", searchable: true});
+    p = fields.One2many({
+        string: "one2many field",
+        relation: "partner",
+        searchable: true,
+    });
+    sequence = fields.Integer({string: "Sequence", searchable: true});
     _records = [
         {
             id: 1,
@@ -59,7 +63,7 @@ test("HandleField in x2m", async () => {
         message: "handle should be invisible",
     });
 
-    expect("span.o_row_handle").toHaveCount(2, { message: "should have 2 handles" });
+    expect("span.o_row_handle").toHaveCount(2, {message: "should have 2 handles"});
 
     expect(queryFirst("td")).toHaveClass("o_handle_cell", {
         message: "column widget should be displayed in css class",
@@ -84,7 +88,7 @@ test("HandleField with falsy values", async () => {
             </list>`,
     });
 
-    expect(".o_row_handle:visible").toHaveCount(MockServer.env["partner"].length, {
+    expect(".o_row_handle:visible").toHaveCount(MockServer.env.partner.length, {
         message: "there should be a visible handle for each record",
     });
 });

@@ -1,12 +1,12 @@
 import {
-    after,
-    before,
     BEGIN,
     END,
     SNIPPET_SPECIFIC,
+    after,
+    before,
     splitBetween,
 } from "@html_builder/utils/option_sequence";
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 
 const ARBITRARY_FAKE_POSITION = 7777777777;
 

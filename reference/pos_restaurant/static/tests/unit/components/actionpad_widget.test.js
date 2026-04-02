@@ -1,8 +1,8 @@
-import { expect, test } from "@odoo/hoot";
-import { getFilledOrder, setupPosEnv } from "@point_of_sale/../tests/unit/utils";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { ActionpadWidget } from "@point_of_sale/app/screens/product_screen/action_pad/action_pad";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {expect, test} from "@odoo/hoot";
+import {getFilledOrder, setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {ActionpadWidget} from "@point_of_sale/app/screens/product_screen/action_pad/action_pad";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
 
 definePosModels();
 
@@ -17,29 +17,29 @@ test("highlightPay", async () => {
     });
 
     expect(comp.highlightPay).toBe(false);
-    // simulating order send
+    // Simulating order send
     order.updateLastOrderChange();
     expect(comp.highlightPay).toBe(true);
 
-    // orderline qty change
+    // Orderline qty change
     order.lines[1].qty = 21;
     expect(comp.highlightPay).toBe(false);
     order.updateLastOrderChange();
     expect(comp.highlightPay).toBe(true);
 
-    // orderline note update
+    // Orderline note update
     order.lines[0].note = "Test Orderline Note";
     expect(comp.highlightPay).toBe(false);
     order.updateLastOrderChange();
     expect(comp.highlightPay).toBe(true);
 
-    // general customer note
+    // General customer note
     order.general_customer_note = "Test Order Customer Note";
     expect(comp.highlightPay).toBe(false);
     order.updateLastOrderChange();
     expect(comp.highlightPay).toBe(true);
 
-    // internal note
+    // Internal note
     order.internal_note = "Test Order Internal Note";
     expect(comp.highlightPay).toBe(false);
     order.updateLastOrderChange();

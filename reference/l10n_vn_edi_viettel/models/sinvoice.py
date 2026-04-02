@@ -5,7 +5,6 @@ from collections import defaultdict
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
-
 # Invoice template that needs to be passed to Sinvoice and will determine the format of the resulting
 
 

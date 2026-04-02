@@ -1,13 +1,13 @@
-import { test, expect } from "@odoo/hoot";
-import { setupPosEnv } from "@point_of_sale/../tests/unit/utils";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {expect, test} from "@odoo/hoot";
+import {setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
 
 definePosModels();
 
 test("getOrders", async () => {
     const store = await setupPosEnv();
     const table = store.models["restaurant.table"].get(2);
-    const order = store.addNewOrder({ table_id: table });
+    const order = store.addNewOrder({table_id: table});
     const tableOrders = table.getOrders();
     expect(tableOrders.length).toBe(1);
     expect(tableOrders[0].id).toBe(order.id);

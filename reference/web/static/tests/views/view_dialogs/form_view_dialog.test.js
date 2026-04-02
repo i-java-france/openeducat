@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { click, edit, press, queryAllTexts, runAllTimers, waitFor } from "@odoo/hoot-dom";
-import { animationFrame, Deferred } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {click, edit, press, queryAllTexts, runAllTimers, waitFor} from "@odoo/hoot-dom";
+import {Deferred, animationFrame} from "@odoo/hoot-mock";
 import {
     clickSave,
     contains,
@@ -16,13 +16,13 @@ import {
     onRpc,
 } from "@web/../tests/web_test_helpers";
 
-import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
-import { WebClient } from "@web/webclient/webclient";
+import {FormViewDialog} from "@web/views/view_dialogs/form_view_dialog";
+import {WebClient} from "@web/webclient/webclient";
 
 class Partner extends models.Model {
-    name = fields.Char({ string: "Displayed name" });
-    foo = fields.Char({ string: "Foo" });
-    bar = fields.Boolean({ string: "Bar" });
+    name = fields.Char({string: "Displayed name"});
+    foo = fields.Char({string: "Foo"});
+    bar = fields.Boolean({string: "Bar"});
     instrument = fields.Many2one({
         string: "Instruments",
         relation: "instrument",
@@ -30,14 +30,14 @@ class Partner extends models.Model {
     method1() {}
     method2() {}
     _records = [
-        { id: 1, foo: "blip", name: "blipblip", bar: true },
-        { id: 2, foo: "ta tata ta ta", name: "macgyver", bar: false },
-        { id: 3, foo: "piou piou", name: "Jack O'Neill", bar: true },
+        {id: 1, foo: "blip", name: "blipblip", bar: true},
+        {id: 2, foo: "ta tata ta ta", name: "macgyver", bar: false},
+        {id: 3, foo: "piou piou", name: "Jack O'Neill", bar: true},
     ];
 }
 
 class Instrument extends models.Model {
-    name = fields.Char({ string: "name" });
+    name = fields.Char({string: "name"});
     badassery = fields.Many2many({
         string: "level",
         relation: "badassery",
@@ -46,16 +46,16 @@ class Instrument extends models.Model {
 }
 
 class Badassery extends models.Model {
-    level = fields.Char({ string: "level" });
+    level = fields.Char({string: "level"});
 
-    _records = [{ id: 1, level: "Awsome" }];
+    _records = [{id: 1, level: "Awsome"}];
 }
 
 class Product extends models.Model {
-    name = fields.Char({ string: "name" });
-    partner = fields.One2many({ string: "Doors", relation: "partner" });
+    name = fields.Char({string: "name"});
+    partner = fields.One2many({string: "Doors", relation: "partner"});
 
-    _records = [{ id: 1, name: "The end" }];
+    _records = [{id: 1, name: "The end"}];
 }
 
 defineModels([Partner, Instrument, Badassery, Product]);
@@ -78,7 +78,9 @@ test("formviewdialog buttons in footer are positioned properly", async () => {
 
     await animationFrame();
 
-    expect(".modal-body button").toHaveCount(0, { message: "should not have any button in body" });
+    expect(".modal-body button").toHaveCount(0, {
+        message: "should not have any button in body",
+    });
     expect(".modal-footer button:visible").toHaveCount(1, {
         message: "should have only one button in footer",
     });
@@ -136,7 +138,9 @@ test("formviewdialog buttons in footer are not duplicated", async () => {
     await animationFrame();
 
     expect(".modal").toHaveCount(1);
-    expect(".modal button.my_button").toHaveCount(1, { message: "should have 1 buttons in modal" });
+    expect(".modal button.my_button").toHaveCount(1, {
+        message: "should have 1 buttons in modal",
+    });
 
     await click(".o_field_x2many_list_row_add a");
     await animationFrame();
@@ -153,7 +157,7 @@ test.tags("desktop");
 test("Form dialog and subview with _view_ref contexts", async () => {
     expect.assertions(2);
 
-    Instrument._records = [{ id: 1, name: "Tromblon", badassery: [1] }];
+    Instrument._records = [{id: 1, name: "Tromblon", badassery: [1]}];
     Partner._records[0].instrument = 1;
     // This is an old test, written before "get_views" (formerly "load_views") automatically
     // inlines x2many subviews. As the purpose of this test is to assert that the js fetches
@@ -167,7 +171,7 @@ test("Form dialog and subview with _view_ref contexts", async () => {
     `;
     Badassery._views.list = /* xml */ `<list><field name="level"/></list>`;
 
-    onRpc(({ kwargs, method, model }) => {
+    onRpc(({kwargs, method, model}) => {
         if (method === "get_formview_id") {
             return false;
         }
@@ -227,7 +231,7 @@ test("click on view buttons in a FormViewDialog", async () => {
         </form>
     `;
 
-    onRpc(({ method }) => expect.step(method));
+    onRpc(({method}) => expect.step(method));
 
     await mountWithCleanup(WebClient);
     getService("dialog").add(FormViewDialog, {
@@ -241,11 +245,11 @@ test("click on view buttons in a FormViewDialog", async () => {
     await click(".o_dialog .o_form_view .btn1");
     await animationFrame();
     expect(".o_dialog .o_form_view").toHaveCount(1);
-    expect.verifySteps(["method1", "web_read"]); // should re-read the record
+    expect.verifySteps(["method1", "web_read"]); // Should re-read the record
     await click(".o_dialog .o_form_view .btn2");
     await animationFrame();
     expect(".o_dialog .o_form_view").toHaveCount(0);
-    expect.verifySteps(["method2"]); // should not read as we closed
+    expect.verifySteps(["method2"]); // Should not read as we closed
 });
 
 test("formviewdialog is not closed when button handlers return a rejected promise", async () => {
@@ -263,7 +267,7 @@ test("formviewdialog is not closed when button handlers return a rejected promis
     await mountWithCleanup(WebClient);
     getService("dialog").add(FormViewDialog, {
         resModel: "partner",
-        context: { answer: 42 },
+        context: {answer: 42},
     });
 
     await animationFrame();
@@ -332,7 +336,10 @@ test("Buttons are set as disabled on click", async () => {
 
     await clickSave();
 
-    expect(".o_dialog .modal-footer .o_form_button_save").toHaveAttribute("disabled", "1");
+    expect(".o_dialog .modal-footer .o_form_button_save").toHaveAttribute(
+        "disabled",
+        "1"
+    );
 
     def.resolve();
     await animationFrame();
@@ -371,7 +378,7 @@ test("Save a FormViewDialog when a required field is empty don't close the dialo
     await mountWithCleanup(WebClient);
     getService("dialog").add(FormViewDialog, {
         resModel: "partner",
-        context: { answer: 42 },
+        context: {answer: 42},
     });
 
     await animationFrame();
@@ -379,12 +386,12 @@ test("Save a FormViewDialog when a required field is empty don't close the dialo
     await click('.modal button[name="save"]');
     await animationFrame();
 
-    expect(".modal").toHaveCount(1, { message: "modal should still be opened" });
+    expect(".modal").toHaveCount(1, {message: "modal should still be opened"});
     await click("[name='foo'] input");
     await edit("new");
     await click('.modal button[name="save"]');
     await animationFrame();
-    expect(".modal").toHaveCount(0, { message: "modal should be closed" });
+    expect(".modal").toHaveCount(0, {message: "modal should be closed"});
 });
 
 test("new record has an expand button", async () => {
@@ -413,7 +420,10 @@ test("new record has an expand button", async () => {
     await fieldInput("foo").edit("new");
     await click(".o_dialog .modal-header .o_expand_button");
     await animationFrame();
-    expect.verifySteps(["save", [1, "partner", "ir.actions.act_window", [[false, "form"]]]]);
+    expect.verifySteps([
+        "save",
+        [1, "partner", "ir.actions.act_window", [[false, "form"]]],
+    ]);
 });
 
 test("existing record has an expand button", async () => {
@@ -437,7 +447,7 @@ test("existing record has an expand button", async () => {
         expandedFormRef: "test_partner_form_view",
         resModel: "partner",
         resId: 1,
-        context: { key: "val" },
+        context: {key: "val"},
     });
     await animationFrame();
     expect(".o_dialog .o_form_view").toHaveCount(1);
@@ -462,7 +472,7 @@ test("existing record has an expand button", async () => {
 
 test("expand button with save and new", async () => {
     Instrument._views.form = /* xml */ `<form><field name="name"/></form>`;
-    Instrument._records = [{ id: 1, name: "Violon" }];
+    Instrument._records = [{id: 1, name: "Violon"}];
     onRpc("web_save", () => {
         expect.step("save");
     });
@@ -521,7 +531,7 @@ test("close dialog with escape after modifying a field with onchange (no blur)",
 
     await mountWithCleanup(WebClient);
 
-    // must focus something else than body before opening the form view dialog, such that the ui
+    // Must focus something else than body before opening the form view dialog, such that the ui
     // service has something to focus on dialog close, which will then blur the input and fire the
     // change event
     await contains(".o_navbar_apps_menu button").focus();
@@ -534,7 +544,9 @@ test("close dialog with escape after modifying a field with onchange (no blur)",
     await animationFrame();
     expect(".o_dialog").toHaveCount(1);
 
-    await contains(".o_field_widget[name=foo] input").edit("new value", { confirm: false });
+    await contains(".o_field_widget[name=foo] input").edit("new value", {
+        confirm: false,
+    });
     await press("escape");
     await animationFrame();
     expect(".o_dialog").toHaveCount(0);
@@ -567,9 +579,13 @@ test("display a dialog if onchange result is a warning from within a dialog", as
         resId: 2,
     });
 
-    await contains(".o_field_widget[name=instrument] input").edit("tralala", { confirm: false });
+    await contains(".o_field_widget[name=instrument] input").edit("tralala", {
+        confirm: false,
+    });
     await runAllTimers();
-    await contains(".o_field_widget[name=instrument] .o_m2o_dropdown_option_create_edit").click();
+    await contains(
+        ".o_field_widget[name=instrument] .o_m2o_dropdown_option_create_edit"
+    ).click();
 
     await waitFor(".modal.o_inactive_modal");
     expect(".modal").toHaveCount(2);
@@ -579,7 +595,9 @@ test("display a dialog if onchange result is a warning from within a dialog", as
 
     await contains(".modal:not(.o_inactive_modal) button").click();
     expect(".modal").toHaveCount(1);
-    expect(".modal:not(.o_inactive_modal) .modal-title").toHaveText("Create Instruments");
+    expect(".modal:not(.o_inactive_modal) .modal-title").toHaveText(
+        "Create Instruments"
+    );
 
     expect.verifySteps(["onchange warning"]);
 });

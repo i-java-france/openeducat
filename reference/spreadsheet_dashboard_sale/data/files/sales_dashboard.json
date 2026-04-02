@@ -7,80 +7,80 @@
       "colNumber": 7,
       "rowNumber": 96,
       "rows": {
-        "5": { "size": 40 },
-        "21": { "size": 40 },
-        "22": { "size": 29 },
-        "23": { "size": 29 },
-        "24": { "size": 29 },
-        "25": { "size": 29 },
-        "26": { "size": 29 },
-        "27": { "size": 29 },
-        "28": { "size": 29 },
-        "29": { "size": 29 },
-        "30": { "size": 29 },
-        "31": { "size": 29 },
-        "32": { "size": 29 },
-        "33": { "size": 23 },
-        "34": { "size": 43 },
-        "35": { "size": 35 },
-        "36": { "size": 28 },
-        "37": { "size": 28 },
-        "38": { "size": 28 },
-        "39": { "size": 28 },
-        "40": { "size": 28 },
-        "41": { "size": 28 },
-        "42": { "size": 28 },
-        "43": { "size": 28 },
-        "44": { "size": 28 },
-        "45": { "size": 28 },
-        "47": { "size": 40 },
-        "48": { "size": 40 },
-        "49": { "size": 28 },
-        "50": { "size": 28 },
-        "51": { "size": 28 },
-        "52": { "size": 28 },
-        "53": { "size": 28 },
-        "54": { "size": 28 },
-        "55": { "size": 28 },
-        "56": { "size": 28 },
-        "57": { "size": 28 },
-        "58": { "size": 28 },
-        "60": { "size": 40 },
-        "61": { "size": 40 },
-        "62": { "size": 28 },
-        "63": { "size": 28 },
-        "64": { "size": 28 },
-        "65": { "size": 28 },
-        "66": { "size": 28 },
-        "67": { "size": 28 },
-        "68": { "size": 28 },
-        "69": { "size": 28 },
-        "70": { "size": 28 },
-        "71": { "size": 28 },
-        "73": { "size": 40 },
-        "74": { "size": 40 },
-        "75": { "size": 28 },
-        "76": { "size": 28 },
-        "77": { "size": 28 },
-        "78": { "size": 28 },
-        "79": { "size": 28 },
-        "80": { "size": 28 },
-        "81": { "size": 28 },
-        "82": { "size": 28 },
-        "83": { "size": 28 },
-        "84": { "size": 28 },
-        "85": { "size": 28 },
-        "86": { "size": 40 },
-        "87": { "size": 40 }
+        "5": {"size": 40},
+        "21": {"size": 40},
+        "22": {"size": 29},
+        "23": {"size": 29},
+        "24": {"size": 29},
+        "25": {"size": 29},
+        "26": {"size": 29},
+        "27": {"size": 29},
+        "28": {"size": 29},
+        "29": {"size": 29},
+        "30": {"size": 29},
+        "31": {"size": 29},
+        "32": {"size": 29},
+        "33": {"size": 23},
+        "34": {"size": 43},
+        "35": {"size": 35},
+        "36": {"size": 28},
+        "37": {"size": 28},
+        "38": {"size": 28},
+        "39": {"size": 28},
+        "40": {"size": 28},
+        "41": {"size": 28},
+        "42": {"size": 28},
+        "43": {"size": 28},
+        "44": {"size": 28},
+        "45": {"size": 28},
+        "47": {"size": 40},
+        "48": {"size": 40},
+        "49": {"size": 28},
+        "50": {"size": 28},
+        "51": {"size": 28},
+        "52": {"size": 28},
+        "53": {"size": 28},
+        "54": {"size": 28},
+        "55": {"size": 28},
+        "56": {"size": 28},
+        "57": {"size": 28},
+        "58": {"size": 28},
+        "60": {"size": 40},
+        "61": {"size": 40},
+        "62": {"size": 28},
+        "63": {"size": 28},
+        "64": {"size": 28},
+        "65": {"size": 28},
+        "66": {"size": 28},
+        "67": {"size": 28},
+        "68": {"size": 28},
+        "69": {"size": 28},
+        "70": {"size": 28},
+        "71": {"size": 28},
+        "73": {"size": 40},
+        "74": {"size": 40},
+        "75": {"size": 28},
+        "76": {"size": 28},
+        "77": {"size": 28},
+        "78": {"size": 28},
+        "79": {"size": 28},
+        "80": {"size": 28},
+        "81": {"size": 28},
+        "82": {"size": 28},
+        "83": {"size": 28},
+        "84": {"size": 28},
+        "85": {"size": 28},
+        "86": {"size": 40},
+        "87": {"size": 40}
       },
       "cols": {
-        "0": { "size": 349 },
-        "1": { "size": 95 },
-        "2": { "size": 80 },
-        "3": { "size": 50 },
-        "4": { "size": 323 },
-        "5": { "size": 100 },
-        "6": { "size": 100 }
+        "0": {"size": 349},
+        "1": {"size": 95},
+        "2": {"size": 80},
+        "3": {"size": 50},
+        "4": {"size": 323},
+        "5": {"size": 100},
+        "6": {"size": 100}
       },
       "merges": [],
       "cells": {
@@ -270,52 +270,52 @@
       },
       "conditionalFormats": [
         {
-          "rule": { "type": "DataBarRule", "color": 16775149, "rangeValues": "C24:C33" },
+          "rule": {"type": "DataBarRule", "color": 16775149, "rangeValues": "C24:C33"},
           "id": "3e153fc3-0c7c-4713-991c-48f6921d7f51",
           "ranges": ["A24:A33"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 15726335, "rangeValues": "G24:G33" },
+          "rule": {"type": "DataBarRule", "color": 15726335, "rangeValues": "G24:G33"},
           "id": "7b9e9b33-151f-4190-a0a3-9a762d831033",
           "ranges": ["E24:E33"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 15531509, "rangeValues": "C37:C46" },
+          "rule": {"type": "DataBarRule", "color": 15531509, "rangeValues": "C37:C46"},
           "id": "947af8f8-96d3-4a02-89e7-eb1b12d95517",
           "ranges": ["A37:A46"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 16708338, "rangeValues": "G37:G46" },
+          "rule": {"type": "DataBarRule", "color": 16708338, "rangeValues": "G37:G46"},
           "id": "33e47ff1-2748-4243-a03a-ec896dca969f",
           "ranges": ["E37:E46"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 16775149, "rangeValues": "C50:C59" },
+          "rule": {"type": "DataBarRule", "color": 16775149, "rangeValues": "C50:C59"},
           "id": "e957d7f6-aaea-4c20-b474-e30a6949c5d1",
           "ranges": ["A50:A59"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 15726335, "rangeValues": "G50:G59" },
+          "rule": {"type": "DataBarRule", "color": 15726335, "rangeValues": "G50:G59"},
           "id": "fc65bd3e-81a8-4490-9b87-159f1862e58f",
           "ranges": ["E50:E59"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 15531509, "rangeValues": "C63:C72" },
+          "rule": {"type": "DataBarRule", "color": 15531509, "rangeValues": "C63:C72"},
           "id": "99da46d6-80cb-42a6-9147-4fb5e1a91dda",
           "ranges": ["A63:A72"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 16708338, "rangeValues": "G63:G72" },
+          "rule": {"type": "DataBarRule", "color": 16708338, "rangeValues": "G63:G72"},
           "id": "a4f8bba7-132d-4542-8a69-d4ac18bdc772",
           "ranges": ["E63:E72"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 16775149, "rangeValues": "C76:C85" },
+          "rule": {"type": "DataBarRule", "color": 16775149, "rangeValues": "C76:C85"},
           "id": "71bf3b6c-7ba1-4883-875e-b93482b51236",
           "ranges": ["A76:A85"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 15726335, "rangeValues": "G76:G85" },
+          "rule": {"type": "DataBarRule", "color": 15726335, "rangeValues": "G76:G85"},
           "id": "f5bc51ad-eac7-4ce7-9432-d39520cbd3cb",
           "ranges": ["E76:E85"]
         }
@@ -331,16 +331,16 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "percentage",
-            "title": { "text": "Quotations", "bold": true, "color": "#434343" },
+            "title": {"text": "Quotations", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#EFF6FF",
             "baseline": "Data!E4",
-            "baselineDescr": { "text": "since last period" },
+            "baselineDescr": {"text": "since last period"},
             "keyValue": "Data!D4",
             "humanize": false,
             "chartId": "51823220-f22b-4359-8711-579a249c91bb"
           },
-          "offset": { "x": 0, "y": 11 },
+          "offset": {"x": 0, "y": 11},
           "col": 0,
           "row": 0
         },
@@ -353,16 +353,16 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "percentage",
-            "title": { "text": "Orders", "color": "#434343", "bold": true },
+            "title": {"text": "Orders", "color": "#434343", "bold": true},
             "type": "scorecard",
             "background": "#EFF6FF",
             "baseline": "Data!E5",
-            "baselineDescr": { "text": "since last period" },
+            "baselineDescr": {"text": "since last period"},
             "keyValue": "Data!D5",
             "humanize": false,
             "chartId": "9a38934c-b454-4a4b-88aa-17d1b80dbf5f"
           },
-          "offset": { "x": 223, "y": 11 },
+          "offset": {"x": 223, "y": 11},
           "col": 0,
           "row": 0
         },
@@ -375,16 +375,16 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "percentage",
-            "title": { "text": "Revenue", "color": "#434343", "bold": true },
+            "title": {"text": "Revenue", "color": "#434343", "bold": true},
             "type": "scorecard",
             "background": "#FFF7ED",
             "baseline": "Data!E7",
-            "baselineDescr": { "text": "since last period" },
+            "baselineDescr": {"text": "since last period"},
             "keyValue": "Data!D7",
             "humanize": false,
             "chartId": "67858d0e-b5ba-4a3c-bf9e-c0fceaeedf65"
           },
-          "offset": { "x": 444, "y": 11 },
+          "offset": {"x": 444, "y": 11},
           "col": 0,
           "row": 0
         },
@@ -397,16 +397,16 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "percentage",
-            "title": { "text": "Average Order", "color": "#434343", "bold": true },
+            "title": {"text": "Average Order", "color": "#434343", "bold": true},
             "type": "scorecard",
             "background": "#FFF7ED",
             "baseline": "Data!E8",
-            "baselineDescr": { "text": "since last period" },
+            "baselineDescr": {"text": "since last period"},
             "keyValue": "Data!D8",
             "humanize": false,
             "chartId": "d43375c1-73a6-42a2-8dbd-0f13c285824f"
           },
-          "offset": { "x": 672, "y": 11 },
+          "offset": {"x": 672, "y": 11},
           "col": 0,
           "row": 0
         },
@@ -416,7 +416,7 @@
           "height": 344,
           "tag": "chart",
           "data": {
-            "title": { "text": "" },
+            "title": {"text": ""},
             "background": "#FFFFFF",
             "legendPosition": "none",
             "metaData": {
@@ -432,43 +432,63 @@
               "context": {
                 "group_by": []
               },
-              "domain": [
-                [
-                  "state",
-                  "not in",
-                  ["draft", "cancel", "sent"]
-                ]
-              ],
+              "domain": [["state", "not in", ["draft", "cancel", "sent"]]],
               "groupBy": ["date:month"],
               "orderBy": []
             },
             "type": "odoo_line",
-            "dataSets": [
-              {}
-            ],
+            "dataSets": [{}],
             "verticalAxisPosition": "left",
             "stacked": false,
             "cumulatedStart": false,
             "axesDesign": {
               "y": {
-                "title": { "text": "Revenue" }
+                "title": {"text": "Revenue"}
               }
             },
             "fillArea": true,
             "chartId": "a527960b-0812-4291-baba-f6b4b5280a0d",
             "fieldMatching": {
-              "13d30fda-b14d-4a56-b186-25468af3b1e9": { "chain": "date", "type": "datetime", "offset": 0 },
-              "e6db018b-19ec-42c3-b29e-11b1e3910916": { "chain": "country_id", "type": "many2one" },
-              "dbb716a1-5977-47ee-a53e-ca5716303433": { "chain": "product_id", "type": "many2one" },
-              "7d95fe28-fd13-4805-948c-95742e7d6733": { "chain": "partner_id", "type": "many2one" },
-              "27e323f4-cd70-4345-82fa-dfc855707bc1": { "chain": "categ_id", "type": "many2one" },
-              "b75963ca-ab5f-4da5-9c90-67526517e5e7": { "chain": "team_id", "type": "many2one" },
-              "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": { "chain": "user_id", "type": "many2one" },
-              "ec466626-f54a-4955-9611-eaa2719f1afb": { "chain": "source_id", "type": "many2one" },
-              "85d94827-6ce2-429c-9775-ef646cfddb6b": { "chain": "medium_id", "type": "many2one" }
+              "13d30fda-b14d-4a56-b186-25468af3b1e9": {
+                "chain": "date",
+                "type": "datetime",
+                "offset": 0
+              },
+              "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+                "chain": "country_id",
+                "type": "many2one"
+              },
+              "dbb716a1-5977-47ee-a53e-ca5716303433": {
+                "chain": "product_id",
+                "type": "many2one"
+              },
+              "7d95fe28-fd13-4805-948c-95742e7d6733": {
+                "chain": "partner_id",
+                "type": "many2one"
+              },
+              "27e323f4-cd70-4345-82fa-dfc855707bc1": {
+                "chain": "categ_id",
+                "type": "many2one"
+              },
+              "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+                "chain": "team_id",
+                "type": "many2one"
+              },
+              "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+                "chain": "user_id",
+                "type": "many2one"
+              },
+              "ec466626-f54a-4955-9611-eaa2719f1afb": {
+                "chain": "source_id",
+                "type": "many2one"
+              },
+              "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+                "chain": "medium_id",
+                "type": "many2one"
+              }
             }
           },
-          "offset": { "x": 0, "y": 155 },
+          "offset": {"x": 0, "y": 155},
           "col": 0,
           "row": 0
         },
@@ -476,7 +496,7 @@
           "id": "0adf3c8f-fb0d",
           "col": 0,
           "row": 34,
-          "offset": { "x": 0, "y": 10 },
+          "offset": {"x": 0, "y": 10},
           "width": 536,
           "height": 367,
           "tag": "carousel",
@@ -503,15 +523,13 @@
                 },
                 "type": "odoo_geo",
                 "actionXmlId": "sale.action_order_report_all",
-                "dataSets": [
-                  {}
-                ],
+                "dataSets": [{}],
                 "colorScale": "blues"
               }
             },
             "items": [
-              { "type": "chart", "chartId": "0ce069db-1c2a", "title": "Map" },
-              { "type": "carouselDataView", "title": "Top 10" }
+              {"type": "chart", "chartId": "0ce069db-1c2a", "title": "Map"},
+              {"type": "carouselDataView", "title": "Top 10"}
             ],
             "title": {
               "text": "Top Countries",
@@ -521,15 +539,42 @@
             },
             "fieldMatching": {
               "0ce069db-1c2a": {
-                "13d30fda-b14d-4a56-b186-25468af3b1e9": { "chain": "date", "type": "datetime" },
-                "e6db018b-19ec-42c3-b29e-11b1e3910916": { "chain": "country_id", "type": "many2one" },
-                "dbb716a1-5977-47ee-a53e-ca5716303433": { "chain": "product_id", "type": "many2one" },
-                "7d95fe28-fd13-4805-948c-95742e7d6733": { "chain": "partner_id", "type": "many2one" },
-                "27e323f4-cd70-4345-82fa-dfc855707bc1": { "chain": "categ_id", "type": "many2one" },
-                "b75963ca-ab5f-4da5-9c90-67526517e5e7": { "chain": "team_id", "type": "many2one" },
-                "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": { "chain": "user_id", "type": "many2one" },
-                "ec466626-f54a-4955-9611-eaa2719f1afb": { "chain": "source_id", "type": "many2one" },
-                "85d94827-6ce2-429c-9775-ef646cfddb6b": { "chain": "medium_id", "type": "many2one" }
+                "13d30fda-b14d-4a56-b186-25468af3b1e9": {
+                  "chain": "date",
+                  "type": "datetime"
+                },
+                "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+                  "chain": "country_id",
+                  "type": "many2one"
+                },
+                "dbb716a1-5977-47ee-a53e-ca5716303433": {
+                  "chain": "product_id",
+                  "type": "many2one"
+                },
+                "7d95fe28-fd13-4805-948c-95742e7d6733": {
+                  "chain": "partner_id",
+                  "type": "many2one"
+                },
+                "27e323f4-cd70-4345-82fa-dfc855707bc1": {
+                  "chain": "categ_id",
+                  "type": "many2one"
+                },
+                "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+                  "chain": "team_id",
+                  "type": "many2one"
+                },
+                "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+                  "chain": "user_id",
+                  "type": "many2one"
+                },
+                "ec466626-f54a-4955-9611-eaa2719f1afb": {
+                  "chain": "source_id",
+                  "type": "many2one"
+                },
+                "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+                  "chain": "medium_id",
+                  "type": "many2one"
+                }
               }
             }
           }
@@ -538,7 +583,7 @@
           "id": "8ff0e8f4-d779",
           "col": 3,
           "row": 47,
-          "offset": { "x": 47, "y": 7 },
+          "offset": {"x": 47, "y": 7},
           "width": 526,
           "height": 367,
           "tag": "carousel",
@@ -565,14 +610,12 @@
                 },
                 "type": "odoo_treemap",
                 "actionXmlId": "sale.action_order_report_all",
-                "dataSets": [
-                  {}
-                ]
+                "dataSets": [{}]
               }
             },
             "items": [
-              { "type": "chart", "chartId": "3104b1c2-c3b3" },
-              { "type": "carouselDataView", "title": "Top 10" }
+              {"type": "chart", "chartId": "3104b1c2-c3b3"},
+              {"type": "carouselDataView", "title": "Top 10"}
             ],
             "title": {
               "text": "Top Categories",
@@ -582,15 +625,42 @@
             },
             "fieldMatching": {
               "3104b1c2-c3b3": {
-                "13d30fda-b14d-4a56-b186-25468af3b1e9": { "chain": "date", "type": "datetime" },
-                "e6db018b-19ec-42c3-b29e-11b1e3910916": { "chain": "country_id", "type": "many2one" },
-                "dbb716a1-5977-47ee-a53e-ca5716303433": { "chain": "product_id", "type": "many2one" },
-                "7d95fe28-fd13-4805-948c-95742e7d6733": { "chain": "partner_id", "type": "many2one" },
-                "27e323f4-cd70-4345-82fa-dfc855707bc1": { "chain": "categ_id", "type": "many2one" },
-                "b75963ca-ab5f-4da5-9c90-67526517e5e7": { "chain": "team_id", "type": "many2one" },
-                "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": { "chain": "user_id", "type": "many2one" },
-                "ec466626-f54a-4955-9611-eaa2719f1afb": { "chain": "source_id", "type": "many2one" },
-                "85d94827-6ce2-429c-9775-ef646cfddb6b": { "chain": "medium_id", "type": "many2one" }
+                "13d30fda-b14d-4a56-b186-25468af3b1e9": {
+                  "chain": "date",
+                  "type": "datetime"
+                },
+                "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+                  "chain": "country_id",
+                  "type": "many2one"
+                },
+                "dbb716a1-5977-47ee-a53e-ca5716303433": {
+                  "chain": "product_id",
+                  "type": "many2one"
+                },
+                "7d95fe28-fd13-4805-948c-95742e7d6733": {
+                  "chain": "partner_id",
+                  "type": "many2one"
+                },
+                "27e323f4-cd70-4345-82fa-dfc855707bc1": {
+                  "chain": "categ_id",
+                  "type": "many2one"
+                },
+                "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+                  "chain": "team_id",
+                  "type": "many2one"
+                },
+                "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+                  "chain": "user_id",
+                  "type": "many2one"
+                },
+                "ec466626-f54a-4955-9611-eaa2719f1afb": {
+                  "chain": "source_id",
+                  "type": "many2one"
+                },
+                "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+                  "chain": "medium_id",
+                  "type": "many2one"
+                }
               }
             }
           }
@@ -763,11 +833,11 @@
       "rowNumber": 103,
       "rows": {},
       "cols": {
-        "0": { "size": 160 },
-        "1": { "size": 89 },
-        "2": { "size": 89 },
-        "3": { "size": 89 },
-        "4": { "size": 89 }
+        "0": {"size": 160},
+        "1": {"size": 89},
+        "2": {"size": 89},
+        "3": {"size": 89},
+        "4": {"size": 89}
       },
       "merges": [],
       "cells": {
@@ -812,7 +882,7 @@
         "E7": "=FORMAT.LARGE.NUMBER(C7)",
         "E8": "=FORMAT.LARGE.NUMBER(C8)"
       },
-      "styles": { "A1:E1": 8, "D2:E8": 9 },
+      "styles": {"A1:E1": 8, "D2:E8": 9},
       "formats": {},
       "borders": {},
       "conditionalFormats": [],
@@ -829,16 +899,16 @@
     }
   ],
   "styles": {
-    "1": { "textColor": "#01666b", "bold": true, "fontSize": 16 },
+    "1": {"textColor": "#01666b", "bold": true, "fontSize": 16},
     "2": {
       "fontSize": 11,
       "textColor": "#434343",
       "verticalAlign": "middle",
       "bold": true
     },
-    "3": { "textColor": "#01666B", "verticalAlign": "middle" },
-    "4": { "bold": true, "fontSize": 11, "textColor": "#434343" },
-    "5": { "textColor": "#434343", "verticalAlign": "middle" },
+    "3": {"textColor": "#01666B", "verticalAlign": "middle"},
+    "4": {"bold": true, "fontSize": 11, "textColor": "#434343"},
+    "5": {"textColor": "#434343", "verticalAlign": "middle"},
     "6": {
       "bold": true,
       "fontSize": 11,
@@ -852,45 +922,45 @@
       "verticalAlign": "middle",
       "bold": true
     },
-    "8": { "bold": true },
-    "9": { "fillColor": "#f2f2f2" }
+    "8": {"bold": true},
+    "9": {"fillColor": "#f2f2f2"}
   },
   "formats": {},
   "borders": {
     "1": {
-      "bottom": { "style": "thin", "color": "#CCCCCC" }
+      "bottom": {"style": "thin", "color": "#CCCCCC"}
     },
     "2": {
-      "top": { "style": "thin", "color": "#CCCCCC" }
+      "top": {"style": "thin", "color": "#CCCCCC"}
     },
     "3": {
-      "top": { "style": "thin", "color": "#CCCCCC" },
-      "bottom": { "style": "thin", "color": "#FFFFFF" }
+      "top": {"style": "thin", "color": "#CCCCCC"},
+      "bottom": {"style": "thin", "color": "#FFFFFF"}
     },
     "4": {
-      "top": { "style": "thin", "color": "#FFFFFF" },
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "top": {"style": "thin", "color": "#FFFFFF"},
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     },
     "5": {
-      "top": { "style": "thick", "color": "#FFFFFF" },
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "top": {"style": "thick", "color": "#FFFFFF"},
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     },
     "6": {
-      "top": { "style": "thick", "color": "#FFFFFF" },
-      "bottom": { "style": "thin", "color": "#FFFFFF" }
+      "top": {"style": "thick", "color": "#FFFFFF"},
+      "bottom": {"style": "thin", "color": "#FFFFFF"}
     },
     "7": {
-      "top": { "style": "thin", "color": "#FFFFFF" }
+      "top": {"style": "thin", "color": "#FFFFFF"}
     },
     "8": {
-      "top": { "style": "thin", "color": "#CCCCCC" },
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "top": {"style": "thin", "color": "#CCCCCC"},
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     },
     "9": {
-      "top": { "style": "thick", "color": "#FFFFFF" }
+      "top": {"style": "thick", "color": "#FFFFFF"}
     },
     "10": {
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     }
   },
   "revisionId": "START_REVISION",
@@ -911,15 +981,43 @@
     "3": {
       "type": "ODOO",
       "fieldMatching": {
-        "13d30fda-b14d-4a56-b186-25468af3b1e9": { "chain": "date", "type": "datetime", "offset": 0 },
-        "e6db018b-19ec-42c3-b29e-11b1e3910916": { "chain": "country_id", "type": "many2one" },
-        "dbb716a1-5977-47ee-a53e-ca5716303433": { "chain": "product_id", "type": "many2one" },
-        "7d95fe28-fd13-4805-948c-95742e7d6733": { "chain": "partner_id", "type": "many2one" },
-        "27e323f4-cd70-4345-82fa-dfc855707bc1": { "chain": "categ_id", "type": "many2one" },
-        "b75963ca-ab5f-4da5-9c90-67526517e5e7": { "chain": "team_id", "type": "many2one" },
-        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": { "chain": "user_id", "type": "many2one" },
-        "ec466626-f54a-4955-9611-eaa2719f1afb": { "chain": "source_id", "type": "many2one" },
-        "85d94827-6ce2-429c-9775-ef646cfddb6b": { "chain": "medium_id", "type": "many2one" }
+        "13d30fda-b14d-4a56-b186-25468af3b1e9": {
+          "chain": "date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+          "chain": "country_id",
+          "type": "many2one"
+        },
+        "dbb716a1-5977-47ee-a53e-ca5716303433": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "7d95fe28-fd13-4805-948c-95742e7d6733": {
+          "chain": "partner_id",
+          "type": "many2one"
+        },
+        "27e323f4-cd70-4345-82fa-dfc855707bc1": {
+          "chain": "categ_id",
+          "type": "many2one"
+        },
+        "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+          "chain": "team_id",
+          "type": "many2one"
+        },
+        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+          "chain": "user_id",
+          "type": "many2one"
+        },
+        "ec466626-f54a-4955-9611-eaa2719f1afb": {
+          "chain": "source_id",
+          "type": "many2one"
+        },
+        "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+          "chain": "medium_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "params": {
@@ -934,11 +1032,7 @@
       "domain": [
         "&",
         ["categ_id", "!=", false],
-        [
-          "state",
-          "not in",
-          ["draft", "sent", "cancel"]
-        ]
+        ["state", "not in", ["draft", "sent", "cancel"]]
       ],
       "id": "3",
       "measures": [
@@ -962,22 +1056,48 @@
       },
       "formulaId": "3",
       "columns": [],
-      "rows": [
-        { "fieldName": "categ_id" }
-      ]
+      "rows": [{"fieldName": "categ_id"}]
     },
     "4": {
       "type": "ODOO",
       "fieldMatching": {
-        "13d30fda-b14d-4a56-b186-25468af3b1e9": { "chain": "date", "type": "datetime", "offset": 0 },
-        "e6db018b-19ec-42c3-b29e-11b1e3910916": { "chain": "country_id", "type": "many2one" },
-        "dbb716a1-5977-47ee-a53e-ca5716303433": { "chain": "product_id", "type": "many2one" },
-        "7d95fe28-fd13-4805-948c-95742e7d6733": { "chain": "partner_id", "type": "many2one" },
-        "27e323f4-cd70-4345-82fa-dfc855707bc1": { "chain": "categ_id", "type": "many2one" },
-        "b75963ca-ab5f-4da5-9c90-67526517e5e7": { "chain": "team_id", "type": "many2one" },
-        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": { "chain": "user_id", "type": "many2one" },
-        "ec466626-f54a-4955-9611-eaa2719f1afb": { "chain": "source_id", "type": "many2one" },
-        "85d94827-6ce2-429c-9775-ef646cfddb6b": { "chain": "medium_id", "type": "many2one" }
+        "13d30fda-b14d-4a56-b186-25468af3b1e9": {
+          "chain": "date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+          "chain": "country_id",
+          "type": "many2one"
+        },
+        "dbb716a1-5977-47ee-a53e-ca5716303433": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "7d95fe28-fd13-4805-948c-95742e7d6733": {
+          "chain": "partner_id",
+          "type": "many2one"
+        },
+        "27e323f4-cd70-4345-82fa-dfc855707bc1": {
+          "chain": "categ_id",
+          "type": "many2one"
+        },
+        "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+          "chain": "team_id",
+          "type": "many2one"
+        },
+        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+          "chain": "user_id",
+          "type": "many2one"
+        },
+        "ec466626-f54a-4955-9611-eaa2719f1afb": {
+          "chain": "source_id",
+          "type": "many2one"
+        },
+        "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+          "chain": "medium_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "params": {
@@ -992,11 +1112,7 @@
       "domain": [
         "&",
         ["partner_id", "!=", false],
-        [
-          "state",
-          "not in",
-          ["draft", "sent", "cancel"]
-        ]
+        ["state", "not in", ["draft", "sent", "cancel"]]
       ],
       "id": "4",
       "measures": [
@@ -1020,22 +1136,48 @@
       },
       "formulaId": "4",
       "columns": [],
-      "rows": [
-        { "fieldName": "partner_id" }
-      ]
+      "rows": [{"fieldName": "partner_id"}]
     },
     "5": {
       "type": "ODOO",
       "fieldMatching": {
-        "13d30fda-b14d-4a56-b186-25468af3b1e9": { "chain": "date", "type": "datetime", "offset": 0 },
-        "e6db018b-19ec-42c3-b29e-11b1e3910916": { "chain": "country_id", "type": "many2one" },
-        "dbb716a1-5977-47ee-a53e-ca5716303433": { "chain": "product_id", "type": "many2one" },
-        "7d95fe28-fd13-4805-948c-95742e7d6733": { "chain": "partner_id", "type": "many2one" },
-        "27e323f4-cd70-4345-82fa-dfc855707bc1": { "chain": "categ_id", "type": "many2one" },
-        "b75963ca-ab5f-4da5-9c90-67526517e5e7": { "chain": "team_id", "type": "many2one" },
-        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": { "chain": "user_id", "type": "many2one" },
-        "ec466626-f54a-4955-9611-eaa2719f1afb": { "chain": "source_id", "type": "many2one" },
-        "85d94827-6ce2-429c-9775-ef646cfddb6b": { "chain": "medium_id", "type": "many2one" }
+        "13d30fda-b14d-4a56-b186-25468af3b1e9": {
+          "chain": "date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+          "chain": "country_id",
+          "type": "many2one"
+        },
+        "dbb716a1-5977-47ee-a53e-ca5716303433": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "7d95fe28-fd13-4805-948c-95742e7d6733": {
+          "chain": "partner_id",
+          "type": "many2one"
+        },
+        "27e323f4-cd70-4345-82fa-dfc855707bc1": {
+          "chain": "categ_id",
+          "type": "many2one"
+        },
+        "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+          "chain": "team_id",
+          "type": "many2one"
+        },
+        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+          "chain": "user_id",
+          "type": "many2one"
+        },
+        "ec466626-f54a-4955-9611-eaa2719f1afb": {
+          "chain": "source_id",
+          "type": "many2one"
+        },
+        "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+          "chain": "medium_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "params": {
@@ -1050,11 +1192,7 @@
       "domain": [
         "&",
         ["country_id", "!=", false],
-        [
-          "state",
-          "not in",
-          ["draft", "sent", "cancel"]
-        ]
+        ["state", "not in", ["draft", "sent", "cancel"]]
       ],
       "id": "5",
       "measures": [
@@ -1078,22 +1216,48 @@
       },
       "formulaId": "5",
       "columns": [],
-      "rows": [
-        { "fieldName": "country_id" }
-      ]
+      "rows": [{"fieldName": "country_id"}]
     },
     "6": {
       "type": "ODOO",
       "fieldMatching": {
-        "13d30fda-b14d-4a56-b186-25468af3b1e9": { "chain": "date", "type": "datetime", "offset": 0 },
-        "e6db018b-19ec-42c3-b29e-11b1e3910916": { "chain": "country_id", "type": "many2one" },
-        "dbb716a1-5977-47ee-a53e-ca5716303433": { "chain": "product_id", "type": "many2one" },
-        "7d95fe28-fd13-4805-948c-95742e7d6733": { "chain": "partner_id", "type": "many2one" },
-        "27e323f4-cd70-4345-82fa-dfc855707bc1": { "chain": "categ_id", "type": "many2one" },
-        "b75963ca-ab5f-4da5-9c90-67526517e5e7": { "chain": "team_id", "type": "many2one" },
-        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": { "chain": "user_id", "type": "many2one" },
-        "ec466626-f54a-4955-9611-eaa2719f1afb": { "chain": "source_id", "type": "many2one" },
-        "85d94827-6ce2-429c-9775-ef646cfddb6b": { "chain": "medium_id", "type": "many2one" }
+        "13d30fda-b14d-4a56-b186-25468af3b1e9": {
+          "chain": "date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+          "chain": "country_id",
+          "type": "many2one"
+        },
+        "dbb716a1-5977-47ee-a53e-ca5716303433": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "7d95fe28-fd13-4805-948c-95742e7d6733": {
+          "chain": "partner_id",
+          "type": "many2one"
+        },
+        "27e323f4-cd70-4345-82fa-dfc855707bc1": {
+          "chain": "categ_id",
+          "type": "many2one"
+        },
+        "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+          "chain": "team_id",
+          "type": "many2one"
+        },
+        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+          "chain": "user_id",
+          "type": "many2one"
+        },
+        "ec466626-f54a-4955-9611-eaa2719f1afb": {
+          "chain": "source_id",
+          "type": "many2one"
+        },
+        "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+          "chain": "medium_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "params": {
@@ -1108,11 +1272,7 @@
       "domain": [
         "&",
         ["product_tmpl_id", "!=", false],
-        [
-          "state",
-          "not in",
-          ["draft", "sent", "cancel"]
-        ]
+        ["state", "not in", ["draft", "sent", "cancel"]]
       ],
       "id": "6",
       "measures": [
@@ -1136,22 +1296,48 @@
       },
       "formulaId": "6",
       "columns": [],
-      "rows": [
-        { "fieldName": "product_id" }
-      ]
+      "rows": [{"fieldName": "product_id"}]
     },
     "7": {
       "type": "ODOO",
       "fieldMatching": {
-        "13d30fda-b14d-4a56-b186-25468af3b1e9": { "chain": "date", "type": "datetime", "offset": 0 },
-        "e6db018b-19ec-42c3-b29e-11b1e3910916": { "chain": "country_id", "type": "many2one" },
-        "dbb716a1-5977-47ee-a53e-ca5716303433": { "chain": "product_id", "type": "many2one" },
-        "7d95fe28-fd13-4805-948c-95742e7d6733": { "chain": "partner_id", "type": "many2one" },
-        "27e323f4-cd70-4345-82fa-dfc855707bc1": { "chain": "categ_id", "type": "many2one" },
-        "b75963ca-ab5f-4da5-9c90-67526517e5e7": { "chain": "team_id", "type": "many2one" },
-        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": { "chain": "user_id", "type": "many2one" },
-        "ec466626-f54a-4955-9611-eaa2719f1afb": { "chain": "source_id", "type": "many2one" },
-        "85d94827-6ce2-429c-9775-ef646cfddb6b": { "chain": "medium_id", "type": "many2one" }
+        "13d30fda-b14d-4a56-b186-25468af3b1e9": {
+          "chain": "date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+          "chain": "country_id",
+          "type": "many2one"
+        },
+        "dbb716a1-5977-47ee-a53e-ca5716303433": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "7d95fe28-fd13-4805-948c-95742e7d6733": {
+          "chain": "partner_id",
+          "type": "many2one"
+        },
+        "27e323f4-cd70-4345-82fa-dfc855707bc1": {
+          "chain": "categ_id",
+          "type": "many2one"
+        },
+        "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+          "chain": "team_id",
+          "type": "many2one"
+        },
+        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+          "chain": "user_id",
+          "type": "many2one"
+        },
+        "ec466626-f54a-4955-9611-eaa2719f1afb": {
+          "chain": "source_id",
+          "type": "many2one"
+        },
+        "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+          "chain": "medium_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "group_by": []
@@ -1159,11 +1345,7 @@
       "domain": [
         "&",
         ["team_id", "!=", false],
-        [
-          "state",
-          "not in",
-          ["draft", "sent", "cancel"]
-        ]
+        ["state", "not in", ["draft", "sent", "cancel"]]
       ],
       "id": "7",
       "measures": [
@@ -1187,22 +1369,48 @@
       },
       "formulaId": "7",
       "columns": [],
-      "rows": [
-        { "fieldName": "team_id" }
-      ]
+      "rows": [{"fieldName": "team_id"}]
     },
     "8": {
       "type": "ODOO",
       "fieldMatching": {
-        "13d30fda-b14d-4a56-b186-25468af3b1e9": { "chain": "date", "type": "datetime", "offset": 0 },
-        "e6db018b-19ec-42c3-b29e-11b1e3910916": { "chain": "country_id", "type": "many2one" },
-        "dbb716a1-5977-47ee-a53e-ca5716303433": { "chain": "product_id", "type": "many2one" },
-        "7d95fe28-fd13-4805-948c-95742e7d6733": { "chain": "partner_id", "type": "many2one" },
-        "27e323f4-cd70-4345-82fa-dfc855707bc1": { "chain": "categ_id", "type": "many2one" },
-        "b75963ca-ab5f-4da5-9c90-67526517e5e7": { "chain": "team_id", "type": "many2one" },
-        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": { "chain": "user_id", "type": "many2one" },
-        "ec466626-f54a-4955-9611-eaa2719f1afb": { "chain": "source_id", "type": "many2one" },
-        "85d94827-6ce2-429c-9775-ef646cfddb6b": { "chain": "medium_id", "type": "many2one" }
+        "13d30fda-b14d-4a56-b186-25468af3b1e9": {
+          "chain": "date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+          "chain": "country_id",
+          "type": "many2one"
+        },
+        "dbb716a1-5977-47ee-a53e-ca5716303433": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "7d95fe28-fd13-4805-948c-95742e7d6733": {
+          "chain": "partner_id",
+          "type": "many2one"
+        },
+        "27e323f4-cd70-4345-82fa-dfc855707bc1": {
+          "chain": "categ_id",
+          "type": "many2one"
+        },
+        "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+          "chain": "team_id",
+          "type": "many2one"
+        },
+        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+          "chain": "user_id",
+          "type": "many2one"
+        },
+        "ec466626-f54a-4955-9611-eaa2719f1afb": {
+          "chain": "source_id",
+          "type": "many2one"
+        },
+        "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+          "chain": "medium_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "group_by": []
@@ -1210,11 +1418,7 @@
       "domain": [
         "&",
         ["user_id", "!=", false],
-        [
-          "state",
-          "not in",
-          ["draft", "sent", "cancel"]
-        ]
+        ["state", "not in", ["draft", "sent", "cancel"]]
       ],
       "id": "8",
       "measures": [
@@ -1238,22 +1442,48 @@
       },
       "formulaId": "8",
       "columns": [],
-      "rows": [
-        { "fieldName": "user_id" }
-      ]
+      "rows": [{"fieldName": "user_id"}]
     },
     "9": {
       "type": "ODOO",
       "fieldMatching": {
-        "13d30fda-b14d-4a56-b186-25468af3b1e9": { "chain": "date", "type": "datetime", "offset": 0 },
-        "e6db018b-19ec-42c3-b29e-11b1e3910916": { "chain": "country_id", "type": "many2one" },
-        "dbb716a1-5977-47ee-a53e-ca5716303433": { "chain": "product_id", "type": "many2one" },
-        "7d95fe28-fd13-4805-948c-95742e7d6733": { "chain": "partner_id", "type": "many2one" },
-        "27e323f4-cd70-4345-82fa-dfc855707bc1": { "chain": "categ_id", "type": "many2one" },
-        "b75963ca-ab5f-4da5-9c90-67526517e5e7": { "chain": "team_id", "type": "many2one" },
-        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": { "chain": "user_id", "type": "many2one" },
-        "ec466626-f54a-4955-9611-eaa2719f1afb": { "chain": "source_id", "type": "many2one" },
-        "85d94827-6ce2-429c-9775-ef646cfddb6b": { "chain": "medium_id", "type": "many2one" }
+        "13d30fda-b14d-4a56-b186-25468af3b1e9": {
+          "chain": "date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+          "chain": "country_id",
+          "type": "many2one"
+        },
+        "dbb716a1-5977-47ee-a53e-ca5716303433": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "7d95fe28-fd13-4805-948c-95742e7d6733": {
+          "chain": "partner_id",
+          "type": "many2one"
+        },
+        "27e323f4-cd70-4345-82fa-dfc855707bc1": {
+          "chain": "categ_id",
+          "type": "many2one"
+        },
+        "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+          "chain": "team_id",
+          "type": "many2one"
+        },
+        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+          "chain": "user_id",
+          "type": "many2one"
+        },
+        "ec466626-f54a-4955-9611-eaa2719f1afb": {
+          "chain": "source_id",
+          "type": "many2one"
+        },
+        "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+          "chain": "medium_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "group_by": []
@@ -1261,11 +1491,7 @@
       "domain": [
         "&",
         ["source_id", "!=", false],
-        [
-          "state",
-          "not in",
-          ["draft", "sent", "cancel"]
-        ]
+        ["state", "not in", ["draft", "sent", "cancel"]]
       ],
       "id": "9",
       "measures": [
@@ -1289,22 +1515,48 @@
       },
       "formulaId": "9",
       "columns": [],
-      "rows": [
-        { "fieldName": "source_id" }
-      ]
+      "rows": [{"fieldName": "source_id"}]
     },
     "10": {
       "type": "ODOO",
       "fieldMatching": {
-        "13d30fda-b14d-4a56-b186-25468af3b1e9": { "chain": "date", "type": "datetime", "offset": 0 },
-        "e6db018b-19ec-42c3-b29e-11b1e3910916": { "chain": "country_id", "type": "many2one" },
-        "dbb716a1-5977-47ee-a53e-ca5716303433": { "chain": "product_id", "type": "many2one" },
-        "7d95fe28-fd13-4805-948c-95742e7d6733": { "chain": "partner_id", "type": "many2one" },
-        "27e323f4-cd70-4345-82fa-dfc855707bc1": { "chain": "categ_id", "type": "many2one" },
-        "b75963ca-ab5f-4da5-9c90-67526517e5e7": { "chain": "team_id", "type": "many2one" },
-        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": { "chain": "user_id", "type": "many2one" },
-        "ec466626-f54a-4955-9611-eaa2719f1afb": { "chain": "source_id", "type": "many2one" },
-        "85d94827-6ce2-429c-9775-ef646cfddb6b": { "chain": "medium_id", "type": "many2one" }
+        "13d30fda-b14d-4a56-b186-25468af3b1e9": {
+          "chain": "date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+          "chain": "country_id",
+          "type": "many2one"
+        },
+        "dbb716a1-5977-47ee-a53e-ca5716303433": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "7d95fe28-fd13-4805-948c-95742e7d6733": {
+          "chain": "partner_id",
+          "type": "many2one"
+        },
+        "27e323f4-cd70-4345-82fa-dfc855707bc1": {
+          "chain": "categ_id",
+          "type": "many2one"
+        },
+        "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+          "chain": "team_id",
+          "type": "many2one"
+        },
+        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+          "chain": "user_id",
+          "type": "many2one"
+        },
+        "ec466626-f54a-4955-9611-eaa2719f1afb": {
+          "chain": "source_id",
+          "type": "many2one"
+        },
+        "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+          "chain": "medium_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "group_by": []
@@ -1312,11 +1564,7 @@
       "domain": [
         "&",
         ["medium_id", "!=", false],
-        [
-          "state",
-          "not in",
-          ["draft", "sent", "cancel"]
-        ]
+        ["state", "not in", ["draft", "sent", "cancel"]]
       ],
       "id": "10",
       "measures": [
@@ -1340,79 +1588,117 @@
       },
       "formulaId": "10",
       "columns": [],
-      "rows": [
-        { "fieldName": "medium_id" }
-      ]
+      "rows": [{"fieldName": "medium_id"}]
     },
     "11": {
       "type": "ODOO",
       "fieldMatching": {
-        "13d30fda-b14d-4a56-b186-25468af3b1e9": { "chain": "date", "type": "datetime", "offset": 0 },
-        "e6db018b-19ec-42c3-b29e-11b1e3910916": { "chain": "partner_id.country_id", "type": "many2one" },
-        "dbb716a1-5977-47ee-a53e-ca5716303433": { "chain": "product_id", "type": "many2one" },
-        "7d95fe28-fd13-4805-948c-95742e7d6733": { "chain": "partner_id", "type": "many2one" },
-        "27e323f4-cd70-4345-82fa-dfc855707bc1": { "chain": "product_id.categ_id", "type": "many2one" },
-        "b75963ca-ab5f-4da5-9c90-67526517e5e7": { "chain": "team_id", "type": "many2one" },
-        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": { "chain": "user_id", "type": "many2one" },
-        "ec466626-f54a-4955-9611-eaa2719f1afb": { "chain": "source_id", "type": "many2one" },
-        "85d94827-6ce2-429c-9775-ef646cfddb6b": { "chain": "medium_id", "type": "many2one" }
+        "13d30fda-b14d-4a56-b186-25468af3b1e9": {
+          "chain": "date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+          "chain": "partner_id.country_id",
+          "type": "many2one"
+        },
+        "dbb716a1-5977-47ee-a53e-ca5716303433": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "7d95fe28-fd13-4805-948c-95742e7d6733": {
+          "chain": "partner_id",
+          "type": "many2one"
+        },
+        "27e323f4-cd70-4345-82fa-dfc855707bc1": {
+          "chain": "product_id.categ_id",
+          "type": "many2one"
+        },
+        "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+          "chain": "team_id",
+          "type": "many2one"
+        },
+        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+          "chain": "user_id",
+          "type": "many2one"
+        },
+        "ec466626-f54a-4955-9611-eaa2719f1afb": {
+          "chain": "source_id",
+          "type": "many2one"
+        },
+        "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+          "chain": "medium_id",
+          "type": "many2one"
+        }
       },
       "context": {},
-      "domain": [
-        [
-          "state",
-          "in",
-          ["draft", "sent", "sale"]
-        ]
-      ],
+      "domain": [["state", "in", ["draft", "sent", "sale"]]],
       "id": "11",
       "measures": [
-        { "id": "order_reference", "fieldName": "order_reference" },
-        { "id": "price_subtotal", "fieldName": "price_subtotal" }
+        {"id": "order_reference", "fieldName": "order_reference"},
+        {"id": "price_subtotal", "fieldName": "price_subtotal"}
       ],
       "model": "sale.report",
       "name": "so stats - current",
       "sortedColumn": null,
       "formulaId": "11",
       "columns": [],
-      "rows": [
-        { "fieldName": "state" }
-      ]
+      "rows": [{"fieldName": "state"}]
     },
     "12": {
       "type": "ODOO",
       "fieldMatching": {
-        "13d30fda-b14d-4a56-b186-25468af3b1e9": { "chain": "date", "type": "datetime", "offset": -1 },
-        "e6db018b-19ec-42c3-b29e-11b1e3910916": { "chain": "partner_id.country_id", "type": "many2one" },
-        "dbb716a1-5977-47ee-a53e-ca5716303433": { "chain": "product_id", "type": "many2one" },
-        "7d95fe28-fd13-4805-948c-95742e7d6733": { "chain": "partner_id", "type": "many2one" },
-        "27e323f4-cd70-4345-82fa-dfc855707bc1": { "chain": "product_id.categ_id", "type": "many2one" },
-        "b75963ca-ab5f-4da5-9c90-67526517e5e7": { "chain": "team_id", "type": "many2one" },
-        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": { "chain": "user_id", "type": "many2one" },
-        "ec466626-f54a-4955-9611-eaa2719f1afb": { "chain": "source_id", "type": "many2one" },
-        "85d94827-6ce2-429c-9775-ef646cfddb6b": { "chain": "medium_id", "type": "many2one" }
+        "13d30fda-b14d-4a56-b186-25468af3b1e9": {
+          "chain": "date",
+          "type": "datetime",
+          "offset": -1
+        },
+        "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+          "chain": "partner_id.country_id",
+          "type": "many2one"
+        },
+        "dbb716a1-5977-47ee-a53e-ca5716303433": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "7d95fe28-fd13-4805-948c-95742e7d6733": {
+          "chain": "partner_id",
+          "type": "many2one"
+        },
+        "27e323f4-cd70-4345-82fa-dfc855707bc1": {
+          "chain": "product_id.categ_id",
+          "type": "many2one"
+        },
+        "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+          "chain": "team_id",
+          "type": "many2one"
+        },
+        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+          "chain": "user_id",
+          "type": "many2one"
+        },
+        "ec466626-f54a-4955-9611-eaa2719f1afb": {
+          "chain": "source_id",
+          "type": "many2one"
+        },
+        "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+          "chain": "medium_id",
+          "type": "many2one"
+        }
       },
       "context": {},
-      "domain": [
-        [
-          "state",
-          "in",
-          ["draft", "sent", "sale"]
-        ]
-      ],
+      "domain": [["state", "in", ["draft", "sent", "sale"]]],
       "id": "12",
       "measures": [
-        { "id": "order_reference", "fieldName": "order_reference" },
-        { "id": "price_subtotal", "fieldName": "price_subtotal" }
+        {"id": "order_reference", "fieldName": "order_reference"},
+        {"id": "price_subtotal", "fieldName": "price_subtotal"}
       ],
       "model": "sale.report",
       "name": "so stats - previous",
       "sortedColumn": null,
       "formulaId": "12",
       "columns": [],
-      "rows": [
-        { "fieldName": "state" }
-      ]
+      "rows": [{"fieldName": "state"}]
     }
   },
   "pivotNextId": 13,
@@ -1484,57 +1770,101 @@
   "lists": {
     "1": {
       "columns": ["name", "partner_id", "user_id", "amount_untaxed"],
-      "domain": [
-        "|",
-        ["state", "=", "draft"],
-        ["state", "=", "sent"]
-      ],
+      "domain": ["|", ["state", "=", "draft"], ["state", "=", "sent"]],
       "model": "sale.order",
       "context": {},
-      "orderBy": [
-        { "name": "amount_untaxed", "asc": false }
-      ],
+      "orderBy": [{"name": "amount_untaxed", "asc": false}],
       "id": "1",
       "name": "Quotations by Untaxed Amount",
       "fieldMatching": {
-        "13d30fda-b14d-4a56-b186-25468af3b1e9": { "chain": "date_order", "type": "datetime", "offset": 0 },
-        "e6db018b-19ec-42c3-b29e-11b1e3910916": { "chain": "partner_id.country_id", "type": "many2one" },
-        "dbb716a1-5977-47ee-a53e-ca5716303433": { "chain": "order_line.product_id", "type": "many2one" },
-        "7d95fe28-fd13-4805-948c-95742e7d6733": { "chain": "partner_id", "type": "many2one" },
-        "27e323f4-cd70-4345-82fa-dfc855707bc1": { "chain": "order_line.product_id.categ_id", "type": "many2one" },
-        "b75963ca-ab5f-4da5-9c90-67526517e5e7": { "chain": "team_id", "type": "many2one" },
-        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": { "chain": "user_id", "type": "many2one" },
-        "ec466626-f54a-4955-9611-eaa2719f1afb": { "chain": "source_id", "type": "many2one" },
-        "85d94827-6ce2-429c-9775-ef646cfddb6b": { "chain": "medium_id", "type": "many2one" }
+        "13d30fda-b14d-4a56-b186-25468af3b1e9": {
+          "chain": "date_order",
+          "type": "datetime",
+          "offset": 0
+        },
+        "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+          "chain": "partner_id.country_id",
+          "type": "many2one"
+        },
+        "dbb716a1-5977-47ee-a53e-ca5716303433": {
+          "chain": "order_line.product_id",
+          "type": "many2one"
+        },
+        "7d95fe28-fd13-4805-948c-95742e7d6733": {
+          "chain": "partner_id",
+          "type": "many2one"
+        },
+        "27e323f4-cd70-4345-82fa-dfc855707bc1": {
+          "chain": "order_line.product_id.categ_id",
+          "type": "many2one"
+        },
+        "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+          "chain": "team_id",
+          "type": "many2one"
+        },
+        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+          "chain": "user_id",
+          "type": "many2one"
+        },
+        "ec466626-f54a-4955-9611-eaa2719f1afb": {
+          "chain": "source_id",
+          "type": "many2one"
+        },
+        "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+          "chain": "medium_id",
+          "type": "many2one"
+        }
       }
     },
     "2": {
       "columns": ["name", "partner_id", "user_id", "amount_untaxed"],
-      "domain": [
-        [
-          "state",
-          "not in",
-          ["draft", "sent", "cancel"]
-        ]
-      ],
+      "domain": [["state", "not in", ["draft", "sent", "cancel"]]],
       "model": "sale.order",
       "context": {},
       "orderBy": [
-        { "name": "amount_untaxed", "asc": false },
-        { "name": "invoice_status", "asc": true }
+        {"name": "amount_untaxed", "asc": false},
+        {"name": "invoice_status", "asc": true}
       ],
       "id": "2",
       "name": "Sales Orders by Untaxed Amount",
       "fieldMatching": {
-        "13d30fda-b14d-4a56-b186-25468af3b1e9": { "chain": "date_order", "type": "datetime", "offset": 0 },
-        "e6db018b-19ec-42c3-b29e-11b1e3910916": { "chain": "partner_id.country_id", "type": "many2one" },
-        "dbb716a1-5977-47ee-a53e-ca5716303433": { "chain": "order_line.product_id", "type": "many2one" },
-        "7d95fe28-fd13-4805-948c-95742e7d6733": { "chain": "partner_id", "type": "many2one" },
-        "27e323f4-cd70-4345-82fa-dfc855707bc1": { "chain": "order_line.product_id.categ_id", "type": "many2one" },
-        "b75963ca-ab5f-4da5-9c90-67526517e5e7": { "chain": "team_id", "type": "many2one" },
-        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": { "chain": "user_id", "type": "many2one" },
-        "ec466626-f54a-4955-9611-eaa2719f1afb": { "chain": "source_id", "type": "many2one" },
-        "85d94827-6ce2-429c-9775-ef646cfddb6b": { "chain": "medium_id", "type": "many2one" }
+        "13d30fda-b14d-4a56-b186-25468af3b1e9": {
+          "chain": "date_order",
+          "type": "datetime",
+          "offset": 0
+        },
+        "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+          "chain": "partner_id.country_id",
+          "type": "many2one"
+        },
+        "dbb716a1-5977-47ee-a53e-ca5716303433": {
+          "chain": "order_line.product_id",
+          "type": "many2one"
+        },
+        "7d95fe28-fd13-4805-948c-95742e7d6733": {
+          "chain": "partner_id",
+          "type": "many2one"
+        },
+        "27e323f4-cd70-4345-82fa-dfc855707bc1": {
+          "chain": "order_line.product_id.categ_id",
+          "type": "many2one"
+        },
+        "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+          "chain": "team_id",
+          "type": "many2one"
+        },
+        "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+          "chain": "user_id",
+          "type": "many2one"
+        },
+        "ec466626-f54a-4955-9611-eaa2719f1afb": {
+          "chain": "source_id",
+          "type": "many2one"
+        },
+        "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+          "chain": "medium_id",
+          "type": "many2one"
+        }
       }
     }
   },

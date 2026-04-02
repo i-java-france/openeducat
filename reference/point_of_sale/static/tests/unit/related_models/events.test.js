@@ -1,7 +1,7 @@
-import { expect, test, describe } from "@odoo/hoot";
-import { getRelatedModelsInstance } from "../data/get_model_definitions";
-import { makeMockServer } from "@web/../tests/web_test_helpers";
-import { definePosModels } from "../data/generate_model_definitions";
+import {describe, expect, test} from "@odoo/hoot";
+import {getRelatedModelsInstance} from "../data/get_model_definitions";
+import {makeMockServer} from "@web/../tests/web_test_helpers";
+import {definePosModels} from "../data/generate_model_definitions";
 
 definePosModels();
 
@@ -25,7 +25,7 @@ describe(`Related models Events`, () => {
 
         expect(orderUpdates.length).toBe(0);
 
-        order.update({ lines: [line1, line2], amount_total: 10 });
+        order.update({lines: [line1, line2], amount_total: 10});
         expect(orderUpdates.length).toBe(1);
         expect(orderUpdates[0].id).toEqual(order.id);
         expect(orderUpdates[0].fields).toEqual(["lines", "amount_total"]);
@@ -60,7 +60,7 @@ describe(`Related models Events`, () => {
             "pos.order": [
                 {
                     id: 1,
-                    uuid: order1.uuid, //Update
+                    uuid: order1.uuid, // Update
                 },
                 {
                     id: 2,
@@ -79,7 +79,7 @@ describe(`Related models Events`, () => {
     test("Connecting new data", async () => {
         await makeMockServer();
         const models = getRelatedModelsInstance(false);
-        const order1 = models["pos.order"].create({ id: 3333 });
+        const order1 = models["pos.order"].create({id: 3333});
         const orderUpdates = [];
         const lineUpdates = [];
         const lineCreates = [];
@@ -126,13 +126,13 @@ describe(`Related models Events`, () => {
         });
 
         const linesUpdates = [];
-        models["pos.order.line"].create({ order_id: order.id });
-        models["pos.order.line"].create({ order_id: order.id });
+        models["pos.order.line"].create({order_id: order.id});
+        models["pos.order.line"].create({order_id: order.id});
         models["pos.order.line"].addEventListener("update", (data) => {
             linesUpdates.push(data);
         });
 
-        expect(orderUpdates.length).toBe(2); // connecting lines to order
+        expect(orderUpdates.length).toBe(2); // Connecting lines to order
         expect(orderDeletes.length).toBe(0);
         expect(linesUpdates.length).toBe(0);
 

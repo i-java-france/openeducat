@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { keyDown, press, queryAllTexts } from "@odoo/hoot-dom";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {keyDown, press, queryAllTexts} from "@odoo/hoot-dom";
 import {
     Deferred,
     advanceFrame,
@@ -15,12 +15,12 @@ import {
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 
-import { Component, reactive, xml } from "@odoo/owl";
+import {Component, reactive, xml} from "@odoo/owl";
 
-import { useCommand } from "@web/core/commands/command_hook";
-import { HotkeyCommandItem } from "@web/core/commands/default_providers";
-import { registry } from "@web/core/registry";
-import { useActiveElement } from "@web/core/ui/ui_service";
+import {useCommand} from "@web/core/commands/command_hook";
+import {HotkeyCommandItem} from "@web/core/commands/default_providers";
+import {registry} from "@web/core/registry";
+import {useActiveElement} from "@web/core/ui/ui_service";
 
 class TestComponent extends Component {
     static template = xml`<div />`;
@@ -54,7 +54,10 @@ beforeEach(async () => {
     const commandCategoryRegistry = registry.category("command_categories");
     // Adding default last. The order of insertion of categories matters
     commandCategoryRegistry.remove("default");
-    commandCategoryRegistry.add("custom-nolabel", {}).add("custom", {}).add("default", {});
+    commandCategoryRegistry
+        .add("custom-nolabel", {})
+        .add("custom", {})
+        .add("default", {});
 });
 
 test("commands evilness 👹", async () => {
@@ -83,8 +86,8 @@ test("useCommand hook", async () => {
             });
         }
     }
-    const componentInfo = reactive({ Component: MyComponent });
-    await mountWithCleanup(Parent, { props: { componentInfo } });
+    const componentInfo = reactive({Component: MyComponent});
+    await mountWithCleanup(Parent, {props: {componentInfo}});
 
     await press(["Control", "k"]);
     await animationFrame();
@@ -106,7 +109,7 @@ test("useCommand hook when the activeElement change", async () => {
     class MyComponent extends TestComponent {
         setup() {
             useCommand("Take the throne", () => {});
-            useCommand("Lose the throne", () => {}, { global: true });
+            useCommand("Lose the throne", () => {}, {global: true});
         }
     }
 
@@ -127,11 +130,14 @@ test("useCommand hook when the activeElement change", async () => {
     await press("escape");
     await animationFrame();
 
-    await mountWithCleanup(OtherComponent, { noMainContainer: true });
+    await mountWithCleanup(OtherComponent, {noMainContainer: true});
     await press(["Control", "k"]);
     await animationFrame();
     expect(".o_command").toHaveCount(2);
-    expect(queryAllTexts(".o_command")).toEqual(["Lose the throne", "I'm taking the throne"]);
+    expect(queryAllTexts(".o_command")).toEqual([
+        "Lose the throne",
+        "I'm taking the throne",
+    ]);
 });
 
 test("useCommand hook with isAvailable", async () => {
@@ -319,7 +325,11 @@ test("useCommand hook with hotkey and isAvailable", async () => {
     await animationFrame();
     expect(".o_command_palette").toHaveCount(1);
     expect(".o_command").toHaveCount(3);
-    expect(queryAllTexts(".o_command")).toEqual(["Command 1\nA", "Command 2\nB", "Command 4\nD"]);
+    expect(queryAllTexts(".o_command")).toEqual([
+        "Command 1\nA",
+        "Command 2\nB",
+        "Command 4\nD",
+    ]);
 });
 
 test("open command palette with command config", async () => {
@@ -331,7 +341,7 @@ test("open command palette with command config", async () => {
             action,
         },
     ];
-    const providers = [{ provide }];
+    const providers = [{provide}];
     getService("command").add(
         "test",
         () => ({
@@ -352,7 +362,7 @@ test("open command palette with command config", async () => {
 
 test("data-hotkey added to command palette", async () => {
     class MyComponent extends Component {
-        static components = { TestComponent };
+        static components = {TestComponent};
         static template = xml`
             <div>
                 <button title="Aria Stark" data-hotkey="a" t-on-click="onClick">visible</button>
@@ -373,7 +383,10 @@ test("data-hotkey added to command palette", async () => {
     await animationFrame();
 
     expect(".o_command").toHaveCount(2);
-    expect(queryAllTexts(".o_command span:first-child")).toEqual(["Aria stark", "Bran stark"]);
+    expect(queryAllTexts(".o_command span:first-child")).toEqual([
+        "Aria stark",
+        "Bran stark",
+    ]);
 
     // Click on first command
     await contains("#o_command_0").click();
@@ -389,7 +402,7 @@ test("data-hotkey added to command palette", async () => {
     expect(".o_command_palette").toHaveCount(0);
     expect("input[title='Bran Stark']").toBeFocused();
 
-    // only step should come from the first command execution
+    // Only step should come from the first command execution
     expect.verifySteps(["Hodor"]);
 });
 
@@ -400,7 +413,7 @@ test("access to hotkeys from the command palette", async () => {
     });
 
     class MyComponent extends Component {
-        static components = { TestComponent };
+        static components = {TestComponent};
         static template = xml`
             <div>
                 <button title="B" data-hotkey="b" t-on-click="onClickB">visible</button>
@@ -455,7 +468,12 @@ test("can be searched", async () => {
     await mountWithCleanup(TestComponent);
 
     // Register some commands
-    const names = ["Cersei Lannister", "Jaime Lannister", "Tyrion Lannister", "Tywin Lannister"];
+    const names = [
+        "Cersei Lannister",
+        "Jaime Lannister",
+        "Tyrion Lannister",
+        "Tywin Lannister",
+    ];
     for (const name of names) {
         getService("command").add(name, function action() {});
     }
@@ -470,13 +488,13 @@ test("can be searched", async () => {
     expect(queryAllTexts(".o_command")).toEqual(names);
 
     // Search something
-    await contains(".o_command_palette_search input").edit("jl", { confirm: false });
+    await contains(".o_command_palette_search input").edit("jl", {confirm: false});
     await animationFrame();
 
     expect(queryAllTexts(".o_command")).toEqual(["Jaime Lannister"]);
 
     // Clear search input
-    await contains(".o_command_palette_search input").clear({ confirm: false });
+    await contains(".o_command_palette_search input").clear({confirm: false});
     await animationFrame();
 
     expect(queryAllTexts(".o_command")).toEqual(names);
@@ -489,7 +507,7 @@ test("configure the empty message based on the namespace", async () => {
             namespace: "default",
             provide: () => [],
         },
-        { force: true }
+        {force: true}
     );
 
     commandProviderRegistry.add("@", {
@@ -502,7 +520,7 @@ test("configure the empty message based on the namespace", async () => {
         {
             emptyMessage: "Empty Default",
         },
-        { force: true }
+        {force: true}
     );
     commandSetupRegistry.add("@", {
         emptyMessage: "Empty @",
@@ -516,7 +534,7 @@ test("configure the empty message based on the namespace", async () => {
 
     expect(".o_command_palette_listbox_empty").toHaveText("Empty Default");
 
-    await contains(".o_command_palette_search input").edit("@", { confirm: false });
+    await contains(".o_command_palette_search input").edit("@", {confirm: false});
     await animationFrame();
     expect(".o_command_palette_listbox_empty").toHaveText("Empty @");
 });
@@ -528,7 +546,7 @@ test("footer displays the right tips", async () => {
             namespace: "default",
             provide: () => [],
         },
-        { force: true }
+        {force: true}
     );
 
     commandProviderRegistry.add("@", {
@@ -547,7 +565,7 @@ test("footer displays the right tips", async () => {
     });
 
     commandSetupRegistry.remove("/");
-    commandSetupRegistry.add("default", {}, { force: true });
+    commandSetupRegistry.add("default", {}, {force: true});
     commandSetupRegistry.add("@", {
         name: "FirstName",
     });
@@ -567,7 +585,9 @@ test("footer displays the right tips", async () => {
     // Open palette
     await press(["Control", "k"]);
     await animationFrame();
-    expect(".o_command_palette_footer").toHaveText("TIP — search for @FirstName and !SecondName");
+    expect(".o_command_palette_footer").toHaveText(
+        "TIP — search for @FirstName and !SecondName"
+    );
 
     // Close palette
     await press("escape");
@@ -603,7 +623,7 @@ test("namespaces display in the footer are still clickable", async () => {
         ],
     });
 
-    commandSetupRegistry.add("default", {}, { force: true });
+    commandSetupRegistry.add("default", {}, {force: true});
     commandSetupRegistry.add("@", {
         name: "users",
     });
@@ -615,7 +635,9 @@ test("namespaces display in the footer are still clickable", async () => {
     // Open palette
     await press(["Control", "k"]);
     await animationFrame();
-    expect(".o_command_palette_footer").toHaveText("TIP — search for @users and #channels");
+    expect(".o_command_palette_footer").toHaveText(
+        "TIP — search for @users and #channels"
+    );
     expect(queryAllTexts(".o_command")).toEqual([]);
 
     await contains(".o_command_palette_footer .o_namespace").click();
@@ -624,7 +646,7 @@ test("namespaces display in the footer are still clickable", async () => {
     expect(".o_command_palette_search input").toHaveValue("");
     expect(queryAllTexts(".o_command")).toEqual(["Command@"]);
 
-    await contains(".o_command_palette_search input").edit("Com", { confirm: false });
+    await contains(".o_command_palette_search input").edit("Com", {confirm: false});
     await advanceFrame();
     await contains(".o_command_palette_footer .o_namespace:eq(1)").click();
     await animationFrame();
@@ -705,7 +727,7 @@ test("can switch between command providers", async () => {
     expect(queryAllTexts(".o_command")).toEqual(defaultNames);
 
     // Switch to the other provider
-    await contains(".o_command_palette_search input").edit("@", { confirm: false });
+    await contains(".o_command_palette_search input").edit("@", {confirm: false});
     await advanceFrame();
 
     expect(queryAllTexts(".o_command")).toEqual(otherNames);
@@ -817,7 +839,9 @@ test("multi level commands with hotkey", async () => {
         "Search for a command..."
     );
 
-    expect(queryAllTexts(".o_command")).toEqual([[name, hotkey.toUpperCase()].join("\n")]);
+    expect(queryAllTexts(".o_command")).toEqual([
+        [name, hotkey.toUpperCase()].join("\n"),
+    ]);
 
     await press("a");
     await animationFrame();
@@ -835,10 +859,10 @@ test("command categories", async () => {
 
     // Register some commands
     function action() {}
-    getService("command").add("a", action, { category: "custom-nolabel" });
-    getService("command").add("b", action, { category: "custom" });
+    getService("command").add("a", action, {category: "custom-nolabel"});
+    getService("command").add("b", action, {category: "custom"});
     getService("command").add("c", action);
-    getService("command").add("d", action, { category: "invalid-category" });
+    getService("command").add("d", action, {category: "invalid-category"});
     await animationFrame();
 
     // Open palette
@@ -851,7 +875,7 @@ test("command categories", async () => {
 
 test("data-command-category", async () => {
     class MyComponent extends Component {
-        static components = { TestComponent };
+        static components = {TestComponent};
         static template = xml`
             <div>
             <div>
@@ -875,16 +899,20 @@ test("data-command-category", async () => {
 
     expect(".o_command").toHaveCount(4);
     expect(
-        queryAllTexts(".o_command_category:nth-of-type(1) .o_command > a > div > span:first-child")
+        queryAllTexts(
+            ".o_command_category:nth-of-type(1) .o_command > a > div > span:first-child"
+        )
     ).toEqual(["Robert baratheon", "Joffrey baratheon"]);
     expect(
-        queryAllTexts(".o_command_category:nth-of-type(2) .o_command > a > div > span:first-child")
+        queryAllTexts(
+            ".o_command_category:nth-of-type(2) .o_command > a > div > span:first-child"
+        )
     ).toEqual(["Aria stark", "Bran stark"]);
 });
 
 test("display shortcuts correctly for non-MacOS ", async () => {
     class MyComponent extends Component {
-        static components = { TestComponent };
+        static components = {TestComponent};
         static template = xml`
             <div>
                 <button title="Click" data-hotkey="f">visible</button>
@@ -899,8 +927,8 @@ test("display shortcuts correctly for non-MacOS ", async () => {
     // Register some commands
     function action() {}
     getService("command").add("a", action);
-    getService("command").add("b", action, { hotkey: "alt+b" });
-    getService("command").add("c", action, { hotkey: "c" });
+    getService("command").add("b", action, {hotkey: "alt+b"});
+    getService("command").add("c", action, {hotkey: "c"});
     getService("command").add("d", action, {
         hotkey: "control+d",
     });
@@ -927,7 +955,7 @@ test("display shortcuts correctly for MacOS ", async () => {
     mockUserAgent("mac");
 
     class MyComponent extends Component {
-        static components = { TestComponent };
+        static components = {TestComponent};
         static template = xml`
             <div>
             <button title="Click" data-hotkey="f">visible</button>
@@ -942,8 +970,8 @@ test("display shortcuts correctly for MacOS ", async () => {
     // Register some commands
     function action() {}
     getService("command").add("a", action);
-    getService("command").add("b", action, { hotkey: "alt+b" });
-    getService("command").add("c", action, { hotkey: "c" });
+    getService("command").add("b", action, {hotkey: "alt+b"});
+    getService("command").add("c", action, {hotkey: "c"});
     getService("command").add("d", action, {
         hotkey: "control+d",
     });
@@ -973,7 +1001,7 @@ test("display shortcuts correctly for non-MacOS with a new overlayModifier", asy
     });
 
     class MyComponent extends Component {
-        static components = { TestComponent };
+        static components = {TestComponent};
         static template = xml`
                 <div>
                 <button title="Click" data-hotkey="a">visible</button>
@@ -1000,7 +1028,7 @@ test("display shortcuts correctly for MacOS with a new overlayModifier", async (
     });
 
     class MyComponent extends Component {
-        static components = { TestComponent };
+        static components = {TestComponent};
         static template = xml`
             <div>
             <button title="Click" data-hotkey="a">visible</button>
@@ -1051,7 +1079,7 @@ test("uses openPalette to modify the config used by the command palette", async 
             action,
         },
     ];
-    const providers = [{ provide }];
+    const providers = [{provide}];
     const configCustom = {
         searchValue: "Command",
         providers,
@@ -1092,11 +1120,11 @@ test("ensure that calling openPalette multiple times successfully loads the last
     ];
     const configCustom1 = {
         searchValue: "Command",
-        providers: [{ provide: provide[0] }],
+        providers: [{provide: provide[0]}],
     };
     const configCustom2 = {
         searchValue: "Command",
-        providers: [{ provide: provide[1] }],
+        providers: [{provide: provide[1]}],
     };
 
     getService("command").openPalette(configCustom1);

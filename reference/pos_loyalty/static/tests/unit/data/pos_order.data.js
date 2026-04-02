@@ -1,10 +1,12 @@
-import { patch } from "@web/core/utils/patch";
-import { PosOrder } from "@point_of_sale/../tests/unit/data/pos_order.data";
-import { _t } from "@web/core/l10n/translation";
+import {patch} from "@web/core/utils/patch";
+import {PosOrder} from "@point_of_sale/../tests/unit/data/pos_order.data";
+import {_t} from "@web/core/l10n/translation";
 
 patch(PosOrder.prototype, {
     validate_coupon_programs(self, point_changes) {
-        const couponIdsFromPos = new Set(Object.keys(point_changes).map((id) => parseInt(id)));
+        const couponIdsFromPos = new Set(
+            Object.keys(point_changes).map((id) => parseInt(id))
+        );
 
         const coupons = this.env["loyalty.card"]
             .browse([...couponIdsFromPos])
@@ -32,8 +34,13 @@ patch(PosOrder.prototype, {
                 return {
                     successful: false,
                     payload: {
-                        message: _t("There are not enough points for the coupon: %s.", coupon.code),
-                        updated_points: Object.fromEntries(coupons.map((c) => [c.id, c.points])),
+                        message: _t(
+                            "There are not enough points for the coupon: %s.",
+                            coupon.code
+                        ),
+                        updated_points: Object.fromEntries(
+                            coupons.map((c) => [c.id, c.points])
+                        ),
                     },
                 };
             }
@@ -74,7 +81,9 @@ patch(PosOrder.prototype, {
             couponNewIdMap[oldId] = newCoupon.id;
         }
 
-        const allCoupons = this.env["loyalty.card"].browse(Object.keys(couponNewIdMap).map(Number));
+        const allCoupons = this.env["loyalty.card"].browse(
+            Object.keys(couponNewIdMap).map(Number)
+        );
         for (const coupon of allCoupons) {
             const oldId = couponNewIdMap[coupon.id];
             if (oldId && coupon_data[oldId]) {
@@ -91,12 +100,16 @@ patch(PosOrder.prototype, {
                 program_id: coupon.program_id,
                 partner_id: coupon.partner_id,
             })),
-            program_updates: [...new Set(allCoupons.map((c) => c.program_id))].map((program) => ({
-                program_id: program,
-                usages: this.env["loyalty.program"].browse(program)?.[0]?.total_order_count,
-            })),
+            program_updates: [...new Set(allCoupons.map((c) => c.program_id))].map(
+                (program) => ({
+                    program_id: program,
+                    usages: this.env["loyalty.program"].browse(program)?.[0]
+                        ?.total_order_count,
+                })
+            ),
             new_coupon_info: newCoupons.map((c) => ({
-                program_name: this.env["loyalty.program"].browse(c.program_id)?.[0]?.name || "",
+                program_name:
+                    this.env["loyalty.program"].browse(c.program_id)?.[0]?.name || "",
                 expiration_date: c.expiration_date || false,
                 code: c.code,
             })),

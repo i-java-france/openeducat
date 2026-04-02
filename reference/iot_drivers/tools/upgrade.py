@@ -2,8 +2,10 @@
 
 import logging
 import platform
-import requests
 import subprocess
+
+import requests
+
 from odoo.addons.iot_drivers.tools.helpers import (
     odoo_restart,
     path_file,
@@ -11,7 +13,7 @@ from odoo.addons.iot_drivers.tools.helpers import (
     toggleable,
     unlink_file,
 )
-from odoo.addons.iot_drivers.tools.system import rpi_only, IS_RPI, IS_TEST
+from odoo.addons.iot_drivers.tools.system import IS_RPI, IS_TEST, rpi_only
 
 _logger = logging.getLogger(__name__)
 

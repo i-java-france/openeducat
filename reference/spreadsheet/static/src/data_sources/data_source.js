@@ -1,10 +1,10 @@
 // @ts-check
 
-import { LoadingDataError } from "@spreadsheet/o_spreadsheet/errors";
-import { RPCError } from "@web/core/network/rpc";
-import { KeepLast } from "@web/core/utils/concurrency";
-import { CellErrorType, EvaluationError } from "@odoo/o-spreadsheet";
-import { _t } from "@web/core/l10n/translation";
+import {LoadingDataError} from "@spreadsheet/o_spreadsheet/errors";
+import {RPCError} from "@web/core/network/rpc";
+import {KeepLast} from "@web/core/utils/concurrency";
+import {CellErrorType, EvaluationError} from "@odoo/o-spreadsheet";
+import {_t} from "@web/core/l10n/translation";
 
 /**
  * @typedef {import("./odoo_data_provider").OdooDataProvider} OdooDataProvider
@@ -26,7 +26,7 @@ export class LoadableDataSource {
      * @param {Object} param0
      * @param {OdooDataProvider} param0.odooDataProvider
      */
-    constructor({ odooDataProvider }) {
+    constructor({odooDataProvider}) {
         /** @protected */
         this.odooDataProvider = odooDataProvider;
 
@@ -78,7 +78,9 @@ export class LoadableDataSource {
                         this._isModelValid = false;
                         this._loadError = Object.assign(
                             new EvaluationError(
-                                _t(`The model "%(model)s" does not exist.`, { model: e.message })
+                                _t(`The model "%(model)s" does not exist.`, {
+                                    model: e.message,
+                                })
                             ),
                             {
                                 cause: e,
@@ -87,8 +89,10 @@ export class LoadableDataSource {
                         return;
                     }
                     this._loadError = Object.assign(
-                        new EvaluationError(e instanceof RPCError ? e.data.message : e.message),
-                        { cause: e }
+                        new EvaluationError(
+                            e instanceof RPCError ? e.data.message : e.message
+                        ),
+                        {cause: e}
                     );
                 })
                 .finally(() => {
@@ -123,7 +127,7 @@ export class LoadableDataSource {
         return this.isReady() && this._isModelValid;
     }
 
-    assertIsValid({ throwOnError } = { throwOnError: true }) {
+    assertIsValid({throwOnError} = {throwOnError: true}) {
         if (!this._isFullyLoaded) {
             this.load();
             if (throwOnError) {
@@ -135,7 +139,10 @@ export class LoadableDataSource {
             if (throwOnError) {
                 throw this._loadError;
             }
-            return { value: CellErrorType.GenericError, message: this._loadError.message };
+            return {
+                value: CellErrorType.GenericError,
+                message: this._loadError.message,
+            };
         }
     }
 

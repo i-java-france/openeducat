@@ -1,4 +1,4 @@
-import { PivotRenderer } from "@web/views/pivot/pivot_renderer";
+import {PivotRenderer} from "@web/views/pivot/pivot_renderer";
 
 export const LivechatPivotRendererMixin = (model) =>
     class extends PivotRenderer {
@@ -7,7 +7,7 @@ export const LivechatPivotRendererMixin = (model) =>
                 model,
                 "action_open_discuss_channel_view",
                 [],
-                { domain }
+                {domain}
             );
             this.env.services.action.doAction(action);
         }

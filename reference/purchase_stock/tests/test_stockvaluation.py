@@ -1,19 +1,16 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import time
 from datetime import datetime, timedelta
-from freezegun import freeze_time
 from unittest import skip
-from unittest.mock import patch
 
-import odoo
-from odoo import fields, Command
+from freezegun import freeze_time
+
+from odoo import Command, fields
 from odoo.tests import Form
-from odoo.tests.common import TransactionCase, tagged
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo.tests.common import tagged
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
-from odoo.addons.stock.tests.common import TestStockCommon
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
 @tagged('post_install', '-at_install')

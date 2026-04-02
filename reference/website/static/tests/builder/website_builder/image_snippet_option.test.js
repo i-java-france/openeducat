@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { contains, onRpc, patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {contains, onRpc, patchWithCleanup} from "@web/../tests/web_test_helpers";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
@@ -9,9 +9,9 @@ import {
     getDragHelper,
     waitForEndOfOperation,
 } from "@html_builder/../tests/helpers";
-import { withSequence } from "@html_editor/utils/resource";
-import { Plugin } from "@html_editor/plugin";
-import { BlockTab } from "@html_builder/sidebar/block_tab";
+import {withSequence} from "@html_editor/utils/resource";
+import {Plugin} from "@html_editor/plugin";
+import {BlockTab} from "@html_builder/sidebar/block_tab";
 
 defineWebsiteModels();
 
@@ -27,12 +27,12 @@ test("Drag & drop an 'Image' snippet opens the dialog to select an image", async
         },
     ]);
 
-    const { getEditableContent } = await setupWebsiteBuilder(`<div><p>Text</p></div>`);
+    const {getEditableContent} = await setupWebsiteBuilder(`<div><p>Text</p></div>`);
     const contentEl = getEditableContent();
     expect(contentEl).toHaveInnerHTML(`<div><p>Text</p></div>`);
     expect(".o-website-builder_sidebar .fa-undo").not.toBeEnabled();
 
-    const { moveTo, drop } = await contains(
+    const {moveTo, drop} = await contains(
         ".o-website-builder_sidebar [name='Image'] .o_snippet_thumbnail"
     ).drag();
     expect(":iframe .oe_drop_zone:nth-child(1)").toHaveCount(1);
@@ -57,12 +57,12 @@ test("Drag & drop an 'Image' snippet opens the dialog to select an image", async
 });
 
 test("Drag & drop an 'Image' snippet does not add a step in the history if we cancel the dialog", async () => {
-    const { getEditableContent } = await setupWebsiteBuilder(`<div><p>Text</p></div>`);
+    const {getEditableContent} = await setupWebsiteBuilder(`<div><p>Text</p></div>`);
     const contentEl = getEditableContent();
     expect(contentEl).toHaveInnerHTML(`<div><p>Text</p></div>`);
     expect(".o-website-builder_sidebar .fa-undo").not.toBeEnabled();
 
-    const { moveTo, drop } = await contains(
+    const {moveTo, drop} = await contains(
         ".o-website-builder_sidebar [name='Image'] .o_snippet_thumbnail"
     ).drag();
     expect(":iframe .oe_drop_zone:nth-child(1)").toHaveCount(1);
@@ -89,7 +89,7 @@ test("Check that all the `on_snippet_dropped_handlers` work with the correct sni
     class AddClassOnSnippetDroppedPlugin extends Plugin {
         static id = "AddClassOnSnippetDroppedPlugin";
         resources = {
-            on_snippet_dropped_handlers: withSequence(30, ({ snippetEl }) => {
+            on_snippet_dropped_handlers: withSequence(30, ({snippetEl}) => {
                 snippetEl.classList.add("snippet-added");
             }),
         };
@@ -112,8 +112,8 @@ test("Check that all the `on_snippet_dropped_handlers` work with the correct sni
         },
     ]);
 
-    const { waitSidebarUpdated } = await setupWebsiteBuilder(`<div><p>Text</p></div>`);
-    const { moveTo, drop } = await contains(
+    const {waitSidebarUpdated} = await setupWebsiteBuilder(`<div><p>Text</p></div>`);
+    const {moveTo, drop} = await contains(
         ".o-website-builder_sidebar [name='Image'] .o_snippet_thumbnail"
     ).drag();
     await moveTo(":iframe .oe_drop_zone");

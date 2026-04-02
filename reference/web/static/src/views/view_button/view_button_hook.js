@@ -1,8 +1,8 @@
-import { useService } from "@web/core/utils/hooks";
-import { evaluateExpr } from "@web/core/py_js/py";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import {useService} from "@web/core/utils/hooks";
+import {evaluateExpr} from "@web/core/py_js/py";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
 
-import { status, useComponent, useEnv, useSubEnv } from "@odoo/owl";
+import {status, useComponent, useEnv, useSubEnv} from "@odoo/owl";
 
 export async function executeButtonCallback(el, fct) {
     let btns = [];
@@ -54,7 +54,7 @@ export function useViewButtons(ref, options = {}) {
     const comp = useComponent();
     const env = useEnv();
     useSubEnv({
-        async onClickViewButton({ clickParams, getResParams, beforeExecute, newWindow }) {
+        async onClickViewButton({clickParams, getResParams, beforeExecute, newWindow}) {
             async function execute() {
                 let _continue = true;
                 if (beforeExecute) {
@@ -62,7 +62,8 @@ export function useViewButtons(ref, options = {}) {
                 }
 
                 _continue =
-                    _continue && undefinedAsTrue(await options.beforeExecuteAction?.(clickParams));
+                    _continue &&
+                    undefinedAsTrue(await options.beforeExecuteAction?.(clickParams));
                 if (!_continue) {
                     return;
                 }
@@ -72,7 +73,10 @@ export function useViewButtons(ref, options = {}) {
                 let buttonContext = {};
                 if (clickParams.context) {
                     if (typeof clickParams.context === "string") {
-                        buttonContext = evaluateExpr(clickParams.context, params.evalContext);
+                        buttonContext = evaluateExpr(
+                            clickParams.context,
+                            params.evalContext
+                        );
                     } else {
                         buttonContext = clickParams.context;
                     }
@@ -98,7 +102,7 @@ export function useViewButtons(ref, options = {}) {
                 });
                 let error;
                 try {
-                    await action.doActionButton(doActionParams, { newWindow });
+                    await action.doActionButton(doActionParams, {newWindow});
                 } catch (_e) {
                     error = _e;
                 }
@@ -128,7 +132,7 @@ export function useViewButtons(ref, options = {}) {
                             confirm: () => execute(),
                             cancel: () => {},
                         };
-                        dialog.add(ConfirmationDialog, dialogProps, { onClose: resolve });
+                        dialog.add(ConfirmationDialog, dialogProps, {onClose: resolve});
                     });
                 });
             } else {

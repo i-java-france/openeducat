@@ -2,12 +2,12 @@
 
 import logging
 import time
-
 from datetime import date
-from odoo.tests.common import TransactionCase, tagged
+
+import pytz
 
 from odoo import fields
-import pytz
+from odoo.tests.common import TransactionCase, tagged
 
 _logger = logging.getLogger(__name__)
 

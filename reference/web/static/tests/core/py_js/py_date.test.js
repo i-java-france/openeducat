@@ -1,8 +1,8 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { mockDate } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {mockDate} from "@odoo/hoot-mock";
 
-import { evaluateExpr } from "@web/core/py_js/py";
-import { PyDate, PyTimeDelta } from "@web/core/py_js/py_date";
+import {evaluateExpr} from "@web/core/py_js/py";
+import {PyDate, PyTimeDelta} from "@web/core/py_js/py_date";
 
 const check = (expr, fn) => {
     const d0 = new Date();
@@ -33,7 +33,10 @@ describe("time", () => {
     test("strftime", () => {
         expect(check("time.strftime('%Y')", (d) => String(d.getFullYear()))).toBe(true);
         expect(
-            check("time.strftime('%Y') + '-01-30'", (d) => String(d.getFullYear()) + "-01-30")
+            check(
+                "time.strftime('%Y') + '-01-30'",
+                (d) => String(d.getFullYear()) + "-01-30"
+            )
         ).toBe(true);
         expect(check("time.strftime('%Y-%m-%d %H:%M:%S')", formatDateTime)).toBe(true);
     });
@@ -41,12 +44,20 @@ describe("time", () => {
 
 describe("datetime.datetime", () => {
     test("datetime.datetime.now", () => {
-        expect(check("datetime.datetime.now().year", (d) => d.getFullYear())).toBe(true);
-        expect(check("datetime.datetime.now().month", (d) => d.getMonth() + 1)).toBe(true);
+        expect(check("datetime.datetime.now().year", (d) => d.getFullYear())).toBe(
+            true
+        );
+        expect(check("datetime.datetime.now().month", (d) => d.getMonth() + 1)).toBe(
+            true
+        );
         expect(check("datetime.datetime.now().day", (d) => d.getDate())).toBe(true);
         expect(check("datetime.datetime.now().hour", (d) => d.getHours())).toBe(true);
-        expect(check("datetime.datetime.now().minute", (d) => d.getMinutes())).toBe(true);
-        expect(check("datetime.datetime.now().second", (d) => d.getSeconds())).toBe(true);
+        expect(check("datetime.datetime.now().minute", (d) => d.getMinutes())).toBe(
+            true
+        );
+        expect(check("datetime.datetime.now().second", (d) => d.getSeconds())).toBe(
+            true
+        );
     });
 
     test("various operations", () => {
@@ -62,7 +73,8 @@ describe("datetime.datetime", () => {
     test("to_utc", () => {
         mockDate("2021-09-17 10:00:00", +6);
 
-        const expr = "datetime.datetime.combine(context_today(), datetime.time(0,0,0)).to_utc()";
+        const expr =
+            "datetime.datetime.combine(context_today(), datetime.time(0,0,0)).to_utc()";
 
         expect(JSON.stringify(evaluateExpr(expr))).toBe(`"2021-09-16 18:00:00"`);
     });
@@ -86,7 +98,9 @@ describe("datetime.datetime", () => {
 
     test("datetime.datetime.toJSON", () => {
         expect(
-            JSON.stringify(evaluateExpr("datetime.datetime(day=3,month=4,year=2001,hour=10)"))
+            JSON.stringify(
+                evaluateExpr("datetime.datetime(day=3,month=4,year=2001,hour=10)")
+            )
         ).toBe(`"2001-04-03 10:00:00"`);
     });
 
@@ -128,7 +142,9 @@ describe("datetime.datetime", () => {
 
 describe("datetime.date", () => {
     test("datetime.date.today", () => {
-        expect(check("(datetime.date.today()).strftime('%Y-%m-%d')", formatDate)).toBe(true);
+        expect(check("(datetime.date.today()).strftime('%Y-%m-%d')", formatDate)).toBe(
+            true
+        );
     });
 
     test("various operations", () => {
@@ -139,9 +155,9 @@ describe("datetime.date", () => {
     });
 
     test("datetime.date.toJSON", () => {
-        expect(JSON.stringify(evaluateExpr("datetime.date(year=1997,month=5,day=18)"))).toBe(
-            `"1997-05-18"`
-        );
+        expect(
+            JSON.stringify(evaluateExpr("datetime.date(year=1997,month=5,day=18)"))
+        ).toBe(`"1997-05-18"`);
     });
 
     test("basic operations with dates", function () {
@@ -158,8 +174,8 @@ describe("datetime.date", () => {
 
         ctx = {
             a: PyDate.create(2002, 3, 2),
-            day: PyTimeDelta.create({ days: 1 }),
-            week: PyTimeDelta.create({ days: 7 }),
+            day: PyTimeDelta.create({days: 1}),
+            week: PyTimeDelta.create({days: 7}),
             date: PyDate,
         };
 
@@ -180,7 +196,7 @@ describe("datetime.date", () => {
         expect(evaluateExpr("a - (a - week) == week", ctx)).toBe(true);
         expect(evaluateExpr("a - (a - day) == day", ctx)).toBe(true);
 
-        // expect(() => evaluateExpr("a + 1", ctx)).toThrow(/^Error: TypeError:/); //20
+        // Expect(() => evaluateExpr("a + 1", ctx)).toThrow(/^Error: TypeError:/); //20
         // expect(() => evaluateExpr("a - 1", ctx)).toThrow(/^Error: TypeError:/);
         // expect(() => evaluateExpr("1 + a", ctx)).toThrow(/^Error: TypeError:/);
         // expect(() => evaluateExpr("1 - a", ctx)).toThrow(/^Error: TypeError:/);
@@ -217,9 +233,9 @@ describe("datetime.time", () => {
     });
 
     test("datetime.time.toJSON", () => {
-        expect(JSON.stringify(evaluateExpr("datetime.time(hour=11,minute=45,second=15)"))).toBe(
-            `"11:45:15"`
-        );
+        expect(
+            JSON.stringify(evaluateExpr("datetime.time(hour=11,minute=45,second=15)"))
+        ).toBe(`"11:45:15"`);
     });
 });
 
@@ -333,7 +349,8 @@ describe("relativedelta absolute : period is singular", () => {
     });
 
     test("type of date + relative delta", () => {
-        const expr1 = "(datetime.date(2021,10,1) + relativedelta(day=15,days=3,hours=24))";
+        const expr1 =
+            "(datetime.date(2021,10,1) + relativedelta(day=15,days=3,hours=24))";
         expect(evaluateExpr(expr1)).toBeInstanceOf(PyDate);
     });
 });

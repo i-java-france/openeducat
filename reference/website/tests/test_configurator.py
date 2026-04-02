@@ -4,6 +4,7 @@ from unittest.mock import patch
 
 import odoo.tests
 
+
 class TestConfiguratorCommon(odoo.tests.HttpCase):
 
     def _theme_upgrade_upstream(self):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models
@@ -15,7 +14,7 @@ class MailActivity(models.Model):
         view.
         e.g: It will set the partner_id of the crm.lead as default attendee of the meeting. """
 
-        action = super(MailActivity, self).action_create_calendar_event()
+        action = super().action_create_calendar_event()
         opportunity = self.calendar_event_id.opportunity_id
         if opportunity:
             opportunity_action_context = opportunity.action_schedule_meeting(smart_calendar=False).get('context', {})

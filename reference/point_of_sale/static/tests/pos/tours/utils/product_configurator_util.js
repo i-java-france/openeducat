@@ -37,7 +37,7 @@ export function pickSelect(name) {
         {
             content: `picking select attribute with name ${name}`,
             trigger: `.modal .configurator_select:has(option:contains('${name}'))`,
-            run: ({ queryAll }) => {
+            run: ({queryAll}) => {
                 const selects = queryAll`.modal .configurator_select`;
                 for (const select of selects) {
                     const option = Array.from(select.options).find(
@@ -46,7 +46,7 @@ export function pickSelect(name) {
                     if (option) {
                         select.value = option.value;
                         // Manually trigger change event
-                        select.dispatchEvent(new Event("change", { bubbles: true }));
+                        select.dispatchEvent(new Event("change", {bubbles: true}));
                         return;
                     }
                 }
@@ -61,7 +61,7 @@ export function selectedSelect(name) {
         {
             content: `check selected value for select containing option "${name}"`,
             trigger: `.modal .configurator_select:has(option:contains(${name}))`,
-            run: ({ queryAll }) => {
+            run: ({queryAll}) => {
                 const selects = queryAll`.modal .configurator_select:has(option:contains(${name}))`;
                 for (const select of selects) {
                     const selected = select.options[select.selectedIndex];
@@ -108,7 +108,7 @@ export function selectedCustomAttribute(value) {
             content: `checking selected custom attribute with value "${value}"`,
             // trigger: `.modal .custom_value:contains('${value}')`,
             trigger: `.modal .custom_value`,
-            run: ({ queryAll }) => {
+            run: ({queryAll}) => {
                 const inputs = queryAll(".modal .custom_value");
                 for (const input of inputs) {
                     const actual = input.value?.trim();
@@ -127,9 +127,12 @@ export function numberRadioOptions(number) {
         {
             trigger: `.attribute-name-cell`,
             run: () => {
-                const radio_options = document.querySelectorAll(".attribute-name-cell").length;
+                const radio_options =
+                    document.querySelectorAll(".attribute-name-cell").length;
                 if (radio_options !== number) {
-                    throw new Error(`Expected ${number} radio options, got ${radio_options}`);
+                    throw new Error(
+                        `Expected ${number} radio options, got ${radio_options}`
+                    );
                 }
             },
         },

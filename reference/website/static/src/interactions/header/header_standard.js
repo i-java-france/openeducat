@@ -1,5 +1,5 @@
-import { BaseHeader } from "@website/interactions/header/base_header";
-import { registry } from "@web/core/registry";
+import {BaseHeader} from "@website/interactions/header/base_header";
+import {registry} from "@web/core/registry";
 
 export class HeaderStandard extends BaseHeader {
     static selector = "header.o_header_standard:not(.o_header_sidebar)";
@@ -68,8 +68,8 @@ export class HeaderStandard extends BaseHeader {
         reachTransitionPoint
             ? this.transformShow()
             : reachHeaderBottom
-            ? this.transformHide()
-            : this.transformShow();
+              ? this.transformHide()
+              : this.transformShow();
         void this.el.offsetWidth; // Force a paint refresh
 
         this.hideEl?.classList.toggle("hidden", reachHeaderBottom);

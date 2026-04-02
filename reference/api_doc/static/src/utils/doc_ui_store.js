@@ -1,4 +1,4 @@
-import { useEnv, useExternalListener, useState, useSubEnv } from "@odoo/owl";
+import {useEnv, useExternalListener, useState, useSubEnv} from "@odoo/owl";
 
 function isSmall() {
     return window.innerWidth < 960;
@@ -14,7 +14,7 @@ export function useDocUI() {
         size: window.innerWidth,
     });
 
-    useSubEnv({ ui });
+    useSubEnv({ui});
     useExternalListener(window, "resize", () => {
         ui.size = window.innerWidth;
         ui.isSmall = isSmall();

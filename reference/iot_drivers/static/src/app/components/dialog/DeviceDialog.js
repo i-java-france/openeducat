@@ -1,9 +1,9 @@
 /* global owl */
 
 import useStore from "../../hooks/useStore.js";
-import { BootstrapDialog } from "./BootstrapDialog.js";
+import {BootstrapDialog} from "./BootstrapDialog.js";
 
-const { Component, xml } = owl;
+const {Component, xml} = owl;
 
 export const DEVICE_ICONS = {
     camera: "fa-camera",
@@ -28,7 +28,7 @@ export const CONNECTION_ICONS = {
 
 export class DeviceDialog extends Component {
     static props = {};
-    static components = { BootstrapDialog };
+    static components = {BootstrapDialog};
 
     setup() {
         this.store = useStore();

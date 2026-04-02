@@ -18,13 +18,12 @@
 var dw, dh, rw, rh, lx, ly;
 
 var defaults = {
-
     // Attribute to retrieve the zoom image URL from.
-    linkTag: 'a',
-    linkAttribute: 'data-zoom-image',
+    linkTag: "a",
+    linkAttribute: "data-zoom-image",
 
-    // event to trigger zoom
-    event: 'click', //or mouseenter
+    // Event to trigger zoom
+    event: "click", // Or mouseenter
 
     // Timer before trigger zoom
     timer: 0,
@@ -32,7 +31,7 @@ var defaults = {
     // Prevent clicks on the zoom image link.
     preventClicks: true,
 
-    // disable on mobile
+    // Disable on mobile
     disabledOnMobile: true,
 
     // Callback function to execute before the flyout is displayed.
@@ -51,13 +50,12 @@ var defaults = {
     onMove: $.noop,
 
     // Callback function to execute when the flyout is attached to the target.
-    beforeAttach: $.noop
-
+    beforeAttach: $.noop,
 };
 
 /**
  * ZoomOdoo
- * @constructor
+ * @class
  * @param {Object} target
  * @param {Object} options (Optional)
  */
@@ -76,23 +74,43 @@ function ZoomOdoo(target, options) {
  */
 ZoomOdoo.prototype._init = function () {
     if (window.outerWidth > 467 || !this.opts.disabledOnMobile) {
-        this.$link  = this.$target.find(this.opts.linkTag).length && this.$target.find(this.opts.linkTag) || this.$target;
-        this.$image  = this.$target.find('img').length && this.$target.find('img') || this.$target;
+        this.$link =
+            (this.$target.find(this.opts.linkTag).length &&
+                this.$target.find(this.opts.linkTag)) ||
+            this.$target;
+        this.$image =
+            (this.$target.find("img").length && this.$target.find("img")) ||
+            this.$target;
         this.$flyout = $('<div class="zoomodoo-flyout" />');
 
         var $attach = this.$target;
-        if (this.opts.attach !== undefined && this.$target.closest(this.opts.attach).length) {
+        if (
+            this.opts.attach !== undefined &&
+            this.$target.closest(this.opts.attach).length
+        ) {
             $attach = this.$target.closest(this.opts.attach);
         }
-        $attach.parent().on('mousemove.zoomodoo touchmove.zoomodoo', $.proxy(this._onMove, this));
-        $attach.parent().on('mouseleave.zoomodoo touchend.zoomodoo', $.proxy(this._onLeave, this));
-        this.$target.on(this.opts.event + '.zoomodoo touchstart.zoomodoo', $.proxy(this._onEnter, this));
+        $attach
+            .parent()
+            .on("mousemove.zoomodoo touchmove.zoomodoo", $.proxy(this._onMove, this));
+        $attach
+            .parent()
+            .on("mouseleave.zoomodoo touchend.zoomodoo", $.proxy(this._onLeave, this));
+        this.$target.on(
+            this.opts.event + ".zoomodoo touchstart.zoomodoo",
+            $.proxy(this._onEnter, this)
+        );
 
         if (this.opts.preventClicks) {
-            this.$target.on('click.zoomodoo', function (e) { e.preventDefault(); });
+            this.$target.on("click.zoomodoo", function (e) {
+                e.preventDefault();
+            });
         } else {
             var self = this;
-            this.$target.on('click.zoomodoo', function () { self.hide(); self.$target.unbind(); });
+            this.$target.on("click.zoomodoo", function () {
+                self.hide();
+                self.$target.unbind();
+            });
         }
     }
 };
@@ -117,13 +135,16 @@ ZoomOdoo.prototype.show = function (e, testMouseOver) {
     }
 
     var $attach = this.$target;
-    if (this.opts.attach !== undefined && this.$target.closest(this.opts.attach).length) {
+    if (
+        this.opts.attach !== undefined &&
+        this.$target.closest(this.opts.attach).length
+    ) {
         $attach = this.$target.closest(this.opts.attach);
     }
 
     // Prevents having multiple zoom flyouts
-    $attach.parent().find('.zoomodoo-flyout').remove();
-    this.$flyout.removeAttr('style');
+    $attach.parent().find(".zoomodoo-flyout").remove();
+    this.$flyout.removeAttr("style");
     $attach.parent().append(this.$flyout);
 
     if (this.opts.attachToTarget) {
@@ -131,22 +152,22 @@ ZoomOdoo.prototype.show = function (e, testMouseOver) {
 
         // Be sure that the flyout is at top 0, left 0 to ensure correct computation
         // e.g. employees kanban on dashboard
-        this.$flyout.css('position', 'fixed');
+        this.$flyout.css("position", "fixed");
         var flyoutOffset = this.$flyout.offset();
         if (flyoutOffset.left > 0) {
-            var flyoutLeft = parseFloat(this.$flyout.css('left').replace('px',''));
-            this.$flyout.css('left', flyoutLeft - flyoutOffset.left + 'px');
+            var flyoutLeft = parseFloat(this.$flyout.css("left").replace("px", ""));
+            this.$flyout.css("left", flyoutLeft - flyoutOffset.left + "px");
         }
         if (flyoutOffset.top > 0) {
-            var flyoutTop = parseFloat(this.$flyout.css('top').replace('px',''));
-            this.$flyout.css('top', flyoutTop - flyoutOffset.top + 'px');
+            var flyoutTop = parseFloat(this.$flyout.css("top").replace("px", ""));
+            this.$flyout.css("top", flyoutTop - flyoutOffset.top + "px");
         }
 
-        if(this.$zoom.height() < this.$flyout.height()) {
-             this.$flyout.css('height', this.$zoom.height() + 'px');
+        if (this.$zoom.height() < this.$flyout.height()) {
+            this.$flyout.css("height", this.$zoom.height() + "px");
         }
-        if(this.$zoom.width() < this.$flyout.width()) {
-             this.$flyout.css('width', this.$zoom.width() + 'px');
+        if (this.$zoom.width() < this.$flyout.width()) {
+            this.$flyout.css("width", this.$zoom.width() + "px");
         }
 
         var offset = this.$target.offset();
@@ -155,8 +176,8 @@ ZoomOdoo.prototype.show = function (e, testMouseOver) {
 
         // Position the zoom on the right side of the target
         // if there's not enough room on the left
-        if(left < 0) {
-            if(offset.left < ($(document).width() / 2)) {
+        if (left < 0) {
+            if (offset.left < $(document).width() / 2) {
                 left = offset.left + this.$target.width();
             } else {
                 left = 0;
@@ -164,23 +185,28 @@ ZoomOdoo.prototype.show = function (e, testMouseOver) {
         }
 
         // Prevents the flyout to overflow
-        if(left + this.$flyout.width() > $(document).width()) {
-            this.$flyout.css('width',  $(document).width() - left + 'px');
-        } else if(left === 0) { // Limit the max width if displayed on the left
-            this.$flyout.css('width', offset.left + 'px');
+        if (left + this.$flyout.width() > $(document).width()) {
+            this.$flyout.css("width", $(document).width() - left + "px");
+        } else if (left === 0) {
+            // Limit the max width if displayed on the left
+            this.$flyout.css("width", offset.left + "px");
         }
 
         // Prevents the zoom to be displayed outside the current viewport
-        if((top + this.$flyout.height()) > $(document).height()) {
+        if (top + this.$flyout.height() > $(document).height()) {
             top = $(document).height() - this.$flyout.height();
         }
 
-        this.$flyout.css('transform', 'translate3d(' + left + 'px, ' + top + 'px, 0px)');
+        this.$flyout.css(
+            "transform",
+            "translate3d(" + left + "px, " + top + "px, 0px)"
+        );
     } else {
         // Computing flyout max-width depending to the available space on the right to avoid overflow-x issues
         // e.g. width too high so a right zoomed element is not visible (need to scroll on x axis)
-        var rightAvailableSpace = document.body.clientWidth - this.$flyout[0].getBoundingClientRect().left;
-        this.$flyout.css('max-width', rightAvailableSpace);
+        var rightAvailableSpace =
+            document.body.clientWidth - this.$flyout[0].getBoundingClientRect().left;
+        this.$flyout.css("max-width", rightAvailableSpace);
     }
 
     w1 = this.$target[0].offsetWidth;
@@ -224,8 +250,7 @@ ZoomOdoo.prototype._onEnter = function (e) {
         if (self.isMouseOver && (!touches || touches.length === 1)) {
             self.show(e, true);
         }
-      }, this.opts.timer);
-
+    }, this.opts.timer);
 };
 
 /**
@@ -278,9 +303,9 @@ ZoomOdoo.prototype._onLoad = function (e) {
 ZoomOdoo.prototype._loadImage = function (href, callback) {
     var zoom = new Image();
 
-    this.$zoom = $(zoom).on('load', callback, $.proxy(this._onLoad, this));
+    this.$zoom = $(zoom).on("load", callback, $.proxy(this._onLoad, this));
 
-    zoom.style.position = 'absolute';
+    zoom.style.position = "absolute";
     zoom.src = href;
 };
 
@@ -290,7 +315,7 @@ ZoomOdoo.prototype._loadImage = function (href, callback) {
  * @param {Event} e
  */
 ZoomOdoo.prototype._move = function (e) {
-    if (e.type.indexOf('touch') === 0) {
+    if (e.type.indexOf("touch") === 0) {
         var touchlist = e.touches || e.originalEvent.touches;
         lx = touchlist[0].pageX;
         ly = touchlist[0].pageY;
@@ -299,14 +324,21 @@ ZoomOdoo.prototype._move = function (e) {
         ly = e.pageY || ly;
     }
 
-    var offset  = this.$target.offset();
+    var offset = this.$target.offset();
     var pt = ly - offset.top;
     var pl = lx - offset.left;
     var xt = Math.ceil(pt * rh);
     var xl = Math.ceil(pl * rw);
 
     // Close if outside
-    if (!this.opts.attachToTarget && (xl < 0 || xt < 0 || xl > dw || xt > dh || lx > (offset.left + this.$target.outerWidth()))) {
+    if (
+        !this.opts.attachToTarget &&
+        (xl < 0 ||
+            xt < 0 ||
+            xl > dw ||
+            xt > dh ||
+            lx > offset.left + this.$target.outerWidth())
+    ) {
         this.hide();
     } else {
         var top = xt * -1;
@@ -314,12 +346,11 @@ ZoomOdoo.prototype._move = function (e) {
 
         this.$zoom.css({
             top: top,
-            left: left
+            left: left,
         });
 
         this.opts.onMove.call(this, top, left);
     }
-
 };
 
 /**
@@ -335,13 +366,13 @@ ZoomOdoo.prototype.hide = function () {
     this.opts.onHide.call(this);
 };
 
-// jQuery plugin wrapper
+// JQuery plugin wrapper
 $.fn.zoomOdoo = function (options) {
     return this.each(function () {
-        var api = $.data(this, 'zoomOdoo');
+        var api = $.data(this, "zoomOdoo");
 
         if (!api) {
-            $.data(this, 'zoomOdoo', new ZoomOdoo(this, options));
+            $.data(this, "zoomOdoo", new ZoomOdoo(this, options));
         } else if (api.isOpen === undefined) {
             api._init();
         }

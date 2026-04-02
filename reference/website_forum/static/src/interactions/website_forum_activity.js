@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { Interaction } from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
 
 export class WebsiteProfileForumActivity extends Interaction {
     static selector = ".o_wprofile_forum_activity";
@@ -12,10 +12,10 @@ export class WebsiteProfileForumActivity extends Interaction {
                 ),
         },
         ".o_wprofile_forum_activity_search_question": {
-            "t-att-class": () => ({ "d-none": this.activeTab !== "question" }),
+            "t-att-class": () => ({"d-none": this.activeTab !== "question"}),
         },
         ".o_wprofile_forum_activity_search_answer": {
-            "t-att-class": () => ({ "d-none": this.activeTab !== "answer" }),
+            "t-att-class": () => ({"d-none": this.activeTab !== "answer"}),
         },
         ".o_wprofile_forum_activity_filter_label": {
             "t-out": () => this.activeTabLabel,

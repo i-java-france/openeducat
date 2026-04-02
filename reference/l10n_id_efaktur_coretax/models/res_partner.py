@@ -1,7 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+
 from odoo.addons.l10n_id_efaktur_coretax.models.account_move import TAX_TRANSACTION_CODE
+
 
 class Partner(models.Model):
     _inherit = "res.partner"

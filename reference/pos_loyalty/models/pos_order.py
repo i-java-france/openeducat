@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import base64
 from collections import defaultdict
+
 from odoo import _, models
 from odoo.tools import float_compare
-import base64
 
 
 class PosOrder(models.Model):
@@ -108,7 +108,7 @@ class PosOrder(models.Model):
         new_coupons = self.env['loyalty.card'].with_context(action_no_send_mail=True).sudo().create(coupon_create_vals)
 
         # Map the newly created coupons
-        for old_id, new_id in zip(coupons_to_create.keys(), new_coupons):
+        for old_id, new_id in zip(coupons_to_create.keys(), new_coupons, strict=False):
             coupon_new_id_map[new_id.id] = old_id
 
         # We need a sudo here because this can trigger `_compute_order_count` that require access to `sale.order.line`
@@ -271,7 +271,7 @@ class PosOrder(models.Model):
             coupon_data.pop(item)
 
     def _get_fields_for_order_line(self):
-        fields = super(PosOrder, self)._get_fields_for_order_line()
+        fields = super()._get_fields_for_order_line()
         fields.extend(['is_reward_line', 'reward_id', 'coupon_id', 'reward_identifier_code', 'points_cost'])
         return fields
 

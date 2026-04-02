@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { EventBus } from "@website/utils/misc";
+import {registry} from "@web/core/registry";
+import {EventBus} from "@website/utils/misc";
 
 export const websiteCookiesService = {
     dependencies: ["public.interactions"],
@@ -24,7 +24,7 @@ export const websiteCookiesService = {
             }
         }
 
-        return { bus, manageIframeSrc };
+        return {bus, manageIframeSrc};
     },
 };
 

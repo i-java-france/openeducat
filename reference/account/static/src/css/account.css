@@ -1,23 +1,23 @@
 .openerp div.oe_account_help {
-    background : #D6EBFF;
+    background: #d6ebff;
     width: 100%;
     padding: 10px;
-    border: 3px solid #C1D4E6;
+    border: 3px solid #c1d4e6;
 }
 
-.openerp p.oe_account_font_help{
+.openerp p.oe_account_font_help {
     text-align: left;
     font-weight: bold;
     margin: 0px;
     font-size: 14px;
 }
 
-.openerp p.oe_account_font_content{
+.openerp p.oe_account_font_content {
     margin-left: 30px;
     font-size: 14px;
 }
 
-.openerp p.oe_account_font_title{
+.openerp p.oe_account_font_title {
     margin-top: 7px;
     font-size: 15px;
     font-style: italic;
@@ -73,6 +73,6 @@
     }
 }
 
-.o_account_move_form_view .o_cell:has(>div[name="journal_div"]:empty) {
+.o_account_move_form_view .o_cell:has(> div[name="journal_div"]:empty) {
     display: none !important;
 }

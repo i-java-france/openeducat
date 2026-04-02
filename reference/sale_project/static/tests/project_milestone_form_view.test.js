@@ -1,8 +1,8 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { queryFirst } from "@odoo/hoot-dom";
-import { defineModels, mountView } from "@web/../tests/web_test_helpers";
-import { defineProjectModels } from "@project/../tests/project_models";
-import { ProductProduct, ProjectMilestone, SaleOrderLine } from "./project_task_model"
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {queryFirst} from "@odoo/hoot-dom";
+import {defineModels, mountView} from "@web/../tests/web_test_helpers";
+import {defineProjectModels} from "@project/../tests/project_models";
+import {ProductProduct, ProjectMilestone, SaleOrderLine} from "./project_task_model";
 
 describe.current.tags("desktop");
 defineModels([SaleOrderLine, ProductProduct]);
@@ -10,9 +10,9 @@ defineProjectModels();
 
 beforeEach(() => {
     ProjectMilestone._records = [
-        { id: 1, product_uom_qty: -1, quantity_percentage: -25 },
-        { id: 2, product_uom_qty: 5, quantity_percentage: 125 },
-        { id: 3, product_uom_qty: 2, quantity_percentage: 0.02 },
+        {id: 1, product_uom_qty: -1, quantity_percentage: -25},
+        {id: 2, product_uom_qty: 5, quantity_percentage: 125},
+        {id: 3, product_uom_qty: 2, quantity_percentage: 0.02},
     ];
 });
 
@@ -29,15 +29,15 @@ const mountViewParams = {
 
 /**
  * Helper function to mount the view and test if an element has the `text-danger` class.
- * @param {number} resId.
- * @param {boolean} shouldHaveClass.
+ * @param {Number} resId.
+ * @param {Boolean} shouldHaveClass.
  */
 async function _testElementClass(resId, shouldHaveClass) {
     mountViewParams.resId = resId;
     await mountView(mountViewParams);
 
-    const quantityElement = queryFirst('#quantity_percentage_0').parentElement;
-    const productUomQtyElement = queryFirst('#product_uom_qty_0').parentElement;
+    const quantityElement = queryFirst("#quantity_percentage_0").parentElement;
+    const productUomQtyElement = queryFirst("#product_uom_qty_0").parentElement;
 
     if (shouldHaveClass) {
         expect(quantityElement).toHaveClass("text-danger");

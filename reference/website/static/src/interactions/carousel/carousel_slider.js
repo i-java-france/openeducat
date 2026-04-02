@@ -1,7 +1,7 @@
-import { Interaction } from "@web/public/interaction";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { registry } from "@web/core/registry";
-import { onceAllImagesLoaded } from "@website/utils/images";
+import {Interaction} from "@web/public/interaction";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {registry} from "@web/core/registry";
+import {onceAllImagesLoaded} from "@website/utils/images";
 
 export class CarouselSlider extends Interaction {
     static selector = ".carousel";
@@ -21,16 +21,22 @@ export class CarouselSlider extends Interaction {
                 "min-height": this.maxHeight ? `${this.maxHeight}px` : "",
             }),
         },
-        ".slide-link": { "t-att-class": () => ({ "d-none": !this.showClickableSlideLinks }) },
+        ".slide-link": {
+            "t-att-class": () => ({"d-none": !this.showClickableSlideLinks}),
+        },
         ".carousel-indicators button, .carousel-indicators li": {
             "t-on-pointerdown": (ev) => {
-                const toLoadEl = this.carouselItemEls.at(ev.currentTarget.dataset.bsSlideTo);
+                const toLoadEl = this.carouselItemEls.at(
+                    ev.currentTarget.dataset.bsSlideTo
+                );
                 this.prefetchImages([toLoadEl]);
             },
             "t-on-keydown": (ev) => {
                 const hotkey = getActiveHotkey(ev);
                 if (["space", "enter"].includes(hotkey)) {
-                    const toLoadEl = this.carouselItemEls.at(ev.currentTarget.dataset.bsSlideTo);
+                    const toLoadEl = this.carouselItemEls.at(
+                        ev.currentTarget.dataset.bsSlideTo
+                    );
                     this.prefetchImages([toLoadEl]);
                 }
             },
@@ -43,15 +49,19 @@ export class CarouselSlider extends Interaction {
         this.maxHeight = undefined;
         this.carouselInnerEl = this.el.querySelector(".carousel-inner");
         if (this.carouselInnerEl) {
-            this.carouselItemEls = [...this.carouselInnerEl.querySelectorAll(".carousel-item")];
+            this.carouselItemEls = [
+                ...this.carouselInnerEl.querySelectorAll(".carousel-item"),
+            ];
         }
 
-        this.hasInterval = ![undefined, "false", "0"].includes(this.el.dataset.bsInterval);
+        this.hasInterval = ![undefined, "false", "0"].includes(
+            this.el.dataset.bsInterval
+        );
         if (!["true", "carousel", "false"].includes(this.el.dataset.bsRide)) {
             this.el.dataset.bsRide = this.hasInterval ? "carousel" : "false";
         }
         if (this.el.dataset.bsRide === "false") {
-            window.Carousel.getOrCreateInstance(this.el, { ride: false, pause: true });
+            window.Carousel.getOrCreateInstance(this.el, {ride: false, pause: true});
         } else if (!this.hasInterval) {
             this.el.dataset.bsInterval = "1000";
         }
@@ -60,7 +70,10 @@ export class CarouselSlider extends Interaction {
     start() {
         this.computeMaxHeight();
         this.updateContent();
-        const carouselBS = window.Carousel.getOrCreateInstance(this.el, this.carouselOptions);
+        const carouselBS = window.Carousel.getOrCreateInstance(
+            this.el,
+            this.carouselOptions
+        );
         this.registerCleanup(() => carouselBS.dispose());
 
         const itemWidth = getComputedStyle(this.el).getPropertyValue(
@@ -68,7 +81,9 @@ export class CarouselSlider extends Interaction {
         );
         const itemsPerSlide = itemWidth ? Math.round(100 / parseFloat(itemWidth)) : 1;
         this.options = {
-            scrollMode: this.el.classList.contains("o_carousel_multi_items") ? "single" : "all",
+            scrollMode: this.el.classList.contains("o_carousel_multi_items")
+                ? "single"
+                : "all",
             itemsPerSlide: itemsPerSlide,
         };
 
@@ -169,7 +184,8 @@ export class CarouselSlider extends Interaction {
         // when animation is done, we move the first item (which is not active
         // anymore) to the end.
         if (ev.direction === "left") {
-            const carouselItemsEls = this.carouselInnerEl.querySelectorAll(".carousel-item");
+            const carouselItemsEls =
+                this.carouselInnerEl.querySelectorAll(".carousel-item");
             this.carouselInnerEl.appendChild(carouselItemsEls[0]);
         }
     }
@@ -184,7 +200,9 @@ export class CarouselSlider extends Interaction {
         if (!this.carouselInnerEl) {
             return;
         }
-        const index = this.carouselItemEls.findIndex((el) => el.classList.contains("active"));
+        const index = this.carouselItemEls.findIndex((el) =>
+            el.classList.contains("active")
+        );
         const activeItemIndex = index >= 0 ? index : 0;
 
         // Load "Next" items: nbItemsToLoad items after the active element
@@ -194,7 +212,10 @@ export class CarouselSlider extends Interaction {
             activeItemIndex + nbItemElsOnScreen + nbItemsToLoad + 1,
             this.carouselItemEls.length
         );
-        const nextItemElsToLoad = this.carouselItemEls.slice(activeItemIndex, nextEndIndex);
+        const nextItemElsToLoad = this.carouselItemEls.slice(
+            activeItemIndex,
+            nextEndIndex
+        );
 
         // load "Prev" items : nbItemsToLoad items before the active element (circular wrapping)
         // if currentIndex is 0, then the nbItemsToLoad items are the last elements of the carousel
@@ -202,7 +223,10 @@ export class CarouselSlider extends Interaction {
         if (activeItemIndex - nbItemsToLoad < 0) {
             const wrapAmount = Math.abs(activeItemIndex - nbItemsToLoad);
             prevItemElsToLoad = this.carouselItemEls
-                .slice(this.carouselItemEls.length - wrapAmount, this.carouselItemEls.length)
+                .slice(
+                    this.carouselItemEls.length - wrapAmount,
+                    this.carouselItemEls.length
+                )
                 .concat(this.carouselItemEls.slice(0, activeItemIndex))
                 .reverse();
         } else {

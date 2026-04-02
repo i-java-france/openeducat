@@ -1,14 +1,14 @@
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { AUTOCLOSE_DELAY } from "@html_editor/main/media/media_dialog/upload_progress_toast/upload_service";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {AUTOCLOSE_DELAY} from "@html_editor/main/media/media_dialog/upload_progress_toast/upload_service";
 
 export const unsplashService = {
     dependencies: ["upload"],
-    async start(env, { upload }) {
+    async start(env, {upload}) {
         const _cache = {};
         return {
-            async uploadUnsplashRecords(records, { resModel, resId }, onUploaded) {
+            async uploadUnsplashRecords(records, {resModel, resId}, onUploaded) {
                 upload.incrementId();
                 const file = upload.addFile({
                     id: upload.fileId,
@@ -50,7 +50,7 @@ export const unsplashService = {
                             unsplashurls: urls,
                             query: records[0].query,
                         },
-                        { xhr }
+                        {xhr}
                     );
 
                     if (attachments.error) {
@@ -73,7 +73,9 @@ export const unsplashService = {
                 const to = offset + pageSize;
                 // Use orientation in the cache key to not show images in cache
                 // when using the same query word but changing the orientation
-                let cachedData = orientation ? _cache[query + orientation] : _cache[query];
+                let cachedData = orientation
+                    ? _cache[query + orientation]
+                    : _cache[query];
 
                 if (
                     cachedData &&

@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
-import { CommandPalette } from "./command_palette";
+import {registry} from "@web/core/registry";
+import {CommandPalette} from "./command_palette";
 
-import { Component, EventBus } from "@odoo/owl";
+import {Component, EventBus} from "@odoo/owl";
 
 /**
  * @typedef {import("./command_palette").CommandPaletteConfig} CommandPaletteConfig
@@ -41,12 +41,12 @@ const commandSetupRegistry = registry.category("command_setup");
 class DefaultFooter extends Component {
     static template = "web.DefaultFooter";
     static props = {
-        switchNamespace: { type: Function },
+        switchNamespace: {type: Function},
     };
     setup() {
         this.elements = commandSetupRegistry
             .getEntries()
-            .map((el) => ({ namespace: el[0], name: el[1].name }))
+            .map((el) => ({namespace: el[0], name: el[1].name}))
             .filter((el) => el.name);
     }
 
@@ -57,7 +57,7 @@ class DefaultFooter extends Component {
 
 export const commandService = {
     dependencies: ["dialog", "hotkey", "ui"],
-    start(env, { dialog, hotkey: hotkeyService, ui }) {
+    start(env, {dialog, hotkey: hotkeyService, ui}) {
         /** @type {Map<CommandRegistration>} */
         const registeredCommands = new Map();
         let nextToken = 0;
@@ -97,7 +97,7 @@ export const commandService = {
 
             for (const [
                 namespace,
-                { emptyMessage, debounceDelay, placeholder },
+                {emptyMessage, debounceDelay, placeholder},
             ] of commandSetupRegistry.getEntries()) {
                 if (namespace in configByNamespace) {
                     if (emptyMessage) {
@@ -158,13 +158,19 @@ export const commandService = {
          * @returns {number} token
          */
         function registerCommand(command, options) {
-            if (!command.name || !command.action || typeof command.action !== "function") {
+            if (
+                !command.name ||
+                !command.action ||
+                typeof command.action !== "function"
+            ) {
                 throw new Error("A Command must have a name and an action function.");
             }
             const registration = Object.assign({}, command, options);
             if (registration.identifier) {
                 const commandsArray = Array.from(registeredCommands.values());
-                const sameName = commandsArray.find((com) => com.name === registration.name);
+                const sameName = commandsArray.find(
+                    (com) => com.name === registration.name
+                );
                 if (sameName) {
                     if (registration.identifier !== sameName.identifier) {
                         registration.name += ` (${registration.identifier})`;
@@ -172,7 +178,9 @@ export const commandService = {
                     }
                 } else {
                     const sameFullName = commandsArray.find(
-                        (com) => com.name === registration.name + `(${registration.identifier})`
+                        (com) =>
+                            com.name ===
+                            registration.name + `(${registration.identifier})`
                     );
                     if (sameFullName) {
                         registration.name += ` (${registration.identifier})`;
@@ -187,20 +195,24 @@ export const commandService = {
                         commandService.openPalette(config);
                     }
                 };
-                registration.removeHotkey = hotkeyService.add(registration.hotkey, action, {
-                    ...options.hotkeyOptions,
-                    global: registration.global,
-                    isAvailable: (...args) => {
-                        let available = true;
-                        if (registration.isAvailable) {
-                            available = registration.isAvailable(...args);
-                        }
-                        if (available && options.hotkeyOptions?.isAvailable) {
-                            available = options.hotkeyOptions?.isAvailable(...args);
-                        }
-                        return available;
-                    },
-                });
+                registration.removeHotkey = hotkeyService.add(
+                    registration.hotkey,
+                    action,
+                    {
+                        ...options.hotkeyOptions,
+                        global: registration.global,
+                        isAvailable: (...args) => {
+                            let available = true;
+                            if (registration.isAvailable) {
+                                available = registration.isAvailable(...args);
+                            }
+                            if (available && options.hotkeyOptions?.isAvailable) {
+                                available = options.hotkeyOptions?.isAvailable(...args);
+                            }
+                            return available;
+                        },
+                    }
+                );
             }
 
             const token = nextToken++;
@@ -238,7 +250,7 @@ export const commandService = {
              * @returns {() => void}
              */
             add(name, action, options = {}) {
-                const token = registerCommand({ name, action }, options);
+                const token = registerCommand({name, action}, options);
                 return () => {
                     unregisterCommand(token);
                 };
@@ -249,7 +261,8 @@ export const commandService = {
              */
             getCommands(activeElement) {
                 return [...registeredCommands.values()].filter(
-                    (command) => command.activeElement === activeElement || command.global
+                    (command) =>
+                        command.activeElement === activeElement || command.global
                 );
             },
             openMainPalette,

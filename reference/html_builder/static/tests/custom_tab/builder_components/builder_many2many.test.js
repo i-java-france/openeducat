@@ -3,20 +3,26 @@ import {
     addBuilderOption,
     setupHTMLBuilder,
 } from "@html_builder/../tests/helpers";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame, Deferred } from "@odoo/hoot-mock";
-import { xml } from "@odoo/owl";
-import { contains, defineModels, fields, models, onRpc } from "@web/../tests/web_test_helpers";
-import { delay } from "@web/core/utils/concurrency";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {describe, expect, test} from "@odoo/hoot";
+import {Deferred, animationFrame} from "@odoo/hoot-mock";
+import {xml} from "@odoo/owl";
+import {
+    contains,
+    defineModels,
+    fields,
+    models,
+    onRpc,
+} from "@web/../tests/web_test_helpers";
+import {delay} from "@web/core/utils/concurrency";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 class Test extends models.Model {
     _name = "test";
     _records = [
-        { id: 1, name: "First" },
-        { id: 2, name: "Second" },
-        { id: 3, name: "Third" },
+        {id: 1, name: "First"},
+        {id: 2, name: "Second"},
+        {id: 3, name: "Third"},
     ];
     name = fields.Char();
 }
@@ -26,7 +32,7 @@ defineModels([Test]);
 
 test("many2many: find tag, select tag, unselect tag", async () => {
     let executeCount = 0;
-    onRpc("test", "name_search", ({ kwargs }) => {
+    onRpc("test", "name_search", ({kwargs}) => {
         expect.step("name_search");
         executeCount++;
         if (executeCount === 1) {
@@ -42,7 +48,7 @@ test("many2many: find tag, select tag, unselect tag", async () => {
             static template = xml`<BuilderMany2Many dataAttributeAction="'test'" model="'test'" limit="10"/>`;
         }
     );
-    const { getEditableContent } = await setupHTMLBuilder(
+    const {getEditableContent} = await setupHTMLBuilder(
         `<div class="test-options-target">b</div>`
     );
     const editableContent = getEditableContent();
@@ -55,7 +61,7 @@ test("many2many: find tag, select tag, unselect tag", async () => {
     await contains(".btn.o-dropdown").click();
     expect("input").toHaveCount(1);
     await contains("input").click();
-    await delay(300); // debounce
+    await delay(300); // Debounce
     await animationFrame();
     expect("span.o-dropdown-item").toHaveCount(3);
     await contains("span.o-dropdown-item").click();
@@ -65,7 +71,7 @@ test("many2many: find tag, select tag, unselect tag", async () => {
     expect("table tr").toHaveCount(1);
 
     await contains(".btn.o-dropdown").click();
-    await delay(300); // debounce
+    await delay(300); // Debounce
     await animationFrame();
     expect("span.o-dropdown-item").toHaveCount(2);
     await contains("span.o-dropdown-item").click();
@@ -94,16 +100,16 @@ test("many2many: async load", async () => {
     addBuilderAction({
         testAction: class extends BuilderAction {
             static id = "testAction";
-            async load({ value }) {
+            async load({value}) {
                 expect.step("load");
                 await defWillLoad;
                 return value;
             }
-            apply({ editingElement, value }) {
+            apply({editingElement, value}) {
                 editingElement.dataset.test = value;
                 defDidApply.resolve();
             }
-            getValue({ editingElement }) {
+            getValue({editingElement}) {
                 return editingElement.dataset.test;
             }
         },
@@ -114,7 +120,7 @@ test("many2many: async load", async () => {
             static template = xml`<BuilderMany2Many action="'testAction'" model="'test'" limit="10"/>`;
         }
     );
-    const { getEditableContent } = await setupHTMLBuilder(
+    const {getEditableContent} = await setupHTMLBuilder(
         `<div class="test-options-target">b</div>`
     );
     const editableContent = getEditableContent();

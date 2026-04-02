@@ -1,12 +1,16 @@
 import json
 import re
-from requests import Response
 from unittest.mock import patch
+
+from requests import Response
 
 import odoo
 from odoo.tools.misc import file_open
+
 from odoo.addons.base.tests.common import HttpCaseWithUserDemo
-from odoo.addons.cloud_storage_azure.tests.test_cloud_storage_azure import TestCloudStorageAzureCommon
+from odoo.addons.cloud_storage_azure.tests.test_cloud_storage_azure import (
+    TestCloudStorageAzureCommon,
+)
 
 
 @odoo.tests.tagged("-at_install", "post_install", "mail_controller")

@@ -1,5 +1,5 @@
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
 import {
     SEE_RECORDS_PIVOT,
@@ -8,7 +8,7 @@ import {
     SET_FILTER_MATCHING_CONDITION,
 } from "@spreadsheet/pivot/pivot_actions";
 
-const { clickableCellRegistry } = spreadsheet.registries;
+const {clickableCellRegistry} = spreadsheet.registries;
 
 clickableCellRegistry.add("pivot", {
     condition: SEE_RECORDS_PIVOT_VISIBLE,

@@ -1,10 +1,12 @@
 from contextlib import contextmanager
-from freezegun import freeze_time
 from unittest.mock import patch
 
+from freezegun import freeze_time
+
 from odoo import Command, fields
-from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.tests import common
+
+from odoo.addons.mail.tests.common import mail_new_test_user
 
 
 class EventCase(common.TransactionCase):
@@ -227,7 +229,7 @@ class EventCase(common.TransactionCase):
 
     def assertSchedulerCronTriggers(self, capture, call_at_list):
         self.assertEqual(len(capture.records), len(call_at_list))
-        for record, call_at in zip(capture.records, call_at_list):
+        for record, call_at in zip(capture.records, call_at_list, strict=False):
             self.assertEqual(record.call_at, call_at.replace(microsecond=0))
             self.assertEqual(record.cron_id, self.env.ref('event.event_mail_scheduler'))
 

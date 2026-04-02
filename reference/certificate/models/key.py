@@ -8,7 +8,6 @@ from cryptography.hazmat.primitives.serialization import Encoding
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
-
 STR_TO_HASH = {
     'sha1': hashes.SHA1(),
     'sha256': hashes.SHA256(),

@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { AnnouncementScroll } from "./announcement_scroll";
+import {registry} from "@web/core/registry";
+import {AnnouncementScroll} from "./announcement_scroll";
 
 export const AnnouncementScrollEdit = (I) =>
     class extends I {

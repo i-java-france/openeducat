@@ -1,11 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import _, fields, models, service
+from odoo import fields, models, service
 from odoo.tools import urls
 
 from odoo.addons.payment.logging import get_payment_logger
 from odoo.addons.payment_mollie import const
-
 
 _logger = get_payment_logger(__name__)
 

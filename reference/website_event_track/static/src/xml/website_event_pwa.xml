@@ -1,5 +1,4 @@
 <templates>
-
     <t t-name="website_event_track.pwa_install_banner">
         <div class="alert alert-default o_pwa_install_banner">
             <button class="btn o_btn_close">x</button>
@@ -7,5 +6,4 @@
             <button class="btn btn-primary o_btn_install">Install</button>
         </div>
     </t>
-
 </templates>

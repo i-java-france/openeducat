@@ -2,7 +2,7 @@
 
 import useStore from "../hooks/useStore.js";
 
-const { Component, xml, onMounted } = owl;
+const {Component, xml, onMounted} = owl;
 
 export class LoadingFullScreen extends Component {
     static props = {

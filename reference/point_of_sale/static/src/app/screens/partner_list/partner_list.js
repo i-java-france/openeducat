@@ -1,24 +1,24 @@
-import { _t } from "@web/core/l10n/translation";
-import { useChildRef, useService } from "@web/core/utils/hooks";
-import { Dialog } from "@web/core/dialog/dialog";
-import { PartnerLine } from "@point_of_sale/app/screens/partner_list/partner_line/partner_line";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { Input } from "@point_of_sale/app/components/inputs/input/input";
-import { Component, useEffect, useState } from "@odoo/owl";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
-import { normalize } from "@web/core/l10n/utils";
-import { debounce } from "@web/core/utils/timing";
+import {_t} from "@web/core/l10n/translation";
+import {useChildRef, useService} from "@web/core/utils/hooks";
+import {Dialog} from "@web/core/dialog/dialog";
+import {PartnerLine} from "@point_of_sale/app/screens/partner_list/partner_line/partner_line";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {Input} from "@point_of_sale/app/components/inputs/input/input";
+import {Component, useEffect, useState} from "@odoo/owl";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
+import {normalize} from "@web/core/l10n/utils";
+import {debounce} from "@web/core/utils/timing";
 
 export class PartnerList extends Component {
-    static components = { PartnerLine, Dialog, Input };
+    static components = {PartnerLine, Dialog, Input};
     static template = "point_of_sale.PartnerList";
     static props = {
         partner: {
             optional: true,
-            type: [{ value: null }, Object],
+            type: [{value: null}, Object],
         },
-        getPayload: { type: Function },
-        close: { type: Function },
+        getPayload: {type: Function},
+        close: {type: Function},
     };
 
     setup() {
@@ -92,7 +92,9 @@ export class PartnerList extends Component {
                 3000
             );
         } else {
-            this.notification.add(_t('No more customer found for "%s".', this.state.query));
+            this.notification.add(
+                _t('No more customer found for "%s".', this.state.query)
+            );
         }
     }
 
@@ -109,16 +111,18 @@ export class PartnerList extends Component {
             },
             filter: partnerHasActiveOrders ? "" : "SYNCED",
         };
-        this.pos.navigate("TicketScreen", { stateOverride });
+        this.pos.navigate("TicketScreen", {stateOverride});
     }
 
     confirm() {
-        this.props.resolve({ confirmed: true, payload: this.state.selectedPartner });
+        this.props.resolve({confirmed: true, payload: this.state.selectedPartner});
         this.pos.closeTempScreen();
     }
     getPartners(partners) {
         const searchWord = normalize(this.state.query?.trim() ?? "");
-        const exactMatches = partners.filter((partner) => partner.exactMatch(searchWord));
+        const exactMatches = partners.filter((partner) =>
+            partner.exactMatch(searchWord)
+        );
 
         if (exactMatches.length > 0) {
             return exactMatches;
@@ -145,8 +149,8 @@ export class PartnerList extends Component {
                       this.props.partner?.id === a.id
                           ? -1
                           : this.props.partner?.id === b.id
-                          ? 1
-                          : (a.name || "").localeCompare(b.name || "")
+                            ? 1
+                            : (a.name || "").localeCompare(b.name || "")
                   );
 
         return availablePartners;
@@ -184,18 +188,22 @@ export class PartnerList extends Component {
             ];
             domain = [
                 ...Array(search_fields.length - 1).fill("|"),
-                ...search_fields.map((field) => [field, "ilike", this.state.query + "%"]),
+                ...search_fields.map((field) => [
+                    field,
+                    "ilike",
+                    this.state.query + "%",
+                ]),
             ];
         }
 
         try {
             this.state.loading = true;
 
-            const result = await this.pos.data.callRelated("res.partner", "get_new_partner", [
-                this.pos.config.id,
-                domain,
-                offset,
-            ]);
+            const result = await this.pos.data.callRelated(
+                "res.partner",
+                "get_new_partner",
+                [this.pos.config.id, domain, offset]
+            );
 
             this.globalState.offsetBySearch[this.state.query] =
                 offset + (result["res.partner"].length || 100);

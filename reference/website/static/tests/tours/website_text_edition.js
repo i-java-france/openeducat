@@ -5,7 +5,7 @@ import {
     registerWebsitePreviewTour,
     clickToolbarButton,
 } from "@website/js/tours/tour_utils";
-import { rgbToHex } from "@web/core/utils/colors";
+import {rgbToHex} from "@web/core/utils/colors";
 
 const WEBSITE_MAIN_COLOR = "#ABCDEF";
 
@@ -34,7 +34,7 @@ registerWebsitePreviewTour(
             run: `edit ${WEBSITE_MAIN_COLOR} && click body`,
         },
         goBackToBlocks(),
-        ...insertSnippet({ id: "s_text_block", name: "Text", groupName: "Text" }),
+        ...insertSnippet({id: "s_text_block", name: "Text", groupName: "Text"}),
         ...clickToolbarButton(
             "text block first paragraph",
             ".s_text_block p",
@@ -61,13 +61,17 @@ registerWebsitePreviewTour(
                     return;
                 }
                 if (fontEl.style.backgroundColor) {
-                    console.error("The paragraph should not have an inline style background color");
+                    console.error(
+                        "The paragraph should not have an inline style background color"
+                    );
                     return;
                 }
                 const rgbColor = fontEl.style.getPropertyValue("color");
                 const hexColor = rgbToHex(rgbColor);
                 if (hexColor.toUpperCase() !== WEBSITE_MAIN_COLOR) {
-                    console.error("The paragraph should have the right background color class");
+                    console.error(
+                        "The paragraph should have the right background color class"
+                    );
                     return;
                 }
             },

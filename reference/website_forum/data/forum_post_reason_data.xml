@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data noupdate="1">
         <!-- Reasons for closing Post -->
@@ -54,6 +54,5 @@
             <field name="name">Racist and hate speech</field>
             <field name="reason_type">offensive</field>
         </record>
-
     </data>
 </odoo>

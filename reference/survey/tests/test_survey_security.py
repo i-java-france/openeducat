@@ -1,20 +1,20 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
 
-from odoo.addons.survey.tests import common
 from odoo.exceptions import AccessError, ValidationError
 from odoo.tests import tagged
-from odoo.tests.common import users, HttpCase
+from odoo.tests.common import HttpCase, users
 from odoo.tools import mute_logger
+
+from odoo.addons.survey.tests import common
 
 
 @tagged('security')
 class TestAccess(common.TestSurveyCommon):
 
     def setUp(self):
-        super(TestAccess, self).setUp()
+        super().setUp()
 
         self.answer_0 = self._add_answer(self.survey, self.customer)
         self.answer_0_0 = self._add_answer_line(self.question_ft, self.answer_0, 'Test Answer')

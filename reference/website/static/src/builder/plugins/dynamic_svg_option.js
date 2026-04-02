@@ -1,6 +1,6 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { _t } from "@web/core/l10n/translation";
-import { dynamicSVGSelector } from "@html_builder/plugins/utils";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {_t} from "@web/core/l10n/translation";
+import {dynamicSVGSelector} from "@html_builder/plugins/utils";
 
 export class DynamicSvgOption extends BaseOptionComponent {
     static template = "website.DynamicSvgOption";
@@ -17,7 +17,8 @@ export class DynamicSvgOption extends BaseOptionComponent {
         };
         this.domState = useDomState((imgEl) => {
             const colors = {};
-            const searchParams = new URL(imgEl.src, window.location.origin).searchParams;
+            const searchParams = new URL(imgEl.src, window.location.origin)
+                .searchParams;
             for (const colorName of ["c1", "c2", "c3", "c4", "c5"]) {
                 const color = searchParams.get(colorName);
                 if (color) {

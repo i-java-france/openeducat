@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { edit, keyDown, press, queryAllAttributes, queryAllTexts } from "@odoo/hoot-dom";
-import { animationFrame, runAllTimers } from "@odoo/hoot-mock";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {edit, keyDown, press, queryAllAttributes, queryAllTexts} from "@odoo/hoot-dom";
+import {animationFrame, runAllTimers} from "@odoo/hoot-mock";
 import {
     contains,
     mountWithCleanup,
@@ -8,14 +8,14 @@ import {
     serverState,
 } from "@web/../tests/web_test_helpers";
 
-import { cookie } from "@web/core/browser/cookie";
-import { user } from "@web/core/user";
-import { SwitchCompanyMenu } from "@web/webclient/switch_company_menu/switch_company_menu";
+import {cookie} from "@web/core/browser/cookie";
+import {user} from "@web/core/user";
+import {SwitchCompanyMenu} from "@web/webclient/switch_company_menu/switch_company_menu";
 
 const ORIGINAL_TOGGLE_DELAY = SwitchCompanyMenu.toggleDelay;
 
-async function createSwitchCompanyMenu(options = { toggleDelay: 0 }) {
-    patchWithCleanup(SwitchCompanyMenu, { toggleDelay: options.toggleDelay });
+async function createSwitchCompanyMenu(options = {toggleDelay: 0}) {
+    patchWithCleanup(SwitchCompanyMenu, {toggleDelay: options.toggleDelay});
     await mountWithCleanup(SwitchCompanyMenu);
 }
 
@@ -28,12 +28,13 @@ function patchUserActiveCompanies(cids) {
 
 describe.current.tags("desktop");
 
-const clickConfirm = () => contains(".o_switch_company_menu_buttons button:first").click();
+const clickConfirm = () =>
+    contains(".o_switch_company_menu_buttons button:first").click();
 
 const openCompanyMenu = () => contains(".dropdown-toggle").click();
 
 /**
- * @param {number} index
+ * @param {Number} index
  */
 const toggleCompany = (index) =>
     contains(`[data-company-id] [role=menuitemcheckbox]:eq(${index})`).click();
@@ -41,11 +42,11 @@ const toggleCompany = (index) =>
 beforeEach(() => {
     cookie.set("cids", "3");
     serverState.companies = [
-        { id: 3, name: "Hermit", sequence: 1, parent_id: false, child_ids: [] },
-        { id: 2, name: "Herman's", sequence: 2, parent_id: false, child_ids: [] },
-        { id: 1, name: "Heroes TM", sequence: 3, parent_id: false, child_ids: [4, 5] },
-        { id: 4, name: "Hercules", sequence: 4, parent_id: 1, child_ids: [] },
-        { id: 5, name: "Hulk", sequence: 5, parent_id: 1, child_ids: [] },
+        {id: 3, name: "Hermit", sequence: 1, parent_id: false, child_ids: []},
+        {id: 2, name: "Herman's", sequence: 2, parent_id: false, child_ids: []},
+        {id: 1, name: "Heroes TM", sequence: 3, parent_id: false, child_ids: [4, 5]},
+        {id: 4, name: "Hercules", sequence: 4, parent_id: 1, child_ids: []},
+        {id: 5, name: "Hulk", sequence: 5, parent_id: 1, child_ids: []},
     ];
 });
 
@@ -82,9 +83,9 @@ test("companies can be toggled: toggle a second company", async () => {
     expect("[data-company-id]").toHaveCount(5);
     expect("[data-company-id] .fa-check-square").toHaveCount(1);
     expect("[data-company-id] .fa-square-o").toHaveCount(4);
-    expect(queryAllAttributes("[data-company-id] [role=menuitemcheckbox]", "aria-checked")).toEqual(
-        ["true", "false", "false", "false", "false"]
-    );
+    expect(
+        queryAllAttributes("[data-company-id] [role=menuitemcheckbox]", "aria-checked")
+    ).toEqual(["true", "false", "false", "false", "false"]);
     expect(queryAllAttributes("[data-company-id] .log_into", "aria-pressed")).toEqual([
         "true",
         "false",
@@ -101,12 +102,12 @@ test("companies can be toggled: toggle a second company", async () => {
      *   [ ]    Hulk
      */
     await toggleCompany(1);
-    expect(".dropdown-menu").toHaveCount(1, { message: "dropdown is still opened" });
+    expect(".dropdown-menu").toHaveCount(1, {message: "dropdown is still opened"});
     expect("[data-company-id] .fa-check-square").toHaveCount(2);
     expect("[data-company-id] .fa-square-o").toHaveCount(3);
-    expect(queryAllAttributes("[data-company-id] [role=menuitemcheckbox]", "aria-checked")).toEqual(
-        ["true", "true", "false", "false", "false"]
-    );
+    expect(
+        queryAllAttributes("[data-company-id] [role=menuitemcheckbox]", "aria-checked")
+    ).toEqual(["true", "true", "false", "false", "false"]);
     expect(queryAllAttributes("[data-company-id] .log_into", "aria-pressed")).toEqual([
         "true",
         "false",
@@ -119,7 +120,7 @@ test("companies can be toggled: toggle a second company", async () => {
 });
 
 test("can toggle multiple companies at once", async () => {
-    await createSwitchCompanyMenu({ toggleDelay: ORIGINAL_TOGGLE_DELAY });
+    await createSwitchCompanyMenu({toggleDelay: ORIGINAL_TOGGLE_DELAY});
 
     /**
      *   [x] **Hermit**
@@ -145,7 +146,7 @@ test("can toggle multiple companies at once", async () => {
     await toggleCompany(0);
     await toggleCompany(1);
     await toggleCompany(2);
-    expect(".dropdown-menu").toHaveCount(1, { message: "dropdown is still opened" });
+    expect(".dropdown-menu").toHaveCount(1, {message: "dropdown is still opened"});
     expect("[data-company-id] .fa-check-square").toHaveCount(4);
     expect("[data-company-id] .fa-square-o").toHaveCount(1);
 
@@ -193,7 +194,7 @@ test("single company selected: toggling it off will keep it", async () => {
 });
 
 test("single company mode: companies can be logged in", async () => {
-    await createSwitchCompanyMenu({ toggleDelay: ORIGINAL_TOGGLE_DELAY });
+    await createSwitchCompanyMenu({toggleDelay: ORIGINAL_TOGGLE_DELAY});
 
     /**
      *   [x] **Hermit**
@@ -217,7 +218,7 @@ test("single company mode: companies can be logged in", async () => {
      *   [ ]    Hulk
      */
     await contains(".log_into:eq(1)").click();
-    expect(".dropdown-menu").toHaveCount(0, { message: "dropdown is directly closed" });
+    expect(".dropdown-menu").toHaveCount(0, {message: "dropdown is directly closed"});
     expect(cookie.get("cids")).toEqual("2");
 });
 
@@ -247,7 +248,7 @@ test("multi company mode: log into a non selected company", async () => {
      *   [ ]    Hulk
      */
     await contains(".log_into:eq(1)").click();
-    expect(".dropdown-menu").toHaveCount(0, { message: "dropdown is directly closed" });
+    expect(".dropdown-menu").toHaveCount(0, {message: "dropdown is directly closed"});
     expect(cookie.get("cids")).toEqual("2-1-3"); // 1-3 in that order, they are sorted
 });
 
@@ -277,12 +278,12 @@ test("multi company mode: log into an already selected company", async () => {
      *   [x]    Hulk
      */
     await contains(".log_into:eq(2)").click();
-    expect(".dropdown-menu").toHaveCount(0, { message: "dropdown is directly closed" });
+    expect(".dropdown-menu").toHaveCount(0, {message: "dropdown is directly closed"});
     expect(cookie.get("cids")).toEqual("1-2-4-5");
 });
 
 test("companies can be logged in even if some toggled within delay", async () => {
-    await createSwitchCompanyMenu({ toggleDelay: ORIGINAL_TOGGLE_DELAY });
+    await createSwitchCompanyMenu({toggleDelay: ORIGINAL_TOGGLE_DELAY});
 
     /**
      *   [x] **Hermit**
@@ -308,20 +309,20 @@ test("companies can be logged in even if some toggled within delay", async () =>
     await contains("[data-company-id] [role=menuitemcheckbox]:eq(2)").click();
     await contains("[data-company-id] [role=menuitemcheckbox]:eq(0)").click();
     await contains(".log_into:eq(1)").click();
-    expect(".dropdown-menu").toHaveCount(0, { message: "dropdown is directly closed" });
+    expect(".dropdown-menu").toHaveCount(0, {message: "dropdown is directly closed"});
     expect(cookie.get("cids")).toEqual("2");
 });
 
 test("always show the name of the company on the top right of the app", async () => {
-    // initialize a single company
+    // Initialize a single company
     const companyName = "Single company";
     serverState.companies = [
-        { id: 1, name: companyName, sequence: 1, parent_id: false, child_ids: [] },
+        {id: 1, name: companyName, sequence: 1, parent_id: false, child_ids: []},
     ];
 
     await createSwitchCompanyMenu();
 
-    // in case of a single company, drop down button should be displayed but disabled
+    // In case of a single company, drop down button should be displayed but disabled
     expect(".dropdown-toggle").toBeVisible();
     expect(".dropdown-toggle").not.toBeEnabled();
     expect(".dropdown-toggle").toHaveText(companyName);
@@ -464,16 +465,22 @@ test("no search input when less that 10 companies", async () => {
 
 test("show search input when more that 10 companies & search filters items but ignore case and spaces", async () => {
     serverState.companies = [
-        { id: 3, name: "Hermit", sequence: 1, parent_id: false, child_ids: [] },
-        { id: 2, name: "Herman's", sequence: 2, parent_id: false, child_ids: [] },
-        { id: 1, name: "Heroes TM", sequence: 3, parent_id: false, child_ids: [4, 5] },
-        { id: 4, name: "Hercules", sequence: 4, parent_id: 1, child_ids: [] },
-        { id: 5, name: "Hulk", sequence: 5, parent_id: 1, child_ids: [] },
-        { id: 6, name: "Random Company a", sequence: 6, parent_id: false, child_ids: [7, 8] },
-        { id: 7, name: "Random Company aa", sequence: 7, parent_id: 6, child_ids: [] },
-        { id: 8, name: "Random Company ab", sequence: 8, parent_id: 6, child_ids: [] },
-        { id: 9, name: "Random d", sequence: 9, parent_id: false, child_ids: [] },
-        { id: 10, name: "Random e", sequence: 10, parent_id: false, child_ids: [] },
+        {id: 3, name: "Hermit", sequence: 1, parent_id: false, child_ids: []},
+        {id: 2, name: "Herman's", sequence: 2, parent_id: false, child_ids: []},
+        {id: 1, name: "Heroes TM", sequence: 3, parent_id: false, child_ids: [4, 5]},
+        {id: 4, name: "Hercules", sequence: 4, parent_id: 1, child_ids: []},
+        {id: 5, name: "Hulk", sequence: 5, parent_id: 1, child_ids: []},
+        {
+            id: 6,
+            name: "Random Company a",
+            sequence: 6,
+            parent_id: false,
+            child_ids: [7, 8],
+        },
+        {id: 7, name: "Random Company aa", sequence: 7, parent_id: 6, child_ids: []},
+        {id: 8, name: "Random Company ab", sequence: 8, parent_id: 6, child_ids: []},
+        {id: 9, name: "Random d", sequence: 9, parent_id: false, child_ids: []},
+        {id: 10, name: "Random e", sequence: 10, parent_id: false, child_ids: []},
     ];
 
     await createSwitchCompanyMenu();
@@ -512,16 +519,22 @@ test("when less than 10 companies, typing key makes the search input visible", a
 test.tags("focus required");
 test("navigation with search input", async () => {
     serverState.companies = [
-        { id: 3, name: "Hermit", sequence: 1, parent_id: false, child_ids: [] },
-        { id: 2, name: "Herman's", sequence: 2, parent_id: false, child_ids: [] },
-        { id: 1, name: "Heroes TM", sequence: 3, parent_id: false, child_ids: [4, 5] },
-        { id: 4, name: "Hercules", sequence: 4, parent_id: 1, child_ids: [] },
-        { id: 5, name: "Hulk", sequence: 5, parent_id: 1, child_ids: [] },
-        { id: 6, name: "Random Company a", sequence: 6, parent_id: false, child_ids: [7, 8] },
-        { id: 7, name: "Random Company aa", sequence: 7, parent_id: 6, child_ids: [] },
-        { id: 8, name: "Random Company ab", sequence: 8, parent_id: 6, child_ids: [] },
-        { id: 9, name: "Random d", sequence: 9, parent_id: false, child_ids: [] },
-        { id: 10, name: "Random e", sequence: 10, parent_id: false, child_ids: [] },
+        {id: 3, name: "Hermit", sequence: 1, parent_id: false, child_ids: []},
+        {id: 2, name: "Herman's", sequence: 2, parent_id: false, child_ids: []},
+        {id: 1, name: "Heroes TM", sequence: 3, parent_id: false, child_ids: [4, 5]},
+        {id: 4, name: "Hercules", sequence: 4, parent_id: 1, child_ids: []},
+        {id: 5, name: "Hulk", sequence: 5, parent_id: 1, child_ids: []},
+        {
+            id: 6,
+            name: "Random Company a",
+            sequence: 6,
+            parent_id: false,
+            child_ids: [7, 8],
+        },
+        {id: 7, name: "Random Company aa", sequence: 7, parent_id: 6, child_ids: []},
+        {id: 8, name: "Random Company ab", sequence: 8, parent_id: 6, child_ids: []},
+        {id: 9, name: "Random d", sequence: 9, parent_id: false, child_ids: []},
+        {id: 10, name: "Random e", sequence: 10, parent_id: false, child_ids: []},
     ];
 
     await createSwitchCompanyMenu();
@@ -531,24 +544,24 @@ test("navigation with search input", async () => {
     expect(".o_switch_company_item.focus").toHaveCount(0);
 
     const navigationSteps = [
-        { hotkey: "arrowdown", focused: 1, selectedCompanies: [3] }, // Go to first item
-        { hotkey: "arrowup", focused: 0 }, // Go to search input
-        { hotkey: "arrowup", focused: 10 }, // Go to last item
-        { hotkey: "Space", focused: 10, selectedCompanies: [3, 10] }, // Select last item
-        { hotkey: ["shift", "tab"], focused: 9, selectedCompanies: [3, 10] }, // Go to previous item
-        { hotkey: "tab", focused: 10, selectedCompanies: [3, 10] }, // Go to next item
-        { hotkey: "arrowdown", focused: 11 }, // Go to Confirm
-        { hotkey: "arrowdown", focused: 12 }, // Go to Reset
-        { hotkey: "enter", focused: 10, selectedCompanies: [3] }, // Reset, focus is on last item
-        { hotkey: "arrowdown", focused: 0 }, // Go to seach input
-        { input: "a", focused: 0 }, // Type "a"
-        { hotkey: "arrowdown", focused: 1 }, // Go to first item
-        { hotkey: "Space", focused: 1, selectedCompanies: [2] }, // Select first item
+        {hotkey: "arrowdown", focused: 1, selectedCompanies: [3]}, // Go to first item
+        {hotkey: "arrowup", focused: 0}, // Go to search input
+        {hotkey: "arrowup", focused: 10}, // Go to last item
+        {hotkey: "Space", focused: 10, selectedCompanies: [3, 10]}, // Select last item
+        {hotkey: ["shift", "tab"], focused: 9, selectedCompanies: [3, 10]}, // Go to previous item
+        {hotkey: "tab", focused: 10, selectedCompanies: [3, 10]}, // Go to next item
+        {hotkey: "arrowdown", focused: 11}, // Go to Confirm
+        {hotkey: "arrowdown", focused: 12}, // Go to Reset
+        {hotkey: "enter", focused: 10, selectedCompanies: [3]}, // Reset, focus is on last item
+        {hotkey: "arrowdown", focused: 0}, // Go to seach input
+        {input: "a", focused: 0}, // Type "a"
+        {hotkey: "arrowdown", focused: 1}, // Go to first item
+        {hotkey: "Space", focused: 1, selectedCompanies: [2]}, // Select first item
     ];
 
     for (const navigationStep of navigationSteps) {
         expect.step(navigationStep);
-        const { hotkey, focused, selectedCompanies, input } = navigationStep;
+        const {hotkey, focused, selectedCompanies, input} = navigationStep;
         if (hotkey) {
             await press(hotkey);
         }
@@ -590,22 +603,32 @@ test("select and de-select all", async () => {
     await animationFrame();
 
     // One company is selected, there should be a check box with minus inside
-    expect("[role=menuitemcheckbox][title='Deselect all'] i").toHaveClass("fa-minus-square-o");
+    expect("[role=menuitemcheckbox][title='Deselect all'] i").toHaveClass(
+        "fa-minus-square-o"
+    );
 
     await contains("[role=menuitemcheckbox][title='Deselect all']").click();
     // No company is selected, there should be a empty check box
     expect("[role=menuitemcheckbox][title='Select all'] i").toHaveClass("fa-square-o");
-    expect(".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])").toHaveCount(0);
+    expect(
+        ".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])"
+    ).toHaveCount(0);
 
     await contains("[role=menuitemcheckbox][title='Select all']").click();
     // All companies are selected, there should be a checked check box
-    expect("[role=menuitemcheckbox][title='Deselect all'] i").toHaveClass("fa-check-square");
-    expect(".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])").toHaveCount(5);
+    expect("[role=menuitemcheckbox][title='Deselect all'] i").toHaveClass(
+        "fa-check-square"
+    );
+    expect(
+        ".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])"
+    ).toHaveCount(5);
 
     await contains("[role=menuitemcheckbox][title='Deselect all']").click();
     // No company is selected, there should be a empty check box
     expect("[role=menuitemcheckbox][title='Select all'] i").toHaveClass("fa-square-o");
-    expect(".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])").toHaveCount(0);
+    expect(
+        ".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])"
+    ).toHaveCount(0);
 });
 
 test("de-select only changes visible companies", async () => {
@@ -615,7 +638,9 @@ test("de-select only changes visible companies", async () => {
     // Show search
     await edit(" ");
     await toggleCompany(4);
-    expect(".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])").toHaveCount(2);
+    expect(
+        ".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])"
+    ).toHaveCount(2);
 
     // Show search
     await contains("input").edit("m");
@@ -623,37 +648,48 @@ test("de-select only changes visible companies", async () => {
 
     // One company is selected, unselect all
     await contains("[role=menuitemcheckbox][title='Deselect all']").click();
-    expect(".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])").toHaveCount(0);
+    expect(
+        ".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])"
+    ).toHaveCount(0);
 
     // Hidden company is still selected
     await contains("input").clear();
     await animationFrame();
-    expect(".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])").toHaveCount(1);
+    expect(
+        ".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])"
+    ).toHaveCount(1);
 
     // Filter and select all visible companies
     await contains("input").edit("m");
     await animationFrame();
     await contains("[role=menuitemcheckbox][title='Select all']").click();
-    expect(".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])").toHaveCount(3);
+    expect(
+        ".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])"
+    ).toHaveCount(3);
 
     // Hidden company is unchanged
     await contains("input").clear();
     await animationFrame();
-    expect(".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])").toHaveCount(4);
-    expect(".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=false])").toHaveCount(
-        1
-    );
+    expect(
+        ".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=true])"
+    ).toHaveCount(4);
+    expect(
+        ".o_switch_company_item:has([role=menuitemcheckbox][aria-checked=false])"
+    ).toHaveCount(1);
 });
 
 test("disallowed companies in between allowed companies are not enabled", async () => {
     cookie.set("cids", "3");
     serverState.companies = [
-        { id: 1, name: "Parent", sequence: 1, parent_id: false, child_ids: [2] },
-        { id: 2, name: "Child A", sequence: 2, parent_id: 1, child_ids: [3] },
-        { id: 3, name: "Child B", sequence: 3, parent_id: 2, child_ids: [] },
+        {id: 1, name: "Parent", sequence: 1, parent_id: false, child_ids: [2]},
+        {id: 2, name: "Child A", sequence: 2, parent_id: 1, child_ids: [3]},
+        {id: 3, name: "Child B", sequence: 3, parent_id: 2, child_ids: []},
     ];
 
-    patchWithCleanup(user.allowedCompanies, [serverState.companies[0], serverState.companies[2]]);
+    patchWithCleanup(user.allowedCompanies, [
+        serverState.companies[0],
+        serverState.companies[2],
+    ]);
 
     await createSwitchCompanyMenu();
 

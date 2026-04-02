@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { queryAllTexts } from "@odoo/hoot-dom";
-import { mockDate } from "@odoo/hoot-mock";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {queryAllTexts} from "@odoo/hoot-dom";
+import {mockDate} from "@odoo/hoot-mock";
 import {
     contains,
     defineModels,
@@ -12,7 +12,7 @@ import {
     preloadBundle,
 } from "@web/../tests/web_test_helpers";
 
-import { CalendarController } from "@web/views/calendar/calendar_controller";
+import {CalendarController} from "@web/views/calendar/calendar_controller";
 
 describe.current.tags("desktop");
 
@@ -93,9 +93,9 @@ test(`Scale: init with year`, async () => {
 });
 
 test(`First day: 0 = Sunday`, async () => {
-    // the week start depends on the locale
+    // The week start depends on the locale
     defineParams({
-        lang_parameters: { week_start: 0 },
+        lang_parameters: {week_start: 0},
     });
     await mountView({
         resModel: "event",
@@ -114,9 +114,9 @@ test(`First day: 0 = Sunday`, async () => {
 });
 
 test(`First day: 1 = Monday`, async () => {
-    // the week start depends on the locale
+    // The week start depends on the locale
     defineParams({
-        lang_parameters: { week_start: 1 },
+        lang_parameters: {week_start: 1},
     });
     await mountView({
         resModel: "event",
@@ -140,10 +140,15 @@ test(`Click on active day should change scale : day -> month`, async () => {
         type: "calendar",
         arch: `<calendar date_start="start" mode="day"/>`,
     });
-    const calendar = findComponent(view, (component) => component instanceof CalendarController);
+    const calendar = findComponent(
+        view,
+        (component) => component instanceof CalendarController
+    );
     await contains(`.o_datetime_picker .o_selected`).click();
     expect(calendar.model.scale).toBe("month");
-    expect(calendar.model.date.valueOf()).toBe(luxon.DateTime.local(2021, 8, 14).valueOf());
+    expect(calendar.model.date.valueOf()).toBe(
+        luxon.DateTime.local(2021, 8, 14).valueOf()
+    );
 });
 
 test(`Click on active day should change scale : month -> week`, async () => {
@@ -152,10 +157,15 @@ test(`Click on active day should change scale : month -> week`, async () => {
         type: "calendar",
         arch: `<calendar date_start="start" mode="month"/>`,
     });
-    const calendar = findComponent(view, (component) => component instanceof CalendarController);
+    const calendar = findComponent(
+        view,
+        (component) => component instanceof CalendarController
+    );
     await contains(`.o_datetime_picker .o_selected`).click();
     expect(calendar.model.scale).toBe("week");
-    expect(calendar.model.date.valueOf()).toBe(luxon.DateTime.local(2021, 8, 14).valueOf());
+    expect(calendar.model.date.valueOf()).toBe(
+        luxon.DateTime.local(2021, 8, 14).valueOf()
+    );
 });
 
 test(`Click on active day should change scale : week -> day`, async () => {
@@ -164,10 +174,15 @@ test(`Click on active day should change scale : week -> day`, async () => {
         type: "calendar",
         arch: `<calendar date_start="start" mode="week"/>`,
     });
-    const calendar = findComponent(view, (component) => component instanceof CalendarController);
+    const calendar = findComponent(
+        view,
+        (component) => component instanceof CalendarController
+    );
     await contains(`.o_datetime_picker .o_selected`).click();
     expect(calendar.model.scale).toBe("day");
-    expect(calendar.model.date.valueOf()).toBe(luxon.DateTime.local(2021, 8, 14).valueOf());
+    expect(calendar.model.date.valueOf()).toBe(
+        luxon.DateTime.local(2021, 8, 14).valueOf()
+    );
 });
 
 test(`Scale: today is correctly highlighted`, async () => {

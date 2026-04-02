@@ -1,14 +1,14 @@
-import { Component, onWillUpdateProps, useEffect, useRef, useState } from "@odoo/owl";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { TagsList } from "@web/core/tags_list/tags_list";
-import { mergeClasses } from "@web/core/utils/classname";
-import { useChildRef } from "@web/core/utils/hooks";
-import { scrollTo } from "@web/core/utils/scrolling";
-import { fuzzyLookup } from "@web/core/utils/search";
-import { useDebounced } from "@web/core/utils/timing";
-import { hasTouch } from "@web/core/browser/feature_detection";
+import {Component, onWillUpdateProps, useEffect, useRef, useState} from "@odoo/owl";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {TagsList} from "@web/core/tags_list/tags_list";
+import {mergeClasses} from "@web/core/utils/classname";
+import {useChildRef} from "@web/core/utils/hooks";
+import {scrollTo} from "@web/core/utils/scrolling";
+import {fuzzyLookup} from "@web/core/utils/search";
+import {useDebounced} from "@web/core/utils/timing";
+import {hasTouch} from "@web/core/browser/feature_detection";
 
 let selectMenuId = 0;
 
@@ -18,7 +18,7 @@ export class SelectMenu extends Component {
     static template = "web.SelectMenu";
     static choiceItemTemplate = "web.SelectMenu.ChoiceItem";
 
-    static components = { Dropdown, DropdownItem, TagsList };
+    static components = {Dropdown, DropdownItem, TagsList};
 
     static defaultProps = {
         value: undefined,
@@ -50,7 +50,7 @@ export class SelectMenu extends Component {
                 type: Object,
                 shape: {
                     value: true,
-                    label: { type: String },
+                    label: {type: String},
                     "*": true,
                 },
             },
@@ -61,14 +61,14 @@ export class SelectMenu extends Component {
             element: {
                 type: Object,
                 shape: {
-                    label: { type: String, optional: true },
+                    label: {type: String, optional: true},
                     choices: {
                         type: Array,
                         element: {
                             type: Object,
                             shape: {
                                 value: true,
-                                label: { type: String },
+                                label: {type: String},
                                 "*": true,
                             },
                         },
@@ -84,31 +84,31 @@ export class SelectMenu extends Component {
             type: Array,
             optional: true,
             element: {
-                label: { type: String },
-                name: { type: String },
+                label: {type: String},
+                name: {type: String},
             },
         },
-        id: { type: String, optional: true },
-        name: { type: String, optional: true },
-        class: { type: String, optional: true },
-        menuClass: { type: String, optional: true },
-        togglerClass: { type: String, optional: true },
-        required: { type: Boolean, optional: true },
-        searchable: { type: Boolean, optional: true },
-        autoSort: { type: Boolean, optional: true },
-        placeholder: { type: String, optional: true },
-        searchPlaceholder: { type: String, optional: true },
-        searchClass: { type: String, optional: true },
-        value: { optional: true },
-        multiSelect: { type: Boolean, optional: true },
-        onInput: { type: Function, optional: true },
-        onSelect: { type: Function, optional: true },
-        onNavigated: { type: Function, optional: true },
-        onOpened: { type: Function, optional: true },
-        onClosed: { type: Function, optional: true },
-        slots: { type: Object, optional: true },
-        disabled: { type: Boolean, optional: true },
-        menuRef: { type: Function, optional: true },
+        id: {type: String, optional: true},
+        name: {type: String, optional: true},
+        class: {type: String, optional: true},
+        menuClass: {type: String, optional: true},
+        togglerClass: {type: String, optional: true},
+        required: {type: Boolean, optional: true},
+        searchable: {type: Boolean, optional: true},
+        autoSort: {type: Boolean, optional: true},
+        placeholder: {type: String, optional: true},
+        searchPlaceholder: {type: String, optional: true},
+        searchClass: {type: String, optional: true},
+        value: {optional: true},
+        multiSelect: {type: Boolean, optional: true},
+        onInput: {type: Function, optional: true},
+        onSelect: {type: Function, optional: true},
+        onNavigated: {type: Function, optional: true},
+        onOpened: {type: Function, optional: true},
+        onClosed: {type: Function, optional: true},
+        slots: {type: Object, optional: true},
+        disabled: {type: Boolean, optional: true},
+        menuRef: {type: Function, optional: true},
     };
 
     static SCROLL_SETTINGS = {
@@ -151,7 +151,10 @@ export class SelectMenu extends Component {
         useEffect(
             () => {
                 if (this.dropdownState.isOpen) {
-                    const groups = [{ choices: this.props.choices }, ...this.props.groups];
+                    const groups = [
+                        {choices: this.props.choices},
+                        ...this.props.groups,
+                    ];
                     this.filterOptions(this.state.searchValue, groups);
                 }
             },
@@ -163,7 +166,7 @@ export class SelectMenu extends Component {
             virtualFocus: this.props.searchable,
             hotkeys: {
                 enter: {
-                    isAvailable: ({ navigator }) => navigator.items.length > 0,
+                    isAvailable: ({navigator}) => navigator.items.length > 0,
                     callback: (navigator) => {
                         if (navigator.activeItem) {
                             return navigator.activeItem.select();
@@ -196,7 +199,9 @@ export class SelectMenu extends Component {
     }
 
     get displayInputInDropdown() {
-        return (this.isBottomSheet || !this.displayInputInToggler) && this.props.searchable;
+        return (
+            (this.isBottomSheet || !this.displayInputInToggler) && this.props.searchable
+        );
     }
 
     get isBottomSheet() {
@@ -313,7 +318,10 @@ export class SelectMenu extends Component {
     }
 
     getSelectedChoice(props) {
-        const choices = [...props.choices, ...props.groups.flatMap((g) => g.choices || [])];
+        const choices = [
+            ...props.choices,
+            ...props.groups.flatMap((g) => g.choices || []),
+        ];
         if (!this.props.multiSelect) {
             return choices.find((c) => c.value === props.value);
         }
@@ -324,7 +332,8 @@ export class SelectMenu extends Component {
         // props.value i.e. valueSet.
         return [...(this.selectedChoice || []), ...choices].filter(
             (c, index, self) =>
-                valueSet.has(c.value) && self.findIndex((t) => t.value === c.value) === index
+                valueSet.has(c.value) &&
+                self.findIndex((t) => t.value === c.value) === index
         );
     }
 
@@ -342,7 +351,9 @@ export class SelectMenu extends Component {
         } else if (!this.selectedChoice || this.selectedChoice.value !== value) {
             this.props.onSelect(value);
             if (this.inputRef.el) {
-                this.inputRef.el.value = this.state.choices.find((c) => c.value === value).label;
+                this.inputRef.el.value = this.state.choices.find(
+                    (c) => c.value === value
+                ).label;
             }
         }
         this.state.searchValue = null;
@@ -361,7 +372,7 @@ export class SelectMenu extends Component {
      */
     filterOptions(searchString = "", groups) {
         const groupsList = groups || [
-            { choices: this.props.choices, section: "" },
+            {choices: this.props.choices, section: ""},
             ...this.props.groups,
         ];
 
@@ -390,14 +401,16 @@ export class SelectMenu extends Component {
                 continue;
             }
             if (group.section) {
-                const section = this.props.sections.find((e) => e.name === group.section);
+                const section = this.props.sections.find(
+                    (e) => e.name === group.section
+                );
                 if (!_sections.has(section)) {
                     _sections.add(section);
-                    _choices.push({ ...section, isGroup: true });
+                    _choices.push({...section, isGroup: true});
                 }
             }
             if (group.label) {
-                _choices.push({ ...group, isGroup: true });
+                _choices.push({...group, isGroup: true});
             }
             _choices.push(...filteredOptions);
         }
@@ -418,7 +431,8 @@ export class SelectMenu extends Component {
      */
     onScroll(event) {
         const el = event.target;
-        const hasReachMax = this.state.displayedOptions.length >= this.state.choices.length;
+        const hasReachMax =
+            this.state.displayedOptions.length >= this.state.choices.length;
         const remainingDistance = el.scrollHeight - el.scrollTop;
         const distanceToReload =
             el.clientHeight + this.constructor.SCROLL_SETTINGS.distanceBeforeReload;

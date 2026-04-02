@@ -1,10 +1,12 @@
-import { ProductCatalogKanbanController } from "@product/product_catalog/kanban_controller";
-import { patch } from "@web/core/utils/patch";
-import { _t } from "@web/core/l10n/translation";
+import {ProductCatalogKanbanController} from "@product/product_catalog/kanban_controller";
+import {patch} from "@web/core/utils/patch";
+import {_t} from "@web/core/l10n/translation";
 
 patch(ProductCatalogKanbanController.prototype, {
     get stateFiels() {
-        return this.orderResModel === "account.move" ? ["state", "move_type"] : super.stateFiels;
+        return this.orderResModel === "account.move"
+            ? ["state", "move_type"]
+            : super.stateFiels;
     },
 
     _defineButtonContent() {

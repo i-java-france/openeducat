@@ -1,16 +1,16 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { queryFirst, waitFor } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryFirst, waitFor} from "@odoo/hoot-dom";
 import {
+    MockServer,
     asyncStep,
     makeMockEnv,
-    MockServer,
     mockService,
     mountWithCleanup,
     serverState,
     waitForSteps,
 } from "@web/../tests/web_test_helpers";
-import { WebClient } from "@web/webclient/webclient";
-import { defineBusModels } from "./bus_test_helpers";
+import {WebClient} from "@web/webclient/webclient";
+import {defineBusModels} from "./bus_test_helpers";
 
 defineBusModels();
 describe.current.tags("desktop");

@@ -1,12 +1,12 @@
-import { WithLazyGetterTrap } from "@point_of_sale/lazy_getter";
-import { deepImmutable, clone, RAW_SYMBOL } from "./utils";
-import { toRaw } from "@odoo/owl";
-const { DateTime } = luxon;
+import {WithLazyGetterTrap} from "@point_of_sale/lazy_getter";
+import {deepImmutable, clone, RAW_SYMBOL} from "./utils";
+import {toRaw} from "@odoo/owl";
+const {DateTime} = luxon;
 
 export class Base extends WithLazyGetterTrap {
     static excludedLazyGetters = ["id", "models"];
 
-    constructor({ model, raw }) {
+    constructor({model, raw}) {
         super({});
         this.model = model;
         this[RAW_SYMBOL] = raw;
@@ -84,7 +84,7 @@ export class Base extends WithLazyGetterTrap {
         if (!this.uiState) {
             return;
         }
-        return { ...this.uiState };
+        return {...this.uiState};
     }
 
     backLink(link) {

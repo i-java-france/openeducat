@@ -1,6 +1,6 @@
-import { mailDataHelpers } from "@mail/../tests/mock_server/mail_mock_server";
+import {mailDataHelpers} from "@mail/../tests/mock_server/mail_mock_server";
 
-import { makeKwArgs, models } from "@web/../tests/web_test_helpers";
+import {makeKwArgs, models} from "@web/../tests/web_test_helpers";
 
 export class MailNotification extends models.ServerModel {
     _name = "mail.notification";
@@ -17,7 +17,9 @@ export class MailNotification extends models.ServerModel {
         return this.browse(ids).filter((notification) => {
             const [partner] = ResPartner.browse(notification.res_partner_id);
             if (
-                ["bounce", "exception", "canceled"].includes(notification.notification_status) ||
+                ["bounce", "exception", "canceled"].includes(
+                    notification.notification_status
+                ) ||
                 (partner && partner.partner_share)
             ) {
                 return true;
@@ -37,7 +39,10 @@ export class MailNotification extends models.ServerModel {
             "mail_message_id",
             "notification_status",
             "notification_type",
-            mailDataHelpers.Store.one("res_partner_id", makeKwArgs({ fields: ["name", "email"] })),
+            mailDataHelpers.Store.one(
+                "res_partner_id",
+                makeKwArgs({fields: ["name", "email"]})
+            ),
         ];
     }
 }

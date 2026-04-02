@@ -1,15 +1,15 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { setCellContent } from "@spreadsheet/../tests/helpers/commands";
-import { getCellValue, getEvaluatedCell } from "@spreadsheet/../tests/helpers/getters";
-import { createModelWithDataSource } from "@spreadsheet/../tests/helpers/model";
-import { defineSpreadsheetAccountModels } from "@spreadsheet_account/../tests/accounting_test_data";
-import { waitForDataLoaded } from "@spreadsheet/helpers/model";
+import {describe, expect, test} from "@odoo/hoot";
+import {setCellContent} from "@spreadsheet/../tests/helpers/commands";
+import {getCellValue, getEvaluatedCell} from "@spreadsheet/../tests/helpers/getters";
+import {createModelWithDataSource} from "@spreadsheet/../tests/helpers/model";
+import {defineSpreadsheetAccountModels} from "@spreadsheet_account/../tests/accounting_test_data";
+import {waitForDataLoaded} from "@spreadsheet/helpers/model";
 
 describe.current.tags("headless");
 defineSpreadsheetAccountModels();
 
 test("Basic evaluation", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         mockRPC: async function (route, args) {
             if (args.method === "spreadsheet_fetch_residual_amount") {
                 expect.step("spreadsheet_fetch_residual_amount");
@@ -24,7 +24,7 @@ test("Basic evaluation", async () => {
                         include_unposted: false,
                     },
                 ]);
-                return [{ amount_residual: 111.11 }];
+                return [{amount_residual: 111.11}];
             }
         },
     });
@@ -35,7 +35,7 @@ test("Basic evaluation", async () => {
 });
 
 test("with wrong date format", async () => {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     setCellContent(model, "A1", `=ODOO.RESIDUAL("112", "This is not a valid date")`);
     await waitForDataLoaded(model);
     expect(getEvaluatedCell(model, "A1").message).toBe(
@@ -44,7 +44,7 @@ test("with wrong date format", async () => {
 });
 
 test("with no date", async () => {
-    const { model } = await createModelWithDataSource({
+    const {model} = await createModelWithDataSource({
         mockRPC: async function (route, args) {
             if (args.method === "spreadsheet_fetch_residual_amount") {
                 expect.step("spreadsheet_fetch_residual_amount");
@@ -59,7 +59,7 @@ test("with no date", async () => {
                         include_unposted: false,
                     },
                 ]);
-                return [{ amount_residual: 111.11 }];
+                return [{amount_residual: 111.11}];
             }
         },
     });

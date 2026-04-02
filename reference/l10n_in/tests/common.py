@@ -1,7 +1,8 @@
 from datetime import date
 
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo import Command
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
 class L10nInTestInvoicingCommon(AccountTestInvoicingCommon):

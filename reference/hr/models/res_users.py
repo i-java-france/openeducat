@@ -1,16 +1,13 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import ast
 
 from markupsafe import Markup
 
-from odoo import api, models, fields, _, SUPERUSER_ID
+from odoo import SUPERUSER_ID, _, api, fields, models
 from odoo.exceptions import AccessError
 from odoo.fields import Domain
 from odoo.tools.misc import clean_context
-from odoo.addons.mail.tools.discuss import Store
-
 
 HR_READABLE_FIELDS = [
     'active',
@@ -164,7 +161,7 @@ class ResUsers(models.Model):
     def create(self, vals_list):
         res = super().create(vals_list)
         employee_create_vals = []
-        for user, vals in zip(res, vals_list):
+        for user, vals in zip(res, vals_list, strict=False):
             if not vals.get('create_employee') and not vals.get('create_employee_id'):
                 continue
             if vals.get('create_employee_id'):

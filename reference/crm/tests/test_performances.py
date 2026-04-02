@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import random
 
-from odoo.addons.crm.tests.test_crm_lead_assignment import TestLeadAssignCommon
 from odoo.tests.common import tagged
 from odoo.tools import mute_logger
+
+from odoo.addons.crm.tests.test_crm_lead_assignment import TestLeadAssignCommon
 
 
 @tagged('lead_assign', 'crm_performance', 'post_install', '-at_install')

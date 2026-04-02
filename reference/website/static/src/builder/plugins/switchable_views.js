@@ -1,5 +1,5 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { onWillStart } from "@odoo/owl";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {onWillStart} from "@odoo/owl";
 
 export class SwitchableViews extends BaseOptionComponent {
     static template = "website.SwitchableViews";
@@ -10,7 +10,7 @@ export class SwitchableViews extends BaseOptionComponent {
 
     setup() {
         super.setup();
-        const { getSwitchableRelatedViews } = this.dependencies.switchableViews;
+        const {getSwitchableRelatedViews} = this.dependencies.switchableViews;
         onWillStart(async () => {
             this.switchableRelatedViews = await getSwitchableRelatedViews();
         });

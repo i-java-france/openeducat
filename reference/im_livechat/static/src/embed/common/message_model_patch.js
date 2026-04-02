@@ -1,6 +1,6 @@
-import { Message } from "@mail/core/common/message_model";
+import {Message} from "@mail/core/common/message_model";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {import("models").Message} */
 const messagePatch = {

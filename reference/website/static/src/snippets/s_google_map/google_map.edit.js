@@ -1,7 +1,7 @@
 /* global google */
 
-import { GoogleMap } from "./google_map";
-import { registry } from "@web/core/registry";
+import {GoogleMap} from "./google_map";
+import {registry} from "@web/core/registry";
 
 const GoogleMapEdit = (I) =>
     class extends I {
@@ -46,7 +46,8 @@ const GoogleMapEdit = (I) =>
         async loadGoogleMaps(forceReconfigure = false) {
             /** @type {string | undefined} */
             const apiKey = await this.websiteMapService.getGMapAPIKey(true);
-            const apiKeyValidation = await this.websiteMapService.validateGMapApiKey(apiKey);
+            const apiKeyValidation =
+                await this.websiteMapService.validateGMapApiKey(apiKey);
             const shouldReconfigure = forceReconfigure || !apiKeyValidation.isValid;
             let didReconfigure = false;
             if (shouldReconfigure) {
@@ -56,7 +57,11 @@ const GoogleMapEdit = (I) =>
                     apiKey
                 );
                 if (!didReconfigure) {
-                    this.websiteEditService.callShared("remove", "removeElement", this.el);
+                    this.websiteEditService.callShared(
+                        "remove",
+                        "removeElement",
+                        this.el
+                    );
                 }
             }
             if (!shouldReconfigure || didReconfigure) {
@@ -64,7 +69,9 @@ const GoogleMapEdit = (I) =>
                     "googleMapsOption",
                     "shouldRefetchApiKey"
                 );
-                return !!(await this.loadGoogleMapsAPIFromService(shouldRefetch || didReconfigure));
+                return !!(await this.loadGoogleMapsAPIFromService(
+                    shouldRefetch || didReconfigure
+                ));
             } else {
                 return false;
             }
@@ -79,8 +86,14 @@ const GoogleMapEdit = (I) =>
          *                                      key if found.
          */
         async loadGoogleMapsAPIFromService(shouldRefetch) {
-            const apiKey = await this.websiteMapService.loadGMapAPI(true, shouldRefetch);
-            this.websiteEditService.callShared("googleMapsOption", "shouldNotRefetchApiKey");
+            const apiKey = await this.websiteMapService.loadGMapAPI(
+                true,
+                shouldRefetch
+            );
+            this.websiteEditService.callShared(
+                "googleMapsOption",
+                "shouldNotRefetchApiKey"
+            );
             return !!apiKey;
         }
     };

@@ -1,4 +1,4 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 /**
  * @typedef {Object} Props
@@ -8,6 +8,6 @@ import { Component } from "@odoo/owl";
 export class CallInfiniteMirroringWarning extends Component {
     static template = "discuss.CallInfiniteMirroringWarning";
     static props = {
-        onClose: { type: Function },
+        onClose: {type: Function},
     };
 }

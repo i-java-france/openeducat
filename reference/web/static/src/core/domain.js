@@ -1,7 +1,7 @@
-import { shallowEqual } from "@web/core/utils/arrays";
-import { evaluate, formatAST, parseExpr } from "./py_js/py";
-import { toPyValue } from "./py_js/py_utils";
-import { escapeRegExp } from "@web/core/utils/strings";
+import {shallowEqual} from "@web/core/utils/arrays";
+import {evaluate, formatAST, parseExpr} from "./py_js/py";
+import {toPyValue} from "./py_js/py_utils";
+import {escapeRegExp} from "@web/core/utils/strings";
 
 /**
  * @typedef {import("./py_js/py_parser").AST} AST
@@ -26,7 +26,8 @@ export class Domain {
         if (domains.length === 0) {
             return new Domain([]);
         }
-        const domain1 = domains[0] instanceof Domain ? domains[0] : new Domain(domains[0]);
+        const domain1 =
+            domains[0] instanceof Domain ? domains[0] : new Domain(domains[0]);
         if (domains.length === 1) {
             return domain1;
         }
@@ -35,7 +36,7 @@ export class Domain {
         const astValues1 = domain1.ast.value;
         const astValues2 = domain2.ast.value;
         const op = operator === "AND" ? "&" : "|";
-        const combinedAST = { type: 4 /* List */, value: astValues1.concat(astValues2) };
+        const combinedAST = {type: 4 /* List */, value: astValues1.concat(astValues2)};
         result.ast = normalizeDomainAST(combinedAST, op);
         return result;
     }
@@ -64,7 +65,7 @@ export class Domain {
      */
     static not(domain) {
         const result = new Domain(domain);
-        result.ast.value.unshift({ type: 1, value: "!" });
+        result.ast.value.unshift({type: 1, value: "!"});
         return result;
     }
 
@@ -105,7 +106,12 @@ export class Domain {
                 if (leaf.value === "!") {
                     return 1 + processLeaf(elements, idx + 1, "&", newDomain);
                 }
-                const firstLeafSkip = processLeaf(elements, idx + 1, leaf.value, newDomain);
+                const firstLeafSkip = processLeaf(
+                    elements,
+                    idx + 1,
+                    leaf.value,
+                    newDomain
+                );
                 const secondLeafSkip = processLeaf(
                     elements,
                     idx + 1 + firstLeafSkip,
@@ -138,9 +144,12 @@ export class Domain {
             try {
                 rawAST = typeof descr === "string" ? parseExpr(descr) : toAST(descr);
             } catch (error) {
-                throw new InvalidDomainError(`Invalid domain representation: ${descr.toString()}`, {
-                    cause: error,
-                });
+                throw new InvalidDomainError(
+                    `Invalid domain representation: ${descr.toString()}`,
+                    {
+                        cause: error,
+                    }
+                );
             }
             this.ast = normalizeDomainAST(rawAST);
         }
@@ -222,7 +231,7 @@ function toAST(domain) {
             case "!":
             case "&":
             case "|":
-                return { type: 1 /* String */, value: elem };
+                return {type: 1 /* String */, value: elem};
             default:
                 return {
                     type: 10 /* Tuple */,
@@ -230,7 +239,7 @@ function toAST(domain) {
                 };
         }
     });
-    return { type: 4 /* List */, value: elems };
+    return {type: 4 /* List */, value: elems};
 }
 
 /**
@@ -283,14 +292,14 @@ function normalizeDomainAST(domain, op = "&") {
     const values = domain.value.slice();
     while (expected < 0) {
         expected++;
-        values.unshift({ type: 1 /* String */, value: op });
+        values.unshift({type: 1 /* String */, value: op});
     }
     if (expected > 0) {
         throw new InvalidDomainError(
             `invalid domain ${formatAST(domain)} (missing ${expected} segment(s))`
         );
     }
-    return { type: 4 /* List */, value: values };
+    return {type: 4 /* List */, value: values};
 }
 
 /**
@@ -307,13 +316,23 @@ function matchCondition(record, condition) {
     if (typeof field === "string") {
         const names = field.split(".");
         if (names.length >= 2) {
-            return matchCondition(record[names[0]], [names.slice(1).join("."), operator, value]);
+            return matchCondition(record[names[0]], [
+                names.slice(1).join("."),
+                operator,
+                value,
+            ]);
         }
     }
     let likeRegexp, ilikeRegexp;
     if (["like", "not like", "ilike", "not ilike"].includes(operator)) {
-        likeRegexp = new RegExp(`(.*)${escapeRegExp(value).replaceAll("%", "(.*)")}(.*)`, "g");
-        ilikeRegexp = new RegExp(`(.*)${escapeRegExp(value).replaceAll("%", "(.*)")}(.*)`, "gi");
+        likeRegexp = new RegExp(
+            `(.*)${escapeRegExp(value).replaceAll("%", "(.*)")}(.*)`,
+            "g"
+        );
+        ilikeRegexp = new RegExp(
+            `(.*)${escapeRegExp(value).replaceAll("%", "(.*)")}(.*)`,
+            "gi"
+        );
     }
     const fieldValue = typeof field === "number" ? field : record[field];
     const isNot = operator.startsWith("not ");
@@ -358,8 +377,9 @@ function matchCondition(record, condition) {
                 return isNot;
             }
             return (
-                Boolean(new RegExp(escapeRegExp(value).replace(/%/g, ".*")).test(fieldValue)) !=
-                isNot
+                Boolean(
+                    new RegExp(escapeRegExp(value).replace(/%/g, ".*")).test(fieldValue)
+                ) != isNot
             );
         case "ilike":
         case "not ilike":
@@ -374,7 +394,9 @@ function matchCondition(record, condition) {
             }
             return (
                 Boolean(
-                    new RegExp(escapeRegExp(value).replace(/%/g, ".*"), "i").test(fieldValue)
+                    new RegExp(escapeRegExp(value).replace(/%/g, ".*"), "i").test(
+                        fieldValue
+                    )
                 ) != isNot
             );
         case "any":

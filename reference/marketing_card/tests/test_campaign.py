@@ -1,16 +1,20 @@
 import base64
 from datetime import datetime
-from lxml import html
 from unittest.mock import patch
 
-from odoo import exceptions
-from odoo.tools import mute_logger
-from odoo.tests.common import users
-from odoo.tests import Form, HttpCase, tagged, warmup
-from odoo.addons.mail.tests.common import MailCase
-from odoo.addons.marketing_card.controllers.marketing_card import SOCIAL_NETWORK_USER_AGENTS
+from lxml import html
 
-from .common import MarketingCardCommon, mock_image_render, VALID_JPEG
+from odoo import exceptions
+from odoo.tests import Form, HttpCase, tagged, warmup
+from odoo.tests.common import users
+from odoo.tools import mute_logger
+
+from odoo.addons.mail.tests.common import MailCase
+from odoo.addons.marketing_card.controllers.marketing_card import (
+    SOCIAL_NETWORK_USER_AGENTS,
+)
+
+from .common import VALID_JPEG, MarketingCardCommon, mock_image_render
 
 
 def _extract_values_from_document(rendered_document):

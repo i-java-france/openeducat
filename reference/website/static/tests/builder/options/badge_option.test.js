@@ -1,4 +1,4 @@
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
@@ -7,7 +7,7 @@ import {
 defineWebsiteModels();
 
 test("adjacent s_badge elements should not be merged", async () => {
-    const { getEditor } = await setupWebsiteBuilder(
+    const {getEditor} = await setupWebsiteBuilder(
         `<p><span class="s_badge badge rounded-pill text-bg-primary">Badge 1</span><span class="s_badge badge rounded-pill text-bg-primary">Badge 2</span></p>`
     );
     const editor = getEditor();

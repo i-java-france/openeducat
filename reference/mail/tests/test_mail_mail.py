@@ -1,6 +1,7 @@
-from odoo.tests import TransactionCase
-from unittest import mock
 import smtplib
+from unittest import mock
+
+from odoo.tests import TransactionCase
 
 
 class MailCase(TransactionCase):

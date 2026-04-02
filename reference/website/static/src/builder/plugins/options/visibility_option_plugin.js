@@ -1,12 +1,15 @@
-import { registry } from "@web/core/registry";
-import { Plugin } from "@html_editor/plugin";
-import { selectElements } from "@html_editor/utils/dom_traversal";
-import { pyToJsLocale } from "@web/core/l10n/utils";
-import { VisibilityOption } from "./visibility_option";
-import { withSequence } from "@html_editor/utils/resource";
-import { CONDITIONAL_VISIBILITY, DEVICE_VISIBILITY } from "@website/builder/option_sequence";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {registry} from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {selectElements} from "@html_editor/utils/dom_traversal";
+import {pyToJsLocale} from "@web/core/l10n/utils";
+import {VisibilityOption} from "./visibility_option";
+import {withSequence} from "@html_editor/utils/resource";
+import {
+    CONDITIONAL_VISIBILITY,
+    DEVICE_VISIBILITY,
+} from "@website/builder/option_sequence";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 /**
  * @typedef {{
@@ -112,27 +115,38 @@ class VisibilityOptionPlugin extends Plugin {
         const hideAttributes = [];
         for (const attribute of this.optionsAttributes) {
             if (target.dataset[attribute.saveAttribute]) {
-                let records = JSON.parse(target.dataset[attribute.saveAttribute]).map((record) => ({
-                    id: record.id,
-                    value: record[attribute.callWith],
-                }));
+                let records = JSON.parse(target.dataset[attribute.saveAttribute]).map(
+                    (record) => ({
+                        id: record.id,
+                        value: record[attribute.callWith],
+                    })
+                );
                 if (attribute.saveAttribute === "visibilityValueLang") {
                     records = records.map((lang) => {
                         lang.value = pyToJsLocale(lang.value);
                         return lang;
                     });
                 }
-                const hideFor = target.dataset[`${attribute.saveAttribute}Rule`] === "hide";
+                const hideFor =
+                    target.dataset[`${attribute.saveAttribute}Rule`] === "hide";
                 if (hideFor) {
-                    hideAttributes.push({ name: attribute.attributeName, records: records });
+                    hideAttributes.push({
+                        name: attribute.attributeName,
+                        records: records,
+                    });
                 } else {
-                    onlyAttributes.push({ name: attribute.attributeName, records: records });
+                    onlyAttributes.push({
+                        name: attribute.attributeName,
+                        records: records,
+                    });
                 }
                 // Create a visibilityId based on the options name and their
                 // values. eg : hide for en_US(id:1) -> lang1h
                 const type = attribute.attributeName.replace("data-", "");
                 const valueIDs = records.map((record) => record.id).sort();
-                visibilityIDParts.push(`${type}_${hideFor ? "h" : "o"}_${valueIDs.join("_")}`);
+                visibilityIDParts.push(
+                    `${type}_${hideFor ? "h" : "o"}_${valueIDs.join("_")}`
+                );
             }
         }
         const visibilityId = visibilityIDParts.join("_");
@@ -144,7 +158,8 @@ class VisibilityOptionPlugin extends Plugin {
             // html:not([data-attr-1="valueAttr1"]):not([data-attr-1="valueAttr2"]) [data-visibility-id="ruleId"]
             const selector =
                 attribute.records.reduce(
-                    (acc, record) => (acc += `:not([${attribute.name}="${record.value}"])`),
+                    (acc, record) =>
+                        (acc += `:not([${attribute.name}="${record.value}"])`),
                     "html"
                 ) + ` body:not(.editor_enable) [data-visibility-id="${visibilityId}"]`;
             selectors += selector + ", ";
@@ -176,7 +191,7 @@ class VisibilityOptionPlugin extends Plugin {
 export class ForceVisibleAction extends BuilderAction {
     static id = "forceVisible";
     static dependencies = ["visibility"];
-    apply({ editingElement }) {
+    apply({editingElement}) {
         this.dependencies.visibility.onOptionVisibilityUpdate(editingElement, true);
     }
     isApplied() {
@@ -187,9 +202,9 @@ export class ToggleDeviceVisibilityAction extends BuilderAction {
     static id = "toggleDeviceVisibility";
     static dependencies = ["visibility", "history"];
 
-    apply({ editingElement, params: { mainParam: visibility } }) {
+    apply({editingElement, params: {mainParam: visibility}}) {
         // Clean first as the widget is not part of a group
-        this.clean({ editingElement });
+        this.clean({editingElement});
         const style = getComputedStyle(editingElement);
         if (visibility === "no_desktop") {
             editingElement.classList.add("d-lg-none", "o_snippet_desktop_invisible");
@@ -212,7 +227,7 @@ export class ToggleDeviceVisibilityAction extends BuilderAction {
             },
         });
     }
-    clean({ editingElement }) {
+    clean({editingElement}) {
         editingElement.classList.remove(
             "d-none",
             "d-md-none",
@@ -230,7 +245,7 @@ export class ToggleDeviceVisibilityAction extends BuilderAction {
             revert: () => {},
         });
     }
-    isApplied({ editingElement, params: { mainParam: visibilityParam } }) {
+    isApplied({editingElement, params: {mainParam: visibilityParam}}) {
         const classList = [...editingElement.classList];
         if (
             visibilityParam === "no_mobile" &&
@@ -249,4 +264,6 @@ export class ToggleDeviceVisibilityAction extends BuilderAction {
     }
 }
 
-registry.category("website-plugins").add(VisibilityOptionPlugin.id, VisibilityOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(VisibilityOptionPlugin.id, VisibilityOptionPlugin);

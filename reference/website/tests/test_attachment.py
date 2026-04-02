@@ -1,4 +1,5 @@
 import odoo.tests
+
 from ..tools import create_image_attachment
 
 

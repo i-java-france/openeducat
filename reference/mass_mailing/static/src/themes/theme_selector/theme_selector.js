@@ -1,10 +1,10 @@
-import { Component, onWillStart, useState } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
+import {Component, onWillStart, useState} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
 
 export class ThemeSelector extends Component {
     static template = "mass_mailing.ThemeSelector";
     static props = {
-        config: { type: Object },
+        config: {type: Object},
     };
 
     setup() {
@@ -16,10 +16,15 @@ export class ThemeSelector extends Component {
         this.favoriteTemplates = useState([]);
         onWillStart(async () => {
             const themeServicePromise = this.themeService.load();
-            const favoritePromise = this.orm.call("mailing.mailing", "action_fetch_favorites", [
-                this.favoriteDomain,
+            const favoritePromise = this.orm.call(
+                "mailing.mailing",
+                "action_fetch_favorites",
+                [this.favoriteDomain]
+            );
+            const [favoriteTemplates] = await Promise.all([
+                favoritePromise,
+                themeServicePromise,
             ]);
-            const [favoriteTemplates] = await Promise.all([favoritePromise, themeServicePromise]);
             Object.assign(
                 this.favoriteTemplates,
                 favoriteTemplates.map((favorite) => ({

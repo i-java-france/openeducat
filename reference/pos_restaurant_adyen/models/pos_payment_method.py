@@ -1,7 +1,6 @@
-# coding: utf-8
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api
+from odoo import api, fields, models
 
 
 class PosPaymentMethod(models.Model):
@@ -11,7 +10,7 @@ class PosPaymentMethod(models.Model):
 
     def _get_adyen_endpoints(self):
         return {
-            **super(PosPaymentMethod, self)._get_adyen_endpoints(),
+            **super()._get_adyen_endpoints(),
             'adjust': 'https://pal-%s.adyen.com/pal/servlet/Payment/v52/adjustAuthorisation',
             'capture': 'https://pal-%s.adyen.com/pal/servlet/Payment/v52/capture',
         }

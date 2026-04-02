@@ -1,7 +1,7 @@
-import { describe, test } from "@odoo/hoot";
-import { press } from "@odoo/hoot-dom";
-import { testEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
+import {describe, test} from "@odoo/hoot";
+import {press} from "@odoo/hoot-dom";
+import {testEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
 
 describe("move selection with tab/shift+tab", () => {
     describe("tab", () => {
@@ -89,7 +89,7 @@ describe("move selection with tab/shift+tab", () => {
         test.tags("iframe", "desktop");
         test("in iframe, desktop: should move cursor to the end of next cell in an iframe", async () => {
             await testEditor({
-                props: { iframe: true },
+                props: {iframe: true},
                 contentBefore: unformat(`
                     <table>
                         <tbody>
@@ -118,7 +118,7 @@ describe("move selection with tab/shift+tab", () => {
         test.tags("iframe", "mobile");
         test("in iframe, mobile: should move cursor to the end of next cell in an iframe", async () => {
             await testEditor({
-                props: { iframe: true, mobile: true },
+                props: {iframe: true, mobile: true},
                 contentBefore: unformat(`
                     <table>
                         <tbody>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="google_address_autocomplete.AddressAutoCompleteTemplate">
         <AutoComplete
@@ -11,7 +10,7 @@
             input="input"
         >
             <t t-set-slot="option" t-slot-scope="optionScope">
-                <strong t-esc="optionScope.label"/>
+                <strong t-esc="optionScope.label" />
             </t>
         </AutoComplete>
     </t>

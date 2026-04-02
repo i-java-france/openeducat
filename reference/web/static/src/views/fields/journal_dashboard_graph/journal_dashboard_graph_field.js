@@ -1,10 +1,10 @@
-import { loadBundle } from "@web/core/assets";
-import { registry } from "@web/core/registry";
-import { getColor, hexToRGBA, getCustomColor } from "@web/core/colors/colors";
-import { standardFieldProps } from "../standard_field_props";
+import {loadBundle} from "@web/core/assets";
+import {registry} from "@web/core/registry";
+import {getColor, hexToRGBA, getCustomColor} from "@web/core/colors/colors";
+import {standardFieldProps} from "../standard_field_props";
 
-import { Component, onWillStart, useEffect, useRef } from "@odoo/owl";
-import { cookie } from "@web/core/browser/cookie";
+import {Component, onWillStart, useEffect, useRef} from "@odoo/owl";
+import {cookie} from "@web/core/browser/cookie";
 
 const colorScheme = cookie.get("color_scheme");
 const GRAPH_GRID_COLOR = getCustomColor(colorScheme, "#d8dadd", "#3C3E4B");
@@ -54,7 +54,9 @@ export class JournalDashboardGraphField extends Component {
             return pt.x;
         });
         const color10 = getColor(3, cookie.get("color_scheme"), "odoo");
-        const borderColor = this.data[0].is_sample_data ? hexToRGBA(color10, 0.1) : color10;
+        const borderColor = this.data[0].is_sample_data
+            ? hexToRGBA(color10, 0.1)
+            : color10;
         const backgroundColor = this.data[0].is_sample_data
             ? hexToRGBA(color10, 0.05)
             : hexToRGBA(color10, 0.2);
@@ -75,7 +77,7 @@ export class JournalDashboardGraphField extends Component {
             },
             options: {
                 plugins: {
-                    legend: { display: false },
+                    legend: {display: false},
                     tooltip: {
                         enabled: !this.data[0].is_sample_data,
                         intersect: false,
@@ -134,7 +136,7 @@ export class JournalDashboardGraphField extends Component {
             },
             options: {
                 plugins: {
-                    legend: { display: false },
+                    legend: {display: false},
                     tooltip: {
                         enabled: !this.data[0].is_sample_data,
                         intersect: false,
@@ -172,7 +174,7 @@ export class JournalDashboardGraphField extends Component {
 export const journalDashboardGraphField = {
     component: JournalDashboardGraphField,
     supportedTypes: ["text"],
-    extractProps: ({ attrs }) => ({
+    extractProps: ({attrs}) => ({
         graphType: attrs.graph_type,
     }),
 };

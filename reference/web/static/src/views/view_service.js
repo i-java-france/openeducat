@@ -1,6 +1,6 @@
-import { rpcBus } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { UPDATE_METHODS } from "@web/core/orm_service";
+import {rpcBus} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {UPDATE_METHODS} from "@web/core/orm_service";
 
 /**
  * @typedef {Object} IrFilter
@@ -43,9 +43,9 @@ import { UPDATE_METHODS } from "@web/core/orm_service";
 export const viewService = {
     dependencies: ["orm"],
     async: ["loadViews"],
-    start(env, { orm }) {
+    start(env, {orm}) {
         rpcBus.addEventListener("RPC:RESPONSE", (ev) => {
-            const { model, method } = ev.detail.data.params;
+            const {model, method} = ev.detail.data.params;
             if (["ir.ui.view", "ir.filters"].includes(model)) {
                 if (UPDATE_METHODS.includes(method)) {
                     rpcBus.trigger("CLEAR-CACHES", "get_views");
@@ -62,13 +62,14 @@ export const viewService = {
          * @returns {Promise<ViewDescriptions>}
          */
         async function loadViews(params, options = {}) {
-            const { context, resModel, views } = params;
+            const {context, resModel, views} = params;
             const loadViewsOptions = {
                 action_id: options.actionId || false,
                 embedded_action_id: options.embeddedActionId || false,
                 embedded_parent_res_id: options.embeddedParentResId || false,
                 load_filters: options.loadIrFilters || false,
-                toolbar: (!context?.disable_toolbar && options.loadActionMenus) || false,
+                toolbar:
+                    (!context?.disable_toolbar && options.loadActionMenus) || false,
             };
             for (const key in options) {
                 if (
@@ -95,19 +96,22 @@ export const viewService = {
                 )
             );
 
-            const result = await orm.cache({ type: "disk" }).call(resModel, "get_views", [], {
-                context: filteredContext,
-                views,
-                options: loadViewsOptions,
-            });
+            const result = await orm
+                .cache({type: "disk"})
+                .call(resModel, "get_views", [], {
+                    context: filteredContext,
+                    views,
+                    options: loadViewsOptions,
+                });
             const viewDescriptions = {
                 fields: result.models[resModel].fields,
                 relatedModels: result.models,
                 views: {},
             };
             for (const viewType in result.views) {
-                const { arch, toolbar, id, filters, custom_view_id } = result.views[viewType];
-                const viewDescription = { arch, id, custom_view_id };
+                const {arch, toolbar, id, filters, custom_view_id} =
+                    result.views[viewType];
+                const viewDescription = {arch, id, custom_view_id};
                 if (toolbar) {
                     viewDescription.actionMenus = toolbar;
                 }
@@ -118,7 +122,7 @@ export const viewService = {
             }
             return viewDescriptions;
         }
-        return { loadViews };
+        return {loadViews};
     },
 };
 

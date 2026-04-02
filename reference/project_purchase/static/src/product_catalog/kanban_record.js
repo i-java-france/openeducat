@@ -1,6 +1,6 @@
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
-import { ProductCatalogKanbanRecord } from "@product/product_catalog/kanban_record";
+import {ProductCatalogKanbanRecord} from "@product/product_catalog/kanban_record";
 
 patch(ProductCatalogKanbanRecord.prototype, {
     _getUpdateQuantityAndGetPriceParams() {

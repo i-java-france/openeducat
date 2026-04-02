@@ -3,12 +3,12 @@ import {
     addBuilderOption,
     setupHTMLBuilder,
 } from "@html_builder/../tests/helpers";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame, Deferred, delay } from "@odoo/hoot-dom";
-import { xml } from "@odoo/owl";
-import { contains } from "@web/../tests/web_test_helpers";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {describe, expect, test} from "@odoo/hoot";
+import {Deferred, animationFrame, delay} from "@odoo/hoot-dom";
+import {xml} from "@odoo/owl";
+import {contains} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 
@@ -36,7 +36,9 @@ describe("useDomState", () => {
                 }
             }
         );
-        const { getEditor } = await setupHTMLBuilder(`<div class="test-options-target">a</div>`);
+        const {getEditor} = await setupHTMLBuilder(
+            `<div class="test-options-target">a</div>`
+        );
         await animationFrame();
         await contains(":iframe .test-options-target").click();
         const editor = getEditor();
@@ -66,10 +68,10 @@ describe("waitSidebarUpdated", () => {
         addBuilderAction({
             testAction: class extends BuilderAction {
                 static id = "testAction";
-                isApplied({ editingElement, value }) {
+                isApplied({editingElement, value}) {
                     return editingElement.dataset.value == value;
                 }
-                async apply({ editingElement, value }) {
+                async apply({editingElement, value}) {
                     await delay(delayAmount);
                     await deferred;
                     editingElement.dataset.value = value;
@@ -87,7 +89,7 @@ describe("waitSidebarUpdated", () => {
                 this.state = useDomState(async (el) => {
                     await delay(delayAmount);
                     await deferred;
-                    return { value: el.dataset.value };
+                    return {value: el.dataset.value};
                 });
             }
         }
@@ -107,18 +109,21 @@ describe("waitSidebarUpdated", () => {
                     <TestSubComponent/>
                 </t>
             `;
-            static components = { TestSubComponent };
+            static components = {TestSubComponent};
             setup() {
                 super.setup();
                 this.state = useDomState(async (el) => {
                     await delay(delayAmount);
                     await deferred;
-                    return { value: el.dataset.value, showOther: el.dataset.value === "c" };
+                    return {
+                        value: el.dataset.value,
+                        showOther: el.dataset.value === "c",
+                    };
                 });
             }
         }
         addBuilderOption(TestOptionComponent);
-        const { waitSidebarUpdated } = await setupHTMLBuilder(
+        const {waitSidebarUpdated} = await setupHTMLBuilder(
             `<div class="test" data-value="a">a</div>`
         );
 

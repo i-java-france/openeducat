@@ -1,8 +1,8 @@
-import { _t } from "@web/core/l10n/translation";
-import { escape } from "@web/core/utils/strings";
-import { renderToElement } from "@web/core/utils/render";
-import { generateHTMLId } from "@html_builder/utils/utils_css";
-import { isSmallInteger } from "@html_builder/utils/utils";
+import {_t} from "@web/core/l10n/translation";
+import {escape} from "@web/core/utils/strings";
+import {renderToElement} from "@web/core/utils/render";
+import {generateHTMLId} from "@html_builder/utils/utils_css";
+import {isSmallInteger} from "@html_builder/utils/utils";
 
 export const VISIBILITY_DATASET = [
     "visibilityDependency",
@@ -123,7 +123,10 @@ export function renderField(field, resetId = false) {
     if (!field.id) {
         field.id = generateHTMLId();
     }
-    const params = { field: { ...field }, defaultName: escape(field.string || _t("Field")) };
+    const params = {
+        field: {...field},
+        defaultName: escape(field.string || _t("Field")),
+    };
     if (["url", "email", "tel"].includes(field.type)) {
         params.field.inputType = field.type;
     }
@@ -143,9 +146,13 @@ export function renderField(field, resetId = false) {
     }
     const template = document.createElement("template");
     const renderType = field.type === "tags" ? "many2many" : field.type;
-    template.content.append(renderToElement("website.form_field_" + renderType, params));
+    template.content.append(
+        renderToElement("website.form_field_" + renderType, params)
+    );
     if (field.description && field.description !== true) {
-        const descriptionEl = template.content.querySelector(".s_website_form_field_description");
+        const descriptionEl = template.content.querySelector(
+            ".s_website_form_field_description"
+        );
         descriptionEl.replaceWith(field.description);
     }
     template.content
@@ -217,7 +224,8 @@ export function getFieldFormat(fieldEl) {
     const format = {
         labelPosition: getLabelPosition(fieldEl),
         labelWidth: fieldEl.querySelector(".s_website_form_label").style.width,
-        multiPosition: (multipleInputEl && multipleInputEl.dataset.display) || "horizontal",
+        multiPosition:
+            (multipleInputEl && multipleInputEl.dataset.display) || "horizontal",
         col: [...fieldEl.classList].filter((el) => el.match(/^col-/g)).join(" "),
         offset: [...fieldEl.classList].filter((el) => el.match(/^offset-/g)).join(" "),
         requiredMark: requiredMark,
@@ -311,7 +319,9 @@ export function replaceFieldElement(oldFieldEl, fieldEl) {
     [...oldFieldEl.childNodes].forEach((node) => node.remove());
     [...fieldEl.childNodes].forEach((node) => oldFieldEl.appendChild(node));
     [...fieldEl.attributes].forEach((el) => oldFieldEl.removeAttribute(el.nodeName));
-    [...fieldEl.attributes].forEach((el) => oldFieldEl.setAttribute(el.nodeName, el.nodeValue));
+    [...fieldEl.attributes].forEach((el) =>
+        oldFieldEl.setAttribute(el.nodeName, el.nodeValue)
+    );
     if (hasConditionalVisibility) {
         oldFieldEl.classList.add("s_website_form_field_hidden_if", "d-none");
     }
@@ -345,11 +355,14 @@ export function replaceFieldElement(oldFieldEl, fieldEl) {
  * @param {boolean} noRecords
  * @returns {Object}
  */
-export function getActiveField(fieldEl, { noRecords, fields } = {}) {
+export function getActiveField(fieldEl, {noRecords, fields} = {}) {
     let field;
-    const labelText = fieldEl.querySelector(".s_website_form_label_content")?.innerText || "";
+    const labelText =
+        fieldEl.querySelector(".s_website_form_label_content")?.innerText || "";
     if (isFieldCustom(fieldEl)) {
-        const inputName = fieldEl.querySelector(".s_website_form_input").getAttribute("name");
+        const inputName = fieldEl
+            .querySelector(".s_website_form_input")
+            .getAttribute("name");
         field = getCustomField(fieldEl.dataset.type, labelText, inputName);
     } else {
         field = Object.assign({}, fields[getFieldName(fieldEl)]);
@@ -397,7 +410,9 @@ export function getNewRecordId(fieldEl) {
     if (selectEl) {
         options = [...selectEl.querySelectorAll("option")];
     } else if (multipleInputsEl) {
-        options = [...multipleInputsEl.querySelectorAll(".checkbox input, .radio input")];
+        options = [
+            ...multipleInputsEl.querySelectorAll(".checkbox input, .radio input"),
+        ];
     }
     // TODO: @owl-option factorize code above
     const targetEl = fieldEl.querySelector(".s_website_form_input");
@@ -500,7 +515,9 @@ export function getDomain(formEl, name, type, relation) {
     }
     const field = allFormsInfo
         .get(formEl)
-        .fields.find((el) => el.name === name && el.type === type && el.relation === relation);
+        .fields.find(
+            (el) => el.name === name && el.type === type && el.relation === relation
+        );
     return field && field.domain;
 }
 
@@ -515,7 +532,9 @@ export function getListItems(fieldEl) {
     if (selectEl) {
         options = [...selectEl.querySelectorAll("option")];
     } else if (multipleInputsEl) {
-        options = [...multipleInputsEl.querySelectorAll(".checkbox input, .radio input")];
+        options = [
+            ...multipleInputsEl.querySelectorAll(".checkbox input, .radio input"),
+        ];
     }
     return options.map((opt) => {
         const name = selectEl ? opt : opt.nextElementSibling;
@@ -546,7 +565,7 @@ export function setVisibilityDependency(fieldEl, value) {
  * @param {Object<string, Object>} fields - A map of all fields in the form.
  */
 export function rerenderField(fieldEl, fields) {
-    const field = getActiveField(fieldEl, { fields });
+    const field = getActiveField(fieldEl, {fields});
     delete field.id;
     const newFieldEl = renderField(field);
     replaceFieldElement(fieldEl, newFieldEl);

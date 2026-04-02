@@ -1,6 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
+
 from pytz import utc
 
 from odoo import api, fields, models
@@ -71,7 +72,7 @@ class ResourceMixin(models.AbstractModel):
         resources = [record.resource_id for record in self]
         resources_to_copy = self.env['resource.resource'].concat(*resources)
         new_resources = resources_to_copy.copy(resource_default)
-        for resource, vals in zip(new_resources, vals_list):
+        for resource, vals in zip(new_resources, vals_list, strict=False):
             vals['resource_id'] = resource.id
             vals['company_id'] = resource.company_id.id
             vals['resource_calendar_id'] = resource.calendar_id.id

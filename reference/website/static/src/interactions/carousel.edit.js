@@ -1,5 +1,5 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class CarouselEdit extends Interaction {
     static selector = "section > .carousel";
@@ -9,7 +9,7 @@ export class CarouselEdit extends Interaction {
     dynamicContent = {
         ".carousel-control-prev, .carousel-control-next, .carousel-indicators": {
             "t-on-click": this.throttled(this.onControlClick),
-            "t-att-class": () => ({ o_we_no_overlay: true }),
+            "t-att-class": () => ({o_we_no_overlay: true}),
         },
         ".carousel-control-prev, .carousel-control-next": {
             "t-att-data-bs-slide": () => undefined,
@@ -48,7 +48,7 @@ export class CarouselEdit extends Interaction {
         }
 
         // Slide the carousel
-        const applySpec = { editingElement: this.el, params: { direction: direction } };
+        const applySpec = {editingElement: this.el, params: {direction: direction}};
 
         if (this.services["website_edit"].applyAction) {
             this.services["website_edit"].applyAction("slideCarousel", applySpec);

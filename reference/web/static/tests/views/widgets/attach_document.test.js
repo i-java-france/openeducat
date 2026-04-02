@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { click, manuallyDispatchProgrammaticEvent } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {click, manuallyDispatchProgrammaticEvent} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 import {
     contains,
     defineModels,
@@ -12,10 +12,10 @@ import {
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 
-import { AttachDocumentWidget } from "@web/views/widgets/attach_document/attach_document";
+import {AttachDocumentWidget} from "@web/views/widgets/attach_document/attach_document";
 
 class Partner extends models.Model {
-    display_name = fields.Char({ string: "Displayed name" });
+    display_name = fields.Char({string: "Displayed name"});
     _records = [
         {
             id: 1,
@@ -48,7 +48,7 @@ test("attach document widget calls action with attachment ids", async () => {
         },
     });
 
-    onRpc(({ args, kwargs, method, model }) => {
+    onRpc(({args, kwargs, method, model}) => {
         expect.step(method);
         if (method === "my_action") {
             expect(model).toBe("partner");
@@ -57,7 +57,7 @@ test("attach document widget calls action with attachment ids", async () => {
             return true;
         }
         if (method === "web_save") {
-            expect(args[1]).toEqual({ display_name: "yop" });
+            expect(args[1]).toEqual({display_name: "yop"});
         }
         if (method === "web_read") {
             expect(args[0]).toEqual([1]);
@@ -107,7 +107,7 @@ test("attach document widget calls action with attachment ids on a new record", 
         },
     });
 
-    onRpc(({ args, kwargs, method, model }) => {
+    onRpc(({args, kwargs, method, model}) => {
         expect.step(method);
         if (method === "my_action") {
             expect(model).toBe("partner");
@@ -116,7 +116,7 @@ test("attach document widget calls action with attachment ids on a new record", 
             return true;
         }
         if (method === "web_save") {
-            expect(args[1]).toEqual({ display_name: "yop" });
+            expect(args[1]).toEqual({display_name: "yop"});
         }
         if (method === "web_read") {
             expect(args[0]).toEqual([2]);

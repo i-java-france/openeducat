@@ -1,9 +1,9 @@
-import { Component } from "@odoo/owl";
-import { CheckBox } from "@web/core/checkbox/checkbox";
-import { DateTimeInput } from "@web/core/datetime/datetime_input";
-import { Domain } from "@web/core/domain";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+import {Component} from "@odoo/owl";
+import {CheckBox} from "@web/core/checkbox/checkbox";
+import {DateTimeInput} from "@web/core/datetime/datetime_input";
+import {Domain} from "@web/core/domain";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 import {
     deserializeDate,
     deserializeDateTime,
@@ -12,18 +12,25 @@ import {
     serializeDate,
     serializeDateTime,
 } from "@web/core/l10n/dates";
-import { _t } from "@web/core/l10n/translation";
-import { TagsList } from "@web/core/tags_list/tags_list";
-import { useService } from "@web/core/utils/hooks";
-import { formatInteger, formatMany2one, formatMonetary } from "@web/views/fields/formatters";
-import { formatFloat } from "@web/core/utils/numbers";
-import { parseFloat, parseInteger, parseMonetary } from "@web/views/fields/parsers";
-import { Many2XAutocomplete, useOpenMany2XRecord } from "@web/views/fields/relational_utils";
-import { PropertyTags } from "./property_tags";
-import { PropertyText } from "./property_text";
-import { imageUrl } from "@web/core/utils/urls";
-import { getCurrency } from "@web/core/currency";
-import { nbsp } from "@web/core/utils/strings";
+import {_t} from "@web/core/l10n/translation";
+import {TagsList} from "@web/core/tags_list/tags_list";
+import {useService} from "@web/core/utils/hooks";
+import {
+    formatInteger,
+    formatMany2one,
+    formatMonetary,
+} from "@web/views/fields/formatters";
+import {formatFloat} from "@web/core/utils/numbers";
+import {parseFloat, parseInteger, parseMonetary} from "@web/views/fields/parsers";
+import {
+    Many2XAutocomplete,
+    useOpenMany2XRecord,
+} from "@web/views/fields/relational_utils";
+import {PropertyTags} from "./property_tags";
+import {PropertyText} from "./property_text";
+import {imageUrl} from "@web/core/utils/urls";
+import {getCurrency} from "@web/core/currency";
+import {nbsp} from "@web/core/utils/strings";
 
 function extractData(record) {
     let name;
@@ -32,7 +39,7 @@ function extractData(record) {
     } else if ("name" in record) {
         name = record.name.id ? record.name.display_name : record.name;
     }
-    return { id: record.id, display_name: name };
+    return {id: record.id, display_name: name};
 }
 
 /**
@@ -63,21 +70,21 @@ export class PropertyValue extends Component {
     };
 
     static props = {
-        id: { type: String, optional: true },
-        type: { type: String, optional: true },
-        comodel: { type: String, optional: true },
-        currencyField: { type: String, optional: true },
-        domain: { type: String, optional: true },
-        string: { type: String, optional: true },
-        value: { optional: true },
-        context: { type: Object },
-        readonly: { type: Boolean, optional: true },
-        canChangeDefinition: { type: Boolean, optional: true },
-        selection: { type: Array, optional: true },
-        tags: { type: Array, optional: true },
-        onChange: { type: Function, optional: true },
-        onTagsChange: { type: Function, optional: true },
-        record: { type: Object, optional: true },
+        id: {type: String, optional: true},
+        type: {type: String, optional: true},
+        comodel: {type: String, optional: true},
+        currencyField: {type: String, optional: true},
+        domain: {type: String, optional: true},
+        string: {type: String, optional: true},
+        value: {optional: true},
+        context: {type: Object},
+        readonly: {type: Boolean, optional: true},
+        canChangeDefinition: {type: Boolean, optional: true},
+        selection: {type: Array, optional: true},
+        tags: {type: Array, optional: true},
+        onChange: {type: Function, optional: true},
+        onTagsChange: {type: Function, optional: true},
+        record: {type: Object, optional: true},
     };
 
     setup() {
@@ -143,10 +150,12 @@ export class PropertyValue extends Component {
             // force to show at least 1 digit, even for integers
             return value;
         } else if (this.props.type === "datetime") {
-            const datetimeValue = typeof value === "string" ? deserializeDateTime(value) : value;
+            const datetimeValue =
+                typeof value === "string" ? deserializeDateTime(value) : value;
             return datetimeValue && !datetimeValue.invalid ? datetimeValue : false;
         } else if (this.props.type === "date") {
-            const dateValue = typeof value === "string" ? deserializeDate(value) : value;
+            const dateValue =
+                typeof value === "string" ? deserializeDate(value) : value;
             return dateValue && !dateValue.invalid ? dateValue : false;
         } else if (this.props.type === "boolean") {
             return !!value;
@@ -171,7 +180,11 @@ export class PropertyValue extends Component {
                     onClick:
                         hasAccess &&
                         this.clickableRelational &&
-                        (async () => await this._openRecord(this.props.comodel, many2manyValue[0])),
+                        (async () =>
+                            await this._openRecord(
+                                this.props.comodel,
+                                many2manyValue[0]
+                            )),
                     onDelete:
                         !this.props.readonly &&
                         hasAccess &&
@@ -179,7 +192,11 @@ export class PropertyValue extends Component {
                     colorIndex: 0,
                     img:
                         this.showAvatar && hasAccess
-                            ? imageUrl(this.props.comodel, many2manyValue[0], "avatar_128")
+                            ? imageUrl(
+                                  this.props.comodel,
+                                  many2manyValue[0],
+                                  "avatar_128"
+                              )
                             : null,
                 };
             });
@@ -364,7 +381,7 @@ export class PropertyValue extends Component {
         const result = await this.orm.call(this.props.comodel, "name_create", [name], {
             context: this.props.context,
         });
-        this.onValueChange([{ id: result[0], display_name: result[1] }]);
+        this.onValueChange([{id: result[0], display_name: result[1]}]);
     }
 
     /* --------------------------------------------------------
@@ -378,9 +395,14 @@ export class PropertyValue extends Component {
      * @param {integer} recordId
      */
     async _openRecord(recordModel, recordId) {
-        const action = await this.orm.call(recordModel, "get_formview_action", [[recordId]], {
-            context: this.props.context,
-        });
+        const action = await this.orm.call(
+            recordModel,
+            "get_formview_action",
+            [[recordId]],
+            {
+                context: this.props.context,
+            }
+        );
 
         this.action.doAction(action);
     }
@@ -393,9 +415,14 @@ export class PropertyValue extends Component {
      * @returns {array} [record id, record name]
      */
     async _nameGet(recordId) {
-        const result = await this.orm.read(this.props.comodel, [recordId], ["display_name"], {
-            context: this.props.context,
-        });
+        const result = await this.orm.read(
+            this.props.comodel,
+            [recordId],
+            ["display_name"],
+            {
+                context: this.props.context,
+            }
+        );
         return result[0];
     }
 }

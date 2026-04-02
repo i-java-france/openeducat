@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _
+from odoo import _, api, fields, models
 
 
 class StockWarehouse(models.Model):

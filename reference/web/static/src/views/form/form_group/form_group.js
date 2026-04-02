@@ -1,5 +1,5 @@
-import { Component } from "@odoo/owl";
-import { sortBy } from "@web/core/utils/arrays";
+import {Component} from "@odoo/owl";
+import {sortBy} from "@web/core/utils/arrays";
 
 class Group extends Component {
     static template = "";
@@ -9,7 +9,9 @@ class Group extends Component {
     };
 
     _getItems() {
-        const items = Object.entries(this.props.slots || {}).filter(([k, v]) => v.type === "item");
+        const items = Object.entries(this.props.slots || {}).filter(
+            ([k, v]) => v.type === "item"
+        );
         return sortBy(items, (i) => i[1].sequence);
     }
 
@@ -35,7 +37,9 @@ export class OuterGroup extends Group {
         const colSize = Math.max(1, Math.round(12 / nbCols));
 
         // Dispatch items across table rows
-        const items = super.getItems().filter(([k, v]) => !("isVisible" in v) || v.isVisible);
+        const items = super
+            .getItems()
+            .filter(([k, v]) => !("isVisible" in v) || v.isVisible);
         return items.map((item) => {
             const [slotName, slot] = item;
             const itemSpan = slot.itemSpan || 1;
@@ -52,7 +56,9 @@ export class OuterGroup extends Group {
 export class InnerGroup extends Group {
     static template = "web.Form.InnerGroup";
     getTemplate(subType) {
-        return this.constructor.templates[subType] || this.constructor.templates.default;
+        return (
+            this.constructor.templates[subType] || this.constructor.templates.default
+        );
     }
     getRows() {
         const maxCols = this.props.maxCols;
@@ -69,7 +75,7 @@ export class InnerGroup extends Group {
                 continue;
             }
 
-            const { newline, itemSpan } = slot;
+            const {newline, itemSpan} = slot;
             if (newline) {
                 rows.push(currentRow);
                 currentRow = [];
@@ -85,7 +91,7 @@ export class InnerGroup extends Group {
             }
 
             const isVisible = !("isVisible" in slot) || slot.isVisible;
-            currentRow.push({ ...slot, name: slotName, itemSpan, isVisible });
+            currentRow.push({...slot, name: slotName, itemSpan, isVisible});
             reservedSpace += itemSpan || 1;
 
             // Allows to remove the line if the content is not visible instead of leaving an empty line.

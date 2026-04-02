@@ -1,4 +1,4 @@
-import { models } from "@web/../tests/web_test_helpers";
+import {models} from "@web/../tests/web_test_helpers";
 
 export class AccountFiscalPosition extends models.ServerModel {
     _name = "account.fiscal.position";

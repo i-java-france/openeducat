@@ -1,47 +1,63 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { registries } from "@odoo/o-spreadsheet";
-import { setCellContent, setSelection, updatePivot } from "@spreadsheet/../tests/helpers/commands";
-import { defineSpreadsheetModels } from "@spreadsheet/../tests/helpers/data";
-import { getEvaluatedCell, getFormattedValueGrid } from "@spreadsheet/../tests/helpers/getters";
-import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/helpers/pivot";
-import { doMenuAction } from "@spreadsheet/../tests/helpers/ui";
-import { waitForDataLoaded } from "@spreadsheet/helpers/model";
-import { Partner, Product } from "../../helpers/data";
-const { cellMenuRegistry } = registries;
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {registries} from "@odoo/o-spreadsheet";
+import {
+    setCellContent,
+    setSelection,
+    updatePivot,
+} from "@spreadsheet/../tests/helpers/commands";
+import {defineSpreadsheetModels} from "@spreadsheet/../tests/helpers/data";
+import {
+    getEvaluatedCell,
+    getFormattedValueGrid,
+} from "@spreadsheet/../tests/helpers/getters";
+import {createSpreadsheetWithPivot} from "@spreadsheet/../tests/helpers/pivot";
+import {doMenuAction} from "@spreadsheet/../tests/helpers/ui";
+import {waitForDataLoaded} from "@spreadsheet/helpers/model";
+import {Partner, Product} from "../../helpers/data";
+const {cellMenuRegistry} = registries;
 
 describe.current.tags("headless");
 defineSpreadsheetModels();
 
 beforeEach(() => {
     Product._records.push(
-        { id: 200, display_name: "chair", name: "chair" },
-        { id: 201, display_name: "table", name: "table" }
+        {id: 200, display_name: "chair", name: "chair"},
+        {id: 201, display_name: "table", name: "table"}
     );
     Partner._records.push(
-        { id: 200, foo: 12, bar: true, product_id: 200, probability: 100, currency_id: 1 },
-        { id: 201, foo: 13, bar: false, product_id: 201, probability: 50, currency_id: 1 }
+        {
+            id: 200,
+            foo: 12,
+            bar: true,
+            product_id: 200,
+            probability: 100,
+            currency_id: 1,
+        },
+        {id: 201, foo: 13, bar: false, product_id: 201, probability: 50, currency_id: 1}
     );
 });
 
 describe("Pivot custom groups", () => {
     test("Can have custom groups in a pivot", async function () {
-        const { model, pivotId } = await createSpreadsheetWithPivot();
+        const {model, pivotId} = await createSpreadsheetWithPivot();
         updatePivot(model, pivotId, {
-            columns: [{ fieldName: "GroupedProducts", order: "asc" }],
+            columns: [{fieldName: "GroupedProducts", order: "asc"}],
             rows: [],
-            measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+            measures: [
+                {id: "probability:sum", fieldName: "probability", aggregator: "sum"},
+            ],
             customFields: {
                 GroupedProducts: {
                     parentField: "product_id",
                     name: "GroupedProducts",
-                    groups: [{ name: "A Group", values: [37, 41] }],
+                    groups: [{name: "A Group", values: [37, 41]}],
                 },
             },
         });
         await waitForDataLoaded(model);
         setCellContent(model, "A1", "=PIVOT(1)");
 
-        // prettier-ignore
+        // Prettier-ignore
         expect(getFormattedValueGrid(model, "A1:E3")).toEqual({
             A1:"Partner Pivot",  B1: "A Group",      C1: "chair",        D1: "table",        E1: "Total",
             A2: "",              B2: "Probability",  C2: "Probability",  D2: "Probability",  E2: "Probability",
@@ -54,23 +70,30 @@ describe("Pivot custom groups", () => {
             ...record,
             name: `Partner${i + 1}`,
         }));
-        const { model, pivotId } = await createSpreadsheetWithPivot();
+        const {model, pivotId} = await createSpreadsheetWithPivot();
         updatePivot(model, pivotId, {
             columns: [],
-            rows: [{ fieldName: "GroupedNames", order: "asc" }],
-            measures: [{ id: "probability:min", fieldName: "probability", aggregator: "min" }],
+            rows: [{fieldName: "GroupedNames", order: "asc"}],
+            measures: [
+                {id: "probability:min", fieldName: "probability", aggregator: "min"},
+            ],
             customFields: {
                 GroupedNames: {
                     parentField: "name",
                     name: "GroupedNames",
-                    groups: [{ name: "First Three", values: ["Partner1", "Partner2", "Partner3"] }],
+                    groups: [
+                        {
+                            name: "First Three",
+                            values: ["Partner1", "Partner2", "Partner3"],
+                        },
+                    ],
                 },
             },
         });
         await waitForDataLoaded(model);
         setCellContent(model, "A1", "=PIVOT(1)");
 
-        // prettier-ignore
+        // Prettier-ignore
         expect(getFormattedValueGrid(model, "A1:B7")).toEqual({
             A1:"Partner Pivot",  B1: "Total",
             A2: "",              B2: "Probability",
@@ -83,9 +106,9 @@ describe("Pivot custom groups", () => {
     });
 
     test('Cannot have custom groups with "count_distinct" measure', async function () {
-        const { model, pivotId } = await createSpreadsheetWithPivot();
+        const {model, pivotId} = await createSpreadsheetWithPivot();
         updatePivot(model, pivotId, {
-            columns: [{ fieldName: "GroupedProducts", order: "asc" }],
+            columns: [{fieldName: "GroupedProducts", order: "asc"}],
             rows: [],
             measures: [
                 {
@@ -98,7 +121,7 @@ describe("Pivot custom groups", () => {
                 GroupedProducts: {
                     parentField: "product_id",
                     name: "GroupedProducts",
-                    groups: [{ name: "A Group", values: [37, 41] }],
+                    groups: [{name: "A Group", values: [37, 41]}],
                 },
             },
         });
@@ -115,18 +138,20 @@ describe("Pivot custom groups", () => {
     });
 
     test("Can have both the grouped field and the base field at the same time in the pivot", async function () {
-        const { model, pivotId } = await createSpreadsheetWithPivot();
+        const {model, pivotId} = await createSpreadsheetWithPivot();
         updatePivot(model, pivotId, {
-            columns: [{ fieldName: "GroupedProducts", order: "asc" }],
-            rows: [{ fieldName: "product_id", order: "asc" }],
-            measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+            columns: [{fieldName: "GroupedProducts", order: "asc"}],
+            rows: [{fieldName: "product_id", order: "asc"}],
+            measures: [
+                {id: "probability:sum", fieldName: "probability", aggregator: "sum"},
+            ],
             customFields: {
                 GroupedProducts: {
                     parentField: "product_id",
                     name: "GroupedProducts",
                     groups: [
-                        { name: "Group1", values: [37, 41] },
-                        { name: "Group2", values: [200, 201] },
+                        {name: "Group1", values: [37, 41]},
+                        {name: "Group2", values: [200, 201]},
                     ],
                 },
             },
@@ -134,7 +159,7 @@ describe("Pivot custom groups", () => {
         await waitForDataLoaded(model);
         setCellContent(model, "A1", "=PIVOT(1)");
 
-        // prettier-ignore
+        // Prettier-ignore
         expect(getFormattedValueGrid(model, "A1:D7")).toEqual({
             A1:"Partner Pivot",  B1: "Group1",       C1: "Group2",       D1: "Total",
             A2: "",              B2: "Probability",  C2: "Probability",  D2: "Probability",
@@ -147,25 +172,37 @@ describe("Pivot custom groups", () => {
     });
 
     test("Custom groups handle None values", async function () {
-        Partner._records.push({ id: 202, foo: 12, bar: true, product_id: false, probability: 10 });
+        Partner._records.push({
+            id: 202,
+            foo: 12,
+            bar: true,
+            product_id: false,
+            probability: 10,
+        });
 
-        const { model, pivotId } = await createSpreadsheetWithPivot();
+        const {model, pivotId} = await createSpreadsheetWithPivot();
         updatePivot(model, pivotId, {
-            columns: [{ fieldName: "GroupedProducts", order: "asc" }],
+            columns: [{fieldName: "GroupedProducts", order: "asc"}],
             rows: [],
-            measures: [{ id: "probability:count", fieldName: "probability", aggregator: "count" }],
+            measures: [
+                {
+                    id: "probability:count",
+                    fieldName: "probability",
+                    aggregator: "count",
+                },
+            ],
             customFields: {
                 GroupedProducts: {
                     parentField: "product_id",
                     name: "GroupedProducts",
-                    groups: [{ name: "Group1", values: [37, 41, 200] }],
+                    groups: [{name: "Group1", values: [37, 41, 200]}],
                 },
             },
         });
         await waitForDataLoaded(model);
         setCellContent(model, "A1", "=PIVOT(1)");
 
-        // prettier-ignore
+        // Prettier-ignore
         expect(getFormattedValueGrid(model, "A1:E3")).toEqual({
             A1:"Partner Pivot",  B1: "Group1",       C1: "table",        D1: "None",         E1: "Total",
             A2: "",              B2: "Probability",  C2: "Probability",  D2: "Probability",  E2: "Probability",
@@ -177,13 +214,13 @@ describe("Pivot custom groups", () => {
                 GroupedProducts: {
                     parentField: "product_id",
                     name: "GroupedProducts",
-                    groups: [{ name: "Group1", values: [37, 41, 200, false] }], // Add false to the group
+                    groups: [{name: "Group1", values: [37, 41, 200, false]}], // Add false to the group
                 },
             },
         });
         await waitForDataLoaded(model);
 
-        // prettier-ignore
+        // Prettier-ignore
         expect(getFormattedValueGrid(model, "A1:D3")).toEqual({
             A1:"Partner Pivot",  B1: "Group1",       C1: "table",        D1: "Total",
             A2: "",              B2: "Probability",  C2: "Probability",  D2: "Probability",
@@ -192,25 +229,33 @@ describe("Pivot custom groups", () => {
     });
 
     test("Can sort custom groups alphabetically", async function () {
-        Partner._records.push({ id: 202, foo: 12, bar: true, product_id: false, probability: 10 });
+        Partner._records.push({
+            id: 202,
+            foo: 12,
+            bar: true,
+            product_id: false,
+            probability: 10,
+        });
 
-        const { model, pivotId } = await createSpreadsheetWithPivot();
+        const {model, pivotId} = await createSpreadsheetWithPivot();
         updatePivot(model, pivotId, {
-            columns: [{ fieldName: "GroupedProducts", order: "asc" }],
+            columns: [{fieldName: "GroupedProducts", order: "asc"}],
             rows: [],
-            measures: [{ id: "probability:max", fieldName: "probability", aggregator: "max" }],
+            measures: [
+                {id: "probability:max", fieldName: "probability", aggregator: "max"},
+            ],
             customFields: {
                 GroupedProducts: {
                     parentField: "product_id",
                     name: "GroupedProducts",
-                    groups: [{ name: "My Group", values: [37, 41] }],
+                    groups: [{name: "My Group", values: [37, 41]}],
                 },
             },
         });
         await waitForDataLoaded(model);
         setCellContent(model, "A1", "=PIVOT(1)");
 
-        // prettier-ignore
+        // Prettier-ignore
         expect(getFormattedValueGrid(model, "A1:F3")).toEqual({
             A1:"Partner Pivot",  B1: "chair",        C1: "My Group",     D1: "table",        E1: "None",      F1: "Total",
             A2: "",              B2: "Probability",  C2: "Probability",  D2: "Probability",  E2: "Probability",  F2: "Probability",
@@ -218,11 +263,11 @@ describe("Pivot custom groups", () => {
         });
 
         updatePivot(model, pivotId, {
-            columns: [{ fieldName: "GroupedProducts", order: "desc" }],
+            columns: [{fieldName: "GroupedProducts", order: "desc"}],
         });
         await waitForDataLoaded(model);
 
-        // prettier-ignore
+        // Prettier-ignore
         expect(getFormattedValueGrid(model, "A1:F3")).toEqual({
             A1:"Partner Pivot",  B1: "None",         C1: "table",        D1: "My Group",     E1: "chair",        F1: "Total",
             A2: "",              B2: "Probability",  C2: "Probability",  D2: "Probability",  E2: "Probability",  F2: "Probability",
@@ -231,18 +276,20 @@ describe("Pivot custom groups", () => {
     });
 
     test("Can have a group with all the non-grouped values", async function () {
-        const { model, pivotId } = await createSpreadsheetWithPivot();
+        const {model, pivotId} = await createSpreadsheetWithPivot();
         updatePivot(model, pivotId, {
-            columns: [{ fieldName: "GroupedProducts", order: "asc" }],
+            columns: [{fieldName: "GroupedProducts", order: "asc"}],
             rows: [],
-            measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+            measures: [
+                {id: "probability:sum", fieldName: "probability", aggregator: "sum"},
+            ],
             customFields: {
                 GroupedProducts: {
                     parentField: "product_id",
                     name: "GroupedProducts",
                     groups: [
-                        { name: "Group1", values: [37, 41] },
-                        { name: "Others", values: [], isOtherGroup: true },
+                        {name: "Group1", values: [37, 41]},
+                        {name: "Others", values: [], isOtherGroup: true},
                     ],
                 },
             },
@@ -250,7 +297,7 @@ describe("Pivot custom groups", () => {
         await waitForDataLoaded(model);
         setCellContent(model, "A1", "=PIVOT(1)");
 
-        // prettier-ignore
+        // Prettier-ignore
         expect(getFormattedValueGrid(model, "A1:D3")).toEqual({
             A1:"Partner Pivot",  B1: "Group1",       C1: "Others",       D1: "Total",
             A2: "",              B2: "Probability",  C2: "Probability",  D2: "Probability",
@@ -259,21 +306,29 @@ describe("Pivot custom groups", () => {
     });
 
     test("Others group is always sorted at the end", async function () {
-        Partner._records.push({ id: 202, foo: 12, bar: true, product_id: false, probability: 10 });
+        Partner._records.push({
+            id: 202,
+            foo: 12,
+            bar: true,
+            product_id: false,
+            probability: 10,
+        });
 
-        const { model, pivotId } = await createSpreadsheetWithPivot();
+        const {model, pivotId} = await createSpreadsheetWithPivot();
         updatePivot(model, pivotId, {
-            columns: [{ fieldName: "GroupedProducts", order: "asc" }],
+            columns: [{fieldName: "GroupedProducts", order: "asc"}],
             rows: [],
-            measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+            measures: [
+                {id: "probability:sum", fieldName: "probability", aggregator: "sum"},
+            ],
             customFields: {
                 GroupedProducts: {
                     parentField: "product_id",
                     name: "GroupedProducts",
                     groups: [
-                        { name: "Group1", values: [37, 41] },
-                        { name: "Group2", values: [200, false] },
-                        { name: "Others", values: [], isOtherGroup: true },
+                        {name: "Group1", values: [37, 41]},
+                        {name: "Group2", values: [200, false]},
+                        {name: "Others", values: [], isOtherGroup: true},
                     ],
                 },
             },
@@ -281,7 +336,7 @@ describe("Pivot custom groups", () => {
         await waitForDataLoaded(model);
         setCellContent(model, "A1", "=PIVOT(1)");
 
-        // prettier-ignore
+        // Prettier-ignore
         expect(getFormattedValueGrid(model, "A1:E3")).toEqual({
             A1:"Partner Pivot",  B1: "Group1",       C1: "Group2",       D1: "Others",       E1: "Total",
             A2: "",              B2: "Probability",  C2: "Probability",  D2: "Probability",  E2: "Probability",
@@ -289,11 +344,11 @@ describe("Pivot custom groups", () => {
         });
 
         updatePivot(model, pivotId, {
-            columns: [{ fieldName: "GroupedProducts", order: "desc" }],
+            columns: [{fieldName: "GroupedProducts", order: "desc"}],
         });
         await waitForDataLoaded(model);
 
-        // prettier-ignore
+        // Prettier-ignore
         expect(getFormattedValueGrid(model, "A1:E3")).toEqual({
             A1:"Partner Pivot",  B1: "Group2",       C1: "Group1",       D1: "Others",       E1: "Total",
             A2: "",              B2: "Probability",  C2: "Probability",  D2: "Probability",  E2: "Probability",
@@ -304,11 +359,13 @@ describe("Pivot custom groups", () => {
 
 describe("Pivot custom groups menu items", () => {
     test("Can add custom groups from the menu items", async function () {
-        const { model, pivotId, env } = await createSpreadsheetWithPivot();
+        const {model, pivotId, env} = await createSpreadsheetWithPivot();
         updatePivot(model, pivotId, {
-            columns: [{ fieldName: "product_id" }],
+            columns: [{fieldName: "product_id"}],
             rows: [],
-            measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+            measures: [
+                {id: "probability:sum", fieldName: "probability", aggregator: "sum"},
+            ],
         });
         await waitForDataLoaded(model);
 
@@ -319,26 +376,28 @@ describe("Pivot custom groups menu items", () => {
             Product2: {
                 parentField: "product_id",
                 name: "Product2",
-                groups: [{ name: "Group", values: [41, 200, 201] }],
+                groups: [{name: "Group", values: [41, 200, 201]}],
             },
         });
         expect(definition.columns).toEqual([
-            { fieldName: "Product2" },
-            { fieldName: "product_id" },
+            {fieldName: "Product2"},
+            {fieldName: "product_id"},
         ]);
     });
 
     test("Grouping a mix of ungrouped an grouped values creates a new group and removes the old one", async function () {
-        const { model, pivotId, env } = await createSpreadsheetWithPivot();
+        const {model, pivotId, env} = await createSpreadsheetWithPivot();
         updatePivot(model, pivotId, {
-            columns: [{ fieldName: "product_id" }],
+            columns: [{fieldName: "product_id"}],
             rows: [],
-            measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+            measures: [
+                {id: "probability:sum", fieldName: "probability", aggregator: "sum"},
+            ],
             customFields: {
                 Product2: {
                     parentField: "product_id",
                     name: "Product2",
-                    groups: [{ name: "Group", values: [41, 200, 201] }],
+                    groups: [{name: "Group", values: [41, 200, 201]}],
                 },
             },
         });
@@ -351,26 +410,28 @@ describe("Pivot custom groups menu items", () => {
             Product2: {
                 parentField: "product_id",
                 name: "Product2",
-                groups: [{ name: "Group", values: [37, 41] }],
+                groups: [{name: "Group", values: [37, 41]}],
             },
         });
         expect(definition.columns).toEqual([
-            { fieldName: "Product2" },
-            { fieldName: "product_id" },
+            {fieldName: "Product2"},
+            {fieldName: "product_id"},
         ]);
     });
 
     test("Can merge existing group with other values with menu items", async function () {
-        const { model, pivotId, env } = await createSpreadsheetWithPivot();
+        const {model, pivotId, env} = await createSpreadsheetWithPivot();
         updatePivot(model, pivotId, {
-            columns: [{ fieldName: "Product2", order: "asc" }],
+            columns: [{fieldName: "Product2", order: "asc"}],
             rows: [],
-            measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+            measures: [
+                {id: "probability:sum", fieldName: "probability", aggregator: "sum"},
+            ],
             customFields: {
                 Product2: {
                     parentField: "product_id",
                     name: "Product2",
-                    groups: [{ name: "aaGroup", values: [200, 201] }],
+                    groups: [{name: "aaGroup", values: [200, 201]}],
                 },
             },
         });
@@ -383,24 +444,26 @@ describe("Pivot custom groups menu items", () => {
             Product2: {
                 parentField: "product_id",
                 name: "Product2",
-                groups: [{ name: "aaGroup", values: [200, 201, 41] }],
+                groups: [{name: "aaGroup", values: [200, 201, 41]}],
             },
         });
     });
 
     test("Can remove existing groups with menu items", async function () {
-        const { model, pivotId, env } = await createSpreadsheetWithPivot();
+        const {model, pivotId, env} = await createSpreadsheetWithPivot();
         updatePivot(model, pivotId, {
-            columns: [{ fieldName: "Product2", order: "asc" }, { fieldName: "product_id" }],
+            columns: [{fieldName: "Product2", order: "asc"}, {fieldName: "product_id"}],
             rows: [],
-            measures: [{ id: "probability:sum", fieldName: "probability", aggregator: "sum" }],
+            measures: [
+                {id: "probability:sum", fieldName: "probability", aggregator: "sum"},
+            ],
             customFields: {
                 Product2: {
                     parentField: "product_id",
                     name: "Product2",
                     groups: [
-                        { name: "MyGroup", values: [200, 201] },
-                        { name: "MyGroup2", values: [37, 41] },
+                        {name: "MyGroup", values: [200, 201]},
+                        {name: "MyGroup2", values: [37, 41]},
                     ],
                 },
             },
@@ -415,7 +478,7 @@ describe("Pivot custom groups menu items", () => {
             Product2: {
                 parentField: "product_id",
                 name: "Product2",
-                groups: [{ name: "MyGroup2", values: [37, 41] }],
+                groups: [{name: "MyGroup2", values: [37, 41]}],
             },
         });
 
@@ -424,6 +487,6 @@ describe("Pivot custom groups menu items", () => {
         await waitForDataLoaded(model);
         definition = model.getters.getPivotCoreDefinition(pivotId);
         expect(definition.customFields).toEqual({});
-        expect(definition.columns).toEqual([{ fieldName: "product_id" }]);
+        expect(definition.columns).toEqual([{fieldName: "product_id"}]);
     });
 });

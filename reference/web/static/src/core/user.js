@@ -1,11 +1,11 @@
-import { browser } from "@web/core/browser/browser";
-import { pyToJsLocale } from "@web/core/l10n/utils/locales";
-import { rpc } from "@web/core/network/rpc";
-import { Cache } from "@web/core/utils/cache";
-import { session } from "@web/session";
-import { ensureArray, sortBy } from "./utils/arrays";
-import { cookie } from "@web/core/browser/cookie";
-import { EventBus } from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {pyToJsLocale} from "@web/core/l10n/utils/locales";
+import {rpc} from "@web/core/network/rpc";
+import {Cache} from "@web/core/utils/cache";
+import {session} from "@web/session";
+import {ensureArray, sortBy} from "./utils/arrays";
+import {cookie} from "@web/core/browser/cookie";
+import {EventBus} from "@odoo/owl";
 
 // This file exports an object containing user-related information and functions
 // allowing to obtain/alter user-related information from the server.
@@ -75,7 +75,7 @@ export function _makeUser(session) {
 
         // update browser data
         cookie.set("cids", activeCompanies.map((c) => c.id).join("-"));
-        Object.assign(context, { allowed_company_ids: activeCompanies.map((c) => c.id) });
+        Object.assign(context, {allowed_company_ids: activeCompanies.map((c) => c.id)});
 
         userBus.trigger("ACTIVE_COMPANIES_CHANGED");
     }
@@ -88,13 +88,17 @@ export function _makeUser(session) {
 
     if (userCompanies) {
         allowedCompanies = Object.values(userCompanies.allowed_companies);
-        allowedCompaniesWithAncestors.push(...Object.values(userCompanies.allowed_companies));
+        allowedCompaniesWithAncestors.push(
+            ...Object.values(userCompanies.allowed_companies)
+        );
         if (userCompanies.disallowed_ancestor_companies) {
             allowedCompaniesWithAncestors.push(
                 ...Object.values(userCompanies.disallowed_ancestor_companies)
             );
         }
-        defaultCompany = allowedCompanies.find((c) => c.id === userCompanies.current_company); // TODO: change the name in the session current_company to default_company
+        defaultCompany = allowedCompanies.find(
+            (c) => c.id === userCompanies.current_company
+        ); // TODO: change the name in the session current_company to default_company
         updateActiveCompanies(getCookieCompanyIds(), allowedCompanies, defaultCompany);
     }
 
@@ -123,7 +127,7 @@ export function _makeUser(session) {
             model: "res.users",
             method: "has_group",
             args: [userId, group],
-            kwargs: { context },
+            kwargs: {context},
         });
     };
     const getGroupCacheKey = (group) => group;
@@ -149,12 +153,15 @@ export function _makeUser(session) {
             model,
             method: "has_access",
             args: [ids, operation],
-            kwargs: { context },
+            kwargs: {context},
         });
     };
     const getAccessRightCacheKey = (model, operation, ids) =>
         JSON.stringify([model, operation, ids]);
-    const accessRightCache = new Cache(getAccessRightCacheValue, getAccessRightCacheKey);
+    const accessRightCache = new Cache(
+        getAccessRightCacheValue,
+        getAccessRightCacheKey
+    );
     const lang = pyToJsLocale(context?.lang);
 
     return {
@@ -169,7 +176,7 @@ export function _makeUser(session) {
         userId, // TODO: rename into id?
         writeDate,
         get context() {
-            return Object.assign({}, context, { uid: this.userId });
+            return Object.assign({}, context, {uid: this.userId});
         },
         get lang() {
             return lang;
@@ -187,22 +194,30 @@ export function _makeUser(session) {
             return groupCache.read(group, this.context);
         },
         checkAccessRight(model, operation, ids = []) {
-            return accessRightCache.read(model, operation, ensureArray(ids), this.context);
+            return accessRightCache.read(
+                model,
+                operation,
+                ensureArray(ids),
+                this.context
+            );
         },
         async setUserSettings(key, value) {
             const model = "res.users.settings";
             const method = "set_res_users_settings";
-            const changedSettings = await rpc(`/web/dataset/call_kw/${model}/${method}`, {
-                model,
-                method,
-                args: [[this.settings.id]],
-                kwargs: {
-                    new_settings: {
-                        [key]: value,
+            const changedSettings = await rpc(
+                `/web/dataset/call_kw/${model}/${method}`,
+                {
+                    model,
+                    method,
+                    args: [[this.settings.id]],
+                    kwargs: {
+                        new_settings: {
+                            [key]: value,
+                        },
+                        context: this.context,
                     },
-                    context: this.context,
-                },
-            });
+                }
+            );
             Object.assign(settings, changedSettings);
         },
         updateUserSettings(key, value) {
@@ -221,15 +236,19 @@ export function _makeUser(session) {
         },
         async activateCompanies(
             companyIds,
-            options = { includeChildCompanies: true, reload: true }
+            options = {includeChildCompanies: true, reload: true}
         ) {
-            const newCompanyIds = companyIds.length ? companyIds : [activeCompanies[0].id];
+            const newCompanyIds = companyIds.length
+                ? companyIds
+                : [activeCompanies[0].id];
 
             function addCompanies(companyIds) {
                 for (const companyId of companyIds) {
                     if (!newCompanyIds.includes(companyId)) {
                         newCompanyIds.push(companyId);
-                        addCompanies(allowedCompanies.find((c) => c.id === companyId).child_ids);
+                        addCompanies(
+                            allowedCompanies.find((c) => c.id === companyId).child_ids
+                        );
                     }
                 }
             }
@@ -237,7 +256,8 @@ export function _makeUser(session) {
             if (options.includeChildCompanies) {
                 addCompanies(
                     companyIds.flatMap(
-                        (companyId) => allowedCompanies.find((c) => c.id === companyId).child_ids
+                        (companyId) =>
+                            allowedCompanies.find((c) => c.id === companyId).child_ids
                     )
                 );
             }
@@ -261,7 +281,10 @@ export const getLastConnectedUsers = () => {
 };
 
 export const setLastConnectedUsers = (users) => {
-    browser.localStorage.setItem(LAST_CONNECTED_USER_KEY, JSON.stringify(users.slice(0, 5)));
+    browser.localStorage.setItem(
+        LAST_CONNECTED_USER_KEY,
+        JSON.stringify(users.slice(0, 5))
+    );
 };
 
 if (!session.quick_login) {

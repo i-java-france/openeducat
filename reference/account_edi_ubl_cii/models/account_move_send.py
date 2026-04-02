@@ -1,14 +1,17 @@
 import base64
-import logging
 import io
+import logging
 
 from lxml import etree
 
-from odoo import _, api, fields, models, tools, SUPERUSER_ID
-from odoo.addons.account_edi_ubl_cii.models.account_edi_common import SUPPORTED_FILE_TYPES
+from odoo import SUPERUSER_ID, _, api, fields, models, tools
 from odoo.tools import cleanup_xml_node
 from odoo.tools.pdf import OdooPdfFileReader, OdooPdfFileWriter
+
 from odoo.addons.account.tools import dict_to_xml
+from odoo.addons.account_edi_ubl_cii.models.account_edi_common import (
+    SUPPORTED_FILE_TYPES,
+)
 
 _logger = logging.getLogger(__name__)
 

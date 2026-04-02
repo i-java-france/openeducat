@@ -1,9 +1,9 @@
-import { Plugin } from "@html_editor/plugin";
-import { MEDIA_SELECTOR, isProtected } from "@html_editor/utils/dom_info";
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { shouldEditableMediaBeEditable } from "@html_builder/utils/utils_css";
-import { _t } from "@web/core/l10n/translation";
-import { Tooltip } from "@web/core/tooltip/tooltip";
+import {Plugin} from "@html_editor/plugin";
+import {MEDIA_SELECTOR, isProtected} from "@html_editor/utils/dom_info";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {shouldEditableMediaBeEditable} from "@html_builder/utils/utils_css";
+import {_t} from "@web/core/l10n/translation";
+import {Tooltip} from "@web/core/tooltip/tooltip";
 
 /**
  * @typedef { Object } MediaWebsiteShared
@@ -17,7 +17,7 @@ export class MediaWebsitePlugin extends Plugin {
 
     /** @type {import("plugins").BuilderResources} */
     resources = {
-        on_replaced_media_handlers: ({ newMediaEl }) =>
+        on_replaced_media_handlers: ({newMediaEl}) =>
             // Activate the new media options.
             this.dependencies.builderOptions.setNextTarget(newMediaEl),
         on_snippet_dropped_handlers: this.onSnippetDropped.bind(this),
@@ -97,8 +97,9 @@ export class MediaWebsitePlugin extends Plugin {
     async replaceMedia(mediaEl) {
         const sel = this.dependencies.selection.getEditableSelection();
         const editableEl =
-            closestElement(mediaEl || sel.startContainer, ".o_editable") || this.editable;
-        await this.dependencies.media.openMediaDialog({ node: mediaEl }, editableEl);
+            closestElement(mediaEl || sel.startContainer, ".o_editable") ||
+            this.editable;
+        await this.dependencies.media.openMediaDialog({node: mediaEl}, editableEl);
     }
 
     /**
@@ -115,7 +116,7 @@ export class MediaWebsitePlugin extends Plugin {
         setTimeout(this.removeCurrentTooltip, 1500);
     }
 
-    async onSnippetDropped({ snippetEl, dragState }) {
+    async onSnippetDropped({snippetEl, dragState}) {
         if (!snippetEl.matches(".media_iframe_video")) {
             return;
         }

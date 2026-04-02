@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from collections import defaultdict
 from markupsafe import Markup
 
-from odoo import api, fields, models, tools, _
-from odoo.addons.phone_validation.tools import phone_validation
+from odoo import _, api, fields, models, tools
 
 
 class EventRegistration(models.Model):
@@ -26,7 +23,7 @@ class EventRegistration(models.Model):
     def create(self, vals_list):
         """ Trigger rules based on registration creation, and check state for
         rules based on confirmed / done attendees. """
-        registrations = super(EventRegistration, self).create(vals_list)
+        registrations = super().create(vals_list)
 
         # handle triggers based on creation, then those based on confirm and done
         # as registrations can be automatically confirmed, or even created directly
@@ -54,7 +51,7 @@ class EventRegistration(models.Model):
         if to_update:
             lead_tracked_vals = to_update._get_lead_tracked_values()
 
-        res = super(EventRegistration, self).write(vals)
+        res = super().write(vals)
 
         if not event_lead_rule_skip and to_update:
             self.env.flush_all()  # compute notably partner-based fields if necessary

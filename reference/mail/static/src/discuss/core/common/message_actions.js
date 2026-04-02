@@ -1,12 +1,12 @@
-import { registerMessageAction } from "@mail/core/common/message_actions";
+import {registerMessageAction} from "@mail/core/common/message_actions";
 
-import { toRaw } from "@odoo/owl";
+import {toRaw} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
 
 registerMessageAction("set-new-message-separator", {
-    condition: ({ message, thread }) =>
+    condition: ({message, thread}) =>
         thread &&
         thread.self_member_id &&
         thread.eq(message.thread) &&
@@ -14,7 +14,7 @@ registerMessageAction("set-new-message-separator", {
         message.persistent,
     icon: "fa fa-eye-slash",
     name: _t("Mark as Unread"),
-    onSelected: ({ message: msg }) => {
+    onSelected: ({message: msg}) => {
         const message = toRaw(msg);
         const selfMember = message.thread?.self_member_id;
         if (selfMember) {

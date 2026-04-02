@@ -1,5 +1,5 @@
-import { closestBlock, isBlock } from "@html_editor/utils/blocks";
-import { findInSelection } from "@html_editor/utils/selection";
+import {closestBlock, isBlock} from "@html_editor/utils/blocks";
+import {findInSelection} from "@html_editor/utils/selection";
 import {
     animationFrame,
     click,
@@ -8,11 +8,11 @@ import {
     tick,
     waitFor,
 } from "@odoo/hoot-dom";
-import { setSelection } from "./selection";
-import { execCommand } from "./userCommands";
-import { isMobileOS } from "@web/core/browser/feature_detection";
-import { isTextNode } from "@html_editor/utils/dom_info";
-import { closestElement } from "@html_editor/utils/dom_traversal";
+import {setSelection} from "./selection";
+import {execCommand} from "./userCommands";
+import {isMobileOS} from "@web/core/browser/feature_detection";
+import {isTextNode} from "@html_editor/utils/dom_info";
+import {closestElement} from "@html_editor/utils/dom_traversal";
 
 /** @typedef {import("@html_editor/plugin").Editor} Editor */
 
@@ -40,10 +40,12 @@ export async function insertText(editor, text) {
             offset = 1;
             range.startContainer.appendChild(node);
             range.insertNode(node);
-            setSelection({ anchorNode: node, anchorOffset: offset });
+            setSelection({anchorNode: node, anchorOffset: offset});
         } else {
             node.textContent =
-                node.textContent.slice(0, offset) + char + node.textContent.slice(offset);
+                node.textContent.slice(0, offset) +
+                char +
+                node.textContent.slice(offset);
             offset++;
             setSelection({
                 anchorNode: node,
@@ -55,7 +57,7 @@ export async function insertText(editor, text) {
         const [keydownEvent] = await manuallyDispatchProgrammaticEvent.silent(
             editor.editable,
             "keydown",
-            { key: char }
+            {key: char}
         );
         if (keydownEvent.defaultPrevented) {
             continue;
@@ -65,7 +67,7 @@ export async function insertText(editor, text) {
         const [beforeinputEvent] = await manuallyDispatchProgrammaticEvent.silent(
             editor.editable,
             "beforeinput",
-            { inputType: "insertText", data: char }
+            {inputType: "insertText", data: char}
         );
         if (beforeinputEvent.defaultPrevented) {
             continue;
@@ -75,15 +77,19 @@ export async function insertText(editor, text) {
         const [inputEvent] = await manuallyDispatchProgrammaticEvent.silent(
             editor.editable,
             "input",
-            { inputType: "insertText", data: char }
+            {inputType: "insertText", data: char}
         );
         if (inputEvent.defaultPrevented) {
             continue;
         }
         // KeyUpEvent is not required but is triggered like the browser would.
-        await manuallyDispatchProgrammaticEvent.as("insertChar")(editor.editable, "keyup", {
-            key: char,
-        });
+        await manuallyDispatchProgrammaticEvent.as("insertChar")(
+            editor.editable,
+            "keyup",
+            {
+                key: char,
+            }
+        );
     }
 }
 
@@ -107,7 +113,8 @@ function simulateBrowserAutoBRRemoval(editor) {
     }
     const closestEl = closestElement(selection.anchorNode);
     const anchorElementIsEmpty = closestBlock(selection.anchorNode)?.textContent === "";
-    const previousElementSibling = selection.anchorNode?.childNodes[selection.anchorOffset - 1];
+    const previousElementSibling =
+        selection.anchorNode?.childNodes[selection.anchorOffset - 1];
     const nextElementSibling = selection.anchorNode?.childNodes[selection.anchorOffset];
 
     if (
@@ -173,7 +180,7 @@ export async function clickCheckbox(li) {
         throw new Error("Expected a LI element in a checklist");
     }
     await click(li, {
-        position: { x: -10, y: 10 },
+        position: {x: -10, y: 10},
         relative: true,
     });
 }
@@ -202,10 +209,10 @@ export function strikeThrough(editor) {
     execCommand(editor, "formatStrikethrough");
 }
 export function setFontSize(size) {
-    return (editor) => execCommand(editor, "formatFontSize", { size });
+    return (editor) => execCommand(editor, "formatFontSize", {size});
 }
 export function setFontSizeClassName(className) {
-    return (editor) => execCommand(editor, "formatFontSizeClassName", { className });
+    return (editor) => execCommand(editor, "formatFontSizeClassName", {className});
 }
 export function setFontFamily(fontFamily) {
     return (editor) => {
@@ -238,9 +245,13 @@ export async function simulateArrowKeyPress(editor, keys) {
     }
     const alter = keysArray.includes("Shift") ? "extend" : "move";
     const direction =
-        keysArray.includes("ArrowLeft") || keysArray.includes("ArrowUp") ? "left" : "right";
+        keysArray.includes("ArrowLeft") || keysArray.includes("ArrowUp")
+            ? "left"
+            : "right";
     const granularity =
-        keysArray.includes("ArrowUp") || keysArray.includes("ArrowDown") ? "line" : "character";
+        keysArray.includes("ArrowUp") || keysArray.includes("ArrowDown")
+            ? "line"
+            : "character";
     const selection = editor.document.getSelection();
     selection.modify(alter, direction, granularity);
 }
@@ -267,16 +278,24 @@ export function deleteImage(editor) {
 
 /** @param {Editor} editor */
 export async function keydownTab(editor) {
-    await manuallyDispatchProgrammaticEvent.as("keydownTab")(editor.editable, "keydown", {
-        key: "Tab",
-    });
+    await manuallyDispatchProgrammaticEvent.as("keydownTab")(
+        editor.editable,
+        "keydown",
+        {
+            key: "Tab",
+        }
+    );
 }
 /** @param {Editor} editor */
 export async function keydownShiftTab(editor) {
-    await manuallyDispatchProgrammaticEvent.as("keydownShiftTab")(editor.editable, "keydown", {
-        key: "Tab",
-        shiftKey: true,
-    });
+    await manuallyDispatchProgrammaticEvent.as("keydownShiftTab")(
+        editor.editable,
+        "keydown",
+        {
+            key: "Tab",
+            shiftKey: true,
+        }
+    );
 }
 /** @param {Editor} editor */
 export function resetSize(editor) {
@@ -319,7 +338,7 @@ export function alignBottom(editor) {
 export function setColor(color, mode) {
     /** @param {Editor} editor */
     return (editor) => {
-        execCommand(editor, "applyColor", { color, mode });
+        execCommand(editor, "applyColor", {color, mode});
     };
 }
 
@@ -333,7 +352,7 @@ export function setColor(color, mode) {
 function pasteData(editor, text, type) {
     const clipboardData = new DataTransfer();
     clipboardData.setData(type, text);
-    const pasteEvent = new ClipboardEvent("paste", { clipboardData, bubbles: true });
+    const pasteEvent = new ClipboardEvent("paste", {clipboardData, bubbles: true});
     editor.editable.dispatchEvent(pasteEvent);
 }
 /**
@@ -370,7 +389,7 @@ export async function tripleClick(node) {
     const selection = element.ownerDocument.getSelection();
     // First click
     await click(element);
-    setSelection({ anchorNode: element, anchorOffset: 0 });
+    setSelection({anchorNode: element, anchorOffset: 0});
     await tick();
 
     // Second click of a double click

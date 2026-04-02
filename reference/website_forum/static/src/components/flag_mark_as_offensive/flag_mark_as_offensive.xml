@@ -2,9 +2,9 @@
 <templates xml:space="preserve">
 
   <t t-name="website_forum.FlagMarkAsOffensiveDialog">
-    <Dialog size="'md'" title="props.title" footer="false" modalRef="modalRef" >
-      <t t-out="props.body"/>
-    </Dialog>
-  </t>
+        <Dialog size="'md'" title="props.title" footer="false" modalRef="modalRef">
+            <t t-out="props.body" />
+        </Dialog>
+    </t>
 
 </templates>

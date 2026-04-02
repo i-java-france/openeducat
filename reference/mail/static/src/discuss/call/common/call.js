@@ -1,19 +1,27 @@
-import { BlurPerformanceWarning } from "@mail/discuss/call/common/blur_performance_warning";
-import { CallActionList } from "@mail/discuss/call/common/call_action_list";
-import { CallParticipantCard } from "@mail/discuss/call/common/call_participant_card";
-import { PttAdBanner } from "@mail/discuss/call/common/ptt_ad_banner";
+import {BlurPerformanceWarning} from "@mail/discuss/call/common/blur_performance_warning";
+import {CallActionList} from "@mail/discuss/call/common/call_action_list";
+import {CallParticipantCard} from "@mail/discuss/call/common/call_participant_card";
+import {PttAdBanner} from "@mail/discuss/call/common/ptt_ad_banner";
 
-import { Component, onMounted, onPatched, onWillUnmount, toRaw, useRef, useState } from "@odoo/owl";
+import {
+    Component,
+    onMounted,
+    onPatched,
+    onWillUnmount,
+    toRaw,
+    useRef,
+    useState,
+} from "@odoo/owl";
 
-import { browser } from "@web/core/browser/browser";
-import { isMobileOS } from "@web/core/browser/feature_detection";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
-import { useService } from "@web/core/utils/hooks";
-import { isEventHandled, markEventHandled } from "@web/core/utils/misc";
-import { useCallActions } from "@mail/discuss/call/common/call_actions";
-import { ActionList } from "@mail/core/common/action_list";
-import { ACTION_TAGS } from "@mail/core/common/action";
-import { inDiscussCallViewProps, useInDiscussCallView } from "@mail/utils/common/hooks";
+import {browser} from "@web/core/browser/browser";
+import {isMobileOS} from "@web/core/browser/feature_detection";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
+import {useService} from "@web/core/utils/hooks";
+import {isEventHandled, markEventHandled} from "@web/core/utils/misc";
+import {useCallActions} from "@mail/discuss/call/common/call_actions";
+import {ActionList} from "@mail/core/common/action_list";
+import {ACTION_TAGS} from "@mail/core/common/action";
+import {inDiscussCallViewProps, useInDiscussCallView} from "@mail/utils/common/hooks";
 
 /**
  * @typedef CardData
@@ -38,7 +46,7 @@ export class Call extends Component {
         PttAdBanner,
     };
     static props = ["thread?", "compact?", "hasOverlay?", ...inDiscussCallViewProps];
-    static defaultProps = { hasOverlay: true };
+    static defaultProps = {hasOverlay: true};
     static template = "discuss.Call";
 
     overlayTimeout;
@@ -61,7 +69,7 @@ export class Call extends Component {
             insetCard: undefined,
         });
         this.store = useService("mail.store");
-        this.callActions = useCallActions({ thread: () => this.channel });
+        this.callActions = useCallActions({thread: () => this.channel});
         onMounted(() => {
             this.resizeObserver = new ResizeObserver(() => this.arrangeTiles());
             this.resizeObserver.observe(this.grid.el);
@@ -95,7 +103,11 @@ export class Call extends Component {
     }
 
     get minimized() {
-        if (this.rtc.state.isFullscreen || !this.channel || this.channel.activeRtcSession) {
+        if (
+            this.rtc.state.isFullscreen ||
+            !this.channel ||
+            this.channel.activeRtcSession
+        ) {
             return false;
         }
         if (!this.isActiveCall || this.channel.videoCount === 0 || this.props.compact) {
@@ -167,7 +179,10 @@ export class Call extends Component {
     }
 
     get isControllerFloating() {
-        return this.rtc.state.isFullscreen || (this.channel.activeRtcSession && !this.ui.isSmall);
+        return (
+            this.rtc.state.isFullscreen ||
+            (this.channel.activeRtcSession && !this.ui.isSmall)
+        );
     }
 
     onMouseleaveMain(ev) {
@@ -205,7 +220,7 @@ export class Call extends Component {
         }
         this.grid.el.style.setProperty("--width", "0");
         this.grid.el.style.setProperty("--height", "0");
-        const { width, height } = this.grid.el.getBoundingClientRect();
+        const {width, height} = this.grid.el.getBoundingClientRect();
         const aspectRatio = this.minimized ? 1 : 16 / 9;
         const tileCount = this.grid.el.children.length;
         let optimal = {

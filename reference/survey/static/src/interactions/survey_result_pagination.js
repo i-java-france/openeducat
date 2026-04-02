@@ -1,6 +1,6 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
-import { renderToMarkup } from "@web/core/utils/render";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {renderToMarkup} from "@web/core/utils/render";
 
 export class SurveyResultPagination extends Interaction {
     static selector = ".survey_table_with_pagination";
@@ -59,8 +59,10 @@ export class SurveyResultPagination extends Interaction {
     parseAnswersJSON() {
         const keys = ["id", "value", "url"];
         return JSON.parse(this.el.dataset.answersJson).map((entry, index) => {
-            const content = Object.fromEntries(entry.map((value, index) => [keys[index], value]));
-            return { index: index, ...content };
+            const content = Object.fromEntries(
+                entry.map((value, index) => [keys[index], value])
+            );
+            return {index: index, ...content};
         });
     }
 
@@ -83,7 +85,8 @@ export class SurveyResultPagination extends Interaction {
         this.pageBtnsEl
             .querySelector(`li:nth-child(${this.paginationState.currentPage})`)
             .classList.add("active");
-        this.paginationState.minIdx = this.limit * (this.paginationState.currentPage - 1);
+        this.paginationState.minIdx =
+            this.limit * (this.paginationState.currentPage - 1);
         this.paginationState.maxIdx = Math.min(
             this.elCount,
             this.limit * this.paginationState.currentPage

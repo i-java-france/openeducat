@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { FullScreenHeight } from "./full_screen_height";
+import {registry} from "@web/core/registry";
+import {FullScreenHeight} from "./full_screen_height";
 
 const FullScreenHeightEdit = (I) =>
     class extends I {

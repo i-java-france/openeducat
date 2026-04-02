@@ -1,8 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, Command
-from odoo.exceptions import AccessError
+from odoo import Command, fields
 from odoo.tests.common import TransactionCase
+
 
 class TestTokenAccess(TransactionCase):
 

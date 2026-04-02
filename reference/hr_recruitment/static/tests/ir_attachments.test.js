@@ -6,9 +6,9 @@ import {
     start,
     startServer,
 } from "@mail/../tests/mail_test_helpers";
-import { expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
-import { defineModels, models } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
+import {defineModels, models} from "@web/../tests/web_test_helpers";
 
 class HrApplicant extends models.ServerModel {
     _name = "hr.applicant";
@@ -36,12 +36,12 @@ test("Recruitment applicant_char widget on ir.attachment", async () => {
     const pyEnv = await startServer();
     pyEnv["ir.attachment"]._fields.res_id.model_field = "res_model";
     pyEnv["ir.attachment"].create([
-        { res_id: 21, res_model: "hr.applicant", res_name: "Someone" },
-        { res_id: false, res_model: "hr.applicant", res_name: "Nobody" },
+        {res_id: 21, res_model: "hr.applicant", res_name: "Someone"},
+        {res_id: false, res_model: "hr.applicant", res_name: "Nobody"},
     ]);
     registerArchs(newArchs);
     await start();
-    await openView({ res_model: "ir.attachment", views: [[false, "list"]] });
+    await openView({res_model: "ir.attachment", views: [[false, "list"]]});
     await click(".o_field_applicant_char:last span");
     await animationFrame();
     expect(".o_field_applicant_char").toHaveCount(2);

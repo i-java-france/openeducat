@@ -1,12 +1,12 @@
 /** @odoo-module alias=@web/../tests/views/helpers default=false */
 
-import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { getFixture, mount, nextTick } from "@web/../tests/helpers/utils";
-import { createDebugContext } from "@web/core/debug/debug_context";
-import { Dialog } from "@web/core/dialog/dialog";
-import { MainComponentsContainer } from "@web/core/main_components_container";
-import { registry } from "@web/core/registry";
-import { View, getDefaultConfig } from "@web/views/view";
+import {makeTestEnv} from "@web/../tests/helpers/mock_env";
+import {getFixture, mount, nextTick} from "@web/../tests/helpers/utils";
+import {createDebugContext} from "@web/core/debug/debug_context";
+import {Dialog} from "@web/core/dialog/dialog";
+import {MainComponentsContainer} from "@web/core/main_components_container";
+import {registry} from "@web/core/registry";
+import {View, getDefaultConfig} from "@web/views/view";
 import {
     makeFakeLocalizationService,
     patchUserWithCleanup,
@@ -16,7 +16,7 @@ import {
     setupControlPanelServiceRegistry,
 } from "../search/helpers";
 
-import { Component, useSubEnv, xml } from "@odoo/owl";
+import {Component, useSubEnv, xml} from "@odoo/owl";
 
 const serviceRegistry = registry.category("services");
 
@@ -39,7 +39,7 @@ const rootDialogTemplate = xml`<Dialog><View t-props="props.viewProps"/></Dialog
  * @returns {Promise<T>}
  */
 async function _makeView(params, inDialog = false) {
-    const props = { resId: false, ...params };
+    const props = {resId: false, ...params};
     const serverData = props.serverData;
     const mockRPC = props.mockRPC;
     const config = {
@@ -54,26 +54,28 @@ async function _makeView(params, inDialog = false) {
     if (props.arch) {
         serverData.views = serverData.views || {};
         props.viewId = params.viewId || 100000001; // hopefully will not conflict with an id already in views
-        serverData.views[`${props.resModel},${props.viewId},${props.type}`] = props.arch;
+        serverData.views[`${props.resModel},${props.viewId},${props.type}`] =
+            props.arch;
         delete props.arch;
         props.searchViewId = 100000002; // hopefully will not conflict with an id already in views
         const searchViewArch = props.searchViewArch || "<search/>";
-        serverData.views[`${props.resModel},${props.searchViewId},search`] = searchViewArch;
+        serverData.views[`${props.resModel},${props.searchViewId},search`] =
+            searchViewArch;
         delete props.searchViewArch;
     }
 
-    const env = await makeTestEnv({ serverData, mockRPC });
+    const env = await makeTestEnv({serverData, mockRPC});
     Object.assign(env, createDebugContext(env)); // This is needed if the views are in debug mode
 
     const target = getFixture();
-    const viewEnv = Object.assign(Object.create(env), { config });
+    const viewEnv = Object.assign(Object.create(env), {config});
 
-    await mount(MainComponentsContainer, target, { env });
+    await mount(MainComponentsContainer, target, {env});
     let viewNode;
     if (inDialog) {
         let root;
         class RootDialog extends Component {
-            static components = { Dialog, View };
+            static components = {Dialog, View};
             static template = rootDialogTemplate;
             static props = ["*"];
             setup() {
@@ -81,13 +83,13 @@ async function _makeView(params, inDialog = false) {
                 useSubEnv(viewEnv);
             }
         }
-        env.services.dialog.add(RootDialog, { viewProps: props });
+        env.services.dialog.add(RootDialog, {viewProps: props});
         await nextTick();
         const rootNode = root.__owl__;
         const dialogNode = Object.values(rootNode.children)[0];
         viewNode = Object.values(dialogNode.children)[0];
     } else {
-        const view = await mount(View, target, { env: viewEnv, props });
+        const view = await mount(View, target, {env: viewEnv, props});
         await nextTick();
         viewNode = view.__owl__;
     }
@@ -117,10 +119,7 @@ export function setupViewRegistries() {
     setupControlPanelServiceRegistry();
     patchUserWithCleanup({
         hasGroup: async (group) => {
-            return [
-                "base.group_allow_export",
-                "base.group_user",
-            ].includes(group);
+            return ["base.group_allow_export", "base.group_user"].includes(group);
         },
         isInternalUser: true,
     });

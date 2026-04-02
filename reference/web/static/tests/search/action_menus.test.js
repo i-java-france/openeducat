@@ -7,9 +7,9 @@ import {
     onRpc,
     stepAllNetworkCalls,
 } from "../web_test_helpers";
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { queryAllTexts } from "@odoo/hoot-dom";
-import { registry } from "@web/core/registry";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {queryAllTexts} from "@odoo/hoot-dom";
+import {registry} from "@web/core/registry";
 
 /** Foo is dummy model to test `action.report` with domain of its field `value`. **/
 class Foo extends models.Model {
@@ -41,7 +41,7 @@ class IrActionsReport extends models.Model {
             validActionIds.push(3);
         }
         if (!recordIds.includes(1) && !recordIds.includes(2)) {
-            // new record are initialized with value=False so domain of action 3 is satisfied
+            // New record are initialized with value=False so domain of action 3 is satisfied
             validActionIds.push(3);
         }
         return validActionIds;
@@ -101,15 +101,14 @@ test("render ActionMenus in list view", async () => {
         "has_group",
     ]);
 
-    // select all records
+    // Select all records
     await contains(`thead .o_list_record_selector input`).click();
     expect(`div.o_control_panel .o_cp_action_menus`).toHaveCount(1);
-    expect(queryAllTexts(`div.o_control_panel .o_cp_action_menus .dropdown-toggle`)).toEqual([
-        "Print",
-        "Actions",
-    ]);
+    expect(
+        queryAllTexts(`div.o_control_panel .o_cp_action_menus .dropdown-toggle`)
+    ).toEqual(["Print", "Actions"]);
 
-    // select Print dropdown
+    // Select Print dropdown
     await contains(`.o_cp_action_menus .dropdown-toggle:eq(0)`).click();
     expect(`.o-dropdown--menu .o-dropdown-item`).toHaveCount(3);
     expect(queryAllTexts(`.o-dropdown--menu .o-dropdown-item`)).toEqual([
@@ -118,10 +117,10 @@ test("render ActionMenus in list view", async () => {
         "Some Report with domain 2",
     ]);
 
-    // the last RPC call to retrieve print items only happens when the dropdown is clicked
+    // The last RPC call to retrieve print items only happens when the dropdown is clicked
     expect.verifySteps(["get_valid_action_reports"]);
 
-    // select only the record that satisfies domain 1
+    // Select only the record that satisfies domain 1
     await contains(`.o_data_row:eq(1) input`).click();
     await contains(`.o_cp_action_menus .dropdown-toggle:eq(0)`).click();
     expect(`.o-dropdown--menu .o-dropdown-item`).toHaveCount(2);
@@ -157,20 +156,20 @@ test("render ActionMenus in form view", async () => {
         "web_read",
     ]);
 
-    // select CogMenu
+    // Select CogMenu
     await contains(`div.o_control_panel_breadcrumbs_actions i.fa-cog`).click();
 
-    // select Print dropdown
+    // Select Print dropdown
     await contains(`button.o-dropdown:contains(Print)`).click();
     expect(queryAllTexts(`.o-dropdown--menu-submenu span.o-dropdown-item`)).toEqual([
         "Some Report always visible",
         "Some Report with domain 1",
     ]);
 
-    // the RPC call to retrieve print items only happens when the dropdown is clicked
+    // The RPC call to retrieve print items only happens when the dropdown is clicked
     expect.verifySteps(["get_valid_action_reports"]);
 
-    // create a new record
+    // Create a new record
     await contains(`button.o_form_button_create`).click();
     await contains(`button.o_form_button_save`).click();
     expect(`.o_pager_counter`).toHaveText("2 / 2");
@@ -183,7 +182,7 @@ test("render ActionMenus in form view", async () => {
     ]);
     expect.verifySteps(["get_valid_action_reports"]);
 
-    // switch back to first record
+    // Switch back to first record
     await contains(`.o_pager_previous`).click();
     expect(`.o_pager_counter`).toHaveText("1 / 2");
     await contains(`div.o_control_panel_breadcrumbs_actions i.fa-cog`).click();
@@ -234,15 +233,14 @@ test("render ActionMenus in list view with extraPrintItems", async () => {
         "has_group",
     ]);
 
-    // select all records
+    // Select all records
     await contains(`thead .o_list_record_selector input`).click();
     expect(`div.o_control_panel .o_cp_action_menus`).toHaveCount(1);
-    expect(queryAllTexts(`div.o_control_panel .o_cp_action_menus .dropdown-toggle`)).toEqual([
-        "Print",
-        "Actions",
-    ]);
+    expect(
+        queryAllTexts(`div.o_control_panel .o_cp_action_menus .dropdown-toggle`)
+    ).toEqual(["Print", "Actions"]);
 
-    // select Print dropdown
+    // Select Print dropdown
     await contains(`.o_cp_action_menus .dropdown-toggle:eq(0)`).click();
     expect(`.o-dropdown--menu .o-dropdown-item`).toHaveCount(4);
     expect(queryAllTexts(`.o-dropdown--menu .o-dropdown-item`)).toEqual([
@@ -252,10 +250,10 @@ test("render ActionMenus in list view with extraPrintItems", async () => {
         "Some Report with domain 2",
     ]);
 
-    // the last RPC call to retrieve print items only happens when the dropdown is clicked
+    // The last RPC call to retrieve print items only happens when the dropdown is clicked
     expect.verifySteps(["get_valid_action_reports"]);
 
-    // select only the record that satisfies domain 1
+    // Select only the record that satisfies domain 1
     await contains(`.o_data_row:eq(1) input`).click();
     await contains(`.o_cp_action_menus .dropdown-toggle:eq(0)`).click();
     expect(`.o-dropdown--menu .o-dropdown-item`).toHaveCount(3);
@@ -283,7 +281,7 @@ test("static action items are properly ordered and styled", async () => {
               </list>
          `,
     });
-    // select all records
+    // Select all records
     await contains(`thead .o_list_record_selector input`).click();
     expect(`div.o_control_panel .o_cp_action_menus .dropdown-toggle`).toHaveCount(1);
     await contains(`div.o_control_panel .o_cp_action_menus .dropdown-toggle`).click();

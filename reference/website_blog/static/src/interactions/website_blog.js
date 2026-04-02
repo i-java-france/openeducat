@@ -1,11 +1,11 @@
-import { scrollTo } from "@html_builder/utils/scrolling";
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {scrollTo} from "@html_builder/utils/scrolling";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { browser } from "@web/core/browser/browser";
-import { _t } from "@web/core/l10n/translation";
-import { verifyHttpsUrl } from "@website/utils/misc";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
+import {browser} from "@web/core/browser/browser";
+import {_t} from "@web/core/l10n/translation";
+import {verifyHttpsUrl} from "@website/utils/misc";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
 
 export class WebsiteBlog extends Interaction {
     static selector = ".website_blog";
@@ -28,7 +28,9 @@ export class WebsiteBlog extends Interaction {
      */
     async onNextBlogClick(ev) {
         const blogNextContainerEl = ev.currentTarget.closest("#o_wblog_next_container");
-        const nextInfo = blogNextContainerEl.querySelector("#o_wblog_next_post_info").dataset;
+        const nextInfo = blogNextContainerEl.querySelector(
+            "#o_wblog_next_post_info"
+        ).dataset;
         const recordCoverContainerEl = blogNextContainerEl.querySelector(
             ".o_record_cover_container"
         );
@@ -41,7 +43,11 @@ export class WebsiteBlog extends Interaction {
         // screen, regardless of its height.
         const placeholder = document.createElement("div");
         placeholder.style.minHeight = "100vh";
-        this.insert(placeholder, this.el.querySelector("#o_wblog_next_container"), "beforeend");
+        this.insert(
+            placeholder,
+            this.el.querySelector("#o_wblog_next_container"),
+            "beforeend"
+        );
         const nextUrl = verifyHttpsUrl(nextInfo.url);
         await this.forumScrollAction(
             blogNextContainerEl,
@@ -80,18 +86,24 @@ export class WebsiteBlog extends Interaction {
      */
     onShareArticleClick(ev, currentTargetEl) {
         let url = "";
-        const blogPostTitle = document.querySelector(".o_wblog_post_name").textContent || "";
+        const blogPostTitle =
+            document.querySelector(".o_wblog_post_name").textContent || "";
         const articleURL = browser.location.href;
         if (currentTargetEl.classList.contains("o_twitter")) {
-            const tweetText = _t("Amazing blog article: %(title)s! Check it live: %(url)s", {
-                title: blogPostTitle,
-                url: articleURL,
-            });
+            const tweetText = _t(
+                "Amazing blog article: %(title)s! Check it live: %(url)s",
+                {
+                    title: blogPostTitle,
+                    url: articleURL,
+                }
+            );
             url =
                 "https://twitter.com/intent/tweet?tw_p=tweetbutton&text=" +
                 encodeURIComponent(tweetText);
         } else if (currentTargetEl.classList.contains("o_facebook")) {
-            url = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(articleURL);
+            url =
+                "https://www.facebook.com/sharer/sharer.php?u=" +
+                encodeURIComponent(articleURL);
         } else if (currentTargetEl.classList.contains("o_linkedin")) {
             url =
                 "https://www.linkedin.com/sharing/share-offsite/?url=" +
@@ -106,7 +118,7 @@ export class WebsiteBlog extends Interaction {
      * @param {Function} callback - to be executed after the scroll is performed
      */
     async forumScrollAction(el, duration, callback) {
-        await this.waitFor(scrollTo(el, { duration }));
+        await this.waitFor(scrollTo(el, {duration}));
         callback();
     }
 }

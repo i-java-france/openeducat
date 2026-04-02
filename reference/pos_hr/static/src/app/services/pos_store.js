@@ -1,6 +1,6 @@
-import { patch } from "@web/core/utils/patch";
-import { PosStore } from "@point_of_sale/app/services/pos_store";
-import { browser } from "@web/core/browser/browser";
+import {patch} from "@web/core/utils/patch";
+import {PosStore} from "@point_of_sale/app/services/pos_store";
+import {browser} from "@web/core/browser/browser";
 
 patch(PosStore.prototype, {
     async setup() {
@@ -121,7 +121,9 @@ patch(PosStore.prototype, {
         if (!this.config.module_pos_hr) {
             return super._getConnectedCashier(...arguments);
         }
-        const cashier_id = Number(sessionStorage.getItem(`connected_cashier_${this.config.id}`));
+        const cashier_id = Number(
+            sessionStorage.getItem(`connected_cashier_${this.config.id}`)
+        );
         if (cashier_id && this.models["hr.employee"].get(cashier_id)) {
             return this.models["hr.employee"].get(cashier_id);
         }
@@ -144,7 +146,10 @@ patch(PosStore.prototype, {
         return await super.allowProductCreation();
     },
     canEditPayment(order) {
-        return super.canEditPayment(order) && (!this.config.module_pos_hr || this.employeeIsAdmin);
+        return (
+            super.canEditPayment(order) &&
+            (!this.config.module_pos_hr || this.employeeIsAdmin)
+        );
     },
     async handleUrlParams() {
         if (this.config.module_pos_hr && !this.cashier) {

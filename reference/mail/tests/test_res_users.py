@@ -1,17 +1,18 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, timedelta
-from freezegun import freeze_time
-from psycopg2 import IntegrityError
 from unittest import skip
 from unittest.mock import patch
 
-from odoo.addons.base.models.res_users import ResUsersPatchedInTest
-from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
-from odoo.addons.base.tests.common import HttpCaseWithUserDemo
+from freezegun import freeze_time
+from psycopg2 import IntegrityError
+
 from odoo.tests import RecordCapturer, tagged, users
 from odoo.tools import mute_logger
+
+from odoo.addons.base.models.res_users import ResUsersPatchedInTest
+from odoo.addons.base.tests.common import HttpCaseWithUserDemo
+from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
 
 
 @tagged('-at_install', 'post_install', 'mail_tools', 'res_users')

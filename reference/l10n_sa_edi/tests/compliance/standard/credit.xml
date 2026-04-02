@@ -1,7 +1,9 @@
-<Invoice xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+<Invoice
+    xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
     xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
     xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
-    xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
+    xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
+>
     <cbc:UBLVersionID>2.1</cbc:UBLVersionID>
     <cbc:ProfileID>reporting:1.0</cbc:ProfileID>
     <cbc:ID>RINV/2022/00006</cbc:ID>
@@ -41,7 +43,9 @@
                 <cbc:BuildingNumber>1234</cbc:BuildingNumber>
                 <cbc:PlotIdentification>1234</cbc:PlotIdentification>
                 <cbc:CitySubdivisionName>Testomania</cbc:CitySubdivisionName>
-                <cbc:CityName>&#1575;&#1604;&#1605;&#1583;&#1610;&#1606;&#1577; &#1575;&#1604;&#1605;&#1606;&#1608;&#1585;&#1577;</cbc:CityName>
+                <cbc:CityName>
+                    &#1575; &#1604; &#1605; &#1583; &#1610; &#1606; &#1577; &#1575; &#1604; &#1605; &#1606; &#1608; &#1585; &#1577;
+                </cbc:CityName>
                 <cbc:PostalZone>42317</cbc:PostalZone>
                 <cbc:CountrySubentity>Riyadh</cbc:CountrySubentity>
                 <cbc:CountrySubentityCode>RUH</cbc:CountrySubentityCode>
@@ -54,11 +58,14 @@
                 <cbc:RegistrationName>SA Company Test</cbc:RegistrationName>
                 <cbc:CompanyID>311111111111113</cbc:CompanyID>
                 <cac:RegistrationAddress>
-                    <cbc:StreetName>Al Amir Mohammed Bin Abdul Aziz Street</cbc:StreetName>
+                    <cbc:StreetName
+                    >Al Amir Mohammed Bin Abdul Aziz Street</cbc:StreetName>
                     <cbc:BuildingNumber>1234</cbc:BuildingNumber>
                     <cbc:PlotIdentification>1234</cbc:PlotIdentification>
                     <cbc:CitySubdivisionName>Testomania</cbc:CitySubdivisionName>
-                    <cbc:CityName>&#1575;&#1604;&#1605;&#1583;&#1610;&#1606;&#1577; &#1575;&#1604;&#1605;&#1606;&#1608;&#1585;&#1577;</cbc:CityName>
+                    <cbc:CityName>
+                        &#1575; &#1604; &#1605; &#1583; &#1610; &#1606; &#1577; &#1575; &#1604; &#1605; &#1606; &#1608; &#1585; &#1577;
+                    </cbc:CityName>
                     <cbc:PostalZone>42317</cbc:PostalZone>
                     <cbc:CountrySubentity>Riyadh</cbc:CountrySubentity>
                     <cbc:CountrySubentityCode>RUH</cbc:CountrySubentityCode>
@@ -75,11 +82,14 @@
                 <cbc:RegistrationName>SA Company Test</cbc:RegistrationName>
                 <cbc:CompanyID>311111111111113</cbc:CompanyID>
                 <cac:RegistrationAddress>
-                    <cbc:StreetName>Al Amir Mohammed Bin Abdul Aziz Street</cbc:StreetName>
+                    <cbc:StreetName
+                    >Al Amir Mohammed Bin Abdul Aziz Street</cbc:StreetName>
                     <cbc:BuildingNumber>1234</cbc:BuildingNumber>
                     <cbc:PlotIdentification>1234</cbc:PlotIdentification>
                     <cbc:CitySubdivisionName>Testomania</cbc:CitySubdivisionName>
-                    <cbc:CityName>&#1575;&#1604;&#1605;&#1583;&#1610;&#1606;&#1577; &#1575;&#1604;&#1605;&#1606;&#1608;&#1585;&#1577;</cbc:CityName>
+                    <cbc:CityName>
+                        &#1575; &#1604; &#1605; &#1583; &#1610; &#1606; &#1577; &#1575; &#1604; &#1605; &#1606; &#1608; &#1585; &#1577;
+                    </cbc:CityName>
                     <cbc:PostalZone>42317</cbc:PostalZone>
                     <cbc:CountrySubentity>Riyadh</cbc:CountrySubentity>
                     <cbc:CountrySubentityCode>RUH</cbc:CountrySubentityCode>
@@ -144,18 +154,18 @@
                 <cbc:RegistrationName>Saud Ahmed</cbc:RegistrationName>
                 <cbc:CompanyID>311111111111113</cbc:CompanyID>
                 <cac:RegistrationAddress>
-                <cbc:StreetName>4557 King Salman St</cbc:StreetName>
-                <cbc:BuildingNumber>12300</cbc:BuildingNumber>
-                <cbc:PlotIdentification>2323</cbc:PlotIdentification>
-                <cbc:CitySubdivisionName>Neighbor!</cbc:CitySubdivisionName>
-                <cbc:CityName>Riyadh</cbc:CityName>
-                <cbc:PostalZone>94538</cbc:PostalZone>
-                <cbc:CountrySubentity>Riyadh</cbc:CountrySubentity>
-                <cbc:CountrySubentityCode>RUH</cbc:CountrySubentityCode>
-                <cac:Country>
-                    <cbc:IdentificationCode>SA</cbc:IdentificationCode>
-                    <cbc:Name>Saudi Arabia</cbc:Name>
-                </cac:Country>
+                    <cbc:StreetName>4557 King Salman St</cbc:StreetName>
+                    <cbc:BuildingNumber>12300</cbc:BuildingNumber>
+                    <cbc:PlotIdentification>2323</cbc:PlotIdentification>
+                    <cbc:CitySubdivisionName>Neighbor!</cbc:CitySubdivisionName>
+                    <cbc:CityName>Riyadh</cbc:CityName>
+                    <cbc:PostalZone>94538</cbc:PostalZone>
+                    <cbc:CountrySubentity>Riyadh</cbc:CountrySubentity>
+                    <cbc:CountrySubentityCode>RUH</cbc:CountrySubentityCode>
+                    <cac:Country>
+                        <cbc:IdentificationCode>SA</cbc:IdentificationCode>
+                        <cbc:Name>Saudi Arabia</cbc:Name>
+                    </cac:Country>
                 </cac:RegistrationAddress>
             </cac:PartyLegalEntity>
             <cac:Contact>
@@ -167,7 +177,7 @@
         </cac:Party>
     </cac:AccountingCustomerParty>
     <cac:Delivery>
-      <cbc:ActualDeliveryDate>2022-09-05</cbc:ActualDeliveryDate>
+        <cbc:ActualDeliveryDate>2022-09-05</cbc:ActualDeliveryDate>
     </cac:Delivery>
     <cac:PaymentMeans>
         <cbc:PaymentMeansCode listID="UN/ECE 4461">1</cbc:PaymentMeansCode>

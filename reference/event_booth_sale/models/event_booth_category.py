@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
 
 from odoo import _, api, fields, models
-from odoo.addons.product.models.product_template import PRICE_CONTEXT_KEYS
 from odoo.exceptions import ValidationError
+
+from odoo.addons.product.models.product_template import PRICE_CONTEXT_KEYS
 
 _logger = logging.getLogger(__name__)
 
@@ -89,7 +89,7 @@ class EventBoothCategory(models.Model):
         """ Initialize product_id for existing columns when installing sale
         bridge, to ensure required attribute is fulfilled. """
         if column_name != "product_id":
-            return super(EventBoothCategory, self)._init_column(column_name)
+            return super()._init_column(column_name)
 
         # fetch void columns
         self.env.cr.execute("SELECT id FROM %s WHERE product_id IS NULL" % self._table)

@@ -36,7 +36,8 @@ registerWebsitePreviewTour(
         // Add a megamenu item to the top menu.
         {
             content: "Click on a menu item",
-            trigger: ":iframe .top_menu .nav-item .nav-link [data-oe-model='website.menu']",
+            trigger:
+                ":iframe .top_menu .nav-item .nav-link [data-oe-model='website.menu']",
             run: "click",
         },
         {
@@ -85,7 +86,8 @@ registerWebsitePreviewTour(
         toggleMegaMenu({}),
         {
             content: "Select the last menu link of the first column",
-            trigger: ":iframe .s_mega_menu_odoo_menu .row > div:first-child .nav > :nth-child(6)", // 6th is the last one
+            trigger:
+                ":iframe .s_mega_menu_odoo_menu .row > div:first-child .nav > :nth-child(6)", // 6th is the last one
             run: "click",
         },
         {
@@ -108,7 +110,10 @@ registerWebsitePreviewTour(
             trigger: ":iframe .o_mega_menu h4",
             run() {
                 this.anchor.dispatchEvent(
-                    new window.InputEvent("input", { bubbles: true, inputType: "insertParagraph" })
+                    new window.InputEvent("input", {
+                        bubbles: true,
+                        inputType: "insertParagraph",
+                    })
                 );
             },
         },
@@ -182,7 +187,10 @@ registerWebsitePreviewTour(
         },
         clickOnExtraMenuItem({}, true),
         toggleMegaMenu({}),
-        ...openLinkPopup(":iframe .s_mega_menu_odoo_menu .nav-link:contains('Laptops')", "Laptops"),
+        ...openLinkPopup(
+            ":iframe .s_mega_menu_odoo_menu .nav-link:contains('Laptops')",
+            "Laptops"
+        ),
         {
             content: "Click on 'Edit Link'",
             trigger: ".o-we-linkpopover a.o_we_edit_link",
@@ -198,7 +206,8 @@ registerWebsitePreviewTour(
         toggleMegaMenu(),
         {
             content: "Click on the first menu link of the first column",
-            trigger: ":iframe .s_mega_menu_odoo_menu .row > div:first-child .nav > :nth-child(1)",
+            trigger:
+                ":iframe .s_mega_menu_odoo_menu .row > div:first-child .nav > :nth-child(1)",
             run: "click",
         },
         {
@@ -253,18 +262,24 @@ registerWebsitePreviewTour(
         },
         {
             content: "Check for the new mega menu",
-            trigger: ':iframe .top_menu:has(.nav-item a.o_mega_menu_toggle:contains("Megaaaaa2!"))',
+            trigger:
+                ':iframe .top_menu:has(.nav-item a.o_mega_menu_toggle:contains("Megaaaaa2!"))',
         },
         // Edit a menu item
         clickOnExtraMenuItem({}, true),
         toggleMegaMenu({}),
         {
             content: "Select the first menu link of the first column",
-            trigger: ":iframe .s_mega_menu_odoo_menu .row > div:first-child .nav > :first-child",
+            trigger:
+                ":iframe .s_mega_menu_odoo_menu .row > div:first-child .nav > :first-child",
             run: "click",
         },
         // Change MegaMenu template
-        ...changeOptionInPopover("Mega Menu", "Template", "[title='Big Icons Subtitles']"),
+        ...changeOptionInPopover(
+            "Mega Menu",
+            "Template",
+            "[title='Big Icons Subtitles']"
+        ),
         ...clickToolbarButton(
             "h4 of first menu link of the first column",
             ".s_mega_menu_big_icons_subtitles .row > div:first-child .nav > :first-child h4",
@@ -290,7 +305,8 @@ const createMegaMenu = function (name) {
         },
         {
             content: "Set the mega menu item name to " + name,
-            trigger: ".modal:not(.o_inactive_modal) .modal-dialog .o_website_dialog input:eq(0)",
+            trigger:
+                ".modal:not(.o_inactive_modal) .modal-dialog .o_website_dialog input:eq(0)",
             run: "edit " + name,
         },
         {
@@ -309,11 +325,13 @@ const createDropdown = function (name) {
         },
         {
             content: "Set the dropdown name to " + name,
-            trigger: ".modal:not(.o_inactive_modal) .modal-dialog .o_website_dialog input:eq(0)",
+            trigger:
+                ".modal:not(.o_inactive_modal) .modal-dialog .o_website_dialog input:eq(0)",
             run: "edit " + name,
         },
         {
-            trigger: ".modal:not(.o_inactive_modal) .modal-dialog .o_website_dialog input:eq(1)",
+            trigger:
+                ".modal:not(.o_inactive_modal) .modal-dialog .o_website_dialog input:eq(1)",
             run: "edit /",
         },
         {
@@ -326,11 +344,13 @@ const createDropdown = function (name) {
             run: "click",
         },
         {
-            trigger: ".modal:not(.o_inactive_modal) .modal-dialog .o_website_dialog input:eq(0)",
+            trigger:
+                ".modal:not(.o_inactive_modal) .modal-dialog .o_website_dialog input:eq(0)",
             run: "edit " + name + " item",
         },
         {
-            trigger: ".modal:not(.o_inactive_modal) .modal-dialog .o_website_dialog input:eq(1)",
+            trigger:
+                ".modal:not(.o_inactive_modal) .modal-dialog .o_website_dialog input:eq(1)",
             run: "edit /",
         },
         {
@@ -339,15 +359,19 @@ const createDropdown = function (name) {
         },
         {
             content: "Move the dropdown item into the dropdown",
-            trigger: '.oe_menu_editor li:contains("' + name + " item" + '") .oi-draggable',
+            trigger:
+                '.oe_menu_editor li:contains("' + name + " item" + '") .oi-draggable',
             run(helpers) {
-                return helpers.drag_and_drop('.oe_menu_editor li:contains("' + name + '")', {
-                    position: {
-                        left: 50,
-                        top: 5,
-                    },
-                    relative: true,
-                });
+                return helpers.drag_and_drop(
+                    '.oe_menu_editor li:contains("' + name + '")',
+                    {
+                        position: {
+                            left: 50,
+                            top: 5,
+                        },
+                        relative: true,
+                    }
+                );
             },
         },
     ];
@@ -397,7 +421,8 @@ registerWebsitePreviewTour(
         ...createDropdown("Drop 2"),
         ...createMegaMenu("MM cond"),
         {
-            trigger: ".modal:not(.o_inactive_modal) .modal-footer .btn-primary:contains(save)",
+            trigger:
+                ".modal:not(.o_inactive_modal) .modal-footer .btn-primary:contains(save)",
             run: "click",
         },
         selectHeader(),

@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 
 
 class ResCompany(models.Model):
@@ -22,7 +21,7 @@ class ResCompany(models.Model):
             for company in self
         ]
         resource_calendars = self.env['resource.calendar'].create(vals_list)
-        for company, calendar in zip(self, resource_calendars):
+        for company, calendar in zip(self, resource_calendars, strict=False):
             company.resource_calendar_id = calendar
 
     def _prepare_resource_calendar_values(self):

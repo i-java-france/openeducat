@@ -1,12 +1,14 @@
 import logging
 import queue
-import requests
 import threading
 import time
 
+import requests
+
+from odoo.netsvc import ColoredFormatter
+
 from odoo.addons.iot_drivers.tools import helpers
 from odoo.addons.iot_drivers.tools.system import IS_TEST
-from odoo.netsvc import ColoredFormatter
 
 _logger = logging.getLogger(__name__)
 

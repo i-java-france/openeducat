@@ -2,10 +2,11 @@
 
 import datetime
 import logging
-from collections import defaultdict, OrderedDict
-from dateutil.relativedelta import relativedelta
-from typing import NamedTuple
+from collections import OrderedDict, defaultdict
 from functools import partial
+from typing import NamedTuple
+
+from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -114,7 +115,7 @@ class StockRule(models.Model):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
         if 'name' not in default:
-            for rule, vals in zip(self, vals_list):
+            for rule, vals in zip(self, vals_list, strict=False):
                 vals['name'] = _("%s (copy)", rule.name)
         return vals_list
 
@@ -465,7 +466,7 @@ class StockRule(models.Model):
 
         def raise_exception(procurement_errors):
             if raise_user_error:
-                dummy, errors = zip(*procurement_errors)
+                dummy, errors = zip(*procurement_errors, strict=False)
                 raise UserError('\n'.join(errors))
             else:
                 raise ProcurementException(procurement_errors)

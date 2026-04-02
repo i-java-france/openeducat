@@ -1,16 +1,16 @@
-import { useAttachmentUploader } from "@mail/core/common/attachment_uploader_hook";
-import { ActivityMailTemplate } from "@mail/core/web/activity_mail_template";
-import { ActivityMarkAsDone } from "@mail/core/web/activity_markasdone_popover";
-import { computeDelay, getMsToTomorrow } from "@mail/utils/common/dates";
-import { AvatarCardPopover } from "@mail/discuss/web/avatar_card/avatar_card_popover";
+import {useAttachmentUploader} from "@mail/core/common/attachment_uploader_hook";
+import {ActivityMailTemplate} from "@mail/core/web/activity_mail_template";
+import {ActivityMarkAsDone} from "@mail/core/web/activity_markasdone_popover";
+import {computeDelay, getMsToTomorrow} from "@mail/utils/common/dates";
+import {AvatarCardPopover} from "@mail/discuss/web/avatar_card/avatar_card_popover";
 
-import { Component, onMounted, onWillUnmount, useState } from "@odoo/owl";
+import {Component, onMounted, onWillUnmount, useState} from "@odoo/owl";
 
-import { browser } from "@web/core/browser/browser";
-import { _t } from "@web/core/l10n/translation";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { useService } from "@web/core/utils/hooks";
-import { FileUploader } from "@web/views/fields/file_handler";
+import {browser} from "@web/core/browser/browser";
+import {_t} from "@web/core/l10n/translation";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {useService} from "@web/core/utils/hooks";
+import {FileUploader} from "@web/views/fields/file_handler";
 
 /**
  * @typedef {Object} Props
@@ -20,15 +20,15 @@ import { FileUploader } from "@web/views/fields/file_handler";
  * @extends {Component<Props, Env>}
  */
 export class Activity extends Component {
-    static components = { ActivityMailTemplate, FileUploader };
+    static components = {ActivityMailTemplate, FileUploader};
     static props = ["activity", "onActivityChanged", "reloadParentView"];
     static template = "mail.Activity";
 
     setup() {
         super.setup();
         this.storeService = useService("mail.store");
-        this.state = useState({ showDetails: false });
-        this.markDonePopover = usePopover(ActivityMarkAsDone, { position: "right" });
+        this.state = useState({showDetails: false});
+        this.markDonePopover = usePopover(ActivityMarkAsDone, {position: "right"});
         this.avatarCard = usePopover(AvatarCardPopover);
         onMounted(() => {
             this.updateDelayAtNight();
@@ -74,7 +74,7 @@ export class Activity extends Component {
 
     async onFileUploaded(data) {
         const thread = this.thread;
-        const { id: attachmentId } = await this.attachmentUploader.uploadData(data, {
+        const {id: attachmentId} = await this.attachmentUploader.uploadData(data, {
             activity: this.props.activity,
         });
         await this.props.activity.markAsDone([attachmentId]);

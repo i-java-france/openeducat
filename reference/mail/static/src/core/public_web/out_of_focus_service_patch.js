@@ -1,5 +1,8 @@
-import { OutOfFocusService, outOfFocusService } from "@mail/core/common/out_of_focus_service";
-import { patch } from "@web/core/utils/patch";
+import {
+    OutOfFocusService,
+    outOfFocusService,
+} from "@mail/core/common/out_of_focus_service";
+import {patch} from "@web/core/utils/patch";
 
 patch(OutOfFocusService.prototype, {
     setup(env, services) {
@@ -12,7 +15,7 @@ patch(OutOfFocusService.prototype, {
     clearUnreadMessage() {
         this.counter = 0;
         this.contributingMessageLocalIds.clear();
-        this.titleService.setCounters({ discuss: undefined });
+        this.titleService.setCounters({discuss: undefined});
     },
     notify(message) {
         if (this.contributingMessageLocalIds.has(message.localId)) {
@@ -20,7 +23,7 @@ patch(OutOfFocusService.prototype, {
         }
         this.contributingMessageLocalIds.add(message.localId);
         this.counter++;
-        this.titleService.setCounters({ discuss: this.counter });
+        this.titleService.setCounters({discuss: this.counter});
         super.notify(...arguments);
     },
     onWindowFocus() {

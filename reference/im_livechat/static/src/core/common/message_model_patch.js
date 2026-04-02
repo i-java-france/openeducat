@@ -1,13 +1,13 @@
-import { Message } from "@mail/core/common/message_model";
-import { fields } from "@mail/core/common/record";
+import {Message} from "@mail/core/common/message_model";
+import {fields} from "@mail/core/common/record";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {import("models").Message} */
 const messagePatch = {
     setup() {
         super.setup(...arguments);
-        this.chatbotStep = fields.One("ChatbotStep", { inverse: "message" });
+        this.chatbotStep = fields.One("ChatbotStep", {inverse: "message"});
     },
     canReplyTo(thread) {
         return (

@@ -1,7 +1,7 @@
-import { DiscussChannel } from "@mail/../tests/mock_server/mock_models/discuss_channel";
+import {DiscussChannel} from "@mail/../tests/mock_server/mock_models/discuss_channel";
 
-import { getKwArgs, serverState } from "@web/../tests/web_test_helpers";
-import { patch } from "@web/core/utils/patch";
+import {getKwArgs, serverState} from "@web/../tests/web_test_helpers";
+import {patch} from "@web/core/utils/patch";
 
 const discussChannelPatch = {
     execute_command_lead() {
@@ -10,14 +10,18 @@ const discussChannelPatch = {
         const body = kwargs.body;
 
         const leadName = body.substring("/lead".length).trim();
-        const leadId = this.env["crm.lead"].create({ name: leadName });
-        this.env["bus.bus"]._sendone(serverState.partnerId, "discuss.channel/transient_message", {
-            body: `
+        const leadId = this.env["crm.lead"].create({name: leadName});
+        this.env["bus.bus"]._sendone(
+            serverState.partnerId,
+            "discuss.channel/transient_message",
+            {
+                body: `
                     <span class="o_mail_notification">
                         Created a new lead: <a href="#" data-oe-model="crm.lead" data-oe-id="${leadId}">${leadName}</a>
                     </span>`,
-            channel_id: ids[0],
-        });
+                channel_id: ids[0],
+            }
+        );
         return true;
     },
 };

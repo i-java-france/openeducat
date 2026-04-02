@@ -1,5 +1,5 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 export class BlogPostTitlePlugin extends Plugin {
     static id = "blogPostTitle";
@@ -18,4 +18,6 @@ export class BlogPostTitlePlugin extends Plugin {
 }
 
 registry.category("website-plugins").add(BlogPostTitlePlugin.id, BlogPostTitlePlugin);
-registry.category("website-translation-plugins").add(BlogPostTitlePlugin.id, BlogPostTitlePlugin);
+registry
+    .category("website-translation-plugins")
+    .add(BlogPostTitlePlugin.id, BlogPostTitlePlugin);

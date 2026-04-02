@@ -1,4 +1,4 @@
-import { delay } from "@web/core/utils/concurrency";
+import {delay} from "@web/core/utils/concurrency";
 
 export function selectLocation(locationName) {
     return {
@@ -41,9 +41,13 @@ export function checkCarouselAutoPlaying() {
         content: `Check that the slideshow is working`,
         trigger: `.carousel-item.active`,
         async run() {
-            const firstSlideHtml = document.querySelector(".carousel-item.active")?.outerHTML;
+            const firstSlideHtml = document.querySelector(
+                ".carousel-item.active"
+            )?.outerHTML;
             await delay(150);
-            const currentSlideHtml = document.querySelector(".carousel-item.active")?.outerHTML;
+            const currentSlideHtml = document.querySelector(
+                ".carousel-item.active"
+            )?.outerHTML;
             if (firstSlideHtml === currentSlideHtml) {
                 throw new Error(
                     "Slideshow is not working. Slide should change in all self ordering mode."

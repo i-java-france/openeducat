@@ -1,36 +1,36 @@
-import { Component, onWillStart, onWillUpdateProps } from "@odoo/owl";
-import { CheckBox } from "@web/core/checkbox/checkbox";
-import { Domain } from "@web/core/domain";
-import { getDomainDisplayedOperators } from "@web/core/domain_selector/domain_selector_operator_editor";
-import { _t } from "@web/core/l10n/translation";
-import { ModelFieldSelector } from "@web/core/model_field_selector/model_field_selector";
+import {Component, onWillStart, onWillUpdateProps} from "@odoo/owl";
+import {CheckBox} from "@web/core/checkbox/checkbox";
+import {Domain} from "@web/core/domain";
+import {getDomainDisplayedOperators} from "@web/core/domain_selector/domain_selector_operator_editor";
+import {_t} from "@web/core/l10n/translation";
+import {ModelFieldSelector} from "@web/core/model_field_selector/model_field_selector";
 import {
     areEqualTrees,
     condition,
     connector,
     formatValue,
 } from "@web/core/tree_editor/condition_tree";
-import { domainFromTree } from "@web/core/tree_editor/domain_from_tree";
-import { TreeEditor } from "@web/core/tree_editor/tree_editor";
-import { getOperatorEditorInfo } from "@web/core/tree_editor/tree_editor_operator_editor";
-import { useService } from "@web/core/utils/hooks";
-import { getDefaultCondition } from "./utils";
+import {domainFromTree} from "@web/core/tree_editor/domain_from_tree";
+import {TreeEditor} from "@web/core/tree_editor/tree_editor";
+import {getOperatorEditorInfo} from "@web/core/tree_editor/tree_editor_operator_editor";
+import {useService} from "@web/core/utils/hooks";
+import {getDefaultCondition} from "./utils";
 
 const ARCHIVED_CONDITION = condition("active", "in", [true, false]);
 const ARCHIVED_DOMAIN = `[("active", "in", [True, False])]`;
 
 export class DomainSelector extends Component {
     static template = "web.DomainSelector";
-    static components = { TreeEditor, CheckBox };
+    static components = {TreeEditor, CheckBox};
     static props = {
         domain: String,
         resModel: String,
-        className: { type: String, optional: true },
-        defaultConnector: { type: [{ value: "&" }, { value: "|" }], optional: true },
-        isDebugMode: { type: Boolean, optional: true },
-        readonly: { type: Boolean, optional: true },
-        update: { type: Function, optional: true },
-        debugUpdate: { type: Function, optional: true },
+        className: {type: String, optional: true},
+        defaultConnector: {type: [{value: "&"}, {value: "|"}], optional: true},
+        isDebugMode: {type: Boolean, optional: true},
+        readonly: {type: Boolean, optional: true},
+        update: {type: Function, optional: true},
+        debugUpdate: {type: Function, optional: true},
     };
     static defaultProps = {
         isDebugMode: false,
@@ -65,13 +65,16 @@ export class DomainSelector extends Component {
             return;
         }
 
-        const [tree, { fieldDef: activeFieldDef }] = await Promise.all([
+        const [tree, {fieldDef: activeFieldDef}] = await Promise.all([
             this.treeProcessor.treeFromDomain(p.resModel, domain, !p.isDebugMode),
             this.fieldService.loadFieldInfo(p.resModel, "active"),
         ]);
 
         this.tree = tree;
-        this.showArchivedCheckbox = this.getShowArchivedCheckBox(Boolean(activeFieldDef), p);
+        this.showArchivedCheckbox = this.getShowArchivedCheckBox(
+            Boolean(activeFieldDef),
+            p
+        );
 
         this.includeArchived = false;
         if (this.showArchivedCheckbox) {
@@ -111,10 +114,10 @@ export class DomainSelector extends Component {
     }
 
     getPathEditorInfo(resModel, defaultCondition) {
-        const { isDebugMode } = this.props;
+        const {isDebugMode} = this.props;
         return {
             component: ModelFieldSelector,
-            extractProps: ({ update, value: path }) => ({
+            extractProps: ({update, value: path}) => ({
                 path,
                 update,
                 resModel,

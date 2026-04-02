@@ -7,8 +7,8 @@ import * as TicketScreen from "@point_of_sale/../tests/pos/tours/utils/ticket_sc
 import * as Order from "@point_of_sale/../tests/generic_helpers/order_widget_util";
 import * as Chrome from "@point_of_sale/../tests/pos/tours/utils/chrome_util";
 import * as Dialog from "@point_of_sale/../tests/generic_helpers/dialog_util";
-import { inLeftSide } from "@point_of_sale/../tests/pos/tours/utils/common";
-import { registry } from "@web/core/registry";
+import {inLeftSide} from "@point_of_sale/../tests/pos/tours/utils/common";
+import {registry} from "@web/core/registry";
 import * as OfflineUtil from "@point_of_sale/../tests/generic_helpers/offline_util";
 import * as ProductConfiguratorPopup from "@point_of_sale/../tests/pos/tours/utils/product_configurator_util";
 
@@ -114,23 +114,25 @@ registry.category("web_tour.tours").add("TicketScreenTour", {
             TicketScreen.filterIs("Paid"),
             TicketScreen.selectOrder("003"),
             inLeftSide([
-                ...Order.hasLine({ productName: "Desk Pad", withClass: ".selected" }),
+                ...Order.hasLine({productName: "Desk Pad", withClass: ".selected"}),
                 Numpad.click("3"),
                 Dialog.confirm(),
             ]),
             Chrome.clickRegister(),
-            { ...ProductScreen.back(), isActive: ["mobile"] },
+            {...ProductScreen.back(), isActive: ["mobile"]},
             ProductScreen.isShown(),
             ProductScreen.orderIsEmpty(),
             ...ProductScreen.clickRefund(),
             TicketScreen.selectOrder("003"),
-            inLeftSide(Order.hasLine({ productName: "Desk Pad", withClass: ".selected" })),
+            inLeftSide(
+                Order.hasLine({productName: "Desk Pad", withClass: ".selected"})
+            ),
             ProductScreen.clickNumpad("1"),
             TicketScreen.toRefundTextContains("To Refund: 1"),
             TicketScreen.confirmRefund(),
             PaymentScreen.isShown(),
             PaymentScreen.clickBack(),
-            { ...ProductScreen.back(), isActive: ["mobile"] },
+            {...ProductScreen.back(), isActive: ["mobile"]},
             ProductScreen.isShown(),
             inLeftSide([
                 ...ProductScreen.clickLine("Desk Pad"),
@@ -149,7 +151,7 @@ registry.category("web_tour.tours").add("TicketScreenTour", {
             TicketScreen.selectOrder("003"),
             TicketScreen.toRefundTextContains("Refunding 1.00"),
             Chrome.clickRegister(),
-            { ...ProductScreen.back(), isActive: ["mobile"] },
+            {...ProductScreen.back(), isActive: ["mobile"]},
             // Pay the refund order.
             ProductScreen.clickPayButton(),
             PaymentScreen.clickPaymentMethod("Bank"),
@@ -173,7 +175,7 @@ registry.category("web_tour.tours").add("FiscalPositionNoTaxRefund", {
             ProductScreen.clickFiscalPosition("No Tax"),
             ProductScreen.totalAmountIs("100.00"),
             ProductScreen.clickPayButton(),
-            PaymentScreen.clickPaymentMethod("Bank", true, { remaining: "0.00" }),
+            PaymentScreen.clickPaymentMethod("Bank", true, {remaining: "0.00"}),
             PaymentScreen.clickValidate(),
             ReceiptScreen.isShown(),
             ReceiptScreen.clickNextOrder(),
@@ -184,7 +186,7 @@ registry.category("web_tour.tours").add("FiscalPositionNoTaxRefund", {
             PaymentScreen.isShown(),
             PaymentScreen.clickBack(),
             ProductScreen.isShown(),
-            { ...ProductScreen.back(), isActive: ["mobile"] },
+            {...ProductScreen.back(), isActive: ["mobile"]},
             ProductScreen.totalAmountIs("100.00"),
             ProductScreen.clickPayButton(),
             PaymentScreen.clickPaymentMethod("Bank"),
@@ -405,7 +407,11 @@ registry.category("web_tour.tours").add("LotTour", {
             ...ProductScreen.clickRefund(),
             TicketScreen.selectOrder("002"),
             inLeftSide(
-                [Numpad.click("1"), ProductScreen.clickLine("Product B"), Numpad.click("1")].flat()
+                [
+                    Numpad.click("1"),
+                    ProductScreen.clickLine("Product B"),
+                    Numpad.click("1"),
+                ].flat()
             ),
             TicketScreen.confirmRefund(),
             PaymentScreen.isShown(),
@@ -421,7 +427,7 @@ registry.category("web_tour.tours").add("OrderTimeTour", {
         const validateDateStep = {
             content: "Validate order date is Today",
             trigger: ".orders .order-row:first .fw-bolder",
-            run: function ({ anchor: displayedDateElement }) {
+            run: function ({anchor: displayedDateElement}) {
                 if (displayedDateElement.textContent.trim() !== "Today") {
                     throw new Error("Order date does not match local timezone");
                 }
@@ -431,12 +437,15 @@ registry.category("web_tour.tours").add("OrderTimeTour", {
         const validateTimeStep = {
             content: "Validate order time matches local timezone",
             trigger: ".orders .order-row:first .small.text-muted",
-            run: function ({ anchor: displayedTimeElement }) {
+            run: function ({anchor: displayedTimeElement}) {
                 const orderDateUTC = window.posmodel.getOrder().date_order;
                 const orderDateTime = luxon.DateTime.fromSQL(orderDateUTC, {
                     zone: "UTC",
                 }).toLocal();
-                if (orderDateTime.toFormat("HH:mm") !== displayedTimeElement.textContent.trim()) {
+                if (
+                    orderDateTime.toFormat("HH:mm") !==
+                    displayedTimeElement.textContent.trim()
+                ) {
                     throw new Error("Order time does not match local timezone");
                 }
             },
@@ -475,7 +484,9 @@ registry
                 ReceiptScreen.clickNextOrder(),
                 ...ProductScreen.clickRefund(),
                 TicketScreen.selectOrder("001"),
-                inLeftSide(Order.hasLine({ productName: "Desk Pad", withClass: ".selected" })),
+                inLeftSide(
+                    Order.hasLine({productName: "Desk Pad", withClass: ".selected"})
+                ),
                 ProductScreen.clickNumpad("1"),
                 TicketScreen.toRefundTextContains("To Refund: 1"),
                 TicketScreen.confirmRefund(),
@@ -495,7 +506,10 @@ registry.category("web_tour.tours").add("test_paid_order_with_archived_product_l
             TicketScreen.nthRowContains(1, "0002"),
             TicketScreen.selectOrder("0002"),
             inLeftSide([
-                ...Order.hasLine({ productName: "Archived Product", withClass: ".selected" }),
+                ...Order.hasLine({
+                    productName: "Archived Product",
+                    withClass: ".selected",
+                }),
             ]),
         ].flat(),
 });

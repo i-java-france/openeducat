@@ -1,13 +1,13 @@
-import { Domain } from "@web/core/domain";
-import { _t } from "@web/core/l10n/translation";
-import { user } from "@web/core/user";
-import { sortBy } from "@web/core/utils/arrays";
-import { KeepLast, Race } from "@web/core/utils/concurrency";
-import { addPropertyFieldDefs, Model } from "@web/model/model";
-import { rankInterval } from "@web/search/utils/dates";
-import { getGroupBy } from "@web/search/utils/group_by";
-import { GROUPABLE_TYPES } from "@web/search/utils/misc";
-import { computeReportMeasures, processMeasure } from "@web/views/utils";
+import {Domain} from "@web/core/domain";
+import {_t} from "@web/core/l10n/translation";
+import {user} from "@web/core/user";
+import {sortBy} from "@web/core/utils/arrays";
+import {KeepLast, Race} from "@web/core/utils/concurrency";
+import {addPropertyFieldDefs, Model} from "@web/model/model";
+import {rankInterval} from "@web/search/utils/dates";
+import {getGroupBy} from "@web/search/utils/group_by";
+import {GROUPABLE_TYPES} from "@web/search/utils/misc";
+import {computeReportMeasures, processMeasure} from "@web/views/utils";
 
 export const SEP = " / ";
 const DATA_LIMIT = 80;
@@ -48,7 +48,8 @@ export class GraphModel extends Model {
     async load(searchParams) {
         this.searchParams = searchParams;
         if (!this.initialGroupBy) {
-            this.initialGroupBy = searchParams.context.graph_groupbys || this.metaData.groupBy; // = arch groupBy --> change that
+            this.initialGroupBy =
+                searchParams.context.graph_groupbys || this.metaData.groupBy; // = arch groupBy --> change that
         }
         const metaData = this._buildMetaData();
         await addPropertyFieldDefs(
@@ -102,30 +103,34 @@ export class GraphModel extends Model {
      * @returns {Object}
      */
     _buildMetaData(params) {
-        const { domain, context, groupBy } = this.searchParams;
+        const {domain, context, groupBy} = this.searchParams;
 
-        const metaData = Object.assign({}, this.metaData, { context });
+        const metaData = Object.assign({}, this.metaData, {context});
         metaData.domain = domain;
         metaData.measure = context.graph_measure || metaData.measure;
         metaData.mode = context.graph_mode || metaData.mode;
         metaData.groupBy = groupBy.length ? groupBy : this.initialGroupBy;
         if (metaData.mode !== "pie") {
-            metaData.order = "graph_order" in context ? context.graph_order : metaData.order;
+            metaData.order =
+                "graph_order" in context ? context.graph_order : metaData.order;
             if ("graph_stacked" in context) {
                 metaData.stacked = context.graph_stacked;
             }
             if (metaData.mode === "line") {
                 metaData.cumulated =
-                    "graph_cumulated" in context ? context.graph_cumulated : metaData.cumulated;
+                    "graph_cumulated" in context
+                        ? context.graph_cumulated
+                        : metaData.cumulated;
             }
         }
 
         this._normalize(metaData);
 
-        metaData.measures = computeReportMeasures(metaData.fields, metaData.fieldAttrs, [
-            ...(metaData.viewMeasures || []),
-            metaData.measure,
-        ]);
+        metaData.measures = computeReportMeasures(
+            metaData.fields,
+            metaData.fieldAttrs,
+            [...(metaData.viewMeasures || []), metaData.measure]
+        );
 
         return Object.assign(metaData, params);
     }
@@ -153,7 +158,7 @@ export class GraphModel extends Model {
      * @returns {Object}
      */
     _getData(dataPoints, forceUseAllDataPoints) {
-        const { mode } = this.metaData;
+        const {mode} = this.metaData;
 
         const dataPtMapping = new WeakMap();
         const datasetsTmp = {};
@@ -165,11 +170,14 @@ export class GraphModel extends Model {
         for (const dataPt of dataPoints) {
             const datasetLabel = this._getDatasetLabel(dataPt);
             if (!(datasetLabel in datasetsTmp)) {
-                if (!forceUseAllDataPoints && Object.keys(datasetsTmp).length >= DATA_LIMIT) {
+                if (
+                    !forceUseAllDataPoints &&
+                    Object.keys(datasetsTmp).length >= DATA_LIMIT
+                ) {
                     exceeds = true;
                     continue;
                 }
-                datasetsTmp[datasetLabel] = { label: datasetLabel }; // add the entry but don't initialize it entirely
+                datasetsTmp[datasetLabel] = {label: datasetLabel}; // add the entry but don't initialize it entirely
             }
             dataPtMapping.set(dataPt, datasetsTmp[datasetLabel]);
 
@@ -191,8 +199,15 @@ export class GraphModel extends Model {
                 continue;
             }
 
-            const { domain, labelIndex, trueLabel, value, identifier, cumulatedStart, currencyId } =
-                dataPt;
+            const {
+                domain,
+                labelIndex,
+                trueLabel,
+                value,
+                identifier,
+                cumulatedStart,
+                currencyId,
+            } = dataPt;
             const dataset = dataPtMapping.get(dataPt);
             if (!dataset.data) {
                 const dataLength = labels.length;
@@ -214,11 +229,11 @@ export class GraphModel extends Model {
 
         const datasets = Object.values(datasetsTmp);
 
-        return { datasets, labels, exceeds };
+        return {datasets, labels, exceeds};
     }
 
     _getLineOverlayDataset() {
-        const { stacked } = this.metaData;
+        const {stacked} = this.metaData;
         const datasets = this.data.datasets;
         let lineOverlayDataset = null;
         if (stacked && datasets.length > 1) {
@@ -248,8 +263,8 @@ export class GraphModel extends Model {
      * @returns {string}
      */
     _getDatasetLabel(dataPoint) {
-        const { measure, measures, mode } = this.metaData;
-        const { labels } = dataPoint;
+        const {measure, measures, mode} = this.metaData;
+        const {labels} = dataPoint;
         if (mode === "pie") {
             return "";
         }
@@ -270,18 +285,21 @@ export class GraphModel extends Model {
      * @returns {Object[]}
      */
     _getProcessedDataPoints() {
-        const { groupBy, mode, order } = this.metaData;
+        const {groupBy, mode, order} = this.metaData;
         let processedDataPoints = [];
         if (mode === "line") {
             processedDataPoints = this.dataPoints.filter(
-                (dataPoint) => dataPoint.labels[0] !== this._getDefaultFilterLabel(groupBy[0])
+                (dataPoint) =>
+                    dataPoint.labels[0] !== this._getDefaultFilterLabel(groupBy[0])
             );
         } else if (mode === "pie") {
             processedDataPoints = this.dataPoints.filter(
                 (dataPoint) => dataPoint.value > 0 && dataPoint.count !== 0
             );
         } else {
-            processedDataPoints = this.dataPoints.filter((dataPoint) => dataPoint.count !== 0);
+            processedDataPoints = this.dataPoints.filter(
+                (dataPoint) => dataPoint.count !== 0
+            );
         }
 
         if (order !== null && mode !== "pie" && groupBy.length > 0) {
@@ -296,8 +314,13 @@ export class GraphModel extends Model {
                 groupedDataPoints[key].push(dataPt);
             }
             const groups = Object.values(groupedDataPoints);
-            const groupTotal = (group) => group.reduce((sum, dataPt) => sum + dataPt.value, 0);
-            processedDataPoints = sortBy(groups, groupTotal, order.toLowerCase()).flat();
+            const groupTotal = (group) =>
+                group.reduce((sum, dataPt) => sum + dataPt.value, 0);
+            processedDataPoints = sortBy(
+                groups,
+                groupTotal,
+                order.toLowerCase()
+            ).flat();
         }
 
         return processedDataPoints;
@@ -313,16 +336,18 @@ export class GraphModel extends Model {
      * @returns {Array}
      */
     async _loadDataPoints(metaData) {
-        const { measure, domain, fields, groupBy, resModel, cumulatedStart } = metaData;
+        const {measure, domain, fields, groupBy, resModel, cumulatedStart} = metaData;
         const fieldName = groupBy[0]?.fieldName;
         const sequentialField =
-            cumulatedStart && SEQUENTIAL_TYPES.includes(fields[fieldName]?.type) ? fieldName : null;
+            cumulatedStart && SEQUENTIAL_TYPES.includes(fields[fieldName]?.type)
+                ? fieldName
+                : null;
         const sequentialSpec = sequentialField && groupBy[0].spec;
         const measures = ["__count"];
         let fieldAggregate = "__count",
             monetaryAggregates;
         if (measure !== "__count") {
-            let { aggregator, currency_field, name, type } = fields[measure];
+            let {aggregator, currency_field, name, type} = fields[measure];
             if (type === "many2one") {
                 aggregator = "count_distinct";
             }
@@ -351,7 +376,7 @@ export class GraphModel extends Model {
             groupBy.map((gb) => gb.spec),
             measures,
             {
-                context: { fill_temporal: true, ...this.searchParams.context },
+                context: {fill_temporal: true, ...this.searchParams.context},
             }
         );
         let startGroups = false;
@@ -372,10 +397,12 @@ export class GraphModel extends Model {
             startGroups = await this.orm.formattedReadGroup(
                 resModel,
                 newDomain,
-                groupBy.filter((gb) => gb.fieldName != sequentialField).map((gb) => gb.spec),
+                groupBy
+                    .filter((gb) => gb.fieldName != sequentialField)
+                    .map((gb) => gb.spec),
                 measures,
                 {
-                    context: { ...this.searchParams.context },
+                    context: {...this.searchParams.context},
                 }
             );
         }
@@ -384,24 +411,27 @@ export class GraphModel extends Model {
         if (startGroups) {
             for (const group of startGroups) {
                 const rawValues = [];
-                for (const gb of groupBy.filter((gb) => gb.fieldName != sequentialField)) {
-                    rawValues.push({ [gb.spec]: group[gb.spec] });
+                for (const gb of groupBy.filter(
+                    (gb) => gb.fieldName != sequentialField
+                )) {
+                    rawValues.push({[gb.spec]: group[gb.spec]});
                 }
-                cumulatedStartValue[JSON.stringify(rawValues)] = group[measures.slice(-1)];
+                cumulatedStartValue[JSON.stringify(rawValues)] =
+                    group[measures.slice(-1)];
             }
         }
         const graphCurrencies = new Set();
         const defaultCurrency = user.activeCompany.currency_id;
         for (const group of groups) {
-            const { __domain, __count } = group;
+            const {__domain, __count} = group;
             const labels = [];
             const rawValues = [];
             for (const gb of groupBy) {
                 let label;
                 const val = group[gb.spec];
-                rawValues.push({ [gb.spec]: val });
+                rawValues.push({[gb.spec]: val});
                 const fieldName = gb.fieldName;
-                const { type } = fields[fieldName];
+                const {type} = fields[fieldName];
                 if (type === "boolean") {
                     label = `${val}`; // toUpperCase?
                 } else if (type === "integer") {
@@ -421,7 +451,9 @@ export class GraphModel extends Model {
                     const num = numbers[id];
                     label = num === 1 ? name : `${name} (${num})`;
                 } else if (type === "selection") {
-                    const selected = fields[fieldName].selection.find((s) => s[0] === val);
+                    const selected = fields[fieldName].selection.find(
+                        (s) => s[0] === val
+                    );
                     label = selected[1];
                 } else if (["date", "datetime"].includes(type)) {
                     label = val[1];
@@ -477,7 +509,7 @@ export class GraphModel extends Model {
      * @param {Object} metaData
      */
     _normalize(metaData) {
-        const { fields } = metaData;
+        const {fields} = metaData;
         const groupBy = [];
         for (const gb of metaData.groupBy) {
             let ngb = gb;
@@ -489,9 +521,9 @@ export class GraphModel extends Model {
 
         const processedGroupBy = [];
         for (const gb of groupBy) {
-            const { fieldName, interval } = gb;
+            const {fieldName, interval} = gb;
             if (!fieldName.includes(".")) {
-                const { groupable, type } = fields[fieldName];
+                const {groupable, type} = fields[fieldName];
                 if (
                     // cf. _description_groupable in odoo/fields.py
                     !groupable ||
@@ -501,7 +533,9 @@ export class GraphModel extends Model {
                     continue;
                 }
             }
-            const index = processedGroupBy.findIndex((gb) => gb.fieldName === fieldName);
+            const index = processedGroupBy.findIndex(
+                (gb) => gb.fieldName === fieldName
+            );
             if (index === -1) {
                 processedGroupBy.push(gb);
             } else if (interval) {

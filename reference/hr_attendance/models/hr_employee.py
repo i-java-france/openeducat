@@ -1,10 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import defaultdict
+
 import pytz
 from dateutil.relativedelta import relativedelta
-from collections import defaultdict
+
+from odoo import _, api, exceptions, fields, models
 from odoo.tools.intervals import Intervals
-from odoo import models, fields, api, exceptions, _
 
 
 class HrEmployee(models.Model):

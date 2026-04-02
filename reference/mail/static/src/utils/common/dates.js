@@ -1,4 +1,4 @@
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 /**
  * @param {luxon.DateTime} datetime

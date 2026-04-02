@@ -1,8 +1,8 @@
-import { AND, fields, Record } from "@mail/core/common/record";
-import { rpc } from "@web/core/network/rpc";
-import { browser } from "@web/core/browser/browser";
-import { debounce } from "@web/core/utils/timing";
-import { expirableStorage } from "@im_livechat/core/common/expirable_storage";
+import {AND, fields, Record} from "@mail/core/common/record";
+import {rpc} from "@web/core/network/rpc";
+import {browser} from "@web/core/browser/browser";
+import {debounce} from "@web/core/utils/timing";
+import {expirableStorage} from "@im_livechat/core/common/expirable_storage";
 
 export class Chatbot extends Record {
     static id = AND("script", "thread");
@@ -76,7 +76,7 @@ export class Chatbot extends Record {
         if (!this.completed) {
             return;
         }
-        const { store_data, message_id } = await rpc("/chatbot/restart", {
+        const {store_data, message_id} = await rpc("/chatbot/restart", {
             channel_id: this.thread.id,
             chatbot_script_id: this.script.id,
         });
@@ -242,10 +242,14 @@ export class Chatbot extends Record {
             return true;
         }
         let isRedirecting = false;
-        if (answer.redirect_link && URL.canParse(answer.redirect_link, window.location.href)) {
+        if (
+            answer.redirect_link &&
+            URL.canParse(answer.redirect_link, window.location.href)
+        ) {
             const url = new URL(window.location.href);
             const nextURL = new URL(answer.redirect_link, window.location.href);
-            isRedirecting = url.pathname !== nextURL.pathname || url.origin !== nextURL.origin;
+            isRedirecting =
+                url.pathname !== nextURL.pathname || url.origin !== nextURL.origin;
         }
         const redirects = JSON.parse(
             expirableStorage.getItem("im_livechat.chatbot_redirect") ?? "[]"
@@ -264,7 +268,7 @@ export class Chatbot extends Record {
             browser.location.assign(answer.redirect_link);
         } else if (this.store.env.services.ui.isSmall) {
             await this.store.chatHub.initPromise;
-            this.store.ChatWindow.get({ thread: this.thread })?.fold();
+            this.store.ChatWindow.get({thread: this.thread})?.fold();
         }
         return redirectionAlreadyDone || !isRedirecting;
     }
@@ -275,7 +279,7 @@ export class Chatbot extends Record {
      * @returns {Promise<boolean>} Whether the script is ready to go to the next step.
      */
     async _processAnswerQuestionEmail() {
-        const { success, data } = await rpc("/chatbot/step/validate_email", {
+        const {success, data} = await rpc("/chatbot/step/validate_email", {
             channel_id: this.thread.id,
         });
         this.store.insert(data);

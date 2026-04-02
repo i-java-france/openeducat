@@ -1,10 +1,10 @@
 /** @ts-check */
 
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import { waitForDataLoaded } from "@spreadsheet/helpers/model";
-import { animationFrame } from "@odoo/hoot-mock";
+import {waitForDataLoaded} from "@spreadsheet/helpers/model";
+import {animationFrame} from "@odoo/hoot-mock";
 
-const { toCartesian, toZone, lettersToNumber, deepCopy } = spreadsheet.helpers;
+const {toCartesian, toZone, lettersToNumber, deepCopy} = spreadsheet.helpers;
 
 /**
  * @typedef {import("@spreadsheet").GlobalFilter} GlobalFilter
@@ -17,9 +17,9 @@ const { toCartesian, toZone, lettersToNumber, deepCopy } = spreadsheet.helpers;
  * Select a cell
  */
 export function selectCell(model, xc, sheetId = model.getters.getActiveSheetId()) {
-    const { col, row } = toCartesian(xc);
+    const {col, row} = toCartesian(xc);
     if (sheetId !== model.getters.getActiveSheetId()) {
-        model.dispatch("ACTIVATE_SHEET", { sheetIdTo: sheetId });
+        model.dispatch("ACTIVATE_SHEET", {sheetIdTo: sheetId});
     }
     return model.selection.selectCell(col, row);
 }
@@ -30,7 +30,7 @@ export function selectCell(model, xc, sheetId = model.getters.getActiveSheetId()
  * @param {CmdGlobalFilter} filter
  */
 export function addGlobalFilterWithoutReload(model, filter, fieldMatchings = {}) {
-    return model.dispatch("ADD_GLOBAL_FILTER", { filter, ...fieldMatchings });
+    return model.dispatch("ADD_GLOBAL_FILTER", {filter, ...fieldMatchings});
 }
 
 export function setGlobalFilterValueWithoutReload(model, payload) {
@@ -43,7 +43,7 @@ export function setGlobalFilterValueWithoutReload(model, payload) {
  * @param {CmdGlobalFilter} filter
  */
 export async function addGlobalFilter(model, filter, fieldMatchings = {}) {
-    const result = model.dispatch("ADD_GLOBAL_FILTER", { filter, ...fieldMatchings });
+    const result = model.dispatch("ADD_GLOBAL_FILTER", {filter, ...fieldMatchings});
     // Wait for the fetch of DisplayNames
     await animationFrame();
     await waitForDataLoaded(model);
@@ -54,7 +54,7 @@ export async function addGlobalFilter(model, filter, fieldMatchings = {}) {
  * Remove a global filter and ensure the data sources are completely reloaded
  */
 export async function removeGlobalFilter(model, id) {
-    const result = model.dispatch("REMOVE_GLOBAL_FILTER", { id });
+    const result = model.dispatch("REMOVE_GLOBAL_FILTER", {id});
     // Wait for the fetch of DisplayNames
     await animationFrame();
     await waitForDataLoaded(model);
@@ -67,7 +67,7 @@ export async function removeGlobalFilter(model, id) {
  * @param {CmdGlobalFilter} filter
  */
 export async function editGlobalFilter(model, filter) {
-    const result = model.dispatch("EDIT_GLOBAL_FILTER", { filter });
+    const result = model.dispatch("EDIT_GLOBAL_FILTER", {filter});
     // Wait for the fetch of DisplayNames
     await animationFrame();
     await waitForDataLoaded(model);
@@ -87,7 +87,7 @@ export async function setGlobalFilterValue(model, payload) {
 }
 
 export function moveGlobalFilter(model, id, delta) {
-    return model.dispatch("MOVE_GLOBAL_FILTER", { id, delta });
+    return model.dispatch("MOVE_GLOBAL_FILTER", {id, delta});
 }
 
 /**
@@ -95,7 +95,7 @@ export function moveGlobalFilter(model, id, delta) {
  */
 export function setSelection(model, xc) {
     const zone = toZone(xc);
-    model.selection.selectZone({ cell: { col: zone.left, row: zone.top }, zone });
+    model.selection.selectZone({cell: {col: zone.left, row: zone.top}, zone});
 }
 
 /**
@@ -110,22 +110,37 @@ export function autofill(model, from, to) {
 /**
  * Set the content of a cell
  */
-export function setCellContent(model, xc, content, sheetId = model.getters.getActiveSheetId()) {
-    model.dispatch("UPDATE_CELL", { ...toCartesian(xc), sheetId, content });
+export function setCellContent(
+    model,
+    xc,
+    content,
+    sheetId = model.getters.getActiveSheetId()
+) {
+    model.dispatch("UPDATE_CELL", {...toCartesian(xc), sheetId, content});
 }
 
 /**
  * Set the format of a cell
  */
-export function setCellFormat(model, xc, format, sheetId = model.getters.getActiveSheetId()) {
-    model.dispatch("UPDATE_CELL", { ...toCartesian(xc), sheetId, format });
+export function setCellFormat(
+    model,
+    xc,
+    format,
+    sheetId = model.getters.getActiveSheetId()
+) {
+    model.dispatch("UPDATE_CELL", {...toCartesian(xc), sheetId, format});
 }
 
 /**
  * Set the style of a cell
  */
-export function setCellStyle(model, xc, style, sheetId = model.getters.getActiveSheetId()) {
-    model.dispatch("UPDATE_CELL", { ...toCartesian(xc), sheetId, style });
+export function setCellStyle(
+    model,
+    xc,
+    style,
+    sheetId = model.getters.getActiveSheetId()
+) {
+    model.dispatch("UPDATE_CELL", {...toCartesian(xc), sheetId, style});
 }
 
 /**
@@ -174,7 +189,11 @@ export function addRows(
  * @param {string[]} columns
  * @param {UID} sheetId
  */
-export function deleteColumns(model, columns, sheetId = model.getters.getActiveSheetId()) {
+export function deleteColumns(
+    model,
+    columns,
+    sheetId = model.getters.getActiveSheetId()
+) {
     return model.dispatch("REMOVE_COLUMNS_ROWS", {
         sheetId,
         dimension: "COL",
@@ -201,8 +220,8 @@ export function createBasicChart(
         },
         sheetId: sheetId,
         definition: {
-            title: { text: "test" },
-            dataSets: [{ dataRange: "A1" }],
+            title: {text: "test"},
+            dataSets: [{dataRange: "A1"}],
             type: "bar",
             background: "#fff",
             verticalAxisPosition: "left",
@@ -225,10 +244,10 @@ export function createScorecardChart(
         chartId,
         col: 0,
         row: 0,
-        offset: { x: 0, y: 0 },
+        offset: {x: 0, y: 0},
         sheetId: sheetId,
         definition: {
-            title: { text: "test" },
+            title: {text: "test"},
             keyValue: "A1",
             type: "scorecard",
             background: "#fff",
@@ -251,10 +270,10 @@ export function createGaugeChart(
         chartId,
         col: 0,
         row: 0,
-        offset: { x: 0, y: 0 },
+        offset: {x: 0, y: 0},
         sheetId: sheetId,
         definition: {
-            title: { text: "test" },
+            title: {text: "test"},
             type: "gauge",
             background: "#fff",
             dataRange: "A1",
@@ -282,7 +301,7 @@ export function createGaugeChart(
 export function updateChart(model, chartId, partialDefinition) {
     const definition = model.getters.getChartDefinition(chartId);
     return model.dispatch("UPDATE_CHART", {
-        definition: { ...definition, ...partialDefinition },
+        definition: {...definition, ...partialDefinition},
         chartId,
         figureId: model.getters.getFigureIdFromChartId(chartId),
         sheetId: model.getters.getActiveSheetId(),
@@ -302,7 +321,7 @@ export function updatePivot(model, pivotId, pivotData) {
         ...model.getters.getPivotCoreDefinition(pivotId),
         ...pivotData,
     };
-    return model.dispatch("UPDATE_PIVOT", { pivotId, pivot });
+    return model.dispatch("UPDATE_PIVOT", {pivotId, pivot});
 }
 
 /**
@@ -325,14 +344,14 @@ export function cut(model, xc) {
  * Paste on a zone
  */
 export function paste(model, range, pasteOption) {
-    return model.dispatch("PASTE", { target: [toZone(range)], pasteOption });
+    return model.dispatch("PASTE", {target: [toZone(range)], pasteOption});
 }
 
 export function updatePivotMeasureDisplay(model, pivotId, measureId, display) {
     const measures = deepCopy(model.getters.getPivotCoreDefinition(pivotId)).measures;
     const measure = measures.find((m) => m.id === measureId);
     measure.display = display;
-    updatePivot(model, pivotId, { measures });
+    updatePivot(model, pivotId, {measures});
 }
 
 export function createSheet(model, data = {}) {
@@ -346,15 +365,21 @@ export function createSheet(model, data = {}) {
     });
 }
 
-export function createCarousel(model, data = { items: [] }, carouselId, sheetId, figureData = {}) {
+export function createCarousel(
+    model,
+    data = {items: []},
+    carouselId,
+    sheetId,
+    figureData = {}
+) {
     return model.dispatch("CREATE_CAROUSEL", {
         figureId: carouselId || model.uuidGenerator.smallUuid(),
         sheetId: sheetId || model.getters.getActiveSheetId(),
         col: 0,
         row: 0,
         definition: data,
-        size: { width: 500, height: 300 },
-        offset: { x: 0, y: 0 },
+        size: {width: 500, height: 300},
+        offset: {x: 0, y: 0},
         ...figureData,
     });
 }

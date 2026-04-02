@@ -1,5 +1,5 @@
-import { ChatWindow } from "@mail/core/common/chat_window_model";
-import { patch } from "@web/core/utils/patch";
+import {ChatWindow} from "@mail/core/common/chat_window_model";
+import {patch} from "@web/core/utils/patch";
 
 patch(ChatWindow.prototype, {
     _onClose(options = {}) {
@@ -11,7 +11,7 @@ patch(ChatWindow.prototype, {
             super._onClose(...arguments);
             this.delete();
             if (options.notifyState) {
-                thread.leaveChannel({ force: true });
+                thread.leaveChannel({force: true});
             }
         } else {
             super._onClose(...arguments);

@@ -1,9 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
+from collections import defaultdict
 
 from odoo import models
-from collections import defaultdict
 
 
 class ProjectProject(models.Model):

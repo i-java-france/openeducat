@@ -4,15 +4,17 @@ import * as ProductScreen from "@point_of_sale/../tests/pos/tours/utils/product_
 import * as PaymentScreen from "@point_of_sale/../tests/pos/tours/utils/payment_screen_util";
 import * as ReceiptScreen from "@point_of_sale/../tests/pos/tours/utils/receipt_screen_util";
 import * as TicketScreen from "@point_of_sale/../tests/pos/tours/utils/ticket_screen_util";
-import { escapeRegExp } from "@web/core/utils/strings";
-import { registry } from "@web/core/registry";
+import {escapeRegExp} from "@web/core/utils/strings";
+import {registry} from "@web/core/registry";
 
 export function addDocument(documentParams) {
     const steps = [];
     for (const values of documentParams) {
         steps.push(...ProductScreen.addOrderline(values.product, values.quantity));
     }
-    steps.push(...[ProductScreen.clickPartnerButton(), ProductScreen.clickCustomer("AAAAAA")]);
+    steps.push(
+        ...[ProductScreen.clickPartnerButton(), ProductScreen.clickCustomer("AAAAAA")]
+    );
     return steps;
 }
 
@@ -62,24 +64,24 @@ registry
                 Dialog.confirm("Open Register"),
 
                 ...addDocument([
-                    { product: "product_1_1", quantity: "1" },
-                    { product: "product_1_2", quantity: "1" },
+                    {product: "product_1_1", quantity: "1"},
+                    {product: "product_1_2", quantity: "1"},
                 ]),
                 ...addDiscount("2"),
                 ProductScreen.checkTotalAmount("35.91"),
                 ProductScreen.checkTaxAmount("4.76"),
                 ...payAndInvoice("35.91"),
                 ...addDocument([
-                    { product: "product_1_1", quantity: "1" },
-                    { product: "product_1_2", quantity: "1" },
+                    {product: "product_1_1", quantity: "1"},
+                    {product: "product_1_2", quantity: "1"},
                 ]),
                 ...addDiscount("7"),
                 ProductScreen.checkTotalAmount("34.08"),
                 ProductScreen.checkTaxAmount("4.53"),
                 ...payAndInvoice("34.08"),
                 ...addDocument([
-                    { product: "product_1_1", quantity: "1" },
-                    { product: "product_1_2", quantity: "1" },
+                    {product: "product_1_1", quantity: "1"},
+                    {product: "product_1_2", quantity: "1"},
                 ]),
                 ...addDiscount("18"),
                 ProductScreen.checkTotalAmount("30.04"),
@@ -104,24 +106,24 @@ registry
                 Dialog.confirm("Open Register"),
 
                 ...addDocument([
-                    { product: "product_2_1", quantity: "1" },
-                    { product: "product_2_2", quantity: "1" },
+                    {product: "product_2_1", quantity: "1"},
+                    {product: "product_2_2", quantity: "1"},
                 ]),
                 ...addDiscount("2"),
                 ProductScreen.checkTotalAmount("35.94"),
                 ProductScreen.checkTaxAmount("4.79"),
                 ...payAndInvoice("35.94"),
                 ...addDocument([
-                    { product: "product_2_1", quantity: "1" },
-                    { product: "product_2_2", quantity: "1" },
+                    {product: "product_2_1", quantity: "1"},
+                    {product: "product_2_2", quantity: "1"},
                 ]),
                 ...addDiscount("7"),
                 ProductScreen.checkTotalAmount("34.10"),
                 ProductScreen.checkTaxAmount("4.56"),
                 ...payAndInvoice("34.10"),
                 ...addDocument([
-                    { product: "product_2_1", quantity: "1" },
-                    { product: "product_2_2", quantity: "1" },
+                    {product: "product_2_1", quantity: "1"},
+                    {product: "product_2_2", quantity: "1"},
                 ]),
                 ...addDiscount("18"),
                 ProductScreen.checkTotalAmount("30.07"),
@@ -139,24 +141,24 @@ registry
                 Dialog.confirm("Open Register"),
 
                 ...addDocument([
-                    { product: "product_3_1", quantity: "1" },
-                    { product: "product_3_2", quantity: "1" },
+                    {product: "product_3_1", quantity: "1"},
+                    {product: "product_3_2", quantity: "1"},
                 ]),
                 ...addDiscount("2"),
                 ProductScreen.checkTotalAmount("35.91"),
                 ProductScreen.checkTaxAmount("4.76"),
                 ...payAndInvoice("35.91"),
                 ...addDocument([
-                    { product: "product_3_1", quantity: "1" },
-                    { product: "product_3_2", quantity: "1" },
+                    {product: "product_3_1", quantity: "1"},
+                    {product: "product_3_2", quantity: "1"},
                 ]),
                 ...addDiscount("7"),
                 ProductScreen.checkTotalAmount("34.08"),
                 ProductScreen.checkTaxAmount("4.53"),
                 ...payAndInvoice("34.08"),
                 ...addDocument([
-                    { product: "product_3_1", quantity: "1" },
-                    { product: "product_3_2", quantity: "1" },
+                    {product: "product_3_1", quantity: "1"},
+                    {product: "product_3_2", quantity: "1"},
                 ]),
                 ...addDiscount("18"),
                 ProductScreen.checkTotalAmount("30.04"),
@@ -174,24 +176,24 @@ registry
                 Dialog.confirm("Open Register"),
 
                 ...addDocument([
-                    { product: "product_4_1", quantity: "1" },
-                    { product: "product_4_2", quantity: "1" },
+                    {product: "product_4_1", quantity: "1"},
+                    {product: "product_4_2", quantity: "1"},
                 ]),
                 ...addDiscount("2"),
                 ProductScreen.checkTotalAmount("35.93"),
                 ProductScreen.checkTaxAmount("4.79"),
                 ...payAndInvoice("35.93"),
                 ...addDocument([
-                    { product: "product_4_1", quantity: "1" },
-                    { product: "product_4_2", quantity: "1" },
+                    {product: "product_4_1", quantity: "1"},
+                    {product: "product_4_2", quantity: "1"},
                 ]),
                 ...addDiscount("7"),
                 ProductScreen.checkTotalAmount("34.09"),
                 ProductScreen.checkTaxAmount("4.56"),
                 ...payAndInvoice("34.09"),
                 ...addDocument([
-                    { product: "product_4_1", quantity: "1" },
-                    { product: "product_4_2", quantity: "1" },
+                    {product: "product_4_1", quantity: "1"},
+                    {product: "product_4_2", quantity: "1"},
                 ]),
                 ...addDiscount("18"),
                 ProductScreen.checkTotalAmount("30.06"),
@@ -209,8 +211,8 @@ registry
                 Dialog.confirm("Open Register"),
 
                 ...addDocument([
-                    { product: "product_1_1", quantity: "1" },
-                    { product: "product_1_2", quantity: "1" },
+                    {product: "product_1_1", quantity: "1"},
+                    {product: "product_1_2", quantity: "1"},
                 ]),
                 ...addDiscount("2"),
                 ProductScreen.checkTotalAmount("94.08"),
@@ -228,8 +230,8 @@ registry
                 Dialog.confirm("Open Register"),
 
                 ...addDocument([
-                    { product: "product_2_1", quantity: "1" },
-                    { product: "product_2_2", quantity: "1" },
+                    {product: "product_2_1", quantity: "1"},
+                    {product: "product_2_2", quantity: "1"},
                 ]),
                 ...addDiscount("2"),
                 ProductScreen.checkTotalAmount("94.08"),
@@ -247,8 +249,8 @@ registry
                 Dialog.confirm("Open Register"),
 
                 ...addDocument([
-                    { product: "product_3_1", quantity: "1" },
-                    { product: "product_3_2", quantity: "1" },
+                    {product: "product_3_1", quantity: "1"},
+                    {product: "product_3_2", quantity: "1"},
                 ]),
                 ...addDiscount("2"),
                 ProductScreen.checkTotalAmount("94.08"),
@@ -266,8 +268,8 @@ registry
                 Dialog.confirm("Open Register"),
 
                 ...addDocument([
-                    { product: "product_4_1", quantity: "1" },
-                    { product: "product_4_2", quantity: "1" },
+                    {product: "product_4_1", quantity: "1"},
+                    {product: "product_4_2", quantity: "1"},
                 ]),
                 ...addDiscount("2"),
                 ProductScreen.checkTotalAmount("94.08"),
@@ -285,8 +287,8 @@ registry
                 Dialog.confirm("Open Register"),
 
                 ...addDocument([
-                    { product: "product_1_1", quantity: "1" },
-                    { product: "product_1_2", quantity: "1" },
+                    {product: "product_1_1", quantity: "1"},
+                    {product: "product_1_2", quantity: "1"},
                 ]),
                 ...addDiscount("2"),
                 ProductScreen.checkTotalAmount("42.25"),
@@ -304,8 +306,8 @@ registry
                 Dialog.confirm("Open Register"),
 
                 ...addDocument([
-                    { product: "product_2_1", quantity: "1" },
-                    { product: "product_2_2", quantity: "1" },
+                    {product: "product_2_1", quantity: "1"},
+                    {product: "product_2_2", quantity: "1"},
                 ]),
                 ...addDiscount("2"),
                 ProductScreen.checkTotalAmount("42.24"),
@@ -323,8 +325,8 @@ registry
                 Dialog.confirm("Open Register"),
 
                 ...addDocument([
-                    { product: "product_3_1", quantity: "1" },
-                    { product: "product_3_2", quantity: "1" },
+                    {product: "product_3_1", quantity: "1"},
+                    {product: "product_3_2", quantity: "1"},
                 ]),
                 ...addDiscount("2"),
                 ProductScreen.checkTotalAmount("42.25"),
@@ -342,8 +344,8 @@ registry
                 Dialog.confirm("Open Register"),
 
                 ...addDocument([
-                    { product: "product_4_1", quantity: "1" },
-                    { product: "product_4_2", quantity: "1" },
+                    {product: "product_4_1", quantity: "1"},
+                    {product: "product_4_2", quantity: "1"},
                 ]),
                 ...addDiscount("2"),
                 ProductScreen.checkTotalAmount("42.25"),

@@ -1,23 +1,24 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
-import pytz
 import textwrap
 import urllib.parse
 from datetime import datetime, timedelta
-
-from dateutil.relativedelta import relativedelta
-from markupsafe import escape
 from urllib.parse import urlparse
 
-from odoo import _, api, Command, fields, models, tools
-from odoo.addons.base.models.res_partner import _tz_get
+import pytz
+from dateutil.relativedelta import relativedelta
+from markupsafe import escape
+
+from odoo import Command, _, api, fields, models, tools
 from odoo.exceptions import ValidationError
 from odoo.fields import Datetime, Domain
-from odoo.tools import format_date, format_datetime, format_time, frozendict
-from odoo.tools.mail import is_html_empty, html_to_inner_content
+from odoo.tools import format_date, frozendict
+from odoo.tools.mail import html_to_inner_content, is_html_empty
 from odoo.tools.misc import formatLang
 from odoo.tools.translate import html_translate
+
+from odoo.addons.base.models.res_partner import _tz_get
 
 _logger = logging.getLogger(__name__)
 
@@ -660,7 +661,7 @@ class EventEvent(models.Model):
 
     def copy_data(self, default=None):
         vals_list = super().copy_data(default=default)
-        return [dict(vals, name=self.env._("%s (copy)", event.name)) for event, vals in zip(self, vals_list)]
+        return [dict(vals, name=self.env._("%s (copy)", event.name)) for event, vals in zip(self, vals_list, strict=False)]
 
     def _mail_get_operation_for_mail_message_operation(self, message_operation):
         if (message_operation == 'create' and self.env.user.has_group('event.group_event_registration_desk')):

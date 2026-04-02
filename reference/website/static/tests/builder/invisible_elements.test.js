@@ -1,13 +1,16 @@
-import { InvisibleElementsPanel } from "@html_builder/sidebar/invisible_elements_panel";
-import { getSnippetStructure, waitForEndOfOperation } from "@html_builder/../tests/helpers";
-import { unformat } from "@html_editor/../tests/_helpers/format";
-import { expect, test } from "@odoo/hoot";
-import { click, queryAllTexts, queryFirst, queryOne } from "@odoo/hoot-dom";
-import { xml } from "@odoo/owl";
-import { contains, patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {InvisibleElementsPanel} from "@html_builder/sidebar/invisible_elements_panel";
 import {
-    addOption,
+    getSnippetStructure,
+    waitForEndOfOperation,
+} from "@html_builder/../tests/helpers";
+import {unformat} from "@html_editor/../tests/_helpers/format";
+import {expect, test} from "@odoo/hoot";
+import {click, queryAllTexts, queryFirst, queryOne} from "@odoo/hoot-dom";
+import {xml} from "@odoo/owl";
+import {contains, patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {
     addDropZoneSelector,
+    addOption,
     defineWebsiteModels,
     invisibleEl,
     setupWebsiteBuilder,
@@ -25,7 +28,9 @@ test("click on invisible elements in the invisible elements tab (check eye icon)
         "fa-eye-slash"
     );
     await contains(".o_we_invisible_el_panel .o_we_invisible_entry").click();
-    expect(queryOne(".o_we_invisible_el_panel .o_we_invisible_entry i")).toHaveClass("fa-eye");
+    expect(queryOne(".o_we_invisible_el_panel .o_we_invisible_entry i")).toHaveClass(
+        "fa-eye"
+    );
     await contains(".o_we_invisible_el_panel .o_we_invisible_entry").click();
     expect(queryOne(".o_we_invisible_el_panel .o_we_invisible_entry i")).toHaveClass(
         "fa-eye-slash"
@@ -83,9 +88,9 @@ test("Add an element on the invisible elements tab", async () => {
         ".o_add_snippet_dialog .o_add_snippet_iframe:iframe .o_snippet_preview_wrap"
     ).click();
     await waitForEndOfOperation();
-    expect(".o_we_invisible_el_panel .o_we_invisible_entry:contains('Test') .fa-eye").toHaveCount(
-        1
-    );
+    expect(
+        ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Test') .fa-eye"
+    ).toHaveCount(1);
     expect(
         ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Invisible Element') .fa-eye-slash"
     ).toHaveCount(1);

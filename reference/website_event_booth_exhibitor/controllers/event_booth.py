@@ -1,16 +1,16 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
 
-from odoo.addons.website_event.controllers.main import WebsiteEventController
 from odoo.tools import plaintext2html
+
+from odoo.addons.website_event.controllers.main import WebsiteEventController
 
 
 class WebsiteEventBoothController(WebsiteEventController):
 
     def _prepare_booth_registration_values(self, event, kwargs):
-        booth_values = super(WebsiteEventBoothController, self)._prepare_booth_registration_values(event, kwargs)
+        booth_values = super()._prepare_booth_registration_values(event, kwargs)
         if not booth_values.get('contact_email'):
             booth_values['contact_email'] = kwargs.get('sponsor_email')
         if not booth_values.get('contact_name'):
@@ -28,7 +28,7 @@ class WebsiteEventBoothController(WebsiteEventController):
             kwargs['contact_name'] = kwargs['sponsor_name']
         if not kwargs.get('contact_phone') and kwargs.get('sponsor_phone'):
             kwargs['contact_phone'] = kwargs['sponsor_phone']
-        return super(WebsiteEventBoothController, self)._prepare_booth_registration_partner_values(event, kwargs)
+        return super()._prepare_booth_registration_partner_values(event, kwargs)
 
     def _prepare_booth_registration_sponsor_values(self, event, booth_values, kwargs):
         sponsor_values = {

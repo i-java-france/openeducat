@@ -1,8 +1,8 @@
-import { test, expect } from "@odoo/hoot";
-import { setupPosEnv } from "@point_of_sale/../tests/unit/utils";
-import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {expect, test} from "@odoo/hoot";
+import {setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {PaymentScreen} from "@point_of_sale/app/screens/payment_screen/payment_screen";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
 
 definePosModels();
 
@@ -11,7 +11,7 @@ test("validateOrder", async () => {
     store.addNewOrder();
     const orderUuid = store.getOrder().uuid;
     const comp = await mountWithCleanup(PaymentScreen, {
-        props: { orderUuid },
+        props: {orderUuid},
     });
     await comp.validateOrder();
     const order = store.getOrder();

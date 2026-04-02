@@ -1,6 +1,6 @@
-import { useService } from "@web/core/utils/hooks";
-import { Component } from "@odoo/owl";
-import { localization } from "@web/core/l10n/localization";
+import {useService} from "@web/core/utils/hooks";
+import {Component} from "@odoo/owl";
+import {localization} from "@web/core/l10n/localization";
 
 export const buttonsType = {
     type: Array,
@@ -9,9 +9,9 @@ export const buttonsType = {
             type: Object,
             shape: {
                 value: String,
-                text: { type: String, optional: true },
-                class: { type: String, optional: true },
-                disabled: { type: Boolean, optional: true },
+                text: {type: String, optional: true},
+                class: {type: String, optional: true},
+                disabled: {type: Boolean, optional: true},
             },
         },
         Number,
@@ -30,24 +30,24 @@ export const BACKSPACE = {
     text: "⌫",
     class: "o_colorlist_item_numpad_color_1",
 };
-export const ZERO = { value: "0" };
-export const SWITCHSIGN = { value: "-", text: "+/-" };
+export const ZERO = {value: "0"};
+export const SWITCHSIGN = {value: "-", text: "+/-"};
 export const DEFAULT_LAST_ROW = [SWITCHSIGN, ZERO, DECIMAL];
-export const EMPTY = { value: "" };
+export const EMPTY = {value: ""};
 
 export function getButtons(lastRow, rightColumn) {
     return [
-        { value: "1" },
-        { value: "2" },
-        { value: "3" },
+        {value: "1"},
+        {value: "2"},
+        {value: "3"},
         ...(rightColumn ? [rightColumn[0]] : []),
-        { value: "4" },
-        { value: "5" },
-        { value: "6" },
+        {value: "4"},
+        {value: "5"},
+        {value: "6"},
         ...(rightColumn ? [rightColumn[1]] : []),
-        { value: "7" },
-        { value: "8" },
-        { value: "9" },
+        {value: "7"},
+        {value: "8"},
+        {value: "9"},
         ...(rightColumn ? [rightColumn[2]] : []),
         ...lastRow,
         ...(rightColumn ? [rightColumn[3]] : []),
@@ -56,9 +56,9 @@ export function getButtons(lastRow, rightColumn) {
 
 export function enhancedButtons() {
     return getButtons(DEFAULT_LAST_ROW, [
-        { value: "+10" },
-        { value: "+20" },
-        { value: "+50" },
+        {value: "+10"},
+        {value: "+20"},
+        {value: "+50"},
         BACKSPACE,
     ]);
 }
@@ -66,9 +66,9 @@ export function enhancedButtons() {
 export class Numpad extends Component {
     static template = "point_of_sale.Numpad";
     static props = {
-        class: { type: String, optional: true },
-        onClick: { type: Function, optional: true },
-        buttons: { type: buttonsType, optional: true },
+        class: {type: String, optional: true},
+        onClick: {type: Function, optional: true},
+        buttons: {type: buttonsType, optional: true},
     };
     static defaultProps = {
         class: "numpad",

@@ -1,10 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from freezegun import freeze_time
 
 from odoo import _
-from odoo.addons.l10n_in.tests.common import L10nInTestInvoicingCommon
 from odoo.tests import tagged
+
+from odoo.addons.l10n_in.tests.common import L10nInTestInvoicingCommon
 
 
 @tagged("post_install_l10n", "post_install", "-at_install")

@@ -3,22 +3,29 @@ import re
 import uuid
 from base64 import b64decode, b64encode
 from datetime import datetime
-import werkzeug.exceptions
-import werkzeug.urls
-import requests
 from os.path import join as opj
 from urllib.parse import urlparse
 
-from odoo import _, http, tools, SUPERUSER_ID
-from odoo.addons.html_editor.tools import get_video_url_data
-from odoo.exceptions import UserError, MissingError, AccessError
+import requests
+import werkzeug.exceptions
+import werkzeug.urls
+from lxml import etree, html
+
+from odoo import SUPERUSER_ID, _, http, tools
+from odoo.exceptions import AccessError, MissingError, UserError
 from odoo.http import request
-from odoo.tools.image import image_process, image_data_uri, binary_to_image, get_webp_size
+from odoo.tools.image import (
+    binary_to_image,
+    get_webp_size,
+    image_data_uri,
+    image_process,
+)
 from odoo.tools.mimetypes import guess_mimetype
 from odoo.tools.misc import file_open
+
+from odoo.addons.html_editor.tools import get_video_url_data
 from odoo.addons.iap.tools import iap_tools
 from odoo.addons.mail.tools import link_preview
-from lxml import html, etree
 
 from ..models.ir_attachment import SUPPORTED_IMAGE_MIMETYPES
 

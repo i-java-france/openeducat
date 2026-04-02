@@ -1,8 +1,8 @@
-import { test, expect } from "@odoo/hoot";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { Orderline } from "@point_of_sale/app/components/orderline/orderline";
-import { expectFormattedPrice, setupPosEnv } from "../utils";
-import { definePosModels } from "../data/generate_model_definitions";
+import {expect, test} from "@odoo/hoot";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {Orderline} from "@point_of_sale/app/components/orderline/orderline";
+import {expectFormattedPrice, setupPosEnv} from "../utils";
+import {definePosModels} from "../data/generate_model_definitions";
 
 definePosModels();
 
@@ -20,7 +20,7 @@ test("orderline.js", async () => {
     );
 
     const comp = await mountWithCleanup(Orderline, {
-        props: { line },
+        props: {line},
     });
     const lineData = comp.lineScreenValues;
     expect(comp.line.id).toEqual(line.id);

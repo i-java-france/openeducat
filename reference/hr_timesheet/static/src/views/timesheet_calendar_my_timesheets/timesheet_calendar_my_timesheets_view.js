@@ -1,6 +1,6 @@
-import { registry } from "@web/core/registry";
-import { calendarView } from "@web/views/calendar/calendar_view";
-import { TimesheetCalendarMyTimesheetsModel } from "./timesheet_calendar_my_timesheets_model";
+import {registry} from "@web/core/registry";
+import {calendarView} from "@web/views/calendar/calendar_view";
+import {TimesheetCalendarMyTimesheetsModel} from "./timesheet_calendar_my_timesheets_model";
 
 export const timesheetCalendarMyTimesheetsView = {
     ...calendarView,

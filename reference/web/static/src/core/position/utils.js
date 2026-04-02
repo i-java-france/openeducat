@@ -1,4 +1,4 @@
-import { localization } from "@web/core/l10n/localization";
+import {localization} from "@web/core/l10n/localization";
 
 /**
  * @typedef {"top" | "left" | "bottom" | "right"} Direction
@@ -42,11 +42,17 @@ const DEFAULTS = {
 };
 
 /** @type {{[d: string]: Direction}} */
-const DIRECTIONS = { t: "top", r: "right", b: "bottom", l: "left", c: "center" };
+const DIRECTIONS = {t: "top", r: "right", b: "bottom", l: "left", c: "center"};
 /** @type {{[v: string]: Variant}} */
-const VARIANTS = { s: "start", m: "middle", e: "end", f: "fit" };
+const VARIANTS = {s: "start", m: "middle", e: "end", f: "fit"};
 /** @type DirectionFlipOrder */
-const DIRECTION_FLIP_ORDER = { top: "tb", right: "rl", bottom: "bt", left: "lr", center: "c" };
+const DIRECTION_FLIP_ORDER = {
+    top: "tb",
+    right: "rl",
+    bottom: "bt",
+    left: "lr",
+    center: "c",
+};
 /** @type DirectionFlipOrder */
 const EXTENDED_DIRECTION_FLIP_ORDER = {
     top: "tbrlc",
@@ -56,7 +62,7 @@ const EXTENDED_DIRECTION_FLIP_ORDER = {
     center: "c",
 };
 /** @type VariantFlipOrder */
-const VARIANT_FLIP_ORDER = { start: "se", middle: "m", end: "es", fit: "f" };
+const VARIANT_FLIP_ORDER = {start: "se", middle: "m", end: "es", fit: "f"};
 
 /**
  * @param {HTMLElement} popperEl
@@ -113,7 +119,7 @@ export function reverseForRTL(direction, variant = "middle") {
 function computePosition(
     popper,
     target,
-    { container, extendedFlipping, flip, margin, position, shrink }
+    {container, extendedFlipping, flip, margin, position, shrink}
 ) {
     // Retrieve directions and variants
     const [direction, variant = "middle"] = reverseForRTL(...position.split("-"));
@@ -134,13 +140,15 @@ function computePosition(
 
     if (variant === "fit") {
         // make sure the popper has the desired dimensions during the computation of the position
-        const styleProperty = ["top", "bottom"].includes(direction) ? "width" : "height";
+        const styleProperty = ["top", "bottom"].includes(direction)
+            ? "width"
+            : "height";
         popper.style[styleProperty] = getComputedStyle(target)[styleProperty];
     }
 
     // Account for popper actual margins
     const popperStyle = getComputedStyle(popper);
-    const { marginTop, marginLeft, marginRight, marginBottom } = popperStyle;
+    const {marginTop, marginLeft, marginRight, marginBottom} = popperStyle;
     const popMargins = {
         top: parseFloat(marginTop),
         left: parseFloat(marginLeft),
@@ -156,7 +164,7 @@ function computePosition(
     const popBox = popper.getBoundingClientRect();
     const targetBox = target.getBoundingClientRect();
     const contBox = container.getBoundingClientRect();
-    const iframeBox = iframe?.getBoundingClientRect() ?? { top: 0, left: 0 };
+    const iframeBox = iframe?.getBoundingClientRect() ?? {top: 0, left: 0};
 
     const containerIsHTMLNode = container === container.ownerDocument.firstElementChild;
     const containerIsInIframe =
@@ -183,7 +191,7 @@ function computePosition(
 
     function getPositioningData(d, v) {
         const [direction, variant] = reverseForRTL(DIRECTIONS[d], VARIANTS[v]);
-        const result = { direction, variant };
+        const result = {direction, variant};
         const vertical = ["t", "b", "c"].includes(d);
         const variantPrefix = vertical ? "v" : "h";
         const directionValue = directionsData[d];
@@ -216,7 +224,9 @@ function computePosition(
         let directionOverflow = 0;
         if (Math.floor(directionValue) < Math.ceil(directionMin)) {
             directionOverflow = Math.floor(directionValue) - Math.ceil(directionMin);
-        } else if (Math.ceil(directionValue + directionSize) > Math.floor(directionMax)) {
+        } else if (
+            Math.ceil(directionValue + directionSize) > Math.floor(directionMax)
+        ) {
             directionOverflow =
                 Math.ceil(directionValue + directionSize) - Math.floor(directionMax);
         }
@@ -224,7 +234,8 @@ function computePosition(
         if (Math.floor(variantValue) < Math.ceil(variantMin)) {
             variantOverflow = Math.floor(variantValue) - Math.ceil(variantMin);
         } else if (Math.ceil(variantValue + variantSize) > Math.floor(variantMax)) {
-            variantOverflow = Math.ceil(variantValue + variantSize) - Math.floor(variantMax);
+            variantOverflow =
+                Math.ceil(variantValue + variantSize) - Math.floor(variantMax);
         }
 
         // All non zero values of variantOverflow lead to the
@@ -236,8 +247,8 @@ function computePosition(
         result.variantOffset = -variantOverflow;
 
         const positioning = vertical
-            ? { top: directionValue, left: variantValue }
-            : { top: variantValue, left: directionValue };
+            ? {top: directionValue, left: variantValue}
+            : {top: variantValue, left: directionValue};
         // Subtract the offsets of the containing block (relative to the
         // viewport). It can be done like that because the style top and
         // left were reset to 0px in `reposition`
@@ -251,12 +262,16 @@ function computePosition(
             malus = 1.001;
             result.top -= directionOverflow;
         } else if (shrink && malus) {
-            const minTop = Math.floor(!vertical && v === "s" ? targetBox.top : contBox.top);
+            const minTop = Math.floor(
+                !vertical && v === "s" ? targetBox.top : contBox.top
+            );
             result.top = Math.max(minTop, result.top);
 
             let height;
             if (vertical) {
-                height = Math.abs(targetBox[direction] - (d === "t" ? directionMin : directionMax));
+                height = Math.abs(
+                    targetBox[direction] - (d === "t" ? directionMin : directionMax)
+                );
             } else {
                 height = {
                     s: variantMax - targetBox.top,
@@ -266,7 +281,7 @@ function computePosition(
             }
             result.maxHeight = Math.floor(height);
         }
-        return { result, malus };
+        return {result, malus};
     }
 
     // Find best solution
@@ -308,10 +323,10 @@ export function reposition(popper, target, options) {
     popper.style.left = "0px";
 
     // Compute positioning solution
-    const solution = computePosition(popper, target, { ...DEFAULTS, ...options });
+    const solution = computePosition(popper, target, {...DEFAULTS, ...options});
 
     // Apply it
-    const { top, left, maxHeight } = solution;
+    const {top, left, maxHeight} = solution;
     popper.style.top = `${top}px`;
     popper.style.left = `${left}px`;
     if (maxHeight) {

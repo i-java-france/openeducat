@@ -1,18 +1,20 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from cups import Connection as CupsConnection, IPPError
+import logging
+import re
+import time
 from itertools import groupby
-from urllib.parse import urlsplit, parse_qs, unquote
+from urllib.parse import parse_qs, unquote, urlsplit
+
+import pyudev
+from cups import Connection as CupsConnection
+from cups import IPPError
 from zeroconf import (
     IPVersion,
     ServiceBrowser,
     ServiceStateChange,
     Zeroconf,
 )
-import logging
-import pyudev
-import re
-import time
 
 from odoo.addons.iot_drivers.interface import Interface
 from odoo.addons.iot_drivers.main import iot_devices

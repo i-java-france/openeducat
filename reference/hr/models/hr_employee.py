@@ -1,24 +1,24 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
-
 from collections import defaultdict
-
-from pytz import timezone, UTC, utc
-from datetime import datetime, time, timedelta, date
+from datetime import date, datetime, time, timedelta
 from random import choice
 from string import digits
+
 from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
+from pytz import UTC, timezone, utc
 
-from odoo import api, fields, models, _, tools
+from odoo import _, api, fields, models, tools
+from odoo.exceptions import AccessError, RedirectWarning, UserError, ValidationError
 from odoo.fields import Domain
-from odoo.exceptions import ValidationError, AccessError, RedirectWarning, UserError
-from odoo.tools import convert, format_time, email_normalize, SQL, Query
+from odoo.tools import SQL, Query, convert, email_normalize, format_time
+from odoo.tools.float_utils import float_is_zero
 from odoo.tools.intervals import Intervals
+
 from odoo.addons.hr.models.hr_version import format_date_abbr
 from odoo.addons.mail.tools.discuss import Store
-from odoo.tools.float_utils import float_is_zero
 
 # This sentinel object, when in the context, provides read access to the
 # model 'hr.employee' in certain situations, like when setting a many2many
@@ -351,7 +351,7 @@ class HrEmployee(models.Model):
     def _create(self, data_list):
         versions = [vals['stored'].pop('version_id', None) for vals in data_list]
         result = super()._create(data_list)
-        for (employee, version_id, vals) in zip(result, versions, data_list):
+        for (employee, version_id, vals) in zip(result, versions, data_list, strict=False):
             version = self.env['hr.version'].browse(version_id)
             version.employee_id = employee.id
             version.write({**vals.get('inherited', {})['hr.version'], 'employee_id': employee.id})
@@ -796,7 +796,7 @@ class HrEmployee(models.Model):
             'image_1920': employee.image_1920,
             'company_id': employee.company_id.id
         } for employee in self])
-        for employee, work_contact in zip(self, work_contacts):
+        for employee, work_contact in zip(self, work_contacts, strict=False):
             employee.work_contact_id = work_contact
 
     @api.depends('parent_id')
@@ -1083,7 +1083,7 @@ class HrEmployee(models.Model):
     def _compute_display_name(self):
         if self.browse().has_access('read'):
             return super()._compute_display_name()
-        for employee_private, employee_public in zip(self, self.env['hr.employee.public'].browse(self.ids)):
+        for employee_private, employee_public in zip(self, self.env['hr.employee.public'].browse(self.ids), strict=False):
             employee_private.display_name = employee_public.display_name
 
     @api.model
@@ -1360,9 +1360,9 @@ We can redirect you to the public employee list."""
         index_per_employee = {}
         employees = self.env['hr.employee']
         for company, vals_list in vals_per_company.items():
-            idxs, vals_list = zip(*vals_list)
+            idxs, vals_list = zip(*vals_list, strict=False)
             new_employees = super(HrEmployee, self.with_company(company)).create(vals_list)
-            index_per_employee.update(dict(zip(new_employees, idxs)))
+            index_per_employee.update(dict(zip(new_employees, idxs, strict=False)))
             employees |= new_employees
         # As we do a custom batch by company, we must reorder the records to respect the original order.
         employees = employees.sorted(key=lambda employee: index_per_employee[employee])

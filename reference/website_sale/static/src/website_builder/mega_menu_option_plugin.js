@@ -1,8 +1,8 @@
-import { MegaMenuOptionPlugin } from "@website/builder/plugins/options/mega_menu_option_plugin";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { patch } from "@web/core/utils/patch";
-import { BuilderAction } from "@html_builder/core/builder_action";
+import {MegaMenuOptionPlugin} from "@website/builder/plugins/options/mega_menu_option_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {patch} from "@web/core/utils/patch";
+import {BuilderAction} from "@html_builder/core/builder_action";
 
 patch(MegaMenuOptionPlugin.prototype, {
     getTemplatePrefix(editingEl, toggle) {
@@ -33,7 +33,7 @@ class WebsiteSaleMegaMenuOptionPlugin extends Plugin {
 export class ToggleFetchEcomCategoriesAction extends BuilderAction {
     static id = "toggleFetchEcomCategories";
     static dependencies = ["megaMenuOptionPlugin", "customizeWebsite"];
-    async load({ editingElement }) {
+    async load({editingElement}) {
         const module = this.dependencies.megaMenuOptionPlugin.getTemplatePrefix(
             editingElement,
             true
@@ -45,11 +45,11 @@ export class ToggleFetchEcomCategoriesAction extends BuilderAction {
         await this.dependencies.customizeWebsite.loadTemplateKey(templateKey);
         return templateKey;
     }
-    apply({ editingElement, loadResult }) {
+    apply({editingElement, loadResult}) {
         this.dependencies.customizeWebsite.toggleTemplate(
             {
                 editingElement,
-                params: { view: loadResult },
+                params: {view: loadResult},
             },
             true
         );

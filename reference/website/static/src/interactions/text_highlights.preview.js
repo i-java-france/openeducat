@@ -1,5 +1,5 @@
-import { TextHighlight } from "@website/interactions/text_highlights";
-import { registry } from "@web/core/registry";
+import {TextHighlight} from "@website/interactions/text_highlights";
+import {registry} from "@web/core/registry";
 
 const TextHighlightPreview = (I) =>
     class extends I {

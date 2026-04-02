@@ -1,8 +1,8 @@
-import { ResPartner } from "@mail/core/common/res_partner_model";
-import { fields } from "@mail/model/misc";
+import {ResPartner} from "@mail/core/common/res_partner_model";
+import {fields} from "@mail/model/misc";
 
-import { patch } from "@web/core/utils/patch";
-import { user } from "@web/core/user";
+import {patch} from "@web/core/utils/patch";
+import {user} from "@web/core/user";
 
 patch(ResPartner.prototype, {
     /** @type {number|undefined} */

@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <template id="address_form_fields" inherit_id="portal.address_form_fields">
         <!-- o_city must remain in DOM, otherwise the standard portal js breaks. -->
         <input id="o_city" position="attributes">
-            <attribute name="class" separator=" " add="o_standard_address"/>
+            <attribute name="class" separator=" " add="o_standard_address" />
         </input>
         <input id="o_city" position="after">
-            <div t-if="res_company.account_fiscal_country_id.code == 'BR'" class="o_select_city">
+            <div
+                t-if="res_company.account_fiscal_country_id.code == 'BR'"
+                class="o_select_city"
+            >
                 <!-- will be replaced with SelectMenuWrapper -->
                 <select id="o_city_id" name="city_id" class="form-select">
                     <option value="">City...</option>
@@ -26,11 +28,14 @@
         </input>
         <!-- put base_address_extended fields separately to be more user-friendly -->
         <div id="div_street" position="attributes">
-            <attribute name="class" separator=" " add="o_standard_address"/>
+            <attribute name="class" separator=" " add="o_standard_address" />
         </div>
         <div id="div_street" position="after">
             <t t-if="res_company.account_fiscal_country_id.code == 'BR'">
-                <div id="div_street_name" t-attf-class="col-lg-8 mb-2 o_extended_address">
+                <div
+                    id="div_street_name"
+                    t-attf-class="col-lg-8 mb-2 o_extended_address"
+                >
                     <label class="col-form-label" for="o_street_name">Street</label>
                     <input
                         id="o_street_name"
@@ -40,8 +45,14 @@
                         t-att-value="partner_sudo.street_name"
                     />
                 </div>
-                <div id="div_street_number" t-attf-class="col-lg-4 mb-2 o_extended_address">
-                    <label class="col-form-label" for="o_street_number">Street Number</label>
+                <div
+                    id="div_street_number"
+                    t-attf-class="col-lg-4 mb-2 o_extended_address"
+                >
+                    <label
+                        class="col-form-label"
+                        for="o_street_number"
+                    >Street Number</label>
                     <input
                         id="o_street_number"
                         type="text"
@@ -50,8 +61,11 @@
                         t-att-value="partner_sudo.street_number"
                     />
                 </div>
-                <div class="w-100"/>
-                <div id="div_street_number2" t-attf-class="col-lg-6 mb-2 o_extended_address">
+                <div class="w-100" />
+                <div
+                    id="div_street_number2"
+                    t-attf-class="col-lg-6 mb-2 o_extended_address"
+                >
                     <label class="col-form-label label-optional" for="o_street_number2">
                         Complement
                     </label>
@@ -63,12 +77,12 @@
                         t-att-value="partner_sudo.street_number2"
                     />
                 </div>
-                <div id="div_street2" position="move"/>
+                <div id="div_street2" position="move" />
             </t>
         </div>
         <!-- street2 is used for neighborhood in Brazil, change the default label -->
         <label for="o_street2" position="attributes">
-            <attribute name="class" separator=" " add="o_standard_address"/>
+            <attribute name="class" separator=" " add="o_standard_address" />
         </label>
         <label for="o_street2" position="after">
             <label
@@ -80,5 +94,4 @@
             </label>
         </label>
     </template>
-
 </odoo>

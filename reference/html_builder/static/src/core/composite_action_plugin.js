@@ -1,6 +1,6 @@
-import { convertParamToObject } from "@html_builder/core/utils";
-import { Plugin } from "@html_editor/plugin";
-import { BuilderAction } from "@html_builder/core/builder_action";
+import {convertParamToObject} from "@html_builder/core/utils";
+import {Plugin} from "@html_editor/plugin";
+import {BuilderAction} from "@html_builder/core/builder_action";
 
 export class CompositeActionPlugin extends Plugin {
     static id = "compositeAction";
@@ -23,14 +23,16 @@ export class CompositeAction extends BuilderAction {
     static id = "composite";
     static dependencies = ["builderActions"];
     loadOnClean = true;
-    async prepare({ actionParam: { mainParam: actions }, actionValue }) {
+    async prepare({actionParam: {mainParam: actions}, actionValue}) {
         const proms = [];
         for (const actionDef of actions) {
             const action = this.dependencies.builderActions.getAction(actionDef.action);
             if (action.has("prepare")) {
-                const actionDescr = { actionId: actionDef.action };
+                const actionDescr = {actionId: actionDef.action};
                 if (actionDef.actionParam) {
-                    actionDescr.actionParam = convertParamToObject(actionDef.actionParam);
+                    actionDescr.actionParam = convertParamToObject(
+                        actionDef.actionParam
+                    );
                 }
                 if (actionDef.actionValue || actionValue) {
                     actionDescr.actionValue = actionDef.actionValue || actionValue;
@@ -40,12 +42,12 @@ export class CompositeAction extends BuilderAction {
         }
         await Promise.all(proms);
     }
-    getPriority({ params: { mainParam: actions }, value }) {
+    getPriority({params: {mainParam: actions}, value}) {
         const results = [];
         for (const actionDef of actions) {
             const action = this.dependencies.builderActions.getAction(actionDef.action);
             if (action.has("getPriority")) {
-                const actionDescr = this._getActionDescription({ ...actionDef, value });
+                const actionDescr = this._getActionDescription({...actionDef, value});
                 results.push(action.getPriority(actionDescr));
             }
         }
@@ -54,7 +56,7 @@ export class CompositeAction extends BuilderAction {
     }
     // We arbitrarily keep the result of the 1st action, as we
     // obviously cannot return more than one value.
-    getValue({ editingElement, params: { mainParam: actions } }) {
+    getValue({editingElement, params: {mainParam: actions}}) {
         let actionGetValue;
         const actionDef = actions.find((actionDef) => {
             const action = this.dependencies.builderActions.getAction(actionDef.action);
@@ -71,7 +73,7 @@ export class CompositeAction extends BuilderAction {
             return actionGetValue(actionDescr);
         }
     }
-    isApplied({ editingElement, params: { mainParam: actions }, value }) {
+    isApplied({editingElement, params: {mainParam: actions}, value}) {
         const results = [];
         for (const actionDef of actions) {
             const action = this.dependencies.builderActions.getAction(actionDef.action);
@@ -86,7 +88,7 @@ export class CompositeAction extends BuilderAction {
         }
         return !!results.length && results.every((result) => result);
     }
-    async load({ editingElement, params: { mainParam: actions }, value }) {
+    async load({editingElement, params: {mainParam: actions}, value}) {
         const loadActions = [];
         const loadResults = [];
         for (const actionDef of actions) {
@@ -112,7 +114,7 @@ export class CompositeAction extends BuilderAction {
     }
     async apply({
         editingElement,
-        params: { mainParam: actions },
+        params: {mainParam: actions},
         value,
         loadResult,
         dependencyManager,
@@ -135,7 +137,7 @@ export class CompositeAction extends BuilderAction {
     }
     clean({
         editingElement,
-        params: { mainParam: actions },
+        params: {mainParam: actions},
         value,
         loadResult,
         dependencyManager,
@@ -164,7 +166,7 @@ export class CompositeAction extends BuilderAction {
         }
     }
     _getActionDescription(action) {
-        const { action: actionId, actionParam, actionValue, value, loadResult } = action;
+        const {action: actionId, actionParam, actionValue, value, loadResult} = action;
         const actionDescr = {};
         const forwardedSpecs = [
             "editingElement",

@@ -1,11 +1,14 @@
-import { _t } from "@web/core/l10n/translation";
-import { usePageManager } from "./page_manager_hook";
-import { PageSearchModel } from "./page_search_model";
-import { registry } from "@web/core/registry";
-import { listView } from "@web/views/list/list_view";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { DeletePageDialog, DuplicatePageDialog } from "@website/components/dialog/page_properties";
-import { useService } from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
+import {usePageManager} from "./page_manager_hook";
+import {PageSearchModel} from "./page_search_model";
+import {registry} from "@web/core/registry";
+import {listView} from "@web/views/list/list_view";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {
+    DeletePageDialog,
+    DuplicatePageDialog,
+} from "@website/components/dialog/page_properties";
+import {useService} from "@web/core/utils/hooks";
 
 export class PageListController extends listView.Controller {
     static components = {
@@ -98,7 +101,7 @@ export class PageListController extends listView.Controller {
 
     async togglePublished(publish) {
         const resIds = this.model.root.selection.map((record) => record.resId);
-        await this.orm.write(this.props.resModel, resIds, { is_published: publish });
+        await this.orm.write(this.props.resModel, resIds, {is_published: publish});
         this.actionService.switchView("list");
     }
 }

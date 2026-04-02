@@ -1,5 +1,6 @@
-from odoo import api, SUPERUSER_ID
+from odoo import SUPERUSER_ID, api
 from odoo.tools import sql
+
 
 def migrate(cr, version):
     env = api.Environment(cr, SUPERUSER_ID, {})

@@ -1,21 +1,27 @@
-import { Composer } from "@mail/core/common/composer";
-import { Thread } from "@mail/core/common/thread";
-import { Call } from "@mail/discuss/call/common/call";
-import { CallActionList } from "@mail/discuss/call/common/call_action_list";
-import { ChannelInvitation } from "@mail/discuss/core/common/channel_invitation";
+import {Composer} from "@mail/core/common/composer";
+import {Thread} from "@mail/core/common/thread";
+import {Call} from "@mail/discuss/call/common/call";
+import {CallActionList} from "@mail/discuss/call/common/call_action_list";
+import {ChannelInvitation} from "@mail/discuss/core/common/channel_invitation";
 import {
     inDiscussCallViewProps,
     useInDiscussCallView,
     useMessageScrolling,
 } from "@mail/utils/common/hooks";
 
-import { Component, onMounted, onWillUnmount, useChildSubEnv, useSubEnv } from "@odoo/owl";
+import {
+    Component,
+    onMounted,
+    onWillUnmount,
+    useChildSubEnv,
+    useSubEnv,
+} from "@odoo/owl";
 
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { useService } from "@web/core/utils/hooks";
-import { MeetingSideActions } from "./meeting_side_actions";
-import { useThreadActions } from "@mail/core/common/thread_actions";
-import { useMessageSearch } from "@mail/core/common/message_search_hook";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {useService} from "@web/core/utils/hooks";
+import {MeetingSideActions} from "./meeting_side_actions";
+import {useThreadActions} from "@mail/core/common/thread_actions";
+import {useMessageSearch} from "@mail/core/common/message_search_hook";
 
 /** @typedef {"chat"|"invite"} MeetingPanel */
 
@@ -57,7 +63,7 @@ export class Meeting extends Component {
                         ?.open(),
             },
         });
-        this.threadActions = useThreadActions({ thread: () => this.thread });
+        this.threadActions = useThreadActions({thread: () => this.thread});
         this.messageHighlight = useMessageScrolling();
         this.messageSearch = useMessageSearch(this.thread);
         useChildSubEnv({

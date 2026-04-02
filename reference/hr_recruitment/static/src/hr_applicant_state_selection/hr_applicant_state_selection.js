@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import {
     StateSelectionField,
     stateSelectionField,
@@ -22,4 +22,6 @@ export const hrApplicantStateSelectionField = {
     component: HrApplicantStateSelectionField,
 };
 
-registry.category("fields").add("hr_applicant_state_selection", hrApplicantStateSelectionField);
+registry
+    .category("fields")
+    .add("hr_applicant_state_selection", hrApplicantStateSelectionField);

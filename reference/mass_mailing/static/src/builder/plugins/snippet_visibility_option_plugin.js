@@ -1,9 +1,9 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { SnippetVisibilityOption } from "../options/snippet_visibility_option";
-import { withSequence } from "@html_editor/utils/resource";
-import { effect } from "@web/core/utils/reactive";
-import { DataAttributeAction } from "@html_builder/core/core_builder_action_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {SnippetVisibilityOption} from "../options/snippet_visibility_option";
+import {withSequence} from "@html_editor/utils/resource";
+import {effect} from "@web/core/utils/reactive";
+import {DataAttributeAction} from "@html_builder/core/core_builder_action_plugin";
 
 class DataAttributeChangeAction extends DataAttributeAction {
     static id = "dataAttributeChangeAction";
@@ -18,7 +18,7 @@ class SnippetVisibilityPlugin extends Plugin {
     static shared = ["getModel"];
 
     resources = {
-        builder_actions: { DataAttributeChangeAction },
+        builder_actions: {DataAttributeChangeAction},
         builder_options: [withSequence(Infinity, SnippetVisibilityOption)],
         system_attributes: "data-filter-domain",
     };
@@ -45,8 +45,10 @@ class SnippetVisibilityPlugin extends Plugin {
     resetFilterDomains() {
         const filteredElements = this.editable.querySelectorAll("[data-filter-domain]");
         filteredElements.forEach((el) => el.removeAttribute("data-filter-domain"));
-        this.config.onChange?.({ isPreviewing: false });
+        this.config.onChange?.({isPreviewing: false});
     }
 }
 
-registry.category("mass_mailing-plugins").add(SnippetVisibilityPlugin.id, SnippetVisibilityPlugin);
+registry
+    .category("mass_mailing-plugins")
+    .add(SnippetVisibilityPlugin.id, SnippetVisibilityPlugin);

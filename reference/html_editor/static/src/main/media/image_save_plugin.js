@@ -1,10 +1,10 @@
-import { Plugin } from "@html_editor/plugin";
+import {Plugin} from "@html_editor/plugin";
 import {
     backgroundImageCssToParts,
     backgroundImagePartsToCss,
     getImageSrc,
 } from "@html_editor/utils/image";
-import { rpc } from "@web/core/network/rpc";
+import {rpc} from "@web/core/network/rpc";
 
 /**
  * @typedef { Object } ImageSaveShared
@@ -43,20 +43,20 @@ export class ImageSavePlugin extends Plugin {
         const oldSrcToNewSrcMap = new Map();
         const b64Proms = [...editableEl.querySelectorAll(".o_b64_image_to_save")].map(
             async (el) => {
-                const { resModel, resId } = this.getRecordInfo(getClosestSavable(el));
+                const {resModel, resId} = this.getRecordInfo(getClosestSavable(el));
                 const oldSrc = el.getAttribute("src");
                 await this.saveB64Image(el, resModel, resId);
                 oldSrcToNewSrcMap.set(oldSrc, el.getAttribute("src"));
             }
         );
-        const modifiedProms = [...editableEl.querySelectorAll(".o_modified_image_to_save")].map(
-            async (el) => {
-                const { resModel, resId } = this.getRecordInfo(getClosestSavable(el));
-                const oldSrc = el.getAttribute("src");
-                await this.saveModifiedImage(el, resModel, resId);
-                oldSrcToNewSrcMap.set(oldSrc, el.getAttribute("src"));
-            }
-        );
+        const modifiedProms = [
+            ...editableEl.querySelectorAll(".o_modified_image_to_save"),
+        ].map(async (el) => {
+            const {resModel, resId} = this.getRecordInfo(getClosestSavable(el));
+            const oldSrc = el.getAttribute("src");
+            await this.saveModifiedImage(el, resModel, resId);
+            oldSrcToNewSrcMap.set(oldSrc, el.getAttribute("src"));
+        });
         const proms = [...b64Proms, ...modifiedProms];
         const hasChange = !!proms.length;
         if (hasChange) {
@@ -65,7 +65,7 @@ export class ImageSavePlugin extends Plugin {
         return hasChange ? oldSrcToNewSrcMap : undefined;
     }
 
-    createAttachment({ el, imageData, resModel, resId }) {
+    createAttachment({el, imageData, resModel, resId}) {
         return rpc("/html_editor/attachment/add_data", {
             name: el.dataset.fileName || "",
             data: imageData,
@@ -148,7 +148,9 @@ export class ImageSavePlugin extends Plugin {
             image.src = getImageSrc(el);
             await new Promise((resolve) => image.addEventListener("load", resolve));
             const originalSize = Math.max(image.width, image.height);
-            const smallerSizes = [1024, 512, 256, 128].filter((size) => size < originalSize);
+            const smallerSizes = [1024, 512, 256, 128].filter(
+                (size) => size < originalSize
+            );
             for (const size of [originalSize, ...smallerSizes]) {
                 const ratio = size / originalSize;
                 const canvas = document.createElement("canvas");
@@ -200,7 +202,7 @@ export class ImageSavePlugin extends Plugin {
         } else {
             el.setAttribute("src", newAttachmentSrc);
         }
-        this.dispatchTo("on_image_saved_handlers", { imageEl: el });
+        this.dispatchTo("on_image_saved_handlers", {imageEl: el});
     }
 
     getRecordInfo(editableEl = null) {

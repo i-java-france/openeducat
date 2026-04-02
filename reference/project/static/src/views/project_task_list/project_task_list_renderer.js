@@ -1,6 +1,6 @@
-import { ListRenderer } from "@web/views/list/list_renderer";
-import { getRawValue } from "@web/views/kanban/kanban_record";
-import { ProjectTaskGroupConfigMenu } from "../project_task_kanban/project_task_group_config_menu";
+import {ListRenderer} from "@web/views/list/list_renderer";
+import {getRawValue} from "@web/views/kanban/kanban_record";
+import {ProjectTaskGroupConfigMenu} from "../project_task_kanban/project_task_group_config_menu";
 
 export class ProjectTaskListRenderer extends ListRenderer {
     static components = {
@@ -33,7 +33,7 @@ export class ProjectTaskListRenderer extends ListRenderer {
     isCellReadonly(column, record) {
         let readonly = false;
         if (column.name === "stage_id") {
-            readonly = !this.haveAllSelectedTasksSameField('project_id');
+            readonly = !this.haveAllSelectedTasksSameField("project_id");
         }
         return readonly || super.isCellReadonly(column, record);
     }

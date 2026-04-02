@@ -1,7 +1,11 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { testEditor, setupEditor } from "../_helpers/editor";
-import { unlinkFromPopover, unlinkByCommand, unlinkFromToolbar } from "../_helpers/user_actions";
-import { getContent, setSelection } from "../_helpers/selection";
+import {describe, expect, test} from "@odoo/hoot";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {
+    unlinkByCommand,
+    unlinkFromPopover,
+    unlinkFromToolbar,
+} from "../_helpers/user_actions";
+import {getContent, setSelection} from "../_helpers/selection";
 
 describe("range collapsed, remove by popover unlink button", () => {
     test("should remove the link if collapsed range at the end of a link (1)", async () => {
@@ -184,7 +188,8 @@ describe("range not collapsed", () => {
         });
         test("should remove fully selected link along with text by toolbar unlink button", async () => {
             await testEditor({
-                contentBefore: '<p>a<a href="exist" class="btn btn-primary">[bcd</a>ef]g</p>',
+                contentBefore:
+                    '<p>a<a href="exist" class="btn btn-primary">[bcd</a>ef]g</p>',
                 stepFunction: unlinkFromToolbar,
                 contentAfterEdit: "<p>a[bcdef]g</p>",
                 contentAfter: "<p>a[bcdef]g</p>",
@@ -215,7 +220,8 @@ describe("range not collapsed", () => {
                 stepFunction: async (editor) => {
                     await unlinkByCommand(editor);
                 },
-                contentAfterEdit: '<p>a\ufeff<a href="exist">\ufeffbc\ufeff</a>\ufeff[d]e</p>',
+                contentAfterEdit:
+                    '<p>a\ufeff<a href="exist">\ufeffbc\ufeff</a>\ufeff[d]e</p>',
                 contentAfter: '<p>a<a href="exist">bc</a>[d]e</p>',
             });
         });
@@ -227,7 +233,8 @@ describe("range not collapsed", () => {
                 stepFunction: async (editor) => {
                     await unlinkByCommand(editor);
                 },
-                contentAfterEdit: '<p>a\ufeff<a href="exist">\ufeffbc\ufeff</a>\ufeff]d[e</p>',
+                contentAfterEdit:
+                    '<p>a\ufeff<a href="exist">\ufeffbc\ufeff</a>\ufeff]d[e</p>',
                 contentAfter: '<p>a<a href="exist">bc</a>]d[e</p>',
             });
         });
@@ -261,7 +268,8 @@ describe("range not collapsed", () => {
                 stepFunction: async (editor) => {
                     await unlinkByCommand(editor);
                 },
-                contentAfterEdit: '<p>a[b]\ufeff<a href="exist">\ufeffcd\ufeff</a>\ufeffe</p>',
+                contentAfterEdit:
+                    '<p>a[b]\ufeff<a href="exist">\ufeffcd\ufeff</a>\ufeffe</p>',
                 contentAfter: '<p>a[b]<a href="exist">cd</a>e</p>',
             });
         });
@@ -273,7 +281,8 @@ describe("range not collapsed", () => {
                 stepFunction: async (editor) => {
                     await unlinkByCommand(editor);
                 },
-                contentAfterEdit: '<p>a]b[\ufeff<a href="exist">\ufeffcd\ufeff</a>\ufeffe</p>',
+                contentAfterEdit:
+                    '<p>a]b[\ufeff<a href="exist">\ufeffcd\ufeff</a>\ufeffe</p>',
                 contentAfter: '<p>a]b[<a href="exist">cd</a>e</p>',
             });
         });
@@ -329,7 +338,8 @@ describe("range not collapsed", () => {
                 stepFunction: async (editor) => {
                     await unlinkByCommand(editor);
                 },
-                contentAfter: '<p>[ab<a contenteditable="false" href="exist">cd</a>ef]</p>',
+                contentAfter:
+                    '<p>[ab<a contenteditable="false" href="exist">cd</a>ef]</p>',
             });
         });
 
@@ -378,7 +388,7 @@ describe("range not collapsed", () => {
                 /** @param {import("@html_editor/plugin").Editor} editor */
                 stepFunction: (editor) => {
                     const selection = editor.shared.selection.getEditableSelection();
-                    // extends selection to contain the feffs
+                    // Extends selection to contain the feffs
                     editor.shared.selection.setSelection({
                         anchorNode: selection.anchorNode.previousSibling,
                         anchorOffset: 0,
@@ -393,7 +403,7 @@ describe("range not collapsed", () => {
         });
     });
     test("should be able to remove link if selection has FEFF character", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             '<p><a href="google.com" class="btn btn-primary">[test]</a></p>'
         );
         const link = el.querySelector("a");
@@ -409,7 +419,7 @@ describe("range not collapsed", () => {
         expect(getContent(el)).toBe("<p>[test]</p>");
     });
     test("should be able to remove link if selection has FEFF character (2)", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             '<p><a href="http://test.test/" class="btn btn-primary">[]test</a></p>'
         );
         const link = el.querySelector("a");

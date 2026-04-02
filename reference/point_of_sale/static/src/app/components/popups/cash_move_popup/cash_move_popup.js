@@ -1,22 +1,22 @@
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { parseFloat } from "@web/views/fields/parsers";
-import { Component, useState } from "@odoo/owl";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {parseFloat} from "@web/views/fields/parsers";
+import {Component, useState} from "@odoo/owl";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
 
-import { CashMoveReceipt } from "@point_of_sale/app/components/popups/cash_move_popup/cash_move_receipt/cash_move_receipt";
-import { CashMoveListPopup } from "@point_of_sale/app/components/popups/cash_move_popup/cash_move_list_popup/cash_move_list_popup";
-import { Dialog } from "@web/core/dialog/dialog";
-import { useAsyncLockedMethod } from "@point_of_sale/app/hooks/hooks";
-import { Input } from "@point_of_sale/app/components/inputs/input/input";
-import { makeAwaitable } from "@point_of_sale/app/utils/make_awaitable_dialog";
-import { NumberPopup } from "@point_of_sale/app/components/popups/number_popup/number_popup";
+import {CashMoveReceipt} from "@point_of_sale/app/components/popups/cash_move_popup/cash_move_receipt/cash_move_receipt";
+import {CashMoveListPopup} from "@point_of_sale/app/components/popups/cash_move_popup/cash_move_list_popup/cash_move_list_popup";
+import {Dialog} from "@web/core/dialog/dialog";
+import {useAsyncLockedMethod} from "@point_of_sale/app/hooks/hooks";
+import {Input} from "@point_of_sale/app/components/inputs/input/input";
+import {makeAwaitable} from "@point_of_sale/app/utils/make_awaitable_dialog";
+import {NumberPopup} from "@point_of_sale/app/components/popups/number_popup/number_popup";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class CashMovePopup extends Component {
     static template = "point_of_sale.CashMovePopup";
-    static components = { Input, Dialog };
+    static components = {Input, Dialog};
     static props = ["confirmKey?", "close", "getPayload?"];
     setup() {
         super.setup();
@@ -49,13 +49,19 @@ export class CashMovePopup extends Component {
 
         const type = this.state.type;
         const translatedType = _t(type);
-        const extras = { formattedAmount, translatedType };
+        const extras = {formattedAmount, translatedType};
         const reason = this.state.reason.trim();
 
         await this.pos.data.call(
             "pos.session",
             "try_cash_in_out",
-            this._prepareTryCashInOutPayload(type, amount, reason, this.partnerId, extras),
+            this._prepareTryCashInOutPayload(
+                type,
+                amount,
+                reason,
+                this.partnerId,
+                extras
+            ),
             {},
             true
         );
@@ -101,16 +107,21 @@ export class CashMovePopup extends Component {
         return [[this.pos.session.id], type, amount, reason, partnerId, extras];
     }
     isValidCashMove() {
-        return this.env.utils.isValidFloat(this.state.amount) && this.state.reason.trim() !== "";
+        return (
+            this.env.utils.isValidFloat(this.state.amount) &&
+            this.state.reason.trim() !== ""
+        );
     }
     async openDetails() {
-        const cashMoves = await this.pos.data.call("pos.session", "get_cash_in_out_list", [
-            this.pos.session.id,
-        ]);
+        const cashMoves = await this.pos.data.call(
+            "pos.session",
+            "get_cash_in_out_list",
+            [this.pos.session.id]
+        );
         this.dialog.add(CashMoveListPopup, {
             cashMoves: cashMoves.map((m) => ({
                 ...m,
-                date: DateTime.fromSQL(m.date, { zone: "UTC" }).setZone("local"),
+                date: DateTime.fromSQL(m.date, {zone: "UTC"}).setZone("local"),
             })),
             partnerId: this.partnerId,
         });

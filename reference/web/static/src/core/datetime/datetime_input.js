@@ -1,7 +1,7 @@
-import { Component } from "@odoo/owl";
-import { omit } from "../utils/objects";
-import { DateTimePicker } from "./datetime_picker";
-import { useDateTimePicker } from "./datetime_picker_hook";
+import {Component} from "@odoo/owl";
+import {omit} from "../utils/objects";
+import {DateTimePicker} from "./datetime_picker";
+import {useDateTimePicker} from "./datetime_picker_hook";
 
 /**
  * @typedef {import("./datetime_picker").DateTimePickerProps & {
@@ -14,13 +14,13 @@ import { useDateTimePicker } from "./datetime_picker_hook";
  */
 
 const dateTimeInputOwnProps = {
-    format: { type: String, optional: true },
-    id: { type: String, optional: true },
-    class: { type: String, optional: true },
-    onChange: { type: Function, optional: true },
-    onApply: { type: Function, optional: true },
-    placeholder: { type: String, optional: true },
-    disabled: { type: Boolean, optional: true },
+    format: {type: String, optional: true},
+    id: {type: String, optional: true},
+    class: {type: String, optional: true},
+    onChange: {type: Function, optional: true},
+    onApply: {type: Function, optional: true},
+    placeholder: {type: String, optional: true},
+    disabled: {type: Boolean, optional: true},
 };
 
 /** @extends {Component<DateTimeInputProps>} */
@@ -33,7 +33,8 @@ export class DateTimeInput extends Component {
     static template = "web.DateTimeInput";
 
     setup() {
-        const getPickerProps = () => omit(this.props, ...Object.keys(dateTimeInputOwnProps));
+        const getPickerProps = () =>
+            omit(this.props, ...Object.keys(dateTimeInputOwnProps));
 
         useDateTimePicker({
             format: this.props.format,

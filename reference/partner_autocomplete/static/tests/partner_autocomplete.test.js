@@ -1,6 +1,6 @@
-import { mailModels } from "@mail/../tests/mail_test_helpers";
-import { expect, getFixture, test } from "@odoo/hoot";
-import { advanceTime, queryOne } from "@odoo/hoot-dom";
+import {mailModels} from "@mail/../tests/mail_test_helpers";
+import {expect, getFixture, test} from "@odoo/hoot";
+import {advanceTime, queryOne} from "@odoo/hoot-dom";
 import {
     contains,
     defineModels,
@@ -14,7 +14,7 @@ import {
 
 // Autocomplete has a debounce time of 250 ms on input
 async function editAutocomplete(el, value) {
-    await contains(el).edit(value, { confirm: false });
+    await contains(el).edit(value, {confirm: false});
     await advanceTime(250);
 }
 
@@ -30,7 +30,7 @@ class ResPartner extends mailModels.ResPartner {
             obj.is_company = obj.company_type === "company";
         },
     });
-    state_id = fields.Many2one({ relation: "res.country.state" });
+    state_id = fields.Many2one({relation: "res.country.state"});
     _views = {
         form: `
             <form>
@@ -75,26 +75,26 @@ class ResCountryState extends models.Model {
     ];
 }
 
-defineModels({ ...mailModels, ResPartner, ResCountry, ResCountryState });
+defineModels({...mailModels, ResPartner, ResCountry, ResCountryState});
 
 const iapSuggestions = [
     {
         name: "First Company",
         duns: "123",
         city: "FirstCity",
-        country_id: { id: 1, name: "Belgium" },
+        country_id: {id: 1, name: "Belgium"},
     },
     {
         name: "Second Company",
         duns: "456",
         city: "SecondCity",
-        country_id: { id: 1, name: "Belgium" },
+        country_id: {id: 1, name: "Belgium"},
     },
     {
         name: "Third Company",
         duns: "789",
         city: "ThirdCity",
-        country_id: { id: 1, name: "Belgium" },
+        country_id: {id: 1, name: "Belgium"},
     },
 ];
 
@@ -115,7 +115,7 @@ const clearbitSuggestions = [
 
 onRpc("res.partner", "autocomplete_by_name", () => iapSuggestions);
 onRpc("res.partner", "autocomplete_by_vat", () => iapSuggestions);
-onRpc("res.partner", "enrich_by_duns", ({ args }) => ({
+onRpc("res.partner", "enrich_by_duns", ({args}) => ({
     name: iapSuggestions.filter((sugg) => sugg.duns === args[0])[0].name,
     vat: "BE0477472701",
     duns: "372441183",
@@ -158,12 +158,14 @@ test("Partner autocomplete : Company type = Individual", async () => {
     await contains("[name='parent_id']:first input").click();
     expect(
         "[name='parent_id']:first .o-autocomplete .o-autocomplete--dropdown-item.partner_autocomplete_dropdown_many2one"
-    ).toHaveCount(0, { message: "There should be no option when input is empty" });
+    ).toHaveCount(0, {message: "There should be no option when input is empty"});
 
     await editAutocomplete("[name='parent_id']:first input", "od");
     expect(
         "[name='parent_id']:first .o-autocomplete .o-autocomplete--dropdown-item.partner_autocomplete_dropdown_many2one"
-    ).toHaveCount(0, { message: "There should be no option when the length of the query is < 3" });
+    ).toHaveCount(0, {
+        message: "There should be no option when the length of the query is < 3",
+    });
 
     await editAutocomplete("[name='parent_id']:first input", "company");
     expect(
@@ -205,16 +207,20 @@ test("Partner autocomplete : Company type = Company / Name search", async () => 
     await contains("[name='name'] .dropdown input").click();
     expect(
         "[name='name'] .o-autocomplete .o-autocomplete--dropdown-item.partner_autocomplete_dropdown_many2one"
-    ).toHaveCount(0, { message: "There should be no option when input is empty" });
+    ).toHaveCount(0, {message: "There should be no option when input is empty"});
 
     await editAutocomplete("[name='name'] .dropdown input", "od");
     expect(
         "[name='name'] .o-autocomplete .o-autocomplete--dropdown-item.partner_autocomplete_dropdown_many2one"
-    ).toHaveCount(0, { message: "There should be no option when the length of the query is < 3" });
+    ).toHaveCount(0, {
+        message: "There should be no option when the length of the query is < 3",
+    });
 
     await editAutocomplete("[name='name'] .dropdown input", "company");
     // 3 options + 1 for the worldwide option
-    expect("[name='name'] .o-autocomplete .o-autocomplete--dropdown-item").toHaveCount(4);
+    expect("[name='name'] .o-autocomplete .o-autocomplete--dropdown-item").toHaveCount(
+        4
+    );
 
     // Click on the first option - "First Company"
     await contains("[name='name'] .o-autocomplete ul li").click();
@@ -251,18 +257,21 @@ test("Partner autocomplete : Company type = Company / VAT search", async () => {
     await contains("[name='vat'] .dropdown input").click();
     expect(
         "[name='vat'] .o-autocomplete .o-autocomplete--dropdown-item.partner_autocomplete_dropdown_many2one"
-    ).toHaveCount(0, { message: "There should be no option when input is empty" });
+    ).toHaveCount(0, {message: "There should be no option when input is empty"});
 
     await editAutocomplete("[name='vat'] .dropdown input", "blabla");
     expect(
         "[name='vat'] .o-autocomplete .o-autocomplete--dropdown-item.partner_autocomplete_dropdown_many2one"
     ).toHaveCount(0, {
-        message: "There should be no option when the value doesn't have a valid VAT number format",
+        message:
+            "There should be no option when the value doesn't have a valid VAT number format",
     });
 
     await editAutocomplete("[name='vat'] .dropdown input", "BE0477472701");
     // 3 options + 1 for the worldwide option
-    expect("[name='vat'] .o-autocomplete .o-autocomplete--dropdown-item").toHaveCount(4);
+    expect("[name='vat'] .o-autocomplete .o-autocomplete--dropdown-item").toHaveCount(
+        4
+    );
 
     // Click on the first option - "First company"
     await contains("[name='vat'] .o-autocomplete ul li").click();
@@ -302,8 +311,8 @@ test("Click out after edition", async () => {
 
 test.tags("desktop");
 test("Can unset the partner many2one field", async () => {
-    ResPartner._records[0] = { id: 1, name: "Some partner", parent_id: 1 };
-    onRpc("web_save", ({ args }) => {
+    ResPartner._records[0] = {id: 1, name: "Some partner", parent_id: 1};
+    onRpc("web_save", ({args}) => {
         expect.step("web_save");
         expect(args[1].parent_id).toBe(false);
     });
@@ -350,8 +359,10 @@ test("Display auto complete suggestion for canCreate", async () => {
         </form>`,
     });
     await editAutocomplete("[name='parent_id'] input", "blabla");
-    // create + create & edit + 3 partner suggestions + search worldwide
-    expect("[name='parent_id'] .o-autocomplete .o-autocomplete--dropdown-item").toHaveCount(6);
+    // Create + create & edit + 3 partner suggestions + search worldwide
+    expect(
+        "[name='parent_id'] .o-autocomplete .o-autocomplete--dropdown-item"
+    ).toHaveCount(6);
 });
 
 test("Partner autocomplete : onChange should not disturb option selection", async () => {
@@ -366,7 +377,9 @@ test("Partner autocomplete : onChange should not disturb option selection", asyn
     await contains("[name='name'] .dropdown input").click();
     await editAutocomplete("[name='name'] .dropdown input", "company");
     // 3 options + 1 for the worldwide option
-    expect("[name='name'] .o-autocomplete .o-autocomplete--dropdown-item").toHaveCount(4);
+    expect("[name='name'] .o-autocomplete .o-autocomplete--dropdown-item").toHaveCount(
+        4
+    );
     await contains(".o-autocomplete--dropdown-item:eq(1)").click();
 
     // Check that the fields have been filled

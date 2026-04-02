@@ -1,6 +1,6 @@
 // ! WARNING: this module cannot depend on modules not ending with ".hoot" (except libs) !
 
-import { onServerStateChange } from "./mock_server_state.hoot";
+import {onServerStateChange} from "./mock_server_state.hoot";
 
 //-----------------------------------------------------------------------------
 // Exports
@@ -10,9 +10,9 @@ import { onServerStateChange } from "./mock_server_state.hoot";
  * @param {string} name
  * @param {OdooModuleFactory} factory
  */
-export function mockUserFactory(name, { fn }) {
+export function mockUserFactory(name, {fn}) {
     return (requireModule, ...args) => {
-        const { session } = requireModule("@web/session");
+        const {session} = requireModule("@web/session");
         const userModule = fn(requireModule, ...args);
 
         onServerStateChange(userModule.user, () => userModule._makeUser(session));

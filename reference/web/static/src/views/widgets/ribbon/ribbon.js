@@ -1,8 +1,8 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { standardWidgetProps } from "../standard_widget_props";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {standardWidgetProps} from "../standard_widget_props";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 /**
  * This widget adds a ribbon on the top right side of the form
@@ -21,10 +21,10 @@ export class RibbonWidget extends Component {
     static template = "web.Ribbon";
     static props = {
         ...standardWidgetProps,
-        record: { type: Object, optional: true },
-        text: { type: String },
-        title: { type: String, optional: true },
-        bgClass: { type: String, optional: true },
+        record: {type: Object, optional: true},
+        text: {type: String},
+        title: {type: String, optional: true},
+        bgClass: {type: String, optional: true},
     };
     static defaultProps = {
         title: "",
@@ -44,7 +44,7 @@ export class RibbonWidget extends Component {
 
 export const ribbonWidget = {
     component: RibbonWidget,
-    extractProps: ({ attrs }) => ({
+    extractProps: ({attrs}) => ({
         text: attrs.title || attrs.text,
         title: attrs.tooltip,
         bgClass: attrs.bg_color,

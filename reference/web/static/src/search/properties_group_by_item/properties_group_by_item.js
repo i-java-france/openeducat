@@ -1,18 +1,18 @@
-import { AccordionItem, ACCORDION } from "@web/core/dropdown/accordion_item";
-import { CheckboxItem } from "@web/core/dropdown/checkbox_item";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { Component, useState, useChildSubEnv } from "@odoo/owl";
+import {AccordionItem, ACCORDION} from "@web/core/dropdown/accordion_item";
+import {CheckboxItem} from "@web/core/dropdown/checkbox_item";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {Component, useState, useChildSubEnv} from "@odoo/owl";
 
 export class PropertiesGroupByItem extends Component {
     static template = "web.PropertiesGroupByItem";
-    static components = { AccordionItem, CheckboxItem, DropdownItem };
+    static components = {AccordionItem, CheckboxItem, DropdownItem};
     static props = {
         item: Object,
         onGroup: Function,
     };
 
     setup() {
-        this.state = useState({ groupByItems: [] });
+        this.state = useState({groupByItems: []});
         useChildSubEnv({
             [ACCORDION]: {
                 accordionStateChanged: this.beforeOpen.bind(this),
@@ -31,7 +31,9 @@ export class PropertiesGroupByItem extends Component {
      * True if all group items come from the same definition record.
      */
     get isSingleParent() {
-        const uniqueNames = new Set(this.state.groupByItems.map((item) => item.definitionRecordId));
+        const uniqueNames = new Set(
+            this.state.groupByItems.map((item) => item.definitionRecordId)
+        );
         return uniqueNames.size < 2;
     }
 

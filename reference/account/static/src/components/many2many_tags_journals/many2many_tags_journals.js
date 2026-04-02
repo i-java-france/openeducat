@@ -1,15 +1,15 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import {
     Many2ManyTagsField,
     many2ManyTagsField,
 } from "@web/views/fields/many2many_tags/many2many_tags_field";
-import { Many2XAutocomplete } from "@web/views/fields/relational_utils";
+import {Many2XAutocomplete} from "@web/views/fields/relational_utils";
 
 export class Many2ManyTagsJournalsMany2xAutocomplete extends Many2XAutocomplete {
     static template = "account.Many2ManyTagsJournalsMany2xAutocomplete";
     static props = {
         ...Many2XAutocomplete.props,
-        group_company_id: { type: Number, optional: true },
+        group_company_id: {type: Number, optional: true},
     };
 
     get searchSpecification() {
@@ -49,7 +49,7 @@ export const fieldMany2ManyTagsJournals = {
     component: Many2ManyTagsJournals,
     relatedFields: (fieldInfo) => [
         ...many2ManyTagsField.relatedFields(fieldInfo),
-        { name: "company_id", type: "many2one", relation: "res.company" },
+        {name: "company_id", type: "many2one", relation: "res.company"},
     ],
 };
 

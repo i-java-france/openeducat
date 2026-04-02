@@ -1,22 +1,22 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { click, queryAllTexts, resize } from "@odoo/hoot-dom";
-import { animationFrame, mockDate } from "@odoo/hoot-mock";
-import { Component, useState, xml } from "@odoo/owl";
-import { DateTimePicker } from "@web/core/datetime/datetime_picker";
-import { ensureArray } from "@web/core/utils/arrays";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {click, queryAllTexts, resize} from "@odoo/hoot-dom";
+import {animationFrame, mockDate} from "@odoo/hoot-mock";
+import {Component, useState, xml} from "@odoo/owl";
+import {DateTimePicker} from "@web/core/datetime/datetime_picker";
+import {ensureArray} from "@web/core/utils/arrays";
 import {
     defineParams,
-    mountWithCleanup,
     makeMockEnv,
+    mountWithCleanup,
     serverState,
 } from "@web/../tests/web_test_helpers";
 import {
     assertDateTimePicker,
-    getPickerCell,
     editTime,
+    getPickerCell,
 } from "../../datetime/datetime_test_helpers";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 /**
  * @param {DateTimePickerProps["value"]} value
@@ -33,13 +33,15 @@ const pad2 = (value) => String(value).padStart(2, "0");
 
 /**
  * @template {any} [T=number]
- * @param {number} length
+ * @param {Number} length
  * @param {(index: number) => T} mapping
  */
 const range = (length, mapping) => [...Array(length)].map((_, i) => mapping(i));
 
 const MINUTES = range(60, (i) => i).filter((i) => i % 15 === 0);
-const TIME_OPTIONS = range(24, String).flatMap((h) => MINUTES.map((m) => `${h}:${pad2(m)}`));
+const TIME_OPTIONS = range(24, String).flatMap((h) =>
+    MINUTES.map((m) => `${h}:${pad2(m)}`)
+);
 
 defineParams({
     lang_parameters: {
@@ -74,7 +76,9 @@ test("default params", async () => {
 
     await click(".o_time_picker_input");
     await animationFrame();
-    expect(queryAllTexts(".o_time_picker_dropdown .o_time_picker_option")).toEqual(TIME_OPTIONS);
+    expect(queryAllTexts(".o_time_picker_dropdown .o_time_picker_option")).toEqual(
+        TIME_OPTIONS
+    );
     expect(".o_datetime_picker").toHaveStyle({
         "--DateTimePicker__Day-template-columns": "8",
     });
@@ -82,7 +86,7 @@ test("default params", async () => {
 
 test("minDate: correct days/month/year/decades are disabled", async () => {
     serverState.lang = "en-US";
-    // necessary to configure the lang before minDate/maxDate are created
+    // Necessary to configure the lang before minDate/maxDate are created
     await makeMockEnv();
 
     await mountWithCleanup(DateTimePicker, {
@@ -112,7 +116,9 @@ test("minDate: correct days/month/year/decades are disabled", async () => {
 
     await click(".o_time_picker_input");
     await animationFrame();
-    expect(queryAllTexts(".o_time_picker_dropdown .o_time_picker_option")).toEqual(TIME_OPTIONS);
+    expect(queryAllTexts(".o_time_picker_dropdown .o_time_picker_option")).toEqual(
+        TIME_OPTIONS
+    );
 
     await click(".o_zoom_out");
     await animationFrame();
@@ -136,7 +142,12 @@ test("minDate: correct days/month/year/decades are disabled", async () => {
     await animationFrame();
 
     expect(".o_datetime_picker_header").toHaveText("2019 - 2030");
-    expect(queryAllTexts(".o_date_item_cell[disabled]")).toEqual(["2019", "2020", "2021", "2022"]);
+    expect(queryAllTexts(".o_date_item_cell[disabled]")).toEqual([
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+    ]);
     expect(queryAllTexts(".o_date_item_cell:not([disabled])")).toEqual([
         "2023",
         "2024",
@@ -153,7 +164,11 @@ test("minDate: correct days/month/year/decades are disabled", async () => {
     await animationFrame();
 
     expect(".o_datetime_picker_header").toHaveText("1990 - 2100");
-    expect(queryAllTexts(".o_date_item_cell[disabled]")).toEqual(["1990", "2000", "2010"]);
+    expect(queryAllTexts(".o_date_item_cell[disabled]")).toEqual([
+        "1990",
+        "2000",
+        "2010",
+    ]);
     expect(queryAllTexts(".o_date_item_cell:not([disabled])")).toEqual([
         "2020",
         "2030",
@@ -222,7 +237,9 @@ test("maxDate: correct days/month/year/decades are disabled", async () => {
 
     await click(".o_time_picker_input");
     await animationFrame();
-    expect(queryAllTexts(".o_time_picker_dropdown .o_time_picker_option")).toEqual(TIME_OPTIONS);
+    expect(queryAllTexts(".o_time_picker_dropdown .o_time_picker_option")).toEqual(
+        TIME_OPTIONS
+    );
 
     await click(".o_zoom_out");
     await animationFrame();
@@ -319,7 +336,7 @@ test("maxDate: correct days/month/year/decades are disabled", async () => {
 
 test("min+max date: correct days/month/year/decades are disabled", async () => {
     serverState.lang = "en-US";
-    // necessary to configure the lang before minDate/maxDate are created
+    // Necessary to configure the lang before minDate/maxDate are created
     await makeMockEnv();
 
     await mountWithCleanup(DateTimePicker, {
@@ -350,7 +367,9 @@ test("min+max date: correct days/month/year/decades are disabled", async () => {
 
     await click(".o_time_picker_input");
     await animationFrame();
-    expect(queryAllTexts(".o_time_picker_dropdown .o_time_picker_option")).toEqual(TIME_OPTIONS);
+    expect(queryAllTexts(".o_time_picker_dropdown .o_time_picker_option")).toEqual(
+        TIME_OPTIONS
+    );
 
     await click(".o_zoom_out");
     await animationFrame();
@@ -453,8 +472,8 @@ test("twelve-hour clock with non-null focus date index", async () => {
                 expect.step(formatForStep(value));
             },
             value: [
-                DateTime.fromObject({ day: 20, hour: 8, minute: 45 }),
-                DateTime.fromObject({ day: 23, hour: 11, minute: 15 }),
+                DateTime.fromObject({day: 20, hour: 8, minute: 45}),
+                DateTime.fromObject({day: 23, hour: 11, minute: 15}),
             ],
             focusedDateIndex: 1,
         },
@@ -502,7 +521,9 @@ test("twelve-hour clock", async () => {
     }
     await click(".o_time_picker_input");
     await animationFrame();
-    expect(queryAllTexts(".o_time_picker_dropdown .o_time_picker_option")).toEqual(times);
+    expect(queryAllTexts(".o_time_picker_dropdown .o_time_picker_option")).toEqual(
+        times
+    );
 });
 
 test("hide time picker", async () => {
@@ -534,7 +555,7 @@ test("hide time picker", async () => {
 test("focus is adjusted to selected date", async () => {
     await mountWithCleanup(DateTimePicker, {
         props: {
-            value: DateTime.fromObject({ month: 5, day: 29, hour: 23, minute: 55 }),
+            value: DateTime.fromObject({month: 5, day: 29, hour: 23, minute: 55}),
         },
     });
 
@@ -652,8 +673,8 @@ test("range value", async () => {
     await mountWithCleanup(DateTimePicker, {
         props: {
             value: [
-                DateTime.fromObject({ day: 5, hour: 17, minute: 18 }),
-                DateTime.fromObject({ month: 5, day: 18, hour: 5, minute: 25 }),
+                DateTime.fromObject({day: 5, hour: 17, minute: 18}),
+                DateTime.fromObject({month: 5, day: 18, hour: 5, minute: 25}),
             ],
             range: true,
         },
@@ -692,13 +713,13 @@ test("range value", async () => {
 });
 
 test("range value on small device", async () => {
-    await resize({ width: 300 });
+    await resize({width: 300});
 
     await mountWithCleanup(DateTimePicker, {
         props: {
             value: [
-                DateTime.fromObject({ hour: 9, minute: 30 }),
-                DateTime.fromObject({ hour: 21, minute: 5 }),
+                DateTime.fromObject({hour: 9, minute: 30}),
+                DateTime.fromObject({hour: 21, minute: 5}),
             ],
             range: true,
         },
@@ -814,9 +835,9 @@ test("days of week narrow format", async () => {
     });
 });
 
-//-------------------------------------------------------------------------
+// -------------------------------------------------------------------------
 // Props and interactions
-//-------------------------------------------------------------------------
+// -------------------------------------------------------------------------
 
 test("different rounding", async () => {
     await mountWithCleanup(DateTimePicker, {
@@ -969,7 +990,7 @@ test("custom invalidity function", async () => {
     await mountWithCleanup(DateTimePicker, {
         props: {
             type: "date",
-            // make weekends invalid
+            // Make weekends invalid
             isDateValid: (date) => date.weekday <= 5,
         },
     });
@@ -995,7 +1016,7 @@ test("custom date cell class function", async () => {
     await mountWithCleanup(DateTimePicker, {
         props: {
             type: "date",
-            // give special class to weekends
+            // Give special class to weekends
             dayCellClass: (date) => (date.weekday >= 6 ? "o_weekend" : ""),
         },
     });
@@ -1019,7 +1040,7 @@ test("custom date cell class function", async () => {
 test("single value, select date", async () => {
     await mountWithCleanup(DateTimePicker, {
         props: {
-            value: DateTime.fromObject({ day: 30, hour: 8, minute: 43 }),
+            value: DateTime.fromObject({day: 30, hour: 8, minute: 43}),
             onSelect: (value) => expect.step(formatForStep(value)),
         },
     });
@@ -1032,7 +1053,7 @@ test("single value, select date", async () => {
 test("single value, select time", async () => {
     await mountWithCleanup(DateTimePicker, {
         props: {
-            value: DateTime.fromObject({ day: 30, hour: 8, minute: 43 }),
+            value: DateTime.fromObject({day: 30, hour: 8, minute: 43}),
             onSelect: (value) => expect.step(formatForStep(value)),
         },
     });
@@ -1050,7 +1071,7 @@ test("single value, select time in twelve-hour clock format", async () => {
     });
     await mountWithCleanup(DateTimePicker, {
         props: {
-            value: DateTime.fromObject({ day: 30, hour: 8, minute: 43 }),
+            value: DateTime.fromObject({day: 30, hour: 8, minute: 43}),
             onSelect: (value) => expect.step(formatForStep(value)),
         },
     });
@@ -1064,11 +1085,11 @@ test("range value, select date for first value", async () => {
     await mountWithCleanup(DateTimePicker, {
         props: {
             value: [
-                DateTime.fromObject({ day: 20, hour: 8, minute: 43 }),
-                DateTime.fromObject({ day: 23, hour: 17, minute: 16 }),
+                DateTime.fromObject({day: 20, hour: 8, minute: 43}),
+                DateTime.fromObject({day: 23, hour: 17, minute: 16}),
             ],
             range: true,
-            // focusedDateIndex is implicitly 0
+            // FocusedDateIndex is implicitly 0
             onSelect: (value) => expect.step(formatForStep(value)),
         },
     });
@@ -1082,8 +1103,8 @@ test("range value, select time for first value", async () => {
     await mountWithCleanup(DateTimePicker, {
         props: {
             value: [
-                DateTime.fromObject({ day: 20, hour: 8, minute: 43 }),
-                DateTime.fromObject({ day: 23, hour: 17, minute: 16 }),
+                DateTime.fromObject({day: 20, hour: 8, minute: 43}),
+                DateTime.fromObject({day: 23, hour: 17, minute: 16}),
             ],
             range: true,
             onSelect: (value) => expect.step(formatForStep(value)),
@@ -1100,8 +1121,8 @@ test("range value, select date for second value", async () => {
     await mountWithCleanup(DateTimePicker, {
         props: {
             value: [
-                DateTime.fromObject({ day: 20, hour: 8, minute: 43 }),
-                DateTime.fromObject({ day: 23, hour: 17, minute: 16 }),
+                DateTime.fromObject({day: 20, hour: 8, minute: 43}),
+                DateTime.fromObject({day: 23, hour: 17, minute: 16}),
             ],
             range: true,
             focusedDateIndex: 1,
@@ -1118,8 +1139,8 @@ test("range value, select time for second value", async () => {
     await mountWithCleanup(DateTimePicker, {
         props: {
             value: [
-                DateTime.fromObject({ day: 20, hour: 8, minute: 43 }),
-                DateTime.fromObject({ day: 23, hour: 17, minute: 16 }),
+                DateTime.fromObject({day: 20, hour: 8, minute: 43}),
+                DateTime.fromObject({day: 23, hour: 17, minute: 16}),
             ],
             range: true,
             focusedDateIndex: 1,
@@ -1137,8 +1158,8 @@ test("range value, select date for second value before first value", async () =>
     await mountWithCleanup(DateTimePicker, {
         props: {
             value: [
-                DateTime.fromObject({ day: 20, hour: 8, minute: 43 }),
-                DateTime.fromObject({ day: 23, hour: 17, minute: 16 }),
+                DateTime.fromObject({day: 20, hour: 8, minute: 43}),
+                DateTime.fromObject({day: 23, hour: 17, minute: 16}),
             ],
             range: true,
             focusedDateIndex: 1,
@@ -1155,8 +1176,8 @@ test("range value, select date for first value after second value", async () => 
     await mountWithCleanup(DateTimePicker, {
         props: {
             value: [
-                DateTime.fromObject({ day: 20, hour: 8, minute: 43 }),
-                DateTime.fromObject({ day: 23, hour: 17, minute: 16 }),
+                DateTime.fromObject({day: 20, hour: 8, minute: 43}),
+                DateTime.fromObject({day: 23, hour: 17, minute: 16}),
             ],
             range: true,
             focusedDateIndex: 0,
@@ -1172,7 +1193,7 @@ test("range value, select date for first value after second value", async () => 
 test("focus proper month when changing props out of current month", async () => {
     class Parent extends Component {
         static template = xml`<DateTimePicker value="state.current"/>`;
-        static components = { DateTimePicker };
+        static components = {DateTimePicker};
         static props = ["*"];
         setup() {
             this.state = useState({
@@ -1201,7 +1222,12 @@ test("focus proper month when changing props out of current month", async () => 
         time: ["13:45"],
     });
 
-    parent.state.current = DateTime.fromObject({ month: 5, day: 1, hour: 17, minute: 16 });
+    parent.state.current = DateTime.fromObject({
+        month: 5,
+        day: 1,
+        hour: 17,
+        minute: 16,
+    });
     await animationFrame();
 
     assertDateTimePicker({
@@ -1225,7 +1251,7 @@ test("focus proper month when changing props out of current month", async () => 
 
 test("disable show week numbers", async () => {
     await mountWithCleanup(DateTimePicker, {
-        props: { showWeekNumbers: false },
+        props: {showWeekNumbers: false},
     });
 
     assertDateTimePicker({

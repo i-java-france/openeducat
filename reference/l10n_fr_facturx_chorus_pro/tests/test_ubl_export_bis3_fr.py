@@ -1,6 +1,12 @@
-from odoo.addons.account_edi_ubl_cii.tests.common import TestUblBis3Common, TestUblCiiFRCommon
-from odoo.addons.l10n_fr_facturx_chorus_pro.tests.common import TestUblCiiCommonChorusPro
 from odoo.tests import tagged
+
+from odoo.addons.account_edi_ubl_cii.tests.common import (
+    TestUblBis3Common,
+    TestUblCiiFRCommon,
+)
+from odoo.addons.l10n_fr_facturx_chorus_pro.tests.common import (
+    TestUblCiiCommonChorusPro,
+)
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install', *TestUblBis3Common.extra_tags)

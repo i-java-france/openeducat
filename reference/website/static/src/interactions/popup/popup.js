@@ -1,10 +1,10 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { browser } from "@web/core/browser/browser";
-import { cookie } from "@web/core/browser/cookie";
-import { utils as uiUtils, SIZES } from "@web/core/ui/ui_service";
-import { getTabableElements } from "@web/core/utils/ui";
+import {browser} from "@web/core/browser/browser";
+import {cookie} from "@web/core/browser/cookie";
+import {utils as uiUtils, SIZES} from "@web/core/ui/ui_service";
+import {getTabableElements} from "@web/core/utils/ui";
 
 export class Popup extends Interaction {
     static selector = ".s_popup:not(#website_cookies_bar)";
@@ -40,7 +40,9 @@ export class Popup extends Interaction {
             this.bsModal.dispose();
         });
 
-        this.modalShownOnClickEl = this.el.querySelector(".modal[data-display='onClick']");
+        this.modalShownOnClickEl = this.el.querySelector(
+            ".modal[data-display='onClick']"
+        );
         if (this.modalShownOnClickEl) {
             this.showModalBtnEl = document.querySelector(
                 `[href="#${this.modalShownOnClickEl.id}"]`
@@ -68,7 +70,10 @@ export class Popup extends Interaction {
             const deviceInvisible = isMobile
                 ? el.classList.contains("o_snippet_mobile_invisible")
                 : el.classList.contains("o_snippet_desktop_invisible");
-            return (visibilitySelectors && el.matches(visibilitySelectors)) || deviceInvisible;
+            return (
+                (visibilitySelectors && el.matches(visibilitySelectors)) ||
+                deviceInvisible
+            );
         });
         if (!this.popupAlreadyShown && !emptyPopup) {
             this.bindPopup();
@@ -167,9 +172,14 @@ export class Popup extends Interaction {
         }
         // The focus should stay free for no backdrop popups.
         if (this.el.querySelector(".s_popup_no_backdrop")) {
-            this.addListener(this.el, "hide.bs.modal", () => previouslyFocusedEl.focus(), {
-                once: true,
-            });
+            this.addListener(
+                this.el,
+                "hide.bs.modal",
+                () => previouslyFocusedEl.focus(),
+                {
+                    once: true,
+                }
+            );
             return;
         }
         const onKeydown = (ev) => {
@@ -199,7 +209,7 @@ export class Popup extends Interaction {
                 removeOnKeydown();
                 previouslyFocusedEl.focus();
             },
-            { once: true }
+            {once: true}
         );
     }
 

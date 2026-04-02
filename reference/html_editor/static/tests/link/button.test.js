@@ -1,33 +1,33 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 import {
     click,
     edit,
     hover,
+    manuallyDispatchProgrammaticEvent,
     queryAll,
     queryOne,
     select,
     waitFor,
     waitForNone,
-    manuallyDispatchProgrammaticEvent,
 } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { contains, onRpc } from "@web/../tests/web_test_helpers";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { cleanLinkArtifacts, unformat } from "../_helpers/format";
-import { getContent, setSelection } from "../_helpers/selection";
-import { deleteBackward, insertText } from "../_helpers/user_actions";
+import {animationFrame} from "@odoo/hoot-mock";
+import {contains, onRpc} from "@web/../tests/web_test_helpers";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {cleanLinkArtifacts, unformat} from "../_helpers/format";
+import {getContent, setSelection} from "../_helpers/selection";
+import {deleteBackward, insertText} from "../_helpers/user_actions";
 
 describe("button style", () => {
     test("editable button should have cursor text", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             '<p><a href="#" class="btn btn-fill-primary">Link styled as button</a></p>'
         );
 
         const button = el.querySelector("a");
-        expect(button).toHaveStyle({ cursor: "text" });
+        expect(button).toHaveStyle({cursor: "text"});
     });
     test("non-editable .btn-link should have cursor pointer", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             // A simpliflied version of an embedded component with toolbar
             // buttons, as it happens in certain flows in Knowledge.
             unformat(`
@@ -39,16 +39,18 @@ describe("button style", () => {
             `)
         );
         const button = el.querySelector(".o_embedded_toolbar button");
-        expect(button).toHaveStyle({ cursor: "pointer" });
+        expect(button).toHaveStyle({cursor: "pointer"});
     });
     test("editable button is user-selectable", async () => {
         await setupEditor('<p><a href="#" class="btn test-btn">button</a></p>');
-        expect(queryOne(".test-btn")).toHaveStyle({ userSelect: "auto" });
+        expect(queryOne(".test-btn")).toHaveStyle({userSelect: "auto"});
     });
     test("non-editable button should not be user-selectable", async () => {
-        const { el } = await setupEditor('<p><a href="#" class="btn test-btn">button</a></p>');
+        const {el} = await setupEditor(
+            '<p><a href="#" class="btn test-btn">button</a></p>'
+        );
         el.setAttribute("contenteditable", "false");
-        expect(queryOne(".test-btn")).toHaveStyle({ userSelect: "none" });
+        expect(queryOne(".test-btn")).toHaveStyle({userSelect: "none"});
     });
     test("Button styling should not override inner font size", async () => {
         onRpc("/test", () => ({}));
@@ -56,7 +58,7 @@ describe("button style", () => {
             description: "test",
             link_preview_name: "test",
         }));
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             unformat(`
                 <div>
                     <span class="display-1-fs">a[b]c</span>
@@ -95,7 +97,7 @@ describe("button style", () => {
             `),
             stepFunction: (editor) => {
                 editor.shared.format.formatSelection("setFontSizeClassName", {
-                    formatProps: { className: "h1-fs" },
+                    formatProps: {className: "h1-fs"},
                     applyStyle: true,
                 });
             },
@@ -145,9 +147,9 @@ describe("Custom button style", () => {
         await waitFor(".o-we-linkpopover");
         await click(".o_we_edit_link");
         await animationFrame();
-        const optionsValues = [...queryOne('select[name="link_style_size"]').options].map(
-            (opt) => opt.label
-        );
+        const optionsValues = [
+            ...queryOne('select[name="link_style_size"]').options,
+        ].map((opt) => opt.label);
         expect(optionsValues).toInclude("Small");
         expect(optionsValues).toInclude("Medium");
         expect(optionsValues).toInclude("Large");
@@ -162,7 +164,10 @@ describe("Custom button style", () => {
     });
 
     test("Editor allow custom Style if config is active", async () => {
-        await setupEditor('<p><a href="https://test.com/">link[]Label</a></p>', allowCustomOpt);
+        await setupEditor(
+            '<p><a href="https://test.com/">link[]Label</a></p>',
+            allowCustomOpt
+        );
         await waitFor(".o-we-linkpopover");
         await click(".o_we_edit_link");
         await animationFrame();
@@ -184,10 +189,18 @@ describe("Custom button style", () => {
         await animationFrame();
         expect(".o_we_label_link").toHaveValue("linkLabel");
         expect(".o_we_href_input_link").toHaveValue("https://test.com/");
-        expect(queryOne('select[name="link_type"]').selectedOptions[0].value).toBe("custom");
-        expect(queryOne(".custom-text-picker").style.backgroundColor).toBe("rgb(0, 255, 0)");
-        expect(queryOne(".custom-fill-picker").style.backgroundColor).toBe("rgb(0, 0, 255)");
-        expect(queryOne(".custom-border-picker").style.backgroundColor).toBe("rgb(255, 0, 0)");
+        expect(queryOne('select[name="link_type"]').selectedOptions[0].value).toBe(
+            "custom"
+        );
+        expect(queryOne(".custom-text-picker").style.backgroundColor).toBe(
+            "rgb(0, 255, 0)"
+        );
+        expect(queryOne(".custom-fill-picker").style.backgroundColor).toBe(
+            "rgb(0, 0, 255)"
+        );
+        expect(queryOne(".custom-border-picker").style.backgroundColor).toBe(
+            "rgb(255, 0, 0)"
+        );
         expect(queryOne(".custom-border-size").value).toBe("4");
         expect(queryOne(".custom-border-style").value).toBe("dotted");
     });
@@ -206,21 +219,28 @@ describe("Custom button style", () => {
         await hover(".o_color_button[data-color='#00FF00']");
         await animationFrame();
 
-        expect(queryOne(".custom-fill-picker").style.backgroundColor).toBe("rgb(0, 255, 0)");
+        expect(queryOne(".custom-fill-picker").style.backgroundColor).toBe(
+            "rgb(0, 255, 0)"
+        );
 
-        await hover(".custom-fill-picker"); // cursor out of the colorpicker
+        await hover(".custom-fill-picker"); // Cursor out of the colorpicker
         await animationFrame();
 
-        expect(queryOne(".custom-fill-picker").style.backgroundColor).toBe("rgb(0, 0, 255)");
+        expect(queryOne(".custom-fill-picker").style.backgroundColor).toBe(
+            "rgb(0, 0, 255)"
+        );
     });
 
     test("should convert all selected text to a custom button", async () => {
-        const { el } = await setupEditor("<p>[Hello]</p>", allowCustomOpt);
+        const {el} = await setupEditor("<p>[Hello]</p>", allowCustomOpt);
         await waitFor(".o-we-toolbar");
         await click(".o-we-toolbar .fa-link");
-        await contains(".o-we-linkpopover input.o_we_href_input_link").edit("http://test.test/", {
-            confirm: false,
-        });
+        await contains(".o-we-linkpopover input.o_we_href_input_link").edit(
+            "http://test.test/",
+            {
+                confirm: false,
+            }
+        );
         await click('select[name="link_type"]');
         await select("custom");
         await animationFrame();
@@ -264,12 +284,15 @@ describe("Custom button style", () => {
     });
 
     test("should allow target _blank on custom button", async () => {
-        const { el } = await setupEditor("<p>[Hello]</p>", allowTargetBlankOpt);
+        const {el} = await setupEditor("<p>[Hello]</p>", allowTargetBlankOpt);
         await waitFor(".o-we-toolbar");
         await click(".o-we-toolbar .fa-link");
-        await contains(".o-we-linkpopover input.o_we_href_input_link").edit("http://test.test/", {
-            confirm: false,
-        });
+        await contains(".o-we-linkpopover input.o_we_href_input_link").edit(
+            "http://test.test/",
+            {
+                confirm: false,
+            }
+        );
         await click(".o-we-linkpopover .fa-gear");
         await contains(".o_advance_option_panel .target-blank-option").click();
         await click(".o_advance_option_panel .fa-angle-left");
@@ -285,7 +308,7 @@ describe("Custom button style", () => {
     });
 
     test("Editor allow custom shape if config is active", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             '<p><a href="https://test.com/">link[]Label</a></p>',
             allowCustomOpt
         );
@@ -296,7 +319,7 @@ describe("Custom button style", () => {
         await select("custom");
         await animationFrame();
 
-        // test outline
+        // Test outline
         await click('select[name="link_style_shape"]');
         await select("outline");
         await animationFrame();
@@ -304,7 +327,7 @@ describe("Custom button style", () => {
             '<p><a href="https://test.com/" class="btn btn-outline-custom" style="color: rgb(0, 0, 0); background-color: rgb(166, 227, 226); border-width: 1px; border-color: rgb(0, 143, 140); border-style: dashed; ">linkLabel</a></p>'
         );
 
-        // test fill + rounded
+        // Test fill + rounded
         await click('select[name="link_style_shape"]');
         await select("fill rounded-circle");
         await animationFrame();
@@ -322,14 +345,14 @@ describe("Custom button style", () => {
 
 describe("button edit", () => {
     test("button link should be editable with double click select", async () => {
-        const { el, editor } = await setupEditor(
+        const {el, editor} = await setupEditor(
             '<p>this is a <a href="http://test.test/">link</a></p>'
         );
         await waitForNone(".o-we-linkpopover");
         const button = el.querySelector("a");
-        // simulate double click selection
-        setSelection({ anchorNode: button, anchorOffset: 0 });
-        manuallyDispatchProgrammaticEvent(button, "mousedown", { detail: 2 });
+        // Simulate double click selection
+        setSelection({anchorNode: button, anchorOffset: 0});
+        manuallyDispatchProgrammaticEvent(button, "mousedown", {detail: 2});
         await animationFrame();
         expect(getContent(el)).toBe(
             '<p>this is a \ufeff<a href="http://test.test/" class="o_link_in_selection">\ufeff[link]\ufeff</a>\ufeff</p>'
@@ -344,12 +367,12 @@ describe("button edit", () => {
     });
 
     test("double click select on a link should stay inside the link (1)", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             '<p>this is a <a href="http://test.test/">test b[]tn</a><a href="http://test2.test/">test btn2</a></p>'
         );
         const link = el.querySelector("a[href='http://test.test/']");
-        // simulate double click selection
-        manuallyDispatchProgrammaticEvent(link, "mousedown", { detail: 2 });
+        // Simulate double click selection
+        manuallyDispatchProgrammaticEvent(link, "mousedown", {detail: 2});
         await animationFrame();
         expect(getContent(el)).toBe(
             '<p>this is a \ufeff<a href="http://test.test/" class="o_link_in_selection">\ufefftest [btn]\ufeff</a>\ufeff<a href="http://test2.test/">\ufefftest btn2\ufeff</a>\ufeff</p>'
@@ -360,12 +383,12 @@ describe("button edit", () => {
     });
 
     test("double click select on a link should stay inside the link (2)", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             '<p>this is a <a href="http://test.test/">test btn</a><a href="http://test2.test/">t[]est btn2</a></p>'
         );
         const link = el.querySelector("a[href='http://test2.test/']");
-        // simulate double click selection
-        manuallyDispatchProgrammaticEvent(link, "mousedown", { detail: 2 });
+        // Simulate double click selection
+        manuallyDispatchProgrammaticEvent(link, "mousedown", {detail: 2});
         await animationFrame();
         expect(getContent(el)).toBe(
             '<p>this is a \ufeff<a href="http://test.test/">\ufefftest btn\ufeff</a>\ufeff<a href="http://test2.test/" class="o_link_in_selection">\ufeff[test] btn2\ufeff</a>\ufeff</p>'
@@ -376,12 +399,12 @@ describe("button edit", () => {
     });
 
     test("triple click select should select the full button text", async () => {
-        const { el, editor } = await setupEditor(
+        const {el, editor} = await setupEditor(
             '<p>this is a <a href="http://test.test/" class="btn btn-fill-primary">test b[]tn</a></p>'
         );
         const button = el.querySelector("a");
-        // simulate triple click selection
-        manuallyDispatchProgrammaticEvent(button, "mousedown", { detail: 3 });
+        // Simulate triple click selection
+        manuallyDispatchProgrammaticEvent(button, "mousedown", {detail: 3});
         await animationFrame();
         expect(getContent(el)).toBe(
             '<p>this is a \ufeff<a href="http://test.test/" class="btn btn-fill-primary">[\ufefftest btn\ufeff]</a>\ufeff</p>'
@@ -396,7 +419,7 @@ describe("button edit", () => {
     });
 
     test("Should not remove invisible button", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             '<p><a href="http://test.test/" class="invisible btn btn-primary">a[]</a></p>',
             {
                 styleContent: `
@@ -429,10 +452,12 @@ test("button should never contain selection placeholder", async () => {
 test.tags("firefox");
 describe("firefox", () => {
     test("text should be inserted inside link after backspace", async () => {
-        const { el, editor } = await setupEditor('<p><a href="#">link</a>t[]est</p>');
+        const {el, editor} = await setupEditor('<p><a href="#">link</a>t[]est</p>');
         deleteBackward(editor);
         deleteBackward(editor);
         await insertText(editor, "X");
-        expect(cleanLinkArtifacts(getContent(el))).toBe('<p><a href="#">linX[]</a>est</p>');
+        expect(cleanLinkArtifacts(getContent(el))).toBe(
+            '<p><a href="#">linX[]</a>est</p>'
+        );
     });
 });

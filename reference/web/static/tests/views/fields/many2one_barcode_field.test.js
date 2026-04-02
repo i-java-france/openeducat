@@ -1,5 +1,5 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { mockUserAgent, mockVibrate, runAllTimers } from "@odoo/hoot-mock";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {mockUserAgent, mockVibrate, runAllTimers} from "@odoo/hoot-mock";
 
 import {
     clickSave,
@@ -37,7 +37,7 @@ class Product extends models.Model {
             barcode: "601647855633",
         },
     ];
-    // to allow the search in barcode too
+    // To allow the search in barcode too
     name_search() {
         const result = super.name_search(...arguments);
         const kwargs = getKwArgs(arguments, "name", "domain", "operator", "limit");
@@ -108,7 +108,7 @@ test("barcode button with single results", async () => {
     });
 
     onRpc("sale.order.line", "web_save", (args) => {
-        const selectedId = args.args[1]["product_id"];
+        const selectedId = args.args[1].product_id;
         expect(selectedId).toBe(selectedRecordTest.id, {
             message: `product id selected ${selectedId}, should be ${selectedRecordTest.id} (${selectedRecordTest.barcode})`,
         });
@@ -145,7 +145,7 @@ test("barcode button with multiple results on desktop", async () => {
     });
 
     onRpc("sale.order.line", "web_save", (args) => {
-        const selectedId = args.args[1]["product_id"];
+        const selectedId = args.args[1].product_id;
         expect(selectedId).toBe(selectedRecordTest.id, {
             message: `product id selected ${selectedId}, should be ${selectedRecordTest.id} (${selectedRecordTest.barcode})`,
         });
@@ -189,7 +189,7 @@ test("barcode button with multiple results on mobile", async () => {
     });
 
     onRpc("sale.order.line", "web_save", (args) => {
-        const selectedId = args.args[1]["product_id"];
+        const selectedId = args.args[1].product_id;
         expect(selectedId).toBe(selectedRecordTest.id, {
             message: `product id selected ${selectedId}, should be ${selectedRecordTest.id} (${selectedRecordTest.barcode})`,
         });
@@ -202,16 +202,19 @@ test("barcode button with multiple results on mobile", async () => {
         arch: `<form><field name="product_id" options="{'can_scan_barcode': True}"/></form>`,
     });
 
-    expect(".o_barcode").toHaveCount(1, { message: "has scanner barcode button" });
+    expect(".o_barcode").toHaveCount(1, {message: "has scanner barcode button"});
 
     await contains(".o_barcode").click();
 
     expect(".modal-dialog.modal-lg").toHaveCount(1, {
         message: "there should be one modal opened in full screen",
     });
-    expect(".modal-dialog.modal-lg .o_kanban_record:not(.o_kanban_ghost)").toHaveCount(2, {
-        message: "there should be 2 records displayed",
-    });
+    expect(".modal-dialog.modal-lg .o_kanban_record:not(.o_kanban_ghost)").toHaveCount(
+        2,
+        {
+            message: "there should be 2 records displayed",
+        }
+    );
 
     await contains(".o_kanban_record:nth-child(1)").click();
     await clickSave();
@@ -242,8 +245,11 @@ test("many2one with barcode show all records", async () => {
     expect(".modal-dialog.modal-lg").toHaveCount(1, {
         message: "there should be one modal opened in full screen",
     });
-    expect(".modal-dialog.modal-lg .o_kanban_record:not(.o_kanban_ghost)").toHaveCount(3, {
-        message: "there should be 3 records displayed",
-    });
+    expect(".modal-dialog.modal-lg .o_kanban_record:not(.o_kanban_ghost)").toHaveCount(
+        3,
+        {
+            message: "there should be 3 records displayed",
+        }
+    );
     expect.verifySteps(["vibrate:100"]);
 });

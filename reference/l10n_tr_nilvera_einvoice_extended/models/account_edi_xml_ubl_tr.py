@@ -1,9 +1,13 @@
 from collections import defaultdict
+
 from lxml import etree
 
 from odoo import api, models
 from odoo.tools import float_compare, frozendict
-from odoo.addons.l10n_tr_nilvera_einvoice_extended.tools.clean_node_dict import clean_node_dict
+
+from odoo.addons.l10n_tr_nilvera_einvoice_extended.tools.clean_node_dict import (
+    clean_node_dict,
+)
 from odoo.addons.l10n_tr_nilvera_einvoice_extended.tools.ubl_tr_invoice import TrInvoice
 
 

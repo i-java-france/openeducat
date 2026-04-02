@@ -1,8 +1,8 @@
-import { patch } from "@web/core/utils/patch";
-import { hootPosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
-import { models } from "@web/../tests/web_test_helpers";
+import {patch} from "@web/core/utils/patch";
+import {hootPosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {models} from "@web/../tests/web_test_helpers";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class LoyaltyProgram extends models.ServerModel {
     _name = "loyalty.program";
@@ -125,8 +125,8 @@ export class LoyaltyProgram extends models.ServerModel {
             applies_on: "future",
             program_type: "ewallet",
             pricelist_ids: [],
-            date_from: DateTime.now().minus({ days: 10 }).toISODate(),
-            date_to: DateTime.now().minus({ days: 1 }).toISODate(),
+            date_from: DateTime.now().minus({days: 10}).toISODate(),
+            date_to: DateTime.now().minus({days: 1}).toISODate(),
             limit_usage: false,
             max_usage: 0,
             is_nominative: false,

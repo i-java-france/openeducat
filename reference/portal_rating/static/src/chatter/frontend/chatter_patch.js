@@ -1,9 +1,9 @@
-import { Chatter } from "@mail/chatter/web_portal/chatter";
-import { patch } from "@web/core/utils/patch";
+import {Chatter} from "@mail/chatter/web_portal/chatter";
+import {patch} from "@web/core/utils/patch";
 
 const chatterPatch = {
     async onClickStarDomain(star) {
-        const { thread } = this.state;
+        const {thread} = this.state;
         Object.assign(thread, {
             loadOlder: false,
             rating_stats: this.ratingStats,
@@ -14,7 +14,7 @@ const chatterPatch = {
     },
 
     async onClickStarDomainReset() {
-        const { thread } = this.state;
+        const {thread} = this.state;
         Object.assign(thread, {
             loadOlder: false,
             selectedRating: false,
@@ -24,7 +24,10 @@ const chatterPatch = {
     },
 
     get ratingStats() {
-        return this.state.thread?.messages.at(-1)?.rating_stats || this.state.thread?.rating_stats;
+        return (
+            this.state.thread?.messages.at(-1)?.rating_stats ||
+            this.state.thread?.rating_stats
+        );
     },
 };
 

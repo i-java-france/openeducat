@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from markupsafe import Markup
 
-from odoo import _, api, Command, fields, models, tools
+from odoo import Command, _, api, fields, models, tools
 from odoo.exceptions import UserError
 
 
@@ -129,7 +128,7 @@ class MailingList(models.Model):
 
     def copy_data(self, default=None):
         vals_list = super().copy_data(default=default)
-        return [dict(vals, name=self.env._("%s (copy)", mailing_list.name)) for mailing_list, vals in zip(self, vals_list)]
+        return [dict(vals, name=self.env._("%s (copy)", mailing_list.name)) for mailing_list, vals in zip(self, vals_list, strict=False)]
 
     # ------------------------------------------------------
     # ACTIONS

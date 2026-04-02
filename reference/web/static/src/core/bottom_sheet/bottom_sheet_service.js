@@ -1,6 +1,6 @@
-import { markRaw } from "@odoo/owl";
-import { BottomSheet } from "@web/core/bottom_sheet/bottom_sheet";
-import { registry } from "@web/core/registry";
+import {markRaw} from "@odoo/owl";
+import {BottomSheet} from "@web/core/bottom_sheet/bottom_sheet";
+import {registry} from "@web/core/registry";
 
 /**
  * @typedef {{
@@ -17,7 +17,7 @@ import { registry } from "@web/core/registry";
 
 export const popoverService = {
     dependencies: ["overlay"],
-    start(_, { overlay }) {
+    start(_, {overlay}) {
         let bottomSheetCount = 0;
         /**
          * Signals the manager to add a popover.
@@ -64,7 +64,7 @@ export const popoverService = {
             return removeAndUpdateCount;
         };
 
-        return { add };
+        return {add};
     },
 };
 

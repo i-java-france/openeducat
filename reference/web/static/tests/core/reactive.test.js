@@ -1,6 +1,6 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { EventBus, reactive } from "@odoo/owl";
-import { Reactive, effect, withComputedProperties } from "@web/core/utils/reactive";
+import {describe, expect, test} from "@odoo/hoot";
+import {EventBus, reactive} from "@odoo/owl";
+import {Reactive, effect, withComputedProperties} from "@web/core/utils/reactive";
 
 describe.current.tags("headless");
 
@@ -19,7 +19,7 @@ describe("class", () => {
             expect.step(`counter: ${obj.counter}`);
         });
 
-        obj.counter; // initial subscription to counter
+        obj.counter; // Initial subscription to counter
         obj.counter++;
         expect.verifySteps(["counter: 1"]);
         bus.trigger("change");
@@ -42,7 +42,7 @@ describe("class", () => {
         const obj = reactive(new MyReactiveClass(), () => {
             expect.step(`counter: ${obj.counter}`);
         });
-        obj.counter; // initial subscription to counter
+        obj.counter; // Initial subscription to counter
         obj.counter++;
         expect.verifySteps(["counter: 1"]);
         bus.trigger("change");
@@ -53,7 +53,7 @@ describe("class", () => {
 
 describe("effect", () => {
     test("effect runs once immediately", async () => {
-        const state = reactive({ counter: 0 });
+        const state = reactive({counter: 0});
         expect.verifySteps([]);
         effect(
             (state) => {
@@ -65,7 +65,7 @@ describe("effect", () => {
     });
 
     test("effect runs when reactive deps change", async () => {
-        const state = reactive({ counter: 0 });
+        const state = reactive({counter: 0});
         expect.verifySteps([]);
         effect(
             (state) => {
@@ -73,15 +73,15 @@ describe("effect", () => {
             },
             [state]
         );
-        // effect runs immediately
+        // Effect runs immediately
         expect.verifySteps(["counter: 0"]);
 
         state.counter++;
-        // first mutation runs the effect
+        // First mutation runs the effect
         expect.verifySteps(["counter: 1"]);
 
         state.counter++;
-        // subsequent mutations run the effect
+        // Subsequent mutations run the effect
         expect.verifySteps(["counter: 2"]);
     });
 
@@ -110,16 +110,17 @@ describe("effect", () => {
         expect(reactiveCallCount).toBe(0, {
             message: "did not call the original reactive's callback",
         });
-        state.counter; // subscribe the original reactive
+        state.counter; // Subscribe the original reactive
         state.counter = 2;
         expect.verifySteps(["counter: 2"]);
         expect(reactiveCallCount).toBe(1, {
-            message: "the original callback was called because it is subscribed independently",
+            message:
+                "the original callback was called because it is subscribed independently",
         });
     });
 
     test("mutating keys not observed by the effect doesn't cause it to run", async () => {
-        const state = reactive({ counter: 0, unobserved: 0 });
+        const state = reactive({counter: 0, unobserved: 0});
         effect(
             (state) => {
                 expect.step(`counter: ${state.counter}`);
@@ -137,7 +138,7 @@ describe("effect", () => {
 
 describe("withComputedProperties", () => {
     test("computed properties are set immediately", async () => {
-        const source = reactive({ counter: 1 });
+        const source = reactive({counter: 1});
         const derived = withComputedProperties(reactive({}), [source], {
             doubleCounter(source) {
                 return source.counter * 2;
@@ -147,7 +148,7 @@ describe("withComputedProperties", () => {
     });
 
     test("computed properties are recomputed when dependencies change", async () => {
-        const source = reactive({ counter: 1 });
+        const source = reactive({counter: 1});
         const derived = withComputedProperties(reactive({}), [source], {
             doubleCounter(source) {
                 return source.counter * 2;
@@ -159,7 +160,7 @@ describe("withComputedProperties", () => {
     });
 
     test("can observe computed properties", async () => {
-        const source = reactive({ counter: 1 });
+        const source = reactive({counter: 1});
         const derived = withComputedProperties(reactive({}), [source], {
             doubleCounter(source) {
                 return source.counter * 2;
@@ -168,14 +169,14 @@ describe("withComputedProperties", () => {
         const observed = reactive(derived, () => {
             expect.step(`doubleCounter: ${observed.doubleCounter}`);
         });
-        observed.doubleCounter; // subscribe to doubleCounter
+        observed.doubleCounter; // Subscribe to doubleCounter
         expect.verifySteps([]);
         source.counter++;
         expect.verifySteps(["doubleCounter: 4"]);
     });
 
     test("computed properties can use nested objects", async () => {
-        const source = reactive({ subObj: { counter: 1 } });
+        const source = reactive({subObj: {counter: 1}});
         const derived = withComputedProperties(reactive({}), [source], {
             doubleCounter(source) {
                 return source.subObj.counter * 2;
@@ -184,12 +185,12 @@ describe("withComputedProperties", () => {
         const observed = reactive(derived, () => {
             expect.step(`doubleCounter: ${observed.doubleCounter}`);
         });
-        observed.doubleCounter; // subscribe to doubleCounter
+        observed.doubleCounter; // Subscribe to doubleCounter
         expect(derived.doubleCounter).toBe(2);
         expect.verifySteps([]);
         source.subObj.counter++;
         expect(derived.doubleCounter).toBe(4);
-        // reactive gets notified even for computed properties dervied from nested objects
+        // Reactive gets notified even for computed properties dervied from nested objects
         expect.verifySteps(["doubleCounter: 4"]);
     });
 });

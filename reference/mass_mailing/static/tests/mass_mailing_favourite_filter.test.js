@@ -1,29 +1,32 @@
-import { expect, test, describe } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 import {
+    MockServer,
+    clickSave,
+    contains,
     defineModels,
     fields,
     models,
     mountView,
     onRpc,
-    contains,
-    clickSave,
-    MockServer,
 } from "@web/../tests/web_test_helpers";
-import { queryFirst } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
+import {queryFirst} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
 
 class Mailing extends models.Model {
     _name = "mailing.mailing";
 
     display_name = fields.Char();
     subject = fields.Char();
-    mailing_model_id = fields.Many2one({ relation: "ir.model", string: "Recipients" });
-    mailing_model_name = fields.Char({ string: "Recipients Model Name" });
-    mailing_filter_id = fields.Many2one({ relation: "mailing.filter", string: "Filters" });
-    mailing_domain = fields.Char({ string: "Domain" });
-    mailing_filter_domain = fields.Char({ related: "mailing_domain", string: "Domain" });
-    mailing_filter_count = fields.Integer({ string: "Filter Count" });
+    mailing_model_id = fields.Many2one({relation: "ir.model", string: "Recipients"});
+    mailing_model_name = fields.Char({string: "Recipients Model Name"});
+    mailing_filter_id = fields.Many2one({
+        relation: "mailing.filter",
+        string: "Filters",
+    });
+    mailing_domain = fields.Char({string: "Domain"});
+    mailing_filter_domain = fields.Char({related: "mailing_domain", string: "Domain"});
+    mailing_filter_count = fields.Integer({string: "Filter Count"});
 
     _records = [
         {
@@ -75,7 +78,10 @@ class MailingFilter extends models.Model {
 
     name = fields.Char();
     mailing_domain = fields.Char();
-    mailing_model_id = fields.Many2one({ relation: "ir.model", string: "Recipients Model" });
+    mailing_model_id = fields.Many2one({
+        relation: "ir.model",
+        string: "Recipients Model",
+    });
 
     _records = [
         {
@@ -93,9 +99,9 @@ class Partner extends models.Model {
     name = fields.Char();
 
     _records = [
-        { id: 1, name: "Azure Interior" },
-        { id: 2, name: "Acme Corporation" },
-        { id: 3, name: "Marc Demo" },
+        {id: 1, name: "Azure Interior"},
+        {id: 2, name: "Acme Corporation"},
+        {id: 3, name: "Marc Demo"},
     ];
 }
 
@@ -105,7 +111,7 @@ class Event extends models.Model {
     name = fields.Char();
     country = fields.Char();
 
-    _records = [{ id: 1, name: "BE Event", country: "be" }];
+    _records = [{id: 1, name: "BE Event", country: "be"}];
 }
 
 defineMailModels();
@@ -207,7 +213,9 @@ test("unlink favorite filter", async () => {
 
     queryFirst(".o_field_mailing_filter input").autocomplete = "widget";
     await contains(".o_field_mailing_filter input").click();
-    expect(".o_field_mailing_filter .dropdown li.ui-menu-item.o_m2o_no_result").toHaveCount(1);
+    expect(
+        ".o_field_mailing_filter .dropdown li.ui-menu-item.o_m2o_no_result"
+    ).toHaveCount(1);
     await clickSave();
 });
 

@@ -1,16 +1,22 @@
-import { Plugin } from "../plugin";
-import { isBlock } from "../utils/blocks";
-import { fillEmpty, splitTextNode } from "../utils/dom";
+import {Plugin} from "../plugin";
+import {isBlock} from "../utils/blocks";
+import {fillEmpty, splitTextNode} from "../utils/dom";
 import {
     isContentEditable,
     isContentEditableAncestor,
     isTextNode,
     isVisible,
 } from "../utils/dom_info";
-import { prepareUpdate } from "../utils/dom_state";
-import { childNodes, closestElement, firstLeaf, lastLeaf, findUpTo } from "../utils/dom_traversal";
-import { DIRECTIONS, childNodeIndex, nodeSize } from "../utils/position";
-import { isProtected, isProtecting } from "@html_editor/utils/dom_info";
+import {prepareUpdate} from "../utils/dom_state";
+import {
+    childNodes,
+    closestElement,
+    firstLeaf,
+    lastLeaf,
+    findUpTo,
+} from "../utils/dom_traversal";
+import {DIRECTIONS, childNodeIndex, nodeSize} from "../utils/position";
+import {isProtected, isProtecting} from "@html_editor/utils/dom_info";
 
 /**
  * @typedef { Object } SplitShared
@@ -33,7 +39,14 @@ import { isProtected, isProtecting } from "@html_editor/utils/dom_info";
  */
 
 export class SplitPlugin extends Plugin {
-    static dependencies = ["baseContainer", "selection", "history", "input", "delete", "lineBreak"];
+    static dependencies = [
+        "baseContainer",
+        "selection",
+        "history",
+        "input",
+        "delete",
+        "lineBreak",
+    ];
     static id = "split";
     static shared = [
         "splitBlock",
@@ -92,7 +105,8 @@ export class SplitPlugin extends Plugin {
     // --------------------------------------------------------------------------
     splitBlock() {
         this.dispatchTo("before_split_block_handlers");
-        let selection = this.dependencies.selection.getSelectionData().deepEditableSelection;
+        let selection =
+            this.dependencies.selection.getSelectionData().deepEditableSelection;
         if (!selection.isCollapsed) {
             // @todo @phoenix collapseIfZWS is not tested
             // this.shared.collapseIfZWS();
@@ -114,13 +128,13 @@ export class SplitPlugin extends Plugin {
      * @param {number} param0.targetOffset
      * @returns {[HTMLElement|undefined, HTMLElement|undefined]}
      */
-    splitBlockNode({ targetNode, targetOffset }) {
+    splitBlockNode({targetNode, targetOffset}) {
         if (targetNode.nodeType === Node.TEXT_NODE) {
             targetOffset = splitTextNode(targetNode, targetOffset);
             targetNode = targetNode.parentElement;
         }
         const blockToSplit = closestElement(targetNode, isBlock);
-        const params = { targetNode, targetOffset, blockToSplit };
+        const params = {targetNode, targetOffset, blockToSplit};
 
         if (this.delegateTo("split_element_block_overrides", params)) {
             return [undefined, undefined];
@@ -135,7 +149,7 @@ export class SplitPlugin extends Plugin {
      * @param {HTMLElement} param0.blockToSplit
      * @returns {[HTMLElement|undefined, HTMLElement|undefined]}
      */
-    splitElementBlock({ targetNode, targetOffset, blockToSplit }) {
+    splitElementBlock({targetNode, targetOffset, blockToSplit}) {
         // If the block is unsplittable or the targetNode is within an
         // unsplittable element, insert a line break instead.
         if (
@@ -146,7 +160,10 @@ export class SplitPlugin extends Plugin {
             // unsplittable.  The check must be done from the targetNode up to
             // the block for unsplittables. There are apparently no tests for
             // this.
-            this.dependencies.lineBreak.insertLineBreakElement({ targetNode, targetOffset });
+            this.dependencies.lineBreak.insertLineBreakElement({
+                targetNode,
+                targetOffset,
+            });
             return [undefined, undefined];
         }
         const restore = prepareUpdate(targetNode, targetOffset);
@@ -208,7 +225,7 @@ export class SplitPlugin extends Plugin {
         firstPart.append(...children.slice(0, offset));
         secondPart.append(...children.slice(offset));
         element.remove();
-        this.dispatchTo("after_split_element_handlers", { firstPart, secondPart });
+        this.dispatchTo("after_split_element_handlers", {firstPart, secondPart});
         return [firstPart, secondPart];
     }
 
@@ -270,13 +287,22 @@ export class SplitPlugin extends Plugin {
                 limitAncestor
             );
         } else if (!after && lastNode.parentElement !== limitAncestor) {
-            return this.splitAroundUntil([firstNode, lastNode.parentElement], limitAncestor);
+            return this.splitAroundUntil(
+                [firstNode, lastNode.parentElement],
+                limitAncestor
+            );
         } else if (!before && firstNode.parentElement !== limitAncestor) {
-            return this.splitAroundUntil([firstNode.parentElement, lastNode], limitAncestor);
+            return this.splitAroundUntil(
+                [firstNode.parentElement, lastNode],
+                limitAncestor
+            );
         }
         // Split up ancestors up to font
         while (after && after.parentElement !== limitAncestor) {
-            afterSplit = this.splitElement(after.parentElement, childNodeIndex(after))[0];
+            afterSplit = this.splitElement(
+                after.parentElement,
+                childNodeIndex(after)
+            )[0];
             after = afterSplit.nextSibling;
         }
         if (after) {
@@ -284,23 +310,34 @@ export class SplitPlugin extends Plugin {
             limitAncestor = afterSplit;
         }
         while (before && before.parentElement !== limitAncestor) {
-            beforeSplit = this.splitElement(before.parentElement, childNodeIndex(before) + 1)[1];
+            beforeSplit = this.splitElement(
+                before.parentElement,
+                childNodeIndex(before) + 1
+            )[1];
             before = beforeSplit.previousSibling;
         }
         if (before) {
-            beforeSplit = this.splitElement(limitAncestor, childNodeIndex(before) + 1)[1];
+            beforeSplit = this.splitElement(
+                limitAncestor,
+                childNodeIndex(before) + 1
+            )[1];
         }
         return beforeSplit || afterSplit || limitAncestor;
     }
 
     splitSelection() {
-        let { startContainer, startOffset, endContainer, endOffset, direction } =
+        let {startContainer, startOffset, endContainer, endOffset, direction} =
             this.dependencies.selection.getEditableSelection();
         const isInSingleContainer = startContainer === endContainer;
-        if (isTextNode(endContainer) && endOffset > 0 && endOffset < nodeSize(endContainer)) {
+        if (
+            isTextNode(endContainer) &&
+            endOffset > 0 &&
+            endOffset < nodeSize(endContainer)
+        ) {
             const endParent = endContainer.parentNode;
             const splitOffset = splitTextNode(endContainer, endOffset);
-            endContainer = endParent.childNodes[splitOffset - 1] || endParent.firstChild;
+            endContainer =
+                endParent.childNodes[splitOffset - 1] || endParent.firstChild;
             if (isInSingleContainer) {
                 startContainer = endContainer;
             }
@@ -332,7 +369,7 @@ export class SplitPlugin extends Plugin {
                       focusNode: startContainer,
                       focusOffset: startOffset,
                   };
-        return this.dependencies.selection.setSelection(selection, { normalize: false });
+        return this.dependencies.selection.setSelection(selection, {normalize: false});
     }
 
     onBeforeInput(e) {

@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api, _
+from odoo import _, api, fields, models
 
 
 class ResCompany(models.Model):
@@ -41,7 +40,7 @@ class ResCompany(models.Model):
         return companies
 
     def write(self, vals):
-        res = super(ResCompany, self).write(vals)
+        res = super().write(vals)
         #if country changed to fr, create the securisation sequence
         for company in self:
             if company._is_accounting_unalterable():

@@ -3,25 +3,32 @@ import {
     StateChangeManager,
     useEmbeddedState,
 } from "@html_editor/others/embedded_component_utils";
-import { Component, onMounted, onWillStart, useEffect, useRef, useState } from "@odoo/owl";
-import { loadBundle } from "@web/core/assets";
-import { cookie } from "@web/core/browser/cookie";
+import {
+    Component,
+    onMounted,
+    onWillStart,
+    useEffect,
+    useRef,
+    useState,
+} from "@odoo/owl";
+import {loadBundle} from "@web/core/assets";
+import {cookie} from "@web/core/browser/cookie";
 import {
     getPreValue,
     highlightPre,
 } from "../../core/syntax_highlighting/syntax_highlighting_utils";
-import { CodeToolbar } from "./code_toolbar";
+import {CodeToolbar} from "./code_toolbar";
 
 export class EmbeddedSyntaxHighlightingComponent extends Component {
     static template = "html_editor.EmbeddedSyntaxHighlighting";
 
-    static components = { CodeToolbar };
+    static components = {CodeToolbar};
     static props = {
-        value: { type: String },
-        languageId: { type: String },
-        onTextareaFocus: { type: Function },
-        convertToParagraph: { type: Function },
-        host: { type: Object },
+        value: {type: String},
+        languageId: {type: String},
+        onTextareaFocus: {type: Function},
+        convertToParagraph: {type: Function},
+        host: {type: Object},
     };
 
     setup() {
@@ -55,7 +62,7 @@ export class EmbeddedSyntaxHighlightingComponent extends Component {
     loadPrism() {
         return loadBundle(
             `html_editor.assets_prism${cookie.get("color_scheme") === "dark" ? "_dark" : ""}`,
-            { targetDoc: this.props.host.ownerDocument }
+            {targetDoc: this.props.host.ownerDocument}
         );
     }
 
@@ -73,7 +80,7 @@ export class EmbeddedSyntaxHighlightingComponent extends Component {
             this.textarea.value = preValue;
         }
         if (focus) {
-            this.textarea.focus({ preventScroll: true });
+            this.textarea.focus({preventScroll: true});
             this.props.onTextareaFocus();
         }
         this.embeddedState.value = this.textarea.value;
@@ -95,7 +102,7 @@ export class EmbeddedSyntaxHighlightingComponent extends Component {
             ev.preventDefault();
             const tabSize = +getComputedStyle(this.textarea).tabSize || 4;
             const tab = " ".repeat(tabSize);
-            const { selectionStart, selectionEnd } = this.textarea;
+            const {selectionStart, selectionEnd} = this.textarea;
             const collapsed = selectionStart === selectionEnd;
             let start = this.textarea.value.slice(0, selectionStart).lastIndexOf("\n");
             start = start === -1 ? 0 : start;
@@ -119,16 +126,24 @@ export class EmbeddedSyntaxHighlightingComponent extends Component {
                 newValue += this.textarea.value
                     .slice(selectionStart, selectionEnd)
                     .replace(regex, "$1");
-                newValue += this.textarea.value.slice(selectionEnd, end).replace(regex, "$1");
+                newValue += this.textarea.value
+                    .slice(selectionEnd, end)
+                    .replace(regex, "$1");
                 // From selection end to end.
                 newValue += this.textarea.value.slice(end, this.textarea.value.length);
             } else {
                 // Insert tabs.
-                if (collapsed && /\S/.test(this.textarea.value.slice(start, selectionStart))) {
+                if (
+                    collapsed &&
+                    /\S/.test(this.textarea.value.slice(start, selectionStart))
+                ) {
                     newValue =
                         this.textarea.value.slice(0, selectionStart) +
                         tab +
-                        this.textarea.value.slice(selectionStart, this.textarea.value.length);
+                        this.textarea.value.slice(
+                            selectionStart,
+                            this.textarea.value.length
+                        );
                 } else {
                     // From 0 to the last \n before selection start.
                     newValue = start ? this.textarea.value.slice(0, start) : tab;
@@ -137,20 +152,28 @@ export class EmbeddedSyntaxHighlightingComponent extends Component {
                         .slice(start, selectionEnd)
                         .replaceAll("\n", `\n${tab}`);
                     // From selection end to end.
-                    newValue += this.textarea.value.slice(selectionEnd, this.textarea.value.length);
+                    newValue += this.textarea.value.slice(
+                        selectionEnd,
+                        this.textarea.value.length
+                    );
                 }
             }
             const insertedChars = newValue.length - this.textarea.value.length;
             this.textarea.value = newValue;
-            const newStart = selectionStart + (ev.shiftKey ? -spacesRemovedAtStart : tabSize);
+            const newStart =
+                selectionStart + (ev.shiftKey ? -spacesRemovedAtStart : tabSize);
             const newEnd = collapsed ? newStart : selectionEnd + insertedChars;
-            this.textarea.setSelectionRange(newStart, newEnd, this.textarea.selectionDirection);
+            this.textarea.setSelectionRange(
+                newStart,
+                newEnd,
+                this.textarea.selectionDirection
+            );
             this.embeddedState.value = this.textarea.value;
         } else if (ev.key === "Backspace") {
             // Transform empty code block into base container on backspace.
             if (this.textarea.value === "") {
                 ev.preventDefault();
-                this.props.convertToParagraph({ target: this.pre });
+                this.props.convertToParagraph({target: this.pre});
             }
         }
     }
@@ -180,6 +203,6 @@ export class EmbeddedSyntaxHighlightingComponent extends Component {
 export const syntaxHighlightingEmbedding = {
     name: "syntaxHighlighting",
     Component: EmbeddedSyntaxHighlightingComponent,
-    getProps: (host) => ({ host, ...getEmbeddedProps(host) }),
+    getProps: (host) => ({host, ...getEmbeddedProps(host)}),
     getStateChangeManager: (config) => new StateChangeManager(config),
 };

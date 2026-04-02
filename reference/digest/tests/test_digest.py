@@ -1,22 +1,23 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from ast import literal_eval
 from contextlib import contextmanager
-from freezegun import freeze_time
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
-from lxml import html
 from unittest.mock import patch
+
+from dateutil.relativedelta import relativedelta
+from freezegun import freeze_time
+from lxml import html
 from werkzeug.urls import url_encode
 
 from odoo import SUPERUSER_ID
-from odoo.addons.base.tests.common import HttpCaseWithUserDemo
-from odoo.addons.digest.tests.common import TestDigestCommon
-from odoo.addons.mail.tests.common import MailCommon
 from odoo.tests import tagged
 from odoo.tests.common import users
 from odoo.tools import mute_logger, urls
+
+from odoo.addons.base.tests.common import HttpCaseWithUserDemo
+from odoo.addons.digest.tests.common import TestDigestCommon
+from odoo.addons.mail.tests.common import MailCommon
 
 
 class TestDigest(TestDigestCommon):
@@ -32,7 +33,7 @@ class TestDigest(TestDigestCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestDigest, cls).setUpClass()
+        super().setUpClass()
         cls.reference_datetime = datetime(2024, 2, 13, 13, 30, 0)
 
         # clean messages
@@ -276,7 +277,7 @@ class TestDigest(TestDigestCommon):
                 ('quarterly', self.reference_datetime.date() + relativedelta(months=3), 'Quaterly ok'),  # just push date
                 ('quarterly', self.reference_datetime.date() + relativedelta(months=3), 'Quaterly ok'),  # just push date
                 ('quarterly', self.reference_datetime.date() + relativedelta(months=3), 'Quaterly ok'),  # just push date
-            ],
+            ], strict=False,
         ):
             with self.subTest(logs=logs, msg=msg, periodicity=periodicity, run_date=run_date):
                 digest.write({
@@ -299,7 +300,7 @@ class TestDigest(TestDigestCommon):
 class TestUnsubscribe(MailCommon, HttpCaseWithUserDemo):
 
     def setUp(self):
-        super(TestUnsubscribe, self).setUp()
+        super().setUp()
 
         self.test_digest = self.env['digest.digest'].create({
             'kpi_mail_message_total': True,

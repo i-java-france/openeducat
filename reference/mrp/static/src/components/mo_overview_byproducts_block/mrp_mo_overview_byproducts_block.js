@@ -1,5 +1,5 @@
-import { MoOverviewOperationsBlock } from "../mo_overview_operations_block/mrp_mo_overview_operations_block";
-import { MoOverviewLine } from "../mo_overview_line/mrp_mo_overview_line";
+import {MoOverviewOperationsBlock} from "../mo_overview_operations_block/mrp_mo_overview_operations_block";
+import {MoOverviewLine} from "../mo_overview_line/mrp_mo_overview_line";
 
 export class MoOverviewByproductsBlock extends MoOverviewOperationsBlock {
     static components = {
@@ -7,7 +7,7 @@ export class MoOverviewByproductsBlock extends MoOverviewOperationsBlock {
     };
     static props = {
         // Keep all props except "operations"
-        ...(({ operations, ...props }) => props)(MoOverviewOperationsBlock.props),
+        ...(({operations, ...props}) => props)(MoOverviewOperationsBlock.props),
         byproducts: Array,
     };
 
@@ -25,5 +25,5 @@ export class MoOverviewByproductsBlock extends MoOverviewOperationsBlock {
 }
 MoOverviewByproductsBlock.props.summary.shape = {
     ...MoOverviewByproductsBlock.props.summary.shape,
-    product_cost: { type: Number, optional: true },
+    product_cost: {type: Number, optional: true},
 };

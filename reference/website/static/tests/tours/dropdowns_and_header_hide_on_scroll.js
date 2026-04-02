@@ -11,7 +11,8 @@ const checkIfUserMenuNotMasked = function () {
     return [
         {
             content: "Click on the user dropdown",
-            trigger: ":iframe #wrapwrap header li.dropdown > a:contains(mitchell admin)",
+            trigger:
+                ":iframe #wrapwrap header li.dropdown > a:contains(mitchell admin)",
             run: "click",
         },
         checkIfVisibleOnScreen(
@@ -22,11 +23,12 @@ const checkIfUserMenuNotMasked = function () {
 
 const scrollDownToMediaList = function () {
     return {
-        content: "Scroll down the page a little to leave the dropdown partially visible",
+        content:
+            "Scroll down the page a little to leave the dropdown partially visible",
         trigger: ":iframe #wrapwrap .s_media_list",
         run() {
             // Scroll down to the media list snippet.
-            this.anchor.scrollIntoView({ behavior: "instant" });
+            this.anchor.scrollIntoView({behavior: "instant"});
         },
     };
 };
@@ -38,9 +40,17 @@ registerWebsitePreviewTour(
         edition: true,
     },
     () => [
-        ...insertSnippet({ id: "s_media_list", name: "Media List", groupName: "Content" }),
+        ...insertSnippet({
+            id: "s_media_list",
+            name: "Media List",
+            groupName: "Content",
+        }),
         selectHeader(),
-        ...changeOptionInPopover("Header", "Scroll Effect", ".dropdown-item:contains('Fixed')"),
+        ...changeOptionInPopover(
+            "Header",
+            "Scroll Effect",
+            ".dropdown-item:contains('Fixed')"
+        ),
         {
             content: "Wait for the option to be applied",
             trigger: "[data-label='Scroll Effect'] .dropdown-toggle:contains('Fixed')",

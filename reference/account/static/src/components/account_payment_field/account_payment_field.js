@@ -1,26 +1,26 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { useService } from "@web/core/utils/hooks";
-import { localization } from "@web/core/l10n/localization";
-import { formatDate, deserializeDate } from "@web/core/l10n/dates";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {useService} from "@web/core/utils/hooks";
+import {localization} from "@web/core/l10n/localization";
+import {formatDate, deserializeDate} from "@web/core/l10n/dates";
 
-import { formatMonetary } from "@web/views/fields/formatters";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
-import { Component } from "@odoo/owl";
+import {formatMonetary} from "@web/views/fields/formatters";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
+import {Component} from "@odoo/owl";
 
 class AccountPaymentPopOver extends Component {
-    static props = { "*": { optional: true } };
+    static props = {"*": {optional: true}};
     static template = "account.AccountPaymentPopOver";
 }
 
 export class AccountPaymentField extends Component {
-    static props = { ...standardFieldProps };
+    static props = {...standardFieldProps};
     static template = "account.AccountPaymentField";
 
     setup() {
         const position = localization.direction === "rtl" ? "bottom" : "left";
-        this.popover = usePopover(AccountPaymentPopOver, { position });
+        this.popover = usePopover(AccountPaymentPopOver, {position});
         this.orm = useService("orm");
         this.action = useService("action");
     }
@@ -39,7 +39,7 @@ export class AccountPaymentField extends Component {
             });
             if (value.date) {
                 // value.date is a string, parse to date and format to the users date format
-                value.formattedDate = formatDate(deserializeDate(value.date))
+                value.formattedDate = formatDate(deserializeDate(value.date));
             }
         }
         return {
@@ -60,18 +60,33 @@ export class AccountPaymentField extends Component {
     }
 
     async assignOutstandingCredit(moveId, id) {
-        await this.orm.call(this.props.record.resModel, 'js_assign_outstanding_line', [moveId, id], {});
+        await this.orm.call(
+            this.props.record.resModel,
+            "js_assign_outstanding_line",
+            [moveId, id],
+            {}
+        );
         await this.props.record.model.root.load();
     }
 
     async removeMoveReconcile(moveId, partialId) {
         this.popover.close();
-        await this.orm.call(this.props.record.resModel, 'js_remove_outstanding_partial', [moveId, partialId], {});
+        await this.orm.call(
+            this.props.record.resModel,
+            "js_remove_outstanding_partial",
+            [moveId, partialId],
+            {}
+        );
         await this.props.record.model.root.load();
     }
 
     async openMove(moveId) {
-        const action = await this.orm.call(this.props.record.resModel, 'action_open_business_doc', [moveId], {});
+        const action = await this.orm.call(
+            this.props.record.resModel,
+            "action_open_business_doc",
+            [moveId],
+            {}
+        );
         this.action.doAction(action);
     }
 }

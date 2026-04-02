@@ -1,7 +1,7 @@
 /** @odoo-module alias=@web/../tests/views/graph_view_tests default=false */
 
-import { click, findChildren, triggerEvent } from "@web/../tests/helpers/utils";
-import { ensureArray } from "@web/core/utils/arrays";
+import {click, findChildren, triggerEvent} from "@web/../tests/helpers/utils";
+import {ensureArray} from "@web/core/utils/arrays";
 
 // TODO: remove when dependant modules are converted
 
@@ -12,7 +12,7 @@ export function checkLabels(assert, graph, expectedLabels) {
 
 export function checkLegend(assert, graph, expectedLegendLabels) {
     expectedLegendLabels = ensureArray(expectedLegendLabels);
-    const { chart } = getGraphRenderer(graph);
+    const {chart} = getGraphRenderer(graph);
     const actualLegendLabels = chart.config.options.plugins.legend.labels
         .generateLabels(chart)
         .map((o) => o.text);
@@ -20,7 +20,7 @@ export function checkLegend(assert, graph, expectedLegendLabels) {
 }
 
 export function clickOnDataset(graph) {
-    const { chart } = getGraphRenderer(graph);
+    const {chart} = getGraphRenderer(graph);
     const meta = chart.getDatasetMeta(0);
     const rectangle = chart.canvas.getBoundingClientRect();
     const point = meta.data[0].getCenterPoint();
@@ -31,7 +31,7 @@ export function clickOnDataset(graph) {
 }
 
 export function getGraphRenderer(graph) {
-    for (const { component } of Object.values(findChildren(graph).children)) {
+    for (const {component} of Object.values(findChildren(graph).children)) {
         if (component.chart) {
             return component;
         }

@@ -1,5 +1,5 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { click, queryAll } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {click, queryAll} from "@odoo/hoot-dom";
 import {
     defineModels,
     fields,
@@ -11,14 +11,14 @@ import {
     toggleSearchBarMenu,
 } from "@web/../tests/web_test_helpers";
 
-import { defineProjectModels } from "./project_models";
+import {defineProjectModels} from "./project_models";
 
 class ProjectTaskBurndownChartReport extends models.Model {
     _name = "project.task.burndown.chart.report";
 
     date = fields.Date();
-    project_id = fields.Many2one({ relation: "project.project" });
-    stage_id = fields.Many2one({ relation: "project.task.type" });
+    project_id = fields.Many2one({relation: "project.project"});
+    stage_id = fields.Many2one({relation: "project.task.type"});
     is_closed = fields.Selection({
         string: "Burnup chart",
         selection: [
@@ -117,12 +117,11 @@ function checkGroupByOrder() {
 
 test("burndown.chart: check that the sort buttons are invisible", async () => {
     await mountView(mountViewParams);
-    expect(".o_cp_bottom_left:has(.btn-group[role=toolbar][aria-label='Sort graph'])").toHaveCount(
-        0,
-        {
-            message: "The sort buttons shouldn't be rendered",
-        }
-    );
+    expect(
+        ".o_cp_bottom_left:has(.btn-group[role=toolbar][aria-label='Sort graph'])"
+    ).toHaveCount(0, {
+        message: "The sort buttons shouldn't be rendered",
+    });
 });
 
 test("burndown.chart: check that removing the group by 'Date: Month > Stage' in the search bar triggers a notification", async () => {

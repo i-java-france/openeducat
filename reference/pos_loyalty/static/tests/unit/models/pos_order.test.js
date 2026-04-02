@@ -1,12 +1,12 @@
-import { test, describe, expect } from "@odoo/hoot";
-import { tick } from "@odoo/hoot-mock";
-import { setupPosEnv, getFilledOrder } from "@point_of_sale/../tests/unit/utils";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
-import { addProductLineToOrder } from "@pos_loyalty/../tests/unit/utils";
+import {describe, expect, test} from "@odoo/hoot";
+import {tick} from "@odoo/hoot-mock";
+import {getFilledOrder, setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {addProductLineToOrder} from "@pos_loyalty/../tests/unit/utils";
 
 definePosModels();
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 describe("pos.order - loyalty", () => {
     test("_getIgnoredProductIdsTotalDiscount", async () => {
@@ -23,8 +23,8 @@ describe("pos.order - loyalty", () => {
 
         const order = await getFilledOrder(store);
         const [line1, line2] = order.getOrderlines();
-        line1.update({ is_reward_line: true });
-        line2.update({ is_reward_line: false, refunded_orderline_id: 123 });
+        line1.update({is_reward_line: true});
+        line2.update({is_reward_line: false, refunded_orderline_id: 123});
 
         // Verify getOrderlines method
         const orderedLines = order.getOrderlines();
@@ -60,8 +60,8 @@ describe("pos.order - loyalty", () => {
         const pricelist2 = models["product.pricelist"].get(2);
 
         order.uiState.couponPointChanges = {
-            key1: { program_id: 1, points: 100 },
-            key2: { program_id: 2, points: 50 },
+            key1: {program_id: 1, points: 100},
+            key2: {program_id: 2, points: 50},
         };
 
         order.setPricelist(pricelist2);
@@ -77,7 +77,7 @@ describe("pos.order - loyalty", () => {
 
         order.uiState.disabledRewards = new Set(["reward1"]);
         order.uiState.codeActivatedProgramRules = ["rule1"];
-        order.uiState.couponPointChanges = { key1: { points: 100 } };
+        order.uiState.couponPointChanges = {key1: {points: 100}};
 
         await addProductLineToOrder(store, order, {
             is_reward_line: true,
@@ -146,7 +146,7 @@ describe("pos.order - loyalty", () => {
 
         order.selected_orderline = line;
 
-        const expirationDate = DateTime.now().plus({ days: 1 }).toISODate();
+        const expirationDate = DateTime.now().plus({days: 1}).toISODate();
         order.processGiftCard("GIFT9999", 100, expirationDate);
 
         const couponChanges = Object.values(order.uiState.couponPointChanges);
@@ -220,7 +220,7 @@ describe("pos.order - loyalty", () => {
         expect(order.isProgramsResettable()).toBe(true);
 
         order.uiState.codeActivatedProgramRules = [];
-        order.uiState.couponPointChanges = { key1: { points: 10 } };
+        order.uiState.couponPointChanges = {key1: {points: 10}};
         expect(order.isProgramsResettable()).toBe(true);
     });
 
@@ -266,7 +266,10 @@ describe("pos.order - loyalty", () => {
         // Get loyalty program #3 - type = "gift_card"
         const giftProgram = models["loyalty.program"].get(3);
 
-        const result = order.isSaleDisallowed({}, { eWalletGiftCardProgram: giftProgram });
+        const result = order.isSaleDisallowed(
+            {},
+            {eWalletGiftCardProgram: giftProgram}
+        );
         expect(result).toBe(false);
     });
 
@@ -281,8 +284,8 @@ describe("pos.order - loyalty", () => {
         order.setPartner(partner1);
 
         order.uiState.couponPointChanges = {
-            key1: { program_id: 5, points: 100 },
-            key2: { program_id: 2, points: 50 },
+            key1: {program_id: 5, points: 100},
+            key2: {program_id: 2, points: 50},
         };
 
         order.setPartner(partner2);

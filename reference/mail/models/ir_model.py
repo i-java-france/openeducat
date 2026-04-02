@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import _, api, fields, models
@@ -67,7 +66,7 @@ class IrModel(models.Model):
         for (fname,) in fnames:
             self.env['ir.attachment']._file_delete(fname)
 
-        return super(IrModel, self).unlink()
+        return super().unlink()
 
     def write(self, vals):
         if self and ('is_mail_thread' in vals or 'is_mail_activity' in vals or 'is_mail_blacklist' in vals):
@@ -79,7 +78,7 @@ class IrModel(models.Model):
                 raise UserError(_('Field "Mail Activity" cannot be changed to "False".'))
             if 'is_mail_blacklist' in vals and any(rec.is_mail_blacklist > vals['is_mail_blacklist'] for rec in self):
                 raise UserError(_('Field "Mail Blacklist" cannot be changed to "False".'))
-            res = super(IrModel, self).write(vals)
+            res = super().write(vals)
             self.env.flush_all()
             # setup models; this reloads custom models in registry
             model_names = self.mapped('model')
@@ -88,11 +87,11 @@ class IrModel(models.Model):
             model_names = self.pool.descendants(model_names, '_inherits')
             self.pool.init_models(self.env.cr, model_names, dict(self.env.context, update_custom_fields=True))
         else:
-            res = super(IrModel, self).write(vals)
+            res = super().write(vals)
         return res
 
     def _reflect_model_params(self, model):
-        vals = super(IrModel, self)._reflect_model_params(model)
+        vals = super()._reflect_model_params(model)
         vals['is_mail_thread'] = isinstance(model, self.pool['mail.thread'])
         vals['is_mail_activity'] = isinstance(model, self.pool['mail.activity.mixin'])
         vals['is_mail_blacklist'] = isinstance(model, self.pool['mail.thread.blacklist'])

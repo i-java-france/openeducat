@@ -1,6 +1,6 @@
-import { Notification } from "@mail/core/common/notification_model";
-import { patch } from "@web/core/utils/patch";
-import { _t } from "@web/core/l10n/translation";
+import {Notification} from "@mail/core/common/notification_model";
+import {patch} from "@web/core/utils/patch";
+import {_t} from "@web/core/l10n/translation";
 
 /** @type {import("models").Notification} */
 const notificationPatch = {

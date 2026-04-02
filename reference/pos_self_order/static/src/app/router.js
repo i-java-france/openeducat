@@ -1,12 +1,12 @@
-import { Component, onWillRender, xml } from "@odoo/owl";
-import { escapeRegExp } from "@web/core/utils/strings";
-import { zip } from "@web/core/utils/arrays";
-import { useService } from "@web/core/utils/hooks";
+import {Component, onWillRender, xml} from "@odoo/owl";
+import {escapeRegExp} from "@web/core/utils/strings";
+import {zip} from "@web/core/utils/arrays";
+import {useService} from "@web/core/utils/hooks";
 
 function parseParams(matches, paramSpecs) {
     return Object.fromEntries(
         zip(matches, paramSpecs).map(([match, paramSpec]) => {
-            const { type, name } = paramSpec;
+            const {type, name} = paramSpec;
             switch (type) {
                 case "int":
                     return [name, parseInt(match)];
@@ -20,7 +20,7 @@ function parseParams(matches, paramSpecs) {
 }
 
 export class Router extends Component {
-    static props = { slots: Object, pos_config_id: Number };
+    static props = {slots: Object, pos_config_id: Number};
     static template = xml`<t t-slot="{{activeSlot}}" t-props="slotProps"/>`;
 
     setup() {
@@ -45,7 +45,7 @@ export class Router extends Component {
 
             const paramSpecs = paramStrings.map((paramString) => {
                 const [, type, name] = paramString.match(/(\w+):(\w+)/);
-                return { type, name };
+                return {type, name};
             });
 
             const regex = new RegExp(
@@ -55,7 +55,7 @@ export class Router extends Component {
                     .join("([^/]+)")}$`
             );
 
-            this.routes[routeName] = { route, paramSpecs, regex };
+            this.routes[routeName] = {route, paramSpecs, regex};
         }
 
         this.router.registerRoutes(this.routes);
@@ -68,7 +68,7 @@ export class Router extends Component {
     matchURL() {
         const path = this.router.path;
 
-        for (const [routeName, { paramSpecs, regex }] of Object.entries(this.routes)) {
+        for (const [routeName, {paramSpecs, regex}] of Object.entries(this.routes)) {
             const match = path.match(regex);
             if (match) {
                 const parsedParams = parseParams(match.slice(2), paramSpecs);

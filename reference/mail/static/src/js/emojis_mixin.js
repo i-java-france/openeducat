@@ -1,6 +1,6 @@
-import { markup } from "@odoo/owl";
+import {markup} from "@odoo/owl";
 
-import { htmlReplace, htmlReplaceAll } from "@web/core/utils/html";
+import {htmlReplace, htmlReplaceAll} from "@web/core/utils/html";
 
 /**
  * Adds a span with a CSS class around chains of emojis in the message for styling purposes.

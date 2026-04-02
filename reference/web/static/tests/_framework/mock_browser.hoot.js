@@ -1,6 +1,6 @@
 // ! WARNING: this module cannot depend on modules not ending with ".hoot" (except libs) !
 
-import { mockLocation } from "@odoo/hoot";
+import {mockLocation} from "@odoo/hoot";
 
 //-----------------------------------------------------------------------------
 // Internal
@@ -32,7 +32,7 @@ const READONLY_PROPERTIES = [
  * @param {string} name
  * @param {OdooModuleFactory} factory
  */
-export function mockBrowserFactory(name, { fn }) {
+export function mockBrowserFactory(name, {fn}) {
     return (...args) => {
         const browserModule = fn(...args);
         const properties = {

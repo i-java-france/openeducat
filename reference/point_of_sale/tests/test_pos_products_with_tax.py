@@ -1,11 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import Command
-
 import odoo
-from odoo.addons.point_of_sale.tests.common import TestPoSCommon
-from odoo.tests import Form
+from odoo import Command
 from odoo.exceptions import UserError
+from odoo.tests import Form
+
+from odoo.addons.point_of_sale.tests.common import TestPoSCommon
 
 
 @odoo.tests.tagged('post_install', '-at_install')
@@ -14,7 +14,7 @@ class TestPoSProductsWithTax(TestPoSCommon):
     """
 
     def setUp(self):
-        super(TestPoSProductsWithTax, self).setUp()
+        super().setUp()
 
         self.config = self.basic_config
         self.product1 = self.create_product(
@@ -168,7 +168,7 @@ class TestPoSProductsWithTax(TestPoSCommon):
 
             manually_calculated_taxes = (-6.81, -44.54)
             self.assertAlmostEqual(sum(manually_calculated_taxes), sum(tax_lines.mapped('balance')))
-            for t1, t2 in zip(sorted(manually_calculated_taxes), sorted(tax_lines.mapped('balance'))):
+            for t1, t2 in zip(sorted(manually_calculated_taxes), sorted(tax_lines.mapped('balance')), strict=False):
                 self.assertAlmostEqual(t1, t2, msg='Taxes should be correctly combined.')
 
             base_amounts = (97.27, 445.46)  # computation does not include invoiced order.
@@ -282,7 +282,7 @@ class TestPoSProductsWithTax(TestPoSCommon):
             manually_calculated_taxes = (4.01, 6.36)  # should be positive since it is return order
             tax_lines = self.pos_session.move_id.line_ids.filtered(lambda line: line.account_id == self.tax_received_account)
             self.assertAlmostEqual(sum(manually_calculated_taxes), sum(tax_lines.mapped('balance')))
-            for t1, t2 in zip(sorted(manually_calculated_taxes), sorted(tax_lines.mapped('balance'))):
+            for t1, t2 in zip(sorted(manually_calculated_taxes), sorted(tax_lines.mapped('balance')), strict=False):
                 self.assertAlmostEqual(t1, t2, msg='Taxes should be correctly combined and should be debit.')
 
         self._run_test({

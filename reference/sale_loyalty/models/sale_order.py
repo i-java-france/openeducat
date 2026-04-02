@@ -838,7 +838,7 @@ class SaleOrder(models.Model):
         """
         self.ensure_one()
         command_list = []
-        for vals, line in zip(reward_vals, old_lines):
+        for vals, line in zip(reward_vals, old_lines, strict=False):
             if vals['product_id'] == line.product_id.id:
                 vals['name'] = line.name  # Preserve custom description
             command_list.append((Command.UPDATE, line.id, vals))
@@ -1119,7 +1119,7 @@ class SaleOrder(models.Model):
                 all_point_changes = [p for p in status['points'] if p]
                 if not all_point_changes and program.is_nominative:
                     all_point_changes = [0]
-                for pe, points in zip(program_point_entries.sudo(), all_point_changes):
+                for pe, points in zip(program_point_entries.sudo(), all_point_changes, strict=False):
                     pe.points = points
                 if len(program_point_entries) < len(all_point_changes):
                     new_coupon_points = all_point_changes[len(program_point_entries):]
@@ -1132,7 +1132,7 @@ class SaleOrder(models.Model):
                         'points': 0,
                         'order_id': self.id,
                     } for _ in new_coupon_points])
-                    self._add_points_for_coupon({coupon: x for coupon, x in zip(new_coupons, new_coupon_points)})
+                    self._add_points_for_coupon({coupon: x for coupon, x in zip(new_coupons, new_coupon_points, strict=False)})
                 elif len(program_point_entries) > len(all_point_changes):
                     point_ids_to_unlink = program_point_entries[len(all_point_changes):]
                     all_coupons -= point_ids_to_unlink.coupon_id
@@ -1386,7 +1386,7 @@ class SaleOrder(models.Model):
                     'points': 0,
                     'order_id': self.id,
                 } for _ in all_points])
-                self._add_points_for_coupon({coupon: x for coupon, x in zip(coupons, all_points)})
+                self._add_points_for_coupon({coupon: x for coupon, x in zip(coupons, all_points, strict=False)})
         return {'coupon': coupons}
 
     def _try_apply_program(self, program, coupon=None):

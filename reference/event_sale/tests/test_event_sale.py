@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.event_sale.tests.common import TestEventSaleCommon
-from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.exceptions import ValidationError
 from odoo.tests import tagged
 from odoo.tests.common import users
+
+from odoo.addons.event_sale.tests.common import TestEventSaleCommon
+from odoo.addons.mail.tests.common import mail_new_test_user
 
 
 @tagged('event_flow')
@@ -13,7 +13,7 @@ class TestEventSale(TestEventSaleCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestEventSale, cls).setUpClass()
+        super().setUpClass()
 
         product = cls.env['product.product'].create({
             'name': 'Event',

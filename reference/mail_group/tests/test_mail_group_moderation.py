@@ -1,21 +1,21 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from psycopg2 import IntegrityError
 
 from odoo import Command, tools
-from odoo.addons.mail_group.tests.data import GROUP_TEMPLATE
-from odoo.addons.mail_group.tests.common import TestMailListCommon
 from odoo.exceptions import AccessError
 from odoo.tests.common import tagged, users
 from odoo.tools import mute_logger
+
+from odoo.addons.mail_group.tests.common import TestMailListCommon
+from odoo.addons.mail_group.tests.data import GROUP_TEMPLATE
 
 
 @tagged('mail_group_moderation')
 class TestMailGroupModeration(TestMailListCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestMailGroupModeration, cls).setUpClass()
+        super().setUpClass()
 
         cls.test_group_2 = cls.env['mail.group'].create({
             'access_mode': 'members',
@@ -129,7 +129,7 @@ class TestModeration(TestMailListCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestModeration, cls).setUpClass()
+        super().setUpClass()
 
         # Test group: members, moderation
         cls.test_group_2 = cls.env['mail.group'].create({

@@ -1,9 +1,9 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { getContent } from "../_helpers/selection";
-import { execCommand } from "../_helpers/userCommands";
-import { simulateArrowKeyPress } from "../_helpers/user_actions";
-import { animationFrame, click, tick } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {getContent} from "../_helpers/selection";
+import {execCommand} from "../_helpers/userCommands";
+import {simulateArrowKeyPress} from "../_helpers/user_actions";
+import {animationFrame, click, tick} from "@odoo/hoot-dom";
 
 async function insertSeparator(editor) {
     execCommand(editor, "insertSeparator");
@@ -72,15 +72,18 @@ describe("insert separator", () => {
 
     test("should insert a separator before a empty p element inside a table cell", async () => {
         await testEditor({
-            contentBefore: "<table><tbody><tr><td><p>[]<br></p></td></tr></tbody></table>",
+            contentBefore:
+                "<table><tbody><tr><td><p>[]<br></p></td></tr></tbody></table>",
             stepFunction: insertSeparator,
-            contentAfter: "<table><tbody><tr><td><hr><p>[]<br></p></td></tr></tbody></table>",
+            contentAfter:
+                "<table><tbody><tr><td><hr><p>[]<br></p></td></tr></tbody></table>",
         });
     });
 
     test("should insert a separator after a p element containing text inside a table cell", async () => {
         await testEditor({
-            contentBefore: "<table><tbody><tr><td><p>content[]</p></td></tr></tbody></table>",
+            contentBefore:
+                "<table><tbody><tr><td><p>content[]</p></td></tr></tbody></table>",
             stepFunction: insertSeparator,
             contentAfter:
                 "<table><tbody><tr><td><p>content</p><hr><p>[]<br></p></td></tr></tbody></table>",
@@ -104,7 +107,7 @@ describe("insert separator", () => {
     });
 
     test("should set the contenteditable attribute to false on the separator when inserted as a child after normalization", async () => {
-        const { el, editor } = await setupEditor("<p>[]<br></p>");
+        const {el, editor} = await setupEditor("<p>[]<br></p>");
         const div = editor.document.createElement("div");
         const separator = editor.document.createElement("hr");
         div.append(separator);
@@ -116,7 +119,7 @@ describe("insert separator", () => {
     });
 
     test("should apply custom selection on separator when selected", async () => {
-        const { el, editor } = await setupEditor("<p>abc</p><p>x[]yz</p>");
+        const {el, editor} = await setupEditor("<p>abc</p><p>x[]yz</p>");
         await insertSeparator(editor);
         expect(getContent(el)).toBe(
             `<p>abc</p><p>xyz</p><hr contenteditable="false"><p o-we-hint-text='Type "/" for commands' class="o-we-hint">[]<br></p>`
@@ -131,7 +134,7 @@ describe("insert separator", () => {
     });
 
     test("should remove custom selection on separator when not selected", async () => {
-        const { el, editor } = await setupEditor(
+        const {el, editor} = await setupEditor(
             '<p>[abc</p><hr contenteditable="false"><p>xyz]</p>'
         );
         expect(getContent(el)).toBe(
@@ -141,11 +144,15 @@ describe("insert separator", () => {
         simulateArrowKeyPress(editor, ["Shift", "ArrowUp"]);
         await animationFrame();
 
-        expect(getContent(el)).toBe(`<p>[abc]</p><hr contenteditable="false"><p>xyz</p>`);
+        expect(getContent(el)).toBe(
+            `<p>[abc]</p><hr contenteditable="false"><p>xyz</p>`
+        );
     });
 
     test("should remove custom selection on separator when click outside of editor", async () => {
-        const { el } = await setupEditor('<p>[abc</p><hr contenteditable="false"><p>xyz]</p>');
+        const {el} = await setupEditor(
+            '<p>[abc</p><hr contenteditable="false"><p>xyz]</p>'
+        );
         expect(getContent(el)).toBe(
             `<p>[abc</p><hr contenteditable="false" class="o_selected_hr"><p>xyz]</p>`
         );

@@ -1,9 +1,9 @@
-import { registries, chartHelpers } from "@odoo/o-spreadsheet";
-import { _t } from "@web/core/l10n/translation";
-import { OdooChart } from "./odoo_chart";
-import { onOdooChartItemHover, onOdooChartItemClick } from "./odoo_chart_helpers";
+import {registries, chartHelpers} from "@odoo/o-spreadsheet";
+import {_t} from "@web/core/l10n/translation";
+import {OdooChart} from "./odoo_chart";
+import {onOdooChartItemHover, onOdooChartItemClick} from "./odoo_chart_helpers";
 
-const { chartRegistry } = registries;
+const {chartRegistry} = registries;
 
 const {
     getComboChartDatasets,
@@ -48,18 +48,20 @@ export class OdooComboChart extends OdooChart {
 
 chartRegistry.add("odoo_combo", {
     match: (type) => type === "odoo_combo",
-    createChart: (definition, sheetId, getters) => new OdooComboChart(definition, sheetId, getters),
+    createChart: (definition, sheetId, getters) =>
+        new OdooComboChart(definition, sheetId, getters),
     getChartRuntime: createOdooChartRuntime,
     validateChartDefinition: (validator, definition) =>
         OdooComboChart.validateChartDefinition(validator, definition),
     transformDefinition: (definition) => OdooComboChart.transformDefinition(definition),
-    getChartDefinitionFromContextCreation: () => OdooComboChart.getDefinitionFromContextCreation(),
+    getChartDefinitionFromContextCreation: () =>
+        OdooComboChart.getDefinitionFromContextCreation(),
     name: _t("Combo"),
 });
 
 function createOdooChartRuntime(chart, getters) {
     const background = chart.background || "#FFFFFF";
-    const { datasets, labels } = chart.dataSource.getData();
+    const {datasets, labels} = chart.dataSource.getData();
     const definition = chart.getDefinition();
 
     const trendDataSetsValues = datasets.map((dataset, index) => {
@@ -71,7 +73,7 @@ function createOdooChartRuntime(chart, getters) {
 
     const chartData = {
         labels,
-        dataSetsValues: datasets.map((ds) => ({ data: ds.data, label: ds.label })),
+        dataSetsValues: datasets.map((ds) => ({data: ds.data, label: ds.label})),
         locale: getters.getLocale(),
         trendDataSetsValues,
     };
@@ -97,5 +99,5 @@ function createOdooChartRuntime(chart, getters) {
         },
     };
 
-    return { background, chartJsConfig: config };
+    return {background, chartJsConfig: config};
 }

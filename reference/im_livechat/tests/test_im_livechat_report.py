@@ -1,12 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, timedelta
-from freezegun import freeze_time
 from unittest.mock import patch
 
+from freezegun import freeze_time
+
 from odoo import Command
-from odoo.addons.im_livechat.tests.common import TestImLivechatCommon
 from odoo.tests.common import new_test_user, tagged
+
+from odoo.addons.im_livechat.tests.common import TestImLivechatCommon
 
 
 @tagged("post_install", "-at_install")

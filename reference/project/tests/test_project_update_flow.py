@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 from dateutil.relativedelta import relativedelta
 
@@ -6,6 +5,7 @@ from odoo import fields
 from odoo.tests import Form, tagged
 
 from odoo.addons.project.tests.test_project_base import TestProjectCommon
+
 
 @tagged('-at_install', 'post_install')
 class TestProjectUpdate(TestProjectCommon):

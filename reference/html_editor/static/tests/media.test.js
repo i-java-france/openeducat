@@ -1,16 +1,24 @@
-import { EDITABLE_MEDIA_CLASS } from "@html_editor/utils/dom_info";
-import { describe, expect, test } from "@odoo/hoot";
-import { click, press, waitFor, waitForNone } from "@odoo/hoot-dom";
-import { animationFrame, tick } from "@odoo/hoot-mock";
-import { contains, makeMockEnv, onRpc, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { cleanHints } from "./_helpers/dispatch";
-import { base64Img, setupEditor, testEditor } from "./_helpers/editor";
-import { getContent } from "./_helpers/selection";
-import { expectElementCount } from "./_helpers/ui_expectations";
-import { deleteBackward, deleteForward, insertText } from "./_helpers/user_actions";
-import { MAIN_PLUGINS, NO_EMBEDDED_COMPONENTS_FALLBACK_PLUGINS } from "@html_editor/plugin_sets";
-import { delay } from "@web/core/utils/concurrency";
-import { ImageCrop } from "@html_editor/main/media/image_crop";
+import {EDITABLE_MEDIA_CLASS} from "@html_editor/utils/dom_info";
+import {describe, expect, test} from "@odoo/hoot";
+import {click, press, waitFor, waitForNone} from "@odoo/hoot-dom";
+import {animationFrame, tick} from "@odoo/hoot-mock";
+import {
+    contains,
+    makeMockEnv,
+    onRpc,
+    patchWithCleanup,
+} from "@web/../tests/web_test_helpers";
+import {cleanHints} from "./_helpers/dispatch";
+import {base64Img, setupEditor, testEditor} from "./_helpers/editor";
+import {getContent} from "./_helpers/selection";
+import {expectElementCount} from "./_helpers/ui_expectations";
+import {deleteBackward, deleteForward, insertText} from "./_helpers/user_actions";
+import {
+    MAIN_PLUGINS,
+    NO_EMBEDDED_COMPONENTS_FALLBACK_PLUGINS,
+} from "@html_editor/plugin_sets";
+import {delay} from "@web/core/utils/concurrency";
+import {ImageCrop} from "@html_editor/main/media/image_crop";
 
 test("Can replace an image", async () => {
     onRpc("ir.attachment", "search_read", () => [
@@ -24,10 +32,13 @@ test("Can replace an image", async () => {
         },
     ]);
     const env = await makeMockEnv();
-    await setupEditor(`<p> <img class="img-fluid" src="/web/static/img/logo.png"> </p>`, { env });
+    await setupEditor(
+        `<p> <img class="img-fluid" src="/web/static/img/logo.png"> </p>`,
+        {env}
+    );
     expect("img[src='/web/static/img/logo.png']").toHaveCount(1);
     await click("img");
-    await tick(); // selectionchange
+    await tick(); // Selectionchange
     await waitFor(".o-we-toolbar");
     expect("button[name='replace_image']").toHaveCount(1);
     await click("button[name='replace_image']");
@@ -51,11 +62,16 @@ test("Replace an image with link by a document should remove the link", async ()
     const env = await makeMockEnv();
     await setupEditor(
         `<p><a href="http://test.com"><img class="img-fluid" src="/web/static/img/logo.png"></a></p>`,
-        { env, config: { Plugins: [...MAIN_PLUGINS, ...NO_EMBEDDED_COMPONENTS_FALLBACK_PLUGINS] } }
+        {
+            env,
+            config: {
+                Plugins: [...MAIN_PLUGINS, ...NO_EMBEDDED_COMPONENTS_FALLBACK_PLUGINS],
+            },
+        }
     );
     expect("img[src='/web/static/img/logo.png']").toHaveCount(1);
     await click("img");
-    await tick(); // selectionchange
+    await tick(); // Selectionchange
     await waitFor(".o-we-toolbar");
     expect("button[name='replace_image']").toHaveCount(1);
     await click("button[name='replace_image']");
@@ -71,13 +87,16 @@ test("Replace an image with link by a document should remove the link", async ()
 test("Replace an image by icon should remove invalid classes", async () => {
     onRpc("ir.attachment", "search_read", () => []);
     const env = await makeMockEnv();
-    await setupEditor(`<p><img class="img-fluid w-100" src="/web/static/img/logo.png"></p>`, {
-        env,
-    });
+    await setupEditor(
+        `<p><img class="img-fluid w-100" src="/web/static/img/logo.png"></p>`,
+        {
+            env,
+        }
+    );
     expect("img[src='/web/static/img/logo.png']").toHaveCount(1);
     expect("img[src='/web/static/img/logo.png']").toHaveClass("img-fluid w-100");
     await click("img");
-    await tick(); // selectionchange
+    await tick(); // Selectionchange
     await waitFor(".o-we-toolbar");
     expect("button[name='replace_image']").toHaveCount(1);
     await click("button[name='replace_image']");
@@ -105,9 +124,9 @@ test("Selection is collapsed after the image after replacing it", async () => {
         },
     ]);
     const env = await makeMockEnv();
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         `<p>abc<img class="img-fluid" src="/web/static/img/logo.png">def</p>`,
-        { env }
+        {env}
     );
     await click("img");
     await waitFor(".o-we-toolbar");
@@ -121,12 +140,12 @@ test("Selection is collapsed after the image after replacing it", async () => {
 
 test("should not preserve image styles when replacing an image with an icon", async () => {
     onRpc("ir.attachment", "search_read", () => []);
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         `<p><img class="img-fluid" src="/web/static/img/logo.png" style="width: 25%; transform: scaleX(2) scaleY(1);"></p>`
     );
     expect("img[src='/web/static/img/logo.png']").toHaveCount(1);
     await click("img");
-    await tick(); // selectionchange
+    await tick(); // Selectionchange
     await waitFor(".o-we-toolbar");
     expect("button[name='replace_image']").toHaveCount(1);
     await click("button[name='replace_image']");
@@ -153,7 +172,7 @@ test("Can insert an image, and selection should be collapsed after it", async ()
         },
     ]);
     const env = await makeMockEnv();
-    const { editor, el } = await setupEditor("<p>a[]bc</p>", { env });
+    const {editor, el} = await setupEditor("<p>a[]bc</p>", {env});
     await insertText(editor, "/image");
     await animationFrame();
     await expectElementCount(".o-we-powerbox", 1);
@@ -168,7 +187,7 @@ test("Can insert an image, and selection should be collapsed after it", async ()
 test("press escape to close media dialog", async () => {
     onRpc("ir.attachment", "search_read", () => []);
     const env = await makeMockEnv();
-    const { editor, el } = await setupEditor("<p>a[]bc</p>", { env });
+    const {editor, el} = await setupEditor("<p>a[]bc</p>", {env});
     await insertText(editor, "/image");
     await waitFor(".o-we-powerbox");
     await press("Enter");
@@ -183,13 +202,13 @@ test("press escape to close media dialog", async () => {
 
 describe("Powerbox search keywords", () => {
     test("Image and Icon are keywords for the Media command", async () => {
-        const { editor } = await setupEditor("<p>[]<br></p>");
+        const {editor} = await setupEditor("<p>[]<br></p>");
         await insertText(editor, "/");
         for (const word of ["image", "icon"]) {
             await insertText(editor, word);
             await animationFrame();
             expect(".active .o-we-command-name").toHaveText("Media");
-            // delete the keyword to try the next one
+            // Delete the keyword to try the next one
             for (let i = 0; i < word.length; i++) {
                 await press("backspace");
             }
@@ -201,7 +220,7 @@ describe("(non-)editable media", () => {
     describe.tags("desktop");
     describe("toolbar", () => {
         test("toolbar should open when clicking on an image in an editable context", async () => {
-            const { editor } = await setupEditor(
+            const {editor} = await setupEditor(
                 `<div contenteditable="true"><img src="${base64Img}"></div>`
             );
             await click("img");
@@ -215,7 +234,7 @@ describe("(non-)editable media", () => {
             );
         });
         test("toolbar should not open when clicking on an image in an non-editable context", async () => {
-            const { editor } = await setupEditor(
+            const {editor} = await setupEditor(
                 `<div contenteditable="false"><img src="${base64Img}"></div>`
             );
             await click("img");
@@ -226,7 +245,7 @@ describe("(non-)editable media", () => {
             );
         });
         test("toolbar should open when clicking on an editable image in a non-editable context", async () => {
-            const { editor } = await setupEditor(
+            const {editor} = await setupEditor(
                 `<div contenteditable="false"><img src="${base64Img}" class="${EDITABLE_MEDIA_CLASS}"></div>`
             );
             await click("img");
@@ -333,7 +352,7 @@ test("cropper should not open for external image", async () => {
     await animationFrame();
 
     await click('.btn[name="image_crop"]');
-    await waitFor(".o_notification_manager .o_notification", { timeout: 1000 });
+    await waitFor(".o_notification_manager .o_notification", {timeout: 1000});
     expect("img.o_we_cropper_img").toHaveCount(0);
 });
 
@@ -357,17 +376,17 @@ test("Image cropper disappear on backspace", async () => {
     onRpc("/html_editor/get_image_info", async () => {
         await delay(50);
         return {
-            original: { image_src: base64Image },
+            original: {image_src: base64Image},
         };
     });
     await setupEditor(`<p>[<img src="${base64Image}">]</p>`);
     await waitFor(".o-we-toolbar");
 
     await contains('.o-we-toolbar .btn[name="image_crop"]').click();
-    await waitFor(".o_we_crop_widget", { timeout: 1000 });
+    await waitFor(".o_we_crop_widget", {timeout: 1000});
     expect("img.o_we_cropper_img").toHaveCount(1);
     await cropperReadyPromise;
     press("backspace");
-    await waitForNone(".o_we_crop_widget", { timeout: 1000 });
+    await waitForNone(".o_we_crop_widget", {timeout: 1000});
     expect("img.o_we_cropper_img").toHaveCount(0);
 });

@@ -2,11 +2,12 @@
 
 import logging
 import mimetypes
+
 import requests
 import werkzeug.utils
 from werkzeug.urls import url_encode
 
-from odoo import http, modules, _
+from odoo import _, http, modules
 from odoo.http import request
 from odoo.tools.image import image_process
 from odoo.tools.mimetypes import guess_mimetype

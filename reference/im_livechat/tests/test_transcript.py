@@ -1,5 +1,6 @@
 from odoo.tests.common import JsonRpcException, tagged
 from odoo.tools import mute_logger
+
 from odoo.addons.base.tests.common import HttpCaseWithUserDemo, HttpCaseWithUserPortal
 from odoo.addons.im_livechat.tests.common import TestImLivechatCommon
 

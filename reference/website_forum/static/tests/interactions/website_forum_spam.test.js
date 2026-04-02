@@ -1,8 +1,11 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { advanceTime, click, edit, fill, queryAll, tick } from "@odoo/hoot-dom";
-import { Deferred } from "@odoo/hoot-mock";
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
-import { onRpc } from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {advanceTime, click, edit, fill, queryAll, tick} from "@odoo/hoot-dom";
+import {Deferred} from "@odoo/hoot-mock";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
+import {onRpc} from "@web/../tests/web_test_helpers";
 
 setupInteractionWhiteList("website_forum.website_forum_spam");
 describe.current.tags("interaction_dev");
@@ -31,23 +34,23 @@ const template = (options = {}) => `
 `;
 
 test("spamIds returns empty array if dataset is empty", async () => {
-    const { core } = await startInteractions(template());
+    const {core} = await startInteractions(template());
     expect(core.interactions[0].interaction.spamIDs).toHaveLength(0);
 });
 
 test("keep last spam input search", async () => {
-    await startInteractions(template({ spamIds: true }));
+    await startInteractions(template({spamIds: true}));
 
     const def = new Deferred();
     def.then(() => expect.step("rpc"));
     onRpc("forum.post", "search_read", async () => await def);
     await click("#spamSearch");
     await fill("coucou");
-    await advanceTime(201); // debounced
+    await advanceTime(201); // Debounced
     await edit("hello");
-    await advanceTime(201); // debounced
+    await advanceTime(201); // Debounced
     expect.verifySteps([]);
-    def.resolve([{ content: "<div>hello</div>"}]);
+    def.resolve([{content: "<div>hello</div>"}]);
     await tick();
     expect.verifySteps(["rpc"]);
     expect(".post_spam").toHaveText("hello");

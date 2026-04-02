@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
-
-from odoo import models
 
 import re
+
+from odoo import models
 
 
 class AccountEdiXmlUbl_Efff(models.AbstractModel):

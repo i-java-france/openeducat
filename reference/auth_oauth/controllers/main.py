@@ -1,24 +1,20 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import base64
 import functools
 import json
 import logging
-import os
 
 import werkzeug.urls
 import werkzeug.utils
 from werkzeug.exceptions import BadRequest
 
-from odoo import api, http, SUPERUSER_ID, _
+from odoo import SUPERUSER_ID, _, api, http
 from odoo.exceptions import AccessDenied
-from odoo.http import request, Response
+from odoo.http import Response, request
 from odoo.modules.registry import Registry
 from odoo.tools.misc import clean_context
 
 from odoo.addons.auth_signup.controllers.main import AuthSignupHome as Home
-from odoo.addons.web.controllers.utils import ensure_db, _get_login_redirect_url
-
+from odoo.addons.web.controllers.utils import _get_login_redirect_url, ensure_db
 
 _logger = logging.getLogger(__name__)
 
@@ -93,7 +89,7 @@ class OAuthLogin(Home):
             return request.redirect(request.params.get('redirect'))
         providers = self.list_providers()
 
-        response = super(OAuthLogin, self).web_login(*args, **kw)
+        response = super().web_login(*args, **kw)
         if response.is_qweb:
             error = request.params.get('oauth_error')
             if error == '1':
@@ -112,7 +108,7 @@ class OAuthLogin(Home):
         return response
 
     def get_auth_signup_qcontext(self):
-        result = super(OAuthLogin, self).get_auth_signup_qcontext()
+        result = super().get_auth_signup_qcontext()
         result["providers"] = self.list_providers()
         return result
 

@@ -4,10 +4,10 @@ import {
     serializeDate,
     serializeDateTime,
 } from "@web/core/l10n/dates";
-import { ORM } from "@web/core/orm_service";
-import { registry } from "@web/core/registry";
-import { cartesian, sortBy as arraySortBy, unique } from "@web/core/utils/arrays";
-import { parseServerValue } from "./relational_model/utils";
+import {ORM} from "@web/core/orm_service";
+import {registry} from "@web/core/registry";
+import {cartesian, sortBy as arraySortBy, unique} from "@web/core/utils/arrays";
+import {parseServerValue} from "./relational_model/utils";
 
 class UnimplementedRouteError extends Error {}
 
@@ -27,7 +27,9 @@ function serializeGroupDateValue(range, field) {
         return false;
     }
     const dateValue = parseServerValue(field, range[0]);
-    return field.type === "date" ? serializeDate(dateValue) : serializeDateTime(dateValue);
+    return field.type === "date"
+        ? serializeDate(dateValue)
+        : serializeDateTime(dateValue);
 }
 
 /**
@@ -47,7 +49,13 @@ function fieldNameRegex(...terms) {
 }
 
 const MEASURE_SPEC_REGEX = /(?<fieldName>\w+):(?<func>\w+)/;
-const DESCRIPTION_REGEX = fieldNameRegex("description", "label", "title", "subject", "message");
+const DESCRIPTION_REGEX = fieldNameRegex(
+    "description",
+    "label",
+    "title",
+    "subject",
+    "message"
+);
 const EMAIL_REGEX = fieldNameRegex("email");
 const PHONE_REGEX = fieldNameRegex("phone");
 const URL_REGEX = fieldNameRegex("url");
@@ -81,9 +89,9 @@ export class SampleServer {
             if (["many2one", "one2many", "many2many"].includes(field.type)) {
                 this.data[field.relation] = this.data[field.relation] || {
                     fields: {
-                        display_name: { type: "char" },
-                        id: { type: "integer" },
-                        color: { type: "integer" },
+                        display_name: {type: "char"},
+                        id: {type: "integer"},
+                        color: {type: "integer"},
                     },
                     records: [],
                 };
@@ -146,7 +154,9 @@ export class SampleServer {
         if (mockFunction) {
             return mockFunction.call(this, params);
         }
-        console.log(`SampleServer: unimplemented route "${params.method || params.route}"`);
+        console.log(
+            `SampleServer: unimplemented route "${params.method || params.route}"`
+        );
         throw new SampleServer.UnimplementedRouteError();
     }
 
@@ -165,7 +175,7 @@ export class SampleServer {
      */
     _aggregateFields(measures, records) {
         const group = {};
-        for (const { fieldName, func, name } of measures) {
+        for (const {fieldName, func, name} of measures) {
             if (["sum", "sum_currency", "avg", "max", "min"].includes(func)) {
                 if (!records.length) {
                     group[name] = false;
@@ -181,7 +191,9 @@ export class SampleServer {
             } else if (func === "__count") {
                 group[name] = records.length;
             } else if (func === "count_distinct") {
-                group[name] = unique(records.map((r) => r[fieldName])).filter(Boolean).length;
+                group[name] = unique(records.map((r) => r[fieldName])).filter(
+                    Boolean
+                ).length;
             } else if (func === "bool_or") {
                 group[name] = records.some((r) => Boolean(r[fieldName]));
             } else if (func === "bool_and") {
@@ -207,7 +219,7 @@ export class SampleServer {
         if (!value) {
             return false;
         }
-        const { type, interval, relation } = options;
+        const {type, interval, relation} = options;
         if (["date", "datetime"].includes(type) && value) {
             const deserialize = type === "date" ? deserializeDate : deserializeDateTime;
             const serialize = type === "date" ? serializeDate : serializeDateTime;
@@ -215,7 +227,7 @@ export class SampleServer {
             const fmt = SampleServer.FORMATS[interval];
             return [serialize(from), from.toFormat(fmt)];
         } else if (["many2one", "many2many"].includes(type)) {
-            const rec = this.data[relation].records.find(({ id }) => id === value);
+            const rec = this.data[relation].records.find(({id}) => id === value);
             return [value, rec.display_name];
         } else {
             return value;
@@ -292,7 +304,10 @@ export class SampleServer {
                 return this._getRandomSubRecordId();
             case "one2many":
             case "many2many": {
-                const ids = [this._getRandomSubRecordId(), this._getRandomSubRecordId()];
+                const ids = [
+                    this._getRandomSubRecordId(),
+                    this._getRandomSubRecordId(),
+                ];
                 return [...new Set(ids)];
             }
             case "selection": {
@@ -325,8 +340,10 @@ export class SampleServer {
      * @returns {DateTime}
      */
     _getRandomDate() {
-        const delta = Math.floor((Math.random() - Math.random()) * SampleServer.DATE_DELTA);
-        return luxon.DateTime.local().plus({ hours: delta });
+        const delta = Math.floor(
+            (Math.random() - Math.random()) * SampleServer.DATE_DELTA
+        );
+        return luxon.DateTime.local().plus({hours: delta});
     }
 
     /**
@@ -384,15 +401,19 @@ export class SampleServer {
             if (!ids.includes(r.id)) {
                 continue;
             }
-            const record = { id: r.id };
+            const record = {id: r.id};
             for (const fieldName of fieldNames) {
                 const field = model.fields[fieldName];
                 if (!field) {
                     record[fieldName] = false; // unknown field
                 } else if (field.type === "many2one") {
                     const relModel = this.data[field.relation];
-                    const relRecord = relModel.records.find((relR) => r[fieldName] === relR.id);
-                    record[fieldName] = relRecord ? [relRecord.id, relRecord.display_name] : false;
+                    const relRecord = relModel.records.find(
+                        (relR) => r[fieldName] === relR.id
+                    );
+                    record[fieldName] = relRecord
+                        ? [relRecord.id, relRecord.display_name]
+                        : false;
                 } else {
                     record[fieldName] = r[fieldName];
                 }
@@ -420,9 +441,9 @@ export class SampleServer {
 
         for (const groupBySpec of groupBy) {
             const [fieldName, interval] = groupBySpec.split(":");
-            const { type, relation } = fields[fieldName];
+            const {type, relation} = fields[fieldName];
             if (type) {
-                const gb = { fieldName, type, interval, relation, alias: groupBySpec };
+                const gb = {fieldName, type, interval, relation, alias: groupBySpec};
                 normalizedGroupBys.push(gb);
             }
         }
@@ -430,7 +451,7 @@ export class SampleServer {
         const groupsFromRecord = (record) => {
             const values = [];
             for (const gb of normalizedGroupBys) {
-                const { fieldName, type, alias } = gb;
+                const {fieldName, type, alias} = gb;
                 let fieldVals;
                 if (["date", "datetime"].includes(type)) {
                     fieldVals = [this._formatValue(record[fieldName], gb)];
@@ -439,7 +460,7 @@ export class SampleServer {
                 } else {
                     fieldVals = [record[fieldName]];
                 }
-                values.push(fieldVals.map((val) => ({ [alias]: val })));
+                values.push(fieldVals.map((val) => ({[alias]: val})));
             }
             const cart = cartesian(...values);
             return cart.map((tuple) => {
@@ -466,25 +487,31 @@ export class SampleServer {
         const measures = [];
         for (const measureSpec of aggregates) {
             if (measureSpec === "__count") {
-                measures.push({ fieldName: "__count", func: "__count", name: measureSpec });
+                measures.push({
+                    fieldName: "__count",
+                    func: "__count",
+                    name: measureSpec,
+                });
                 continue;
             }
             const matches = measureSpec.match(MEASURE_SPEC_REGEX);
             if (!matches) {
-                throw new Error(`Invalidate Aggregate "${measureSpec}" in SampleServer`);
+                throw new Error(
+                    `Invalidate Aggregate "${measureSpec}" in SampleServer`
+                );
             }
-            const { fieldName, func } = matches.groups;
-            measures.push({ fieldName, func, name: measureSpec });
+            const {fieldName, func} = matches.groups;
+            measures.push({fieldName, func, name: measureSpec});
         }
 
         let result = [];
         for (const id in groups) {
             const records = groups[id];
-            const group = { __extra_domain: [] };
+            const group = {__extra_domain: []};
             const firstElem = records[0];
             const parsedId = JSON.parse(id);
             for (const gb of normalizedGroupBys) {
-                const { alias, fieldName, type } = gb;
+                const {alias, fieldName, type} = gb;
                 if (type === "many2many") {
                     group[alias] = this._formatValue(parsedId[fieldName], gb);
                 } else {
@@ -495,7 +522,7 @@ export class SampleServer {
             result.push(group);
         }
         if (normalizedGroupBys.length > 0) {
-            const { alias, type } = normalizedGroupBys[0];
+            const {alias, type} = normalizedGroupBys[0];
             result = arraySortBy(result, (group) => {
                 const val = group[alias];
                 if (type === "datetime") {
@@ -521,7 +548,7 @@ export class SampleServer {
     _mockFormattedReadGroupingSets(params) {
         const res = [];
         for (const groupBy of params.grouping_sets) {
-            res.push(this._mockFormattedReadGroup({ ...params, groupBy }));
+            res.push(this._mockFormattedReadGroup({...params, groupBy}));
         }
         return res;
     }
@@ -576,7 +603,9 @@ export class SampleServer {
         const model = this.data[params.model];
         let rawRecords = model.records;
         if ("recordIds" in params) {
-            rawRecords = model.records.filter((record) => params.recordIds.includes(record.id));
+            rawRecords = model.records.filter((record) =>
+                params.recordIds.includes(record.id)
+            );
         } else {
             rawRecords = rawRecords.slice(0, SampleServer.SEARCH_READ_LIMIT);
         }
@@ -584,7 +613,7 @@ export class SampleServer {
             model: params.model,
             args: [rawRecords.map((r) => r.id), fields],
         });
-        const result = { records, length: records.length };
+        const result = {records, length: records.length};
         // populate many2one and x2many values
         for (const fieldName in params.specification) {
             const field = this.data[params.model].fields[fieldName];
@@ -599,7 +628,9 @@ export class SampleServer {
                 }
             }
             if (field.type === "one2many" || field.type === "many2many") {
-                const relFields = Object.keys(params.specification[fieldName].fields || {});
+                const relFields = Object.keys(
+                    params.specification[fieldName].fields || {}
+                );
                 if (relFields.length) {
                     const relIds = result.records.map((r) => r[fieldName]).flat();
                     const relRecords = {};
@@ -611,7 +642,9 @@ export class SampleServer {
                         relRecords[relRecord.id] = relRecord;
                     }
                     for (const record of result.records) {
-                        record[fieldName] = record[fieldName].map((resId) => relRecords[resId]);
+                        record[fieldName] = record[fieldName].map(
+                            (resId) => relRecords[resId]
+                        );
                     }
                 }
             }
@@ -637,10 +670,10 @@ export class SampleServer {
         }
         let groups;
         if (this.existingGroups) {
-            this._tweakExistingGroups({ ...params, aggregates });
+            this._tweakExistingGroups({...params, aggregates});
             groups = this.existingGroups;
         } else {
-            groups = this._mockFormattedReadGroup({ ...params, aggregates });
+            groups = this._mockFormattedReadGroup({...params, aggregates});
         }
         // Don't care another params - and no subgroup:
         // order / opening_info / unfold_read_default_limit / groupby_read_specification
@@ -696,9 +729,14 @@ export class SampleServer {
         for (const r of this.data[params.model].records) {
             const group = getSampleFromId(r.id, groups);
             if (["date", "datetime"].includes(groupByField.type)) {
-                r[groupBy] = serializeGroupDateValue(group[params.groupBy[0]], groupByField);
+                r[groupBy] = serializeGroupDateValue(
+                    group[params.groupBy[0]],
+                    groupByField
+                );
             } else if (groupByField.type === "many2one") {
-                r[groupBy] = group[params.groupBy[0]] ? group[params.groupBy[0]][0] : false;
+                r[groupBy] = group[params.groupBy[0]]
+                    ? group[params.groupBy[0]][0]
+                    : false;
             } else {
                 r[groupBy] = group[params.groupBy[0]];
             }
@@ -720,9 +758,13 @@ export class SampleServer {
                         ? SampleServer.MAIN_RECORDSET_SIZE
                         : SampleServer.SUB_RECORDSET_SIZE;
                 for (let id = 1; id <= size; id++) {
-                    const record = { id };
+                    const record = {id};
                     for (const fieldName of fieldNames) {
-                        record[fieldName] = this._generateFieldValue(modelName, fieldName, id);
+                        record[fieldName] = this._generateFieldValue(
+                            modelName,
+                            fieldName,
+                            id
+                        );
                     }
                     model.records.push(record);
                 }
@@ -767,9 +809,15 @@ export class SampleServer {
         for (const g of groups) {
             const recordsInGroup = records.filter((r) => {
                 if (["date", "datetime"].includes(groupByField.type)) {
-                    return r[groupBy] === serializeGroupDateValue(g[fullGroupBy], groupByField);
+                    return (
+                        r[groupBy] ===
+                        serializeGroupDateValue(g[fullGroupBy], groupByField)
+                    );
                 } else if (groupByField.type === "many2one") {
-                    return (!r[groupBy] && !g[fullGroupBy]) || r[groupBy] === g[fullGroupBy][0];
+                    return (
+                        (!r[groupBy] && !g[fullGroupBy]) ||
+                        r[groupBy] === g[fullGroupBy][0]
+                    );
                 }
                 return r[groupBy] === g[fullGroupBy];
             });
@@ -786,7 +834,10 @@ export class SampleServer {
                         this.data[params.model].fields[fieldName].type
                     )
                 ) {
-                    g[aggregateSpec] = recordsInGroup.reduce((acc, r) => acc + r[fieldName], 0);
+                    g[aggregateSpec] = recordsInGroup.reduce(
+                        (acc, r) => acc + r[fieldName],
+                        0
+                    );
                 }
             }
         }
@@ -801,13 +852,15 @@ SampleServer.FORMATS = {
     year: "y",
 };
 SampleServer.INTERVALS = {
-    day: (dt) => dt.plus({ days: 1 }),
-    week: (dt) => dt.plus({ weeks: 1 }),
-    month: (dt) => dt.plus({ months: 1 }),
-    quarter: (dt) => dt.plus({ months: 3 }),
-    year: (dt) => dt.plus({ years: 1 }),
+    day: (dt) => dt.plus({days: 1}),
+    week: (dt) => dt.plus({weeks: 1}),
+    month: (dt) => dt.plus({months: 1}),
+    quarter: (dt) => dt.plus({months: 3}),
+    year: (dt) => dt.plus({years: 1}),
 };
-SampleServer.DISPLAY_FORMATS = Object.assign({}, SampleServer.FORMATS, { day: "dd MMM yyyy" });
+SampleServer.DISPLAY_FORMATS = Object.assign({}, SampleServer.FORMATS, {
+    day: "dd MMM yyyy",
+});
 
 SampleServer.MAIN_RECORDSET_SIZE = 16;
 SampleServer.SUB_RECORDSET_SIZE = 5;
@@ -820,7 +873,13 @@ SampleServer.MAX_MONETARY = 100000;
 SampleServer.DATE_DELTA = 24 * 60; // in hours -> 60 days
 SampleServer.FLOAT_PRECISION = 2;
 
-SampleServer.SAMPLE_COUNTRIES = ["Belgium", "France", "Portugal", "Singapore", "Australia"];
+SampleServer.SAMPLE_COUNTRIES = [
+    "Belgium",
+    "France",
+    "Portugal",
+    "Singapore",
+    "Australia",
+];
 SampleServer.SAMPLE_PEOPLE = [
     "John Miller",
     "Henry Campbell",
@@ -848,9 +907,9 @@ SampleServer.UnimplementedRouteError = UnimplementedRouteError;
 export function buildSampleORM(resModel, fields, user) {
     const sampleServer = new SampleServer(resModel, fields);
     const fakeRPC = async (_, params) => {
-        const { args, kwargs, method, model } = params;
-        const { groupby: groupBy } = kwargs;
-        return sampleServer.mockRpc({ method, model, args, ...kwargs, groupBy });
+        const {args, kwargs, method, model} = params;
+        const {groupby: groupBy} = kwargs;
+        return sampleServer.mockRpc({method, model, args, ...kwargs, groupBy});
     };
     const sampleORM = new ORM(user);
     sampleORM.rpc = fakeRPC;

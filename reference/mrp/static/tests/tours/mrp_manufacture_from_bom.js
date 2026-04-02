@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 registry.category("web_tour.tours").add("test_manufacture_from_bom", {
     steps: () => [
@@ -11,7 +11,7 @@ registry.category("web_tour.tours").add("test_manufacture_from_bom", {
             run: "click",
         },
         {
-            trigger: '.fa-toggle-off',
+            trigger: ".fa-toggle-off",
             run: "click",
         },
         {

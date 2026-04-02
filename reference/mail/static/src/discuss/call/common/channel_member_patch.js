@@ -1,8 +1,8 @@
-import { ChannelMember } from "@mail/discuss/core/common/channel_member_model";
-import { fields } from "@mail/core/common/record";
+import {ChannelMember} from "@mail/discuss/core/common/channel_member_model";
+import {fields} from "@mail/core/common/record";
 
-import { browser } from "@web/core/browser/browser";
-import { patch } from "@web/core/utils/patch";
+import {browser} from "@web/core/browser/browser";
+import {patch} from "@web/core/utils/patch";
 
 ChannelMember.CANCEL_CALL_INVITE_DELAY = 30000;
 /** @type {import("models").ChannelMember} */

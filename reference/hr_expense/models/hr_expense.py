@@ -1,15 +1,22 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import logging
 import re
 
-from markupsafe import Markup
-import logging
 import werkzeug
+from markupsafe import Markup
 
-from odoo import api, fields, Command, models, _
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import RedirectWarning, UserError, ValidationError
-from odoo.tools import clean_context, email_normalize, float_repr, float_round, format_date, is_html_empty, parse_version
-
+from odoo.tools import (
+    clean_context,
+    email_normalize,
+    float_repr,
+    float_round,
+    format_date,
+    is_html_empty,
+    parse_version,
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -1563,14 +1570,14 @@ class HrExpense(models.Model):
         moves_sudo = self.env['account.move'].sudo()
 
         if company_account_expenses:
-            move_vals_list, payment_vals_list = zip(*[expense._prepare_payments_vals() for expense in company_account_expenses])
+            move_vals_list, payment_vals_list = zip(*[expense._prepare_payments_vals() for expense in company_account_expenses], strict=False)
 
             payment_moves_sudo = self.env['account.move'].sudo().create(move_vals_list)
-            for payment_vals, move in zip(payment_vals_list, payment_moves_sudo):
+            for payment_vals, move in zip(payment_vals_list, payment_moves_sudo, strict=False):
                 payment_vals['move_id'] = move.id
 
             payments_sudo = self.env['account.payment'].sudo().create(payment_vals_list)
-            for payment_sudo, move_sudo in zip(payments_sudo, payment_moves_sudo):
+            for payment_sudo, move_sudo in zip(payments_sudo, payment_moves_sudo, strict=False):
                 move_sudo.update({
                     'origin_payment_id': payment_sudo.id,
                     # We need to put the journal_id because editing origin_payment_id triggers a re-computation chain

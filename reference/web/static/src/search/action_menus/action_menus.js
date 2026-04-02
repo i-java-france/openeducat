@@ -1,12 +1,12 @@
-import { browser } from "@web/core/browser/browser";
-import { makeContext } from "@web/core/context";
-import { session } from "@web/session";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+import {browser} from "@web/core/browser/browser";
+import {makeContext} from "@web/core/context";
+import {session} from "@web/session";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
 
-import { Component, onWillStart, onWillUpdateProps, useState } from "@odoo/owl";
+import {Component, onWillStart, onWillUpdateProps, useState} from "@odoo/owl";
 
 export const STATIC_ACTIONS_GROUP_NUMBER = 1;
 export const ACTIONS_GROUP_NUMBER = 100;
@@ -31,19 +31,19 @@ export class ActionMenus extends Component {
         getActiveIds: Function,
         context: Object,
         resModel: String,
-        printDropdownTitle: { type: String, optional: true },
-        domain: { type: Array, optional: true },
-        isDomainSelected: { type: Boolean, optional: true },
+        printDropdownTitle: {type: String, optional: true},
+        domain: {type: Array, optional: true},
+        isDomainSelected: {type: Boolean, optional: true},
         items: {
             type: Object,
             shape: {
-                action: { type: Array, optional: true },
-                print: { type: Array, optional: true },
+                action: {type: Array, optional: true},
+                print: {type: Array, optional: true},
             },
         },
-        onActionExecuted: { type: Function, optional: true },
-        shouldExecuteAction: { type: Function, optional: true },
-        loadExtraPrintItems: { type: Function, optional: true },
+        onActionExecuted: {type: Function, optional: true},
+        shouldExecuteAction: {type: Function, optional: true},
+        loadExtraPrintItems: {type: Function, optional: true},
     };
     static defaultProps = {
         printDropdownTitle: _t("Print"),
@@ -55,7 +55,7 @@ export class ActionMenus extends Component {
     setup() {
         this.orm = useService("orm");
         this.actionService = useService("action");
-        this.state = useState({ printItems: []})
+        this.state = useState({printItems: []});
         onWillStart(async () => {
             this.actionItems = await this.getActionItems(this.props);
         });
@@ -72,7 +72,10 @@ export class ActionMenus extends Component {
         return (props.items.action || []).map((action) => {
             if (action.callback) {
                 return Object.assign(
-                    { key: `action-${action.description}`, groupNumber: ACTIONS_GROUP_NUMBER },
+                    {
+                        key: `action-${action.description}`,
+                        groupNumber: ACTIONS_GROUP_NUMBER,
+                    },
                     action
                 );
             } else {

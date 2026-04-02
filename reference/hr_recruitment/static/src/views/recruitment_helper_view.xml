@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <t t-name="hr_recruitment.RecruitmentActionHelper">
         <div class="o_view_nocontent">
@@ -7,8 +7,11 @@
                     Ready to recruit more efficiently?
                 </p>
                 <p>
-                    <a type="object" class="btn btn-link mt-3"
-                        t-on-click="() => this.actionCreateJobPosition()">
+                    <a
+                        type="object"
+                        class="btn btn-link mt-3"
+                        t-on-click="() => this.actionCreateJobPosition()"
+                    >
                         Let's create a job position.
                     </a>
                 </p>
@@ -17,8 +20,11 @@
                         <hr class="flex-grow-1" /> or <hr class="flex-grow-1" />
                     </div>
 
-                    <a type="object" class="btn btn-secondary mt-3"
-                        t-on-click="() => this.loadRecruitmentScenario()">
+                    <a
+                        type="object"
+                        class="btn btn-secondary mt-3"
+                        t-on-click="() => this.loadRecruitmentScenario()"
+                    >
                         Load sample data
                     </a>
                 </t>

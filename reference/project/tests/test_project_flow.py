@@ -1,7 +1,9 @@
-from .test_project_base import TestProjectCommon
 from odoo import Command
-from odoo.addons.mail.tests.common import MailCase
 from odoo.exceptions import AccessError
+
+from odoo.addons.mail.tests.common import MailCase
+
+from .test_project_base import TestProjectCommon
 
 
 class TestProjectFlow(TestProjectCommon, MailCase):

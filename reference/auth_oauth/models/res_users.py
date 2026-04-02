@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
 
 import requests
-from werkzeug import http, datastructures
+from werkzeug import datastructures, http
 
 if hasattr(datastructures.WWWAuthenticate, "from_header"):
     parse_auth = datastructures.WWWAuthenticate.from_header
@@ -13,6 +12,7 @@ else:
 
 from odoo import api, fields, models
 from odoo.exceptions import AccessDenied, AccessError, UserError
+
 from odoo.addons.auth_signup.models.res_users import SignupError
 
 

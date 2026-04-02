@@ -1,4 +1,4 @@
-import { models, Command } from "@web/../tests/web_test_helpers";
+import {models, Command} from "@web/../tests/web_test_helpers";
 
 export class PosOrder extends models.ServerModel {
     _name = "pos.order";
@@ -25,7 +25,7 @@ export class PosOrder extends models.ServerModel {
         const orderIds = [];
 
         for (const record of records) {
-            this.write([record.id], { state: "cancel" });
+            this.write([record.id], {state: "cancel"});
             orderIds.push(record.id);
         }
 
@@ -36,7 +36,7 @@ export class PosOrder extends models.ServerModel {
 
     create() {
         const orderId = super.create(...arguments);
-        this.write([orderId], { pos_reference: "000-0-000000" });
+        this.write([orderId], {pos_reference: "000-0-000000"});
         return orderId;
     }
 
@@ -67,18 +67,28 @@ export class PosOrder extends models.ServerModel {
                                 [["uuid", "in", uuids]],
                                 ["id", "uuid"]
                             );
-                            const ownerRecord = ownerRecords.find((r) => r.uuid === uuid);
+                            const ownerRecord = ownerRecords.find(
+                                (r) => r.uuid === uuid
+                            );
                             if (ownerRecord) {
                                 this.env[modelName].write([ownerRecord.id], {
-                                    [name]: relatedRecords.map((r) => Command.link(r.id)),
+                                    [name]: relatedRecords.map((r) =>
+                                        Command.link(r.id)
+                                    ),
                                 });
                             }
                         } else {
                             // single record relation (many2one)
-                            const record = this.env[field.relation].search([["uuid", "=", uuids]]);
-                            const ownerRecord = ownerRecords.find((r) => r.uuid === uuid);
+                            const record = this.env[field.relation].search([
+                                ["uuid", "=", uuids],
+                            ]);
+                            const ownerRecord = ownerRecords.find(
+                                (r) => r.uuid === uuid
+                            );
                             if (ownerRecord && record) {
-                                this.env[modelName].write([ownerRecord.id], { [name]: record[0] });
+                                this.env[modelName].write([ownerRecord.id], {
+                                    [name]: record[0],
+                                });
                             }
                         }
                     }
@@ -96,7 +106,11 @@ export class PosOrder extends models.ServerModel {
         const posOrderLine = [];
         const posPackOperationLot = [];
         const posCustomAttributeValue = [];
-        const readOrder = this.read(orderIds, this._load_pos_data_fields(config_id), false);
+        const readOrder = this.read(
+            orderIds,
+            this._load_pos_data_fields(config_id),
+            false
+        );
 
         for (const order of readOrder) {
             posOrder.push(order);
@@ -120,9 +134,13 @@ export class PosOrder extends models.ServerModel {
             const customAttributeValueIds = lines.flatMap(
                 (line) => line.custom_attribute_value_ids
             );
-            const customAttributeValues = this.env["product.attribute.custom.value"].read(
+            const customAttributeValues = this.env[
+                "product.attribute.custom.value"
+            ].read(
                 customAttributeValueIds,
-                this.env["product.attribute.custom.value"]._load_pos_data_fields(config_id),
+                this.env["product.attribute.custom.value"]._load_pos_data_fields(
+                    config_id
+                ),
                 false
             );
 

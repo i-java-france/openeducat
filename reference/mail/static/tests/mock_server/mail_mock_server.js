@@ -1,4 +1,4 @@
-import { markup } from "@odoo/owl";
+import {markup} from "@odoo/owl";
 import {
     authenticate,
     getKwArgs,
@@ -11,11 +11,11 @@ import {
     serverState,
     unmakeKwArgs,
 } from "@web/../tests/web_test_helpers";
-import { Domain } from "@web/core/domain";
-import { serializeDateTime } from "@web/core/l10n/dates";
-import { registry } from "@web/core/registry";
-import { groupBy } from "@web/core/utils/arrays";
-import { createDocumentFragmentFromContent } from "@web/core/utils/html";
+import {Domain} from "@web/core/domain";
+import {serializeDateTime} from "@web/core/l10n/dates";
+import {registry} from "@web/core/registry";
+import {groupBy} from "@web/core/utils/arrays";
+import {createDocumentFragmentFromContent} from "@web/core/utils/html";
 
 const mockRpcRegistry = registry.category("mail.mock_rpc");
 export const DISCUSS_ACTION_ID = 104;
@@ -25,11 +25,11 @@ export const DISCUSS_ACTION_ID = 104;
  * @typedef {import("@web/../tests/web_test_helpers").RouteCallback<T>} RouteCallback
  */
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 /** @param {import("./mock_model").MailGuest} guest */
 export const authenticateGuest = (guest) => {
-    const { env } = MockServer;
+    const {env} = MockServer;
     /** @type {import("mock_models").ResUsers} */
     const ResUsers = env["res.users"];
     if (!guest?.id) {
@@ -48,7 +48,7 @@ export const authenticateGuest = (guest) => {
  * @param {() => any} fn
  */
 export async function withGuest(guestId, fn) {
-    const { env } = MockServer;
+    const {env} = MockServer;
     /** @type {import("mock_models").MailGuest} */
     const MailGuest = env["mail.guest"];
     const currentUser = env.user;
@@ -74,8 +74,8 @@ export const parseRequestParams = async (request) => {
     return response.params;
 };
 
-const onRpcBeforeGlobal = { cb: (route, args) => {} };
-const onRpcAfterGlobal = { cb: (route, args) => {} };
+const onRpcBeforeGlobal = {cb: (route, args) => {}};
+const onRpcAfterGlobal = {cb: (route, args) => {}};
 // using a registry category to not expose for manual import
 // We should use `onRpcBefore`/`onRpcAfter` with 1st parameter being (route, args) callback function
 registry.category("mail.on_rpc_before_global").add(true, onRpcBeforeGlobal);
@@ -130,12 +130,14 @@ async function mail_attachment_upload(request) {
         res_model: model,
     });
     if (body.get("voice")) {
-        DiscussVoiceMetadata.create({ attachment_id: attachmentId });
+        DiscussVoiceMetadata.create({attachment_id: attachmentId});
     }
     return {
         data: {
             attachment_id: attachmentId,
-            store_data: new mailDataHelpers.Store(IrAttachment.browse(attachmentId)).get_result(),
+            store_data: new mailDataHelpers.Store(
+                IrAttachment.browse(attachmentId)
+            ).get_result(),
         },
     };
 }
@@ -150,7 +152,7 @@ async function mail_attachment_delete(request) {
     /** @type {import("mock_models").ResPartner} */
     const ResPartner = this.env["res.partner"];
 
-    const { attachment_id } = await parseRequestParams(request);
+    const {attachment_id} = await parseRequestParams(request);
     const [partner] = ResPartner.read(this.env.user.partner_id);
     BusBus._sendone(partner, "ir.attachment/delete", {
         id: attachment_id,
@@ -170,17 +172,19 @@ async function load_attachments(request) {
         older_attachment_id = null,
     } = await parseRequestParams(request);
     const attachmentIds = IrAttachment.filter(
-        ({ id, res_id, res_model }) =>
+        ({id, res_id, res_model}) =>
             res_id === channel_id &&
             res_model === "discuss.channel" &&
             (!older_attachment_id || id < older_attachment_id)
     )
         .sort()
         .slice(0, limit)
-        .map(({ id }) => id);
+        .map(({id}) => id);
     return {
         count: attachmentIds.length,
-        store_data: new mailDataHelpers.Store(IrAttachment.browse(attachmentIds)).get_result(),
+        store_data: new mailDataHelpers.Store(
+            IrAttachment.browse(attachmentIds)
+        ).get_result(),
     };
 }
 
@@ -194,24 +198,36 @@ async function channel_call_join(request) {
     /** @type {import("mock_models").DiscussChannelRtcSession} */
     const DiscussChannelRtcSession = this.env["discuss.channel.rtc.session"];
 
-    const { channel_id } = await parseRequestParams(request);
-    const memberOfCurrentUser = DiscussChannel._find_or_create_member_for_self(channel_id);
+    const {channel_id} = await parseRequestParams(request);
+    const memberOfCurrentUser =
+        DiscussChannel._find_or_create_member_for_self(channel_id);
     const sessionId = DiscussChannelRtcSession.create({
         channel_member_id: memberOfCurrentUser.id,
         channel_id, // on the server, this is a related field from channel_member_id and not explicitly set
         guest_id: memberOfCurrentUser.guest_id,
         partner_id: memberOfCurrentUser.partner_id,
     });
-    const channelMembers = DiscussChannelMember._filter([["channel_id", "=", channel_id]]);
+    const channelMembers = DiscussChannelMember._filter([
+        ["channel_id", "=", channel_id],
+    ]);
     const rtcSessions = DiscussChannelRtcSession._filter([
-        ["channel_member_id", "in", channelMembers.map((channelMember) => channelMember.id)],
+        [
+            "channel_member_id",
+            "in",
+            channelMembers.map((channelMember) => channelMember.id),
+        ],
     ]);
     return new mailDataHelpers.Store(DiscussChannel.browse(channel_id), {
-        rtc_session_ids: mailDataHelpers.Store.many(rtcSessions, makeKwArgs({ mode: "ADD" })),
+        rtc_session_ids: mailDataHelpers.Store.many(
+            rtcSessions,
+            makeKwArgs({mode: "ADD"})
+        ),
     })
         .add("Rtc", {
             iceServers: false,
-            localSession: mailDataHelpers.Store.one(DiscussChannelRtcSession.browse(sessionId)),
+            localSession: mailDataHelpers.Store.one(
+                DiscussChannelRtcSession.browse(sessionId)
+            ),
         })
         .get_result();
 }
@@ -232,13 +248,17 @@ async function channel_call_leave(request) {
     /** @type {import("mock_models").ResPartner} */
     const ResPartner = this.env["res.partner"];
 
-    const { channel_id } = await parseRequestParams(request);
+    const {channel_id} = await parseRequestParams(request);
     const channelMembers = DiscussChannelMember._filter([
         ["channel_id", "=", channel_id],
         ["is_self", "=", true],
     ]);
     const rtcSessions = DiscussChannelRtcSession._filter([
-        ["channel_member_id", "in", channelMembers.map((channelMember) => channelMember.id)],
+        [
+            "channel_member_id",
+            "in",
+            channelMembers.map((channelMember) => channelMember.id),
+        ],
     ]);
     const notifications = [];
     const sessionsByChannelId = {};
@@ -250,14 +270,18 @@ async function channel_call_leave(request) {
         sessionsByChannelId[member.channel_id].push(session);
     }
     for (const [channelId, sessions] of Object.entries(sessionsByChannelId)) {
-        const channel = DiscussChannel.search_read([["id", "=", parseInt(channelId)]])[0];
+        const channel = DiscussChannel.search_read([
+            ["id", "=", parseInt(channelId)],
+        ])[0];
         notifications.push([
             channel,
             "mail.record/insert",
             new mailDataHelpers.Store(DiscussChannel.browse(Number(channelId)), {
                 rtc_session_ids: mailDataHelpers.Store.many(
-                    DiscussChannelRtcSession.browse(sessions.map((session) => session.id)),
-                    makeKwArgs({ only_id: true, mode: "DELETE" })
+                    DiscussChannelRtcSession.browse(
+                        sessions.map((session) => session.id)
+                    ),
+                    makeKwArgs({only_id: true, mode: "DELETE"})
                 ),
             }).get_result(),
         ]);
@@ -269,10 +293,12 @@ async function channel_call_leave(request) {
         notifications.push([
             target,
             "discuss.channel.rtc.session/ended",
-            { sessionId: rtcSession.id },
+            {sessionId: rtcSession.id},
         ]);
     }
-    this.env["discuss.channel.rtc.session"].unlink(Array.from(rtcSessions).map(({ id }) => id));
+    this.env["discuss.channel.rtc.session"].unlink(
+        Array.from(rtcSessions).map(({id}) => id)
+    );
     BusBus._sendmany(notifications);
 }
 
@@ -282,7 +308,7 @@ async function discuss_channel_members(request) {
     /** @type {import("mock_models").DiscussChannel} */
     const DiscussChannel = this.env["discuss.channel"];
 
-    const { channel_id, known_member_ids } = await parseRequestParams(request);
+    const {channel_id, known_member_ids} = await parseRequestParams(request);
     return DiscussChannel._load_more_members([channel_id], known_member_ids);
 }
 
@@ -292,10 +318,10 @@ async function discuss_channel_messages(request) {
     /** @type {import("mock_models").MailMessage} */
     const MailMessage = this.env["mail.message"];
 
-    const { channel_id, fetch_params = {} } = await parseRequestParams(request);
+    const {channel_id, fetch_params = {}} = await parseRequestParams(request);
     const channel = this.env["discuss.channel"].browse(channel_id);
     const res = MailMessage._message_fetch([], channel, makeKwArgs(fetch_params));
-    const { messages } = res;
+    const {messages} = res;
     delete res.messages;
     if (!fetch_params.around) {
         MailMessage.set_message_done(messages.map((message) => message.id));
@@ -304,30 +330,37 @@ async function discuss_channel_messages(request) {
         ...res,
         data: new mailDataHelpers.Store(
             MailMessage.browse(messages.map((message) => message.id)),
-            makeKwArgs({ for_current_user: true })
+            makeKwArgs({for_current_user: true})
         ).get_result(),
         messages: messages.map((message) => message.id),
     };
 }
 
-registerRoute("/discuss/channel/sub_channel/create", discuss_channel_sub_channel_create);
+registerRoute(
+    "/discuss/channel/sub_channel/create",
+    discuss_channel_sub_channel_create
+);
 async function discuss_channel_sub_channel_create(request) {
     /** @type {import("mock_models").DiscussChannel} */
     const DiscussChannel = this.env["discuss.channel"];
-    const { from_message_id, parent_channel_id, name } = await parseRequestParams(request);
+    const {from_message_id, parent_channel_id, name} =
+        await parseRequestParams(request);
     return DiscussChannel._create_sub_channel(
         [parent_channel_id],
-        makeKwArgs({ from_message_id, name })
+        makeKwArgs({from_message_id, name})
     );
 }
 
-registerRoute("/discuss/channel/sub_channel/delete", discuss_channel_sub_channel_delete);
+registerRoute(
+    "/discuss/channel/sub_channel/delete",
+    discuss_channel_sub_channel_delete
+);
 async function discuss_channel_sub_channel_delete(request) {
     /** @type {import("mock_models").DiscussChannel} */
     const DiscussChannel = this.env["discuss.channel"];
     /** @type {import("mock_models").ResPartner} */
     const ResPartner = this.env["res.partner"];
-    const { sub_channel_id } = await parseRequestParams(request);
+    const {sub_channel_id} = await parseRequestParams(request);
     const [partner] = ResPartner.read(this.env.user.partner_id);
     const [subChannel] = DiscussChannel.read(sub_channel_id);
     if (subChannel.author_id[0] !== partner.id) {
@@ -351,12 +384,15 @@ async function discuss_channel_sub_channel_fetch(request) {
     const DiscussChannel = this.env["discuss.channel"];
     /** @type {import("mock_models").MailMessage} */
     const MailMessage = this.env["mail.message"];
-    const { parent_channel_id, before, limit } = await parseRequestParams(request);
+    const {parent_channel_id, before, limit} = await parseRequestParams(request);
     const domain = [["parent_channel_id", "=", parent_channel_id]];
     if (before) {
         domain.push(["id", "<", before]);
     }
-    const subChannels = DiscussChannel.search(domain, makeKwArgs({ limit, order: "id DESC" }));
+    const subChannels = DiscussChannel.search(
+        domain,
+        makeKwArgs({limit, order: "id DESC"})
+    );
     const store = new mailDataHelpers.Store(DiscussChannel.browse(subChannels));
     const lastMessageIds = [];
     for (const channel of subChannels) {
@@ -384,17 +420,17 @@ async function discuss_settings_mute(request) {
     /** @type {import("mock_models").ResPartner} */
     const ResPartner = this.env["res.partner"];
 
-    const { channel_id, minutes } = await parseRequestParams(request);
+    const {channel_id, minutes} = await parseRequestParams(request);
     let mute_until_dt;
     if (minutes === -1) {
         mute_until_dt = serializeDateTime(DateTime.fromISO("9999-12-31T23:59:59"));
     } else if (minutes) {
-        mute_until_dt = serializeDateTime(DateTime.now().plus({ minutes }));
+        mute_until_dt = serializeDateTime(DateTime.now().plus({minutes}));
     } else {
         mute_until_dt = false;
     }
     const member = DiscussChannel._find_or_create_member_for_self(channel_id);
-    DiscussChannelMember.write([member.id], { mute_until_dt });
+    DiscussChannelMember.write([member.id], {mute_until_dt});
     const [partner] = ResPartner.read(this.env.user.partner_id);
     BusBus._sendone(
         partner,
@@ -416,7 +452,7 @@ async function discuss_custom_notifications(request) {
     /** @type {import("mock_models").DiscussChannelMember} */
     const DiscussChannelMember = this.env["discuss.channel.member"];
 
-    const { custom_notifications, channel_id } = await parseRequestParams(request);
+    const {custom_notifications, channel_id} = await parseRequestParams(request);
     let record;
     let model;
     if (!channel_id) {
@@ -440,8 +476,9 @@ async function discuss_channel_notify_typing(request) {
     /** @type {import("mock_models").DiscussChannelMember} */
     const DiscussChannelMember = this.env["discuss.channel.member"];
 
-    const { channel_id, is_typing } = await parseRequestParams(request);
-    const memberOfCurrentUser = DiscussChannel._find_or_create_member_for_self(channel_id);
+    const {channel_id, is_typing} = await parseRequestParams(request);
+    const memberOfCurrentUser =
+        DiscussChannel._find_or_create_member_for_self(channel_id);
     if (!memberOfCurrentUser) {
         return;
     }
@@ -458,7 +495,7 @@ async function discuss_channel_pins(request) {
     /** @type {import("mock_models").MailMessage} */
     const MailMessage = this.env["mail.message"];
 
-    const { channel_id } = await parseRequestParams(request);
+    const {channel_id} = await parseRequestParams(request);
     const messageIds = MailMessage.search([
         ["model", "=", "discuss.channel"],
         ["res_id", "=", channel_id],
@@ -466,7 +503,7 @@ async function discuss_channel_pins(request) {
     ]);
     return new mailDataHelpers.Store(
         MailMessage.browse(messageIds),
-        makeKwArgs({ for_current_user: true })
+        makeKwArgs({for_current_user: true})
     ).get_result();
 }
 
@@ -475,7 +512,7 @@ registerRoute("/discuss/channel/mark_as_read", discuss_channel_mark_as_read);
 async function discuss_channel_mark_as_read(request) {
     /** @type {import("mock_models").DiscussChannel} */
     const DiscussChannelMember = this.env["discuss.channel.member"];
-    const { channel_id, last_message_id } = await parseRequestParams(request);
+    const {channel_id, last_message_id} = await parseRequestParams(request);
     const [partner, guest] = this.env["res.partner"]._get_current_persona();
     const [memberId] = this.env["discuss.channel.member"].search([
         ["channel_id", "=", channel_id],
@@ -493,7 +530,7 @@ registerRoute(
 );
 /** @type {RouteCallback} */
 async function discuss_channel_set_new_message_separator(request) {
-    const { channel_id, message_id } = await parseRequestParams(request);
+    const {channel_id, message_id} = await parseRequestParams(request);
     const [partner, guest] = this.env["res.partner"]._get_current_persona();
     const [memberId] = this.env["discuss.channel.member"].search([
         ["channel_id", "=", channel_id],
@@ -520,10 +557,10 @@ async function discuss_history_messages(request) {
     /** @type {import("mock_models").MailNotification} */
     const MailNotification = this.env["mail.notification"];
 
-    const { fetch_params = {} } = await parseRequestParams(request);
+    const {fetch_params = {}} = await parseRequestParams(request);
     const domain = [["needaction", "=", false]];
     const res = MailMessage._message_fetch(domain, makeKwArgs(fetch_params));
-    const { messages } = res;
+    const {messages} = res;
     delete res.messages;
     const messagesWithNotification = messages.filter((message) => {
         const notifs = MailNotification.search_read([
@@ -537,7 +574,7 @@ async function discuss_history_messages(request) {
         ...res,
         data: new mailDataHelpers.Store(
             MailMessage.browse(messagesWithNotification.map((message) => message.id)),
-            makeKwArgs({ for_current_user: true })
+            makeKwArgs({for_current_user: true})
         ).get_result(),
         messages: mailDataHelpers.Store.many(messages)._get_id(),
     };
@@ -549,16 +586,16 @@ async function discuss_inbox_messages(request) {
     /** @type {import("mock_models").MailMessage} */
     const MailMessage = this.env["mail.message"];
 
-    const { fetch_params = {} } = await parseRequestParams(request);
+    const {fetch_params = {}} = await parseRequestParams(request);
     const domain = [["needaction", "=", true]];
     const res = MailMessage._message_fetch(domain, makeKwArgs(fetch_params));
-    const { messages } = res;
+    const {messages} = res;
     delete res.messages;
     return {
         ...res,
         data: new mailDataHelpers.Store(
             MailMessage.browse(messages.map((message) => message.id)),
-            makeKwArgs({ for_current_user: true, add_followers: true })
+            makeKwArgs({for_current_user: true, add_followers: true})
         ).get_result(),
         messages: messages.map((message) => message.id),
     };
@@ -576,7 +613,7 @@ async function mail_link_preview(request) {
     /** @type {import("mock_models").MailMessage} */
     const MailMessage = this.env["mail.message"];
 
-    const { message_id } = await parseRequestParams(request);
+    const {message_id} = await parseRequestParams(request);
     const [message] = MailMessage.search_read([["id", "=", message_id]]);
     const link = createDocumentFragmentFromContent(markup(message.body)).querySelector(
         "a[href^='https://tenor.com'], a[href='https://make-link-preview.com']"
@@ -613,7 +650,7 @@ async function mail_link_preview_hide(request) {
     /** @type {import("mock_models").MailMessage} */
     const MailMessage = this.env["mail.message"];
 
-    const { message_link_preview_ids } = await parseRequestParams(request);
+    const {message_link_preview_ids} = await parseRequestParams(request);
     const messageLinkPreviews = MailMessageLinkPreview.browse(
         MailMessageLinkPreview.search([["id", "in", message_link_preview_ids]])
     );
@@ -641,7 +678,7 @@ export async function mail_message_post(request) {
     /** @type {import("mock_models").ResPartner} */
     const ResPartner = this.env["res.partner"];
 
-    const { context, post_data, thread_id, thread_model, canned_response_ids } =
+    const {context, post_data, thread_id, thread_model, canned_response_ids} =
         await parseRequestParams(request);
     if (canned_response_ids) {
         for (const cannedResponseId of canned_response_ids) {
@@ -677,16 +714,22 @@ export async function mail_message_post(request) {
         allowedParams.push("parent_id", "special_mentions");
     }
     if (post_data.role_ids?.length) {
-        const userIds = this.env["res.users"].search([["role_ids", "in", post_data.role_ids]]);
-        const partnerIds = this.env["res.partner"].search([["user_ids", "in", userIds]]);
-        post_data.partner_ids = [...new Set([...(post_data.partner_ids || []), ...partnerIds])];
+        const userIds = this.env["res.users"].search([
+            ["role_ids", "in", post_data.role_ids],
+        ]);
+        const partnerIds = this.env["res.partner"].search([
+            ["user_ids", "in", userIds],
+        ]);
+        post_data.partner_ids = [
+            ...new Set([...(post_data.partner_ids || []), ...partnerIds]),
+        ];
     }
     for (const allowedParam of allowedParams) {
         if (post_data[allowedParam] !== undefined) {
             finalData[allowedParam] = post_data[allowedParam];
         }
     }
-    const kwargs = makeKwArgs({ ...finalData, context });
+    const kwargs = makeKwArgs({...finalData, context});
     let messageIds;
     if (thread_model === "discuss.channel") {
         messageIds = DiscussChannel.message_post(thread_id, kwargs);
@@ -701,7 +744,7 @@ export async function mail_message_post(request) {
         message_id: messageIds[0],
         store_data: new mailDataHelpers.Store(
             MailMessage.browse(messageIds[0]),
-            makeKwArgs({ for_current_user: true })
+            makeKwArgs({for_current_user: true})
         ).get_result(),
     };
 }
@@ -711,11 +754,18 @@ registerRoute("/mail/message/reaction", mail_message_reaction);
 async function mail_message_reaction(request) {
     /** @type {import("mock_models").MailMessage} */
     const MailMessage = this.env["mail.message"];
-    const { action, content, message_id } = await parseRequestParams(request);
+    const {action, content, message_id} = await parseRequestParams(request);
     const partner_id = this.env.user?.partner_id ?? false;
     const guest_id = this.env.cookie.get("dgid") ?? false;
     const store = new mailDataHelpers.Store();
-    MailMessage._message_reaction(message_id, content, partner_id, guest_id, action, store);
+    MailMessage._message_reaction(
+        message_id,
+        content,
+        partner_id,
+        guest_id,
+        action,
+        store
+    );
     return store.get_result();
 }
 
@@ -735,7 +785,7 @@ async function mail_message_update_content(request) {
     /** @type {import("mock_models").MailMessage} */
     const MailMessage = this.env["mail.message"];
 
-    const { message_id, update_data } = await parseRequestParams(request);
+    const {message_id, update_data} = await parseRequestParams(request);
     const [message] = MailMessage.browse(message_id);
     const msg_values = {};
     if (update_data.body !== null) {
@@ -774,12 +824,14 @@ async function mail_message_update_content(request) {
         MailMessage._bus_notification_target(message.id),
         "mail.record/insert",
         new mailDataHelpers.Store(MailMessage.browse(message.id), {
-            attachment_ids: mailDataHelpers.Store.many(IrAttachment.browse(message.attachment_ids)),
+            attachment_ids: mailDataHelpers.Store.many(
+                IrAttachment.browse(message.attachment_ids)
+            ),
             body: ["markup", message.body],
             parent_id: mailDataHelpers.Store.one(MailMessage.browse(message.parent_id)),
             partner_ids: mailDataHelpers.Store.many(
                 this.env["res.partner"].browse(message.partner_ids),
-                makeKwArgs({ fields: ["avatar_128", "name"] })
+                makeKwArgs({fields: ["avatar_128", "name"]})
             ),
             pinned_at: message.pinned_at,
             message_link_preview_ids: message.message_link_preview_ids,
@@ -787,13 +839,16 @@ async function mail_message_update_content(request) {
     );
     return new mailDataHelpers.Store(
         MailMessage.browse(message_id),
-        makeKwArgs({ for_current_user: true })
+        makeKwArgs({for_current_user: true})
     ).get_result();
 }
 
-registerRoute("/discuss/channel/<int:cid>/partner/<int:pid>/avatar_128", partnerAvatar128);
+registerRoute(
+    "/discuss/channel/<int:cid>/partner/<int:pid>/avatar_128",
+    partnerAvatar128
+);
 /** @type {RouteCallback} */
-async function partnerAvatar128(request, { cid, pid }) {
+async function partnerAvatar128(request, {cid, pid}) {
     return [cid, pid];
 }
 
@@ -803,10 +858,12 @@ async function mail_thread_partner_from_email(request) {
     /** @type {import("mock_models").ResPartner} */
     const ResPartner = this.env["res.partner"];
 
-    const { thread_model, thread_id, emails } = await parseRequestParams(request);
+    const {thread_model, thread_id, emails} = await parseRequestParams(request);
     // use variables, but don't actually implement py in JS, much effort for nothing
     this.env[thread_model].browse(thread_id);
-    const partners = emails.map((email) => ResPartner.search([["email", "=", email]])[0]);
+    const partners = emails.map(
+        (email) => ResPartner.search([["email", "=", email]])[0]
+    );
     for (const index in partners) {
         if (!partners[index]) {
             const email = emails[index];
@@ -818,7 +875,7 @@ async function mail_thread_partner_from_email(request) {
     }
     return partners.map((partner_id) => {
         const [partner] = ResPartner.browse(partner_id);
-        return { id: partner_id, name: partner.name, email: partner.email };
+        return {id: partner_id, name: partner.name, email: partner.email};
     });
 }
 
@@ -830,7 +887,7 @@ async function read_subscription_data(request) {
     /** @type {import("mock_models").MailMessageSubtype} */
     const MailMessageSubtype = this.env["mail.message.subtype"];
 
-    const { follower_id } = await parseRequestParams(request);
+    const {follower_id} = await parseRequestParams(request);
     const [follower] = MailFollowers.browse(follower_id);
     const subtypes = MailMessageSubtype.search([
         "&",
@@ -842,9 +899,12 @@ async function read_subscription_data(request) {
     return {
         store_data: new mailDataHelpers.Store(
             MailMessageSubtype.browse(subtypes),
-            makeKwArgs({ fields: ["name"] })
+            makeKwArgs({fields: ["name"]})
         )
-            .add(MailFollowers.browse(follower_id), makeKwArgs({ fields: ["subtype_ids"] }))
+            .add(
+                MailFollowers.browse(follower_id),
+                makeKwArgs({fields: ["subtype_ids"]})
+            )
             .get_result(),
         subtype_ids: subtypes, // Not sorted for simplicity.
     };
@@ -858,7 +918,7 @@ async function session_update_and_broadcast(request) {
     /** @type {import("mock_models").DiscussChannelRtcSession} */
     const DiscussChannelRtcSession = this.env["discuss.channel.rtc.session"];
 
-    const { session_id, values } = await parseRequestParams(request);
+    const {session_id, values} = await parseRequestParams(request);
     const [session] = DiscussChannelRtcSession.search_read([["id", "=", session_id]]);
     const [currentChannelMember] = DiscussChannelMember.search_read([
         ["id", "=", session.channel_member_id[0]],
@@ -874,16 +934,16 @@ async function discuss_starred_messages(request) {
     /** @type {import("mock_models").MailMessage} */
     const MailMessage = this.env["mail.message"];
 
-    const { fetch_params = {} } = await parseRequestParams(request);
+    const {fetch_params = {}} = await parseRequestParams(request);
     const domain = [["starred_partner_ids", "in", [this.env.user.partner_id]]];
     const res = MailMessage._message_fetch(domain, makeKwArgs(fetch_params));
-    const { messages } = res;
+    const {messages} = res;
     delete res.messages;
     return {
         ...res,
         data: new mailDataHelpers.Store(
             MailMessage.browse(messages.map((message) => message.id)),
-            makeKwArgs({ for_current_user: true })
+            makeKwArgs({for_current_user: true})
         ).get_result(),
         messages: messages.map((message) => message.id),
     };
@@ -895,17 +955,21 @@ async function mail_thread_messages(request) {
     /** @type {import("mock_models").MailMessage} */
     const MailMessage = this.env["mail.message"];
 
-    const { fetch_params = {}, thread_id, thread_model } = await parseRequestParams(request);
+    const {
+        fetch_params = {},
+        thread_id,
+        thread_model,
+    } = await parseRequestParams(request);
     const thread = this.env[thread_model].browse(thread_id);
     const res = MailMessage._message_fetch([], thread, makeKwArgs(fetch_params));
-    const { messages } = res;
+    const {messages} = res;
     delete res.messages;
     MailMessage.set_message_done(messages.map((message) => message.id));
     return {
         ...res,
         data: new mailDataHelpers.Store(
             MailMessage.browse(messages.map((message) => message.id)),
-            makeKwArgs({ for_current_user: true })
+            makeKwArgs({for_current_user: true})
         ).get_result(),
         messages: messages.map((message) => message.id),
     };
@@ -919,7 +983,10 @@ async function mail_thread_recipients_fields(request) {
     };
 }
 
-registerRoute("mail/thread/update_suggested_recipents", mail_thread_update_suggested_recipients);
+registerRoute(
+    "mail/thread/update_suggested_recipents",
+    mail_thread_update_suggested_recipients
+);
 async function mail_thread_update_suggested_recipients(request) {
     return [];
 }
@@ -941,7 +1008,7 @@ export async function mail_data(request) {
 registerRoute("/discuss/search", search);
 /** @type {RouteCallback} */
 async function search(request) {
-    const { term, limit = 10 } = await parseRequestParams(request);
+    const {term, limit = 10} = await parseRequestParams(request);
 
     /** @type {import("mock_models").DiscussChannel} */
     const DiscussChannel = this.env["discuss.channel"];
@@ -953,7 +1020,10 @@ async function search(request) {
         ["name", "ilike", term],
         ["channel_type", "!=", "chat"],
     ];
-    const priority_conditions = [[["is_member", "=", true], ...base_domain], base_domain];
+    const priority_conditions = [
+        [["is_member", "=", true], ...base_domain],
+        base_domain,
+    ];
     const channelIds = new Set();
     let remaining_limit;
     for (const domain of priority_conditions) {
@@ -975,35 +1045,49 @@ async function search(request) {
     return store.get_result();
 }
 
-registerRoute("/mail/thread/recipients/get_suggested_recipients", get_suggested_recipients);
+registerRoute(
+    "/mail/thread/recipients/get_suggested_recipients",
+    get_suggested_recipients
+);
 /** @type {RouteCallback} */
 async function get_suggested_recipients(request) {
-    const { thread_model, thread_id, partner_ids, main_email } = await parseRequestParams(request);
+    const {thread_model, thread_id, partner_ids, main_email} =
+        await parseRequestParams(request);
     const MailThread = this.env[thread_model];
-    return MailThread._message_get_suggested_recipients([thread_id], partner_ids, main_email);
+    return MailThread._message_get_suggested_recipients(
+        [thread_id],
+        partner_ids,
+        main_email
+    );
 }
 
 registerRoute("/mail/thread/unsubscribe", mail_thread_unsubscribe);
 /** @type {RouteCallback} */
 async function mail_thread_unsubscribe(request) {
-    const { res_model, res_id, partner_ids } = await parseRequestParams(request);
+    const {res_model, res_id, partner_ids} = await parseRequestParams(request);
     const thread = this.env[res_model].browse(res_id);
     this.env["mail.thread"].message_unsubscribe.call(thread, [res_id], partner_ids);
     return new mailDataHelpers.Store(
         thread,
-        makeKwArgs({ as_thread: true, request_list: ["followers", "suggestedRecipients"] })
+        makeKwArgs({
+            as_thread: true,
+            request_list: ["followers", "suggestedRecipients"],
+        })
     ).get_result();
 }
 
 registerRoute("/mail/thread/subscribe", mail_thread_subscribe);
 /** @type {RouteCallback} */
 async function mail_thread_subscribe(request) {
-    const { res_model, res_id, partner_ids } = await parseRequestParams(request);
+    const {res_model, res_id, partner_ids} = await parseRequestParams(request);
     const thread = this.env[res_model].browse(res_id);
     this.env["mail.thread"].message_subscribe.call(thread, [res_id], partner_ids);
     return new mailDataHelpers.Store(
         thread,
-        makeKwArgs({ as_thread: true, request_list: ["followers", "suggestedRecipients"] })
+        makeKwArgs({
+            as_thread: true,
+            request_list: ["followers", "suggestedRecipients"],
+        })
     ).get_result();
 }
 
@@ -1015,8 +1099,19 @@ function processRequest(fetchParams, context) {
                 ? [fetchParam, undefined, undefined]
                 : fetchParam;
         store.data_id = data_id;
-        mailDataHelpers._process_request_for_all.call(this, store, name, params, context);
-        mailDataHelpers._process_request_for_internal_user.call(this, store, name, params);
+        mailDataHelpers._process_request_for_all.call(
+            this,
+            store,
+            name,
+            params,
+            context
+        );
+        mailDataHelpers._process_request_for_internal_user.call(
+            this,
+            store,
+            name,
+            params
+        );
     }
     store.data_id = null;
     return store;
@@ -1038,12 +1133,18 @@ function _process_request_for_all(store, name, params, context = {}) {
     /** @type {import("mock_models").ResUsers} */
     const ResUsers = this.env["res.users"];
     if (name === "init_messaging") {
-        if (!MailGuest._get_guest_from_context() || !ResUsers._is_public(this.env.uid)) {
+        if (
+            !MailGuest._get_guest_from_context() ||
+            !ResUsers._is_public(this.env.uid)
+        ) {
             ResUsers._init_messaging([this.env.uid], store, context);
         }
-        const guest = ResUsers._is_public(this.env.uid) && MailGuest._get_guest_from_context();
+        const guest =
+            ResUsers._is_public(this.env.uid) && MailGuest._get_guest_from_context();
         const members = DiscussChannelMember._filter([
-            guest ? ["guest_id", "=", guest.id] : ["partner_id", "=", this.env.user.partner_id],
+            guest
+                ? ["guest_id", "=", guest.id]
+                : ["partner_id", "=", this.env.user.partner_id],
             ["rtc_inviting_session_id", "!=", false],
         ]);
         const channelsDomain = [["id", "in", members.map((m) => m.channel_id)]];
@@ -1087,14 +1188,14 @@ function _process_request_for_all(store, name, params, context = {}) {
                     .filter((lastMessage) => lastMessage)
                     .map((message) => message.id)
             ),
-            makeKwArgs({ for_current_user: true })
+            makeKwArgs({for_current_user: true})
         );
         store.add(channels);
     }
     if (name === "mail.thread") {
         store.add(
             this.env[params.thread_model].browse(params.thread_id),
-            makeKwArgs({ as_thread: true, request_list: params.request_list })
+            makeKwArgs({as_thread: true, request_list: params.request_list})
         );
     }
     if (name === "discuss.channel") {
@@ -1103,20 +1204,20 @@ function _process_request_for_all(store, name, params, context = {}) {
         for (const channelId of params.filter((id) => !channels.includes(id))) {
             const channel = DiscussChannel.browse();
             // limitation of mock server: cannot browse non-existing record
-            channel.push({ id: channelId });
-            store.add(channel, makeKwArgs({ delete: true }));
+            channel.push({id: channelId});
+            store.add(channel, makeKwArgs({delete: true}));
         }
     }
     if (name === "/discuss/get_or_create_chat") {
         const channelId = DiscussChannel._get_or_create_chat(params.partners_to);
         store.add(channelId).resolve_data_request({
-            channel: mailDataHelpers.Store.one(channelId, makeKwArgs({ only_id: true })),
+            channel: mailDataHelpers.Store.one(channelId, makeKwArgs({only_id: true})),
         });
     }
     if (name === "/discuss/create_channel") {
         const channelId = DiscussChannel._create_channel(params.name, params.group_id);
         store.add(channelId).resolve_data_request({
-            channel: mailDataHelpers.Store.one(channelId, makeKwArgs({ only_id: true })),
+            channel: mailDataHelpers.Store.one(channelId, makeKwArgs({only_id: true})),
         });
     }
     if (name === "/discuss/create_group") {
@@ -1126,7 +1227,7 @@ function _process_request_for_all(store, name, params, context = {}) {
             params.name
         );
         store.add(channelId).resolve_data_request({
-            channel: mailDataHelpers.Store.one(channelId, makeKwArgs({ only_id: true })),
+            channel: mailDataHelpers.Store.one(channelId, makeKwArgs({only_id: true})),
         });
     }
 }
@@ -1157,7 +1258,7 @@ function _process_request_for_internal_user(store, name, params) {
         store.add(CannedResponse.browse(cannedResponses));
     }
     if (name === "avatar_card") {
-        const { id, model } = params;
+        const {id, model} = params;
         if (!id || !["res.users", "res.partner"].includes(model)) {
             return;
         }
@@ -1165,7 +1266,7 @@ function _process_request_for_internal_user(store, name, params) {
         const [record] = Model.search([["id", "=", id]]);
         if (record) {
             const fields = Model._get_store_avatar_card_fields();
-            store.add(Model.browse(record), makeKwArgs({ fields }));
+            store.add(Model.browse(record), makeKwArgs({fields}));
         }
     }
 }
@@ -1191,7 +1292,12 @@ function extractAndDeleteKwArgs(args, ...keys) {
 
 export class StoreAttr {
     constructor(name, value, predicate) {
-        const [kwargs] = extractAndDeleteKwArgs(arguments, "name", "value", "predicate");
+        const [kwargs] = extractAndDeleteKwArgs(
+            arguments,
+            "name",
+            "value",
+            "predicate"
+        );
         this.name = kwargs.name;
         this.value = kwargs.value;
         this.predicate = kwargs.predicate;
@@ -1208,17 +1314,18 @@ export class StoreAttr {
 
 export class StoreRelation extends StoreAttr {
     constructor(name_or_record, fields, value, predicate, as_thread, only_id) {
-        [{ name_or_record, fields, value, predicate, as_thread, only_id }] = extractAndDeleteKwArgs(
-            arguments,
-            "name_or_record",
-            "fields",
-            "value",
-            "predicate",
-            "as_thread",
-            "only_id"
-        );
+        [{name_or_record, fields, value, predicate, as_thread, only_id}] =
+            extractAndDeleteKwArgs(
+                arguments,
+                "name_or_record",
+                "fields",
+                "value",
+                "predicate",
+                "as_thread",
+                "only_id"
+            );
         const name = typeof name_or_record === "string" ? name_or_record : null;
-        super(makeKwArgs({ name, value }));
+        super(makeKwArgs({name, value}));
         this.records = name_or_record instanceof models.Model ? name_or_record : null;
         this.predicate = predicate;
         this.as_thread = as_thread;
@@ -1262,7 +1369,11 @@ export class StoreRelation extends StoreAttr {
 
     _add_to_store(store, target, key) {
         if (!this.only_id) {
-            store.add(this.records, this.fields, makeKwArgs({ as_thread: this.as_thread }));
+            store.add(
+                this.records,
+                this.fields,
+                makeKwArgs({as_thread: this.as_thread})
+            );
         }
     }
 }
@@ -1278,17 +1389,26 @@ export class StoreOne extends StoreRelation {
         }
         const id = this.records[0].id;
         if (this.as_thread) {
-            return { id, model: this.records._name };
+            return {id, model: this.records._name};
         }
         if (this.records._name === "discuss.channel") {
-            return { id, model: "discuss.channel" };
+            return {id, model: "discuss.channel"};
         }
         return id;
     }
 }
 
 export class StoreMany extends StoreRelation {
-    constructor(name_or_record, fields, value, predicate, as_thread, mode, only_id, sort) {
+    constructor(
+        name_or_record,
+        fields,
+        value,
+        predicate,
+        as_thread,
+        mode,
+        only_id,
+        sort
+    ) {
         const [kwargs] = extractAndDeleteKwArgs(
             arguments,
             "name_or_record",
@@ -1344,10 +1464,13 @@ export class StoreMany extends StoreRelation {
         const res = [];
 
         if (this.records._name === "mail.message.reaction") {
-            const reactionGroups = groupBy(this.records, (r) => [r.message_id, r.content]);
+            const reactionGroups = groupBy(this.records, (r) => [
+                r.message_id,
+                r.content,
+            ]);
             for (const groupId in reactionGroups) {
-                const { message_id, content } = reactionGroups[groupId][0];
-                res.push({ message: message_id, content: content });
+                const {message_id, content} = reactionGroups[groupId][0];
+                res.push({message: message_id, content: content});
             }
         } else {
             for (const record of this.records) {
@@ -1381,7 +1504,7 @@ class Store {
         if (!data) {
             return this;
         }
-        [{ data, fields, as_thread, delete: _delete, extra_fields }, kwargs] =
+        [{data, fields, as_thread, delete: _delete, extra_fields}, kwargs] =
             extractAndDeleteKwArgs(
                 arguments,
                 "data",
@@ -1400,7 +1523,9 @@ class Store {
                     );
                 }
                 if (_delete) {
-                    throw new Error(`deleted not expected for ${data} with values: ${fields}`);
+                    throw new Error(
+                        `deleted not expected for ${data} with values: ${fields}`
+                    );
                 }
             }
             if (_delete) {
@@ -1408,7 +1533,9 @@ class Store {
                     throw new Error(`expected single record ${data} with delete`);
                 }
                 if (fields) {
-                    throw new Error(`for ${data} expected empty values with delete: ${fields}`);
+                    throw new Error(
+                        `for ${data} expected empty values with delete: ${fields}`
+                    );
                 }
             }
             const ids = data.map((idOrRecord) =>
@@ -1418,14 +1545,14 @@ class Store {
                 if (as_thread) {
                     this._add_model_values(
                         "mail.thread",
-                        { id: data[0].id, model: data._name },
-                        makeKwArgs({ delete: _delete })
+                        {id: data[0].id, model: data._name},
+                        makeKwArgs({delete: _delete})
                     );
                 } else {
                     this._add_model_values(
                         data._name,
-                        { id: ids[0] },
-                        makeKwArgs({ delete: _delete })
+                        {id: ids[0]},
+                        makeKwArgs({delete: _delete})
                     );
                 }
             } else {
@@ -1436,7 +1563,9 @@ class Store {
                         fields = data._to_store_defaults || [];
                     }
                 }
-                fields = this._format_fields(fields).concat(this._format_fields(extra_fields));
+                fields = this._format_fields(fields).concat(
+                    this._format_fields(extra_fields)
+                );
                 if (as_thread) {
                     MockServer.env["mail.thread"]._thread_to_store.call(
                         data,
@@ -1467,10 +1596,14 @@ class Store {
             fields = data;
         } else {
             if (Object.keys(kwargs).length) {
-                throw new Error(`expected empty kwargs with model name ${data}: ${kwargs}`);
+                throw new Error(
+                    `expected empty kwargs with model name ${data}: ${kwargs}`
+                );
             }
             if (as_thread) {
-                throw new Error(`expected not as_thread with model name ${data}: ${fields}`);
+                throw new Error(
+                    `expected not as_thread with model name ${data}: ${fields}`
+                );
             }
             model_name = data;
         }
@@ -1597,7 +1730,7 @@ class Store {
             !(fields instanceof StoreAttr)
         ) {
             fields = Object.entries(fields).map(
-                ([key, value]) => new StoreAttr(makeKwArgs({ name: key, value }))
+                ([key, value]) => new StoreAttr(makeKwArgs({name: key, value}))
             );
         }
         if (!Array.isArray(fields)) {
@@ -1607,7 +1740,9 @@ class Store {
     }
 
     _add_values(values, model_name, index) {
-        const target = index ? this.data.get(model_name).get(index) : this.data.get(model_name);
+        const target = index
+            ? this.data.get(model_name).get(index)
+            : this.data.get(model_name);
         for (const [key, val] of Object.entries(values)) {
             if (key === "_DELETE") {
                 throw new Error(`invalid key ${key} in ${model_name}: ${values}`);
@@ -1626,9 +1761,9 @@ class Store {
             const ids = ids_by_model[model_name] || ["id"];
             if (!ids.length) {
                 // singleton
-                res[model_name] = { ...records };
+                res[model_name] = {...records};
             } else {
-                res[model_name] = [...records.values()].map((record) => ({ ...record }));
+                res[model_name] = [...records.values()].map((record) => ({...record}));
             }
         }
         return res;
@@ -1636,7 +1771,11 @@ class Store {
 
     resolve_data_request(values) {
         if (this.data_id) {
-            this._add_model_values("DataResponse", { id: this.data_id, _resolve: true, ...values });
+            this._add_model_values("DataResponse", {
+                id: this.data_id,
+                _resolve: true,
+                ...values,
+            });
         }
         return this;
     }
@@ -1673,7 +1812,12 @@ class Store {
 
     static one(records, fields, as_thread, kwargs) {
         let otherKwArgs;
-        [kwargs, otherKwArgs] = extractAndDeleteKwArgs(arguments, "records", "fields", "as_thread");
+        [kwargs, otherKwArgs] = extractAndDeleteKwArgs(
+            arguments,
+            "records",
+            "fields",
+            "as_thread"
+        );
         records = kwargs.records;
         fields = kwargs.fields;
         as_thread = kwargs.as_thread;
@@ -1688,13 +1832,13 @@ class Store {
     }
 
     static attr(name, value, predicate) {
-        [{ name, value, predicate }] = extractAndDeleteKwArgs(
+        [{name, value, predicate}] = extractAndDeleteKwArgs(
             arguments,
             "name",
             "value",
             "predicate"
         );
-        return new StoreAttr(makeKwArgs({ name, value, predicate }));
+        return new StoreAttr(makeKwArgs({name, value, predicate}));
     }
 }
 

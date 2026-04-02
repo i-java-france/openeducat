@@ -1,11 +1,11 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
-import { CORE_PLUGINS } from "@html_editor/plugin_sets";
-import { getContent, setSelection } from "../_helpers/selection";
+import {describe, expect, test} from "@odoo/hoot";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
+import {CORE_PLUGINS} from "@html_editor/plugin_sets";
+import {getContent, setSelection} from "../_helpers/selection";
 
 async function testCoreEditor(testConfig) {
-    return testEditor({ ...testConfig, config: { Plugins: CORE_PLUGINS } });
+    return testEditor({...testConfig, config: {Plugins: CORE_PLUGINS}});
 }
 
 // Tests the deleteRange shared method.
@@ -17,7 +17,7 @@ async function deleteRange(editor) {
 
     range = editor.shared.delete.deleteRange(range);
 
-    const { startContainer, startOffset, endContainer, endOffset } = range;
+    const {startContainer, startOffset, endContainer, endOffset} = range;
     selection.setBaseAndExtent(startContainer, startOffset, endContainer, endOffset);
 }
 
@@ -72,14 +72,16 @@ describe("deleteRange method", () => {
             await testCoreEditor({
                 contentBefore: "<p><i>[abc</i>de<i>fg]h</i></p>",
                 stepFunction: deleteRange,
-                contentAfterEdit: '<p><i data-oe-zws-empty-inline="">[]\u200b</i><i>h</i></p>',
+                contentAfterEdit:
+                    '<p><i data-oe-zws-empty-inline="">[]\u200b</i><i>h</i></p>',
             });
         });
         test("delete across two inlines, end one left empty (should  fill empty inline) ", async () => {
             await testCoreEditor({
                 contentBefore: "<p><i>a[bc</i>de<i>fgh]</i></p>",
                 stepFunction: deleteRange,
-                contentAfterEdit: '<p><i>a[]</i><i data-oe-zws-empty-inline="">\u200b</i></p>',
+                contentAfterEdit:
+                    '<p><i>a[]</i><i data-oe-zws-empty-inline="">\u200b</i></p>',
             });
         });
         test("delete across two inlines, both left empty (should fill both)", async () => {
@@ -234,7 +236,7 @@ describe("deleteRange method", () => {
                     <tr><td><br></td><td><br></td></tr>
                 </tbody></table>`
             );
-            const { editor, el } = await setupEditor(contentBefore);
+            const {editor, el} = await setupEditor(contentBefore);
             // Place the cursor inside the BR.
             setSelection({
                 anchorNode: el,
@@ -260,7 +262,7 @@ describe("deleteRange method", () => {
     });
     describe("Fill shrunk blocks", () => {
         test("should not fill a HR with BR", async () => {
-            const { editor, el } = await setupEditor("<hr><p>abc[</p><p>]def</p>");
+            const {editor, el} = await setupEditor("<hr><p>abc[</p><p>]def</p>");
             deleteRange(editor);
             const hr = el.querySelector("hr");
             expect(hr.childNodes.length).toBe(0);
@@ -469,10 +471,10 @@ describe("deleteSelection", () => {
                     contentBefore: unformat(
                         `<table><tbody>
                             <tr>
-                                <td>[a</td> <td>b]</td> <td>c</td> 
+                                <td>[a</td> <td>b]</td> <td>c</td>
                             </tr>
                             <tr>
-                                <td>d</td> <td>e</td> <td>f</td> 
+                                <td>d</td> <td>e</td> <td>f</td>
                             </tr>
                         </tbody></table>`
                     ),
@@ -483,7 +485,7 @@ describe("deleteSelection", () => {
                                 <td><p>[]<br></p></td> <td><p><br></p></td> <td>c</td>
                             </tr>
                             <tr>
-                                <td>d</td> <td>e</td> <td>f</td> 
+                                <td>d</td> <td>e</td> <td>f</td>
                             </tr>
                         </tbody></table>`
                     ),

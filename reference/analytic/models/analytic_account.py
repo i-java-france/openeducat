@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
-import itertools
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError, RedirectWarning
-from odoo.tools import groupby, SQL
+
+from odoo import _, api, fields, models
+from odoo.exceptions import RedirectWarning, UserError
+from odoo.tools import SQL, groupby
 
 
 class AccountAnalyticAccount(models.Model):
@@ -115,7 +114,7 @@ class AccountAnalyticAccount(models.Model):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
         if 'name' not in default:
-            for account, vals in zip(self, vals_list):
+            for account, vals in zip(self, vals_list, strict=False):
                 vals['name'] = _("%s (copy)", account.name)
         return vals_list
 

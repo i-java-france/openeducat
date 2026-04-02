@@ -1,14 +1,14 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { mockDate, mockTimeZone } from "@odoo/hoot-mock";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {mockDate, mockTimeZone} from "@odoo/hoot-mock";
 import {
     allowTranslations,
     patchTranslations,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 
-import { Domain } from "@web/core/domain";
-import { localization } from "@web/core/l10n/localization";
-import { constructDateDomain } from "@web/search/utils/dates";
+import {Domain} from "@web/core/domain";
+import {localization} from "@web/core/l10n/localization";
+import {constructDateDomain} from "@web/search/utils/dates";
 
 describe.current.tags("headless");
 
@@ -31,7 +31,7 @@ const dateTimeSearchItem = {
 
 beforeEach(() => {
     mockTimeZone(0);
-    patchWithCleanup(localization, { direction: "ltr" });
+    patchWithCleanup(localization, {direction: "ltr"});
     allowTranslations();
 });
 
@@ -53,7 +53,10 @@ test("construct simple domain based on date field (no comparisonOptionId)", () =
         description: "June 2020",
     });
 
-    domain = constructDateDomain(referenceMoment, dateSearchItem, ["second_quarter", "year"]);
+    domain = constructDateDomain(referenceMoment, dateSearchItem, [
+        "second_quarter",
+        "year",
+    ]);
     expect(domain).toEqual({
         domain: new Domain(
             `["&", ("date_field", ">=", "2020-04-01"), ("date_field", "<=", "2020-06-30")]`
@@ -89,7 +92,10 @@ test("construct simple domain based on date field (no comparisonOptionId) - UTC+
         description: "June 2020",
     });
 
-    domain = constructDateDomain(referenceMoment, dateSearchItem, ["second_quarter", "year"]);
+    domain = constructDateDomain(referenceMoment, dateSearchItem, [
+        "second_quarter",
+        "year",
+    ]);
     expect(domain).toEqual({
         domain: new Domain(
             `["&", ("date_field", ">=", "2020-04-01"), ("date_field", "<=", "2020-06-30")]`
@@ -110,7 +116,10 @@ test("construct simple domain based on datetime field (no comparisonOptionId)", 
     mockDate("2020-06-01T13:00:00");
     const referenceMoment = luxon.DateTime.local();
 
-    let domain = constructDateDomain(referenceMoment, dateTimeSearchItem, ["month", "year"]);
+    let domain = constructDateDomain(referenceMoment, dateTimeSearchItem, [
+        "month",
+        "year",
+    ]);
     expect(domain).toEqual({
         domain: new Domain(
             `["&", ("date_field", ">=", "2020-06-01 00:00:00"), ("date_field", "<=", "2020-06-30 23:59:59")]`
@@ -118,7 +127,10 @@ test("construct simple domain based on datetime field (no comparisonOptionId)", 
         description: "June 2020",
     });
 
-    domain = constructDateDomain(referenceMoment, dateTimeSearchItem, ["second_quarter", "year"]);
+    domain = constructDateDomain(referenceMoment, dateTimeSearchItem, [
+        "second_quarter",
+        "year",
+    ]);
     expect(domain).toEqual({
         domain: new Domain(
             `["&", ("date_field", ">=", "2020-04-01 00:00:00"), ("date_field", "<=", "2020-06-30 23:59:59")]`
@@ -140,7 +152,10 @@ test("construct simple domain based on datetime field (no comparisonOptionId) - 
     mockDate("2020-06-01T00:00:00");
     const referenceMoment = luxon.DateTime.local();
 
-    let domain = constructDateDomain(referenceMoment, dateTimeSearchItem, ["month", "year"]);
+    let domain = constructDateDomain(referenceMoment, dateTimeSearchItem, [
+        "month",
+        "year",
+    ]);
     expect(domain).toEqual({
         domain: new Domain(
             `["&", ("date_field", ">=", "2020-05-31 22:00:00"), ("date_field", "<=", "2020-06-30 21:59:59")]`
@@ -148,7 +163,10 @@ test("construct simple domain based on datetime field (no comparisonOptionId) - 
         description: "June 2020",
     });
 
-    domain = constructDateDomain(referenceMoment, dateTimeSearchItem, ["second_quarter", "year"]);
+    domain = constructDateDomain(referenceMoment, dateTimeSearchItem, [
+        "second_quarter",
+        "year",
+    ]);
     expect(domain).toEqual({
         domain: new Domain(
             `["&", ("date_field", ">=", "2020-03-31 22:00:00"), ("date_field", "<=", "2020-06-30 21:59:59")]`
@@ -201,7 +219,11 @@ test("construct domain based on date field (no comparisonOptionId)", () => {
         description: "Q2 2019/Q2 2020",
     });
 
-    domain = constructDateDomain(referenceMoment, dateSearchItem, ["year", "month", "month-2"]);
+    domain = constructDateDomain(referenceMoment, dateSearchItem, [
+        "year",
+        "month",
+        "month-2",
+    ]);
     expect(domain).toEqual({
         domain: new Domain(
             "[" +
@@ -250,7 +272,11 @@ test("construct domain based on datetime field (no comparisonOptionId)", () => {
         description: "Q2 2019/Q2 2020",
     });
 
-    domain = constructDateDomain(referenceMoment, dateTimeSearchItem, ["year", "month", "month-2"]);
+    domain = constructDateDomain(referenceMoment, dateTimeSearchItem, [
+        "year",
+        "month",
+        "month-2",
+    ]);
     expect(domain).toEqual({
         domain: new Domain(
             "[" +
@@ -266,9 +292,12 @@ test("construct domain based on datetime field (no comparisonOptionId)", () => {
 test("Quarter option: custom translation", async () => {
     mockDate("2020-06-01T13:00:00");
     const referenceMoment = luxon.DateTime.local().setLocale("en");
-    patchTranslations({ web: { Q2: "Deuxième trimestre de l'an de grâce" } });
+    patchTranslations({web: {Q2: "Deuxième trimestre de l'an de grâce"}});
 
-    const domain = constructDateDomain(referenceMoment, dateSearchItem, ["second_quarter", "year"]);
+    const domain = constructDateDomain(referenceMoment, dateSearchItem, [
+        "second_quarter",
+        "year",
+    ]);
     expect(domain).toEqual({
         domain: new Domain(
             `["&", ("date_field", ">=", "2020-04-01"), ("date_field", "<=", "2020-06-30")]`
@@ -280,9 +309,12 @@ test("Quarter option: custom translation", async () => {
 test("Quarter option: right to left", async () => {
     mockDate("2020-06-01T13:00:00");
     const referenceMoment = luxon.DateTime.local().setLocale("en");
-    patchWithCleanup(localization, { direction: "rtl" });
+    patchWithCleanup(localization, {direction: "rtl"});
 
-    const domain = constructDateDomain(referenceMoment, dateSearchItem, ["second_quarter", "year"]);
+    const domain = constructDateDomain(referenceMoment, dateSearchItem, [
+        "second_quarter",
+        "year",
+    ]);
     expect(domain).toEqual({
         domain: new Domain(
             `["&", ("date_field", ">=", "2020-04-01"), ("date_field", "<=", "2020-06-30")]`
@@ -294,10 +326,13 @@ test("Quarter option: right to left", async () => {
 test("Quarter option: custom translation and right to left", async () => {
     mockDate("2020-06-01T13:00:00");
     const referenceMoment = luxon.DateTime.local().setLocale("en");
-    patchWithCleanup(localization, { direction: "rtl" });
-    patchTranslations({ web: { Q2: "2e Trimestre" } });
+    patchWithCleanup(localization, {direction: "rtl"});
+    patchTranslations({web: {Q2: "2e Trimestre"}});
 
-    const domain = constructDateDomain(referenceMoment, dateSearchItem, ["second_quarter", "year"]);
+    const domain = constructDateDomain(referenceMoment, dateSearchItem, [
+        "second_quarter",
+        "year",
+    ]);
     expect(domain).toEqual({
         domain: new Domain(
             `["&", ("date_field", ">=", "2020-04-01"), ("date_field", "<=", "2020-06-30")]`

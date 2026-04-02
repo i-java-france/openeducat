@@ -1,13 +1,13 @@
-import { Wysiwyg } from "@html_editor/wysiwyg";
-import { destroy, expect, getFixture } from "@odoo/hoot";
-import { queryOne } from "@odoo/hoot-dom";
-import { Component, markup, onWillDestroy, xml } from "@odoo/owl";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { getContent, getSelection, setContent } from "./selection";
-import { Deferred, animationFrame, tick } from "@odoo/hoot-mock";
-import { dispatchCleanForSave } from "./dispatch";
-import { fixInvalidHTML } from "@html_editor/utils/sanitize";
-import { toExplicitString } from "@web/../lib/hoot/hoot_utils";
+import {Wysiwyg} from "@html_editor/wysiwyg";
+import {destroy, expect, getFixture} from "@odoo/hoot";
+import {queryOne} from "@odoo/hoot-dom";
+import {Component, markup, onWillDestroy, xml} from "@odoo/owl";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {getContent, getSelection, setContent} from "./selection";
+import {Deferred, animationFrame, tick} from "@odoo/hoot-mock";
+import {dispatchCleanForSave} from "./dispatch";
+import {fixInvalidHTML} from "@html_editor/utils/sanitize";
+import {toExplicitString} from "@web/../lib/hoot/hoot_utils";
 
 export const Direction = {
     BACKWARD: "BACKWARD",
@@ -24,8 +24,14 @@ class TestEditor extends Component {
             <style t-esc="props.styleContent"></style>
         </t>
         <Wysiwyg t-props="wysiwygProps" />`;
-    static components = { Wysiwyg };
-    static props = ["wysiwygProps", "content", "styleContent?", "onMounted?", "onWillDestroy?"];
+    static components = {Wysiwyg};
+    static props = [
+        "wysiwygProps",
+        "content",
+        "styleContent?",
+        "onMounted?",
+        "onWillDestroy?",
+    ];
 
     setup() {
         const props = this.props;
@@ -120,7 +126,9 @@ export async function setupEditor(content, options = {}) {
     // awaiting for mountWithCleanup is not enough when mounted in an iframe,
     // @see Wysiwyg.onMounted
     const editor = await attachedEditor;
-    const plugins = new Map(editor.plugins.map((plugin) => [plugin.constructor.id, plugin]));
+    const plugins = new Map(
+        editor.plugins.map((plugin) => [plugin.constructor.id, plugin])
+    );
     if (plugins.get("embeddedComponents")) {
         // await an extra animation frame for embedded components mounting
         // TODO @phoenix: would be more accurate to register mounting
@@ -173,7 +181,7 @@ export async function testEditor(config) {
     delete config.props?.mobile;
     const willBeDestroyed = new Deferred();
     config.onWillDestroy = () => willBeDestroyed.resolve();
-    const { el, editor, editorComponent } = await setupEditor(contentBefore, config);
+    const {el, editor, editorComponent} = await setupEditor(contentBefore, config);
     // The stageSelection should have been triggered by the click on
     // the editable. As we set the selection programmatically, we dispatch the
     // selection here for the commands that relies on it.
@@ -214,7 +222,7 @@ export async function testEditor(config) {
     if (contentAfter) {
         // Test the saved value, with added cursor markers for convenience of testing.
         const content = editor.getContent(); // Saved value.
-        dispatchCleanForSave(editor, { root: el, preserveSelection: true });
+        dispatchCleanForSave(editor, {root: el, preserveSelection: true});
         const innerHTML = el.innerHTML; // Cleaned value without cursors.
         await compareFunction(
             getContent(el, config.options),
@@ -223,7 +231,12 @@ export async function testEditor(config) {
             editor
         );
         // Test that the saved value matches the cleaned value tested above.
-        await compareFunction(content, innerHTML, "Value from editor.getContent()", editor);
+        await compareFunction(
+            content,
+            innerHTML,
+            "Value from editor.getContent()",
+            editor
+        );
     }
     destroy(editorComponent);
     await willBeDestroyed;
@@ -237,7 +250,7 @@ export async function testEditor(config) {
 export async function setupWysiwyg(props = {}) {
     const content = props.content;
     delete props.content;
-    const wysiwyg = await mountWithCleanup(Wysiwyg, { props });
+    const wysiwyg = await mountWithCleanup(Wysiwyg, {props});
     const el = /** @type {HTMLElement} **/ (
         queryOne(`${props.iframe ? ":iframe " : ""}.odoo-editor-editable`)
     );
@@ -245,7 +258,7 @@ export async function setupWysiwyg(props = {}) {
         // force selection to be put properly
         setContent(el, content);
     }
-    return { wysiwyg, el };
+    return {wysiwyg, el};
 }
 
 export function insertTestHtml(innerHtml) {

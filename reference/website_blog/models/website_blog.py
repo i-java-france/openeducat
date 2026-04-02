@@ -1,14 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime
-import random
 
-from odoo import api, models, fields, _
-from odoo.addons.website.tools import text_from_html
+from odoo import _, api, fields, models
+from odoo.tools import html_escape
 from odoo.tools.json import scriptsafe as json_scriptsafe
 from odoo.tools.translate import html_translate
-from odoo.tools import html_escape
+
+from odoo.addons.website.tools import text_from_html
 
 
 class BlogBlog(models.Model):
@@ -168,7 +166,7 @@ class BlogPost(models.Model):
     _mail_post_access = 'read'
 
     def _compute_website_url(self):
-        super(BlogPost, self)._compute_website_url()
+        super()._compute_website_url()
         for blog_post in self:
             if blog_post.id:
                 blog_post.website_url = "/blog/%s/%s" % (self.env['ir.http']._slug(blog_post.blog_id), self.env['ir.http']._slug(blog_post))
@@ -253,7 +251,7 @@ class BlogPost(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         posts = super(BlogPost, self.with_context(mail_create_nolog=True)).create(vals_list)
-        for post, vals in zip(posts, vals_list):
+        for post, vals in zip(posts, vals_list, strict=False):
             post._check_for_publication(vals)
         return posts
 
@@ -274,7 +272,7 @@ class BlogPost(models.Model):
 
     def copy_data(self, default=None):
         vals_list = super().copy_data(default=default)
-        return [dict(vals, name=self.env._("%s (copy)", blog.name)) for blog, vals in zip(self, vals_list)]
+        return [dict(vals, name=self.env._("%s (copy)", blog.name)) for blog, vals in zip(self, vals_list, strict=False)]
 
     def _get_access_action(self, access_uid=None, force_website=False):
         """ Instead of the classic form view, redirect to the post on website
@@ -282,7 +280,7 @@ class BlogPost(models.Model):
         self.ensure_one()
         user = self.env['res.users'].sudo().browse(access_uid) if access_uid else self.env.user
         if not force_website and user.share and not self.sudo().website_published:
-            return super(BlogPost, self)._get_access_action(access_uid=access_uid, force_website=force_website)
+            return super()._get_access_action(access_uid=access_uid, force_website=force_website)
         return {
             'type': 'ir.actions.act_url',
             'url': self.website_url,
@@ -312,10 +310,10 @@ class BlogPost(models.Model):
         msg_vals = msg_vals or {}
         if msg_vals.get('message_type', message.message_type) == 'comment':
             return
-        return super(BlogPost, self)._notify_thread_by_inbox(message, recipients_data, msg_vals=msg_vals, **kwargs)
+        return super()._notify_thread_by_inbox(message, recipients_data, msg_vals=msg_vals, **kwargs)
 
     def _default_website_meta(self):
-        res = super(BlogPost, self)._default_website_meta()
+        res = super()._default_website_meta()
         res['default_opengraph']['og:description'] = res['default_twitter']['twitter:description'] = self.subtitle
         res['default_opengraph']['og:type'] = 'article'
         res['default_opengraph']['article:published_time'] = self.post_date

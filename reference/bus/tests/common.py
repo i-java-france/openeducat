@@ -1,13 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import contextlib
+import inspect
 import json
 import struct
-from threading import Event
 import unittest
+from threading import Event
 from unittest.mock import patch
-import inspect
+
 from werkzeug.exceptions import BadRequest
-import contextlib
 
 try:
     import websocket
@@ -15,10 +16,17 @@ except ImportError:
     websocket = None
 
 from odoo.http import request
-from odoo.tests.common import HOST, release_test_lock, TEST_CURSOR_COOKIE_NAME, Like, _registry_test_lock
 from odoo.tests import HttpCase
+from odoo.tests.common import (
+    HOST,
+    TEST_CURSOR_COOKIE_NAME,
+    Like,
+    _registry_test_lock,
+    release_test_lock,
+)
+
+from ..models.bus import channel_with_db, dispatch, hashable
 from ..websocket import CloseCode, Websocket, WebsocketConnectionHandler
-from ..models.bus import dispatch, hashable, channel_with_db
 
 
 class WebsocketCase(HttpCase):

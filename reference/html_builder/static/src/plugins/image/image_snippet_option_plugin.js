@@ -1,5 +1,5 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 class ImageSnippetOptionPlugin extends Plugin {
     static id = "imageSnippetOption";
@@ -11,7 +11,7 @@ class ImageSnippetOptionPlugin extends Plugin {
         so_content_addition_selector: [".s_image"],
     };
 
-    async onSnippetDropped({ snippetEl, dragState }) {
+    async onSnippetDropped({snippetEl, dragState}) {
         if (!snippetEl.matches(".s_image")) {
             return;
         }
@@ -42,4 +42,6 @@ class ImageSnippetOptionPlugin extends Plugin {
     }
 }
 
-registry.category("builder-plugins").add(ImageSnippetOptionPlugin.id, ImageSnippetOptionPlugin);
+registry
+    .category("builder-plugins")
+    .add(ImageSnippetOptionPlugin.id, ImageSnippetOptionPlugin);

@@ -5,7 +5,6 @@ from odoo import fields, models
 from odoo.addons.payment.logging import get_payment_logger
 from odoo.addons.payment_xendit import const
 
-
 _logger = get_payment_logger(__name__)
 
 

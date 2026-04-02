@@ -1,5 +1,5 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { setInputFiles } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {setInputFiles} from "@odoo/hoot-dom";
 import {
     contains,
     defineModels,
@@ -9,7 +9,7 @@ import {
     mountView,
     onRpc,
 } from "@web/../tests/web_test_helpers";
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
 
 class Partner extends models.Model {
     name = fields.Char();
@@ -57,7 +57,7 @@ class AccountPaymentTerm extends models.Model {
 class AccountPaymentTermLine extends models.Model {
     _name = "account_payment_term_line";
 
-    value_amount = fields.Float({ string: "Due" });
+    value_amount = fields.Float({string: "Due"});
     _records = [
         {
             id: 1,
@@ -80,7 +80,7 @@ describe("AccountFileUploader", () => {
             return [99];
         });
 
-        onRpc("account.journal", "create_document_from_attachment", ({ kwargs }) => {
+        onRpc("account.journal", "create_document_from_attachment", ({kwargs}) => {
             expect.step("create_document_from_attachment");
             expect(kwargs.context.default_journal_id).toBe(7, {
                 message: "create documents in correct journal",
@@ -116,7 +116,7 @@ describe("AccountFileUploader", () => {
         });
 
         expect(".o_widget_account_file_uploader").toHaveCount(1);
-        const file = new File(["test"], "fake_file.txt", { type: "text/plain" });
+        const file = new File(["test"], "fake_file.txt", {type: "text/plain"});
         await contains(".o_widget_account_file_uploader a").click();
         await setInputFiles([file]);
         await expect.waitForSteps([
@@ -139,7 +139,7 @@ describe("AccountMoveUploadKanbanView", () => {
                 </templates>
             </kanban>
         `;
-        onRpc("res.company", "search_read", () => [{ id: 1, country_code: "US" }]);
+        onRpc("res.company", "search_read", () => [{id: 1, country_code: "US"}]);
         await mountView({
             type: "kanban",
             resModel: "partner",
@@ -168,21 +168,21 @@ describe("PaymentTermsLineWidget", () => {
             `,
         });
         expect(".o_data_row").toHaveCount(2);
-        // click the add button
+        // Click the add button
         await contains(".o_field_x2many_list_row_add > a").click();
-        // make sure the new record is added
+        // Make sure the new record is added
         expect(".o_data_row").toHaveCount(3);
         // global click
         await contains(".o_form_view").click();
-        // make sure the new record is still there
+        // Make sure the new record is still there
         expect(".o_data_row").toHaveCount(3);
-        // click the add button again
+        // Click the add button again
         await contains(".o_field_x2many_list_row_add > a").click();
-        // make sure the new record is added
+        // Make sure the new record is added
         expect(".o_data_row").toHaveCount(4);
-        // click on an existing record
+        // Click on an existing record
         await contains(".o_data_row .o_data_cell").click();
-        // make sure the new record is still there
+        // Make sure the new record is still there
         expect(".o_data_row").toHaveCount(4);
     });
 });

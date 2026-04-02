@@ -1,6 +1,6 @@
-import { scrollTo } from "@html_builder/utils/scrolling";
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {scrollTo} from "@html_builder/utils/scrolling";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class AnchorSlide extends Interaction {
     static selector = "a[href^='/'][href*='#'], a[href^='#']";
@@ -92,7 +92,7 @@ export class AnchorSlide extends Interaction {
                 "hidden.bs.offcanvas",
                 () => this.manageScroll(hash, anchorEl, scrollValue),
                 // the listener must be automatically removed when invoked
-                { once: true }
+                {once: true}
             );
         } else {
             ev.preventDefault();

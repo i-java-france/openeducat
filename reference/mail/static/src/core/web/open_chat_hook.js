@@ -1,4 +1,4 @@
-import { useService } from "@web/core/utils/hooks";
+import {useService} from "@web/core/utils/hooks";
 
 export const helpers = {
     SUPPORTED_M2X_AVATAR_MODELS: ["res.users", "res.partner"],

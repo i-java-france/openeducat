@@ -1,9 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import Command
+from odoo.tests.common import HttpCase, tagged, users
+
 from odoo.addons.crm.tests.common import TestCrmCommon
 from odoo.addons.mail.tests.common import mail_new_test_user
-from odoo.tests.common import HttpCase, tagged, users
 
 
 @tagged("post_install", "-at_install")
@@ -11,7 +12,7 @@ class TestLivechatLead(HttpCase, TestCrmCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestLivechatLead, cls).setUpClass()
+        super().setUpClass()
         cls.env["mail.presence"]._update_presence(cls.user_sales_leads)
         cls.livechat_channel = cls.env['im_livechat.channel'].create({
             'name': 'Test Livechat Channel',

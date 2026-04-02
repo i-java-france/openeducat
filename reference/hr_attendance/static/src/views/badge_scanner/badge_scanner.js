@@ -1,13 +1,13 @@
-import { Component, onWillStart } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { standardActionServiceProps } from "@web/webclient/actions/action_service";
-import { BarcodeScanner } from "@barcodes/components/barcode_scanner";
+import {Component, onWillStart} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {standardActionServiceProps} from "@web/webclient/actions/action_service";
+import {BarcodeScanner} from "@barcodes/components/barcode_scanner";
 
 export class BadgeScanner extends Component {
-    static template = "hr.BadgeScannerTemplate"
-    static components = { BarcodeScanner };
+    static template = "hr.BadgeScannerTemplate";
+    static components = {BarcodeScanner};
     static props = {
         ...standardActionServiceProps,
     };
@@ -17,7 +17,11 @@ export class BadgeScanner extends Component {
         this.actionService = useService("action");
         this.orm = useService("orm");
         onWillStart(async () => {
-            this.employee = await this.orm.read("hr.employee", [this.employeeId], ["name"]);
+            this.employee = await this.orm.read(
+                "hr.employee",
+                [this.employeeId],
+                ["name"]
+            );
         });
     }
 
@@ -33,15 +37,19 @@ export class BadgeScanner extends Component {
                 type: "danger",
             });
         }
-        try{
-            await this.orm.write("hr.employee", [this.employee[0].id], { barcode: barcode })
-            this.env.config.historyBack();
-            this.notification.add((_t("Badge updated: ") + barcode), { type: "success" });
-        }
-        catch(error){
-            this.notification.add(_t("Failed to update badge: ") + error?.data?.message, {
-                type: "danger",
+        try {
+            await this.orm.write("hr.employee", [this.employee[0].id], {
+                barcode: barcode,
             });
+            this.env.config.historyBack();
+            this.notification.add(_t("Badge updated: ") + barcode, {type: "success"});
+        } catch (error) {
+            this.notification.add(
+                _t("Failed to update badge: ") + error?.data?.message,
+                {
+                    type: "danger",
+                }
+            );
         }
     }
 

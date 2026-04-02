@@ -1,7 +1,7 @@
-import { Component, useState } from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 
-import { Deferred, KeepLast } from "@web/core/utils/concurrency";
-import { memoize } from "@web/core/utils/functions";
+import {Deferred, KeepLast} from "@web/core/utils/concurrency";
+import {memoize} from "@web/core/utils/functions";
 
 /**
  * @typedef {Object} Props
@@ -19,13 +19,13 @@ export class Gif extends Component {
     static template = "mail.Gif";
     static props = {
         src: String,
-        alt: { type: String, optional: true },
-        class: { type: String, optional: true },
-        loading: { type: String, optional: true },
-        onLoad: { type: Function, optional: true },
-        onClick: { type: Function, optional: true },
-        paused: { type: Boolean, optional: true },
-        style: { type: String, optional: true },
+        alt: {type: String, optional: true},
+        class: {type: String, optional: true},
+        loading: {type: String, optional: true},
+        onLoad: {type: Function, optional: true},
+        onClick: {type: Function, optional: true},
+        paused: {type: Boolean, optional: true},
+        style: {type: String, optional: true},
     };
     static components = {};
 
@@ -47,7 +47,7 @@ export class Gif extends Component {
     });
 
     setup() {
-        this.state = useState({ snapshot: null });
+        this.state = useState({snapshot: null});
         this.keepLast = new KeepLast();
     }
 

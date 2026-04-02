@@ -1,6 +1,6 @@
-import { CONSOLE_COLOR, PosStore } from "@point_of_sale/app/services/pos_store";
-import { logPosMessage } from "@point_of_sale/app/utils/pretty_console_log";
-import { patch } from "@web/core/utils/patch";
+import {CONSOLE_COLOR, PosStore} from "@point_of_sale/app/services/pos_store";
+import {logPosMessage} from "@point_of_sale/app/utils/pretty_console_log";
+import {patch} from "@web/core/utils/patch";
 
 patch(PosStore.prototype, {
     async setup() {
@@ -33,12 +33,14 @@ patch(PosStore.prototype, {
 
     async printSelfOrderReceipt(orderId) {
         try {
-            const result = await this.data.callRelated("pos.order", "get_order_to_print", [
-                orderId,
-            ]);
+            const result = await this.data.callRelated(
+                "pos.order",
+                "get_order_to_print",
+                [orderId]
+            );
             const order = result["pos.order"][0];
-            await this.sendOrderInPreparation(order, { bypassPdis: true });
-            await this.printReceipt({ order });
+            await this.sendOrderInPreparation(order, {bypassPdis: true});
+            await this.printReceipt({order});
         } catch {
             logPosMessage(
                 "Store",

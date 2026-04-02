@@ -1,11 +1,12 @@
-import { reactive } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { getOrigin } from "@web/core/utils/urls";
-import { click, inputFiles } from "@web/../tests/utils";
+import {reactive} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {getOrigin} from "@web/core/utils/urls";
+import {click, inputFiles} from "@web/../tests/utils";
 
 // The tour is ran twice, ensure the correct message is always targetted.
 const messageSelector = ".o-mail-Message:has(.o-mail-Message-body:contains('cheese'))";
-const editedMessageSelector = ".o-mail-Message:has(.o-mail-Message-body:contains('vegetables'))";
+const editedMessageSelector =
+    ".o-mail-Message:has(.o-mail-Message-body:contains('vegetables'))";
 
 registry.category("web_tour.tours").add("discuss_channel_public_tour.js", {
     steps: () => [
@@ -25,14 +26,16 @@ registry.category("web_tour.tours").add("discuss_channel_public_tour.js", {
                 document.body.classList.add("o_discuss_channel_public_modules_loaded");
                 if (
                     !document.title.includes(
-                        document.querySelector(".o-mail-DiscussContent-threadName")?.value
+                        document.querySelector(".o-mail-DiscussContent-threadName")
+                            ?.value
                     )
                 ) {
                     console.error(
                         `Tab title should match conversation name. Got "${
                             document.title
                         }" instead of "${
-                            document.querySelector(".o-mail-DiscussContent-threadName")?.value
+                            document.querySelector(".o-mail-DiscussContent-threadName")
+                                ?.value
                         }".`
                     );
                 }
@@ -45,16 +48,19 @@ registry.category("web_tour.tours").add("discuss_channel_public_tour.js", {
             trigger: ".o-mail-Composer-input",
             run: "edit cheese",
         },
-        { trigger: ".o-mail-Composer button[title='More Actions']", run: "click" },
+        {trigger: ".o-mail-Composer button[title='More Actions']", run: "click"},
         {
             trigger: ".dropdown-item:contains('Attach Files')",
             async run() {
-                const text = new File(["hello, world"], "text.txt", { type: "text/plain" });
+                const text = new File(["hello, world"], "text.txt", {
+                    type: "text/plain",
+                });
                 await inputFiles(".o-mail-Composer .o_input_file", [text]);
             },
         },
         {
-            trigger: ".o-mail-AttachmentContainer:not(.o-isUploading):contains(text.txt)",
+            trigger:
+                ".o-mail-AttachmentContainer:not(.o-isUploading):contains(text.txt)",
         },
         {
             trigger: ".dropdown-item:contains('Attach Files')",
@@ -69,14 +75,15 @@ registry.category("web_tour.tours").add("discuss_channel_public_tour.js", {
                             ).blob(),
                         ],
                         "image.png",
-                        { type: "image/png" }
+                        {type: "image/png"}
                     ),
                 ]);
             },
         },
         {
-            trigger: '.o-mail-AttachmentContainer:not(.o-isUploading)[title="image.png"]',
-            async run({ waitFor }) {
+            trigger:
+                '.o-mail-AttachmentContainer:not(.o-isUploading)[title="image.png"]',
+            async run({waitFor}) {
                 /** @type {import("models").Store} */
                 const store = odoo.__WOWL_DEBUG__.root.env.services["mail.store"];
                 if (store.self_guest) {
@@ -109,7 +116,7 @@ registry.category("web_tour.tours").add("discuss_channel_public_tour.js", {
                 }
             },
         },
-        { trigger: ".o-mail-Composer button[title='Send']:enabled", run: "click" },
+        {trigger: ".o-mail-Composer button[title='Send']:enabled", run: "click"},
         {
             trigger: `${messageSelector}[data-persistent]`,
         },
@@ -154,7 +161,9 @@ registry.category("web_tour.tours").add("discuss_channel_public_tour.js", {
         {
             trigger: ".dropdown-item:contains('Attach Files')",
             async run() {
-                const extratxt = new File(["hello 2"], "extra.txt", { type: "text/plain" });
+                const extratxt = new File(["hello 2"], "extra.txt", {
+                    type: "text/plain",
+                });
                 await inputFiles(".o-mail-Message .o_input_file", [extratxt]);
             },
         },

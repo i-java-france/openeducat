@@ -1,6 +1,6 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { onWillStart } from "@odoo/owl";
-import { basicHeaderOptionSettings } from "./basicHeaderOptionSettings";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {onWillStart} from "@odoo/owl";
+import {basicHeaderOptionSettings} from "./basicHeaderOptionSettings";
 
 export class HeaderNavigationOption extends BaseOptionComponent {
     static template = "website.HeaderNavigationOption";
@@ -39,7 +39,7 @@ export class HeaderNavigationOption extends BaseOptionComponent {
         return false;
     }
     async getCurrentActiveViews() {
-        const actionParams = { views: this.keys };
+        const actionParams = {views: this.keys};
         await this.dependencies.customizeWebsite.loadConfigKey(actionParams);
         const currentActiveViews = {};
         for (const key of this.keys) {

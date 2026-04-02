@@ -12,7 +12,6 @@ from odoo.addons.payment.logging import get_payment_logger
 from odoo.addons.payment_redsys import const
 from odoo.addons.payment_redsys.controllers.main import RedsysController
 
-
 _logger = get_payment_logger(__name__)
 
 

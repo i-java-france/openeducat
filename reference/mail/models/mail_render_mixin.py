@@ -1,22 +1,27 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import babel
 import copy
 import logging
 import re
 import traceback
-
-from lxml import html
 from functools import reduce
+
+import babel
+from lxml import html
 from markupsafe import Markup, escape
 
 from odoo import _, api, fields, models, tools
-from odoo.addons.base.models.ir_qweb import QWebError
-from odoo.exceptions import UserError, AccessError
+from odoo.exceptions import AccessError, UserError
 from odoo.tools import urls
-from odoo.tools.mail import is_html_empty, prepend_html_content, html_normalize
-from odoo.tools.rendering_tools import convert_inline_template_to_qweb, parse_inline_template, render_inline_template, template_env_globals
+from odoo.tools.mail import html_normalize, is_html_empty, prepend_html_content
+from odoo.tools.rendering_tools import (
+    convert_inline_template_to_qweb,
+    parse_inline_template,
+    render_inline_template,
+    template_env_globals,
+)
+
+from odoo.addons.base.models.ir_qweb import QWebError
 
 _logger = logging.getLogger(__name__)
 
@@ -343,7 +348,7 @@ class MailRenderMixin(models.AbstractModel):
         :returns: {res_id: string of rendered template based on record}
         :rtype: dict
         """
-        results = dict.fromkeys(res_ids, u"")
+        results = dict.fromkeys(res_ids, "")
         if not template_src or not res_ids:
             return results
 

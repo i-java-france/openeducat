@@ -1,10 +1,9 @@
-from typing import Union
 
 from .byteslike_to_bytes import byteslike_to_bytes
-from .exceptions import InvalidAuthenticatorDataStructure
-from .structs import AttestedCredentialData, AuthenticatorData, AuthenticatorDataFlags
-from .parse_cbor import parse_cbor
 from .encode_cbor import encode_cbor
+from .exceptions import InvalidAuthenticatorDataStructure
+from .parse_cbor import parse_cbor
+from .structs import AttestedCredentialData, AuthenticatorData, AuthenticatorDataFlags
 
 
 def parse_authenticator_data(val: bytes) -> AuthenticatorData:

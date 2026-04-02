@@ -1,8 +1,8 @@
-import { registry } from "@web/core/registry";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { ActionMenus } from "@web/search/action_menus/action_menus";
-import { _t } from "@web/core/l10n/translation";
-import { onWillStart, onWillUpdateProps } from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {ActionMenus} from "@web/search/action_menus/action_menus";
+import {_t} from "@web/core/l10n/translation";
+import {onWillStart, onWillUpdateProps} from "@odoo/owl";
 
 const cogMenuRegistry = registry.category("cogMenu");
 
@@ -26,11 +26,11 @@ export class CogMenu extends ActionMenus {
     };
     static props = {
         ...ActionMenus.props,
-        getActiveIds: { type: ActionMenus.props.getActiveIds, optional: true },
-        context: { type: ActionMenus.props.context, optional: true },
-        resModel: { type: ActionMenus.props.resModel, optional: true },
-        items: { ...ActionMenus.props.items, optional: true },
-        slots: { type: Object, optional: true },
+        getActiveIds: {type: ActionMenus.props.getActiveIds, optional: true},
+        context: {type: ActionMenus.props.context, optional: true},
+        resModel: {type: ActionMenus.props.resModel, optional: true},
+        items: {...ActionMenus.props.items, optional: true},
+        slots: {type: Object, optional: true},
     };
     static defaultProps = {
         ...ActionMenus.defaultProps,
@@ -54,7 +54,9 @@ export class CogMenu extends ActionMenus {
     async _registryItems() {
         const registryItems = cogMenuRegistry.getAll();
         const areDisplayed = await Promise.all(
-            registryItems.map((item) => ("isDisplayed" in item ? item.isDisplayed(this.env) : true))
+            registryItems.map((item) =>
+                "isDisplayed" in item ? item.isDisplayed(this.env) : true
+            )
         );
         const items = [];
         for (let i = 0; i < registryItems.length; i++) {

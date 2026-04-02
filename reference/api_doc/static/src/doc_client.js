@@ -1,11 +1,11 @@
-import { Component, useState, onMounted, useSubEnv } from "@odoo/owl";
-import { ModelStore } from "@api_doc/doc_model_store";
-import { useDocUI } from "@api_doc/utils/doc_ui_store";
-import { ApiKeyModal } from "@api_doc/components/doc_modal_api_key";
-import { SearchModal } from "@api_doc/components/doc_modal_search";
-import { DocSidebar } from "@api_doc/components/doc_sidebar";
-import { DocModel } from "@api_doc/components/doc_model";
-import { DocErrorDialog } from "@api_doc/components/doc_error_dialog";
+import {Component, useState, onMounted, useSubEnv} from "@odoo/owl";
+import {ModelStore} from "@api_doc/doc_model_store";
+import {useDocUI} from "@api_doc/utils/doc_ui_store";
+import {ApiKeyModal} from "@api_doc/components/doc_modal_api_key";
+import {SearchModal} from "@api_doc/components/doc_modal_search";
+import {DocSidebar} from "@api_doc/components/doc_sidebar";
+import {DocModel} from "@api_doc/components/doc_model";
+import {DocErrorDialog} from "@api_doc/components/doc_error_dialog";
 
 export class DocClient extends Component {
     static template = "api_doc.DocClient";
@@ -24,9 +24,9 @@ export class DocClient extends Component {
 
         this.ui = useDocUI();
         this.modelStore = useState(new ModelStore());
-        useSubEnv({ modelStore: this.modelStore });
+        useSubEnv({modelStore: this.modelStore});
 
-        this.state = useState({ showSearchModal: false });
+        this.state = useState({showSearchModal: false});
 
         onMounted(async () => {
             await this.modelStore.loadModels();

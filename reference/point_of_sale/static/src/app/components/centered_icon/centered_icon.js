@@ -1,10 +1,10 @@
-import { Component, xml } from "@odoo/owl";
+import {Component, xml} from "@odoo/owl";
 
 export class CenteredIcon extends Component {
     static props = {
         icon: String,
-        text: { type: String, optional: true },
-        class: { type: String, optional: true },
+        text: {type: String, optional: true},
+        class: {type: String, optional: true},
     };
     static defaultProps = {
         class: "",

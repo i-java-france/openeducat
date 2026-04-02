@@ -64,7 +64,7 @@ class EventBooth(models.Model):
 
     def write(self, vals):
         to_confirm = self.filtered(lambda booth: booth.state == 'available')
-        res = super(EventBooth, self).write(vals)
+        res = super().write(vals)
         if vals.get('state') == 'unavailable':
             to_confirm._action_post_confirm(vals)
         return res

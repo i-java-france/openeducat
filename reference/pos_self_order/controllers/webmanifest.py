@@ -2,10 +2,11 @@
 
 import mimetypes
 import re
-
 from urllib.parse import unquote
+
 from odoo import http
 from odoo.http import request
+
 from odoo.addons.web.controllers import webmanifest
 
 

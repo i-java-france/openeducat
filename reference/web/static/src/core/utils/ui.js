@@ -98,7 +98,7 @@ export function getVisibleElements(activeElement, selector) {
  * @returns {HTMLElement[]}
  */
 export function touching(elements, targetRect) {
-    const r1 = { x: 0, y: 0, width: 0, height: 0, ...targetRect };
+    const r1 = {x: 0, y: 0, width: 0, height: 0, ...targetRect};
     return [...elements].filter((el) => {
         const r2 = el.getBoundingClientRect();
         return (
@@ -131,7 +131,9 @@ const FOCUSABLE_SELECTORS = [
     "textarea",
     "details > summary:nth-child(1)",
 ].map((sel) => `${sel}:not(:disabled)`);
-const TABABLE_SELECTORS = FOCUSABLE_SELECTORS.map((sel) => `${sel}:not([tabindex="-1"])`);
+const TABABLE_SELECTORS = FOCUSABLE_SELECTORS.map(
+    (sel) => `${sel}:not([tabindex="-1"])`
+);
 
 /**
  * Check if an element is focusable
@@ -139,7 +141,11 @@ const TABABLE_SELECTORS = FOCUSABLE_SELECTORS.map((sel) => `${sel}:not([tabindex
  * @param {HTMLElement} element
  */
 export function isFocusable(el) {
-    return el.matches(FOCUSABLE_SELECTORS.join(",")) && isVisible(el) && !el.closest("[inert]");
+    return (
+        el.matches(FOCUSABLE_SELECTORS.join(",")) &&
+        isVisible(el) &&
+        !el.closest("[inert]")
+    );
 }
 
 /**
@@ -148,9 +154,9 @@ export function isFocusable(el) {
  * @param {HTMLElement} [container=document.body]
  */
 export function getTabableElements(container = document.body) {
-    const elements = [...container.querySelectorAll(TABABLE_SELECTORS.join(","))].filter(
-        (el) => isVisible(el) && !el.closest("[inert]")
-    );
+    const elements = [
+        ...container.querySelectorAll(TABABLE_SELECTORS.join(",")),
+    ].filter((el) => isVisible(el) && !el.closest("[inert]"));
     /** @type {Record<number, HTMLElement[]>} */
     const byTabIndex = {};
     for (const el of [...elements]) {

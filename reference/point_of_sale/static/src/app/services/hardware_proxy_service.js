@@ -1,11 +1,11 @@
-import { HWPrinter } from "@point_of_sale/app/utils/printer/hw_printer";
-import { EventBus, reactive } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { deduceUrl } from "@point_of_sale/utils";
-import { effect } from "@web/core/utils/reactive";
-import { logPosMessage } from "../utils/pretty_console_log";
+import {HWPrinter} from "@point_of_sale/app/utils/printer/hw_printer";
+import {EventBus, reactive} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {deduceUrl} from "@point_of_sale/utils";
+import {effect} from "@web/core/utils/reactive";
+import {logPosMessage} from "../utils/pretty_console_log";
 
 /**
  * This object interfaces with the local proxy to communicate to the various hardware devices
@@ -22,7 +22,7 @@ export class HardwareProxy extends EventBus {
     setup() {
         this.host = "";
         this.keptalive = false;
-        this.connectionInfo = reactive({ status: "init", drivers: {} });
+        this.connectionInfo = reactive({status: "init", drivers: {}});
         this.deviceControllers = {};
         effect(
             (info) => {
@@ -44,7 +44,7 @@ export class HardwareProxy extends EventBus {
     disconnect() {
         if (this.connectionInfo.status !== "disconnected") {
             this.host = null;
-            this.setConnectionInfo({ status: "disconnected" });
+            this.setConnectionInfo({status: "disconnected"});
         }
     }
 
@@ -54,21 +54,29 @@ export class HardwareProxy extends EventBus {
         }
         try {
             if (await this.message("handshake")) {
-                this.setConnectionInfo({ status: "connected" });
+                this.setConnectionInfo({status: "connected"});
                 localStorage.hw_proxy_url = this.host;
                 this.keepAlive();
             } else {
-                this.setConnectionInfo({ status: "disconnected" });
-                logPosMessage("HardwareProxy", "printHtml", "Connection refused by the Proxy");
+                this.setConnectionInfo({status: "disconnected"});
+                logPosMessage(
+                    "HardwareProxy",
+                    "printHtml",
+                    "Connection refused by the Proxy"
+                );
             }
         } catch {
-            this.setConnectionInfo({ status: "disconnected" });
-            logPosMessage("HardwareProxy", "printHtml", "Could not connect to the Proxy");
+            this.setConnectionInfo({status: "disconnected"});
+            logPosMessage(
+                "HardwareProxy",
+                "printHtml",
+                "Could not connect to the Proxy"
+            );
         }
     }
 
     connectToPrinter() {
-        this.printer = new HWPrinter({ url: this.host });
+        this.printer = new HWPrinter({url: this.host});
     }
 
     /**
@@ -80,7 +88,7 @@ export class HardwareProxy extends EventBus {
      * @returns {Promise}
      */
     async autoConnect(options) {
-        this.setConnectionInfo({ status: "connecting", drivers: {} });
+        this.setConnectionInfo({status: "connecting", drivers: {}});
         let url = options.force_ip || localStorage.hw_proxy_url;
         // Return a pending promise if there is no url to connect to
         // FIXME POSREF do something useful instead if this condition can happen, remove if not
@@ -102,12 +110,12 @@ export class HardwareProxy extends EventBus {
             const always = () => setTimeout(status, 5000);
             const xhr = new browser.XMLHttpRequest();
             xhr.timeout = 2500;
-            rpc(`${this.host}/hw_proxy/status_json`, {}, { silent: true, xhr })
+            rpc(`${this.host}/hw_proxy/status_json`, {}, {silent: true, xhr})
                 .then(
-                    (drivers) => this.setConnectionInfo({ status: "connected", drivers }),
+                    (drivers) => this.setConnectionInfo({status: "connected", drivers}),
                     () => {
                         if (this.connectionInfo.status !== "connecting") {
-                            this.setConnectionInfo({ status: "disconnected" });
+                            this.setConnectionInfo({status: "disconnected"});
                         }
                     }
                 )
@@ -130,7 +138,7 @@ export class HardwareProxy extends EventBus {
         if (this.connectionInfo.status === "disconnected") {
             return Promise.reject();
         }
-        return rpc(`${this.host}/hw_proxy/${name}`, params, { silent: true });
+        return rpc(`${this.host}/hw_proxy/${name}`, params, {silent: true});
     }
 
     /**
@@ -141,7 +149,7 @@ export class HardwareProxy extends EventBus {
      * @returns {Promise<void>}
      */
     async checkProxyAvailability(url) {
-        this.setConnectionInfo({ status: "connecting" });
+        this.setConnectionInfo({status: "connecting"});
         const maxRetries = 3;
         for (let i = 0; i <= maxRetries; i++) {
             const timeoutController = new AbortController();
@@ -156,7 +164,7 @@ export class HardwareProxy extends EventBus {
                 return true;
             }
         }
-        this.setConnectionInfo({ status: "disconnected" });
+        this.setConnectionInfo({status: "disconnected"});
         return false;
     }
 

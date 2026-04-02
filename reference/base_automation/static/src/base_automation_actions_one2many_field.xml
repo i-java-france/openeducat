@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="base_automation.ActionsOne2ManyField">
         <div class="d-flex align-items-center" t-ref="root">
@@ -30,13 +29,17 @@
                         <div class="ps-2" t-esc="action.data.name" />
                     </div>
                 </div>
-                <div t-if="!action_last" class="px-3 align-self-center" t-att-data-action-id="action.id">
-                    <i class="fa fa-lg fa-plus text-primary"></i>
+                <div
+                    t-if="!action_last"
+                    class="px-3 align-self-center"
+                    t-att-data-action-id="action.id"
+                >
+                    <i class="fa fa-lg fa-plus text-primary" />
                 </div>
             </t>
             <t t-if="hiddenActionsCount">
                 <div class="fs-3 align-self-center text-muted text-nowrap">
-                    <t t-out="moreText"/>
+                    <t t-out="moreText" />
                 </div>
             </t>
         </div>

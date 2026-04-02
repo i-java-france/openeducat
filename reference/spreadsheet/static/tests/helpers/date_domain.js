@@ -1,6 +1,6 @@
-const { DateTime } = luxon;
-import { Domain } from "@web/core/domain";
-import { expect } from "@odoo/hoot";
+const {DateTime} = luxon;
+import {Domain} from "@web/core/domain";
+import {expect} from "@odoo/hoot";
 
 function getDateDomainBounds(domain) {
     const startDateStr = domain[1][2];
@@ -12,7 +12,7 @@ function getDateDomainBounds(domain) {
         const dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
         const start = DateTime.fromFormat(startDateStr, dateTimeFormat);
         const end = DateTime.fromFormat(endDateStr, dateTimeFormat);
-        return { start, end };
+        return {start, end};
     }
 
     const start = DateTime.fromISO(startDateStr);

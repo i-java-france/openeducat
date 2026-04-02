@@ -1,20 +1,21 @@
 import logging
-import pytz
 import re
 
-from odoo import api, models, fields
+import pytz
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import SQL
 from odoo.tools.sql import column_exists, create_column
 
 from ..tools import (
+    MojEracunServiceError,
+    _mer_api_check_fiscalization_status_inbox,
+    _mer_api_check_fiscalization_status_outbox,
     _mer_api_mark_paid,
     _mer_api_query_document_process_status_inbox,
     _mer_api_query_document_process_status_outbox,
     _mer_api_update_document_process_status,
-    _mer_api_check_fiscalization_status_outbox,
-    _mer_api_check_fiscalization_status_inbox,
-    MojEracunServiceError,
 )
 
 _logger = logging.getLogger(__name__)

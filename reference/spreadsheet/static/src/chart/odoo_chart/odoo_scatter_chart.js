@@ -1,9 +1,9 @@
-import { registries, chartHelpers } from "@odoo/o-spreadsheet";
-import { _t } from "@web/core/l10n/translation";
-import { OdooChart } from "./odoo_chart";
-import { onOdooChartItemHover, onOdooChartItemClick } from "./odoo_chart_helpers";
+import {registries, chartHelpers} from "@odoo/o-spreadsheet";
+import {_t} from "@web/core/l10n/translation";
+import {OdooChart} from "./odoo_chart";
+import {onOdooChartItemHover, onOdooChartItemClick} from "./odoo_chart_helpers";
 
-const { chartRegistry } = registries;
+const {chartRegistry} = registries;
 
 const {
     getScatterChartDatasets,
@@ -42,7 +42,8 @@ chartRegistry.add("odoo_scatter", {
     getChartRuntime: createOdooChartRuntime,
     validateChartDefinition: (validator, definition) =>
         OdooScatterChart.validateChartDefinition(validator, definition),
-    transformDefinition: (definition) => OdooScatterChart.transformDefinition(definition),
+    transformDefinition: (definition) =>
+        OdooScatterChart.transformDefinition(definition),
     getChartDefinitionFromContextCreation: () =>
         OdooScatterChart.getDefinitionFromContextCreation(),
     name: _t("Scatter"),
@@ -50,7 +51,7 @@ chartRegistry.add("odoo_scatter", {
 
 function createOdooChartRuntime(chart, getters) {
     const background = chart.background || "#FFFFFF";
-    const { datasets, labels } = chart.dataSource.getData();
+    const {datasets, labels} = chart.dataSource.getData();
 
     const definition = chart.getDefinition();
     const locale = getters.getLocale();
@@ -59,12 +60,18 @@ function createOdooChartRuntime(chart, getters) {
         const trend = definition.dataSets[index]?.trend;
         return !trend?.display
             ? undefined
-            : getTrendDatasetForLineChart(trend, dataset.data, labels, "category", locale);
+            : getTrendDatasetForLineChart(
+                  trend,
+                  dataset.data,
+                  labels,
+                  "category",
+                  locale
+              );
     });
 
     const chartData = {
         labels,
-        dataSetsValues: datasets.map((ds) => ({ data: ds.data, label: ds.label })),
+        dataSetsValues: datasets.map((ds) => ({data: ds.data, label: ds.label})),
         locale,
         trendDataSetsValues,
         axisType: definition.axisType || "category",
@@ -91,5 +98,5 @@ function createOdooChartRuntime(chart, getters) {
         },
     };
 
-    return { background, chartJsConfig: config };
+    return {background, chartJsConfig: config};
 }

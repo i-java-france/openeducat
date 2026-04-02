@@ -1,15 +1,23 @@
-import { Wysiwyg } from "@html_editor/wysiwyg";
-import { Component, markup, onMounted, onWillStart, reactive, useRef, useState } from "@odoo/owl";
-import { Dialog } from "@web/core/dialog/dialog";
-import { localization } from "@web/core/l10n/localization";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { user } from "@web/core/user";
-import { useAutofocus, useService } from "@web/core/utils/hooks";
-import { isHtmlEmpty } from "@web/core/utils/html";
-import { isEmail } from "@web/core/utils/strings";
-import { FileUploader } from "@web/views/fields/file_handler";
-import { endPos } from "@html_editor/utils/position";
+import {Wysiwyg} from "@html_editor/wysiwyg";
+import {
+    Component,
+    markup,
+    onMounted,
+    onWillStart,
+    reactive,
+    useRef,
+    useState,
+} from "@odoo/owl";
+import {Dialog} from "@web/core/dialog/dialog";
+import {localization} from "@web/core/l10n/localization";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {user} from "@web/core/user";
+import {useAutofocus, useService} from "@web/core/utils/hooks";
+import {isHtmlEmpty} from "@web/core/utils/html";
+import {isEmail} from "@web/core/utils/strings";
+import {FileUploader} from "@web/views/fields/file_handler";
+import {endPos} from "@html_editor/utils/position";
 
 export class ProfileDialog extends Component {
     static template = "website_profile.ProfileDialog";
@@ -20,12 +28,12 @@ export class ProfileDialog extends Component {
     };
     static props = {
         close: Function,
-        confirm: { type: Function, optional: true },
+        confirm: {type: Function, optional: true},
         focusWebsiteDescription: {
             type: Boolean,
             optional: true,
         },
-        userId: { type: Number },
+        userId: {type: Number},
     };
     static defaultProps = {
         confirm: () => {},
@@ -44,8 +52,9 @@ export class ProfileDialog extends Component {
             emailHasError: false,
             nameHasError: false,
         });
-        const websiteDescriptionClass = "website_profile_profile_dialog_website_description";
-        useAutofocus({ refName: "name" });
+        const websiteDescriptionClass =
+            "website_profile_profile_dialog_website_description";
+        useAutofocus({refName: "name"});
 
         onWillStart(async () => {
             const [users, countries] = await Promise.all([
@@ -135,7 +144,7 @@ export class ProfileDialog extends Component {
             this.props.close();
         } catch (e) {
             const msg = e?.data?.message || e?.message || _t("Update failed.");
-            this.env.services.notification.add(msg, { type: "danger" });
+            this.env.services.notification.add(msg, {type: "danger"});
         } finally {
             this.state.isProcessing = false;
         }

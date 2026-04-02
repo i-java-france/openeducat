@@ -1,8 +1,8 @@
-import { test } from "@odoo/hoot";
-import { testEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
-import { clickCheckbox, pasteHtml } from "../_helpers/user_actions";
-import { click, manuallyDispatchProgrammaticEvent } from "@odoo/hoot-dom";
+import {test} from "@odoo/hoot";
+import {testEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
+import {clickCheckbox, pasteHtml} from "../_helpers/user_actions";
+import {click, manuallyDispatchProgrammaticEvent} from "@odoo/hoot-dom";
 
 test("should do nothing if do not click on the checkbox", async () => {
     await testEditor({
@@ -13,7 +13,9 @@ test("should do nothing if do not click on the checkbox", async () => {
         stepFunction: async (editor) => {
             const li = editor.editable.querySelector("li");
             const liRect = li.getBoundingClientRect();
-            await click(li, { position: { clientX: liRect.left + 10, clientY: liRect.top + 10 } });
+            await click(li, {
+                position: {clientX: liRect.left + 10, clientY: liRect.top + 10},
+            });
         },
         contentAfter: unformat(`
             <ul class="o_checklist">
@@ -98,7 +100,7 @@ test("tripleclick on checkbox should not select the list content", async () => {
             </ul>`),
         stepFunction: async (editor) => {
             const li = editor.editable.querySelector("li");
-            const { top, left } = li.getBoundingClientRect();
+            const {top, left} = li.getBoundingClientRect();
             await manuallyDispatchProgrammaticEvent(li, "mousedown", {
                 detail: 3,
                 clientX: left - 10,

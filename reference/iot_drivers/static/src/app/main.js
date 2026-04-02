@@ -1,9 +1,9 @@
 /* global owl */
 
-import { Homepage } from "./Homepage.js";
+import {Homepage} from "./Homepage.js";
 import Store from "./store.js";
 
-const { mount, reactive } = owl;
+const {mount, reactive} = owl;
 
 function createStore() {
     return reactive(new Store());

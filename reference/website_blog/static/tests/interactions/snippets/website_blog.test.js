@@ -1,14 +1,17 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { click } from "@odoo/hoot-dom";
-import { advanceTime } from "@odoo/hoot-mock";
-import { browser } from "@web/core/browser/browser";
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {click} from "@odoo/hoot-dom";
+import {advanceTime} from "@odoo/hoot-mock";
+import {browser} from "@web/core/browser/browser";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
 setupInteractionWhiteList(["website_blog.website_blog"]);
 describe.current.tags("interaction_dev");
 
 test("click on next blog updates URL", async () => {
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <section class="website_blog">
             <div id="o_wblog_next_container" style="width:100px; height: 100px;">
                 <button class="o_wblog_next_button o_button_area btn z-1"/>

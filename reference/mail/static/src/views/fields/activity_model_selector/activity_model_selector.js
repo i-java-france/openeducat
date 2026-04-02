@@ -1,11 +1,11 @@
-import { _t } from "@web/core/l10n/translation";
-import { Component, useState } from "@odoo/owl";
-import { memoize } from "@web/core/utils/functions";
-import { useService } from "@web/core/utils/hooks";
-import { ModelSelector } from "@web/core/model_selector/model_selector";
-import { registry } from "@web/core/registry";
-import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+import {_t} from "@web/core/l10n/translation";
+import {Component, useState} from "@odoo/owl";
+import {memoize} from "@web/core/utils/functions";
+import {useService} from "@web/core/utils/hooks";
+import {ModelSelector} from "@web/core/model_selector/model_selector";
+import {registry} from "@web/core/registry";
+import {SelectCreateDialog} from "@web/views/view_dialogs/select_create_dialog";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
 
 /** largely taken from documents' DocumentsDetailPanel, which selects arbitrary models and records
  * through two interactions:
@@ -19,7 +19,7 @@ const getAvailableResModels = memoize((_null, orm) =>
 );
 
 class ActivityModelSelector extends Component {
-    static components = { ModelSelector };
+    static components = {ModelSelector};
     static template = "mail.ActivityModelSelector";
     static props = standardFieldProps;
 
@@ -32,7 +32,9 @@ class ActivityModelSelector extends Component {
             resModelName: this.props.record.data.res_model_name || "",
             models: [],
         });
-        getAvailableResModels(null, this.orm).then((models) => (this.state.models = models));
+        getAvailableResModels(null, this.orm).then(
+            (models) => (this.state.models = models)
+        );
     }
 
     async onModelSelected(value) {
@@ -64,7 +66,7 @@ class ActivityModelSelector extends Component {
                                 res_model: this.state.resModel,
                                 res_ids: resId,
                             },
-                            { save: false }
+                            {save: false}
                         );
                         const recordInfo = await this.orm.call(
                             this.state.resModel,
@@ -102,7 +104,7 @@ class ActivityModelSelector extends Component {
             res_ids: false,
         });
         this.props.record.update(persistDataThroughModelChange);
-        return this.onModelSelected({ technical: false, label: false });
+        return this.onModelSelected({technical: false, label: false});
     }
 }
 

@@ -1,7 +1,7 @@
-import { PosOrder } from "@point_of_sale/app/models/pos_order";
-import { patch } from "@web/core/utils/patch";
-import { accountTaxHelpers } from "@account/helpers/account_tax";
-import { formatCurrency } from "@point_of_sale/app/models/utils/currency";
+import {PosOrder} from "@point_of_sale/app/models/pos_order";
+import {patch} from "@web/core/utils/patch";
+import {accountTaxHelpers} from "@account/helpers/account_tax";
+import {formatCurrency} from "@point_of_sale/app/models/utils/currency";
 
 patch(PosOrder.prototype, {
     get isInCompany() {
@@ -25,7 +25,10 @@ patch(PosOrder.prototype, {
         );
         accountTaxHelpers.add_tax_details_in_base_lines(baseLines, company);
         accountTaxHelpers.round_base_lines_tax_details(baseLines, company);
-        const hsnSummary = accountTaxHelpers.l10n_in_get_hsn_summary_table(baseLines, false);
+        const hsnSummary = accountTaxHelpers.l10n_in_get_hsn_summary_table(
+            baseLines,
+            false
+        );
         if (hsnSummary) {
             for (const item of hsnSummary.items) {
                 for (const key of [

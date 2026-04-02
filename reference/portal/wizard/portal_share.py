@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 
 
 class PortalShare(models.TransientModel):
@@ -9,7 +8,7 @@ class PortalShare(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        result = super(PortalShare, self).default_get(fields)
+        result = super().default_get(fields)
         result['res_model'] = self.env.context.get('active_model', False)
         result['res_id'] = self.env.context.get('active_id', False)
         if result['res_model'] and result['res_id']:

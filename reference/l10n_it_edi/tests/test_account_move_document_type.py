@@ -1,5 +1,6 @@
 from odoo import fields
 from odoo.tests import tagged
+
 from odoo.addons.l10n_it_edi.tests.common import TestItEdi
 
 

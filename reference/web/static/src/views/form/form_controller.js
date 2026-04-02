@@ -1,35 +1,41 @@
-import { _t } from "@web/core/l10n/translation";
-import { hasTouch } from "@web/core/browser/feature_detection";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { makeContext } from "@web/core/context";
-import { useDebugCategory } from "@web/core/debug/debug_context";
-import { registry } from "@web/core/registry";
-import { SIZES } from "@web/core/ui/ui_service";
-import { user } from "@web/core/user";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { omit } from "@web/core/utils/objects";
-import { createElement, parseXML } from "@web/core/utils/xml";
-import { evaluateBooleanExpr } from "@web/core/py_js/py";
-import { useSetupAction } from "@web/search/action_hook";
-import { Layout } from "@web/search/layout";
-import { usePager } from "@web/search/pager_hook";
-import { standardViewProps } from "@web/views/standard_view_props";
-import { isX2Many } from "@web/views/utils";
-import { executeButtonCallback, useViewButtons } from "@web/views/view_button/view_button_hook";
-import { ViewButton } from "@web/views/view_button/view_button";
-import { Field } from "@web/views/fields/field";
-import { useModel } from "@web/model/model";
-import { addFieldDependencies, extractFieldsFromArchInfo } from "@web/model/relational_model/utils";
-import { useViewCompiler } from "@web/views/view_compiler";
-import { useDeleteRecords } from "@web/views/view_hook";
-import { Widget } from "@web/views/widgets/widget";
-import { STATIC_ACTIONS_GROUP_NUMBER } from "@web/search/action_menus/action_menus";
+import {_t} from "@web/core/l10n/translation";
+import {hasTouch} from "@web/core/browser/feature_detection";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {makeContext} from "@web/core/context";
+import {useDebugCategory} from "@web/core/debug/debug_context";
+import {registry} from "@web/core/registry";
+import {SIZES} from "@web/core/ui/ui_service";
+import {user} from "@web/core/user";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {omit} from "@web/core/utils/objects";
+import {createElement, parseXML} from "@web/core/utils/xml";
+import {evaluateBooleanExpr} from "@web/core/py_js/py";
+import {useSetupAction} from "@web/search/action_hook";
+import {Layout} from "@web/search/layout";
+import {usePager} from "@web/search/pager_hook";
+import {standardViewProps} from "@web/views/standard_view_props";
+import {isX2Many} from "@web/views/utils";
+import {
+    executeButtonCallback,
+    useViewButtons,
+} from "@web/views/view_button/view_button_hook";
+import {ViewButton} from "@web/views/view_button/view_button";
+import {Field} from "@web/views/fields/field";
+import {useModel} from "@web/model/model";
+import {
+    addFieldDependencies,
+    extractFieldsFromArchInfo,
+} from "@web/model/relational_model/utils";
+import {useViewCompiler} from "@web/views/view_compiler";
+import {useDeleteRecords} from "@web/views/view_hook";
+import {Widget} from "@web/views/widgets/widget";
+import {STATIC_ACTIONS_GROUP_NUMBER} from "@web/search/action_menus/action_menus";
 
-import { ButtonBox } from "./button_box/button_box";
-import { FormCompiler } from "./form_compiler";
-import { FormErrorDialog } from "./form_error_dialog/form_error_dialog";
-import { FormStatusIndicator } from "./form_status_indicator/form_status_indicator";
-import { FormCogMenu } from "./form_cog_menu/form_cog_menu";
+import {ButtonBox} from "./button_box/button_box";
+import {FormCompiler} from "./form_compiler";
+import {FormErrorDialog} from "./form_error_dialog/form_error_dialog";
+import {FormStatusIndicator} from "./form_status_indicator/form_status_indicator";
+import {FormCogMenu} from "./form_cog_menu/form_cog_menu";
 
 import {
     Component,
@@ -44,12 +50,19 @@ import {
     useState,
     useSubEnv,
 } from "@odoo/owl";
-import { FetchRecordError } from "@web/model/relational_model/errors";
-import { effect } from "@web/core/utils/reactive";
+import {FetchRecordError} from "@web/model/relational_model/errors";
+import {effect} from "@web/core/utils/reactive";
 
 const viewRegistry = registry.category("views");
 
-export async function loadSubViews(fieldNodes, fields, context, resModel, viewService, isSmall) {
+export async function loadSubViews(
+    fieldNodes,
+    fields,
+    context,
+    resModel,
+    viewService,
+    isSmall
+) {
     for (const fieldInfo of Object.values(fieldNodes)) {
         const fieldName = fieldInfo.name;
         const field = fields[fieldName];
@@ -98,7 +111,7 @@ export async function loadSubViews(fieldNodes, fields, context, resModel, viewSe
             views: [[false, viewType]],
             context: makeContext([fieldContext, user.context, refinedContext]),
         });
-        const { ArchParser } = viewRegistry.get(viewType);
+        const {ArchParser} = viewRegistry.get(viewType);
         const xmlDoc = parseXML(views[viewType].arch);
         const archInfo = new ArchParser().parse(xmlDoc, relatedModels, comodel);
         fieldInfo.views[viewType] = {
@@ -136,19 +149,19 @@ export class FormController extends Component {
 
     static props = {
         ...standardViewProps,
-        discardRecord: { type: Function, optional: true },
-        readonly: { type: Boolean, optional: true },
-        saveRecord: { type: Function, optional: true },
-        removeRecord: { type: Function, optional: true },
+        discardRecord: {type: Function, optional: true},
+        readonly: {type: Boolean, optional: true},
+        saveRecord: {type: Function, optional: true},
+        removeRecord: {type: Function, optional: true},
         Model: Function,
         Renderer: Function,
         Compiler: Function,
         archInfo: Object,
         buttonTemplate: String,
-        preventCreate: { type: Boolean, optional: true },
-        preventEdit: { type: Boolean, optional: true },
-        onDiscard: { type: Function, optional: true },
-        onSave: { type: Function, optional: true },
+        preventCreate: {type: Boolean, optional: true},
+        preventEdit: {type: Boolean, optional: true},
+        onDiscard: {type: Function, optional: true},
+        onSave: {type: Function, optional: true},
     };
     static defaultProps = {
         preventCreate: false,
@@ -166,19 +179,27 @@ export class FormController extends Component {
         useBus(this.ui.bus, "resize", this.render);
 
         this.archInfo = this.props.archInfo;
-        const { create, edit } = this.archInfo.activeActions;
+        const {create, edit} = this.archInfo.activeActions;
         this.canCreate = create && !this.props.preventCreate;
         this.canEdit = edit && !this.props.preventEdit;
         this.duplicateId = false;
 
-        this.display = { ...this.props.display };
+        this.display = {...this.props.display};
         if (this.env.inDialog) {
             this.display.controlPanel = false;
         }
 
         this.formInDialog = 0;
-        useBus(this.env.bus, "FORM-CONTROLLER:FORM-IN-DIALOG:ADD", () => this.formInDialog++);
-        useBus(this.env.bus, "FORM-CONTROLLER:FORM-IN-DIALOG:REMOVE", () => this.formInDialog--);
+        useBus(
+            this.env.bus,
+            "FORM-CONTROLLER:FORM-IN-DIALOG:ADD",
+            () => this.formInDialog++
+        );
+        useBus(
+            this.env.bus,
+            "FORM-CONTROLLER:FORM-IN-DIALOG:REMOVE",
+            () => this.formInDialog--
+        );
 
         // Wait to be mounted before displaying dialog/notification for onchange warnings returned
         // by the first onchange, for 2 reasons:
@@ -197,25 +218,27 @@ export class FormController extends Component {
                 this.viewService,
                 this.env.isSmall
             );
-            const { activeFields, fields } = extractFieldsFromArchInfo(
+            const {activeFields, fields} = extractFieldsFromArchInfo(
                 this.archInfo,
                 this.props.fields
             );
             if (this.display.controlPanel) {
                 addFieldDependencies(activeFields, fields, [
-                    { name: "display_name", type: "char", readonly: true },
+                    {name: "display_name", type: "char", readonly: true},
                 ]);
             }
             this.model.config.activeFields = activeFields;
             this.model.config.fields = fields;
         };
-        this.model = useState(useModel(this.props.Model, this.modelParams, { beforeFirstLoad }));
-        useSubEnv({ model: this.model });
+        this.model = useState(
+            useModel(this.props.Model, this.modelParams, {beforeFirstLoad})
+        );
+        useSubEnv({model: this.model});
         onMounted(() => {
             effect(
                 (model) => {
                     if (status(this) === "mounted") {
-                        this.props.updateActionState({ resId: model.root.resId });
+                        this.props.updateActionState({resId: model.root.resId});
                     }
                 },
                 [this.model]
@@ -240,7 +263,9 @@ export class FormController extends Component {
 
         // select footers that are not in subviews and move them to another arch
         // that will be moved to the dialog's footer (if we are in a dialog)
-        const footers = [...this.archInfo.xmlDoc.querySelectorAll("footer:not(field footer)")];
+        const footers = [
+            ...this.archInfo.xmlDoc.querySelectorAll("footer:not(field footer)"),
+        ];
         if (footers.length) {
             this.footerArchInfo = Object.assign({}, this.archInfo);
             this.footerArchInfo.xmlDoc = createElement("t");
@@ -255,8 +280,8 @@ export class FormController extends Component {
         if (xmlDocButtonBox) {
             const buttonBoxTemplates = useViewCompiler(
                 this.props.Compiler || FormCompiler,
-                { ButtonBox: xmlDocButtonBox },
-                { isSubView: true }
+                {ButtonBox: xmlDocButtonBox},
+                {isSubView: true}
             );
             this.buttonBoxTemplate = buttonBoxTemplates.ButtonBox;
         }
@@ -269,7 +294,7 @@ export class FormController extends Component {
         });
 
         const state = this.props.state || {};
-        const activeNotebookPages = { ...state.activeNotebookPages };
+        const activeNotebookPages = {...state.activeNotebookPages};
         this.onNotebookPageChange = (notebookId, page) => {
             if (page) {
                 activeNotebookPages[notebookId] = page;
@@ -287,7 +312,7 @@ export class FormController extends Component {
                 resId: this.model.root.resId,
             }),
         });
-        useDebugCategory("form", { component: this });
+        useDebugCategory("form", {component: this});
 
         usePager(() => {
             if (!this.model.root.isNew) {
@@ -296,7 +321,7 @@ export class FormController extends Component {
                     offset: resIds.indexOf(this.model.root.resId),
                     limit: 1,
                     total: resIds.length,
-                    onUpdate: ({ offset }) => this.onPagerUpdate({ offset, resIds }),
+                    onUpdate: ({offset}) => this.onPagerUpdate({offset, resIds}),
                 };
             }
         });
@@ -305,7 +330,7 @@ export class FormController extends Component {
             this.env.config.setDisplayName(this.displayName());
         });
 
-        const { disableAutofocus } = this.archInfo;
+        const {disableAutofocus} = this.archInfo;
         if (!disableAutofocus) {
             useEffect(
                 (isInEdition) => {
@@ -342,10 +367,10 @@ export class FormController extends Component {
             isDomainSelected: this.model.root.isDomainSelected,
             resModel: this.model.root.resModel,
             domain: this.props.domain,
-            onActionExecuted: ({ noReload } = {}) => {
+            onActionExecuted: ({noReload} = {}) => {
                 if (!noReload) {
-                    const { resId, resIds } = this.model.root;
-                    return this.model.load({ resId: resId, resIds: resIds });
+                    const {resId, resIds} = this.model.root;
+                    return this.model.load({resId: resId, resIds: resIds});
                 }
             },
             shouldExecuteAction: this.shouldExecuteAction.bind(this),
@@ -357,7 +382,8 @@ export class FormController extends Component {
             config: {
                 resModel: this.props.resModel,
                 resId: this.props.resId || false,
-                resIds: this.props.resIds || (this.props.resId ? [this.props.resId] : []),
+                resIds:
+                    this.props.resIds || (this.props.resId ? [this.props.resId] : []),
                 fields: this.props.fields,
                 activeFields: {}, // will be generated after loading sub views (see willStart)
                 isMonoRecord: true,
@@ -369,7 +395,8 @@ export class FormController extends Component {
                 onWillLoadRoot: this.onWillLoadRoot.bind(this),
                 onWillSaveRecord: this.onWillSaveRecord.bind(this),
                 onRecordSaved: this.onRecordSaved.bind(this),
-                onWillDisplayOnchangeWarning: this.onWillDisplayOnchangeWarning.bind(this),
+                onWillDisplayOnchangeWarning:
+                    this.onWillDisplayOnchangeWarning.bind(this),
             },
             useSendBeaconToSaveUrgently: true,
         };
@@ -400,10 +427,11 @@ export class FormController extends Component {
                 }
             }
             if (Object.keys(translationChanges).length) {
-                await this.orm.call(this.model.root.resModel, "web_override_translations", [
-                    [this.model.root.resId],
-                    translationChanges,
-                ]);
+                await this.orm.call(
+                    this.model.root.resModel,
+                    "web_override_translations",
+                    [[this.model.root.resId], translationChanges]
+                );
             }
         }
     }
@@ -416,7 +444,7 @@ export class FormController extends Component {
      */
     async onWillSaveRecord() {}
 
-    async onSaveError(error, { discard, retry }, leaving) {
+    async onSaveError(error, {discard, retry}, leaving) {
         const suggestedCompany = error.data?.context?.suggested_company;
         const activeCompanyIds = user.activeCompanies.map((c) => c.id);
         if (
@@ -428,7 +456,7 @@ export class FormController extends Component {
             this.model.config.context.allowed_company_ids.push(suggestedCompany.id);
             // activate the company without reloading !
             activeCompanyIds.push(suggestedCompany.id);
-            user.activateCompanies(activeCompanyIds, { reload: false });
+            user.activateCompanies(activeCompanyIds, {reload: false});
             return retry();
         }
         if (leaving) {
@@ -440,7 +468,7 @@ export class FormController extends Component {
                         discard();
                         resolve(true);
                     },
-                    onRedirect: async ({ action, additionalContext }) => {
+                    onRedirect: async ({action, additionalContext}) => {
                         try {
                             await this.actionService.doAction(action, {
                                 additionalContext,
@@ -459,10 +487,14 @@ export class FormController extends Component {
     }
 
     displayName() {
-        return this.model.root.data.display_name || (this.model.root.isNew && _t("New")) || "";
+        return (
+            this.model.root.data.display_name ||
+            (this.model.root.isNew && _t("New")) ||
+            ""
+        );
     }
 
-    async onPagerUpdate({ offset, resIds }) {
+    async onPagerUpdate({offset, resIds}) {
         const dirty = await this.model.root.isDirty();
         try {
             if (dirty) {
@@ -471,12 +503,14 @@ export class FormController extends Component {
                     nextId: resIds[offset],
                 });
             } else {
-                await this.model.load({ resId: resIds[offset] });
+                await this.model.load({resId: resIds[offset]});
             }
         } catch (e) {
             if (e instanceof FetchRecordError) {
                 this.model.load({
-                    resIds: this.model.config.resIds.filter((id) => !e.resIds.includes(id)),
+                    resIds: this.model.config.resIds.filter(
+                        (id) => !e.resIds.includes(id)
+                    ),
                 });
             }
             throw e;
@@ -489,7 +523,7 @@ export class FormController extends Component {
         }
     }
 
-    async beforeLeave({ forceLeave } = {}) {
+    async beforeLeave({forceLeave} = {}) {
         if (this.model.root.dirty && !forceLeave) {
             return this.save({
                 reload: false,
@@ -507,7 +541,7 @@ export class FormController extends Component {
     }
 
     getStaticActionMenuItems() {
-        const { activeActions } = this.archInfo;
+        const {activeActions} = this.archInfo;
         return {
             addPropertyFieldValue: {
                 isAvailable: () => activeActions.addPropertyFieldValue,
@@ -561,12 +595,17 @@ export class FormController extends Component {
     }
 
     get actionMenuItems() {
-        const { actionMenus } = this.props.info;
+        const {actionMenus} = this.props.info;
         const staticActionItems = Object.entries(this.getStaticActionMenuItems())
-            .filter(([key, item]) => item.isAvailable === undefined || item.isAvailable())
-            .sort(([k1, item1], [k2, item2]) => (item1.sequence || 0) - (item2.sequence || 0))
+            .filter(
+                ([key, item]) => item.isAvailable === undefined || item.isAvailable()
+            )
+            .sort(
+                ([k1, item1], [k2, item2]) =>
+                    (item1.sequence || 0) - (item2.sequence || 0)
+            )
             .map(([key, item]) =>
-                Object.assign({ key }, omit(item, "isAvailable", "sequence"), {
+                Object.assign({key}, omit(item, "isAvailable", "sequence"), {
                     groupNumber: STATIC_ACTIONS_GROUP_NUMBER,
                 })
             );
@@ -582,8 +621,8 @@ export class FormController extends Component {
         return "active" in this.model.root.activeFields
             ? !this.props.fields.active.readonly
             : "x_active" in this.model.root.activeFields
-            ? !this.props.fields.x_active.readonly
-            : false;
+              ? !this.props.fields.x_active.readonly
+              : false;
     }
 
     async shouldExecuteAction(item) {
@@ -618,7 +657,9 @@ export class FormController extends Component {
     }
 
     async deleteRecord() {
-        this.deleteRecordsWithConfirmation(this.deleteConfirmationDialogProps, [this.model.root]);
+        this.deleteRecordsWithConfirmation(this.deleteConfirmationDialogProps, [
+            this.model.root,
+        ]);
     }
 
     async beforeExecuteActionButton(clickParams) {
@@ -628,7 +669,7 @@ export class FormController extends Component {
             if (clickParams.special === "save" && this.props.saveRecord) {
                 saved = await this.props.saveRecord(record, clickParams);
             } else {
-                const params = { reload: !(this.env.inDialog && clickParams.close) };
+                const params = {reload: !(this.env.inDialog && clickParams.close)};
                 saved = await record.save(params);
             }
             if (saved !== false && this.props.onSave) {
@@ -645,11 +686,11 @@ export class FormController extends Component {
     async create() {
         const dirty = await this.model.root.isDirty();
         const onError = (error, options) => this.onSaveError(error, options, true);
-        const canProceed = !dirty || (await this.model.root.save({ onError }));
+        const canProceed = !dirty || (await this.model.root.save({onError}));
         // FIXME: disable/enable not done in onPagerUpdate
         if (canProceed) {
             await executeButtonCallback(this.ui.activeElement, () =>
-                this.model.load({ resId: false })
+                this.model.load({resId: false})
             );
         }
     }
@@ -693,7 +734,7 @@ export class FormController extends Component {
 
     get className() {
         const result = {};
-        const { size } = this.ui;
+        const {size} = this.ui;
         if (size <= SIZES.XS) {
             result.o_xxs_form_view = true;
         } else if (!this.env.inDialog && size === SIZES.XXL) {

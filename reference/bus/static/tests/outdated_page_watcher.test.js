@@ -1,18 +1,22 @@
-import { WEBSOCKET_CLOSE_CODES } from "@bus/workers/websocket_worker";
-import { describe, expect, test } from "@odoo/hoot";
-import { runAllTimers, waitFor } from "@odoo/hoot-dom";
+import {WEBSOCKET_CLOSE_CODES} from "@bus/workers/websocket_worker";
+import {describe, expect, test} from "@odoo/hoot";
+import {runAllTimers, waitFor} from "@odoo/hoot-dom";
 import {
+    MockServer,
     asyncStep,
     contains,
     getService,
-    MockServer,
     mountWithCleanup,
     onRpc,
     waitForSteps,
 } from "@web/../tests/web_test_helpers";
-import { browser } from "@web/core/browser/browser";
-import { WebClient } from "@web/webclient/webclient";
-import { addBusServiceListeners, defineBusModels, startBusService } from "./bus_test_helpers";
+import {browser} from "@web/core/browser/browser";
+import {WebClient} from "@web/webclient/webclient";
+import {
+    addBusServiceListeners,
+    defineBusModels,
+    startBusService,
+} from "./bus_test_helpers";
 
 defineBusModels();
 describe.current.tags("desktop");
@@ -32,7 +36,9 @@ test("disconnect during vacuum should ask for reload", async () => {
     expect(await getService("multi_tab").isOnMainTab()).toBe(true);
     await runAllTimers();
     await waitForSteps(["BUS:CONNECT"]);
-    MockServer.env["bus.bus"]._simulateDisconnection(WEBSOCKET_CLOSE_CODES.ABNORMAL_CLOSURE);
+    MockServer.env["bus.bus"]._simulateDisconnection(
+        WEBSOCKET_CLOSE_CODES.ABNORMAL_CLOSURE
+    );
     await waitForSteps(["BUS:DISCONNECT", "BUS:RECONNECTING"]);
     await runAllTimers();
     await waitForSteps(["BUS:RECONNECT"]);

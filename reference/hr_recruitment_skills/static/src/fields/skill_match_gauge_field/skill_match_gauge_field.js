@@ -1,10 +1,10 @@
-import { getCSSVariableValue } from "@html_editor/utils/formatting";
-import { onWillStart } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { formatFloat } from "@web/views/fields/formatters";
-import { GaugeField, gaugeField } from "@web/views/fields/gauge/gauge_field";
+import {getCSSVariableValue} from "@html_editor/utils/formatting";
+import {onWillStart} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {formatFloat} from "@web/views/fields/formatters";
+import {GaugeField, gaugeField} from "@web/views/fields/gauge/gauge_field";
 
 export class SkillMatchGaugeField extends GaugeField {
     static template = "hr_recruitment.SkillMatchGaugeField";
@@ -15,9 +15,14 @@ export class SkillMatchGaugeField extends GaugeField {
         this.orm = useService("orm");
 
         onWillStart(async () => {
-            const matching_job_id = this.props.record.evalContext.context.matching_job_id;
+            const matching_job_id =
+                this.props.record.evalContext.context.matching_job_id;
             if (matching_job_id) {
-                const matching_job = await this.orm.read("hr.job", [matching_job_id], ["name"]);
+                const matching_job = await this.orm.read(
+                    "hr.job",
+                    [matching_job_id],
+                    ["name"]
+                );
                 this.matching_job_name = matching_job[0].name;
             }
         });
@@ -38,8 +43,14 @@ export class SkillMatchGaugeField extends GaugeField {
 
         const fgColor =
             gaugeValue > maxValue
-                ? getCSSVariableValue("success", getComputedStyle(document.documentElement))
-                : getCSSVariableValue("primary", getComputedStyle(document.documentElement));
+                ? getCSSVariableValue(
+                      "success",
+                      getComputedStyle(document.documentElement)
+                  )
+                : getCSSVariableValue(
+                      "primary",
+                      getComputedStyle(document.documentElement)
+                  );
         maxValue = Math.max(gaugeValue, maxValue);
         if (gaugeValue === 0 && maxValue === 0) {
             maxValue = 1;

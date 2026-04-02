@@ -1,8 +1,8 @@
-import { useEffect } from "@odoo/owl";
+import {useEffect} from "@odoo/owl";
 import wUtils from "@website/js/utils";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { BuilderUrlPicker } from "@html_builder/core/building_blocks/builder_urlpicker";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {BuilderUrlPicker} from "@html_builder/core/building_blocks/builder_urlpicker";
 
 export class WebsiteUrlPicker extends BuilderUrlPicker {
     setup() {

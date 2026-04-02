@@ -1,7 +1,8 @@
 import logging
-import requests
 from datetime import datetime
 from json import JSONDecodeError
+
+import requests
 
 from odoo import _
 from odoo.exceptions import UserError

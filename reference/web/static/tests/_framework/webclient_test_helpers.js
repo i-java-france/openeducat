@@ -1,8 +1,8 @@
-import { animationFrame } from "@odoo/hoot";
-import { Component, xml } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { WebClient } from "@web/webclient/webclient";
-import { mountWithCleanup } from "./component_test_helpers";
+import {animationFrame} from "@odoo/hoot";
+import {Component, xml} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {WebClient} from "@web/webclient/webclient";
+import {mountWithCleanup} from "./component_test_helpers";
 
 class TestClientAction extends Component {
     static template = xml`
@@ -19,7 +19,7 @@ export function useTestClientAction() {
         tag,
         target: "main",
         type: "ir.actions.client",
-        params: { description: "Id 1" },
+        params: {description: "Id 1"},
     };
 }
 

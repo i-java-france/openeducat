@@ -30,7 +30,7 @@ class TestExternalAPI(SavepointCaseWithUserDemo):
 class TestXMLRPC(common.HttpCase):
 
     def setUp(self):
-        super(TestXMLRPC, self).setUp()
+        super().setUp()
         self.admin_uid = self.env.ref('base.user_admin').id
 
         ml_xml = mute_logger('odoo.addons.rpc.controllers.xmlrpc')

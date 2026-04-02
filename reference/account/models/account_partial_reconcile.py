@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
-from odoo import api, fields, models, _, Command
+import json
+
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import frozendict
 
-from datetime import date
-import json
 
 class AccountPartialReconcile(models.Model):
     _name = 'account.partial.reconcile'
@@ -674,7 +673,7 @@ class AccountPartialReconcile(models.Model):
             if counterpart_line.reconciled:
                 continue
 
-            reconciliation_plan.append((counterpart_line + lines))
+            reconciliation_plan.append(counterpart_line + lines)
 
         # passing add_caba_vals in the context to make sure that any exchange diff that would be created for
         # this cash basis move would set the field draft_caba_move_vals accordingly on the partial

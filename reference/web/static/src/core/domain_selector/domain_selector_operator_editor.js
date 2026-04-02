@@ -2,7 +2,7 @@ export function getDomainDisplayedOperators(fieldDef) {
     if (!fieldDef) {
         fieldDef = {};
     }
-    const { type, is_property } = fieldDef;
+    const {type, is_property} = fieldDef;
 
     if (is_property) {
         switch (type) {

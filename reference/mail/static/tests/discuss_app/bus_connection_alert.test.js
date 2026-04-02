@@ -1,18 +1,21 @@
-import { addBusServiceListeners, lockWebsocketConnect } from "@bus/../tests/bus_test_helpers";
-import { getWebSocketWorker } from "@bus/../tests/mock_websocket";
-import { WEBSOCKET_CLOSE_CODES } from "@bus/workers/websocket_worker";
-import { defineMailModels, openDiscuss, start } from "@mail/../tests/mail_test_helpers";
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame, runAllTimers, waitFor, waitForNone } from "@odoo/hoot-dom";
+import {
+    addBusServiceListeners,
+    lockWebsocketConnect,
+} from "@bus/../tests/bus_test_helpers";
+import {getWebSocketWorker} from "@bus/../tests/mock_websocket";
+import {WEBSOCKET_CLOSE_CODES} from "@bus/workers/websocket_worker";
+import {defineMailModels, openDiscuss, start} from "@mail/../tests/mail_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {animationFrame, runAllTimers, waitFor, waitForNone} from "@odoo/hoot-dom";
 
 import {
+    MockServer,
     asyncStep,
     makeMockServer,
-    MockServer,
     patchWithCleanup,
     waitForSteps,
 } from "@web/../tests/web_test_helpers";
-import { browser } from "@web/core/browser/browser";
+import {browser} from "@web/core/browser/browser";
 
 defineMailModels();
 describe.current.tags("desktop");
@@ -33,7 +36,7 @@ test("show warning when bus connection encounters issues", async () => {
                 ev.preventDefault();
                 ev.stopImmediatePropagation();
             },
-            { capture: true }
+            {capture: true}
         );
     }
     addBusServiceListeners(
@@ -45,9 +48,11 @@ test("show warning when bus connection encounters issues", async () => {
     await openDiscuss();
     await waitForSteps(["BUS:CONNECT"]);
     const unlockWebsocket = lockWebsocketConnect();
-    MockServer.env["bus.bus"]._simulateDisconnection(WEBSOCKET_CLOSE_CODES.ABNORMAL_CLOSURE);
+    MockServer.env["bus.bus"]._simulateDisconnection(
+        WEBSOCKET_CLOSE_CODES.ABNORMAL_CLOSURE
+    );
     await waitForSteps(["BUS:RECONNECTING"]);
-    expect(await waitFor(".o-bus-ConnectionAlert", { timeout: 2500 })).toHaveText(
+    expect(await waitFor(".o-bus-ConnectionAlert", {timeout: 2500})).toHaveText(
         "Real-time connection lost..."
     );
     await runAllTimers();

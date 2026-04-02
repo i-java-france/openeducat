@@ -1,7 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
-from odoo import fields, models, _
+
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 

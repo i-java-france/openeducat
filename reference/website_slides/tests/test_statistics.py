@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import math
@@ -6,11 +5,12 @@ import math
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields
-from odoo.addons.website_slides.tests import common
 from odoo.exceptions import UserError
 from odoo.tests import HttpCase, tagged
 from odoo.tests.common import users
-from odoo.tools import mute_logger, float_compare
+from odoo.tools import float_compare, mute_logger
+
+from odoo.addons.website_slides.tests import common
 
 
 @tagged('functional')
@@ -250,7 +250,7 @@ class TestSlideStatistics(common.SlidesCase):
 class TestHttpSlideStatistics(HttpCase, common.SlidesCase):
     @classmethod
     def setUpClass(cls):
-        super(TestHttpSlideStatistics, cls).setUpClass()
+        super().setUpClass()
         cls.slide.is_preview = True
 
     def test_slide_statistics_views(self):

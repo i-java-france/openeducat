@@ -3,7 +3,7 @@
  * --optionName-propertyLikeName (i.e. --button-padding-x, --button-padding-y
  */
 
-import { BASE_CONTAINER_CLASS } from "@html_editor/utils/base_container";
+import {BASE_CONTAINER_CLASS} from "@html_editor/utils/base_container";
 
 function getProperties(propertyDescription) {
     switch (propertyDescription) {
@@ -30,9 +30,7 @@ function generateSimpleMailingVariables(prefix, selectors, properties) {
 // Properties and default values:
 
 /* eslint-disable */
-const wrapperProperties = [
-    "background-color",
-];
+const wrapperProperties = ["background-color"];
 
 const textProperties = [
     "font-size",
@@ -43,9 +41,7 @@ const textProperties = [
     "color",
 ];
 
-const textContainerProperties = [
-    "margin-bottom",
-];
+const textContainerProperties = ["margin-bottom"];
 
 const buttonProperties = [
     ...textProperties,
@@ -82,8 +78,16 @@ export const CUSTOMIZE_MAILING_VARIABLES = Object.assign(
         }
         return variables;
     })(),
-    generateSimpleMailingVariables("text", [`.${BASE_CONTAINER_CLASS}`, "p", "li"], textProperties),
-    generateSimpleMailingVariables("text-container", ["p", "ul"], textContainerProperties),
+    generateSimpleMailingVariables(
+        "text",
+        [`.${BASE_CONTAINER_CLASS}`, "p", "li"],
+        textProperties
+    ),
+    generateSimpleMailingVariables(
+        "text-container",
+        ["p", "ul"],
+        textContainerProperties
+    ),
     generateSimpleMailingVariables(
         "link",
         ["a:not(.btn):not(:has(.fa, img))", "a.btn.btn-link"],
@@ -96,7 +100,11 @@ export const CUSTOMIZE_MAILING_VARIABLES = Object.assign(
     ),
     generateSimpleMailingVariables(
         "btn-secondary",
-        ["a.btn.btn-fill-secondary", "a.btn.btn-outline-secondary", "a.btn.btn-secondary"],
+        [
+            "a.btn.btn-fill-secondary",
+            "a.btn.btn-outline-secondary",
+            "a.btn.btn-secondary",
+        ],
         buttonProperties
     ),
     generateSimpleMailingVariables("separator", ["hr"], separatorProperties)

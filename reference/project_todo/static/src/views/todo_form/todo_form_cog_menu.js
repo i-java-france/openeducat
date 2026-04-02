@@ -1,4 +1,4 @@
-import { FormCogMenu } from "@web/views/form/form_cog_menu/form_cog_menu";
+import {FormCogMenu} from "@web/views/form/form_cog_menu/form_cog_menu";
 
 export class TodoFormCogMenu extends FormCogMenu {
     async _registryItems() {

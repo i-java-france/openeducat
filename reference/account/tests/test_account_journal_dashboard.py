@@ -2,9 +2,13 @@ from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
 from odoo import Command
-from odoo.addons.account.tests.test_account_journal_dashboard_common import TestAccountJournalDashboardCommon
 from odoo.tests import tagged
 from odoo.tools.misc import format_amount
+
+from odoo.addons.account.tests.test_account_journal_dashboard_common import (
+    TestAccountJournalDashboardCommon,
+)
+
 
 @tagged('post_install', '-at_install')
 class TestAccountJournalDashboard(TestAccountJournalDashboardCommon):
@@ -151,7 +155,7 @@ class TestAccountJournalDashboard(TestAccountJournalDashboardCommon):
             [            1,       100,              1,          55,            1,      55, company_currency],
         ]
 
-        for (purchase_journal, bill_currency), expected_vals in zip(setup_values, expected_vals_list):
+        for (purchase_journal, bill_currency), expected_vals in zip(setup_values, expected_vals_list, strict=False):
             with self.subTest(purchase_journal_currency=purchase_journal.currency_id, bill_currency=bill_currency, expected_vals=expected_vals):
                 bill = self.init_invoice('in_invoice', invoice_date='2017-01-01', post=True, amounts=[200], currency=bill_currency, journal=purchase_journal)
                 _draft_bill = self.init_invoice('in_invoice', invoice_date='2017-01-01', post=False, amounts=[200], currency=bill_currency, journal=purchase_journal)

@@ -14,3 +14,8 @@ docker/19/odoo-data/
 
 # System
 .DS_Store
+
+.env
+
+#node_modules
+jira/node_modules/*

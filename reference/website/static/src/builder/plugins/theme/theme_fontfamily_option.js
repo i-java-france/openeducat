@@ -1,7 +1,7 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { BuilderFontFamilyPicker } from "@html_builder/core/building_blocks/builder_fontfamilypicker";
-import { BuilderButton } from "@html_builder/core/building_blocks/builder_button";
-import { getCSSVariableValue } from "@html_editor/utils/formatting";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {BuilderFontFamilyPicker} from "@html_builder/core/building_blocks/builder_fontfamilypicker";
+import {BuilderButton} from "@html_builder/core/building_blocks/builder_button";
+import {getCSSVariableValue} from "@html_editor/utils/formatting";
 
 export class ThemeFontFamilyOption extends BaseOptionComponent {
     static template = "html_builder.ThemeFontFamilyOption";
@@ -28,7 +28,10 @@ export class ThemeFontFamilyOption extends BaseOptionComponent {
             }));
         } else {
             this.state = useDomState(() => ({
-                isFontSpecified: !!getCSSVariableValue("set-" + this.props.cssVariable, htmlStyle),
+                isFontSpecified: !!getCSSVariableValue(
+                    "set-" + this.props.cssVariable,
+                    htmlStyle
+                ),
             }));
         }
     }

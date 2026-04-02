@@ -1,8 +1,8 @@
-import { test, expect } from "@odoo/hoot";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { ProductListPage } from "@pos_self_order/app/pages/product_list_page/product_list_page";
-import { setupSelfPosEnv } from "../utils";
-import { definePosSelfModels } from "../data/generate_model_definitions";
+import {expect, test} from "@odoo/hoot";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {ProductListPage} from "@pos_self_order/app/pages/product_list_page/product_list_page";
+import {setupSelfPosEnv} from "../utils";
+import {definePosSelfModels} from "../data/generate_model_definitions";
 
 definePosSelfModels();
 
@@ -17,7 +17,7 @@ test("selectProduct", async () => {
     expect(store.currentOrder.lines).toHaveLength(1);
     expect(store.currentOrder.lines[0].product_id.id).toBe(5);
 
-    // unavailable Product
+    // Unavailable Product
     const unavailableProduct = models["product.template"].get(6);
     unavailableProduct.self_order_available = false;
     comp.selectProduct(unavailableProduct);
@@ -60,7 +60,7 @@ test("getSubCategories and selectCategory", async () => {
     expect(comp.getSubCategories()).toHaveLength(2);
     expect(comp.getSubCategories().map((c) => c.id)).toEqual([4, 5]);
 
-    // for mobile mode
+    // For mobile mode
     store.config.self_ordering_mode = "mobile";
     expect(comp.getSubCategories()).toHaveLength(0);
 });

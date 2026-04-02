@@ -1,4 +1,4 @@
-import { fields, Record } from "@mail/core/common/record";
+import {fields, Record} from "@mail/core/common/record";
 
 export class DiscussCallHistory extends Record {
     static id = "id";

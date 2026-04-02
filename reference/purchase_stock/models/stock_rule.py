@@ -1,15 +1,15 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
 from datetime import datetime
+
 from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
-from odoo.tools import float_compare
 
-from odoo import api, fields, models, SUPERUSER_ID, _, Command
-from odoo.addons.stock.models.stock_rule import ProcurementException
+from odoo import SUPERUSER_ID, Command, _, api, fields, models
 from odoo.tools import groupby
+
+from odoo.addons.stock.models.stock_rule import ProcurementException
 
 
 class StockRule(models.Model):
@@ -20,7 +20,7 @@ class StockRule(models.Model):
     ], ondelete={'buy': 'cascade'})
 
     def _get_message_dict(self):
-        message_dict = super(StockRule, self)._get_message_dict()
+        message_dict = super()._get_message_dict()
         __, destination, __, __ = self._get_message_values()
         message_dict.update({
             'buy': _('When products are needed in <b>%s</b>, <br/> '
@@ -94,7 +94,7 @@ class StockRule(models.Model):
             # Get the procurements for the current domain.
             # Get the rules for the current domain. Their only use is to create
             # the PO if it does not exist.
-            procurements, rules = zip(*procurements_rules)
+            procurements, rules = zip(*procurements_rules, strict=False)
 
             # Get the set of procurement origin for the current domain.
             origins = set([p.origin for p in procurements if p.origin])
@@ -390,7 +390,7 @@ class StockRule(models.Model):
         return domain
 
     def _push_prepare_move_copy_values(self, move_to_copy, new_date):
-        res = super(StockRule, self)._push_prepare_move_copy_values(move_to_copy, new_date)
+        res = super()._push_prepare_move_copy_values(move_to_copy, new_date)
         res['purchase_line_id'] = None
         if self.location_dest_id.usage == "supplier":
             res['purchase_line_id'], res['partner_id'] = move_to_copy._get_purchase_line_and_partner_from_chain()

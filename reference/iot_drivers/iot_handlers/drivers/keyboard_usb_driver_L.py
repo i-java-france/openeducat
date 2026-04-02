@@ -1,20 +1,22 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import ctypes
-import evdev
 import json
 import logging
-from lxml import etree
 import os
-from queue import Queue, Empty
 import re
-import requests
 import subprocess
-from threading import Lock
 import time
+from queue import Empty, Queue
+from threading import Lock
+
+import evdev
+import requests
+from lxml import etree
 from usb import util
 
 from odoo import http
+
 from odoo.addons.iot_drivers.controllers.proxy import proxy_drivers
 from odoo.addons.iot_drivers.driver import Driver
 from odoo.addons.iot_drivers.event_manager import event_manager

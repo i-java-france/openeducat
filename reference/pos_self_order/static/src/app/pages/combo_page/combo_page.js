@@ -1,12 +1,19 @@
-import { Component, onWillUnmount, useState, useSubEnv, useRef, onMounted } from "@odoo/owl";
-import { useSelfOrder } from "@pos_self_order/app/services/self_order_service";
-import { useService } from "@web/core/utils/hooks";
-import { AttributeSelection } from "@pos_self_order/app/components/attribute_selection/attribute_selection";
-import { ProductNameWidget } from "@pos_self_order/app/components/product_name_widget/product_name_widget";
-import { ComboStepper } from "@pos_self_order/app/components/combo_stepper/combo_stepper";
-import { computeTotalComboPrice } from "../../services/card_utils";
-import { useScrollShadow } from "../../utils/scroll_shadow_hook";
-import { formatProductName } from "../../utils";
+import {
+    Component,
+    onWillUnmount,
+    useState,
+    useSubEnv,
+    useRef,
+    onMounted,
+} from "@odoo/owl";
+import {useSelfOrder} from "@pos_self_order/app/services/self_order_service";
+import {useService} from "@web/core/utils/hooks";
+import {AttributeSelection} from "@pos_self_order/app/components/attribute_selection/attribute_selection";
+import {ProductNameWidget} from "@pos_self_order/app/components/product_name_widget/product_name_widget";
+import {ComboStepper} from "@pos_self_order/app/components/combo_stepper/combo_stepper";
+import {computeTotalComboPrice} from "../../services/card_utils";
+import {useScrollShadow} from "../../utils/scroll_shadow_hook";
+import {formatProductName} from "../../utils";
 
 export class ComboPage extends Component {
     static template = "pos_self_order.ComboPage";
@@ -23,7 +30,7 @@ export class ComboPage extends Component {
             this.goBack();
             return;
         }
-        useSubEnv({ selectedValues: {} });
+        useSubEnv({selectedValues: {}});
         this.selfOrder = useSelfOrder();
         this.state = useState({
             selectedChoiceIndex: 0,
@@ -79,7 +86,9 @@ export class ComboPage extends Component {
             (c) =>
                 c.qty_max > 1 ||
                 c.combo_item_ids.length > 1 ||
-                (c.combo_item_ids.some((c) => c.product_id.attribute_line_ids.length !== 0) &&
+                (c.combo_item_ids.some(
+                    (c) => c.product_id.attribute_line_ids.length !== 0
+                ) &&
                     !c.combo_item_ids.every((c) => c.product_id.isCombo()))
         );
     }
@@ -99,7 +108,8 @@ export class ComboPage extends Component {
         }
         return (
             el.scrollHeight > el.clientHeight &&
-            this.currentChoiceState.displayAttributesOfItem.product_id.attribute_line_ids.length > 1
+            this.currentChoiceState.displayAttributesOfItem.product_id
+                .attribute_line_ids.length > 1
         );
     }
 
@@ -122,7 +132,7 @@ export class ComboPage extends Component {
             return;
         }
 
-        const selection = (selectedItems[item.id] ||= { item });
+        const selection = (selectedItems[item.id] ||= {item});
         selection.item = item;
         selection.qty = 1;
         if (this.hasAttribute(product)) {
@@ -151,9 +161,9 @@ export class ComboPage extends Component {
     getItemState(item) {
         const selection = this.currentChoiceState.selectedItems?.[item.id];
         if (!selection) {
-            return { selected: false };
+            return {selected: false};
         }
-        return { selected: true, qty: selection.qty };
+        return {selected: true, qty: selection.qty};
     }
 
     get hasMultiItemSelection() {
@@ -248,7 +258,8 @@ export class ComboPage extends Component {
 
     isBackVisible() {
         return !(
-            this.state.selectedChoiceIndex === 0 && !this.currentChoiceState.displayAttributesOfItem
+            this.state.selectedChoiceIndex === 0 &&
+            !this.currentChoiceState.displayAttributesOfItem
         );
     }
 
@@ -260,11 +271,16 @@ export class ComboPage extends Component {
             if (!this.isNextEnabled()) {
                 // Disable product selection if not all attributes are selected
                 const choiceState = this.currentChoiceState;
-                delete choiceState.selectedItems[choiceState.displayAttributesOfItem.id];
+                delete choiceState.selectedItems[
+                    choiceState.displayAttributesOfItem.id
+                ];
             }
             this.currentChoiceState.displayAttributesOfItem = false;
         } else {
-            this.state.selectedChoiceIndex = Math.max(0, this.state.selectedChoiceIndex - 1);
+            this.state.selectedChoiceIndex = Math.max(
+                0,
+                this.state.selectedChoiceIndex - 1
+            );
         }
         this.resetScrollPosition();
     }
@@ -272,7 +288,10 @@ export class ComboPage extends Component {
     isNextEnabled() {
         if (this.currentChoiceState.displayAttributesOfItem) {
             const selectedItem = this.currentChoiceState.displayAttributesOfItem;
-            if (!this.hasMissingAttributeValues(selectedItem) && !this.isArchivedCombination()) {
+            if (
+                !this.hasMissingAttributeValues(selectedItem) &&
+                !this.isArchivedCombination()
+            ) {
                 return true;
             }
         } else {
@@ -366,7 +385,7 @@ export class ComboPage extends Component {
         setTimeout(() => {
             const el = window.document.getElementById("k-combo-scroll-target");
             if (el) {
-                this.scrollContainerRef.el?.scrollTo({ top: el.offsetTop - 20 });
+                this.scrollContainerRef.el?.scrollTo({top: el.offsetTop - 20});
             }
         }, 1);
     }
@@ -382,7 +401,8 @@ export class ComboPage extends Component {
                 const selectedValues = this.state.selectedValues[product.id];
 
                 for (const line of product.attribute_line_ids) {
-                    const selected = selectedValues?.getSelectedAttributeValues(line) ?? [];
+                    const selected =
+                        selectedValues?.getSelectedAttributeValues(line) ?? [];
                     if (selected.length > 0) {
                         selectedAttributes.push({
                             attribute_line_id: line,
@@ -470,7 +490,7 @@ export class ComboPage extends Component {
         );
         document
             .getElementById(missingAttribute?.attribute_id?.id)
-            ?.scrollIntoView({ behavior: "smooth" });
+            ?.scrollIntoView({behavior: "smooth"});
     }
 
     formatProductName(product) {

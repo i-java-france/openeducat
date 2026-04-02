@@ -1,11 +1,16 @@
 import json
 from datetime import timedelta
+
 from freezegun import freeze_time
 from markupsafe import Markup
 
 from odoo import Command, fields
 from odoo.tests import new_test_user, tagged, users
-from odoo.addons.im_livechat.tests.common import TestImLivechatCommon, TestGetOperatorCommon
+
+from odoo.addons.im_livechat.tests.common import (
+    TestGetOperatorCommon,
+    TestImLivechatCommon,
+)
 from odoo.addons.mail.tests.common import MailCase
 
 

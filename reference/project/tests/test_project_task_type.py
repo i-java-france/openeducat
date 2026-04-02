@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.exceptions import UserError
+
 from odoo.addons.project.tests.test_project_base import TestProjectCommon
 
 
@@ -9,7 +9,7 @@ class TestProjectTaskType(TestProjectCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestProjectTaskType, cls).setUpClass()
+        super().setUpClass()
 
         cls.stage_created = cls.env['project.task.type'].create({
             'name': 'Stage Already Created',

@@ -1,6 +1,6 @@
-import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
-import { patch } from "@web/core/utils/patch";
-import { onMounted } from "@odoo/owl";
+import {PaymentScreen} from "@point_of_sale/app/screens/payment_screen/payment_screen";
+import {patch} from "@web/core/utils/patch";
+import {onMounted} from "@odoo/owl";
 
 patch(PaymentScreen.prototype, {
     setup() {
@@ -20,7 +20,8 @@ patch(PaymentScreen.prototype, {
 
     async addNewPaymentLine(paymentMethod) {
         if (paymentMethod.use_payment_terminal === "viva_com" && this.isRefundOrder) {
-            const refundedOrder = this.currentOrder.lines[0]?.refunded_orderline_id?.order_id;
+            const refundedOrder =
+                this.currentOrder.lines[0]?.refunded_orderline_id?.order_id;
             const amountDue = Math.abs(this.currentOrder.remainingDue);
             const matchedPaymentLine = refundedOrder.payment_ids.find(
                 (line) =>
@@ -28,7 +29,9 @@ patch(PaymentScreen.prototype, {
                     line.amount === amountDue
             );
             if (matchedPaymentLine) {
-                const paymentLineAddedSuccessfully = await super.addNewPaymentLine(paymentMethod);
+                const paymentLineAddedSuccessfully = await super.addNewPaymentLine(
+                    paymentMethod
+                );
                 if (paymentLineAddedSuccessfully) {
                     const newPaymentLine = this.paymentLines.at(-1);
                     newPaymentLine.updateRefundPaymentLine(matchedPaymentLine);

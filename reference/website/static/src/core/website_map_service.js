@@ -1,9 +1,9 @@
-import { loadJS } from "@web/core/assets";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { user } from "@web/core/user";
-import { markup } from "@odoo/owl";
+import {loadJS} from "@web/core/assets";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {user} from "@web/core/user";
+import {markup} from "@odoo/owl";
 
 export const websiteMapService = {
     dependencies: ["public.interactions", "notification"],
@@ -71,7 +71,7 @@ export const websiteMapService = {
                                         <span>${message}</span><br/>
                                         <a href="/odoo/action-website.action_website_configuration">${urlTitle}</a>
                                     </div>`,
-                                    { type: "warning", sticky: true }
+                                    {type: "warning", sticky: true}
                                 );
                             }
                             return false;
@@ -107,7 +107,7 @@ export const websiteMapService = {
                                 ? undefined
                                 : _t(
                                       "Invalid API Key. The following error was returned by Google: %(error)s",
-                                      { error: await response.text() }
+                                      {error: await response.text()}
                                   ),
                         };
                     } catch {
@@ -117,7 +117,7 @@ export const websiteMapService = {
                         };
                     }
                 } else {
-                    return { isValid: false };
+                    return {isValid: false};
                 }
             },
             /**

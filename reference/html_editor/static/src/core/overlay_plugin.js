@@ -1,6 +1,6 @@
-import { markRaw, EventBus } from "@odoo/owl";
-import { Plugin } from "../plugin";
-import { EditorOverlay } from "./overlay";
+import {markRaw, EventBus} from "@odoo/owl";
+import {Plugin} from "../plugin";
+import {EditorOverlay} from "./overlay";
 
 /**
  * @typedef { Object } OverlayShared
@@ -58,7 +58,7 @@ export class Overlay {
      *  If null or undefined, the current selection will be used instead
      * @param {any} [options.props] overlay component props
      */
-    open({ target, props }) {
+    open({target, props}) {
         if (this.isOpen) {
             this.updatePosition();
         } else {
@@ -83,8 +83,10 @@ export class Overlay {
                     close: this.close.bind(this),
                     isOverlayOpen: this.isOverlayOpen.bind(this),
                     shared: {
-                        ignoreDOMMutations: this.plugin.dependencies.history.ignoreDOMMutations,
-                        getSelectionData: this.plugin.dependencies.selection.getSelectionData,
+                        ignoreDOMMutations:
+                            this.plugin.dependencies.history.ignoreDOMMutations,
+                        getSelectionData:
+                            this.plugin.dependencies.selection.getSelectionData,
                     },
                 }),
                 {

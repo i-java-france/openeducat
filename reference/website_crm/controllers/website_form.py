@@ -1,9 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import tools
+from odoo.http import request
+
 from odoo.addons.phone_validation.tools import phone_validation
 from odoo.addons.website.controllers import form
-from odoo.http import request
 
 
 class WebsiteForm(form.WebsiteForm):
@@ -53,7 +54,7 @@ class WebsiteForm(form.WebsiteForm):
                 state = request.env['res.country.state'].search([('code', '=', geoip_state_code), ('country_id.code', '=', geoip_country_code)])
                 if state:
                     request.params['state_id'] = state.id
-        return super(WebsiteForm, self)._handle_website_form(model_name, **kwargs)
+        return super()._handle_website_form(model_name, **kwargs)
 
     def insert_record(self, request, model_sudo, values, custom, meta=None):
         is_lead_model = model_sudo.model == 'crm.lead'

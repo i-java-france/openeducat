@@ -9,11 +9,11 @@
     xml: <tag t-transition="o_notification_fade" />
  */
 @mixin owl-fade($time, $name) {
-  .#{$name}_fade {
-    transition: all $time;
-  }
+    .#{$name}_fade {
+        transition: all $time;
+    }
 
-  .#{$name}_fade-enter {
-    opacity: 0;
-  }
+    .#{$name}_fade-enter {
+        opacity: 0;
+    }
 }

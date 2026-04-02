@@ -1,8 +1,8 @@
-import { url } from "@web/core/utils/urls";
+import {url} from "@web/core/utils/urls";
 
 async function loadFont(name, url, targetDocument) {
     await targetDocument.fonts.ready;
-    if ([...targetDocument.fonts].some(({ family }) => family === name)) {
+    if ([...targetDocument.fonts].some(({family}) => family === name)) {
         // Font already loaded.
         return;
     }
@@ -51,7 +51,10 @@ function loadStyle(target) {
 export function makeRoot(target) {
     const root = document.createElement("div");
     root.classList.add("o-livechat-root");
-    root.setAttribute("id", `o-livechat-root-${luxon.DateTime.now().ts + Math.random()}`);
+    root.setAttribute(
+        "id",
+        `o-livechat-root-${luxon.DateTime.now().ts + Math.random()}`
+    );
     root.style.zIndex = "calc(9e999)";
     root.style.position = "relative";
     root.style.display = "block";
@@ -76,7 +79,7 @@ export async function loadAssets(styleTarget) {
  * @returns {ShadowRoot}
  */
 export async function makeShadow(root) {
-    const shadow = root.attachShadow({ mode: "open" });
+    const shadow = root.attachShadow({mode: "open"});
     await loadAssets(shadow);
     return shadow;
 }

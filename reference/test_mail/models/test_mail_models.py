@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 
 
 class MailTestSimple(models.Model):
@@ -135,7 +135,7 @@ class MailTestGatewayGroups(models.Model):
     customer_id = fields.Many2one('res.partner', 'Customer')
 
     def _alias_get_creation_values(self):
-        values = super(MailTestGatewayGroups, self)._alias_get_creation_values()
+        values = super()._alias_get_creation_values()
         values['alias_model_id'] = self.env['ir.model']._get('mail.test.gateway.groups').id
         if self.id:
             values['alias_force_thread_id'] = self.id

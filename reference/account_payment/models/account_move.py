@@ -4,10 +4,10 @@ import base64
 
 from odoo import api, fields, models
 from odoo.tools import format_date, str2bool
+from odoo.tools.image import image_data_uri
 from odoo.tools.translate import _
 
 from odoo.addons.payment import utils as payment_utils
-from odoo.tools.image import image_data_uri
 
 
 class AccountMove(models.Model):

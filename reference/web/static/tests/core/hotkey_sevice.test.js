@@ -1,7 +1,7 @@
-import { destroy, expect, getFixture, onError, test } from "@odoo/hoot";
-import { keyDown, keyUp, press, queryAllTexts, queryOne } from "@odoo/hoot-dom";
-import { animationFrame, mockUserAgent, tick } from "@odoo/hoot-mock";
-import { Component, useRef, useState, xml } from "@odoo/owl";
+import {destroy, expect, getFixture, onError, test} from "@odoo/hoot";
+import {keyDown, keyUp, press, queryAllTexts, queryOne} from "@odoo/hoot-dom";
+import {animationFrame, mockUserAgent, tick} from "@odoo/hoot-mock";
+import {Component, useRef, useState, xml} from "@odoo/owl";
 import {
     contains,
     getService,
@@ -9,10 +9,10 @@ import {
     mountWithCleanup,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
-import { getActiveHotkey, hotkeyService } from "@web/core/hotkeys/hotkey_service";
-import { useActiveElement } from "@web/core/ui/ui_service";
-import { Deferred } from "@web/core/utils/concurrency";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
+import {getActiveHotkey, hotkeyService} from "@web/core/hotkeys/hotkey_service";
+import {useActiveElement} from "@web/core/ui/ui_service";
+import {Deferred} from "@web/core/utils/concurrency";
 
 const getOverlays = () => queryAllTexts(".o_web_hotkey_overlay");
 
@@ -43,7 +43,7 @@ test("should ignore when IME is composing", async () => {
     await animationFrame();
     await press(key);
     expect.verifySteps([key]);
-    await press(key, { isComposing: true });
+    await press(key, {isComposing: true});
     expect.verifySteps([]);
 });
 
@@ -51,7 +51,7 @@ test("hotkey handles wrongly formed KeyboardEvent", async () => {
     // This test's aim is to assert that Chrome's autofill bug is handled.
     // When filling a form with the autofill feature of Chrome, a keyboard event without any
     // key set on it is triggered. This seems to be a bug on Chrome's side, since the spec
-    //doesn't mention that field may be unset. (https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key).
+    // doesn't mention that field may be unset. (https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key).
     await makeMockEnv();
 
     const hotkey = getService("hotkey");
@@ -65,7 +65,7 @@ test("hotkey handles wrongly formed KeyboardEvent", async () => {
     onError(handler);
 
     const key = "q";
-    let removeHotkey = hotkey.add(key, () => expect.step(key), { global: true });
+    let removeHotkey = hotkey.add(key, () => expect.step(key), {global: true});
     await press(key);
     expect.verifySteps([key]);
     removeHotkey();
@@ -75,7 +75,7 @@ test("hotkey handles wrongly formed KeyboardEvent", async () => {
         () => {
             throw new Error("error");
         },
-        { global: true }
+        {global: true}
     );
 
     await press(key);
@@ -95,20 +95,20 @@ test("[accesskey] attrs replaced by [data-hotkey]", async () => {
     `);
     queryOne(".foo").addEventListener("click", () => expect.step("click"));
 
-    // div must only have [accesskey] attribute
+    // Div must only have [accesskey] attribute
     expect(".foo").toHaveCount(1);
     expect(".foo[accesskey]").toHaveCount(1);
     expect(".foo[data-hotkey]").toHaveCount(0);
 
-    // press any hotkey, i.e. the left arrow
+    // Press any hotkey, i.e. the left arrow
     await press("arrowleft");
 
-    // div should now only have [data-hotkey] attribute
+    // Div should now only have [data-hotkey] attribute
     expect(".foo").toHaveCount(1);
     expect(".foo[data-hotkey]").toHaveCount(1);
     expect(".foo[accesskey]").toHaveCount(0);
 
-    // try to press the related hotkey, just to make sure it works
+    // Try to press the related hotkey, just to make sure it works
     expect.verifySteps([]);
     await press(["alt", "a"]);
     await tick();
@@ -124,7 +124,7 @@ test("[accesskey] attrs replaced by [data-hotkey], part 2", async () => {
         }
     }
     class MyComponent extends Component {
-        static components = { UIOwnershipTakerComponent };
+        static components = {UIOwnershipTakerComponent};
         static template = xml`
             <main>
                 <UIOwnershipTakerComponent t-if="state.foo" />
@@ -133,7 +133,7 @@ test("[accesskey] attrs replaced by [data-hotkey], part 2", async () => {
         `;
         static props = ["*"];
         setup() {
-            this.state = useState({ foo: true });
+            this.state = useState({foo: true});
             this.step = expect.step.bind();
         }
     }
@@ -143,20 +143,20 @@ test("[accesskey] attrs replaced by [data-hotkey], part 2", async () => {
     expect("main .owner").toHaveCount(1);
     expect(queryOne("main .owner")).toBe(getService("ui").activeElement);
 
-    // div must only have [accesskey] attribute
+    // Div must only have [accesskey] attribute
     expect("main div").toHaveCount(1);
     expect("main div[accesskey]").toHaveCount(1);
     expect("main div[data-hotkey]").toHaveCount(0);
 
-    // press any hotkey, i.e. the left arrow
+    // Press any hotkey, i.e. the left arrow
     await press("arrowleft");
 
-    // div should now only have [data-hotkey] attribute
+    // Div should now only have [data-hotkey] attribute
     expect("main div").toHaveCount(1);
     expect("main div[data-hotkey]").toHaveCount(1);
     expect("main div[accesskey]").toHaveCount(0);
 
-    // try to press the related hotkey, it should not work as the ui active element is different
+    // Try to press the related hotkey, it should not work as the ui active element is different
     expect(getService("ui").getActiveElementOf(queryOne("main div"))).not.toBe(
         getService("ui").activeElement
     );
@@ -165,7 +165,7 @@ test("[accesskey] attrs replaced by [data-hotkey], part 2", async () => {
     await tick();
     expect.verifySteps([]);
 
-    // remove the UIOwnershipTakerComponent
+    // Remove the UIOwnershipTakerComponent
     comp.state.foo = false;
     await animationFrame();
     expect(getService("ui").getActiveElementOf(queryOne("main div"))).toBe(
@@ -237,7 +237,7 @@ test("invisible data-hotkeys are not enabled. ", async () => {
 
     queryOne(".myButton").disabled = true;
     await press(strokes);
-    // shouldn't trigger the hotkey of an invisible button
+    // Shouldn't trigger the hotkey of an invisible button
     expect.verifySteps([]);
 });
 
@@ -309,19 +309,19 @@ test("the overlay of hotkeys is correctly displayed", async () => {
     }
     await mountWithCleanup(MyComponent);
 
-    // apply an existent hotkey
+    // Apply an existent hotkey
     await keyDown("alt");
-    expect(getOverlays()).toEqual(["B", "C"], { message: "should display the overlay" });
+    expect(getOverlays()).toEqual(["B", "C"], {message: "should display the overlay"});
     await press("b");
     await tick();
     expect.verifySteps(["click b"]);
-    expect(getOverlays()).toEqual([], { message: "shouldn't display the overlay" });
+    expect(getOverlays()).toEqual([], {message: "shouldn't display the overlay"});
 
-    // apply a non-existent hotkey
+    // Apply a non-existent hotkey
     await keyDown("alt");
-    expect(getOverlays()).toEqual(["B", "C"], { message: "should display the overlay" });
+    expect(getOverlays()).toEqual(["B", "C"], {message: "should display the overlay"});
     await press("x");
-    expect(getOverlays()).toEqual([], { message: "shouldn't display the overlay" });
+    expect(getOverlays()).toEqual([], {message: "shouldn't display the overlay"});
     expect.verifySteps([]);
 });
 
@@ -341,19 +341,19 @@ test("the overlay of hotkeys is correctly displayed on MacOs", async () => {
     }
     await mountWithCleanup(MyComponent);
 
-    // apply an existent hotkey
+    // Apply an existent hotkey
     await keyDown("ctrl");
-    expect(getOverlays()).toEqual(["B", "C"], { message: "should display the overlay" });
+    expect(getOverlays()).toEqual(["B", "C"], {message: "should display the overlay"});
     await press("b");
     await tick();
     expect.verifySteps(["click b"]);
-    expect(getOverlays()).toEqual([], { message: "shouldn't display the overlay" });
+    expect(getOverlays()).toEqual([], {message: "shouldn't display the overlay"});
 
-    // apply a non-existent hotkey
+    // Apply a non-existent hotkey
     await keyDown("ctrl");
-    expect(getOverlays()).toEqual(["B", "C"], { message: "should display the overlay" });
+    expect(getOverlays()).toEqual(["B", "C"], {message: "should display the overlay"});
     await press("x");
-    expect(getOverlays()).toEqual([], { message: "shouldn't display the overlay" });
+    expect(getOverlays()).toEqual([], {message: "shouldn't display the overlay"});
     expect.verifySteps([]);
 });
 
@@ -448,7 +448,9 @@ test("registration allows repeat if specified", async () => {
     getService("hotkey").add(disallowRepeatKey, () => expect.step(disallowRepeatKey), {
         allowRepeat: false,
     });
-    getService("hotkey").add(defaultBehaviourKey, () => expect.step(defaultBehaviourKey));
+    getService("hotkey").add(defaultBehaviourKey, () =>
+        expect.step(defaultBehaviourKey)
+    );
     await animationFrame();
 
     await keyDown(allowRepeatKey);
@@ -502,7 +504,9 @@ test("hotkeys evil 👹", async () => {
     expect(() => hotkey.add("crap", callback)).toThrow(/not whitelisted/);
     expect(() => hotkey.add("ctrl+o", callback)).toThrow(/not whitelisted/);
     expect(() => hotkey.add("Control+o")).toThrow(/specify a callback/);
-    expect(() => hotkey.add("Control+o+d", callback)).toThrow(/more than one single key part/);
+    expect(() => hotkey.add("Control+o+d", callback)).toThrow(
+        /more than one single key part/
+    );
 });
 
 test("component can register many hotkeys", async () => {
@@ -551,28 +555,28 @@ test("many components can register same hotkeys (call order matters)", async () 
     await press("a");
     await press("b");
     await press(["alt", "c"]);
-    // the callbacks of comp1 are called
+    // The callbacks of comp1 are called
     await tick();
     expect.verifySteps(["comp1:a", "comp1:b", "comp1:c:button"]);
 
     await press(["alt", "z"]);
-    // calls only the callback from the useHotkey registration and the button is not clicked
+    // Calls only the callback from the useHotkey registration and the button is not clicked
     expect.verifySteps(["comp1:z"]);
 
     await mountWithCleanup(getComp("comp2"));
     await press("a");
     await press("b");
     await tick();
-    // calls only the callbacks from last useHotkey registrations
+    // Calls only the callbacks from last useHotkey registrations
     expect.verifySteps(["comp2:a", "comp2:b"]);
 
     await press(["alt", "c"]);
     await tick();
-    // calls only the callback of the first encountered button with proper [data-hotkey]
+    // Calls only the callback of the first encountered button with proper [data-hotkey]
     expect.verifySteps(["comp1:c:button"]);
 
     await press(["alt", "z"]);
-    // calls only the callbacks from last useHotkey registrations and no button is clicked
+    // Calls only the callbacks from last useHotkey registrations and no button is clicked
     expect.verifySteps(["comp2:z"]);
 });
 
@@ -689,7 +693,7 @@ test("protects editable elements", async () => {
 
     await contains(".foo").focus();
     await press("ArrowLeft");
-    // the callback is not getting called when it is triggered from an editable
+    // The callback is not getting called when it is triggered from an editable
     expect.verifySteps([]);
 });
 
@@ -698,7 +702,9 @@ test("protects editable elements: can bypassEditableProtection", async () => {
         static template = xml`<div><input class="foo"/></div>`;
         static props = ["*"];
         setup() {
-            useHotkey("arrowleft", () => expect.step("called"), { bypassEditableProtection: true });
+            useHotkey("arrowleft", () => expect.step("called"), {
+                bypassEditableProtection: true,
+            });
         }
     }
     await mountWithCleanup(Comp);
@@ -709,7 +715,7 @@ test("protects editable elements: can bypassEditableProtection", async () => {
 
     await contains(".foo").focus();
     await press("ArrowLeft");
-    // the callback still gets called even if triggered from an editable
+    // The callback still gets called even if triggered from an editable
     expect.verifySteps(["called"]);
 });
 
@@ -729,12 +735,12 @@ test("protects editable elements: an editable can allow hotkeys", async () => {
 
     await contains(".foo").focus();
     await press("ArrowLeft");
-    // the callback gets called as the foo editable allows it
+    // The callback gets called as the foo editable allows it
     expect.verifySteps(["called"]);
 
     await contains(".bar").focus();
     await press("ArrowLeft");
-    // the callback does not get called as the bar editable does not explicitly allow hotkeys
+    // The callback does not get called as the bar editable does not explicitly allow hotkeys
     expect.verifySteps([]);
 });
 
@@ -744,12 +750,12 @@ test("ignore numpad keys", async () => {
     getService("hotkey").add(`alt+${key}`, () => expect.step(key));
     await animationFrame();
 
-    await keyDown("alt"); // for the whole test
+    await keyDown("alt"); // For the whole test
 
-    await press(key, { code: "Numpad1" });
+    await press(key, {code: "Numpad1"});
     expect.verifySteps([]);
 
-    await press(key, { code: "Digit1" });
+    await press(key, {code: "Digit1"});
     expect.verifySteps(["1"]);
 });
 
@@ -794,16 +800,16 @@ test("callback: received context", async () => {
         static template = xml`<button class="b">b</button>`;
         static props = ["*"];
         setup() {
-            useHotkey("b", expect.step, { area: () => fixture });
+            useHotkey("b", expect.step, {area: () => fixture});
         }
     }
 
     await mountWithCleanup(A);
     await mountWithCleanup(B);
     await contains(".a").press("a");
-    expect.verifySteps([{ area: undefined, target: document.activeElement }]);
+    expect.verifySteps([{area: undefined, target: document.activeElement}]);
     await contains(".b").press("b");
-    expect.verifySteps([{ area: fixture, target: document.activeElement }]);
+    expect.verifySteps([{area: fixture, target: document.activeElement}]);
 });
 
 test("operating area can be restricted", async () => {
@@ -818,7 +824,7 @@ test("operating area can be restricted", async () => {
             const areaRef = useRef("area");
             useHotkey(
                 "space",
-                ({ area }) => {
+                ({area}) => {
                     expect.step("RGNTDJÛ!");
                     expect(area).toBe(queryOne(".two"));
                 },
@@ -848,7 +854,7 @@ test("operating area and UI active element", async () => {
         }
     }
     class C extends Component {
-        static components = { UIOwnershipTakerComponent };
+        static components = {UIOwnershipTakerComponent};
         static template = xml`
             <main>
                 <UIOwnershipTakerComponent t-if="state.foo" />
@@ -858,11 +864,11 @@ test("operating area and UI active element", async () => {
         `;
         static props = ["*"];
         setup() {
-            this.state = useState({ foo: false });
+            this.state = useState({foo: false});
             const areaRef = useRef("area");
             useHotkey(
                 "space",
-                ({ area }) => {
+                ({area}) => {
                     expect.step("RGNTDJÛ!");
                     expect(area).toBe(queryOne(".two"));
                 },
@@ -872,7 +878,7 @@ test("operating area and UI active element", async () => {
             );
             useHotkey(
                 "backspace",
-                ({ area }) => {
+                ({area}) => {
                     expect.step("RGNTDJÛ! (global)");
                     expect(area).toBe(queryOne(".two"));
                 },
@@ -946,7 +952,7 @@ test("operation area with validating option", async () => {
                 () => {
                     expect.step("RGNTDJÛ!");
                 },
-                { area: () => areaRef.el, isAvailable: () => isAvailable }
+                {area: () => areaRef.el, isAvailable: () => isAvailable}
             );
         }
     }
@@ -982,7 +988,7 @@ test("mixing hotkeys with and without operation area", async () => {
         setup() {
             const areaRef = useRef("area");
             useHotkey("space", () => expect.step("withoutArea"));
-            useHotkey("space", () => expect.step("withArea"), { area: () => areaRef.el });
+            useHotkey("space", () => expect.step("withArea"), {area: () => areaRef.el});
         }
     }
     await mountWithCleanup(A);
@@ -1001,10 +1007,10 @@ test("native browser space key ' ' is correctly translated to 'space' ", async (
         }
     }
 
-    expect(getActiveHotkey({ key: " " })).toBe("space");
+    expect(getActiveHotkey({key: " "})).toBe("space");
 
     await mountWithCleanup(A);
-    await press([" "]); // event key triggered by the browser
+    await press([" "]); // Event key triggered by the browser
     expect.verifySteps(["space"]);
 });
 
@@ -1027,10 +1033,10 @@ test("useHotkey can display an overlay over a DOM element ", async () => {
 
     await mountWithCleanup(A);
 
-    expect(getOverlays()).toEqual([], { message: "There is no overlay" });
+    expect(getOverlays()).toEqual([], {message: "There is no overlay"});
 
     await keyDown("alt");
-    expect(getOverlays()).toEqual(["A"], { message: "should display the overlay" });
+    expect(getOverlays()).toEqual(["A"], {message: "should display the overlay"});
 
     await press("a");
     expect.verifySteps(["hotkey alt+a has been triggered"]);

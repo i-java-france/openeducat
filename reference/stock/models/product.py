@@ -4,12 +4,13 @@ import operator as py_operator
 from ast import literal_eval
 from collections import defaultdict
 from collections.abc import Iterable
+
 from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.fields import Domain
-from odoo.tools import Query, SQL
+from odoo.tools import SQL, Query
 from odoo.tools.barcode import check_barcode_encoding
 from odoo.tools.float_utils import float_compare
 from odoo.tools.mail import html2plaintext, is_html_empty
@@ -1079,7 +1080,7 @@ class ProductTemplate(models.Model):
         product_templates = super().create(vals_list)
 
         if any(product_tmpl_quantities):
-            for product_tmpl, qty in zip(product_templates, product_tmpl_quantities):
+            for product_tmpl, qty in zip(product_templates, product_tmpl_quantities, strict=False):
                 if qty > 0 and product_tmpl.tracking == 'none':
                     product_tmpl.product_variant_id.qty_available = qty
         return product_templates

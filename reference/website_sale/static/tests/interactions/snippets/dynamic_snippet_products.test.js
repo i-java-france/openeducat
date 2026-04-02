@@ -1,10 +1,13 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { animationFrame, click, queryAll, queryOne } from "@odoo/hoot-dom";
-import { advanceTime } from "@odoo/hoot-mock";
-import { setupInteractionWhiteList, startInteractions } from "@web/../tests/public/helpers";
-import { onRpc } from "@web/../tests/web_test_helpers";
-import { registry } from "@web/core/registry";
-import { Interaction } from "@web/public/interaction";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {animationFrame, click, queryAll, queryOne} from "@odoo/hoot-dom";
+import {advanceTime} from "@odoo/hoot-mock";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
+import {onRpc} from "@web/../tests/web_test_helpers";
+import {registry} from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
 
 class TestItem extends Interaction {
     static selector = ".s_test_item";
@@ -37,7 +40,9 @@ test("dynamic snippet products loads items and displays them through template", 
             "website_sale.dynamic_filter_template_product_product_products_item"
         );
         expect(json.params.limit).toBe(16);
-        expect(json.params.search_domain).toEqual([["public_categ_ids", "child_of", 2]]);
+        expect(json.params.search_domain).toEqual([
+            ["public_categ_ids", "child_of", 2],
+        ]);
         return [
             `
             <div class="s_test_item" data-test-param="test">
@@ -66,7 +71,7 @@ test("dynamic snippet products loads items and displays them through template", 
         `,
         ];
     });
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
       <div id="wrapwrap">
           <section data-snippet="s_dynamic_snippet_products" class="s_dynamic_snippet_products s_dynamic pt32 pb32 o_colored_level s_product_product_borderless_1"
                   data-name="Products"

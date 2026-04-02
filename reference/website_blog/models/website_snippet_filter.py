@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
 
-from odoo import models, fields, api, _
+from odoo import _, api, fields, models
 
 
 class WebsiteSnippetFilter(models.Model):

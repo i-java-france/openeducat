@@ -1,4 +1,4 @@
-from odoo import models, api, fields, _
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 
@@ -69,7 +69,7 @@ class L10n_LatamDocumentType(models.Model):
                 failed = True
             elif len(number) > 8 or not number.isdigit():
                 failed = True
-            document_number = '{:>05s}-{:>08s}'.format(pos, number)
+            document_number = f'{pos:>05s}-{number:>08s}'
         if failed:
             raise UserError(
                 _(

@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { Interaction } from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
 
 export class AnnouncementScroll extends Interaction {
     static selector = ".s_announcement_scroll";
@@ -8,11 +8,15 @@ export class AnnouncementScroll extends Interaction {
         _root: {
             "t-att-class": () => ({
                 s_announcement_scroll_ready: this.announcementScrollReady,
-                s_announcement_scroll_page_scrolling: this.announcementScrollPageScrolling,
+                s_announcement_scroll_page_scrolling:
+                    this.announcementScrollPageScrolling,
             }),
         },
         _window: {
-            "t-on-resize": this.debounced(this.onResize, 100, { leading: true, trailing: true }),
+            "t-on-resize": this.debounced(this.onResize, 100, {
+                leading: true,
+                trailing: true,
+            }),
             "t-on-scroll": this.throttled(this.onScroll),
         },
         ".s_announcement_scroll_marquee_container": {
@@ -23,8 +27,12 @@ export class AnnouncementScroll extends Interaction {
     };
 
     setup() {
-        this.marqueeContainerEl = this.el.querySelector(".s_announcement_scroll_marquee_container");
-        this.marqueeItemEl = this.el.querySelector(".s_announcement_scroll_marquee_item");
+        this.marqueeContainerEl = this.el.querySelector(
+            ".s_announcement_scroll_marquee_container"
+        );
+        this.marqueeItemEl = this.el.querySelector(
+            ".s_announcement_scroll_marquee_item"
+        );
         this.setParallaxPosition();
     }
 
@@ -93,7 +101,8 @@ export class AnnouncementScroll extends Interaction {
             1
         );
         if (this.el.classList.contains("s_announcement_scroll_direction_right")) {
-            this.parallaxPosition = -MIN_LEFT_SHIFT - PARALLAX_AMOUNT + progress * PARALLAX_AMOUNT;
+            this.parallaxPosition =
+                -MIN_LEFT_SHIFT - PARALLAX_AMOUNT + progress * PARALLAX_AMOUNT;
         } else {
             this.parallaxPosition = -MIN_LEFT_SHIFT - progress * PARALLAX_AMOUNT;
         }
@@ -124,7 +133,10 @@ export class AnnouncementScroll extends Interaction {
 
         this.undoMarqueeLayout();
 
-        this.marqueeContainerEl.style.setProperty("--marquee-item-size", marqueeItemElWidth);
+        this.marqueeContainerEl.style.setProperty(
+            "--marquee-item-size",
+            marqueeItemElWidth
+        );
 
         // * 2 to have 200% of the container width,
         // + 1 for the reverse animation (see scss)
@@ -138,4 +150,6 @@ export class AnnouncementScroll extends Interaction {
     }
 }
 
-registry.category("public.interactions").add("website.announcement_scroll", AnnouncementScroll);
+registry
+    .category("public.interactions")
+    .add("website.announcement_scroll", AnnouncementScroll);

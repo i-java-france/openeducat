@@ -5,9 +5,9 @@ import {
     mountView,
     mountWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { Component, xml } from "@odoo/owl";
-import { expect, test } from "@odoo/hoot";
-import { DocumentationLink } from "@web/views/widgets/documentation_link/documentation_link";
+import {Component, xml} from "@odoo/owl";
+import {expect, test} from "@odoo/hoot";
+import {DocumentationLink} from "@web/views/widgets/documentation_link/documentation_link";
 
 class Partner extends models.Model {
     bar = fields.Boolean();
@@ -45,7 +45,7 @@ test("documentationLink: alert-link", async () => {
 
 test("DocumentationLink Component: alert-link", async () => {
     class Parent extends Component {
-        static components = { DocumentationLink };
+        static components = {DocumentationLink};
         static template = xml`
         <DocumentationLink path="'/this_is_a_test.html'" alertLink="true"/>`;
         static props = ["*"];

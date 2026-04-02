@@ -1,4 +1,4 @@
-import { expect, getFixture, test } from "@odoo/hoot";
+import {expect, getFixture, test} from "@odoo/hoot";
 import {
     click,
     hover,
@@ -11,10 +11,10 @@ import {
     queryOne,
     resize,
 } from "@odoo/hoot-dom";
-import { Deferred, animationFrame, runAllTimers, tick } from "@odoo/hoot-mock";
-import { Component, onMounted, onPatched, useRef, useState, xml } from "@odoo/owl";
+import {Deferred, animationFrame, runAllTimers, tick} from "@odoo/hoot-mock";
+import {Component, onMounted, onPatched, useRef, useState, xml} from "@odoo/owl";
 
-import { getPickerCell } from "@web/../tests/core/datetime/datetime_test_helpers";
+import {getPickerCell} from "@web/../tests/core/datetime/datetime_test_helpers";
 import {
     contains,
     defineParams,
@@ -24,18 +24,18 @@ import {
     mountWithCleanup,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { DateTimeInput } from "@web/core/datetime/datetime_input";
-import { Dialog } from "@web/core/dialog/dialog";
-import { CheckboxItem } from "@web/core/dropdown/checkbox_item";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+import {DateTimeInput} from "@web/core/datetime/datetime_input";
+import {Dialog} from "@web/core/dialog/dialog";
+import {CheckboxItem} from "@web/core/dropdown/checkbox_item";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 
 const DROPDOWN_TOGGLE = ".o-dropdown.dropdown-toggle";
 const DROPDOWN_MENU = ".o-dropdown--menu.dropdown-menu";
 const DROPDOWN_ITEM = ".o-dropdown-item.dropdown-item:not(.o-dropdown)";
 
 class SimpleDropdown extends Component {
-    static components = { Dropdown, DropdownItem };
+    static components = {Dropdown, DropdownItem};
     static props = [];
     static template = xml`
         <div class="outside">outside</div>
@@ -51,7 +51,7 @@ class SimpleDropdown extends Component {
 }
 
 class MultiLevelDropdown extends Component {
-    static components = { Dropdown, DropdownItem };
+    static components = {Dropdown, DropdownItem};
     static props = [];
     static template = xml`
         <div class="outside">outside</div>
@@ -77,7 +77,7 @@ class MultiLevelDropdown extends Component {
 }
 
 class NoBottomSheetDropdown extends Component {
-    static components = { Dropdown, DropdownItem };
+    static components = {Dropdown, DropdownItem};
     static props = [];
     static template = xml`
         <Dropdown t-props="dropdownProps" bottomSheet="false">
@@ -180,38 +180,38 @@ test("close on outside click", async () => {
 
 test("close on outside click in shadow dom", async () => {
     class DropdownInShadowDom extends Component {
-        static components = { SimpleDropdown };
+        static components = {SimpleDropdown};
         static props = [];
         static template = xml`<div><SimpleDropdown/></div>`;
     }
 
     class ShadowDom extends Component {
-        static components = { Dropdown, DropdownItem };
+        static components = {Dropdown, DropdownItem};
         static props = [];
         static template = xml`<div class="shadow-root" t-ref="shadow-root-ref" />`;
         setup() {
             const shadowRootRef = useRef("shadow-root-ref");
             onMounted(() => {
-                const shadowBody = shadowRootRef.el.attachShadow({ mode: "open" });
-                mountWithCleanup(DropdownInShadowDom, { target: shadowBody });
+                const shadowBody = shadowRootRef.el.attachShadow({mode: "open"});
+                mountWithCleanup(DropdownInShadowDom, {target: shadowBody});
             });
         }
     }
 
-    await mountWithCleanup(ShadowDom, { noMainContainer: true });
+    await mountWithCleanup(ShadowDom, {noMainContainer: true});
 
     const shadowBody = queryOne(".shadow-root").shadowRoot;
-    await contains(DROPDOWN_TOGGLE, { root: shadowBody }).click();
+    await contains(DROPDOWN_TOGGLE, {root: shadowBody}).click();
     await animationFrame();
-    expect(queryAll(DROPDOWN_MENU, { root: shadowBody })).toHaveCount(1);
+    expect(queryAll(DROPDOWN_MENU, {root: shadowBody})).toHaveCount(1);
 
     if (getMockEnv().isSmall) {
-        await click(".o_bottom_sheet_backdrop", { root: shadowBody });
+        await click(".o_bottom_sheet_backdrop", {root: shadowBody});
     } else {
-        await click(".outside", { root: shadowBody });
+        await click(".outside", {root: shadowBody});
     }
     await animationFrame();
-    expect(queryAll(DROPDOWN_MENU, { root: shadowBody })).toHaveCount(0);
+    expect(queryAll(DROPDOWN_MENU, {root: shadowBody})).toHaveCount(0);
 });
 
 test("close on item selection", async () => {
@@ -239,7 +239,7 @@ test("hold position on hover", async () => {
     let parentState;
     class Parent extends Component {
         setup() {
-            this.state = useState({ filler: false });
+            this.state = useState({filler: false});
             parentState = this.state;
         }
         static template = xml`
@@ -249,7 +249,7 @@ test("hold position on hover", async () => {
                 <t t-set-slot="content">World</t>
             </Dropdown>
         `;
-        static components = { Dropdown };
+        static components = {Dropdown};
         static props = [];
     }
 
@@ -288,7 +288,7 @@ test("unlock position after close", async () => {
                     </Dropdown>
                 </div>
             `;
-        static components = { Dropdown };
+        static components = {Dropdown};
         static props = [];
     }
     await mountWithCleanup(Parent);
@@ -300,12 +300,12 @@ test("unlock position after close", async () => {
     // Pointer enter the dropdown menu to lock the menu
     await hover(DROPDOWN_MENU);
 
-    // close the menu
+    // Close the menu
     await click(DROPDOWN_TOGGLE);
     await animationFrame();
     expect(DROPDOWN_MENU).toHaveCount(0);
 
-    // and reopen it
+    // And reopen it
     await click(DROPDOWN_TOGGLE);
     await animationFrame();
     expect(DROPDOWN_MENU).toHaveCount(1);
@@ -318,7 +318,7 @@ test("dropdowns keynav", async () => {
     expect.assertions(39);
 
     class Parent extends Component {
-        static components = { Dropdown, DropdownItem };
+        static components = {Dropdown, DropdownItem};
         static props = [];
         static template = xml`
                 <Dropdown>
@@ -346,21 +346,21 @@ test("dropdowns keynav", async () => {
     expect(".dropdown-menu > .focus").toHaveCount(0);
 
     const scenarioSteps = [
-        { hotkey: "arrowdown", expected: "item1" },
-        { hotkey: "arrowdown", expected: "item2" },
-        { hotkey: "arrowdown", expected: "item3" },
-        { hotkey: "arrowdown", expected: "item1" },
-        { hotkey: "tab", expected: "item2" },
-        { hotkey: "tab", expected: "item3" },
-        { hotkey: "tab", expected: "item1" },
-        { hotkey: "arrowup", expected: "item3" },
-        { hotkey: "arrowup", expected: "item2" },
-        { hotkey: "arrowup", expected: "item1" },
-        { hotkey: "shift+tab", expected: "item3" },
-        { hotkey: "shift+tab", expected: "item2" },
-        { hotkey: "shift+tab", expected: "item1" },
-        { hotkey: "end", expected: "item3" },
-        { hotkey: "home", expected: "item1" },
+        {hotkey: "arrowdown", expected: "item1"},
+        {hotkey: "arrowdown", expected: "item2"},
+        {hotkey: "arrowdown", expected: "item3"},
+        {hotkey: "arrowdown", expected: "item1"},
+        {hotkey: "tab", expected: "item2"},
+        {hotkey: "tab", expected: "item3"},
+        {hotkey: "tab", expected: "item1"},
+        {hotkey: "arrowup", expected: "item3"},
+        {hotkey: "arrowup", expected: "item2"},
+        {hotkey: "arrowup", expected: "item1"},
+        {hotkey: "shift+tab", expected: "item3"},
+        {hotkey: "shift+tab", expected: "item2"},
+        {hotkey: "shift+tab", expected: "item1"},
+        {hotkey: "end", expected: "item3"},
+        {hotkey: "home", expected: "item1"},
     ];
 
     for (let i = 0; i < scenarioSteps.length; i++) {
@@ -409,7 +409,7 @@ test("dropdowns keynav", async () => {
 test.tags("desktop");
 test("dropdowns keynav is not impacted by bootstrap", async () => {
     class Parent extends Component {
-        static components = { Dropdown };
+        static components = {Dropdown};
         static props = [];
         static template = xml`
                 <Dropdown state="dropdown">
@@ -502,7 +502,7 @@ test("navigationProps changes navigation behaviour", async () => {
 
 test("'o-dropdown-caret' class adds a caret", async () => {
     class Parent extends Component {
-        static components = { Dropdown, DropdownItem };
+        static components = {Dropdown, DropdownItem};
         static props = [];
         static template = xml`
                 <Dropdown>
@@ -546,10 +546,10 @@ test("'o-dropdown-caret' class adds a caret", async () => {
 
 test.tags("desktop");
 test("direction class set to default when closed", async () => {
-    await resize({ height: 600 });
+    await resize({height: 600});
 
     class Parent extends Component {
-        static components = { Dropdown, DropdownItem };
+        static components = {Dropdown, DropdownItem};
         static props = [];
         static template = xml`
             <Dropdown>
@@ -567,13 +567,13 @@ test("direction class set to default when closed", async () => {
     expect(DROPDOWN_TOGGLE).not.toHaveClass("show");
     expect(DROPDOWN_TOGGLE).toHaveClass("dropdown");
 
-    // open
+    // Open
     await click(DROPDOWN_TOGGLE);
     await animationFrame();
     expect(DROPDOWN_TOGGLE).toHaveClass("show");
     expect(DROPDOWN_TOGGLE).toHaveClass("dropup");
 
-    // close
+    // Close
     await click(DROPDOWN_TOGGLE);
     await animationFrame();
     expect(DROPDOWN_TOGGLE).not.toHaveClass("show");
@@ -583,7 +583,7 @@ test("direction class set to default when closed", async () => {
 test.tags("desktop");
 test("tooltip on toggler", async () => {
     class Parent extends Component {
-        static components = { Dropdown };
+        static components = {Dropdown};
         static props = [];
         static template = xml`
                 <Dropdown>
@@ -605,7 +605,7 @@ test("tooltip on toggler", async () => {
 
 test("date picker inside does not close when a click occurs in date picker", async () => {
     class Parent extends Component {
-        static components = { DateTimeInput, Dropdown };
+        static components = {DateTimeInput, Dropdown};
         static props = [];
         static template = xml`
                     <Dropdown>
@@ -633,7 +633,7 @@ test("date picker inside does not close when a click occurs in date picker", asy
     expect(".o_datetime_picker").toHaveCount(1);
     expect(".o_datetime_input").toHaveValue("");
 
-    await click(getPickerCell("15")); // select some day
+    await click(getPickerCell("15")); // Select some day
     await animationFrame();
 
     expect(DROPDOWN_MENU).toHaveCount(1);
@@ -671,7 +671,7 @@ test("onOpened callback props called after the menu has been mounted", async () 
 
 test("dropdown button can be disabled", async () => {
     class Parent extends Component {
-        static components = { Dropdown };
+        static components = {Dropdown};
         static props = [];
         static template = xml`
                 <Dropdown>
@@ -701,10 +701,10 @@ test("Dropdown with CheckboxItem: toggle value", async () => {
                         </CheckboxItem>
                     </t>
                 </Dropdown>`;
-        static components = { Dropdown, CheckboxItem };
+        static components = {Dropdown, CheckboxItem};
         static props = [];
         setup() {
-            this.state = useState({ checked: false });
+            this.state = useState({checked: false});
         }
         onSelected() {
             this.state.checked = !this.state.checked;
@@ -729,8 +729,8 @@ test("don't close dropdown outside the active element", async () => {
     // This test checks that if a dropdown element opens a dialog with a dropdown inside,
     // opening this dropdown will not close the first dropdown.
     class CustomDialog extends Component {
-        static components = { Dialog, Dropdown, DropdownItem };
-        static props = { close: true };
+        static components = {Dialog, Dropdown, DropdownItem};
+        static props = {close: true};
         static template = xml`
                 <Dialog title="'Welcome'">
                     <Dropdown>
@@ -745,7 +745,7 @@ test("don't close dropdown outside the active element", async () => {
     }
 
     class Parent extends Component {
-        static components = { Dropdown };
+        static components = {Dropdown};
         static props = [];
         static template = xml`
                 <div>
@@ -764,7 +764,7 @@ test("don't close dropdown outside the active element", async () => {
         }
     }
 
-    await mountWithCleanup(Parent, { env });
+    await mountWithCleanup(Parent, {env});
 
     await click("button.parent-toggle");
     await animationFrame();
@@ -801,10 +801,10 @@ test("don't close dropdown outside the active element", async () => {
 });
 
 test("t-if t-else as toggler", async () => {
-    let state = undefined;
+    let state;
 
     class Parent extends Component {
-        static components = { Dropdown };
+        static components = {Dropdown};
         static props = [];
         static template = xml`
                 <Dropdown>
@@ -817,7 +817,7 @@ test("t-if t-else as toggler", async () => {
             `;
 
         setup() {
-            state = useState({ foo: "bar" });
+            state = useState({foo: "bar"});
             this.state = state;
         }
     }
@@ -846,8 +846,8 @@ test("Dropdown in dialog in dropdown, first dropdown should stay open when click
     const env = await makeMockEnv();
 
     class DialogDropdown extends Component {
-        static components = { Dialog, Dropdown };
-        static props = { close: true };
+        static components = {Dialog, Dropdown};
+        static props = {close: true};
         static template = xml`
                 <Dialog>
                     <button class="inside-dialog">Inside Dialog</button>
@@ -862,7 +862,7 @@ test("Dropdown in dialog in dropdown, first dropdown should stay open when click
     }
 
     class Parent extends Component {
-        static components = { Dropdown };
+        static components = {Dropdown};
         static props = {};
         static template = xml`
                 <Dropdown>
@@ -878,7 +878,7 @@ test("Dropdown in dialog in dropdown, first dropdown should stay open when click
         }
     }
 
-    await mountWithCleanup(Parent, { env });
+    await mountWithCleanup(Parent, {env});
     expect(DROPDOWN_MENU).toHaveCount(0);
 
     // Open dialog
@@ -985,7 +985,7 @@ test("multi-level dropdown: close on item selection", async () => {
 
 test("multi-level dropdown: parent closing modes on item selection", async () => {
     class Parent extends Component {
-        static components = { Dropdown, DropdownItem };
+        static components = {Dropdown, DropdownItem};
         static props = [];
         static template = xml`
                 <div class="outside">outside</div>
@@ -1048,7 +1048,7 @@ test("multi-level dropdown: recursive template can be rendered", async () => {
     class Parent extends Component {
         static template = "recursive.Template";
         static props = [];
-        static components = { Dropdown, DropdownItem };
+        static components = {Dropdown, DropdownItem};
         setup() {
             this.dropdown = startOpenState();
 
@@ -1057,34 +1057,34 @@ test("multi-level dropdown: recursive template can be rendered", async () => {
                 {
                     name: "foo-0",
                     children: [
-                        { name: "foo-00", children: [] },
+                        {name: "foo-00", children: []},
                         {
                             name: "foo-01",
                             children: [
-                                { name: "foo-010", children: [] },
-                                { name: "foo-011", children: [] },
+                                {name: "foo-010", children: []},
+                                {name: "foo-011", children: []},
                                 {
                                     name: "foo-012",
                                     children: [
-                                        { name: "foo-0120", children: [] },
-                                        { name: "foo-0121", children: [] },
-                                        { name: "foo-0122", children: [] },
+                                        {name: "foo-0120", children: []},
+                                        {name: "foo-0121", children: []},
+                                        {name: "foo-0122", children: []},
                                     ],
                                 },
                             ],
                         },
-                        { name: "foo-02", children: [] },
+                        {name: "foo-02", children: []},
                     ],
                 },
-                { name: "foo-1", children: [] },
-                { name: "foo-2", children: [] },
+                {name: "foo-1", children: []},
+                {name: "foo-2", children: []},
             ];
         }
     }
 
     await mountWithCleanup(Parent, {
         templates: {
-            ["recursive.Template"]: /* xml */ `
+            "recursive.Template": /* xml */ `
                 <Dropdown state="dropdown">
                     <button><t t-esc="name" /></button>
                     <t t-set-slot="content">
@@ -1135,7 +1135,7 @@ test("multi-level dropdown: keynav", async () => {
         onItemSelected(value) {
             expect.step(value);
         }
-        static components = { Dropdown, DropdownItem };
+        static components = {Dropdown, DropdownItem};
         static props = [];
         static template = xml`
                 <Dropdown>
@@ -1168,53 +1168,53 @@ test("multi-level dropdown: keynav", async () => {
 
     // Highlighting and selecting items
     const scenarioSteps = [
-        { hotkey: "alt+1" },
-        { hotkey: "arrowup", highlighted: ["first-last"] },
-        { hotkey: "arrowup", highlighted: ["second"] },
-        { hotkey: "arrowdown", highlighted: ["first-last"] },
-        { hotkey: "arrowdown", highlighted: ["first-first"] },
-        { hotkey: "arrowdown", highlighted: ["second"] },
-        { hotkey: "tab", highlighted: ["first-last"] },
-        { hotkey: "tab", highlighted: ["first-first"] },
-        { hotkey: "tab", highlighted: ["second"] },
-        { hotkey: "shift+tab", highlighted: ["first-first"] },
-        { hotkey: "shift+tab", highlighted: ["first-last"] },
-        { hotkey: "shift+tab", highlighted: ["second"] },
-        { hotkey: "arrowright", highlighted: ["second", "second-first"] },
-        { hotkey: "arrowright", highlighted: ["second", "second-first"] },
-        { hotkey: "arrowleft", highlighted: ["second"] },
-        { hotkey: "arrowleft", highlighted: ["second"] },
-        { hotkey: "arrowright", highlighted: ["second", "second-first"] },
-        { hotkey: "arrowup", highlighted: ["second", "second-last"] },
-        { hotkey: "arrowup", highlighted: ["second", "third"] },
-        { hotkey: "arrowup", highlighted: ["second", "second-first"] },
-        { hotkey: "arrowdown", highlighted: ["second", "third"] },
-        { hotkey: "arrowright", highlighted: ["second", "third", "third-first"] },
-        { hotkey: "arrowright", highlighted: ["second", "third", "third-first"] },
-        { hotkey: "arrowleft", highlighted: ["second", "third"] },
-        { hotkey: "arrowleft", highlighted: ["second"] },
-        { hotkey: "arrowleft", highlighted: ["second"] },
-        { hotkey: "arrowright", highlighted: ["second", "second-first"] },
-        { hotkey: "arrowdown", highlighted: ["second", "third"] },
-        { hotkey: "arrowright", highlighted: ["second", "third", "third-first"] },
-        { hotkey: "arrowup", highlighted: ["second", "third", "third-last"] },
-        { hotkey: "home", highlighted: ["second", "third", "third-first"] },
-        { hotkey: "home", highlighted: ["second", "third", "third-first"] },
-        { hotkey: "end", highlighted: ["second", "third", "third-last"] },
-        { hotkey: "end", highlighted: ["second", "third", "third-last"] },
-        { hotkey: "arrowleft", highlighted: ["second", "third"] },
-        { hotkey: "enter", highlighted: ["second", "third", "third-first"] },
-        { hotkey: "enter", selected: "third-first" },
-        { hotkey: "alt+1" },
-        { hotkey: "arrowup", highlighted: ["first-last"] },
-        { hotkey: "arrowup", highlighted: ["second"] },
-        { hotkey: "arrowright", highlighted: ["second", "second-first"] },
-        { hotkey: "arrowup", highlighted: ["second", "second-last"] },
-        { hotkey: "arrowup", highlighted: ["second", "third"] },
-        { hotkey: "arrowright", highlighted: ["second", "third", "third-first"] },
-        { hotkey: "escape", highlighted: ["second", "third"] },
-        { hotkey: "escape", highlighted: ["second"] },
-        { hotkey: "escape", highlighted: [] },
+        {hotkey: "alt+1"},
+        {hotkey: "arrowup", highlighted: ["first-last"]},
+        {hotkey: "arrowup", highlighted: ["second"]},
+        {hotkey: "arrowdown", highlighted: ["first-last"]},
+        {hotkey: "arrowdown", highlighted: ["first-first"]},
+        {hotkey: "arrowdown", highlighted: ["second"]},
+        {hotkey: "tab", highlighted: ["first-last"]},
+        {hotkey: "tab", highlighted: ["first-first"]},
+        {hotkey: "tab", highlighted: ["second"]},
+        {hotkey: "shift+tab", highlighted: ["first-first"]},
+        {hotkey: "shift+tab", highlighted: ["first-last"]},
+        {hotkey: "shift+tab", highlighted: ["second"]},
+        {hotkey: "arrowright", highlighted: ["second", "second-first"]},
+        {hotkey: "arrowright", highlighted: ["second", "second-first"]},
+        {hotkey: "arrowleft", highlighted: ["second"]},
+        {hotkey: "arrowleft", highlighted: ["second"]},
+        {hotkey: "arrowright", highlighted: ["second", "second-first"]},
+        {hotkey: "arrowup", highlighted: ["second", "second-last"]},
+        {hotkey: "arrowup", highlighted: ["second", "third"]},
+        {hotkey: "arrowup", highlighted: ["second", "second-first"]},
+        {hotkey: "arrowdown", highlighted: ["second", "third"]},
+        {hotkey: "arrowright", highlighted: ["second", "third", "third-first"]},
+        {hotkey: "arrowright", highlighted: ["second", "third", "third-first"]},
+        {hotkey: "arrowleft", highlighted: ["second", "third"]},
+        {hotkey: "arrowleft", highlighted: ["second"]},
+        {hotkey: "arrowleft", highlighted: ["second"]},
+        {hotkey: "arrowright", highlighted: ["second", "second-first"]},
+        {hotkey: "arrowdown", highlighted: ["second", "third"]},
+        {hotkey: "arrowright", highlighted: ["second", "third", "third-first"]},
+        {hotkey: "arrowup", highlighted: ["second", "third", "third-last"]},
+        {hotkey: "home", highlighted: ["second", "third", "third-first"]},
+        {hotkey: "home", highlighted: ["second", "third", "third-first"]},
+        {hotkey: "end", highlighted: ["second", "third", "third-last"]},
+        {hotkey: "end", highlighted: ["second", "third", "third-last"]},
+        {hotkey: "arrowleft", highlighted: ["second", "third"]},
+        {hotkey: "enter", highlighted: ["second", "third", "third-first"]},
+        {hotkey: "enter", selected: "third-first"},
+        {hotkey: "alt+1"},
+        {hotkey: "arrowup", highlighted: ["first-last"]},
+        {hotkey: "arrowup", highlighted: ["second"]},
+        {hotkey: "arrowright", highlighted: ["second", "second-first"]},
+        {hotkey: "arrowup", highlighted: ["second", "second-last"]},
+        {hotkey: "arrowup", highlighted: ["second", "third"]},
+        {hotkey: "arrowright", highlighted: ["second", "third", "third-first"]},
+        {hotkey: "escape", highlighted: ["second", "third"]},
+        {hotkey: "escape", highlighted: ["second"]},
+        {hotkey: "escape", highlighted: []},
     ];
 
     for (const [stepIndex, step] of scenarioSteps.entries()) {
@@ -1242,13 +1242,13 @@ test("multi-level dropdown: keynav", async () => {
                         : lastActiveElement
                 ).toBeFocused();
             } else {
-                // no active element means that the main dropdown is closed
+                // No active element means that the main dropdown is closed
                 expect(document.activeElement).toHaveClass("first");
             }
         }
         if (step.selected !== undefined) {
             const verify = step.selected === false ? [] : [step.selected];
-            // step ${stepIndex}: selected item is correct
+            // Step ${stepIndex}: selected item is correct
             expect.verifySteps(verify);
         }
     }
@@ -1258,7 +1258,7 @@ test.tags("desktop");
 test("multi-level dropdown: keynav when rtl direction", async () => {
     expect.assertions(10);
     class Parent extends Component {
-        static components = { Dropdown, DropdownItem };
+        static components = {Dropdown, DropdownItem};
         static props = [];
         static template = xml`
                 <Dropdown>
@@ -1289,11 +1289,11 @@ test("multi-level dropdown: keynav when rtl direction", async () => {
 
     // Highlighting and selecting items
     const scenarioSteps = [
-        { hotkey: "alt+1" },
-        { hotkey: "arrowdown", highlighted: ["first-first"] },
-        { hotkey: "arrowdown", highlighted: ["second"] },
-        { hotkey: "arrowleft", highlighted: ["second", "second-first"] },
-        { hotkey: "arrowright", highlighted: ["second"] },
+        {hotkey: "alt+1"},
+        {hotkey: "arrowdown", highlighted: ["first-first"]},
+        {hotkey: "arrowdown", highlighted: ["second"]},
+        {hotkey: "arrowleft", highlighted: ["second", "second-first"]},
+        {hotkey: "arrowright", highlighted: ["second"]},
     ];
 
     for (const [stepIndex, step] of scenarioSteps.entries()) {
@@ -1341,7 +1341,7 @@ test("multi-level dropdown: submenu keeps position when patched", async () => {
 
     let parentState;
     class Parent extends Component {
-        static components = { Dropdown, DropdownItem };
+        static components = {Dropdown, DropdownItem};
         static props = [];
         static template = xml`
                 <Dropdown>
@@ -1357,7 +1357,7 @@ test("multi-level dropdown: submenu keeps position when patched", async () => {
                 </Dropdown>
             `;
         setup() {
-            this.state = useState({ foo: false });
+            this.state = useState({foo: false});
             parentState = this.state;
         }
     }
@@ -1388,7 +1388,7 @@ test.tags("desktop");
 test("multi-level dropdown: mouseentering a dropdown item should close any subdropdown", async () => {
     expect.assertions(4);
     class Parent extends Component {
-        static components = { Dropdown, DropdownItem };
+        static components = {Dropdown, DropdownItem};
         static props = [];
         static template = xml`
                     <Dropdown>
@@ -1433,7 +1433,7 @@ test("multi-level dropdown: mouseentering a dropdown item should close any subdr
 test.tags("desktop");
 test("multi-level dropdown: unsubscribe all keynav when root destroyed", async () => {
     class Parent extends Component {
-        static components = { Dropdown };
+        static components = {Dropdown};
         static props = [];
         static template = xml`
             <Dropdown>

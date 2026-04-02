@@ -1,5 +1,5 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class RippleEffect extends Interaction {
     static selector = ".btn, .dropdown-toggle, .dropdown-item";

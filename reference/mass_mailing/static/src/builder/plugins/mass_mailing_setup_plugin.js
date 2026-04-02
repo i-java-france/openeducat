@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
 
 export class MassMailingSetupPlugin extends Plugin {
     static id = "mass_mailing_setup_plugin";
@@ -21,7 +21,7 @@ export class MassMailingSetupPlugin extends Plugin {
         wrapperTd?.setAttribute("data-editor-message", _t("DRAG BUILDING BLOCKS HERE"));
     }
 
-    cleanForSave({ root }) {
+    cleanForSave({root}) {
         const wrapperTd = root.querySelector(".o_mail_wrapper_td.oe_empty");
         wrapperTd?.classList.remove("oe_empty");
         wrapperTd?.removeAttribute("data-editor-message-default");
@@ -29,4 +29,6 @@ export class MassMailingSetupPlugin extends Plugin {
     }
 }
 
-registry.category("mass_mailing-plugins").add(MassMailingSetupPlugin.id, MassMailingSetupPlugin);
+registry
+    .category("mass_mailing-plugins")
+    .add(MassMailingSetupPlugin.id, MassMailingSetupPlugin);

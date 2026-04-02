@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { EmojiPicker } from "@web/core/emoji_picker/emoji_picker";
-import { _t } from "@web/core/l10n/translation";
+import {Plugin} from "@html_editor/plugin";
+import {EmojiPicker} from "@web/core/emoji_picker/emoji_picker";
+import {_t} from "@web/core/l10n/translation";
 
 /**
  * @typedef { Object } EmojiShared
@@ -43,7 +43,7 @@ export class EmojiPlugin extends Plugin {
      * @param {Function} [options.onSelect] - The callback function to handle the selection of an emoji.
      * If not provided, the emoji will be inserted into the editor and a step will be trigerred.
      */
-    showEmojiPicker({ target, onSelect } = {}) {
+    showEmojiPicker({target, onSelect} = {}) {
         this.overlay.open({
             props: {
                 close: () => {

@@ -1,23 +1,23 @@
-import { ActionList } from "@mail/core/common/action_list";
-import { Composer } from "@mail/core/common/composer";
-import { ImStatus } from "@mail/core/common/im_status";
-import { Thread } from "@mail/core/common/thread";
-import { AutoresizeInput } from "@mail/core/common/autoresize_input";
-import { CountryFlag } from "@mail/core/common/country_flag";
-import { useThreadActions } from "@mail/core/common/thread_actions";
-import { ThreadIcon } from "@mail/core/common/thread_icon";
-import { useHover, useMessageScrolling } from "@mail/utils/common/hooks";
-import { isEventHandled } from "@web/core/utils/misc";
+import {ActionList} from "@mail/core/common/action_list";
+import {Composer} from "@mail/core/common/composer";
+import {ImStatus} from "@mail/core/common/im_status";
+import {Thread} from "@mail/core/common/thread";
+import {AutoresizeInput} from "@mail/core/common/autoresize_input";
+import {CountryFlag} from "@mail/core/common/country_flag";
+import {useThreadActions} from "@mail/core/common/thread_actions";
+import {ThreadIcon} from "@mail/core/common/thread_icon";
+import {useHover, useMessageScrolling} from "@mail/utils/common/hooks";
+import {isEventHandled} from "@web/core/utils/misc";
 
-import { Component, toRaw, useChildSubEnv, useRef, useState, useSubEnv } from "@odoo/owl";
+import {Component, toRaw, useChildSubEnv, useRef, useState, useSubEnv} from "@odoo/owl";
 
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { localization } from "@web/core/l10n/localization";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { Typing } from "@mail/discuss/typing/common/typing";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { isMobileOS } from "@web/core/browser/feature_detection";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {localization} from "@web/core/l10n/localization";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {Typing} from "@mail/discuss/typing/common/typing";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {isMobileOS} from "@web/core/browser/feature_detection";
 
 /**
  * @typedef {Object} Props
@@ -42,7 +42,7 @@ export class ChatWindow extends Component {
 
     setup() {
         super.setup();
-        useSubEnv({ inChatWindow: true });
+        useSubEnv({inChatWindow: true});
         this.store = useService("mail.store");
         this.messageHighlight = useMessageScrolling();
         this.state = useState({
@@ -53,7 +53,7 @@ export class ChatWindow extends Component {
         });
         this.ui = useService("ui");
         this.contentRef = useRef("content");
-        this.threadActions = useThreadActions({ thread: () => this.thread });
+        this.threadActions = useThreadActions({thread: () => this.thread});
         this.actionsMenuButtonHover = useHover("actionsMenuButton");
         this.parentChannelHover = useHover("parentChannel");
         this.isMobileOS = isMobileOS();
@@ -110,7 +110,10 @@ export class ChatWindow extends Component {
             ev.stopPropagation();
             return;
         }
-        if (ev.target.closest(".o-dropdown") || ev.target.closest(".o-dropdown--menu")) {
+        if (
+            ev.target.closest(".o-dropdown") ||
+            ev.target.closest(".o-dropdown--menu")
+        ) {
             return;
         }
         ev.stopPropagation(); // not letting home menu steal my CTRL-C
@@ -126,19 +129,23 @@ export class ChatWindow extends Component {
                     this.state.editingName = false;
                     return;
                 }
-                this.close({ escape: true });
+                this.close({escape: true});
                 break;
             case "tab": {
-                const index = this.store.chatHub.opened.findIndex((cw) => cw.eq(chatWindow));
+                const index = this.store.chatHub.opened.findIndex((cw) =>
+                    cw.eq(chatWindow)
+                );
                 if (index === this.store.chatHub.opened.length - 1) {
-                    this.store.chatHub.opened[0].focus({ jumpToNewMessage: true });
+                    this.store.chatHub.opened[0].focus({jumpToNewMessage: true});
                 } else {
-                    this.store.chatHub.opened[index + 1].focus({ jumpToNewMessage: true });
+                    this.store.chatHub.opened[index + 1].focus({
+                        jumpToNewMessage: true,
+                    });
                 }
                 break;
             }
             case "control+k":
-                this.store.env.services.command.openMainPalette({ searchValue: "@" });
+                this.store.env.services.command.openMainPalette({searchValue: "@"});
                 ev.preventDefault();
                 break;
         }

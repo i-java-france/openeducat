@@ -2,19 +2,21 @@
 
 import json
 import math
-import pytz
 from ast import literal_eval
-from datetime import date, timedelta
 from collections import defaultdict
+from datetime import date, timedelta
+
+import pytz
 
 from odoo import _, api, fields, models
-from odoo.addons.stock.models.stock_move import PROCUREMENT_PRIORITIES
-from odoo.addons.web.controllers.utils import clean_action
 from odoo.exceptions import UserError
-from odoo.fields import Domain, Command
-from odoo.tools import format_datetime, format_date, groupby, OrderedSet, SQL
+from odoo.fields import Command, Domain
+from odoo.tools import SQL, OrderedSet, format_date, format_datetime, groupby
 from odoo.tools.float_utils import float_compare, float_is_zero
 from odoo.tools.misc import clean_context
+
+from odoo.addons.stock.models.stock_move import PROCUREMENT_PRIORITIES
+from odoo.addons.web.controllers.utils import clean_action
 
 
 class StockPickingType(models.Model):
@@ -175,7 +177,7 @@ class StockPickingType(models.Model):
     def copy_data(self, default=None):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
-        for picking, vals in zip(self, vals_list):
+        for picking, vals in zip(self, vals_list, strict=False):
             if 'name' not in default:
                 vals['name'] = _("%s (copy)", picking.name)
             if 'sequence_code' not in default and 'sequence_id' not in default:
@@ -1129,7 +1131,7 @@ class StockPicking(models.Model):
 
         pickings = super().create(vals_list)
 
-        for picking, scheduled_date in zip(pickings, scheduled_dates):
+        for picking, scheduled_date in zip(pickings, scheduled_dates, strict=False):
             if scheduled_date:
                 picking.with_context(mail_notrack=True).write({'scheduled_date': scheduled_date})
         pickings._autoconfirm_picking()

@@ -1,11 +1,12 @@
 import zipfile
 from io import BytesIO
 
-from odoo import models, fields, api, _
+from werkzeug.urls import url_unquote
+
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.fields import Domain
 from odoo.tools.misc import split_every
-from werkzeug.urls import url_unquote
 
 
 class ResConfigSettings(models.TransientModel):
@@ -104,7 +105,7 @@ class ResConfigSettings(models.TransientModel):
         }
 
     def generate_qr_codes_zip(self):
-        if not self.pos_self_ordering_mode in ['mobile', 'consultation']:
+        if self.pos_self_ordering_mode not in ['mobile', 'consultation']:
             raise ValidationError(_("QR codes can only be generated in mobile or consultation mode."))
 
         qr_images = []

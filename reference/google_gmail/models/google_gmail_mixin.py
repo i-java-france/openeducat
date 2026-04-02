@@ -1,16 +1,16 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
 import logging
 import time
-import requests
 
+import requests
 from werkzeug.urls import url_encode
 
-from odoo import _, fields, models, tools, release
+from odoo import _, fields, models, release, tools
 from odoo.exceptions import AccessError, UserError
 from odoo.tools.urls import urljoin as url_join
+
 from odoo.addons.google_gmail.tools import get_iap_error_message
 
 GMAIL_TOKEN_REQUEST_TIMEOUT = 5

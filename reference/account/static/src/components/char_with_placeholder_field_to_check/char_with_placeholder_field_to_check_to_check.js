@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import {
     charWithPlaceholderField,
-    CharWithPlaceholderField
+    CharWithPlaceholderField,
 } from "../char_with_placeholder_field/char_with_placeholder_field";
 
 export class CharWithPlaceholderFieldToCheck extends CharWithPlaceholderField {
@@ -13,4 +13,6 @@ export const charWithPlaceholderFieldToCheck = {
     component: CharWithPlaceholderFieldToCheck,
 };
 
-registry.category("fields").add("char_with_placeholder_field_to_check", charWithPlaceholderFieldToCheck);
+registry
+    .category("fields")
+    .add("char_with_placeholder_field_to_check", charWithPlaceholderFieldToCheck);

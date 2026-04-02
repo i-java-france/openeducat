@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { queryAll, queryFirst } from "@odoo/hoot-dom";
-import { Deferred, animationFrame } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {queryAll, queryFirst} from "@odoo/hoot-dom";
+import {Deferred, animationFrame} from "@odoo/hoot-mock";
 import {
     clickSave,
     contains,
@@ -15,8 +15,8 @@ import {
 
 class Currency extends models.Model {
     digits = fields.Integer();
-    symbol = fields.Char({ string: "Currency Symbol" });
-    position = fields.Char({ string: "Currency Position" });
+    symbol = fields.Char({string: "Currency Symbol"});
+    position = fields.Char({string: "Currency Position"});
 
     _records = [
         {
@@ -48,7 +48,7 @@ class Partner extends models.Model {
         string: "one2many field",
         relation: "res.partner",
     });
-    product_id = fields.Many2one({ relation: "product" });
+    product_id = fields.Many2one({relation: "product"});
 
     placeholder_name = fields.Char();
 
@@ -68,13 +68,13 @@ class Partner extends models.Model {
             int_field: 0,
             partner_ids: [],
         },
-        { id: 3, name: "gnap", int_field: 80 },
+        {id: 3, name: "gnap", int_field: 80},
         {
             id: 4,
             display_name: "aaa",
             name: "abc",
         },
-        { id: 5, name: "blop", int_field: -4 },
+        {id: 5, name: "blop", int_field: -4},
     ];
 
     _views = {
@@ -91,17 +91,17 @@ class Partner extends models.Model {
 }
 
 class PartnerType extends models.Model {
-    color = fields.Integer({ string: "Color index" });
-    name = fields.Char({ string: "Partner Type" });
+    color = fields.Integer({string: "Color index"});
+    name = fields.Char({string: "Partner Type"});
 
     _records = [
-        { id: 12, display_name: "gold", color: 2 },
-        { id: 14, display_name: "silver", color: 5 },
+        {id: 12, display_name: "gold", color: 2},
+        {id: 14, display_name: "silver", color: 5},
     ];
 }
 
 class Product extends models.Model {
-    name = fields.Char({ string: "Product Name" });
+    name = fields.Char({string: "Product Name"});
 
     _records = [
         {
@@ -139,7 +139,7 @@ class Users extends models.Model {
 defineModels([Currency, Partner, PartnerType, Product, Users]);
 
 test("char field in form view", async () => {
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
     expect(".o_field_widget input[type='text']").toHaveCount(1, {
         message: "should have an input for the char field",
@@ -156,7 +156,7 @@ test("char field in form view", async () => {
 
 test("basic rendering text field", async () => {
     Product._fields.description = fields.Text();
-    Product._records = [{ id: 1, description: "Description as text" }];
+    Product._records = [{id: 1, description: "Description as text"}];
     await mountView({
         type: "form",
         resModel: "product",
@@ -171,9 +171,9 @@ test("basic rendering text field", async () => {
 test("setting a char field to empty string is saved as a false value", async () => {
     expect.assertions(1);
 
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1].name).toBe(false);
     });
     await fieldInput("name").clear();
@@ -182,7 +182,7 @@ test("setting a char field to empty string is saved as a false value", async () 
 
 test("char field with size attribute", async () => {
     Partner._fields.name.size = 5;
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
     expect("input").toHaveAttribute("maxlength", "5", {
         message: "maxlength attribute should have been set correctly on the input",
@@ -215,7 +215,7 @@ test("char field in editable list view", async () => {
     expect(`${cellSelector} input`).toHaveValue("yop", {
         message: "should have the corect value in internal input",
     });
-    await fieldInput("name").edit("brolo", { confirm: false });
+    await fieldInput("name").edit("brolo", {confirm: false});
 
     await contains(".o_list_button_save").click();
     expect(cellSelector).not.toHaveClass("o_selected_row", {
@@ -245,26 +245,26 @@ test("char field translatable", async () => {
         if (callGetFieldTranslations++ === 0) {
             return [
                 [
-                    { lang: "en_US", source: "yop", value: "yop" },
-                    { lang: "fr_BE", source: "yop", value: "yop français" },
-                    { lang: "es_ES", source: "yop", value: "yop español" },
+                    {lang: "en_US", source: "yop", value: "yop"},
+                    {lang: "fr_BE", source: "yop", value: "yop français"},
+                    {lang: "es_ES", source: "yop", value: "yop español"},
                 ],
-                { translation_type: "char", translation_show_source: false },
-            ];
-        } else {
-            return [
-                [
-                    { lang: "en_US", source: "bar", value: "bar" },
-                    { lang: "fr_BE", source: "bar", value: "yop français" },
-                    { lang: "es_ES", source: "bar", value: "bar" },
-                ],
-                { translation_type: "char", translation_show_source: false },
+                {translation_type: "char", translation_show_source: false},
             ];
         }
+            return [
+                [
+                    {lang: "en_US", source: "bar", value: "bar"},
+                    {lang: "fr_BE", source: "bar", value: "yop français"},
+                    {lang: "es_ES", source: "bar", value: "bar"},
+                ],
+                {translation_type: "char", translation_show_source: false},
+            ];
+
     });
-    onRpc("res.partner", "update_field_translations", function ({ args, kwargs }) {
+    onRpc("res.partner", "update_field_translations", function ({args, kwargs}) {
         expect(args[2]).toEqual(
-            { en_US: "bar", es_ES: false },
+            {en_US: "bar", es_ES: false},
             {
                 message:
                     "the new translation value should be written and the value false voids the translation",
@@ -351,11 +351,11 @@ test("translation dialog should close if field is not there anymore", async () =
     ]);
     onRpc("res.partner", "get_field_translations", () => [
         [
-            { lang: "en_US", source: "yop", value: "yop" },
-            { lang: "fr_BE", source: "yop", value: "valeur français" },
-            { lang: "es_ES", source: "yop", value: "yop español" },
+            {lang: "en_US", source: "yop", value: "yop"},
+            {lang: "fr_BE", source: "yop", value: "valeur français"},
+            {lang: "es_ES", source: "yop", value: "yop español"},
         ],
-        { translation_type: "char", translation_show_source: false },
+        {translation_type: "char", translation_show_source: false},
     ]);
     expect("[name=name] input").toHaveClass("o_field_translate");
     await contains("[name=name] input").click();
@@ -380,7 +380,7 @@ test("html field translatable", async () => {
     serverState.lang = "en_US";
     serverState.multiLang = true;
 
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
     onRpc("res.lang", "get_installed", () => [
         ["en_US", "English"],
@@ -414,15 +414,15 @@ test("html field translatable", async () => {
             translation_show_source: true,
         },
     ]);
-    onRpc("res.partner", "update_field_translations", ({ args }) => {
+    onRpc("res.partner", "update_field_translations", ({args}) => {
         expect(args[2]).toEqual(
-            { en_US: { "first paragraph": "first paragraph modified" } },
-            { message: "the new translation value should be written" }
+            {en_US: {"first paragraph": "first paragraph modified"}},
+            {message: "the new translation value should be written"}
         );
         return true;
     });
 
-    // this will not affect the translate_fields effect until the record is
+    // This will not affect the translate_fields effect until the record is
     // saved but is set for consistency of the test
     await fieldInput("name").edit("<p>first paragraph</p><p>second paragraph</p>");
     await contains(".o_field_char .btn.o_field_translate").click();
@@ -451,7 +451,7 @@ test("char field translatable in create mode", async () => {
 
     serverState.multiLang = true;
 
-    await mountView({ type: "form", resModel: "res.partner" });
+    await mountView({type: "form", resModel: "res.partner"});
 
     expect(".o_field_char .btn.o_field_translate").toHaveCount(1, {
         message: "should have a translate button in create mode",
@@ -459,7 +459,7 @@ test("char field translatable in create mode", async () => {
 });
 
 test("char field does not allow html injections", async () => {
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
     await fieldInput("name").edit("<script>throw Error();</script>");
     await clickSave();
     expect(".o_field_widget input").toHaveValue("<script>throw Error();</script>", {
@@ -468,7 +468,7 @@ test("char field does not allow html injections", async () => {
 });
 
 test("char field trim (or not) characters", async () => {
-    Partner._fields.foo2 = fields.Char({ trim: false });
+    Partner._fields.foo2 = fields.Char({trim: false});
 
     await mountView({
         type: "form",
@@ -524,7 +524,7 @@ test("input field: change value before pending onchange returns", async () => {
     def = new Deferred();
     await contains(".o-autocomplete--input").click();
     await contains(".o-autocomplete--dropdown-item").click();
-    await fieldInput("name").edit("tralala", { confirm: false });
+    await fieldInput("name").edit("tralala", {confirm: false});
     expect(".o_field_widget[name='name'] input").toHaveValue("tralala", {
         message: "should contain tralala",
     });
@@ -564,26 +564,28 @@ test("input field: change value before pending onchange returns (2)", async () =
         message: "should contain the correct value",
     });
 
-    // trigger a deferred onchange
+    // Trigger a deferred onchange
     await fieldInput("int_field").edit("7");
-    await fieldInput("name").edit("test", { confirm: false });
+    await fieldInput("name").edit("test", {confirm: false});
 
     def.resolve();
     await animationFrame();
     expect(".o_field_widget[name='name'] input").toHaveValue("test", {
-        message: "The onchage value should not be applied because the input is in edition",
+        message:
+            "The onchage value should not be applied because the input is in edition",
     });
     await fieldInput("name").press("Enter");
     await expect(".o_field_widget[name='name'] input").toHaveValue("test");
     await fieldInput("int_field").edit("10");
     await expect(".o_field_widget[name='name'] input").toHaveValue("tralala", {
-        message: "The onchange value should be applied because the input is not in edition",
+        message:
+            "The onchange value should be applied because the input is not in edition",
     });
 });
 
 test.tags("desktop");
 test("input field: change value before pending onchange returns (with fieldDebounce)", async () => {
-    // this test is exactly the same as the previous one, except that in
+    // This test is exactly the same as the previous one, except that in
     // this scenario the onchange return *before* we validate the change
     // on the input field (before the "change" event is triggered).
     Partner._onChanges.product_id = (obj) => {
@@ -616,7 +618,7 @@ test("input field: change value before pending onchange returns (with fieldDebou
     def = new Deferred();
     await contains(".o-autocomplete--input").click();
     await contains(".o-autocomplete--dropdown-item").click();
-    await fieldInput("name").edit("tralala", { confirm: false });
+    await fieldInput("name").edit("tralala", {confirm: false});
     expect(".o_field_widget[name='name'] input").toHaveValue("tralala", {
         message: "should contain tralala",
     });
@@ -635,7 +637,7 @@ test("onchange return value before editing input", async () => {
     Partner._onChanges.name = (obj) => {
         obj.name = "yop";
     };
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
     expect(".o_field_widget[name='name'] input").toHaveValue("yop");
     await fieldInput("name").edit("tralala");
     await expect("[name='name'] input").toHaveValue("yop");
@@ -669,13 +671,13 @@ test("input field: change value before pending onchange renaming", async () => {
     });
     await contains(".o-autocomplete--input").click();
     await contains(".o-autocomplete--dropdown-item").click();
-    // set name before onchange
+    // Set name before onchange
     await fieldInput("name").edit("tralala");
     await expect(".o_field_widget[name='name'] input").toHaveValue("tralala", {
         message: "should contain tralala",
     });
 
-    // complete the onchange
+    // Complete the onchange
     def.resolve();
     await animationFrame();
     expect(".o_field_widget[name='name'] input").toHaveValue("tralala", {
@@ -693,9 +695,13 @@ test("support autocomplete attribute", async () => {
             <field name="name" autocomplete="coucou"/>
         </form>`,
     });
-    expect(".o_field_widget[name='name'] input").toHaveAttribute("autocomplete", "coucou", {
-        message: "attribute autocomplete should be set",
-    });
+    expect(".o_field_widget[name='name'] input").toHaveAttribute(
+        "autocomplete",
+        "coucou",
+        {
+            message: "attribute autocomplete should be set",
+        }
+    );
 });
 
 test("input autocomplete attribute set to none by default", async () => {
@@ -708,9 +714,13 @@ test("input autocomplete attribute set to none by default", async () => {
             <field name="name"/>
         </form>`,
     });
-    expect(".o_field_widget[name='name'] input").toHaveAttribute("autocomplete", "off", {
-        message: "attribute autocomplete should be set to none by default",
-    });
+    expect(".o_field_widget[name='name'] input").toHaveAttribute(
+        "autocomplete",
+        "off",
+        {
+            message: "attribute autocomplete should be set to none by default",
+        }
+    );
 });
 
 test("support password attribute", async () => {
@@ -785,7 +795,8 @@ test("input field: empty password", async () => {
         message: "password field input value should with type 'password' in edit mode",
     });
     expect(".o_field_char input").toHaveValue("", {
-        message: "password field input value should be the (non-hidden, empty) password value",
+        message:
+            "password field input value should be the (non-hidden, empty) password value",
     });
 });
 
@@ -810,10 +821,10 @@ test("input field: set and remove value, then wait for onchange", async () => {
     });
     await contains(".o_field_x2many_list_row_add a").click();
     expect(".o_field_widget[name=name] input").toHaveValue("");
-    await fieldInput("name").edit("test", { confirm: false });
-    await fieldInput("name").clear({ confirm: false });
+    await fieldInput("name").edit("test", {confirm: false});
+    await fieldInput("name").clear({confirm: false});
 
-    // trigger the onchange by setting a product
+    // Trigger the onchange by setting a product
     await contains(".o-autocomplete--input").click();
     await contains(".o-autocomplete--dropdown-item").click();
     expect(".o_field_widget[name=name] input").toHaveValue("onchange value", {
@@ -835,9 +846,13 @@ test("char field with placeholder", async () => {
             </sheet>
         </form>`,
     });
-    expect(".o_field_widget[name='name'] input").toHaveAttribute("placeholder", "Placeholder", {
-        message: "placeholder attribute should be set",
-    });
+    expect(".o_field_widget[name='name'] input").toHaveAttribute(
+        "placeholder",
+        "Placeholder",
+        {
+            message: "placeholder attribute should be set",
+        }
+    );
 });
 
 test("Form: placeholder_field shows as placeholder", async () => {

@@ -1,9 +1,9 @@
-import { App, whenReady } from "@odoo/owl";
-import { PublicReadonlySpreadsheet } from "./public_readonly";
-import { getTemplate } from "@web/core/templates";
-import { makeEnv, startServices } from "@web/env";
-import { session } from "@web/session";
-import { appTranslateFn } from "@web/core/l10n/translation";
+import {App, whenReady} from "@odoo/owl";
+import {PublicReadonlySpreadsheet} from "./public_readonly";
+import {getTemplate} from "@web/core/templates";
+import {makeEnv, startServices} from "@web/env";
+import {session} from "@web/session";
+import {appTranslateFn} from "@web/core/l10n/translation";
 
 (async function boot() {
     odoo.info = {
@@ -26,6 +26,6 @@ import { appTranslateFn } from "@web/core/l10n/translation";
         translatableAttributes: ["data-tooltip"],
     });
     const root = await app.mount(document.getElementById("spreadsheet-mount-anchor"));
-    odoo.__WOWL_DEBUG__ = { root };
+    odoo.__WOWL_DEBUG__ = {root};
     odoo.isReady = true;
 })();

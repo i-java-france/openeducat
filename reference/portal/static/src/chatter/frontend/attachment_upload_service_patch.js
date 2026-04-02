@@ -1,6 +1,6 @@
-import { AttachmentUploadService } from "@mail/core/common/attachment_upload_service";
+import {AttachmentUploadService} from "@mail/core/common/attachment_upload_service";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 patch(AttachmentUploadService.prototype, {
     _buildFormData(formData, file, thread, composer, tmpId, options) {

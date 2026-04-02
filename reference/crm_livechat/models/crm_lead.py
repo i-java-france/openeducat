@@ -2,6 +2,7 @@
 
 from odoo import api, fields, models
 from odoo.exceptions import AccessError
+
 from odoo.addons.mail.tools.discuss import Store
 
 

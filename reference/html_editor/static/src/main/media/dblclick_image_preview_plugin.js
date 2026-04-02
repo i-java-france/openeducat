@@ -1,4 +1,4 @@
-import { Plugin } from "@html_editor/plugin";
+import {Plugin} from "@html_editor/plugin";
 
 export class DoubleClickImagePreviewPlugin extends Plugin {
     static id = "dblclickImagePreview";

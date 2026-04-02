@@ -1,6 +1,9 @@
-import { loadPDFJSAssets } from "@web/core/utils/pdfjs";
+import {loadPDFJSAssets} from "@web/core/utils/pdfjs";
 
-export async function generatePdfThumbnail(pdfUrl, options = { height: 256, width: 256 }) {
+export async function generatePdfThumbnail(
+    pdfUrl,
+    options = {height: 256, width: 256}
+) {
     let initialWorkerSrc = false,
         isPdfValid,
         pdf,
@@ -12,7 +15,7 @@ export async function generatePdfThumbnail(pdfUrl, options = { height: 256, widt
         globalThis.pdfjsLib.GlobalWorkerOptions.workerSrc =
             "/web/static/lib/pdfjs/build/pdf.worker.js";
     } catch {
-        return { thumbnail, pdfEnabled: false };
+        return {thumbnail, pdfEnabled: false};
     }
     try {
         // Support for blob url
@@ -41,16 +44,18 @@ export async function generatePdfThumbnail(pdfUrl, options = { height: 256, widt
         isPdfValid = true;
         const page = await pdf.getPage(1);
         // Render first page onto a canvas
-        const viewPort = page.getViewport({ scale: 1 });
+        const viewPort = page.getViewport({scale: 1});
         const canvas = document.createElement("canvas");
         canvas.width = options.width;
         canvas.height = options.height;
         const scale = canvas.width / viewPort.width;
         await page.render({
             canvasContext: canvas.getContext("2d"),
-            viewport: page.getViewport({ scale }),
+            viewport: page.getViewport({scale}),
         }).promise;
-        thumbnail = canvas.toDataURL("image/jpeg").replace("data:image/jpeg;base64,", "");
+        thumbnail = canvas
+            .toDataURL("image/jpeg")
+            .replace("data:image/jpeg;base64,", "");
     }
-    return { isPdfValid, thumbnail, pdfEnabled: true };
+    return {isPdfValid, thumbnail, pdfEnabled: true};
 }

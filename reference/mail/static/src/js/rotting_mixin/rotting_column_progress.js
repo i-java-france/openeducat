@@ -1,11 +1,11 @@
-import { ColumnProgress } from "@web/views/view_components/column_progress";
+import {ColumnProgress} from "@web/views/view_components/column_progress";
 
 export class RottingColumnProgress extends ColumnProgress {
     static template = "mail.RottingColumnProgress";
     static props = {
         ...ColumnProgress.props,
-        progressBarState: { type: Object },
-        onRotIconClicked: { type: Function },
+        progressBarState: {type: Object},
+        onRotIconClicked: {type: Function},
     };
 
     getRottingGroupCount(group) {

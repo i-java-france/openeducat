@@ -1,9 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.tools import mute_logger
-from odoo.tools.urls import urljoin as url_join
 from odoo.tools.translate import html_translate
+from odoo.tools.urls import urljoin as url_join
 
 
 class HrJob(models.Model):

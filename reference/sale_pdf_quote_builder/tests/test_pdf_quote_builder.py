@@ -15,8 +15,9 @@ from odoo.tools.misc import file_open
 
 from odoo.addons.sale_management.tests.common import SaleManagementCommon
 from odoo.addons.sale_pdf_quote_builder.controllers.quotation_document import (
-    QuotationDocumentController
+    QuotationDocumentController,
 )
+
 from .files import forms_pdf, plain_pdf
 
 
@@ -290,7 +291,9 @@ class TestPDFQuoteBuilder(SaleManagementCommon):
         if 'website' not in self.env:
             self.skipTest("Module `website` not found")
         else:
-            from odoo.addons.http_routing.tests.common import MockRequest  # noqa: PLC0415
+            from odoo.addons.http_routing.tests.common import (
+                MockRequest,  # noqa: PLC0415
+            )
 
         # Upload document without Sale Order Template
         with (
@@ -327,7 +330,9 @@ class TestPDFQuoteBuilder(SaleManagementCommon):
         if 'website' not in self.env:
             self.skipTest("Module `website` not found")
         else:
-            from odoo.addons.http_routing.tests.common import MockRequest  # noqa: PLC0415
+            from odoo.addons.http_routing.tests.common import (
+                MockRequest,  # noqa: PLC0415
+            )
 
         # Upload a document for a Sale Order Template without company id
         self.empty_order_template.company_id = False

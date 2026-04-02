@@ -1,7 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime
+
 from freezegun import freeze_time
+
 from odoo.tests import common, new_test_user
 
 
@@ -13,7 +15,7 @@ class TestsCommon(common.TransactionCase):
         cls.startClassPatcher(freeze_time(cls.fakenow))
 
     def setUp(self):
-        super(TestsCommon, self).setUp()
+        super().setUp()
 
         self.env['lunch.cashmove'].create({
             'amount': 100,

@@ -2,7 +2,7 @@
 
 import useStore from "../hooks/useStore.js";
 
-const { Component, xml } = owl;
+const {Component, xml} = owl;
 
 export class IconButton extends Component {
     static props = {

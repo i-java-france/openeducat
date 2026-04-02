@@ -1,32 +1,32 @@
-import { Dialog } from "@web/core/dialog/dialog";
-import { useChildRef, useService } from "@web/core/utils/hooks";
-import { CallbackRecorder } from "@web/search/action_hook";
-import { View } from "@web/views/view";
+import {Dialog} from "@web/core/dialog/dialog";
+import {useChildRef, useService} from "@web/core/utils/hooks";
+import {CallbackRecorder} from "@web/search/action_hook";
+import {View} from "@web/views/view";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class FormViewDialog extends Component {
     static template = "web.FormViewDialog";
-    static components = { Dialog, View };
+    static components = {Dialog, View};
     static props = {
         close: Function,
         resModel: String,
 
-        context: { type: Object, optional: true },
-        expandedFormRef: { type: String, optional: true },
-        nextRecordsContext: { type: Object, optional: true },
-        readonly: { type: Boolean, optional: true },
-        onRecordSaved: { type: Function, optional: true },
-        onRecordSave: { type: Function, optional: true },
-        onRecordDiscarded: { type: Function, optional: true },
-        removeRecord: { type: Function, optional: true },
-        resId: { type: [Number, Boolean], optional: true },
-        title: { type: String, optional: true },
-        viewId: { type: [Number, Boolean], optional: true },
-        preventCreate: { type: Boolean, optional: true },
-        preventEdit: { type: Boolean, optional: true },
-        canExpand: { type: Boolean, optional: true },
-        isToMany: { type: Boolean, optional: true },
+        context: {type: Object, optional: true},
+        expandedFormRef: {type: String, optional: true},
+        nextRecordsContext: {type: Object, optional: true},
+        readonly: {type: Boolean, optional: true},
+        onRecordSaved: {type: Function, optional: true},
+        onRecordSave: {type: Function, optional: true},
+        onRecordDiscarded: {type: Function, optional: true},
+        removeRecord: {type: Function, optional: true},
+        resId: {type: [Number, Boolean], optional: true},
+        title: {type: String, optional: true},
+        viewId: {type: [Number, Boolean], optional: true},
+        preventCreate: {type: Boolean, optional: true},
+        preventEdit: {type: Boolean, optional: true},
+        canExpand: {type: Boolean, optional: true},
+        isToMany: {type: Boolean, optional: true},
         size: Dialog.props.size,
     };
     static defaultProps = {
@@ -59,7 +59,7 @@ export class FormViewDialog extends Component {
             buttonTemplate,
 
             context: this.props.context || {},
-            display: { controlPanel: false },
+            display: {controlPanel: false},
             readonly: this.props.readonly,
             resId: this.props.resId || false,
             resModel: this.props.resModel,
@@ -72,7 +72,7 @@ export class FormViewDialog extends Component {
                 if (this.props.onRecordSave) {
                     saved = await this.props.onRecordSave(record);
                 } else {
-                    saved = await record.save({ reload: false });
+                    saved = await record.save({reload: false});
                     if (saved) {
                         this.currentResId = record.resId;
                         await this.props.onRecordSaved(record);
@@ -103,7 +103,7 @@ export class FormViewDialog extends Component {
         if (params?.saveAndNew) {
             this.currentResId = false;
             const context = this.props.nextRecordsContext || this.props.context || {};
-            await record.model.load({ resId: false, context });
+            await record.model.load({resId: false, context});
         } else {
             this.props.close();
         }
@@ -118,7 +118,9 @@ export class FormViewDialog extends Component {
 
     async onExpand() {
         const beforeLeaveCallbacks = this.viewProps.__beforeLeave__.callbacks;
-        const res = await Promise.all(beforeLeaveCallbacks.map((callback) => callback()));
+        const res = await Promise.all(
+            beforeLeaveCallbacks.map((callback) => callback())
+        );
         if (!res.includes(false)) {
             this.actionService.doAction({
                 type: "ir.actions.act_window",

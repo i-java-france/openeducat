@@ -1,12 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta
 from collections import defaultdict
+from datetime import timedelta
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 from odoo.fields import Domain
 from odoo.tools import float_compare
-from odoo.exceptions import UserError
 
 
 class SaleOrderLine(models.Model):
@@ -186,7 +186,7 @@ class SaleOrderLine(models.Model):
             For SO line coming from expense, no picking should be generate: we don't manage stock for
             those lines, even if the product is a storable.
         """
-        super(SaleOrderLine, self)._compute_qty_delivered_method()
+        super()._compute_qty_delivered_method()
 
         for line in self:
             if not line.is_expense and line.product_id.type == 'consu':
@@ -194,7 +194,7 @@ class SaleOrderLine(models.Model):
 
     @api.depends('move_ids.state', 'move_ids.location_dest_usage', 'move_ids.quantity', 'move_ids.product_uom')
     def _compute_qty_delivered(self):
-        super(SaleOrderLine, self)._compute_qty_delivered()
+        super()._compute_qty_delivered()
 
     def _prepare_qty_delivered(self):
         delivered_qties = super()._prepare_qty_delivered()
@@ -417,7 +417,7 @@ class SaleOrderLine(models.Model):
         line_products = self.filtered(lambda l: l.product_id.type == 'consu')
         if line_products.mapped('qty_delivered') and float_compare(values['product_uom_qty'], max(line_products.mapped('qty_delivered')), precision_digits=precision) == -1:
             raise UserError(_('The ordered quantity of a sale order line cannot be decreased below the amount already delivered. Instead, create a return in your inventory.'))
-        super(SaleOrderLine, self)._update_line_quantity(values)
+        super()._update_line_quantity(values)
 
     #=== HOOKS ===#
 

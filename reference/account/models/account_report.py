@@ -4,8 +4,8 @@ import ast
 import re
 from collections import defaultdict
 
-from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError, UserError
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Command, Domain
 
 FIGURE_TYPE_SELECTION_VALUES = [
@@ -289,7 +289,7 @@ class AccountReport(models.Model):
 
     def copy_data(self, default=None):
         vals_list = super().copy_data(default=default)
-        return [dict(vals, name=report._get_copied_name()) for report, vals in zip(self, vals_list)]
+        return [dict(vals, name=report._get_copied_name()) for report, vals in zip(self, vals_list, strict=False)]
 
     def copy(self, default=None):
         '''Copy the whole financial report hierarchy by duplicating each line recursively.
@@ -298,7 +298,7 @@ class AccountReport(models.Model):
         :return: The copied account.report record.
         '''
         new_reports = super().copy(default=default)
-        for old_report, new_report in zip(self, new_reports):
+        for old_report, new_report in zip(self, new_reports, strict=False):
             code_mapping = {}
             for line in old_report.line_ids.filtered(lambda x: not x.parent_id):
                 line._copy_hierarchy(new_report, code_mapping=code_mapping)

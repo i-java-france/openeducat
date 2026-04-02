@@ -1,29 +1,33 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import configparser
+import inspect
+import io
+import logging
+import re
+import secrets
+import socket
+import subprocess
+import sys
+import time
+import zipfile
 from enum import Enum
 from functools import cache, wraps
 from importlib import util
-import inspect
-import io
 from ipaddress import ip_address
-import logging
-import netifaces
 from pathlib import Path
-import re
-import requests
-import secrets
-import subprocess
-import socket
+from threading import Lock, Thread
 from urllib.parse import parse_qs
+
+import netifaces
+import requests
 import urllib3.util
-import sys
-from threading import Thread, Lock
-import time
-import zipfile
 from werkzeug.exceptions import Locked
 
 from odoo import http, release, service
+from odoo.tools.func import reset_cached_properties
+from odoo.tools.misc import file_path
+
 from odoo.addons.iot_drivers.tools.system import (
     IOT_CHAR,
     IOT_RPI_CHAR,
@@ -33,8 +37,6 @@ from odoo.addons.iot_drivers.tools.system import (
     IS_WINDOWS,
     mtr,
 )
-from odoo.tools.func import reset_cached_properties
-from odoo.tools.misc import file_path
 
 lock = Lock()
 _logger = logging.getLogger(__name__)

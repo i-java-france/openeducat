@@ -18,10 +18,9 @@ odoo_version: 19.0
 org_name: Odoo Community Association (OCA)
 org_slug: OCA
 rebel_module_groups: []
-repo_description: ''
-repo_name: ''
-repo_slug: ''
+repo_description: ""
+repo_name: ""
+repo_slug: ""
 repo_website: https://github.com/OCA/
 use_pyproject_toml: true
 use_ruff: true
-

@@ -1,8 +1,8 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { Component } from "@odoo/owl";
-import { serverState } from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {Component} from "@odoo/owl";
+import {serverState} from "@web/../tests/web_test_helpers";
 
-import { Registry } from "@web/core/registry";
+import {Registry} from "@web/core/registry";
 
 describe.current.tags("headless");
 
@@ -71,7 +71,7 @@ test("can set and get a value, with an order arg", () => {
     const registry = new Registry();
     const foo = {};
 
-    registry.add("foo", foo, { sequence: 24 });
+    registry.add("foo", foo, {sequence: 24});
 
     expect(registry.get("foo")).toBe(foo);
 });
@@ -80,10 +80,10 @@ test("can get ordered list of elements", () => {
     const registry = new Registry();
 
     registry
-        .add("foo1", "foo1", { sequence: 1 })
-        .add("foo2", "foo2", { sequence: 2 })
-        .add("foo5", "foo5", { sequence: 5 })
-        .add("foo3", "foo3", { sequence: 3 });
+        .add("foo1", "foo1", {sequence: 1})
+        .add("foo2", "foo2", {sequence: 2})
+        .add("foo5", "foo5", {sequence: 5})
+        .add("foo3", "foo3", {sequence: 3});
 
     expect(registry.getAll()).toEqual(["foo1", "foo2", "foo3", "foo5"]);
 });
@@ -92,10 +92,10 @@ test("can get ordered list of entries", () => {
     const registry = new Registry();
 
     registry
-        .add("foo1", "foo1", { sequence: 1 })
-        .add("foo2", "foo2", { sequence: 2 })
-        .add("foo5", "foo5", { sequence: 5 })
-        .add("foo3", "foo3", { sequence: 3 });
+        .add("foo1", "foo1", {sequence: 1})
+        .add("foo2", "foo2", {sequence: 2})
+        .add("foo5", "foo5", {sequence: 5})
+        .add("foo3", "foo3", {sequence: 3});
 
     expect(registry.getEntries()).toEqual([
         ["foo1", "foo1"],
@@ -132,9 +132,9 @@ test("can override element with sequence", () => {
     const registry = new Registry();
 
     registry
-        .add("foo1", "foo1", { sequence: 1 })
-        .add("foo2", "foo2", { sequence: 2 })
-        .add("foo1", "foo3", { force: true });
+        .add("foo1", "foo1", {sequence: 1})
+        .add("foo2", "foo2", {sequence: 2})
+        .add("foo1", "foo3", {force: true});
 
     expect(registry.getEntries()).toEqual([
         ["foo1", "foo3"],
@@ -146,9 +146,9 @@ test("can override element with sequence 2 ", () => {
     const registry = new Registry();
 
     registry
-        .add("foo1", "foo1", { sequence: 1 })
-        .add("foo2", "foo2", { sequence: 2 })
-        .add("foo1", "foo3", { force: true, sequence: 3 });
+        .add("foo1", "foo1", {sequence: 1})
+        .add("foo2", "foo2", {sequence: 2})
+        .add("foo1", "foo3", {force: true, sequence: 3});
 
     expect(registry.getEntries()).toEqual([
         ["foo2", "foo2"],
@@ -165,43 +165,45 @@ test("can recursively open sub registry", () => {
 
 test("can validate the values from a schema", () => {
     serverState.debug = "1";
-    const schema = { name: String, age: { type: Number, optional: true } };
+    const schema = {name: String, age: {type: Number, optional: true}};
     const friendsRegistry = new Registry();
     friendsRegistry.addValidation(schema);
-    expect(() => friendsRegistry.add("jean", { name: "Jean" })).not.toThrow();
-    expect(friendsRegistry.get("jean")).toEqual({ name: "Jean" });
-    expect(() => friendsRegistry.add("luc", { name: "Luc", age: 32 })).not.toThrow();
-    expect(friendsRegistry.get("luc")).toEqual({ name: "Luc", age: 32 });
-    expect(() => friendsRegistry.add("adrien", { name: 23 })).toThrow();
-    expect(() => friendsRegistry.add("hubert", { age: 54 })).toThrow();
-    expect(() => friendsRegistry.add("chris", { name: "chris", city: "Namur" })).toThrow();
-    expect(() => friendsRegistry.addValidation({ something: Number })).toThrow();
+    expect(() => friendsRegistry.add("jean", {name: "Jean"})).not.toThrow();
+    expect(friendsRegistry.get("jean")).toEqual({name: "Jean"});
+    expect(() => friendsRegistry.add("luc", {name: "Luc", age: 32})).not.toThrow();
+    expect(friendsRegistry.get("luc")).toEqual({name: "Luc", age: 32});
+    expect(() => friendsRegistry.add("adrien", {name: 23})).toThrow();
+    expect(() => friendsRegistry.add("hubert", {age: 54})).toThrow();
+    expect(() =>
+        friendsRegistry.add("chris", {name: "chris", city: "Namur"})
+    ).toThrow();
+    expect(() => friendsRegistry.addValidation({something: Number})).toThrow();
 });
 
 test("can validate by adding a schema after the registry is filled", async () => {
     serverState.debug = "1";
-    const schema = { name: String };
+    const schema = {name: String};
     const friendsRegistry = new Registry();
-    expect(() => friendsRegistry.add("jean", { name: 999 })).not.toThrow();
+    expect(() => friendsRegistry.add("jean", {name: 999})).not.toThrow();
     expect(() => friendsRegistry.addValidation(schema)).toThrow();
 });
 
 test("can validate subclassess", async () => {
     serverState.debug = "1";
-    const schema = { component: { validate: (c) => c.prototype instanceof Component } };
+    const schema = {component: {validate: (c) => c.prototype instanceof Component}};
     const widgetRegistry = new Registry();
     widgetRegistry.addValidation(schema);
-    class Widget extends Component {} // eslint-disable-line
-    expect(() => widgetRegistry.add("calculator", { component: Widget })).not.toThrow({
+    class Widget extends Component {}
+    expect(() => widgetRegistry.add("calculator", {component: Widget})).not.toThrow({
         message: "Support subclasses",
     });
 });
 
 test("only validate in debug", async () => {
-    const schema = { name: String };
+    const schema = {name: String};
     const registry = new Registry();
     registry.addValidation(schema);
-    expect(() => registry.add("jean", { name: 50 })).not.toThrow({
+    expect(() => registry.add("jean", {name: 50})).not.toThrow({
         message: "There is no validation if not in debug mode",
     });
 });

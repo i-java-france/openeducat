@@ -1,4 +1,4 @@
-import { Component, useRef, onMounted } from "@odoo/owl";
+import {Component, useRef, onMounted} from "@odoo/owl";
 
 const AUTOCLOSE_DELAY = 4000;
 
@@ -15,24 +15,24 @@ export class Notification extends Component {
             optional: true,
             validate: (t) => ["warning", "danger", "success", "info"].includes(t),
         },
-        title: { type: [String, Boolean, { toString: Function }], optional: true },
-        className: { type: String, optional: true },
+        title: {type: [String, Boolean, {toString: Function}], optional: true},
+        className: {type: String, optional: true},
         buttons: {
             type: Array,
             element: {
                 type: Object,
                 shape: {
-                    name: { type: String },
-                    icon: { type: String, optional: true },
-                    primary: { type: Boolean, optional: true },
+                    name: {type: String},
+                    icon: {type: String, optional: true},
+                    primary: {type: Boolean, optional: true},
                     onClick: Function,
                 },
             },
             optional: true,
         },
-        sticky: { type: Boolean, optional: true },
-        autocloseDelay: { type: Number, optional: true },
-        close: { type: Function },
+        sticky: {type: Boolean, optional: true},
+        autocloseDelay: {type: Number, optional: true},
+        close: {type: Function},
     };
     static defaultProps = {
         buttons: [],
@@ -67,7 +67,8 @@ export class Notification extends Component {
         const cb = () => {
             if (this.startedTimestamp) {
                 const currentProgress =
-                    (luxon.DateTime.now().ts - this.startedTimestamp) / this.props.autocloseDelay;
+                    (luxon.DateTime.now().ts - this.startedTimestamp) /
+                    this.props.autocloseDelay;
                 if (currentProgress > 1) {
                     this.close();
                     return;

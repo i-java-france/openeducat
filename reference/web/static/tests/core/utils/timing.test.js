@@ -1,8 +1,14 @@
-import { describe, destroy, expect, getFixture, test } from "@odoo/hoot";
-import { click, tick } from "@odoo/hoot-dom";
-import { Deferred, advanceTime, animationFrame, microTick, runAllTimers } from "@odoo/hoot-mock";
-import { Component, xml } from "@odoo/owl";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
+import {describe, destroy, expect, getFixture, test} from "@odoo/hoot";
+import {click, tick} from "@odoo/hoot-dom";
+import {
+    Deferred,
+    advanceTime,
+    animationFrame,
+    microTick,
+    runAllTimers,
+} from "@odoo/hoot-mock";
+import {Component, xml} from "@odoo/owl";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
 
 import {
     batched,
@@ -216,8 +222,8 @@ describe("debounce", () => {
         expect.verifySteps(["myFunc"]);
 
         imSearchDef.resolve(42);
-        await microTick(); // wait for promise returned by myFunc
-        await microTick(); // wait for promise returned by debounce
+        await microTick(); // Wait for promise returned by myFunc
+        await microTick(); // Wait for promise returned by debounce
 
         expect.verifySteps(["resolved 42"]);
     });
@@ -233,8 +239,8 @@ describe("debounce", () => {
         });
         expect.verifySteps(["myFunc"]);
 
-        await microTick(); // wait for promise returned by myFunc
-        await microTick(); // wait for promise returned by debounce
+        await microTick(); // Wait for promise returned by myFunc
+        await microTick(); // Wait for promise returned by debounce
 
         expect.verifySteps(["resolved 42"]);
 
@@ -242,15 +248,15 @@ describe("debounce", () => {
             expect.step("resolved " + x);
         });
         await runAllTimers();
-        expect.verifySteps([]); // not called 3000ms did not elapse between the previous call and the first
+        expect.verifySteps([]); // Not called 3000ms did not elapse between the previous call and the first
 
         myDebouncedFunc().then((x) => {
             expect.step("resolved " + x);
         });
         expect.verifySteps(["myFunc"]);
 
-        await microTick(); // wait for promise returned by debounce
-        await microTick(); // wait for promise returned chained onto it (step resolved x)
+        await microTick(); // Wait for promise returned by debounce
+        await microTick(); // Wait for promise returned chained onto it (step resolved x)
         expect.verifySteps(["resolved 42"]);
     });
 
@@ -283,17 +289,17 @@ describe("debounce", () => {
             expect.step("myFunc");
             return lastValue;
         };
-        const myDebouncedFunc = debounce(myFunc, 3000, { leading: true, trailing: true });
+        const myDebouncedFunc = debounce(myFunc, 3000, {leading: true, trailing: true});
         myDebouncedFunc(42).then((x) => expect.step("resolved " + x));
         myDebouncedFunc(43).then((x) => expect.step("resolved " + x));
         myDebouncedFunc(44).then((x) => expect.step("resolved " + x));
         expect.verifySteps(["myFunc"]);
-        await microTick(); // wait for promise returned by debounce
-        await microTick(); // wait for promise returned chained onto it (step resolved x)
+        await microTick(); // Wait for promise returned by debounce
+        await microTick(); // Wait for promise returned chained onto it (step resolved x)
         expect.verifySteps(["resolved 42"]);
 
         await runAllTimers();
-        await microTick(); // wait for the inner promise
+        await microTick(); // Wait for the inner promise
         expect.verifySteps(["myFunc", "resolved 44"]);
     });
 });
@@ -410,7 +416,9 @@ describe("throttleForAnimationScrollEvent", () => {
             "after scroll",
         ]);
         await throttled;
-        expect.verifySteps(["throttled function called with null in event, but DIV in parameter"]);
+        expect.verifySteps([
+            "throttled function called with null in event, but DIV in parameter",
+        ]);
         el.remove();
     });
 });
@@ -449,9 +457,13 @@ describe("useDebounced", () => {
             static template = xml`<button class="c" t-on-click="() => this.debounced('hello')">C</button>`;
             static props = ["*"];
             setup() {
-                this.debounced = useDebounced((p) => expect.step(`debounced: ${p}`), 1000, {
-                    execBeforeUnmount: true,
-                });
+                this.debounced = useDebounced(
+                    (p) => expect.step(`debounced: ${p}`),
+                    1000,
+                    {
+                        execBeforeUnmount: true,
+                    }
+                );
             }
         }
         const component = await mountWithCleanup(TestComponent);
@@ -506,7 +518,10 @@ describe("useThrottleForAnimation", () => {
             static template = xml`<button class="c" t-on-click="throttled">C</button>`;
             static props = ["*"];
             setup() {
-                this.throttled = useThrottleForAnimation(() => expect.step("throttled"), 1000);
+                this.throttled = useThrottleForAnimation(
+                    () => expect.step("throttled"),
+                    1000
+                );
             }
         }
         const component = await mountWithCleanup(TestComponent);

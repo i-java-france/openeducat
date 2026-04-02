@@ -1,6 +1,6 @@
-import { Component } from "@odoo/owl";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { useService } from "@web/core/utils/hooks";
+import {Component} from "@odoo/owl";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {useService} from "@web/core/utils/hooks";
 
 // Previously UsernameWidget
 export class CashierName extends Component {
@@ -17,6 +17,6 @@ export class CashierName extends Component {
         return `/web/image/res.users/${id}/avatar_128`;
     }
     get cssClass() {
-        return { "not-clickable pe-none": true };
+        return {"not-clickable pe-none": true};
     }
 }

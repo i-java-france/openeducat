@@ -1,7 +1,7 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { expectMarkup, allowTranslations } from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {allowTranslations, expectMarkup} from "@web/../tests/web_test_helpers";
 
-import { renderToElement, renderToString } from "@web/core/utils/render";
+import {renderToElement, renderToString} from "@web/core/utils/render";
 
 describe.current.tags("headless");
 

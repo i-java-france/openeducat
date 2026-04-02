@@ -2,13 +2,15 @@
 
 import contextlib
 import re
+
 import requests
 from lxml import etree
-from stdnum import get_cc_module, ean
+from stdnum import ean, get_cc_module
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools.urls import urljoin
+
 from odoo.addons.account.models.company import PEPPOL_LIST
 
 try:

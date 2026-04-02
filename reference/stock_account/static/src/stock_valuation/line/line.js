@@ -1,17 +1,16 @@
-import { Component, useState } from "@odoo/owl";
-
+import {Component, useState} from "@odoo/owl";
 
 export class StockValuationReportLine extends Component {
     static template = "stock_account.StockValuationReport.InventoryValuationLine";
     static props = {
-        class: { type: String, optional: true },
-        displayDebitCredit: { type: Boolean, optional: true },
-        label: { type: String, optional: true },
-        level: { type: Number, optional: true },
-        line: { type: Object, optional: true },
-        sublines: { type: Array, optional: true },
-        onClickMethod: { type: Function, optional: true },
-        value: { type: Number, optional: true },
+        class: {type: String, optional: true},
+        displayDebitCredit: {type: Boolean, optional: true},
+        label: {type: String, optional: true},
+        level: {type: Number, optional: true},
+        line: {type: Object, optional: true},
+        sublines: {type: Array, optional: true},
+        onClickMethod: {type: Function, optional: true},
+        value: {type: Number, optional: true},
     };
     static defaultProps = {
         level: 0,
@@ -19,7 +18,7 @@ export class StockValuationReportLine extends Component {
 
     setup() {
         this.hasSublines = Boolean(this.props.sublines?.length);
-        this.state = useState({ displaySublines: this.hasSublines });
+        this.state = useState({displaySublines: this.hasSublines});
     }
 
     // Getters -----------------------------------------------------------------
@@ -83,4 +82,4 @@ export class StockValuationReportLine extends Component {
     }
 }
 
-StockValuationReportLine.components = { StockValuationReportLine };
+StockValuationReportLine.components = {StockValuationReportLine};

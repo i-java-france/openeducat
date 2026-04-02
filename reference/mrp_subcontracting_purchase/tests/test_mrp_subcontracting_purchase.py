@@ -10,7 +10,9 @@ from odoo import Command
 from odoo.fields import Date
 from odoo.tests import Form, tagged
 
-from odoo.addons.mrp_subcontracting_account.tests.test_subcontracting_account import TestAccountSubcontractingFlows
+from odoo.addons.mrp_subcontracting_account.tests.test_subcontracting_account import (
+    TestAccountSubcontractingFlows,
+)
 
 _logger = logging.getLogger(__name__)
 

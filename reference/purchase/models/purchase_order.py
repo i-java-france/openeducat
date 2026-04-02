@@ -1,19 +1,19 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import logging
-
+from ast import literal_eval
 from collections import defaultdict
 from datetime import datetime
+
 from dateutil.relativedelta import relativedelta
+from markupsafe import Markup, escape
 from pytz import timezone
-from ast import literal_eval
-from markupsafe import escape, Markup
 from werkzeug.urls import url_encode
 
-from odoo import api, fields, models, _
-from odoo.fields import Command, Domain
-from odoo.tools import format_amount, format_date, formatLang, groupby, OrderedSet, SQL
-from odoo.tools.float_utils import float_is_zero, float_repr
+from odoo import _, api, fields, models
 from odoo.exceptions import AccessDenied, UserError, ValidationError
+from odoo.fields import Command, Domain
+from odoo.tools import SQL, OrderedSet, format_amount, format_date, formatLang, groupby
+from odoo.tools.float_utils import float_is_zero, float_repr
 
 _logger = logging.getLogger(__name__)
 
@@ -199,7 +199,7 @@ class PurchaseOrder(models.Model):
                 ))
 
     def _compute_access_url(self):
-        super(PurchaseOrder, self)._compute_access_url()
+        super()._compute_access_url()
         for order in self:
             order.access_url = '/my/purchase/%s' % (order.id)
 
@@ -536,7 +536,7 @@ class PurchaseOrder(models.Model):
             return self.env.ref('purchase.mt_rfq_confirmed')
         elif 'state' in init_values and self.state == 'sent':
             return self.env.ref('purchase.mt_rfq_sent')
-        return super(PurchaseOrder, self)._track_subtype(init_values)
+        return super()._track_subtype(init_values)
 
     # ------------------------------------------------------------
     # ACTIONS

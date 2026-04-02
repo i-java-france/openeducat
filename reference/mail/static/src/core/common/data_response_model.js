@@ -1,6 +1,6 @@
-import { fields, Record } from "@mail/core/common/record";
+import {fields, Record} from "@mail/core/common/record";
 
-import { Deferred } from "@web/core/utils/concurrency";
+import {Deferred} from "@web/core/utils/concurrency";
 
 /**
  * This class represents a specific and unique request coming from the client to the server, and it
@@ -17,7 +17,7 @@ export class DataResponse extends Record {
     static _lastId = 0;
 
     static createRequest() {
-        return this.insert({ id: ++this._lastId });
+        return this.insert({id: ++this._lastId});
     }
 
     /** @type {number} */
@@ -42,7 +42,7 @@ export class DataResponse extends Record {
         /** @this {import("models").DataResponse} */
         onUpdate() {
             if (this._resolve) {
-                this._resultDef.resolve({ ...this });
+                this._resultDef.resolve({...this});
                 this.delete();
             }
         },

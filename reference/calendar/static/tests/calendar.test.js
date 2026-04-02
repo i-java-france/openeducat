@@ -1,15 +1,23 @@
-import { defineCalendarModels } from "@calendar/../tests/calendar_test_helpers";
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { contains, makeMockServer, mountView, onRpc } from "@web/../tests/web_test_helpers";
-import { getOrigin } from "@web/core/utils/urls";
+import {defineCalendarModels} from "@calendar/../tests/calendar_test_helpers";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {
+    contains,
+    makeMockServer,
+    mountView,
+    onRpc,
+} from "@web/../tests/web_test_helpers";
+import {getOrigin} from "@web/core/utils/urls";
 
 defineCalendarModels();
 
 const serverData = {};
 
 beforeEach(async () => {
-    const { env: pyEnv } = await makeMockServer();
-    serverData.partnerIds = pyEnv["res.partner"].create([{ name: "Zeus" }, { name: "Azdaha" }]);
+    const {env: pyEnv} = await makeMockServer();
+    serverData.partnerIds = pyEnv["res.partner"].create([
+        {name: "Zeus"},
+        {name: "Azdaha"},
+    ]);
     serverData.eventId = pyEnv["calendar.event"].create({
         name: "event 1",
         partner_ids: serverData.partnerIds,
@@ -23,15 +31,20 @@ test("Many2ManyAttendee: basic rendering", async () => {
         expect(request.args[0]).toEqual(serverData.partnerIds);
         expect(request.args[1]).toEqual([serverData.eventId]);
         return [
-            { id: serverData.partnerIds[0], name: "Zeus", status: "accepted", color: 0 },
-            { id: serverData.partnerIds[1], name: "Azdaha", status: "tentative", color: 0 },
+            {id: serverData.partnerIds[0], name: "Zeus", status: "accepted", color: 0},
+            {
+                id: serverData.partnerIds[1],
+                name: "Azdaha",
+                status: "tentative",
+                color: 0,
+            },
         ];
     });
     await mountView({
         type: "form",
         resModel: "calendar.event",
         resId: serverData.eventId,
-        arch: /*xml*/ `
+        arch: /* xml*/ `
             <form>
                 <field name="partner_ids" widget="many2manyattendee"/>
             </form>
@@ -57,14 +70,14 @@ test("Many2ManyAttendee: basic rendering", async () => {
 
 test("Many2ManyAttendee: remove own attendee", async () => {
     onRpc("get_attendee_detail", () => [
-        { id: serverData.partnerIds[0], name: "Zeus", status: "accepted", color: 0 },
-        { id: serverData.partnerIds[1], name: "Azdaha", status: "tentative", color: 0 },
+        {id: serverData.partnerIds[0], name: "Zeus", status: "accepted", color: 0},
+        {id: serverData.partnerIds[1], name: "Azdaha", status: "tentative", color: 0},
     ]);
     await mountView({
         type: "form",
         resModel: "calendar.event",
         resId: serverData.eventId,
-        arch: /*xml*/ `
+        arch: /* xml*/ `
             <form>
                 <field name="partner_ids" widget="many2manyattendee"/>
             </form>
@@ -73,7 +86,9 @@ test("Many2ManyAttendee: remove own attendee", async () => {
     expect(".o_field_widget[name='partner_ids'] .o_tag").toHaveCount(2);
 
     // Attendee must be able to uninvite itself from the event.
-    await contains(".o_field_widget[name='partner_ids'] .o_delete", { visible: false }).click();
+    await contains(".o_field_widget[name='partner_ids'] .o_delete", {
+        visible: false,
+    }).click();
     await contains(".o_form_button_save").click();
     expect(".o_field_widget[name='partner_ids'] .o_tag").toHaveCount(1);
 });

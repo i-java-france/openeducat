@@ -1,4 +1,4 @@
-import { makeKwArgs, models } from "@web/../tests/web_test_helpers";
+import {makeKwArgs, models} from "@web/../tests/web_test_helpers";
 
 export class IrWebSocket extends models.ServerModel {
     _name = "ir.websocket";
@@ -21,7 +21,7 @@ export class IrWebSocket extends models.ServerModel {
         const [authenticatedPartner] = authenticatedUserId
             ? ResPartner.search_read(
                   [["user_ids", "in", [authenticatedUserId]]],
-                  makeKwArgs({ context: { active_test: false } })
+                  makeKwArgs({context: {active_test: false}})
               )
             : [];
         if (authenticatedPartner) {

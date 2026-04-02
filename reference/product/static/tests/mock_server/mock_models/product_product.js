@@ -1,5 +1,4 @@
-import { models } from "@web/../tests/web_test_helpers";
-
+import {models} from "@web/../tests/web_test_helpers";
 
 export class ProductProduct extends models.ServerModel {
     _name = "product.product";

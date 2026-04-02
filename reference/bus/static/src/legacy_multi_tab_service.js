@@ -1,6 +1,6 @@
-import { registry } from "@web/core/registry";
-import { browser } from "@web/core/browser/browser";
-import { EventBus } from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {browser} from "@web/core/browser/browser";
+import {EventBus} from "@odoo/owl";
 
 export const legacyMultiTabService = {
     start() {
@@ -24,15 +24,18 @@ export const legacyMultiTabService = {
         }
 
         function setItemInStorage(key, value) {
-            browser.localStorage.setItem(generateLocalStorageKey(key), JSON.stringify(value));
+            browser.localStorage.setItem(
+                generateLocalStorageKey(key),
+                JSON.stringify(value)
+            );
         }
 
-        function onStorage({ key, newValue }) {
+        function onStorage({key, newValue}) {
             if (key && key.includes(localStoragePrefix)) {
                 // Only trigger the shared_value_updated event if the key is
                 // related to this service/origin.
                 const baseKey = key.replace(localStoragePrefix, "");
-                bus.trigger("shared_value_updated", { key: baseKey, newValue });
+                bus.trigger("shared_value_updated", {key: baseKey, newValue});
             }
         }
 

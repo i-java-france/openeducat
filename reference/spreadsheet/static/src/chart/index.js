@@ -1,13 +1,13 @@
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import { OdooChartCorePlugin } from "./plugins/odoo_chart_core_plugin";
-import { ChartOdooMenuPlugin } from "./plugins/chart_odoo_menu_plugin";
-import { OdooChartCoreViewPlugin } from "./plugins/odoo_chart_core_view_plugin";
-import { _t } from "@web/core/l10n/translation";
-import { chartOdooMenuPlugin } from "./odoo_menu/odoo_menu_chartjs_plugin";
+import {OdooChartCorePlugin} from "./plugins/odoo_chart_core_plugin";
+import {ChartOdooMenuPlugin} from "./plugins/chart_odoo_menu_plugin";
+import {OdooChartCoreViewPlugin} from "./plugins/odoo_chart_core_view_plugin";
+import {_t} from "@web/core/l10n/translation";
+import {chartOdooMenuPlugin} from "./odoo_menu/odoo_menu_chartjs_plugin";
 
-const { chartComponentRegistry, chartSubtypeRegistry, chartJsExtensionRegistry } =
+const {chartComponentRegistry, chartSubtypeRegistry, chartJsExtensionRegistry} =
     spreadsheet.registries;
-const { ChartJsComponent, ZoomableChartJsComponent } = spreadsheet.components;
+const {ChartJsComponent, ZoomableChartJsComponent} = spreadsheet.components;
 
 chartComponentRegistry.add("odoo_bar", ZoomableChartJsComponent);
 chartComponentRegistry.add("odoo_line", ZoomableChartJsComponent);
@@ -25,7 +25,7 @@ chartComponentRegistry.add("odoo_funnel", ChartJsComponent);
 chartSubtypeRegistry.add("odoo_line", {
     matcher: (definition) =>
         definition.type === "odoo_line" && !definition.stacked && !definition.fillArea,
-    subtypeDefinition: { stacked: false, fillArea: false },
+    subtypeDefinition: {stacked: false, fillArea: false},
     displayName: _t("Line"),
     chartSubtype: "odoo_line",
     chartType: "odoo_line",
@@ -35,7 +35,7 @@ chartSubtypeRegistry.add("odoo_line", {
 chartSubtypeRegistry.add("odoo_stacked_line", {
     matcher: (definition) =>
         definition.type === "odoo_line" && definition.stacked && !definition.fillArea,
-    subtypeDefinition: { stacked: true, fillArea: false },
+    subtypeDefinition: {stacked: true, fillArea: false},
     displayName: _t("Stacked Line"),
     chartSubtype: "odoo_stacked_line",
     chartType: "odoo_line",
@@ -45,7 +45,7 @@ chartSubtypeRegistry.add("odoo_stacked_line", {
 chartSubtypeRegistry.add("odoo_area", {
     matcher: (definition) =>
         definition.type === "odoo_line" && !definition.stacked && definition.fillArea,
-    subtypeDefinition: { stacked: false, fillArea: true },
+    subtypeDefinition: {stacked: false, fillArea: true},
     displayName: _t("Area"),
     chartSubtype: "odoo_area",
     chartType: "odoo_line",
@@ -55,7 +55,7 @@ chartSubtypeRegistry.add("odoo_area", {
 chartSubtypeRegistry.add("odoo_stacked_area", {
     matcher: (definition) =>
         definition.type === "odoo_line" && definition.stacked && definition.fillArea,
-    subtypeDefinition: { stacked: true, fillArea: true },
+    subtypeDefinition: {stacked: true, fillArea: true},
     displayName: _t("Stacked Area"),
     chartSubtype: "odoo_stacked_area",
     chartType: "odoo_line",
@@ -65,7 +65,7 @@ chartSubtypeRegistry.add("odoo_stacked_area", {
 chartSubtypeRegistry.add("odoo_bar", {
     matcher: (definition) =>
         definition.type === "odoo_bar" && !definition.stacked && !definition.horizontal,
-    subtypeDefinition: { stacked: false, horizontal: false },
+    subtypeDefinition: {stacked: false, horizontal: false},
     displayName: _t("Column"),
     chartSubtype: "odoo_bar",
     chartType: "odoo_bar",
@@ -75,7 +75,7 @@ chartSubtypeRegistry.add("odoo_bar", {
 chartSubtypeRegistry.add("odoo_stacked_bar", {
     matcher: (definition) =>
         definition.type === "odoo_bar" && definition.stacked && !definition.horizontal,
-    subtypeDefinition: { stacked: true, horizontal: false },
+    subtypeDefinition: {stacked: true, horizontal: false},
     displayName: _t("Stacked Column"),
     chartSubtype: "odoo_stacked_bar",
     chartType: "odoo_bar",
@@ -85,7 +85,7 @@ chartSubtypeRegistry.add("odoo_stacked_bar", {
 chartSubtypeRegistry.add("odoo_horizontal_bar", {
     matcher: (definition) =>
         definition.type === "odoo_bar" && !definition.stacked && definition.horizontal,
-    subtypeDefinition: { stacked: false, horizontal: true },
+    subtypeDefinition: {stacked: false, horizontal: true},
     displayName: _t("Bar"),
     chartSubtype: "odoo_horizontal_bar",
     chartType: "odoo_bar",
@@ -95,7 +95,7 @@ chartSubtypeRegistry.add("odoo_horizontal_bar", {
 chartSubtypeRegistry.add("odoo_horizontal_stacked_bar", {
     matcher: (definition) =>
         definition.type === "odoo_bar" && definition.stacked && definition.horizontal,
-    subtypeDefinition: { stacked: true, horizontal: true },
+    subtypeDefinition: {stacked: true, horizontal: true},
     displayName: _t("Stacked Bar"),
     chartSubtype: "odoo_horizontal_stacked_bar",
     chartType: "odoo_bar",
@@ -112,7 +112,7 @@ chartSubtypeRegistry.add("odoo_combo", {
 chartSubtypeRegistry.add("odoo_pie", {
     displayName: _t("Pie"),
     matcher: (definition) => definition.type === "odoo_pie" && !definition.isDoughnut,
-    subtypeDefinition: { isDoughnut: false },
+    subtypeDefinition: {isDoughnut: false},
     chartSubtype: "odoo_pie",
     chartType: "odoo_pie",
     category: "pie",
@@ -120,7 +120,7 @@ chartSubtypeRegistry.add("odoo_pie", {
 });
 chartSubtypeRegistry.add("odoo_doughnut", {
     matcher: (definition) => definition.type === "odoo_pie" && definition.isDoughnut,
-    subtypeDefinition: { isDoughnut: true },
+    subtypeDefinition: {isDoughnut: true},
     displayName: _t("Doughnut"),
     chartSubtype: "odoo_doughnut",
     chartType: "odoo_pie",
@@ -153,7 +153,7 @@ chartSubtypeRegistry.add("odoo_radar", {
     displayName: _t("Radar"),
     chartSubtype: "odoo_radar",
     chartType: "odoo_radar",
-    subtypeDefinition: { fillArea: false },
+    subtypeDefinition: {fillArea: false},
     category: "misc",
     preview: "o-spreadsheet-ChartPreview.RADAR_CHART",
 });
@@ -162,7 +162,7 @@ chartSubtypeRegistry.add("odoo_filled_radar", {
     displayName: _t("Filled Radar"),
     chartType: "odoo_radar",
     chartSubtype: "odoo_filled_radar",
-    subtypeDefinition: { fillArea: true },
+    subtypeDefinition: {fillArea: true},
     category: "misc",
     preview: "o-spreadsheet-ChartPreview.FILLED_RADAR_CHART",
 });
@@ -178,7 +178,7 @@ chartSubtypeRegistry.add("odoo_funnel", {
     displayName: _t("Funnel"),
     chartType: "odoo_funnel",
     chartSubtype: "odoo_funnel",
-    subtypeDefinition: { cumulative: true },
+    subtypeDefinition: {cumulative: true},
     category: "misc",
     preview: "o-spreadsheet-ChartPreview.FUNNEL_CHART",
 });
@@ -202,4 +202,4 @@ chartJsExtensionRegistry.add("chartOdooMenuPlugin", {
     unregister: (Chart) => Chart.unregister(chartOdooMenuPlugin),
 });
 
-export { OdooChartCorePlugin, ChartOdooMenuPlugin, OdooChartCoreViewPlugin };
+export {OdooChartCorePlugin, ChartOdooMenuPlugin, OdooChartCoreViewPlugin};

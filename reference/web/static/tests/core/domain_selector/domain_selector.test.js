@@ -1,16 +1,27 @@
-import { expect, test } from "@odoo/hoot";
-import { press, queryAll, queryAllAttributes, queryAllTexts, queryOne } from "@odoo/hoot-dom";
-import { animationFrame, mockDate, mockTimeZone, runAllTimers } from "@odoo/hoot-mock";
-import { Component, useState, xml } from "@odoo/owl";
-
-import { getPickerCell } from "@web/../tests/core/datetime/datetime_test_helpers";
+import {expect, test} from "@odoo/hoot";
 import {
+    press,
+    queryAll,
+    queryAllAttributes,
+    queryAllTexts,
+    queryOne,
+} from "@odoo/hoot-dom";
+import {animationFrame, mockDate, mockTimeZone, runAllTimers} from "@odoo/hoot-mock";
+import {Component, useState, xml} from "@odoo/owl";
+
+import {getPickerCell} from "@web/../tests/core/datetime/datetime_test_helpers";
+import {
+    Country,
+    Partner,
+    Player,
+    Product,
+    Stage,
+    Team,
     addNewRule,
     clearNotSupported,
     clickOnButtonAddBranch,
     clickOnButtonAddRule,
     clickOnButtonDeleteNode,
-    Country,
     editValue,
     getConditionText,
     getCurrentOperator,
@@ -23,29 +34,24 @@ import {
     isNotSupportedValue,
     label,
     openModelFieldSelectorPopover,
-    Partner,
-    Player,
-    Product,
     selectOperator,
     selectValue,
-    Stage,
-    Team,
     toggleArchive,
     toggleConnector,
 } from "@web/../tests/core/tree_editor/condition_tree_editor_test_helpers";
 import {
+    MockServer,
     contains,
     defineModels,
     defineParams,
     fields,
-    MockServer,
     models,
     mountWithCleanup,
     onRpc,
 } from "@web/../tests/web_test_helpers";
-import { SELECTORS } from "./domain_selector_helpers";
+import {SELECTORS} from "./domain_selector_helpers";
 
-import { DomainSelector } from "@web/core/domain_selector/domain_selector";
+import {DomainSelector} from "@web/core/domain_selector/domain_selector";
 
 function addProductIds() {
     Partner._fields.product_ids = fields.Many2many({
@@ -55,10 +61,10 @@ function addProductIds() {
 }
 
 async function makeDomainSelector(params = {}) {
-    const props = { ...params };
+    const props = {...params};
 
     class Parent extends Component {
-        static components = { DomainSelector };
+        static components = {DomainSelector};
         static template = xml`<DomainSelector t-props="domainSelectorProps"/>`;
         static props = ["*"];
         setup() {
@@ -82,7 +88,7 @@ async function makeDomainSelector(params = {}) {
             await animationFrame();
         }
     }
-    return mountWithCleanup(Parent, { props });
+    return mountWithCleanup(Parent, {props});
 }
 
 defineModels([Partner, Product, Country, Stage, Team, Player]);
@@ -125,7 +131,9 @@ test("creating a domain from scratch", async () => {
     // There should be a "+" button to add a domain part; clicking on it
     // should add the default "('id', '=', 1)" domain
     await addNewRule();
-    expect(SELECTORS.debugArea).toHaveValue(`["&", ("bar", "!=", False), ("bar", "!=", False)]`);
+    expect(SELECTORS.debugArea).toHaveValue(
+        `["&", ("bar", "!=", False), ("bar", "!=", False)]`
+    );
 
     // There should be two "Add branch" buttons to add a domain "branch"; clicking on
     // the first one, should add this group with defaults "('id', '=', 1)"
@@ -148,7 +156,9 @@ test("creating a domain from scratch", async () => {
     expect(SELECTORS.buttonDeleteNode).toHaveCount(5);
     await clickOnButtonDeleteNode(-1);
     await clickOnButtonDeleteNode(-1);
-    expect(SELECTORS.debugArea).toHaveValue(`["&", ("bar", "!=", False), ("bar", "!=", False)]`);
+    expect(SELECTORS.debugArea).toHaveValue(
+        `["&", ("bar", "!=", False), ("bar", "!=", False)]`
+    );
 });
 
 test("creating domain for binary field", async () => {
@@ -167,7 +177,9 @@ test("creating domain for binary field", async () => {
     await openModelFieldSelectorPopover();
 
     // Find and select the binary field
-    await contains(".o_model_field_selector_popover_item_name:contains('Image')").click();
+    await contains(
+        ".o_model_field_selector_popover_item_name:contains('Image')"
+    ).click();
 
     // Check that the operator options are limited to 'set' and 'not set'
     expect(getOperatorOptions()).toEqual(["is set", "is not set"]);
@@ -185,7 +197,9 @@ test("building a domain with a datetime", async () => {
     });
 
     // Check that there is a datepicker to choose the date
-    expect(".o_datetime_input").toHaveCount(1, { message: "there should be a datepicker" });
+    expect(".o_datetime_input").toHaveCount(1, {
+        message: "there should be a datepicker",
+    });
 
     // The input field should display the date and time in the user's timezone
     expect(".o_datetime_input").toHaveValue("03/27/2017 16:42:00");
@@ -427,7 +441,7 @@ test("operator fallback (mode readonly)", async () => {
 });
 
 test("cache fields_get", async () => {
-    onRpc("fields_get", ({ method }) => expect.step(method));
+    onRpc("fields_get", ({method}) => expect.step(method));
 
     await makeDomainSelector({
         domain: "['&', ['foo', '=', 'kikou'], ['bar', '=', 'true']]",
@@ -436,7 +450,7 @@ test("cache fields_get", async () => {
 });
 
 test("selection field with operator change from 'set' to '='", async () => {
-    await makeDomainSelector({ domain: `[['state', '!=', False]]` });
+    await makeDomainSelector({domain: `[['state', '!=', False]]`});
     expect(getCurrentPath()).toBe("State");
     expect(getCurrentOperator()).toBe(label("set"));
 
@@ -447,13 +461,13 @@ test("selection field with operator change from 'set' to '='", async () => {
 });
 
 test("show correct operator", async () => {
-    await makeDomainSelector({ domain: `[['state', 'in', ['abc']]]` });
+    await makeDomainSelector({domain: `[['state', 'in', ['abc']]]`});
     expect(getCurrentOperator()).toBe(label("in"));
 });
 
 test("multi selection", async () => {
     class Parent extends Component {
-        static components = { DomainSelector };
+        static components = {DomainSelector};
         static template = xml`
             <DomainSelector
                 resModel="'partner'"
@@ -490,7 +504,7 @@ test("multi selection", async () => {
 });
 
 test("json field with operator change from 'equal' to 'ilike'", async () => {
-    await makeDomainSelector({ domain: `[['json_field', '=', "hey"]]` });
+    await makeDomainSelector({domain: `[['json_field', '=', "hey"]]`});
     expect(getCurrentPath()).toBe(`Json Field`);
     expect(getCurrentOperator()).toBe(label("="));
     expect(getCurrentValue()).toBe(`hey`);
@@ -501,7 +515,7 @@ test("json field with operator change from 'equal' to 'ilike'", async () => {
 
 test("parse -1", async () => {
     class Parent extends Component {
-        static components = { DomainSelector };
+        static components = {DomainSelector};
         static template = xml`
             <DomainSelector resModel="'partner'" domain="domain" readonly="false"/>
         `;
@@ -516,7 +530,7 @@ test("parse -1", async () => {
 
 test("parse 3-1", async () => {
     class Parent extends Component {
-        static components = { DomainSelector };
+        static components = {DomainSelector};
         static template = xml`
             <DomainSelector resModel="'partner'" domain="domain" readonly="false"/>
         `;
@@ -586,7 +600,9 @@ test("reset domain", async () => {
             expect.step(domain);
         },
     });
-    expect(".o_domain_selector").toHaveText("This domain is not supported.\nReset domain");
+    expect(".o_domain_selector").toHaveText(
+        "This domain is not supported.\nReset domain"
+    );
     expect(SELECTORS.resetButton).toHaveCount(1);
     expect(SELECTORS.addNewRule).toHaveCount(0);
 
@@ -615,7 +631,7 @@ test("default condition depends on available fields", async () => {
 
 test("debug input in model field selector popover", async () => {
     class Parent extends Component {
-        static components = { DomainSelector };
+        static components = {DomainSelector};
         static template = xml`
             <DomainSelector
                 resModel="'partner'"
@@ -637,7 +653,7 @@ test("debug input in model field selector popover", async () => {
     }
     await mountWithCleanup(Parent);
     await openModelFieldSelectorPopover();
-    await contains(".o_model_field_selector_debug").edit("a", { confirm: "tab" });
+    await contains(".o_model_field_selector_debug").edit("a", {confirm: "tab"});
     await contains(".o_model_field_selector_popover_close").click();
     expect.verifySteps([`[("a", "=", 1)]`]);
     expect(getCurrentPath()).toBe("a");
@@ -829,17 +845,17 @@ test("support of connector '!' (mode readonly)", async () => {
     ];
 
     class Parent extends Component {
-        static components = { DomainSelector };
+        static components = {DomainSelector};
         static template = xml`<DomainSelector resModel="'partner'" domain="state.domain"/>`;
         static props = ["*"];
         setup() {
-            this.state = useState({ domain: `[]` });
+            this.state = useState({domain: `[]`});
         }
     }
 
     const parent = await mountWithCleanup(Parent);
 
-    for (const { domain, result } of toTest) {
+    for (const {domain, result} of toTest) {
         parent.state.domain = domain;
         await animationFrame();
         expect(".o_domain_selector").toHaveText(result);
@@ -947,17 +963,17 @@ test("support of connector '!' (debug mode)", async () => {
     ];
 
     class Parent extends Component {
-        static components = { DomainSelector };
+        static components = {DomainSelector};
         static template = xml`<DomainSelector resModel="'partner'" isDebugMode="true" domain="state.domain"/>`;
         static props = ["*"];
         setup() {
-            this.state = useState({ domain: `[]` });
+            this.state = useState({domain: `[]`});
         }
     }
 
     const parent = await mountWithCleanup(Parent);
 
-    for (const { domain, result } of toTest) {
+    for (const {domain, result} of toTest) {
         parent.state.domain = domain;
         await animationFrame();
         expect(".o_domain_selector").toHaveText(result);
@@ -978,16 +994,16 @@ test("support properties", async () => {
         string: "Definitions",
     });
     Product._records[0].definitions = [
-        { name: "xphone_prop_1", string: "Boolean", type: "boolean" },
-        { name: "xphone_prop_2", string: "Selection", type: "selection", selection: [] },
-        { name: "xphone_prop_3", string: "Char", type: "char" },
-        { name: "xphone_prop_4", string: "Integer", type: "integer" },
-        { name: "xphone_prop_5", string: "Date", type: "date" },
-        { name: "xphone_prop_6", string: "Tags", type: "tags" },
-        { name: "xphone_prop_7", string: "M2M", type: "many2many", comodel: "partner" },
+        {name: "xphone_prop_1", string: "Boolean", type: "boolean"},
+        {name: "xphone_prop_2", string: "Selection", type: "selection", selection: []},
+        {name: "xphone_prop_3", string: "Char", type: "char"},
+        {name: "xphone_prop_4", string: "Integer", type: "integer"},
+        {name: "xphone_prop_5", string: "Date", type: "date"},
+        {name: "xphone_prop_6", string: "Tags", type: "tags"},
+        {name: "xphone_prop_7", string: "M2M", type: "many2many", comodel: "partner"},
     ];
     Product._records[1].definitions = [
-        { name: "xpad_prop_1", string: "M2O", type: "many2one", comodel: "partner" },
+        {name: "xpad_prop_1", string: "M2O", type: "many2one", comodel: "partner"},
     ];
 
     let expectedDomain = `[("id", "=", 1)]`;
@@ -1002,7 +1018,7 @@ test("support properties", async () => {
                 update.bind="update"
             />
         `;
-        static components = { DomainSelector };
+        static components = {DomainSelector};
         static props = ["*"];
         setup() {
             this.domain = expectedDomain;
@@ -1021,7 +1037,9 @@ test("support properties", async () => {
     ).click();
     expect(getCurrentPath()).toBe("Properties");
     expectedDomain = `[("properties.xpad_prop_1", "=", False)]`;
-    await contains(".o_model_field_selector_popover_item[data-name='xpad_prop_1'] button").click();
+    await contains(
+        ".o_model_field_selector_popover_item[data-name='xpad_prop_1'] button"
+    ).click();
     expect(getCurrentPath()).toBe("Properties > M2O");
     expect(getOperatorOptions()).toEqual([
         label("=", "many2one"),
@@ -1057,7 +1075,13 @@ test("support properties", async () => {
         {
             name: "xphone_prop_4",
             domain: `[("properties.xphone_prop_4", "=", 1)]`,
-            options: [label("="), label("!="), label("<"), label(">"), label("between")],
+            options: [
+                label("="),
+                label("!="),
+                label("<"),
+                label(">"),
+                label("between"),
+            ],
         },
         {
             name: "xphone_prop_5",
@@ -1088,11 +1112,13 @@ test("support properties", async () => {
         },
     ];
 
-    for (const { name, domain, options } of toTests) {
+    for (const {name, domain, options} of toTests) {
         await openModelFieldSelectorPopover();
         expectedDomain = domain;
-        await contains(`.o_model_field_selector_popover_item[data-name='${name}'] button`).click();
-        const { string } = MockServer.env["product"][0].definitions.find(
+        await contains(
+            `.o_model_field_selector_popover_item[data-name='${name}'] button`
+        ).click();
+        const {string} = MockServer.env.product[0].definitions.find(
             (def) => def.name === name
         );
         expect(getCurrentPath()).toBe(`Properties > ${string}`);
@@ -1110,21 +1136,21 @@ test("support properties (mode readonly)", async () => {
         string: "Definitions",
     });
     Product._records[0].definitions = [
-        { name: "xphone_prop_1", string: "Boolean", type: "boolean" },
+        {name: "xphone_prop_1", string: "Boolean", type: "boolean"},
         {
             name: "xphone_prop_2",
             string: "Selection",
             type: "selection",
             selection: [["abc", "ABC"]],
         },
-        { name: "xphone_prop_3", string: "Char", type: "char" },
-        { name: "xphone_prop_4", string: "Integer", type: "integer" },
-        { name: "xphone_prop_5", string: "Date", type: "date" },
-        { name: "xphone_prop_6", string: "Tags", type: "tags" },
-        { name: "xphone_prop_7", string: "M2M", type: "many2many", comodel: "product" },
+        {name: "xphone_prop_3", string: "Char", type: "char"},
+        {name: "xphone_prop_4", string: "Integer", type: "integer"},
+        {name: "xphone_prop_5", string: "Date", type: "date"},
+        {name: "xphone_prop_6", string: "Tags", type: "tags"},
+        {name: "xphone_prop_7", string: "M2M", type: "many2many", comodel: "product"},
     ];
     Product._records[1].definitions = [
-        { name: "xpad_prop_1", string: "M2O", type: "many2one", comodel: "product" },
+        {name: "xpad_prop_1", string: "M2O", type: "many2one", comodel: "product"},
     ];
 
     defineParams({
@@ -1169,17 +1195,17 @@ test("support properties (mode readonly)", async () => {
     ];
 
     class Parent extends Component {
-        static components = { DomainSelector };
+        static components = {DomainSelector};
         static template = xml`<DomainSelector resModel="'partner'" domain="state.domain"/>`;
         static props = ["*"];
         setup() {
-            this.state = useState({ domain: `[]` });
+            this.state = useState({domain: `[]`});
         }
     }
 
     const parent = await mountWithCleanup(Parent);
 
-    for (const { domain, result } of toTest) {
+    for (const {domain, result} of toTest) {
         parent.state.domain = domain;
         await animationFrame();
         expect(getConditionText()).toBe(result);
@@ -1218,7 +1244,9 @@ test("updating path should also update operator if invalid", async () => {
     });
 
     await openModelFieldSelectorPopover();
-    await contains(".o_model_field_selector_popover_item[data-name=foo] button").click();
+    await contains(
+        ".o_model_field_selector_popover_item[data-name=foo] button"
+    ).click();
 });
 
 test("treat false and true like False and True", async () => {
@@ -1333,12 +1361,12 @@ test("boolean field (readonly)", async () => {
         readonly: true,
     });
     const toTest = [
-        { domain: `[("bar", "=", True)]`, text: "Bar is set" },
-        { domain: `[("bar", "=", False)]`, text: "Bar is not set" },
-        { domain: `[("bar", "!=", True)]`, text: "Bar is not set" },
-        { domain: `[("bar", "!=", False)]`, text: "Bar is set" },
+        {domain: `[("bar", "=", True)]`, text: "Bar is set"},
+        {domain: `[("bar", "=", False)]`, text: "Bar is not set"},
+        {domain: `[("bar", "!=", True)]`, text: "Bar is not set"},
+        {domain: `[("bar", "!=", False)]`, text: "Bar is set"},
     ];
-    for (const { domain, text } of toTest) {
+    for (const {domain, text} of toTest) {
         await parent.set(domain);
         expect(getConditionText()).toBe(text);
     }
@@ -1349,22 +1377,22 @@ test("integer field (readonly)", async () => {
         readonly: true,
     });
     const toTest = [
-        { domain: `[("int", "=", True)]`, text: `Int = true` },
-        { domain: `[("int", "=", False)]`, text: `Int is not set` },
-        { domain: `[("int", "!=", True)]`, text: `Int not = true` },
-        { domain: `[("int", "!=", False)]`, text: `Int is set` },
-        { domain: `[("int", "=", 1)]`, text: `Int = 1` },
-        { domain: `[("int", "!=", 1)]`, text: `Int not = 1` },
-        { domain: `[("int", "<", 1)]`, text: `Int lower than 1` },
-        { domain: `[("int", "<=", 1)]`, text: `Int lower or equal to 1` },
-        { domain: `[("int", ">", 1)]`, text: `Int greater than 1` },
-        { domain: `[("int", ">=", 1)]`, text: `Int greater or equal to 1` },
+        {domain: `[("int", "=", True)]`, text: `Int = true`},
+        {domain: `[("int", "=", False)]`, text: `Int is not set`},
+        {domain: `[("int", "!=", True)]`, text: `Int not = true`},
+        {domain: `[("int", "!=", False)]`, text: `Int is set`},
+        {domain: `[("int", "=", 1)]`, text: `Int = 1`},
+        {domain: `[("int", "!=", 1)]`, text: `Int not = 1`},
+        {domain: `[("int", "<", 1)]`, text: `Int lower than 1`},
+        {domain: `[("int", "<=", 1)]`, text: `Int lower or equal to 1`},
+        {domain: `[("int", ">", 1)]`, text: `Int greater than 1`},
+        {domain: `[("int", ">=", 1)]`, text: `Int greater or equal to 1`},
         {
             domain: `["&", ("int", ">=", 1),("int","<=", 2)]`,
             text: `Int between 1 and 2`,
         },
     ];
-    for (const { domain, text } of toTest) {
+    for (const {domain, text} of toTest) {
         await parent.set(domain);
         expect(getConditionText()).toBe(text);
     }
@@ -1380,15 +1408,21 @@ test("date field (readonly)", async () => {
         readonly: true,
     });
     const toTest = [
-        { domain: `[("date", "=", False)]`, text: `Date is not set` },
-        { domain: `[("date", "!=", False)]`, text: `Date is set` },
-        { domain: `[("date", "=", "2023-07-03")]`, text: `Date = 03|07|2023` },
-        { domain: `[("date", "=", context_today())]`, text: `Date = context_today()` },
-        { domain: `[("date", "!=", "2023-07-03")]`, text: `Date not = 03|07|2023` },
-        { domain: `[("date", "<", "2023-07-03")]`, text: `Date before 03|07|2023` },
-        { domain: `[("date", "<=", "2023-07-03")]`, text: `Date lower or equal to 03|07|2023` },
-        { domain: `[("date", ">", "2023-07-03")]`, text: `Date after 03|07|2023` },
-        { domain: `[("date", ">=", "2023-07-03")]`, text: `Date greater or equal to 03|07|2023` },
+        {domain: `[("date", "=", False)]`, text: `Date is not set`},
+        {domain: `[("date", "!=", False)]`, text: `Date is set`},
+        {domain: `[("date", "=", "2023-07-03")]`, text: `Date = 03|07|2023`},
+        {domain: `[("date", "=", context_today())]`, text: `Date = context_today()`},
+        {domain: `[("date", "!=", "2023-07-03")]`, text: `Date not = 03|07|2023`},
+        {domain: `[("date", "<", "2023-07-03")]`, text: `Date before 03|07|2023`},
+        {
+            domain: `[("date", "<=", "2023-07-03")]`,
+            text: `Date lower or equal to 03|07|2023`,
+        },
+        {domain: `[("date", ">", "2023-07-03")]`, text: `Date after 03|07|2023`},
+        {
+            domain: `[("date", ">=", "2023-07-03")]`,
+            text: `Date greater or equal to 03|07|2023`,
+        },
         {
             domain: `["&", ("date", ">=", "2023-07-03"),("date","<=", "2023-07-15")]`,
             text: `Date between 03|07|2023 and 15|07|2023`,
@@ -1398,7 +1432,7 @@ test("date field (readonly)", async () => {
             text: `Date between 03|07|2023 and context_today()`,
         },
     ];
-    for (const { domain, text } of toTest) {
+    for (const {domain, text} of toTest) {
         await parent.set(domain);
         expect(getConditionText()).toBe(text);
     }
@@ -1409,17 +1443,17 @@ test("char field (readonly)", async () => {
         readonly: true,
     });
     const toTest = [
-        { domain: `[("foo", "=", False)]`, text: `Foo is not set` },
-        { domain: `[("foo", "!=", False)]`, text: `Foo is set` },
-        { domain: `[("foo", "=", "abc")]`, text: `Foo = abc` },
-        { domain: `[("foo", "=", expr)]`, text: `Foo = expr` },
-        { domain: `[("foo", "!=", "abc")]`, text: `Foo not = abc` },
-        { domain: `[("foo", "ilike", "abc")]`, text: `Foo contains abc` },
-        { domain: `[("foo", "not ilike", "abc")]`, text: `Foo does not contain abc` },
-        { domain: `[("foo", "in", ["abc", "def"])]`, text: `Foo = abc or def` },
-        { domain: `[("foo", "not in", ["abc", "def"])]`, text: `Foo not = abc or def` },
+        {domain: `[("foo", "=", False)]`, text: `Foo is not set`},
+        {domain: `[("foo", "!=", False)]`, text: `Foo is set`},
+        {domain: `[("foo", "=", "abc")]`, text: `Foo = abc`},
+        {domain: `[("foo", "=", expr)]`, text: `Foo = expr`},
+        {domain: `[("foo", "!=", "abc")]`, text: `Foo not = abc`},
+        {domain: `[("foo", "ilike", "abc")]`, text: `Foo contains abc`},
+        {domain: `[("foo", "not ilike", "abc")]`, text: `Foo does not contain abc`},
+        {domain: `[("foo", "in", ["abc", "def"])]`, text: `Foo = abc or def`},
+        {domain: `[("foo", "not in", ["abc", "def"])]`, text: `Foo not = abc or def`},
     ];
-    for (const { domain, text } of toTest) {
+    for (const {domain, text} of toTest) {
         await parent.set(domain);
         expect(getConditionText()).toBe(text);
     }
@@ -1430,13 +1464,13 @@ test("selection field (readonly)", async () => {
         readonly: true,
     });
     const toTest = [
-        { domain: `[("state", "=", False)]`, text: `State is not set` },
-        { domain: `[("state", "!=", False)]`, text: `State is set` },
-        { domain: `[("state", "=", "abc")]`, text: `State = ABC` },
-        { domain: `[("state", "=", expr)]`, text: `State = expr` },
-        { domain: `[("state", "!=", "abc")]`, text: `State not = ABC` },
-        { domain: `[("state", "in", ["abc", "def"])]`, text: `State = ABC or DEF` },
-        { domain: `[("state", "in", ["abc", False])]`, text: `State = "ABC" or false` },
+        {domain: `[("state", "=", False)]`, text: `State is not set`},
+        {domain: `[("state", "!=", False)]`, text: `State is set`},
+        {domain: `[("state", "=", "abc")]`, text: `State = ABC`},
+        {domain: `[("state", "=", expr)]`, text: `State = expr`},
+        {domain: `[("state", "!=", "abc")]`, text: `State not = ABC`},
+        {domain: `[("state", "in", ["abc", "def"])]`, text: `State = ABC or DEF`},
+        {domain: `[("state", "in", ["abc", False])]`, text: `State = "ABC" or false`},
         {
             domain: `[("state", "not in", ["abc", "def"])]`,
             text: `State not = ABC or DEF`,
@@ -1446,7 +1480,7 @@ test("selection field (readonly)", async () => {
             text: `State not = "ABC" or expr`,
         },
     ];
-    for (const { domain, text } of toTest) {
+    for (const {domain, text} of toTest) {
         await parent.set(domain);
         expect(getConditionText()).toBe(text);
     }
@@ -1497,7 +1531,7 @@ test("selection property (readonly)", async () => {
             text: `Properties ➔ Selection not = ABC`,
         },
     ];
-    for (const { domain, text } of toTest) {
+    for (const {domain, text} of toTest) {
         await parent.set(domain);
         expect(getConditionText()).toBe(text);
     }
@@ -1554,8 +1588,8 @@ test("many2one field (readonly)", async () => {
             text: "Product = Inaccessible/missing record ID: 2",
         },
     ];
-    const parent = await makeDomainSelector({ readonly: true });
-    for (const { domain, text } of toTest) {
+    const parent = await makeDomainSelector({readonly: true});
+    for (const {domain, text} of toTest) {
         await parent.set(domain);
         expect(getConditionText()).toBe(text);
     }
@@ -1614,7 +1648,7 @@ test("many2one field and operator =/!= (edit)", async () => {
     expect.verifySteps([]);
     expect(".dropdown-menu").toHaveCount(0);
 
-    await editValue("xph", { confirm: false });
+    await editValue("xph", {confirm: false});
     await runAllTimers();
     expect(".dropdown-menu").toHaveCount(1);
     expect(queryAllTexts(".dropdown-menu li")).toEqual(["xphone"]);
@@ -1627,7 +1661,7 @@ test("many2one field and operator =/!= (edit)", async () => {
     expect.verifySteps([`[("product_id", "=", 37)]`]);
     expect(".dropdown-menu").toHaveCount(0);
 
-    await editValue("", { confirm: false });
+    await editValue("", {confirm: false});
     expect(getCurrentOperator()).toBe("=");
     expect(getCurrentValue()).toBe("");
     await contains(".o_domain_selector").click();
@@ -1661,7 +1695,7 @@ test("many2one field and operator in/not in (edit)", async () => {
     expect(getCurrentValue()).toBe("xphone");
     expect.verifySteps([]);
     expect(".dropdown-menu").toHaveCount(0);
-    await contains(SELECTORS.valueEditor + " input").fill("x", { confirm: false });
+    await contains(SELECTORS.valueEditor + " input").fill("x", {confirm: false});
     await runAllTimers();
     expect(".dropdown-menu").toHaveCount(1);
     expect(queryAllTexts(".dropdown-menu li")).toEqual(["xpad"]);
@@ -1751,7 +1785,9 @@ test("many2many field: clone a set/not set condition", async () => {
     expect(SELECTORS.condition).toHaveCount(2);
     expect(getCurrentOperator()).toBe(label("not set"));
     expect(getCurrentOperator(1)).toBe(label("not set"));
-    expect.verifySteps([`["&", ("product_id", "=", False), ("product_id", "=", False)]`]);
+    expect.verifySteps([
+        `["&", ("product_id", "=", False), ("product_id", "=", False)]`,
+    ]);
 });
 
 test("x2many field operators (edit)", async () => {
@@ -1817,7 +1853,7 @@ test("many2many field: operator =/!=/in/not in (edit)", async () => {
     expect.verifySteps([]);
     expect(".dropdown-menu").toHaveCount(0);
 
-    await contains(SELECTORS.valueEditor + " input").fill("x", { confirm: false });
+    await contains(SELECTORS.valueEditor + " input").fill("x", {confirm: false});
     await runAllTimers();
     expect(".dropdown-menu").toHaveCount(1);
     expect(queryAllTexts(".dropdown-menu li")).toEqual(["xpad"]);
@@ -1924,7 +1960,9 @@ test("Include archived on empty tree", async () => {
 
     await toggleArchive();
     expect(SELECTORS.condition).toHaveCount(1);
-    expect.verifySteps(['["&", ("foo", "=", "test"), ("active", "in", [True, False])]']);
+    expect.verifySteps([
+        '["&", ("foo", "=", "test"), ("active", "in", [True, False])]',
+    ]);
 
     await clickOnButtonDeleteNode();
     expect(SELECTORS.condition).toHaveCount(0);
@@ -1994,7 +2032,9 @@ test("date/datetime edition: switch is_set to other operators", async () => {
     expect(SELECTORS.valueEditor).toHaveCount(1);
     expect(SELECTORS.clearNotSupported).toHaveCount(0);
     expect(getCurrentValue()).toBe("Today");
-    expect.verifySteps([`["&", ("datetime", ">=", "today"), ("datetime", "<", "today +1d")]`]);
+    expect.verifySteps([
+        `["&", ("datetime", ">=", "today"), ("datetime", "<", "today +1d")]`,
+    ]);
 
     await selectOperator("not set");
     expect(".o_datetime_input").toHaveCount(0);
@@ -2010,7 +2050,7 @@ test("date/datetime edition: switch is_set to other operators", async () => {
 });
 
 test("render false and true leaves", async () => {
-    await makeDomainSelector({ domain: `[(0, "=", 1), (1, "=", 1)]` });
+    await makeDomainSelector({domain: `[(0, "=", 1), (1, "=", 1)]`});
     expect(getOperatorOptions()).toEqual([label("=")]);
     expect(getValueOptions()).toEqual(["1"]);
     expect(getOperatorOptions(-1)).toEqual([label("=")]);
@@ -2044,7 +2084,9 @@ test("date domain in readonly mode (check localization)", async () => {
         domain: `["&", ("date", ">=", "2023-11-03"), ("date", "<=", "2023-11-13")]`,
         readonly: true,
     });
-    expect(".o_tree_editor_condition").toHaveText("Date\nbetween\n03|11|2023\nand\n13|11|2023");
+    expect(".o_tree_editor_condition").toHaveText(
+        "Date\nbetween\n03|11|2023\nand\n13|11|2023"
+    );
 });
 
 test(`any/not any operator in editable mode`, async () => {
@@ -2078,7 +2120,9 @@ test(`any/not any operator in editable mode (add a rule in empty sub domain)`, a
     expect(getCurrentOperator()).toBe("matches");
     expect(getCurrentPath(1)).toBe("Id");
     expect(getCurrentOperator(1)).toBe(label("="));
-    expect(SELECTORS.debugArea).toHaveValue(`[("product_id", "any", [("id", "=", 1)])]`);
+    expect(SELECTORS.debugArea).toHaveValue(
+        `[("product_id", "any", [("id", "=", 1)])]`
+    );
 });
 
 test(`any/not any operator (readonly) with custom domain as value`, async () => {
@@ -2088,8 +2132,8 @@ test(`any/not any operator (readonly) with custom domain as value`, async () => 
             text: `Match\nall\nof the following rules:\nProduct\n:\nall\nof:\nmachin\n=\nchose\nor\ntruc`,
         },
     ];
-    const parent = await makeDomainSelector({ readonly: true });
-    for (const { domain, text } of toTest) {
+    const parent = await makeDomainSelector({readonly: true});
+    for (const {domain, text} of toTest) {
         await parent.set(domain);
         expect(".o_domain_selector").toHaveText(text);
     }
@@ -2114,15 +2158,15 @@ test(`any/not any operator (readonly) with invalid domain as value`, async () =>
             text: `Match\nall\nof the following rules:\nProduct\n:\n(\n&\n)`,
         },
     ];
-    const parent = await makeDomainSelector({ readonly: true });
-    for (const { domain, text } of toTest) {
+    const parent = await makeDomainSelector({readonly: true});
+    for (const {domain, text} of toTest) {
         await parent.set(domain);
         expect(".o_domain_selector").toHaveText(text);
     }
 });
 
 test(`any operator (edit) with invalid domain as value`, async () => {
-    await makeDomainSelector({ domain: `[("product_id", "any", ["&"])]` });
+    await makeDomainSelector({domain: `[("product_id", "any", ["&"])]`});
     expect(SELECTORS.valueEditor).toHaveCount(1);
     expect(SELECTORS.clearNotSupported).toHaveCount(1);
     await contains(SELECTORS.clearNotSupported).click();
@@ -2201,8 +2245,8 @@ test(`any/not any operator (readonly)`, async () => {
             text: `Match\nall\nof the following rules:\nProduct\n:\nany\nof:\nProduct Name\n=\nJD7\nor\nKDB\nProduct Team\n: not\nany\nof:\nId\n=\n17\nTeam Name\ncontains\nmancity`,
         },
     ];
-    const parent = await makeDomainSelector({ readonly: true });
-    for (const { domain, text } of toTest) {
+    const parent = await makeDomainSelector({readonly: true});
+    for (const {domain, text} of toTest) {
         await parent.set(domain);
         expect(".o_domain_selector").toHaveText(text);
     }
@@ -2242,7 +2286,7 @@ test("many2one: no domain in autocompletion", async () => {
     expect.verifySteps([]);
     expect(".dropdown-menu").toHaveCount(0);
 
-    await editValue("x", { confirm: false });
+    await editValue("x", {confirm: false});
     await runAllTimers();
 
     expect(".dropdown-menu").toHaveCount(1);
@@ -2271,7 +2315,7 @@ test("many2many: domain in autocompletion", async () => {
     expect.verifySteps([]);
     expect(".dropdown-menu").toHaveCount(0);
 
-    await editValue("x", { confirm: false });
+    await editValue("x", {confirm: false});
     await runAllTimers();
 
     expect(".dropdown-menu").toHaveCount(1);
@@ -2338,14 +2382,14 @@ test("Hierarchical operators", async () => {
         label("not set"),
         "parent of",
     ]);
-    await editValue("x", { confirm: false });
+    await editValue("x", {confirm: false});
     await runAllTimers();
 
     expect(".dropdown-menu").toHaveCount(1);
     expect(queryAllTexts(".dropdown-menu li")).toEqual(["xphone", "xpad"]);
     await contains(".dropdown-menu li").click();
     expect.verifySteps(['[("product_id", "parent_of", [37])]']);
-    await editValue("x", { confirm: false });
+    await editValue("x", {confirm: false});
     await runAllTimers();
 
     expect(".dropdown-menu").toHaveCount(1);
@@ -2393,12 +2437,12 @@ test("don't show avatar for expressions", async () => {
         name = fields.Char();
 
         _records = [
-            { id: 1, name: "Mitchell Admin" },
-            { id: 2, name: "Marc Demo" },
+            {id: 1, name: "Mitchell Admin"},
+            {id: 2, name: "Marc Demo"},
         ];
     }
     defineModels([Users]);
-    Partner._fields.user_id = fields.Many2one({ relation: "res.users" });
+    Partner._fields.user_id = fields.Many2one({relation: "res.users"});
     await makeDomainSelector({
         isDebugMode: true,
         domain: `[("user_id", "in", [1, uid, 2])]`,
@@ -2470,7 +2514,9 @@ test("selection: placeholders for in operator", async () => {
     await makeDomainSelector({
         domain: `[("state", "in", [])]`,
     });
-    expect(`${SELECTORS.valueEditor} select`).toHaveValue(`Select one or several criteria`);
+    expect(`${SELECTORS.valueEditor} select`).toHaveValue(
+        `Select one or several criteria`
+    );
 });
 
 test(`datetime: "in range" operator`, async () => {
@@ -2487,7 +2533,9 @@ test(`datetime: "in range" operator`, async () => {
     ).click();
     expect(getCurrentOperator()).toBe(label("in range"));
     expect(getCurrentValue()).toBe("Today");
-    expect.verifySteps([`["&", ("datetime", ">=", "today"), ("datetime", "<", "today +1d")]`]);
+    expect.verifySteps([
+        `["&", ("datetime", ">=", "today"), ("datetime", "<", "today +1d")]`,
+    ]);
 
     expect(getValueOptions()).toEqual([
         "Today",
@@ -2502,15 +2550,21 @@ test(`datetime: "in range" operator`, async () => {
 
     await selectValue("last 7 days");
     expect(getCurrentValue()).toBe("Last 7 days");
-    expect.verifySteps([`["&", ("datetime", ">=", "today -7d"), ("datetime", "<", "today")]`]);
+    expect.verifySteps([
+        `["&", ("datetime", ">=", "today -7d"), ("datetime", "<", "today")]`,
+    ]);
 
     await selectValue("last 30 days");
     expect(getCurrentValue()).toBe("Last 30 days");
-    expect.verifySteps([`["&", ("datetime", ">=", "today -30d"), ("datetime", "<", "today")]`]);
+    expect.verifySteps([
+        `["&", ("datetime", ">=", "today -30d"), ("datetime", "<", "today")]`,
+    ]);
 
     await selectValue("month to date");
     expect(getCurrentValue()).toBe("Month to date");
-    expect.verifySteps([`["&", ("datetime", ">=", "today =1d"), ("datetime", "<", "today +1d")]`]);
+    expect.verifySteps([
+        `["&", ("datetime", ">=", "today =1d"), ("datetime", "<", "today +1d")]`,
+    ]);
 
     await selectValue("last month");
     expect(getCurrentValue()).toBe("Last month");
@@ -2547,7 +2601,9 @@ test(`datetime: "in range" operator`, async () => {
     await selectValue("today");
     expect(getCurrentOperator()).toBe(label("in range"));
     expect(getCurrentValue()).toBe("Today");
-    expect.verifySteps([`["&", ("datetime", ">=", "today"), ("datetime", "<", "today +1d")]`]);
+    expect.verifySteps([
+        `["&", ("datetime", ">=", "today"), ("datetime", "<", "today +1d")]`,
+    ]);
 });
 
 test(`date: "in range" operator`, async () => {
@@ -2587,29 +2643,41 @@ test(`date: "in range" operator`, async () => {
 
     await selectValue("month to date");
     expect(getCurrentValue()).toBe("Month to date");
-    expect.verifySteps([`["&", ("date", ">=", "today =1d"), ("date", "<", "today +1d")]`]);
+    expect.verifySteps([
+        `["&", ("date", ">=", "today =1d"), ("date", "<", "today +1d")]`,
+    ]);
 
     await selectValue("last month");
     expect(getCurrentValue()).toBe("Last month");
-    expect.verifySteps([`["&", ("date", ">=", "today =1d -1m"), ("date", "<", "today =1d")]`]);
+    expect.verifySteps([
+        `["&", ("date", ">=", "today =1d -1m"), ("date", "<", "today =1d")]`,
+    ]);
 
     await selectValue("year to date");
     expect(getCurrentValue()).toBe("Year to date");
-    expect.verifySteps([`["&", ("date", ">=", "today =1m =1d"), ("date", "<", "today +1d")]`]);
+    expect.verifySteps([
+        `["&", ("date", ">=", "today =1m =1d"), ("date", "<", "today +1d")]`,
+    ]);
 
     await selectValue("last 12 months");
     expect(getCurrentValue()).toBe("Last 12 months");
-    expect.verifySteps([`["&", ("date", ">=", "today =1d -12m"), ("date", "<", "today =1d")]`]);
+    expect.verifySteps([
+        `["&", ("date", ">=", "today =1d -12m"), ("date", "<", "today =1d")]`,
+    ]);
 
     await selectValue("custom range");
     expect(queryOne(`${SELECTORS.valueEditor} select`).value).toBe('"custom range"');
-    expect.verifySteps([`["&", ("date", ">=", "2023-04-20"), ("date", "<=", "2023-04-20")]`]);
+    expect.verifySteps([
+        `["&", ("date", ">=", "2023-04-20"), ("date", "<=", "2023-04-20")]`,
+    ]);
 
     await contains(".o_datetime_input:last").click();
     await contains(getPickerCell("26", true)).click();
     await press("enter");
     await animationFrame();
-    expect.verifySteps([`["&", ("date", ">=", "2023-04-20"), ("date", "<=", "2023-04-26")]`]);
+    expect.verifySteps([
+        `["&", ("date", ">=", "2023-04-20"), ("date", "<=", "2023-04-26")]`,
+    ]);
 
     await selectValue("today");
     expect(getCurrentOperator()).toBe(label("in range"));
@@ -2673,5 +2741,7 @@ test(`swith from [(0, "=", 1)] to other condition`, async () => {
         label("set"),
         label("not set"),
     ]);
-    expect.verifySteps([`["&", ("datetime", ">=", "today"), ("datetime", "<", "today +1d")]`]);
+    expect.verifySteps([
+        `["&", ("datetime", ">=", "today"), ("datetime", "<", "today +1d")]`,
+    ]);
 });

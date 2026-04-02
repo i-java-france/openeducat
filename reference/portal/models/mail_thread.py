@@ -3,8 +3,12 @@
 import hashlib
 import hmac
 
-from odoo import api, fields, models, _
-from odoo.addons.portal.utils import validate_thread_with_hash_pid, validate_thread_with_token
+from odoo import _, api, fields, models
+
+from odoo.addons.portal.utils import (
+    validate_thread_with_hash_pid,
+    validate_thread_with_token,
+)
 
 
 class MailThread(models.AbstractModel):

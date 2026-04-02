@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
-import { BoardController } from "./board_controller";
-import { visitXML } from "@web/core/utils/xml";
-import { Domain } from "@web/core/domain";
+import {registry} from "@web/core/registry";
+import {BoardController} from "./board_controller";
+import {visitXML} from "@web/core/utils/xml";
+import {Domain} from "@web/core/domain";
 export class BoardArchParser {
     parse(arch, customViewId) {
         let nextId = 1;
@@ -10,7 +10,7 @@ export class BoardArchParser {
             layout: null,
             colNumber: 0,
             isEmpty: true,
-            columns: [{ actions: [] }, { actions: [] }, { actions: [] }],
+            columns: [{actions: []}, {actions: []}, {actions: []}],
             customViewId,
         };
         let currentIndex = -1;
@@ -30,7 +30,9 @@ export class BoardArchParser {
                 case "action": {
                     archInfo.isEmpty = false;
                     const isFolded = Boolean(
-                        node.hasAttribute("fold") ? parseInt(node.getAttribute("fold"), 10) : 0
+                        node.hasAttribute("fold")
+                            ? parseInt(node.getAttribute("fold"), 10)
+                            : 0
                     );
                     const action = {
                         id: nextId++,
@@ -60,7 +62,7 @@ export const boardView = {
     Controller: BoardController,
 
     props: (genericProps, view) => {
-        const { arch, info } = genericProps;
+        const {arch, info} = genericProps;
         const board = new BoardArchParser().parse(arch, info.customViewId);
         return {
             ...genericProps,

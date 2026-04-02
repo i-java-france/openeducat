@@ -1,7 +1,8 @@
 from odoo import Command
-from odoo.tests import tagged
 from odoo.exceptions import UserError
+from odoo.tests import tagged
 from odoo.tools.barcode import createBarcodeDrawing
+
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 

@@ -1,4 +1,4 @@
-import { Plugin } from "@html_editor/plugin";
+import {Plugin} from "@html_editor/plugin";
 import {
     BG_CLASSES_REGEX,
     COLOR_COMBINATION_CLASSES_REGEX,
@@ -6,7 +6,7 @@ import {
     hasColor,
     TEXT_CLASSES_REGEX,
 } from "@html_editor/utils/color";
-import { fillEmpty, unwrapContents } from "@html_editor/utils/dom";
+import {fillEmpty, unwrapContents} from "@html_editor/utils/dom";
 import {
     isEmptyBlock,
     isRedundantElement,
@@ -15,15 +15,24 @@ import {
     isWhitespace,
     isZWS,
 } from "@html_editor/utils/dom_info";
-import { closestElement, descendants, selectElements } from "@html_editor/utils/dom_traversal";
-import { isColorGradient, rgbaToHex } from "@web/core/utils/colors";
-import { backgroundImageCssToParts, backgroundImagePartsToCss } from "@html_editor/utils/image";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
-import { isBlock } from "@html_editor/utils/blocks";
-import { callbacksForCursorUpdate } from "@html_editor/utils/selection";
+import {
+    closestElement,
+    descendants,
+    selectElements,
+} from "@html_editor/utils/dom_traversal";
+import {isColorGradient, rgbaToHex} from "@web/core/utils/colors";
+import {
+    backgroundImageCssToParts,
+    backgroundImagePartsToCss,
+} from "@html_editor/utils/image";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
+import {isBlock} from "@html_editor/utils/blocks";
+import {callbacksForCursorUpdate} from "@html_editor/utils/selection";
 
 const COLOR_COMBINATION_CLASSES = [1, 2, 3, 4, 5].map((i) => `o_cc${i}`);
-const COLOR_COMBINATION_SELECTOR = COLOR_COMBINATION_CLASSES.map((c) => `.${c}`).join(", ");
+const COLOR_COMBINATION_SELECTOR = COLOR_COMBINATION_CLASSES.map((c) => `.${c}`).join(
+    ", "
+);
 
 /**
  * @typedef { Object } ColorShared
@@ -57,7 +66,7 @@ export class ColorPlugin extends Plugin {
         user_commands: [
             {
                 id: "applyColor",
-                run: ({ color, mode }) => {
+                run: ({color, mode}) => {
                     this.applyColor(color, mode);
                     this.dependencies.history.addStep();
                 },
@@ -99,9 +108,14 @@ export class ColorPlugin extends Plugin {
         }
 
         return {
-            color: hasGradient && hasTextGradientClass ? gradient : rgbaToHex(elStyle.color),
+            color:
+                hasGradient && hasTextGradientClass
+                    ? gradient
+                    : rgbaToHex(elStyle.color),
             backgroundColor:
-                hasGradient && !hasTextGradientClass ? gradient : rgbaToHex(backgroundColor),
+                hasGradient && !hasTextGradientClass
+                    ? gradient
+                    : rgbaToHex(backgroundColor),
         };
     }
 
@@ -146,7 +160,9 @@ export class ColorPlugin extends Plugin {
     applyColor(color, mode, previewMode = false) {
         this.dependencies.selection.selectAroundNonEditable();
         if (mode === "backgroundColor") {
-            for (const processor of this.getResource("apply_background_color_processors")) {
+            for (const processor of this.getResource(
+                "apply_background_color_processors"
+            )) {
                 color = processor(color, mode);
             }
         }
@@ -172,7 +188,7 @@ export class ColorPlugin extends Plugin {
                     anchorNode: zws,
                     anchorOffset: 0,
                 },
-                { normalize: false }
+                {normalize: false}
             );
             cursors = this.dependencies.selection.preserveSelection();
             targetedNodes = [zws];
@@ -183,10 +199,14 @@ export class ColorPlugin extends Plugin {
                 .getTargetedNodes()
                 .filter(
                     (node) =>
-                        this.dependencies.selection.isNodeEditable(node) && node.nodeName !== "T"
+                        this.dependencies.selection.isNodeEditable(node) &&
+                        node.nodeName !== "T"
                 );
             if (isEmptyBlock(selection.endContainer)) {
-                targetedNodes.push(selection.endContainer, ...descendants(selection.endContainer));
+                targetedNodes.push(
+                    selection.endContainer,
+                    ...descendants(selection.endContainer)
+                );
             }
         }
 
@@ -207,7 +227,11 @@ export class ColorPlugin extends Plugin {
                     return false;
                 }
                 const li = closestElement(node, "li");
-                if (li && color && this.dependencies.selection.areNodeContentsFullySelected(li)) {
+                if (
+                    li &&
+                    color &&
+                    this.dependencies.selection.areNodeContentsFullySelected(li)
+                ) {
                     return rgbaToHex(li.style.color).toLowerCase() !== hexColor;
                 }
                 return true;
@@ -232,13 +256,18 @@ export class ColorPlugin extends Plugin {
                     closestElement(node, "span");
 
                 const faNodes = font?.querySelectorAll(".fa");
-                if (faNodes && Array.from(faNodes).some((faNode) => faNode.contains(node))) {
+                if (
+                    faNodes &&
+                    Array.from(faNodes).some((faNode) => faNode.contains(node))
+                ) {
                     return font;
                 }
                 const children = font && descendants(font);
-                const hasInlineGradient = font && isColorGradient(font.style["background-image"]);
+                const hasInlineGradient =
+                    font && isColorGradient(font.style["background-image"]);
                 const isFullySelected =
-                    children && children.every((child) => selectedNodes.includes(child));
+                    children &&
+                    children.every((child) => selectedNodes.includes(child));
                 const isTextGradient =
                     hasInlineGradient && font.classList.contains("text-gradient");
                 const shouldReplaceExistingGradient =
@@ -248,7 +277,9 @@ export class ColorPlugin extends Plugin {
                 if (
                     font &&
                     font.nodeName !== "T" &&
-                    (font.nodeName !== "SPAN" || font.style[mode] || font.style.backgroundImage) &&
+                    (font.nodeName !== "SPAN" ||
+                        font.style[mode] ||
+                        font.style.backgroundImage) &&
                     (isColorGradient(color) ||
                         color === "" ||
                         !hasInlineGradient ||
@@ -261,7 +292,11 @@ export class ColorPlugin extends Plugin {
                     );
                     if (selectedChildren.length) {
                         if (isBlock(font)) {
-                            const colorStyles = ["color", "background-color", "background-image"];
+                            const colorStyles = [
+                                "color",
+                                "background-color",
+                                "background-image",
+                            ];
                             const newFont = this.document.createElement("font");
                             for (const style of colorStyles) {
                                 const styleValue = font.style[style];
@@ -284,22 +319,28 @@ export class ColorPlugin extends Plugin {
                             node,
                             'font[style*="background-image"], span[style*="background-image"]'
                         );
-                        const isGradientBeingUpdated = closestGradientEl && isColorGradient(color);
-                        const splitnode = isGradientBeingUpdated ? closestGradientEl : font;
+                        const isGradientBeingUpdated =
+                            closestGradientEl && isColorGradient(color);
+                        const splitnode = isGradientBeingUpdated
+                            ? closestGradientEl
+                            : font;
                         font = this.dependencies.split.splitAroundUntil(
                             selectedChildren,
                             splitnode
                         );
                         if (isGradientBeingUpdated) {
                             const classRegex =
-                                mode === "color" ? TEXT_CLASSES_REGEX : BG_CLASSES_REGEX;
+                                mode === "color"
+                                    ? TEXT_CLASSES_REGEX
+                                    : BG_CLASSES_REGEX;
                             // When updating a gradient, remove color applied to
                             // its descendants.This ensures the gradient remains
                             // visible without being overwritten by a descendant's color.
                             for (const node of descendants(font)) {
                                 if (
                                     node.nodeType === Node.ELEMENT_NODE &&
-                                    (node.style[mode] || classRegex.test(node.className))
+                                    (node.style[mode] ||
+                                        classRegex.test(node.className))
                                 ) {
                                     this.colorElement(node, "", mode);
                                     node.style.webkitTextFillColor = "";
@@ -312,7 +353,9 @@ export class ColorPlugin extends Plugin {
                             mode === "color" &&
                             (font.style.webkitTextFillColor ||
                                 (closestGradientEl &&
-                                    closestGradientEl.classList.contains("text-gradient") &&
+                                    closestGradientEl.classList.contains(
+                                        "text-gradient"
+                                    ) &&
                                     !shouldReplaceExistingGradient))
                         ) {
                             font.style.webkitTextFillColor = color;
@@ -325,7 +368,9 @@ export class ColorPlugin extends Plugin {
                         (isVisibleTextNode(node) || isZWS(node))) ||
                     (node.nodeName === "BR" && isEmptyBlock(node.parentNode)) ||
                     (node.nodeType === Node.ELEMENT_NODE &&
-                        ["inline", "inline-block"].includes(getComputedStyle(node).display) &&
+                        ["inline", "inline-block"].includes(
+                            getComputedStyle(node).display
+                        ) &&
                         !isWhitespace(node.textContent) &&
                         !node.classList.contains("btn") &&
                         !node.querySelector("font") &&
@@ -335,11 +380,14 @@ export class ColorPlugin extends Plugin {
                     // Node is a visible text or inline node without font nor a button:
                     // wrap it in a <font>.
                     const previous = node.previousSibling;
-                    const classRegex = mode === "color" ? BG_CLASSES_REGEX : TEXT_CLASSES_REGEX;
+                    const classRegex =
+                        mode === "color" ? BG_CLASSES_REGEX : TEXT_CLASSES_REGEX;
                     if (
                         previous &&
                         previous.nodeName === "FONT" &&
-                        !previous.style[mode === "color" ? "backgroundColor" : "color"] &&
+                        !previous.style[
+                            mode === "color" ? "backgroundColor" : "color"
+                        ] &&
                         !classRegex.test(previous.className) &&
                         selectedNodes.includes(previous.firstChild) &&
                         selectedNodes.includes(previous.lastChild)
@@ -417,7 +465,8 @@ export class ColorPlugin extends Plugin {
             if (!color) {
                 element.classList.remove("o_cc", ...COLOR_COMBINATION_CLASSES);
             }
-            const hasGradient = getComputedStyle(element).backgroundImage.includes("-gradient");
+            const hasGradient =
+                getComputedStyle(element).backgroundImage.includes("-gradient");
             delete parts.gradient;
             let newBackgroundImage = backgroundImagePartsToCss(parts);
             // we override the bg image if the new bg image is empty, but the previous one is a gradient.
@@ -445,7 +494,11 @@ export class ColorPlugin extends Plugin {
                 element.style["background-color"] = "";
                 element.classList.add("text-gradient");
             }
-            this.applyColorStyle(element, "background-image", backgroundImagePartsToCss(parts));
+            this.applyColorStyle(
+                element,
+                "background-image",
+                backgroundImagePartsToCss(parts)
+            );
         } else {
             delete parts.gradient;
             if (hasGradientStyle && !backgroundImagePartsToCss(parts)) {
@@ -466,7 +519,8 @@ export class ColorPlugin extends Plugin {
             element.classList.add("o_cc", color);
 
             const hasBackgroundColor = !!getComputedStyle(element).backgroundColor;
-            const hasGradient = getComputedStyle(element).backgroundImage.includes("-gradient");
+            const hasGradient =
+                getComputedStyle(element).backgroundImage.includes("-gradient");
             const backgroundImage = element.style["background-image"];
             // Override gradient background image if coming from css rather than inline style.
             if (hasBackgroundColor && hasGradient && !backgroundImage) {
@@ -493,7 +547,10 @@ export class ColorPlugin extends Plugin {
             !!element.className.match(/\bbg-/) ||
             parts.gradient;
 
-        if (!hasBackgroundColor && (isColorGradient(color) || color.startsWith("o_cc"))) {
+        if (
+            !hasBackgroundColor &&
+            (isColorGradient(color) || color.startsWith("o_cc"))
+        ) {
             element.style["background-image"] = "";
             parts.gradient = backgroundImageCssToParts(
                 // Compute the style from o_cc class.
@@ -538,13 +595,16 @@ function removePresetGradient(element) {
     const currentGradient = parts.gradient;
     element.style.removeProperty("background-image");
     const styleWithoutGradient = getComputedStyle(element);
-    const presetGradient = backgroundImageCssToParts(styleWithoutGradient.backgroundImage).gradient;
+    const presetGradient = backgroundImageCssToParts(
+        styleWithoutGradient.backgroundImage
+    ).gradient;
     if (presetGradient !== currentGradient) {
         const withGradient = backgroundImagePartsToCss(parts);
         element.style["background-image"] = withGradient === "none" ? "" : withGradient;
     } else {
         delete parts.gradient;
         const withoutGradient = backgroundImagePartsToCss(parts);
-        element.style["background-image"] = withoutGradient === "none" ? "" : withoutGradient;
+        element.style["background-image"] =
+            withoutGradient === "none" ? "" : withoutGradient;
     }
 }

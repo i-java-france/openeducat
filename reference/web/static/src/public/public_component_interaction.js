@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { Interaction } from "./interaction";
+import {registry} from "@web/core/registry";
+import {Interaction} from "./interaction";
 
 export class PublicComponentInteraction extends Interaction {
     static selector = "owl-component[name]";
@@ -19,4 +19,6 @@ export class PublicComponentInteraction extends Interaction {
     }
 }
 
-registry.category("public.interactions").add("public_components", PublicComponentInteraction);
+registry
+    .category("public.interactions")
+    .add("public_components", PublicComponentInteraction);

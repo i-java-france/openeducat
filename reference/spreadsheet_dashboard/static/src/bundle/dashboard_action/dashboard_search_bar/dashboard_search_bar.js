@@ -1,15 +1,15 @@
-import { Component, onWillUpdateProps, onWillStart, useState, status } from "@odoo/owl";
-import { DashboardFacet } from "../dashboard_facet/dashboard_facet";
-import { useService, useChildRef, useAutofocus } from "@web/core/utils/hooks";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { DashboardDateFilter } from "../dashboard_date_filter/dashboard_date_filter";
-import { FilterValuesList } from "@spreadsheet/global_filters/components/filter_values_list/filter_values_list";
-import { getFacetInfo } from "@spreadsheet/global_filters/helpers";
-import { _t } from "@web/core/l10n/translation";
-import { fuzzyTest, fuzzyLookup } from "@web/core/utils/search";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { KeepLast } from "@web/core/utils/concurrency";
+import {Component, onWillUpdateProps, onWillStart, useState, status} from "@odoo/owl";
+import {DashboardFacet} from "../dashboard_facet/dashboard_facet";
+import {useService, useChildRef, useAutofocus} from "@web/core/utils/hooks";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {DashboardDateFilter} from "../dashboard_date_filter/dashboard_date_filter";
+import {FilterValuesList} from "@spreadsheet/global_filters/components/filter_values_list/filter_values_list";
+import {getFacetInfo} from "@spreadsheet/global_filters/helpers";
+import {_t} from "@web/core/l10n/translation";
+import {fuzzyTest, fuzzyLookup} from "@web/core/utils/search";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {KeepLast} from "@web/core/utils/concurrency";
 
 let nextItemId = 1;
 const SUB_ITEMS_DEFAULT_LIMIT = 8;
@@ -23,7 +23,7 @@ export class DashboardSearchBar extends Component {
         Dropdown,
         DropdownItem,
     };
-    static props = { model: Object, toggler: Object };
+    static props = {model: Object, toggler: Object};
 
     setup() {
         this.facets = [];
@@ -69,7 +69,7 @@ export class DashboardSearchBar extends Component {
     }
 
     clearFilter(id) {
-        this.props.model.dispatch("SET_GLOBAL_FILTER_VALUE", { id });
+        this.props.model.dispatch("SET_GLOBAL_FILTER_VALUE", {id});
     }
 
     updateFirstDateFilter(value) {
@@ -90,7 +90,7 @@ export class DashboardSearchBar extends Component {
         const query = this.inputRef?.el.value;
         if (query.trim()) {
             this.inputDropdownState.open();
-            this.computeState({ query, expanded: [], subItems: [] });
+            this.computeState({query, expanded: [], subItems: []});
         } else {
             this.inputDropdownState.close();
             this.resetState();
@@ -102,7 +102,7 @@ export class DashboardSearchBar extends Component {
         const query = ev.target.value;
         if (query.trim()) {
             this.inputDropdownState.open();
-            this.computeState({ query, expanded: [], subItems: [] });
+            this.computeState({query, expanded: [], subItems: []});
         } else if (this.items.length) {
             this.inputDropdownState.close();
             this.resetState();
@@ -112,7 +112,11 @@ export class DashboardSearchBar extends Component {
     onSearchInputKeydown(ev) {
         if (ev.key === "Backspace" || ev.key === "Delete") {
             const lastFacet = this.facets[this.facets.length - 1];
-            if (ev.target.selectionStart === 0 && ev.target.selectionEnd === 0 && lastFacet) {
+            if (
+                ev.target.selectionStart === 0 &&
+                ev.target.selectionEnd === 0 &&
+                lastFacet
+            ) {
                 this.clearFilter(lastFacet.id);
             }
         }
@@ -143,7 +147,10 @@ export class DashboardSearchBar extends Component {
                 if (!this.state.subItemsLimits[id]) {
                     this.state.subItemsLimits[id] = SUB_ITEMS_DEFAULT_LIMIT;
                 }
-                tasks.push({ id, prom: this.computeSubItems(this.getGlobalFilter(id), query) });
+                tasks.push({
+                    id,
+                    prom: this.computeSubItems(this.getGlobalFilter(id), query),
+                });
             }
         }
 
@@ -165,13 +172,17 @@ export class DashboardSearchBar extends Component {
         }
 
         const filters = this.props.model.getters.getGlobalFilters();
-        const firstDateFilterIndex = filters.findIndex((filter) => filter.type === "date");
+        const firstDateFilterIndex = filters.findIndex(
+            (filter) => filter.type === "date"
+        );
         if (firstDateFilterIndex !== -1) {
             this.firstDateFilter = filters.splice(firstDateFilterIndex, 1)[0];
         }
         this.facets = await Promise.all(
             filters
-                .filter((filter) => this.props.model.getters.isGlobalFilterActive(filter.id))
+                .filter((filter) =>
+                    this.props.model.getters.isGlobalFilterActive(filter.id)
+                )
                 .map((filter) => this.getFacetFor(filter))
         );
 
@@ -203,7 +214,8 @@ export class DashboardSearchBar extends Component {
                 if (fuzzyTest(trimmedQuery.toLowerCase(), label.toLowerCase())) {
                     items.push({
                         id: nextItemId++,
-                        searchItemDescription: this.getTranslatedFilterLabel(globalFilter),
+                        searchItemDescription:
+                            this.getTranslatedFilterLabel(globalFilter),
                         preposition: _t("for"),
                         globalFilterId: globalFilter.id,
                         label,
@@ -257,7 +269,7 @@ export class DashboardSearchBar extends Component {
             expanded.splice(index, 1);
         }
 
-        this.computeState({ expanded });
+        this.computeState({expanded});
     }
 
     async computeSubItems(globalFilter, query) {
@@ -267,27 +279,36 @@ export class DashboardSearchBar extends Component {
 
         switch (globalFilter.type) {
             case "relation": {
-                options = await this.orm.call(globalFilter.modelName, "name_search", [], {
-                    domain: [],
-                    context: {},
-                    limit: limitToFetch,
-                    name: query.trim(),
-                });
+                options = await this.orm.call(
+                    globalFilter.modelName,
+                    "name_search",
+                    [],
+                    {
+                        domain: [],
+                        context: {},
+                        limit: limitToFetch,
+                        name: query.trim(),
+                    }
+                );
                 break;
             }
             case "text": {
                 const allValues = this.getTextFilterAllowedValues(globalFilter) || [];
-                options = fuzzyLookup(query, allValues, (value) => value.formattedValue).map(
-                    (value) => [value.value, value.formattedValue]
-                );
+                options = fuzzyLookup(
+                    query,
+                    allValues,
+                    (value) => value.formattedValue
+                ).map((value) => [value.value, value.formattedValue]);
                 break;
             }
             case "selection": {
-                const { resModel, selectionField } = globalFilter;
+                const {resModel, selectionField} = globalFilter;
                 const fields = await this.fields.loadFields(resModel);
                 const field = fields[selectionField];
                 if (!field) {
-                    throw new Error(`Field "${selectionField}" not found in model "${resModel}"`);
+                    throw new Error(
+                        `Field "${selectionField}" not found in model "${resModel}"`
+                    );
                 }
                 options = fuzzyLookup(query, field.selection, (value) => value[1]);
                 break;
@@ -318,10 +339,11 @@ export class DashboardSearchBar extends Component {
                     label: _t("Load more"),
                     unselectable: true,
                     loadMore: () => {
-                        this.state.subItemsLimits[globalFilter.id] += SUB_ITEMS_DEFAULT_LIMIT;
+                        this.state.subItemsLimits[globalFilter.id] +=
+                            SUB_ITEMS_DEFAULT_LIMIT;
                         const newSubItems = [...this.subItems];
                         newSubItems[globalFilter.id] = undefined;
-                        this.computeState({ subItems: newSubItems });
+                        this.computeState({subItems: newSubItems});
                     },
                 });
             }
@@ -341,9 +363,9 @@ export class DashboardSearchBar extends Component {
         return this.props.model.getters.getGlobalFilter(id);
     }
 
-    resetState(options = { focus: true }) {
+    resetState(options = {focus: true}) {
         this.state.subItemsLimits = {};
-        this.computeState({ expanded: [], query: "", subItems: [] });
+        this.computeState({expanded: [], query: "", subItems: []});
         if (options.focus && !this.env.isSmall) {
             this.inputRef.el.focus();
         }
@@ -365,8 +387,10 @@ export class DashboardSearchBar extends Component {
 
         return {
             virtualFocus: true,
-            getItems: () => this.menuRef.el?.querySelectorAll(":scope .o-dropdown-item") ?? [],
-            isNavigationAvailable: ({ navigator, target }) => this.inputDropdownState.isOpen,
+            getItems: () =>
+                this.menuRef.el?.querySelectorAll(":scope .o-dropdown-item") ?? [],
+            isNavigationAvailable: ({navigator, target}) =>
+                this.inputDropdownState.isOpen,
             onUpdated: (navigator) => (this.navigator = navigator),
             hotkeys: {
                 escape: {
@@ -378,7 +402,8 @@ export class DashboardSearchBar extends Component {
                 arrowright: {
                     bypassEditableProtection: true,
                     allowRepeat: false,
-                    isAvailable: ({ navigator }) => isExpansible(navigator.activeItemIndex),
+                    isAvailable: ({navigator}) =>
+                        isExpansible(navigator.activeItemIndex),
                     callback: (navigator) => {
                         const item = this.items[navigator.activeItemIndex];
                         if (item.isParent) {
@@ -392,7 +417,8 @@ export class DashboardSearchBar extends Component {
                 },
                 arrowleft: {
                     bypassEditableProtection: true,
-                    isAvailable: ({ navigator }) => isCollapsible(navigator.activeItemIndex),
+                    isAvailable: ({navigator}) =>
+                        isCollapsible(navigator.activeItemIndex),
                     callback: (navigator) => {
                         const item = this.items[navigator.activeItemIndex];
 
@@ -403,7 +429,9 @@ export class DashboardSearchBar extends Component {
                         if (item && item.isParent && item.isExpanded) {
                             this.toggleItem(item, false);
                         } else if (item && item.isChild) {
-                            navigator.items[findIndex(item.globalFilterId)]?.setActive();
+                            navigator.items[
+                                findIndex(item.globalFilterId)
+                            ]?.setActive();
                         }
                     },
                 },
@@ -413,7 +441,7 @@ export class DashboardSearchBar extends Component {
 
     onInputDropdownChanged(isOpen) {
         if (!isOpen && status(this) === "mounted") {
-            this.resetState({ focus: false });
+            this.resetState({focus: false});
         } else if (this.navigator) {
             this.navigator.items[0]?.setActive();
         }
@@ -443,10 +471,13 @@ export class DashboardSearchBar extends Component {
         let newValue = undefined;
         switch (filter.type) {
             case "boolean":
-                newValue = item.value === true ? { operator: "set" } : { operator: "not_set" };
+                newValue =
+                    item.value === true ? {operator: "set"} : {operator: "not_set"};
                 break;
             case "text": {
-                const allowedValues = this.getTextFilterAllowedValues(filter)?.map((v) => v.value);
+                const allowedValues = this.getTextFilterAllowedValues(filter)?.map(
+                    (v) => v.value
+                );
                 if (allowedValues && !allowedValues.includes(item.value)) {
                     break;
                 }

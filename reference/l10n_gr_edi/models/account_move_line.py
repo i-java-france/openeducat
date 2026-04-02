@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.tools.sql import column_exists, create_column
 
 from odoo.addons.l10n_gr_edi.models.preferred_classification import (
     CLASSIFICATION_CATEGORY_SELECTION,
@@ -8,7 +9,6 @@ from odoo.addons.l10n_gr_edi.models.preferred_classification import (
     TAX_EXEMPTION_CATEGORY_SELECTION,
     TYPES_WITH_SEND_EXPENSE,
 )
-from odoo.tools.sql import column_exists, create_column
 
 
 class AccountMoveLine(models.Model):

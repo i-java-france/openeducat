@@ -6,7 +6,7 @@ import * as SlotSelectionScreen from "@pos_event/../tests/tours/utils/slot_selec
 import * as Chrome from "@point_of_sale/../tests/pos/tours/utils/chrome_util";
 import * as EventTourUtils from "@pos_event/../tests/tours/utils/event_tour_utils";
 import * as Dialog from "@point_of_sale/../tests/generic_helpers/dialog_util";
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 registry.category("web_tour.tours").add("SellingMultiSlotEventInPos", {
     steps: () =>
@@ -42,7 +42,7 @@ registry.category("web_tour.tours").add("SellingMultiSlotEventInPos", {
             Dialog.confirm(),
             ProductScreen.totalAmountIs("200.00"),
             ProductScreen.clickPayButton(),
-            PaymentScreen.clickPaymentMethod("Bank", true, { remaining: "0.00" }),
+            PaymentScreen.clickPaymentMethod("Bank", true, {remaining: "0.00"}),
             PaymentScreen.clickValidate(),
             ReceiptScreen.isShown(),
             EventTourUtils.printTicket("full"),

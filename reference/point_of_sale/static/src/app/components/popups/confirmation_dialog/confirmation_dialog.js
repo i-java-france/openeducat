@@ -1,9 +1,12 @@
-import { AlertDialog, ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { patch } from "@web/core/utils/patch";
-import { logPosMessage } from "@point_of_sale/app/utils/pretty_console_log";
-import { SyncPopup } from "@point_of_sale/app/components/popups/sync_popup/sync_popup";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { _t } from "@web/core/l10n/translation";
+import {
+    AlertDialog,
+    ConfirmationDialog,
+} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {patch} from "@web/core/utils/patch";
+import {logPosMessage} from "@point_of_sale/app/utils/pretty_console_log";
+import {SyncPopup} from "@point_of_sale/app/components/popups/sync_popup/sync_popup";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {_t} from "@web/core/l10n/translation";
 
 patch(ConfirmationDialog.prototype, {
     setup() {
@@ -40,8 +43,8 @@ patch(ConfirmationDialog.prototype, {
 
 ConfirmationDialog.props = {
     ...ConfirmationDialog.props,
-    getPayload: { type: Function, optional: true },
-    showReloadButton: { type: Boolean, optional: true },
+    getPayload: {type: Function, optional: true},
+    showReloadButton: {type: Boolean, optional: true},
 };
 
 ConfirmationDialog.defaultProps = {
@@ -51,8 +54,8 @@ ConfirmationDialog.defaultProps = {
 
 AlertDialog.props = {
     ...AlertDialog.props,
-    getPayload: { type: Function, optional: true },
-    showReloadButton: { type: Boolean, optional: true },
+    getPayload: {type: Function, optional: true},
+    showReloadButton: {type: Boolean, optional: true},
 };
 
 AlertDialog.defaultProps = {

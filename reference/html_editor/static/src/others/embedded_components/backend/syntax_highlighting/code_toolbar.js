@@ -1,7 +1,7 @@
-import { Component } from "@odoo/owl";
-import { CopyButton } from "@web/core/copy_button/copy_button";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+import {Component} from "@odoo/owl";
+import {CopyButton} from "@web/core/copy_button/copy_button";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 
 export const LANGUAGES = {
     plaintext: "Plain Text",
@@ -25,13 +25,13 @@ export const LANGUAGES = {
 export class CodeToolbar extends Component {
     static template = "html_editor.CodeToolbar";
     static props = {
-        target: { validate: (el) => el.nodeType === Node.ELEMENT_NODE },
-        getContent: { type: Function },
-        onLanguageChange: { type: Function },
-        currentLanguage: { type: String },
-        convertToParagraph: { type: Function },
+        target: {validate: (el) => el.nodeType === Node.ELEMENT_NODE},
+        getContent: {type: Function},
+        onLanguageChange: {type: Function},
+        currentLanguage: {type: String},
+        convertToParagraph: {type: Function},
     };
-    static components = { Dropdown, DropdownItem, CopyButton };
+    static components = {Dropdown, DropdownItem, CopyButton};
 
     setup() {
         super.setup();

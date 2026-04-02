@@ -1,48 +1,48 @@
-import { BuilderComponent } from "@html_builder/core/building_blocks/builder_component";
+import {BuilderComponent} from "@html_builder/core/building_blocks/builder_component";
 import {
     basicContainerBuilderComponentProps,
     useBuilderComponent,
     useInputBuilderComponent,
 } from "@html_builder/core/utils";
-import { isSmallInteger } from "@html_builder/utils/utils";
-import { Component, onWillUpdateProps, useRef } from "@odoo/owl";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { _t } from "@web/core/l10n/translation";
-import { useSortable } from "@web/core/utils/sortable_owl";
+import {isSmallInteger} from "@html_builder/utils/utils";
+import {Component, onWillUpdateProps, useRef} from "@odoo/owl";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {_t} from "@web/core/l10n/translation";
+import {useSortable} from "@web/core/utils/sortable_owl";
 
 export class BuilderList extends Component {
     static template = "html_builder.BuilderList";
     static props = {
         ...basicContainerBuilderComponentProps,
-        id: { type: String, optional: true },
-        addItemTitle: { type: String, optional: true },
+        id: {type: String, optional: true},
+        addItemTitle: {type: String, optional: true},
         itemShape: {
             type: Object,
             values: [
-                { value: "number" },
-                { value: "text" },
-                { value: "boolean" },
-                { value: "exclusive_boolean" },
+                {value: "number"},
+                {value: "text"},
+                {value: "boolean"},
+                {value: "exclusive_boolean"},
             ],
             validate: (value) =>
                 // is not empty object and doesn't include reserved fields
                 Object.keys(value).length > 0 && !Object.keys(value).includes("_id"),
             optional: true,
         },
-        default: { optional: true },
-        sortable: { optional: true },
-        hiddenProperties: { type: Array, optional: true },
-        records: { type: String, optional: true },
-        defaultNewValue: { type: Object, optional: true },
-        columnWidth: { optional: true },
-        forbidLastItemRemoval: { type: Boolean, optional: true },
-        isInputDisabled: { type: Boolean, optional: true },
+        default: {optional: true},
+        sortable: {optional: true},
+        hiddenProperties: {type: Array, optional: true},
+        records: {type: String, optional: true},
+        defaultNewValue: {type: Object, optional: true},
+        columnWidth: {optional: true},
+        forbidLastItemRemoval: {type: Boolean, optional: true},
+        isInputDisabled: {type: Boolean, optional: true},
     };
     static defaultProps = {
         addItemTitle: _t("Add"),
-        itemShape: { value: "text" },
-        default: { value: _t("Item") },
+        itemShape: {value: "text"},
+        default: {value: _t("Item")},
         sortable: true,
         hiddenProperties: [],
         mode: "button",
@@ -51,13 +51,13 @@ export class BuilderList extends Component {
         forbidLastItemRemoval: false,
         isInputDisabled: false,
     };
-    static components = { BuilderComponent, Dropdown };
+    static components = {BuilderComponent, Dropdown};
 
     setup() {
         this.validateProps();
         this.dropdown = useDropdownState();
         useBuilderComponent();
-        const { state, commit, preview } = useInputBuilderComponent({
+        const {state, commit, preview} = useInputBuilderComponent({
             id: this.props.id,
             defaultValue: this.parseDisplayValue([]),
             parseDisplayValue: this.parseDisplayValue,
@@ -81,7 +81,7 @@ export class BuilderList extends Component {
                 cursor: "grabbing",
                 placeholderClasses: ["d-table-row"],
                 onDrop: (params) => {
-                    const { element, previous } = params;
+                    const {element, previous} = params;
                     this.reorderItem(element.dataset.id, previous?.dataset.id);
                 },
             });
@@ -124,7 +124,8 @@ export class BuilderList extends Component {
         if (!ev.currentTarget.dataset.id) {
             items.push(this.makeDefaultItem());
         } else {
-            const matchId = (el) => el.id.toString() === ev.currentTarget.dataset.id.toString();
+            const matchId = (el) =>
+                el.id.toString() === ev.currentTarget.dataset.id.toString();
             const elementToAdd = this.allRecords.find(matchId);
             if (!items.some(matchId)) {
                 items.push(elementToAdd);
@@ -185,7 +186,10 @@ export class BuilderList extends Component {
         const value = isCheckbox ? targetInputEl.checked : targetInputEl.value;
 
         const items = this.formatRawValue(this.state.value);
-        if (value === true && this.props.itemShape[propertyName] === "exclusive_boolean") {
+        if (
+            value === true &&
+            this.props.itemShape[propertyName] === "exclusive_boolean"
+        ) {
             for (const item of items) {
                 item[propertyName] = false;
             }

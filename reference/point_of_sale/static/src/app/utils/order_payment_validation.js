@@ -1,9 +1,12 @@
-import { AlertDialog, ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { serializeDateTime } from "@web/core/l10n/dates";
-import { _t } from "@web/core/l10n/translation";
-import { ConnectionLostError, RPCError } from "@web/core/network/rpc";
-import { handleRPCError } from "./error_handlers";
-import { ask } from "./make_awaitable_dialog";
+import {
+    AlertDialog,
+    ConfirmationDialog,
+} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {serializeDateTime} from "@web/core/l10n/dates";
+import {_t} from "@web/core/l10n/translation";
+import {ConnectionLostError, RPCError} from "@web/core/network/rpc";
+import {handleRPCError} from "./error_handlers";
+import {ask} from "./make_awaitable_dialog";
 
 /**
  * This class contains all methods related to order validation. Previously,
@@ -18,8 +21,8 @@ import { ask } from "./make_awaitable_dialog";
  * @param {Object} [params.fastPaymentMethod=null] - The payment method to use for fast payment validation.
  */
 export default class OrderPaymentValidation {
-    constructor({ pos, orderUuid, fastPaymentMethod = null }) {
-        this.setup({ pos, orderUuid, fastPaymentMethod });
+    constructor({pos, orderUuid, fastPaymentMethod = null}) {
+        this.setup({pos, orderUuid, fastPaymentMethod});
     }
 
     setup(vals) {
@@ -157,7 +160,7 @@ export default class OrderPaymentValidation {
 
         try {
             // 1. Save order to server.
-            const syncOrderResult = await this.pos.syncAllOrders({ throw: true });
+            const syncOrderResult = await this.pos.syncAllOrders({throw: true});
             if (!syncOrderResult) {
                 return false;
             }
@@ -180,23 +183,34 @@ export default class OrderPaymentValidation {
             }
 
             // 3. Post process.
-            const postPushOrders = syncOrderResult.filter((order) => order.waitForPushOrder());
+            const postPushOrders = syncOrderResult.filter((order) =>
+                order.waitForPushOrder()
+            );
             if (postPushOrders.length > 0) {
-                await this.postPushOrderResolve(postPushOrders.map((order) => order.id));
+                await this.postPushOrderResolve(
+                    postPushOrders.map((order) => order.id)
+                );
             }
 
-            return await this.afterOrderValidation(!!syncOrderResult && syncOrderResult.length > 0);
+            return await this.afterOrderValidation(
+                !!syncOrderResult && syncOrderResult.length > 0
+            );
         } catch (error) {
             return this.handleValidationError(error);
         }
     }
 
     async postPushOrderResolve(ordersServerId) {
-        const postPushResult = await this.beforePostPushOrderResolve(this.order, ordersServerId);
+        const postPushResult = await this.beforePostPushOrderResolve(
+            this.order,
+            ordersServerId
+        );
         if (!postPushResult) {
             this.pos.dialog.add(AlertDialog, {
                 title: _t("Error: no internet connection."),
-                body: _t("Some, if not all, post-processing after syncing order failed."),
+                body: _t(
+                    "Some, if not all, post-processing after syncing order failed."
+                ),
             });
         }
     }
@@ -211,9 +225,11 @@ export default class OrderPaymentValidation {
         }
 
         if (this.order.nb_print === 0 && this.pos.config.iface_print_auto) {
-            const invoiced_finalized = this.order.isToInvoice() ? this.order.finalized : true;
+            const invoiced_finalized = this.order.isToInvoice()
+                ? this.order.finalized
+                : true;
             if (invoiced_finalized) {
-                await this.pos.printReceipt({ order: this.order });
+                await this.pos.printReceipt({order: this.order});
             }
         }
     }
@@ -264,11 +280,15 @@ export default class OrderPaymentValidation {
                     "The amount of your payment lines must be rounded to validate the transaction.\n" +
                         "The rounding precision is %(rounding)s so you should set %(expectedAmount)s as payment amount instead of %(paidAmount)s.",
                     {
-                        rounding: cashRounding.rounding.toFixed(this.pos.currency.decimal_places),
+                        rounding: cashRounding.rounding.toFixed(
+                            this.pos.currency.decimal_places
+                        ),
                         expectedAmount: expectedAmountPaid.toFixed(
                             this.pos.currency.decimal_places
                         ),
-                        paidAmount: amountPaid.toFixed(this.pos.currency.decimal_places),
+                        paidAmount: amountPaid.toFixed(
+                            this.pos.currency.decimal_places
+                        ),
                     }
                 ),
             });
@@ -321,7 +341,7 @@ export default class OrderPaymentValidation {
         }
 
         if (!this.order.presetRequirementsFilled) {
-            const { field, message } = this.order.uiState.requiredPartnerDetails || {};
+            const {field, message} = this.order.uiState.requiredPartnerDetails || {};
             this.pos.dialog.add(AlertDialog, {
                 title: field ? _t("%s required", field) : _t("Missing required"),
                 body: message || _t("Some required information is missing."),
@@ -333,7 +353,9 @@ export default class OrderPaymentValidation {
             !this.pos.currency.isZero(this.order.priceIncl) &&
             this.order.payment_ids.length === 0
         ) {
-            this.pos.notification.add(_t("Select a payment method to validate the order."));
+            this.pos.notification.add(
+                _t("Select a payment method to validate the order.")
+            );
             return false;
         }
 
@@ -343,8 +365,11 @@ export default class OrderPaymentValidation {
 
         // The exact amount must be paid if there is no cash payment method defined.
         if (
-            Math.abs(this.order.priceIncl - this.order.amountPaid + this.order.appliedRounding) >
-            0.00001
+            Math.abs(
+                this.order.priceIncl -
+                    this.order.amountPaid +
+                    this.order.appliedRounding
+            ) > 0.00001
         ) {
             if (!this.pos.models["pos.payment.method"].some((pm) => pm.is_cash_count)) {
                 this.pos.dialog.add(AlertDialog, {
@@ -395,7 +420,10 @@ export default class OrderPaymentValidation {
             const paymentMethod = splitPayments[0].payment_method_id;
             const confirmed = await ask(this.pos.dialog, {
                 title: _t("Customer Required"),
-                body: _t("Customer is required for %s payment method.", paymentMethod.name),
+                body: _t(
+                    "Customer is required for %s payment method.",
+                    paymentMethod.name
+                ),
             });
             if (confirmed) {
                 await this.pos.selectPartner();

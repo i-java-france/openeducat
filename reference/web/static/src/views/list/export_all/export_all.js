@@ -1,10 +1,10 @@
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { registry } from "@web/core/registry";
-import { user } from "@web/core/user";
-import { exprToBoolean } from "@web/core/utils/strings";
-import { STATIC_ACTIONS_GROUP_NUMBER } from "@web/search/action_menus/action_menus";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {registry} from "@web/core/registry";
+import {user} from "@web/core/user";
+import {exprToBoolean} from "@web/core/utils/strings";
+import {STATIC_ACTIONS_GROUP_NUMBER} from "@web/search/action_menus/action_menus";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 const cogMenuRegistry = registry.category("cogMenu");
 
@@ -16,7 +16,7 @@ const cogMenuRegistry = registry.category("cogMenu");
  */
 export class ExportAll extends Component {
     static template = "web.ExportAll";
-    static components = { DropdownItem };
+    static components = {DropdownItem};
     static props = {};
 
     //---------------------------------------------------------------------
@@ -38,4 +38,4 @@ export const exportAllItem = {
         exprToBoolean(env.config.viewArch.getAttribute("export_xlsx"), true),
 };
 
-cogMenuRegistry.add("export-all-menu", exportAllItem, { sequence: 10 });
+cogMenuRegistry.add("export-all-menu", exportAllItem, {sequence: 10});

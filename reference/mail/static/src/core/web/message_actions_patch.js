@@ -1,8 +1,8 @@
-import { getNonEditableMentions, parseEmail } from "@mail/utils/common/format";
-import { registerMessageAction } from "@mail/core/common/message_actions";
-import { _t } from "@web/core/l10n/translation";
-import { renderToMarkup } from "@web/core/utils/render";
-import { rpc } from "@web/core/network/rpc";
+import {getNonEditableMentions, parseEmail} from "@mail/utils/common/format";
+import {registerMessageAction} from "@mail/core/common/message_actions";
+import {_t} from "@web/core/l10n/translation";
+import {renderToMarkup} from "@web/core/utils/render";
+import {rpc} from "@web/core/network/rpc";
 
 export function messageActionOpenFullComposer(title, context, component) {
     const message = component.props.message;
@@ -28,10 +28,10 @@ export function messageActionOpenFullComposer(title, context, component) {
 }
 
 registerMessageAction("reply-all", {
-    condition: ({ message, thread }) => message.canReplyAll(thread),
+    condition: ({message, thread}) => message.canReplyAll(thread),
     icon: "fa fa-reply",
     name: _t("Reply All"),
-    onSelected: async ({ message, owner, thread }) => {
+    onSelected: async ({message, owner, thread}) => {
         const recipients = await rpc("/mail/thread/recipients", {
             thread_model: thread.model,
             thread_id: thread.id,
@@ -62,10 +62,10 @@ registerMessageAction("reply-all", {
     sequence: 71,
 });
 registerMessageAction("forward", {
-    condition: ({ message, thread }) => message.canForward(thread),
+    condition: ({message, thread}) => message.canForward(thread),
     icon: "fa fa-share",
     name: _t("Forward"),
-    onSelected: async ({ message, owner, store }) => {
+    onSelected: async ({message, owner, store}) => {
         const emailFrom = message.author_id?.email || message.email_from;
         const [name, email] = parseEmail(emailFrom);
         const datetime = _t("%(date)s at %(time)s", {
@@ -85,7 +85,7 @@ registerMessageAction("forward", {
             "copy",
             [attachmentIds],
             {
-                default: { res_model: "mail.compose.message", res_id: 0 },
+                default: {res_model: "mail.compose.message", res_id: 0},
             }
         );
         const context = {

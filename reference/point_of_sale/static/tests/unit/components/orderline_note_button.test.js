@@ -1,10 +1,10 @@
-import { expect, test } from "@odoo/hoot";
-import { setupPosEnv, dialogActions } from "../utils";
-import { definePosModels } from "../data/generate_model_definitions";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { click } from "@odoo/hoot-dom";
-import { InternalNoteButton } from "@point_of_sale/app/screens/product_screen/control_buttons/orderline_note_button/orderline_note_button";
-import { OrderSummary } from "@point_of_sale/app/screens/product_screen/order_summary/order_summary";
+import {expect, test} from "@odoo/hoot";
+import {dialogActions, setupPosEnv} from "../utils";
+import {definePosModels} from "../data/generate_model_definitions";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {click} from "@odoo/hoot-dom";
+import {InternalNoteButton} from "@point_of_sale/app/screens/product_screen/control_buttons/orderline_note_button/orderline_note_button";
+import {OrderSummary} from "@point_of_sale/app/screens/product_screen/order_summary/order_summary";
 
 definePosModels();
 
@@ -28,17 +28,18 @@ test("orderline_note_button.js", async () => {
     expect(order.lines[0].qty).toBe(1);
     expect(order.lines[1].qty).toBe(1);
     expect(order.lines[2].qty).toBe(2);
-    const orderSummary = await mountWithCleanup(OrderSummary, { props: {} });
+    const orderSummary = await mountWithCleanup(OrderSummary, {props: {}});
     orderSummary._setValue(4);
     expect(order.lines[0].qty).toBe(4);
     expect(order.lines[1].qty).toBe(4);
     expect(order.lines[2].qty).toBe(8);
-    const comp = await mountWithCleanup(InternalNoteButton, { props: { label: "" } });
+    const comp = await mountWithCleanup(InternalNoteButton, {props: {label: ""}});
     await comp.setChanges(line, '[{"1":"Test","colorIndex":0}]');
     order.updateLastOrderChange();
     orderSummary._setValue(9);
 
-    const noteAction = async () => await comp.setChanges(line, '[{"2":"Test","colorIndex":0}]');
+    const noteAction = async () =>
+        await comp.setChanges(line, '[{"2":"Test","colorIndex":0}]');
     await dialogActions(noteAction, productComboSteps);
     // Check quantity
     expect(order.lines[0].qty).toBe(4);

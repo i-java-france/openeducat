@@ -32,7 +32,7 @@ export function normalize(str) {
  */
 export function normalizedMatch(src, substr) {
     if (!substr) {
-        return { start: 0, end: 0, match: "" };
+        return {start: 0, end: 0, match: ""};
     }
     /**
      * Array.from splits the string into an array of codepoints. This avoids
@@ -65,13 +65,20 @@ export function normalizedMatch(src, substr) {
      * taken into account in the length calculation to get the indexes right,
      * hence Math.max(x.length, 1).
      */
-    const flattenSrcLength = normalizedSrc.reduce((acc, x) => acc + Math.max(x.length, 1), 0);
+    const flattenSrcLength = normalizedSrc.reduce(
+        (acc, x) => acc + Math.max(x.length, 1),
+        0
+    );
     for (let i = 0; i <= flattenSrcLength - normalizedSubstr.length; ++i) {
         const substrStack = Array.from(normalizedSubstr).reverse();
         for (let j = 0; i + j < normalizedSrc.length; ++j) {
             const current = normalizedSrc[i + j];
             // "every" in case normalization expanded current to several chars
-            if (![...current].every((c) => substrStack.length === 0 || c === substrStack.pop())) {
+            if (
+                ![...current].every(
+                    (c) => substrStack.length === 0 || c === substrStack.pop()
+                )
+            ) {
                 break;
             }
             if (substrStack.length === 0) {
@@ -79,11 +86,11 @@ export function normalizedMatch(src, substr) {
                 const start = srcAsCodepoints.slice(0, i).join("").length;
                 const match = srcAsCodepoints.slice(i, i + j + 1).join("");
                 const end = start + match.length;
-                return { start, end, match };
+                return {start, end, match};
             }
         }
     }
-    return { start: -1, end: -1, match: "" };
+    return {start: -1, end: -1, match: ""};
 }
 
 /**
@@ -98,9 +105,9 @@ export function normalizedMatches(src, substr) {
     const matches = [];
     let index = 0;
     while (src.length) {
-        const { start, end, match } = normalizedMatch(src, substr);
+        const {start, end, match} = normalizedMatch(src, substr);
         if (match) {
-            matches.push({ start: index + start, end: index + end, match });
+            matches.push({start: index + start, end: index + end, match});
             index += end;
             src = src.slice(end);
         } else {
@@ -126,7 +133,9 @@ const DECOMPOSITION_BY_LIGATURE = new Map([
  * @returns {string}
  */
 function expandLigatures(str) {
-    return Array.from(str, (char) => DECOMPOSITION_BY_LIGATURE.get(char) ?? char).join("");
+    return Array.from(str, (char) => DECOMPOSITION_BY_LIGATURE.get(char) ?? char).join(
+        ""
+    );
 }
 
 /**

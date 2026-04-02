@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import io
 import base64
-
+import io
 from datetime import datetime, timedelta
+
 from freezegun import freeze_time
 from PIL import Image
 from werkzeug.urls import url_unquote_plus

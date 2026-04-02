@@ -1,10 +1,16 @@
 //@ts-check
 
-import { Domain } from "@web/core/domain";
-import { DynamicList } from "./dynamic_list";
-import { getGroupServerValue } from "./utils";
+import {Domain} from "@web/core/domain";
+import {DynamicList} from "./dynamic_list";
+import {getGroupServerValue} from "./utils";
 
-export const MOVABLE_RECORD_TYPES = ["char", "boolean", "integer", "selection", "many2one"];
+export const MOVABLE_RECORD_TYPES = [
+    "char",
+    "boolean",
+    "integer",
+    "selection",
+    "many2one",
+];
 
 /**
  * @typedef {import("./record").Record} RelationalRecord
@@ -117,22 +123,27 @@ export class DynamicGroupList extends DynamicList {
 
         // move record from a group to another group
         const sourceGroup = this.groups.find((g) => g.id === dataGroupId);
-        const recordIndex = sourceGroup.list.records.findIndex((r) => r.id === dataRecordId);
+        const recordIndex = sourceGroup.list.records.findIndex(
+            (r) => r.id === dataRecordId
+        );
         const record = sourceGroup.list.records[recordIndex];
         // step 1: move record to correct position
         const refIndex = targetGroup.list.records.findIndex((r) => r.id === refId);
-        const oldIndex = sourceGroup.list.records.findIndex((r) => r.id === dataRecordId);
+        const oldIndex = sourceGroup.list.records.findIndex(
+            (r) => r.id === dataRecordId
+        );
 
         const sourceList = sourceGroup.list;
         // if the source contains more records than what's loaded, reload it after moving the record
-        const mustReloadSourceList = sourceList.count > sourceList.offset + sourceList.limit;
+        const mustReloadSourceList =
+            sourceList.count > sourceList.offset + sourceList.limit;
 
         sourceGroup._removeRecords([record.id]);
         targetGroup._addRecord(record, refIndex + 1);
         // step 2: update record value
         let value = targetGroup.value;
         if (targetGroup.groupByField.type === "many2one") {
-            value = value ? { id: value, display_name: targetGroup.displayName } : false;
+            value = value ? {id: value, display_name: targetGroup.displayName} : false;
         }
 
         const revert = () => {
@@ -140,8 +151,8 @@ export class DynamicGroupList extends DynamicList {
             sourceGroup._addRecord(record, oldIndex);
         };
         try {
-            const changes = { [targetGroup.groupByField.name]: value };
-            const res = await record.update(changes, { save: true });
+            const changes = {[targetGroup.groupByField.name]: value};
+            const res = await record.update(changes, {save: true});
             if (!res) {
                 return revert();
             }
@@ -153,13 +164,15 @@ export class DynamicGroupList extends DynamicList {
 
         const proms = [];
         if (mustReloadSourceList) {
-            const { offset, limit, orderBy, domain } = sourceGroup.list;
+            const {offset, limit, orderBy, domain} = sourceGroup.list;
             proms.push(sourceGroup.list._load(offset, limit, orderBy, domain));
         }
         if (!targetGroup.isFolded) {
             const targetList = targetGroup.list;
             const records = targetList.records;
-            proms.push(targetList._resequence(records, this.resModel, dataRecordId, refId));
+            proms.push(
+                targetList._resequence(records, this.resModel, dataRecordId, refId)
+            );
         }
         return Promise.all(proms);
     }
@@ -212,14 +225,14 @@ export class DynamicGroupList extends DynamicList {
             this.groupByField.relation,
             "name_create",
             [groupName],
-            { context: this.context }
+            {context: this.context}
         );
         if (foldField) {
             await this.model.orm.write(
                 this.groupByField.relation,
                 [id],
-                { [foldField]: true },
-                { context: this.context }
+                {[foldField]: true},
+                {context: this.context}
             );
         }
         const lastGroup = this.groups.at(-1);
@@ -237,8 +250,11 @@ export class DynamicGroupList extends DynamicList {
             ...this.context,
             [`default_${this.groupByField.name}`]: id,
         };
-        const nextConfigGroups = { ...this.config.groups };
-        const domain = Domain.and([this.domain, [[this.groupByField.name, "=", id]]]).toList();
+        const nextConfigGroups = {...this.config.groups};
+        const domain = Domain.and([
+            this.domain,
+            [[this.groupByField.name, "=", id]],
+        ]).toList();
         const groupBy = this.groupBy.slice(1);
         nextConfigGroups[id] = {
             ...commonConfig,
@@ -258,7 +274,11 @@ export class DynamicGroupList extends DynamicList {
                 offset: 0,
             },
         };
-        this.model._updateConfig(this.config, { groups: nextConfigGroups }, { reload: false });
+        this.model._updateConfig(
+            this.config,
+            {groups: nextConfigGroups},
+            {reload: false}
+        );
 
         const data = {
             aggregates: {},
@@ -280,7 +300,12 @@ export class DynamicGroupList extends DynamicList {
         const group = this._createGroupDatapoint(data);
         if (lastGroup) {
             const groups = [...this.groups, group];
-            await this._resequence(groups, this.groupByField.relation, group.id, lastGroup.id);
+            await this._resequence(
+                groups,
+                this.groupByField.relation,
+                group.id,
+                lastGroup.id
+            );
             this.groups = groups;
         } else {
             this.groups.push(group);
@@ -288,27 +313,35 @@ export class DynamicGroupList extends DynamicList {
     }
 
     _createGroupDatapoint(data) {
-        return new this.model.constructor.Group(this.model, this.config.groups[data.value], data);
+        return new this.model.constructor.Group(
+            this.model,
+            this.config.groups[data.value],
+            data
+        );
     }
 
     async _deleteGroups(groups) {
         const shouldReload = groups.some((g) => g.count > 0);
         await this._unlinkGroups(groups);
-        const configGroups = { ...this.config.groups };
+        const configGroups = {...this.config.groups};
         for (const group of groups) {
             delete configGroups[group.value];
         }
         if (shouldReload) {
             await this.model._updateConfig(
                 this.config,
-                { groups: configGroups },
-                { commit: this._setData.bind(this) }
+                {groups: configGroups},
+                {commit: this._setData.bind(this)}
             );
         } else {
             for (const group of groups) {
                 this._removeGroup(group);
             }
-            this.model._updateConfig(this.config, { groups: configGroups }, { reload: false });
+            this.model._updateConfig(
+                this.config,
+                {groups: configGroups},
+                {reload: false}
+            );
         }
     }
 
@@ -317,7 +350,7 @@ export class DynamicGroupList extends DynamicList {
             this._nbRecordsMatchingDomain = await this.model.orm.searchCount(
                 this.resModel,
                 this.domain,
-                { limit: this.model.initialCountLimit }
+                {limit: this.model.initialCountLimit}
             );
         }
     }
@@ -333,8 +366,8 @@ export class DynamicGroupList extends DynamicList {
     async _load(offset, limit, orderBy, domain) {
         await this.model._updateConfig(
             this.config,
-            { offset, limit, orderBy, domain },
-            { commit: this._setData.bind(this) }
+            {offset, limit, orderBy, domain},
+            {commit: this._setData.bind(this)}
         );
         if (this.isDomainSelected) {
             await this._ensureCorrectRecordCount();

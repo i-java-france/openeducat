@@ -1,9 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime, timezone
 import random
-from odoo import models, api
+from datetime import datetime, timezone
+
+from odoo import api, models
 from odoo.fields import Domain
+
 from odoo.addons.pos_adyen.models.pos_payment_method import UNPREDICTABLE_ADYEN_DATA
 
 

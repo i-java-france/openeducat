@@ -1,10 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
+
 from freezegun import freeze_time
 
-from . import common
 from odoo import Command
 from odoo.tests import Form, tagged
+
+from . import common
 
 
 @tagged('-at_install', 'post_install')

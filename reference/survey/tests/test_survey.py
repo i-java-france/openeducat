@@ -1,14 +1,14 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
 
 from freezegun import freeze_time
 
-from odoo import _, Command, fields
+from odoo import Command, _, fields
+from odoo.tests.common import users
+
 from odoo.addons.mail.tests.common import MailCase
 from odoo.addons.survey.tests import common
-from odoo.tests.common import users
 
 
 class TestSurveyInternals(common.TestSurveyCommon, MailCase):
@@ -995,7 +995,7 @@ class TestSurveyInternals(common.TestSurveyCommon, MailCase):
                 (31, answer_incorrect),
                 (2, answer_correct),  # end of max_score_delay
                 (2, answer_incorrect),
-            ], [2.5, 0.0, 3.75, 0.0, 5.0, 0.0],  # 2.5 if succeeded + up to 2.5 depending on time to answer
+            ], [2.5, 0.0, 3.75, 0.0, 5.0, 0.0], strict=False,  # 2.5 if succeeded + up to 2.5 depending on time to answer
         ):
             with (self.subTest(elapsed=seconds_since_start, is_correct=answer.is_correct),
                   freeze_time(start_time + datetime.timedelta(seconds=seconds_since_start))):

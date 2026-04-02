@@ -1,8 +1,8 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 export const uploadLocalFileService = {
     dependencies: ["upload", "orm"],
-    start(env, { upload: uploadService, orm }) {
+    start(env, {upload: uploadService, orm}) {
         const input = document.createElement("input");
         input.type = "file";
 
@@ -14,7 +14,7 @@ export const uploadLocalFileService = {
          * @param {string} [options.accept]
          * @returns {Promise<FileList>}
          */
-        async function selectLocalFiles({ multiple, accept }) {
+        async function selectLocalFiles({multiple, accept}) {
             input.multiple = multiple;
             input.accept = accept;
             input.value = ""; // clear previously selected files
@@ -42,9 +42,9 @@ export const uploadLocalFileService = {
          * @param {Object} recordInfo
          * @returns {Promise<Object[]>} attachments
          */
-        async function filesToAttachments(files, { resModel, resId }) {
+        async function filesToAttachments(files, {resModel, resId}) {
             const attachments = [];
-            await uploadService.uploadFiles(files, { resModel, resId }, (attachment) => {
+            await uploadService.uploadFiles(files, {resModel, resId}, (attachment) => {
                 attachments.push(attachment);
             });
             return attachments;
@@ -61,12 +61,12 @@ export const uploadLocalFileService = {
          * @returns {Promise<Object[]>} attachments
          */
         async function upload(
-            { resId, resModel },
-            { accept = "*/*", multiple = false, accessToken = false } = {}
+            {resId, resModel},
+            {accept = "*/*", multiple = false, accessToken = false} = {}
         ) {
             try {
-                const files = await selectLocalFiles({ multiple, accept });
-                const attachments = await filesToAttachments(files, { resModel, resId });
+                const files = await selectLocalFiles({multiple, accept});
+                const attachments = await filesToAttachments(files, {resModel, resId});
                 if (accessToken && attachments.length && !attachments[0].public) {
                     await addAccessToken(attachments);
                 }
@@ -83,9 +83,11 @@ export const uploadLocalFileService = {
          * @returns {Promise<Object[]>}
          */
         async function addAccessToken(attachments) {
-            const accessTokens = await orm.call("ir.attachment", "generate_access_token", [
-                attachments.map((a) => a.id),
-            ]);
+            const accessTokens = await orm.call(
+                "ir.attachment",
+                "generate_access_token",
+                [attachments.map((a) => a.id)]
+            );
             attachments.forEach((attachment, index) => {
                 attachment.access_token = accessTokens[index];
             });
@@ -97,7 +99,7 @@ export const uploadLocalFileService = {
          * @param {Object} [options]
          * @returns {string}
          */
-        function getURL(attachment, { unique, download, accessToken } = {}) {
+        function getURL(attachment, {unique, download, accessToken} = {}) {
             let url = `/web/content/${attachment.id}`;
             const queryParams = [];
             if (unique) {
@@ -115,7 +117,7 @@ export const uploadLocalFileService = {
             return url;
         }
 
-        return { upload, addAccessToken, getURL };
+        return {upload, addAccessToken, getURL};
     },
 };
 

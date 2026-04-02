@@ -1,7 +1,9 @@
 import logging
-from odoo.addons.pos_adyen.controllers.main import PosAdyenController
+
 from odoo import fields
 from odoo.http import request
+
+from odoo.addons.pos_adyen.controllers.main import PosAdyenController
 
 _logger = logging.getLogger(__name__)
 

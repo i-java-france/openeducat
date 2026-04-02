@@ -1,7 +1,7 @@
-import { describe, test } from "@odoo/hoot";
-import { testEditor } from "./_helpers/editor";
-import { unformat } from "./_helpers/format";
-import { deleteBackward } from "./_helpers/user_actions";
+import {describe, test} from "@odoo/hoot";
+import {testEditor} from "./_helpers/editor";
+import {unformat} from "./_helpers/format";
+import {deleteBackward} from "./_helpers/user_actions";
 
 describe("monetary field", () => {
     test("should make a span inside a monetary field be unremovable", async () => {

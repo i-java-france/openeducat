@@ -1,14 +1,15 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import Command
-from odoo.tests import Form
-from odoo.addons.mrp.tests.common import TestMrpCommon
-from odoo.exceptions import UserError
-
-from datetime import datetime
 import logging
+from datetime import datetime
+
 from freezegun import freeze_time
+
+from odoo import Command
+from odoo.exceptions import UserError
+from odoo.tests import Form
+
+from odoo.addons.mrp.tests.common import TestMrpCommon
 
 _logger = logging.getLogger(__name__)
 

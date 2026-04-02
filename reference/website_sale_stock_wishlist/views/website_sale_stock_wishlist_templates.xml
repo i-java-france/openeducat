@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template id="product_wishlist" inherit_id="website_sale_wishlist.product_wishlist">
         <xpath expr="//t[@t-call='website_sale.products_item']" position="inside">
@@ -7,14 +7,16 @@
                     t-if="wish.product_id._is_sold_out() and not wish.product_id.allow_out_of_stock_order"
                     class="o_wsale_stock_badge badge text-bg-danger align-self-start align-top"
                 >
-                    <i class="fa fa-circle text-danger me-1" aria-hidden="true"/>
+                    <i class="fa fa-circle text-danger me-1" aria-hidden="true" />
                     Out of stock
                 </span>
             </t>
         </xpath>
         <xpath expr="//button[@id='add_to_cart_button']" position="replace">
-            <t t-set="is_sold_out"
-               t-value="not wish.product_id.allow_out_of_stock_order and wish.product_id._is_sold_out()"/>
+            <t
+                t-set="is_sold_out"
+                t-value="not wish.product_id.allow_out_of_stock_order and wish.product_id._is_sold_out()"
+            />
             <!-- type="button" needed as default type in a `form` is "sumbit" -->
             <button
                 t-if="not combination_info['prevent_zero_price_sale']"

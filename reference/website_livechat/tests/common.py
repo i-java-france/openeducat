@@ -3,6 +3,7 @@
 import random
 
 from odoo import fields
+
 from odoo.addons.base.tests.common import TransactionCaseWithUserDemo
 from odoo.addons.mail.tests.common import MailCommon
 

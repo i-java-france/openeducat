@@ -1,4 +1,4 @@
-import { clone, getBackRef, RELATION_TYPES } from "./utils";
+import {clone, getBackRef, RELATION_TYPES} from "./utils";
 
 export function processModelDefs(modelDefs) {
     modelDefs = clone(modelDefs);
@@ -13,7 +13,9 @@ export function processModelDefs(modelDefs) {
             // Make sure that the field has a name and consistent with the key.
             if (field.name) {
                 if (fieldName !== field.name) {
-                    throw new Error(`Field name mismatch: ${fieldName} !== ${field.name}`);
+                    throw new Error(
+                        `Field name mismatch: ${fieldName} !== ${field.name}`
+                    );
                 }
             } else {
                 field.name = fieldName;

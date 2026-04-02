@@ -1,13 +1,13 @@
-import { addBuilderOption, setupHTMLBuilder } from "@html_builder/../tests/helpers";
-import { BuilderList } from "@html_builder/core/building_blocks/builder_list";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { expect, test, describe } from "@odoo/hoot";
-import { onError, xml } from "@odoo/owl";
-import { contains } from "@web/../tests/web_test_helpers";
+import {addBuilderOption, setupHTMLBuilder} from "@html_builder/../tests/helpers";
+import {BuilderList} from "@html_builder/core/building_blocks/builder_list";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {describe, expect, test} from "@odoo/hoot";
+import {onError, xml} from "@odoo/owl";
+import {contains} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 
-const defaultValue = { value: "75", title: "default title" };
+const defaultValue = {value: "75", title: "default title"};
 const defaultValueStr = JSON.stringify(defaultValue).replaceAll('"', "'");
 function defaultValueWithIds(ids) {
     return ids.map((id) => ({
@@ -99,7 +99,10 @@ test("delete an item", async () => {
         JSON.stringify(defaultValueWithIds([0]))
     );
     await contains(".we-bg-options-container .builder_list_remove_item").click();
-    expect(":iframe .test-options-target").toHaveAttribute("data-list", JSON.stringify([]));
+    expect(":iframe .test-options-target").toHaveAttribute(
+        "data-list",
+        JSON.stringify([])
+    );
 });
 
 test("reorder items", async () => {
@@ -127,7 +130,8 @@ test("reorder items", async () => {
     }
     expectOrder([0, 1, 2]);
 
-    const rowSelector = (id) => `.we-bg-options-container .o_row_draggable[data-id="${id}"]`;
+    const rowSelector = (id) =>
+        `.we-bg-options-container .o_row_draggable[data-id="${id}"]`;
     const rowHandleSelector = (id) => `${rowSelector(id)} .o_handle_cell`;
 
     await contains(rowHandleSelector(0)).dragAndDrop(rowSelector(1));
@@ -152,7 +156,7 @@ test("reorder items", async () => {
 async function testBuilderListFaultyProps(template) {
     class Test extends BaseOptionComponent {
         static template = xml`${template}`;
-        static components = { BuilderList };
+        static components = {BuilderList};
         static props = ["*"];
         setup() {
             onError(() => {
@@ -270,12 +274,12 @@ test("do not lose id when adjusting 'selected'", async () => {
                 itemShape="{ display_name: 'text', selected: 'boolean' }"
                 default="{ display_name: 'Extra', selected: false }"
                 records="availableRecords" />`;
-        static components = { BuilderList };
+        static components = {BuilderList};
         static props = ["*"];
         setup() {
             this.availableRecords = JSON.stringify([
-                { id: 1, display_name: "A" },
-                { id: 2, display_name: "B" },
+                {id: 1, display_name: "A"},
+                {id: 2, display_name: "B"},
             ]);
         }
     }
@@ -353,7 +357,7 @@ test("can add item with string and integer ids", async () => {
                 itemShape="{ display_name: 'text', selected: 'boolean' }"
                 default="{ display_name: 'Extra', selected: false }"
                 records="availableRecords" />`;
-        static components = { BuilderList };
+        static components = {BuilderList};
         static props = ["*"];
         setup() {
             this.availableRecords = JSON.stringify([

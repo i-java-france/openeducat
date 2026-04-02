@@ -1,13 +1,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
+from unittest.mock import PropertyMock, patch
+
 from freezegun import freeze_time
-from unittest.mock import patch, PropertyMock
 
 from odoo import fields
+from odoo.tests import new_test_user, tagged
+
 from odoo.addons.im_livechat.tests.common import TestImLivechatCommon
 from odoo.addons.mail.tests.common import MailCommon
-from odoo.tests import new_test_user, tagged
 
 
 @tagged("post_install", "-at_install")

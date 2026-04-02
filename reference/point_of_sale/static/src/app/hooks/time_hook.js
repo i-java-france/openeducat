@@ -1,9 +1,9 @@
-import { useState, useEffect } from "@odoo/owl";
-import { localization } from "@web/core/l10n/localization";
-const { DateTime } = luxon;
+import {useState, useEffect} from "@odoo/owl";
+import {localization} from "@web/core/l10n/localization";
+const {DateTime} = luxon;
 
 export function useTime() {
-    const state = useState({ hours: "", day: "", date: "" });
+    const state = useState({hours: "", day: "", date: ""});
     const timeFormat = localization.timeFormat;
     const dateFormat = localization.dateFormat
         .replace(/MM/g, "LLLL")

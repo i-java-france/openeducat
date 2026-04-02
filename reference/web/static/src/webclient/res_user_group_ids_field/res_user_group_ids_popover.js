@@ -1,7 +1,7 @@
-import { Component, useState } from "@odoo/owl";
-import { groupBy } from "@web/core/utils/arrays";
-import { useService } from "@web/core/utils/hooks";
-import { omit } from "@web/core/utils/objects";
+import {Component, useState} from "@odoo/owl";
+import {groupBy} from "@web/core/utils/arrays";
+import {useService} from "@web/core/utils/hooks";
+import {omit} from "@web/core/utils/objects";
 
 export class ResUserGroupIdsPopover extends Component {
     static template = "web.ResUserGroupIdsPopover";
@@ -33,12 +33,16 @@ export class ResUserGroupIdsPopover extends Component {
         // higher level, and omit groups of same privilege as the current group)
         const implyGroups = this.group.implyIds.map((gid) => this.groups[gid]);
         const implyGroupsByPrivilege = groupBy(implyGroups, (g) => g.privilege_id);
-        const keysToOmit = this.privilege ? ["false", String(this.privilege.id)] : ["false"];
+        const keysToOmit = this.privilege
+            ? ["false", String(this.privilege.id)]
+            : ["false"];
         const groupsFromOtherPrivileges = omit(implyGroupsByPrivilege, ...keysToOmit);
-        const higherLevelGroups = Object.values(groupsFromOtherPrivileges).map((groups) => groups[groups.length-1]);
+        const higherLevelGroups = Object.values(groupsFromOtherPrivileges).map(
+            (groups) => groups[groups.length - 1]
+        );
         const groupsWithoutPrivilege = implyGroupsByPrivilege[false] || [];
         const implyGroupsToDisplay = groupsWithoutPrivilege.concat(higherLevelGroups);
-        const { exclusive, joint, extra } = groupBy(implyGroupsToDisplay, (g) => {
+        const {exclusive, joint, extra} = groupBy(implyGroupsToDisplay, (g) => {
             if (g.impliedByIds.length > 1) {
                 return g.privilege_id ? "joint" : "extra";
             }
@@ -50,7 +54,9 @@ export class ResUserGroupIdsPopover extends Component {
     }
 
     getGroupDisplayName(group) {
-        const prefix = group.privilege_id ? `${this.privileges[group.privilege_id].name}/` : "";
+        const prefix = group.privilege_id
+            ? `${this.privileges[group.privilege_id].name}/`
+            : "";
         return `${prefix}${group.name}`;
     }
 

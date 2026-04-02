@@ -1,4 +1,8 @@
-export const changesToOrder = (order, orderPreparationCategories, cancelled = false) => {
+export const changesToOrder = (
+    order,
+    orderPreparationCategories,
+    cancelled = false
+) => {
     const toAdd = [];
     const toRemove = [];
 
@@ -57,19 +61,22 @@ export const getOrderChanges = (order, orderPreparationCategories) => {
         const hasPrepaCategory =
             hasPreparationCategory(product) ||
             hasPreparationCategory(orderline.combo_parent_id?.product_id) ||
-            orderline.combo_line_ids?.some((line) => hasPreparationCategory(line.getProduct())) ||
+            orderline.combo_line_ids?.some((line) =>
+                hasPreparationCategory(line.getProduct())
+            ) ||
             false;
 
         if (hasPrepaCategory) {
-            const key = Object.keys(order.last_order_preparation_change.lines).find((k) =>
-                k.startsWith(orderline.uuid)
+            const key = Object.keys(order.last_order_preparation_change.lines).find(
+                (k) => k.startsWith(orderline.uuid)
             ); // find old data but note changed
             const quantity = orderline.getQuantity();
 
             const relatedKey = key !== lineKey ? key : lineKey; // if note update key would be different
             const quantityDiff =
-                (oldChanges[relatedKey] ? quantity - oldChanges[relatedKey].quantity : quantity) ||
-                0;
+                (oldChanges[relatedKey]
+                    ? quantity - oldChanges[relatedKey].quantity
+                    : quantity) || 0;
             const noteChange =
                 oldChanges[relatedKey] &&
                 (oldChanges[relatedKey].note !== note ||
@@ -124,7 +131,9 @@ export const getOrderChanges = (order, orderPreparationCategories) => {
     }
     // Checks whether an orderline has been deleted from the order since it
     // was last sent to the preparation tools. If so we add this to the changes.
-    for (const [lineKey, lineResume] of Object.entries(order.last_order_preparation_change.lines)) {
+    for (const [lineKey, lineResume] of Object.entries(
+        order.last_order_preparation_change.lines
+    )) {
         if (!order.models["pos.order.line"].getBy("uuid", lineResume["uuid"])) {
             const quantity = isNaN(lineResume["quantity"]) ? 0 : lineResume["quantity"];
             if (!changes[lineKey]) {
@@ -158,7 +167,8 @@ export const getOrderChanges = (order, orderPreparationCategories) => {
     };
 
     // if `generalCustomerNote` key is present, then there is a change in the generalCustomerNote
-    const lastGeneralCustomerNote = order.last_order_preparation_change.general_customer_note || "";
+    const lastGeneralCustomerNote =
+        order.last_order_preparation_change.general_customer_note || "";
     if (lastGeneralCustomerNote !== order.general_customer_note) {
         result.general_customer_note = order.general_customer_note;
     }

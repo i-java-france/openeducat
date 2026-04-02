@@ -1,13 +1,13 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { ClassAction } from "@html_builder/core/core_builder_action_plugin";
-import { applyFunDependOnSelectorAndExclude } from "@html_builder/plugins/utils";
-import { after } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
-import { CONTAINER_WIDTH } from "@website/builder/option_sequence";
-import { connectorOptionParams, ProcessStepsOption } from "./process_steps_option";
-import { BaseWebsiteBackgroundOption } from "./background_option";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {ClassAction} from "@html_builder/core/core_builder_action_plugin";
+import {applyFunDependOnSelectorAndExclude} from "@html_builder/plugins/utils";
+import {after} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
+import {CONTAINER_WIDTH} from "@website/builder/option_sequence";
+import {connectorOptionParams, ProcessStepsOption} from "./process_steps_option";
+import {BaseWebsiteBackgroundOption} from "./background_option";
 
 export class WebsiteBackgroundProcessStepOption extends BaseWebsiteBackgroundOption {
     static selector = ".s_process_step .s_process_step_number";
@@ -48,16 +48,19 @@ class ProcessStepsOptionPlugin extends Plugin {
 
 export class ChangeConnectorAction extends ClassAction {
     static id = "changeConnector";
-    apply({ editingElement, params: { mainParam: className } }) {
+    apply({editingElement, params: {mainParam: className}}) {
         super.apply(...arguments);
         reloadConnectors(editingElement);
         let markerEnd = "";
         if (
-            ["s_process_steps_connector_arrow", "s_process_steps_connector_curved_arrow"].includes(
-                className
-            )
+            [
+                "s_process_steps_connector_arrow",
+                "s_process_steps_connector_curved_arrow",
+            ].includes(className)
         ) {
-            const arrowHeadEl = editingElement.querySelector(".s_process_steps_arrow_head");
+            const arrowHeadEl = editingElement.querySelector(
+                ".s_process_steps_arrow_head"
+            );
             // The arrowhead id is set here so that they are different per snippet
             if (!arrowHeadEl.id) {
                 arrowHeadEl.id = "s_process_steps_arrow_head" + Date.now();
@@ -72,7 +75,7 @@ export class ChangeConnectorAction extends ClassAction {
 
 export class ChangeArrowColorAction extends BuilderAction {
     static id = "changeArrowColor";
-    apply({ editingElement, value: colorValue }) {
+    apply({editingElement, value: colorValue}) {
         const arrowHeadEl = editingElement
             .closest(".s_process_steps")
             .querySelector(".s_process_steps_arrow_head");
@@ -80,7 +83,9 @@ export class ChangeArrowColorAction extends BuilderAction {
     }
 }
 
-registry.category("website-plugins").add(ProcessStepsOptionPlugin.id, ProcessStepsOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(ProcessStepsOptionPlugin.id, ProcessStepsOptionPlugin);
 
 /**
  * Width and position of the connectors should be updated when one of the
@@ -94,7 +99,8 @@ function reloadConnectors(editingElement) {
     const type =
         connectorOptionClasses.find(
             (connectorOptionClass) =>
-                connectorOptionClass && editingElement.classList.contains(connectorOptionClass)
+                connectorOptionClass &&
+                editingElement.classList.contains(connectorOptionClass)
         ) || "";
     // As the connectors are only visible in desktop, we can ignore the
     // steps that are only visible in mobile.
@@ -130,16 +136,19 @@ function reloadConnectors(editingElement) {
         connectorEl.style[marginType] = `${0 - Math.abs(stepHeightDifference)}px`;
 
         const isTheLastColOfRow =
-            nbBootstrapCols < colsInRow + stepSize + stepOffset + nextStepSize + nextStepOffset;
+            nbBootstrapCols <
+            colsInRow + stepSize + stepOffset + nextStepSize + nextStepOffset;
         connectorEl.classList.toggle("d-none", isTheLastColOfRow);
         colsInRow = isTheLastColOfRow ? 0 : colsInRow + stepSize + stepOffset;
         // When we are mobile view, the connector is not visible, here we
         // display it quickly just to have its size.
         connectorEl.style.display = "block";
-        const { height, width } = connectorEl.getBoundingClientRect();
+        const {height, width} = connectorEl.getBoundingClientRect();
         connectorEl.style.removeProperty("display");
         if (type === "s_process_steps_connector_curved_arrow" && i % 2 === 0) {
-            connectorEl.style.transform = stepHeightDifference ? "unset" : "scale(1, -1)";
+            connectorEl.style.transform = stepHeightDifference
+                ? "unset"
+                : "scale(1, -1)";
         } else {
             connectorEl.style.transform = "unset";
         }
@@ -218,7 +227,9 @@ function getPath(
             const verticalPaddingFactor = Math.abs(stepHeightDifference) / 8;
             if (stepHeightDifference >= 0) {
                 return `M 0 ${
-                    stepHeightDifference + hCurrentStepIconHeight - verticalPaddingFactor
+                    stepHeightDifference +
+                    hCurrentStepIconHeight -
+                    verticalPaddingFactor
                 } L ${width} ${hNextStepIconHeight + verticalPaddingFactor}`;
             }
             return `M 0 ${hCurrentStepIconHeight + verticalPaddingFactor} L ${width} ${
@@ -232,7 +243,9 @@ function getPath(
             const verticalPaddingFactor = (Math.abs(stepHeightDifference) / 8) * 1.5;
             if (stepHeightDifference >= 0) {
                 return `M ${0.05 * width} ${
-                    stepHeightDifference + hCurrentStepIconHeight - verticalPaddingFactor
+                    stepHeightDifference +
+                    hCurrentStepIconHeight -
+                    verticalPaddingFactor
                 } L ${0.95 * width - 6} ${hNextStepIconHeight + verticalPaddingFactor}`;
             }
             return `M ${0.05 * width} ${hCurrentStepIconHeight + verticalPaddingFactor} L ${

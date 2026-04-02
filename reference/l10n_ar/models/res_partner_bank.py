@@ -3,7 +3,7 @@ import logging
 
 from stdnum.ar.cbu import validate
 
-from odoo import models, api, _
+from odoo import _, api, models
 
 _logger = logging.getLogger(__name__)
 

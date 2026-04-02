@@ -1,8 +1,8 @@
-import { CTABadgeOption } from "@html_builder/plugins/cta_badge_option_plugin";
-import { BLOCK_ALIGN } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
+import {CTABadgeOption} from "@html_builder/plugins/cta_badge_option_plugin";
+import {BLOCK_ALIGN} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
 
 export class MassMailingCTABadgeOption extends CTABadgeOption {
     static selector = ".s_cta_badge";

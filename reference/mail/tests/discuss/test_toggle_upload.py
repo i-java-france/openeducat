@@ -1,10 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from requests.exceptions import HTTPError
 
 from odoo import Command, http
-from odoo.tests.common import tagged, HttpCase
-from odoo.tools import file_open, mute_logger
+from odoo.tests.common import HttpCase, tagged
+from odoo.tools import file_open
 
 
 @tagged("post_install", "-at_install")

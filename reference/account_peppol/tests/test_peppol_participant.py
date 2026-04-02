@@ -2,7 +2,7 @@ from base64 import b64encode
 
 from odoo import Command
 from odoo.exceptions import UserError, ValidationError
-from odoo.tests.common import tagged, freeze_time
+from odoo.tests.common import freeze_time, tagged
 from odoo.tools.misc import file_open
 
 from odoo.addons.account_peppol.tests.common import PeppolConnectorCommon

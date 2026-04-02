@@ -1,8 +1,8 @@
-import { checkRainbowmanMessage } from "@crm/views/check_rainbowman_message";
-import { RelationalModel } from "@web/model/relational_model/relational_model";
+import {checkRainbowmanMessage} from "@crm/views/check_rainbowman_message";
+import {RelationalModel} from "@web/model/relational_model/relational_model";
 
 export class CrmKanbanModel extends RelationalModel {
-    setup(params, { effect }) {
+    setup(params, {effect}) {
         super.setup(...arguments);
         this.effect = effect;
     }
@@ -26,7 +26,11 @@ export class CrmKanbanDynamicGroupList extends RelationalModel.DynamicGroupList 
             sourceGroup.groupByField.name === "stage_id"
         ) {
             const record = targetGroup.list.records.find((r) => r.id === dataRecordId);
-            await checkRainbowmanMessage(this.model.orm, this.model.effect, record.resId);
+            await checkRainbowmanMessage(
+                this.model.orm,
+                this.model.effect,
+                record.resId
+            );
         }
     }
 }

@@ -7,7 +7,9 @@ from odoo.exceptions import UserError
 from odoo.tests import freeze_time, tagged
 from odoo.tools import file_open
 
-from odoo.addons.l10n_tr_nilvera_einvoice.tests.test_xml_ubl_tr_common import TestUBLTRCommon
+from odoo.addons.l10n_tr_nilvera_einvoice.tests.test_xml_ubl_tr_common import (
+    TestUBLTRCommon,
+)
 
 COMPANY_VAT = '3297552117'
 ERRORENOUS_ALIAS = 'erroneous_alias'

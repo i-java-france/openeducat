@@ -1,7 +1,7 @@
-import { Component } from "@odoo/owl";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { useService } from "@web/core/utils/hooks";
-import { pick } from "@web/core/utils/objects";
+import {Component} from "@odoo/owl";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {useService} from "@web/core/utils/hooks";
+import {pick} from "@web/core/utils/objects";
 
 export class CategorySelector extends Component {
     static template = "point_of_sale.CategorySelector";
@@ -25,7 +25,7 @@ export class CategorySelector extends Component {
     }
 
     getCategoriesAndSub() {
-        const { limit_categories, iface_available_categ_ids } = this.pos.config;
+        const {limit_categories, iface_available_categ_ids} = this.pos.config;
         let rootCategories = this.pos.models["pos.category"].getAll();
         if (limit_categories && iface_available_categ_ids.length > 0) {
             rootCategories = iface_available_categ_ids;
@@ -34,7 +34,9 @@ export class CategorySelector extends Component {
             .filter((category) => !category.parent_id)
             .sort((a, b) => a.sequence - b.sequence);
         const selected = this.pos.selectedCategory ? [this.pos.selectedCategory] : [];
-        const allParents = selected.concat(this.pos.selectedCategory?.allParents || []).reverse();
+        const allParents = selected
+            .concat(this.pos.selectedCategory?.allParents || [])
+            .reverse();
         return this.getCategoriesList(rootCategories, allParents, 0)
             .flat(Infinity)
             .filter((c) => c.hasProductsToShow)
@@ -56,7 +58,9 @@ export class CategorySelector extends Component {
                     ? `/web/image?model=pos.category&field=image_128&id=${category.id}`
                     : undefined,
             isSelected: this.getAncestorsAndCurrent().includes(category),
-            isChildren: this.getChildCategories(this.pos.selectedCategory).includes(category),
+            isChildren: this.getChildCategories(this.pos.selectedCategory).includes(
+                category
+            ),
         };
     }
 
@@ -78,6 +82,9 @@ export class CategorySelector extends Component {
         if (!selected) {
             return false;
         }
-        return category.id === selected.id || selected.allParents.some((p) => p.id === category.id);
+        return (
+            category.id === selected.id ||
+            selected.allParents.some((p) => p.id === category.id)
+        );
     }
 }

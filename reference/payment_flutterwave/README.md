@@ -2,11 +2,12 @@
 
 ## Technical details
 
-API: [Flutterwave standard](https://developer.flutterwave.com/v3.0.0/docs/flutterwave-standard-1)
+API:
+[Flutterwave standard](https://developer.flutterwave.com/v3.0.0/docs/flutterwave-standard-1)
 version `3`
 
-This module integrates Flutterwave using the generic payment with redirection flow based on form
-submission provided by the `payment` module.
+This module integrates Flutterwave using the generic payment with redirection flow based
+on form submission provided by the `payment` module.
 
 ## Supported features
 

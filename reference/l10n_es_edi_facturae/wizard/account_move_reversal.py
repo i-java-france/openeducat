@@ -1,4 +1,4 @@
-from odoo import models, fields, _
+from odoo import _, fields, models
 
 
 class AccountMoveReversal(models.TransientModel):
@@ -12,7 +12,7 @@ class AccountMoveReversal(models.TransientModel):
 
     def reverse_moves(self, is_modify=False):
         # Extends account_account
-        res = super(AccountMoveReversal, self).reverse_moves(is_modify)
+        res = super().reverse_moves(is_modify)
         new_es_moves = self.new_move_ids.filtered(lambda move: move.country_code == 'ES')
         new_es_moves.l10n_es_edi_facturae_reason_code = self.l10n_es_edi_facturae_reason_code
         return res

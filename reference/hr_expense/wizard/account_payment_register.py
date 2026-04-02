@@ -1,4 +1,4 @@
-from odoo import models, api
+from odoo import api, models
 
 
 class AccountPaymentRegister(models.TransientModel):
@@ -24,7 +24,7 @@ class AccountPaymentRegister(models.TransientModel):
     def _init_payments(self, to_process, edit_mode=False):
         # OVERRIDE
         payments = super()._init_payments(to_process, edit_mode=edit_mode)
-        for payment, vals in zip(payments, to_process):
+        for payment, vals in zip(payments, to_process, strict=False):
             expenses = vals['batch']['lines'].expense_id
             if expenses:
                 payment.move_id.line_ids.write({'expense_id': expenses[0].id})

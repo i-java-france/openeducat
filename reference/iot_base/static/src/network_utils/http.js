@@ -1,4 +1,4 @@
-import { browser } from "@web/core/browser/browser";
+import {browser} from "@web/core/browser/browser";
 
 /**
  * Format the endpoint to send the request to
@@ -11,7 +11,9 @@ import { browser } from "@web/core/browser/browser";
  */
 export function formatEndpoint(ip, route, forceHttp = false) {
     const protocol = forceHttp ? "http:" : window.location.protocol;
-    const rawIp = forceHttp ? ip.replace(/^(\d+)-(\d+)-(\d+)-(\d+).*/, "$1.$2.$3.$4") : ip;
+    const rawIp = forceHttp
+        ? ip.replace(/^(\d+)-(\d+)-(\d+)-(\d+).*/, "$1.$2.$3.$4")
+        : ip;
     const url = new URL(`${protocol}//${rawIp}`);
     url.pathname = route;
     return url.toString();
@@ -28,14 +30,24 @@ export function formatEndpoint(ip, route, forceHttp = false) {
  * @param {boolean} useLna If true, use local targetAddressSpace + Force HTTP
  * @returns {Promise<any>}
  */
-export async function post(ip, route, params = {}, timeout = 6000, headers = {}, abortSignal = null, useLna = false) {
+export async function post(
+    ip,
+    route,
+    params = {},
+    timeout = 6000,
+    headers = {},
+    abortSignal = null,
+    useLna = false
+) {
     const endpoint = formatEndpoint(ip, route, useLna);
     const timeoutSignal = AbortSignal.timeout(timeout);
     const response = await browser.fetch(endpoint, {
-        body: JSON.stringify({'params': params}),
+        body: JSON.stringify({params: params}),
         method: "POST",
         headers: {"Content-Type": "application/json", ...headers},
-        signal: abortSignal ? AbortSignal.any([abortSignal, timeoutSignal]) : timeoutSignal,
+        signal: abortSignal
+            ? AbortSignal.any([abortSignal, timeoutSignal])
+            : timeoutSignal,
         targetAddressSpace: useLna ? "local" : undefined,
     });
 

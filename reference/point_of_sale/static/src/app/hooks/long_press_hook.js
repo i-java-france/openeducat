@@ -1,4 +1,4 @@
-import { LONG_PRESS_DURATION } from "@point_of_sale/utils";
+import {LONG_PRESS_DURATION} from "@point_of_sale/utils";
 
 export function useLongPress(callback, delay = LONG_PRESS_DURATION) {
     let timer = null;

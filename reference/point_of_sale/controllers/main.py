@@ -1,14 +1,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import logging
 import json
+import logging
+from datetime import datetime, timedelta
 
-from odoo import http, _
+from odoo import _, http
 from odoo.fields import Domain
 from odoo.http import request
-from odoo.tools import format_amount, file_open
+from odoo.tools import file_open, format_amount
+
 from odoo.addons.account.controllers.portal import PortalAccount
-from datetime import timedelta, datetime
 
 _logger = logging.getLogger(__name__)
 

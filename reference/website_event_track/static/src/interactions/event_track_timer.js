@@ -1,8 +1,8 @@
-import { formatDuration } from "@web/core/l10n/dates";
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-const { DateTime } = luxon;
+import {formatDuration} from "@web/core/l10n/dates";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+const {DateTime} = luxon;
 
 /*
  * Simple implementation of a timer interaction that uses a "time to live" configuration
@@ -14,12 +14,12 @@ export class WebsiteEventTrackTimer extends Interaction {
     static selector = ".o_we_track_timer";
 
     dynamicContent = {
-        ".close": { "t-on-click": this.onCloseClick },
+        ".close": {"t-on-click": this.onCloseClick},
     };
 
     setup() {
         const timeToLive = parseInt(this.el.dataset.timeToLive);
-        const deadline = DateTime.now().plus({ seconds: timeToLive });
+        const deadline = DateTime.now().plus({seconds: timeToLive});
         const remainingMs = deadline.diff(DateTime.now()).as("milliseconds");
         if (remainingMs > 0) {
             this.updateTimerDisplay(remainingMs);
@@ -72,7 +72,4 @@ export class WebsiteEventTrackTimer extends Interaction {
 
 registry
     .category("public.interactions")
-    .add(
-        "website_event_track.website_event_track_timer",
-        WebsiteEventTrackTimer
-    );
+    .add("website_event_track.website_event_track_timer", WebsiteEventTrackTimer);

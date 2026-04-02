@@ -1,6 +1,6 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { queryAllTexts } from "@odoo/hoot-dom";
-import { Component, xml } from "@odoo/owl";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryAllTexts} from "@odoo/hoot-dom";
+import {Component, xml} from "@odoo/owl";
 import {
     contains,
     defineModels,
@@ -9,14 +9,14 @@ import {
     mountWithSearch,
 } from "@web/../tests/web_test_helpers";
 
-import { SearchPanel } from "@web/search/search_panel/search_panel";
+import {SearchPanel} from "@web/search/search_panel/search_panel";
 
 class Partner extends models.Model {
     name = fields.Char();
     foo = fields.Char();
     bar = fields.Boolean();
-    int_field = fields.Integer({ string: "Int Field", aggregator: "sum" });
-    category_id = fields.Many2one({ string: "category", relation: "category" });
+    int_field = fields.Integer({string: "Int Field", aggregator: "sum"});
+    category_id = fields.Many2one({string: "category", relation: "category"});
     state = fields.Selection({
         selection: [
             ["abc", "ABC"],
@@ -75,11 +75,11 @@ class Partner extends models.Model {
 }
 
 class Category extends models.Model {
-    name = fields.Char({ string: "Category Name" });
+    name = fields.Char({string: "Category Name"});
 
     _records = [
-        { id: 6, name: "gold" },
-        { id: 7, name: "silver" },
+        {id: 6, name: "gold"},
+        {id: 7, name: "silver"},
     ];
 }
 
@@ -89,7 +89,7 @@ describe.current.tags("mobile");
 
 test("basic search panel rendering", async () => {
     class Parent extends Component {
-        static components = { SearchPanel };
+        static components = {SearchPanel};
         static template = xml`<SearchPanel/>`;
         static props = ["*"];
     }
@@ -105,7 +105,11 @@ test("basic search panel rendering", async () => {
     await contains(".o_search_panel .o-dropdown").click();
     expect(".o_search_panel_section.o_search_panel_category").toHaveCount(1);
     expect(".o_search_panel_category_value").toHaveCount(3);
-    expect(queryAllTexts(".o_search_panel_field li")).toEqual(["All", "gold", "silver"]);
+    expect(queryAllTexts(".o_search_panel_field li")).toEqual([
+        "All",
+        "gold",
+        "silver",
+    ]);
 
     await contains(".o_search_panel_category_value:nth-of-type(2) header").click();
     expect(".o_search_panel .o-dropdown").toHaveText("gold");
@@ -117,7 +121,7 @@ test("basic search panel rendering", async () => {
 
 test("Dropdown closes on category selection", async () => {
     class Parent extends Component {
-        static components = { SearchPanel };
+        static components = {SearchPanel};
         static template = xml`<SearchPanel/>`;
         static props = ["*"];
     }

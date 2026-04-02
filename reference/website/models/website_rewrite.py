@@ -1,12 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import logging
 import re
+
 import werkzeug
 
-from odoo import models, fields, api, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
-import logging
 _logger = logging.getLogger(__name__)
 
 
@@ -143,7 +144,7 @@ class WebsiteRewrite(models.Model):
 
     def write(self, vals):
         need_invalidate = set(self.mapped('redirect_type')) & {'308', '404'}
-        res = super(WebsiteRewrite, self).write(vals)
+        res = super().write(vals)
         need_invalidate |= set(self.mapped('redirect_type')) & {'308', '404'}
         if need_invalidate:
             self._invalidate_routing()
@@ -151,7 +152,7 @@ class WebsiteRewrite(models.Model):
 
     def unlink(self):
         need_invalidate = set(self.mapped('redirect_type')) & {'308', '404'}
-        res = super(WebsiteRewrite, self).unlink()
+        res = super().unlink()
         if need_invalidate:
             self._invalidate_routing()
         return res

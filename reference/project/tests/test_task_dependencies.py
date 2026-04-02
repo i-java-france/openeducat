@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
 
-from odoo.fields import Command, Datetime
+
 from odoo.exceptions import ValidationError
+from odoo.fields import Command, Datetime
 from odoo.tests import tagged
 
 from odoo.addons.project.tests.test_project_base import TestProjectCommon
-
-from datetime import date
 
 
 @tagged('-at_install', 'post_install')

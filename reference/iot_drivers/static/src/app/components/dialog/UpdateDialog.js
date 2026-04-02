@@ -1,14 +1,14 @@
 /* global owl */
 
 import useStore from "../../hooks/useStore.js";
-import { BootstrapDialog } from "./BootstrapDialog.js";
-import { LoadingFullScreen } from "../LoadingFullScreen.js";
+import {BootstrapDialog} from "./BootstrapDialog.js";
+import {LoadingFullScreen} from "../LoadingFullScreen.js";
 
-const { Component, xml, useState } = owl;
+const {Component, xml, useState} = owl;
 
 export class UpdateDialog extends Component {
     static props = {};
-    static components = { BootstrapDialog, LoadingFullScreen };
+    static components = {BootstrapDialog, LoadingFullScreen};
 
     setup() {
         this.store = useStore();
@@ -129,7 +129,7 @@ export class UpdateDialog extends Component {
                         <button class="btn btn-primary btn-sm" t-on-click="updateGitTree">Update</button>
                     </div>
                     <div t-if="this.store.dev" class="alert alert-light small">
-                        Current: 
+                        Current:
                         <a t-att-href="'https://github.com/odoo/odoo/commit/' + this.state.currentCommitHash" target="_blank" class="alert-link">
                             <t t-esc="this.state.currentCommitHash"/>
                         </a>
@@ -144,7 +144,7 @@ export class UpdateDialog extends Component {
                 </div>
             </t>
             <t t-set-slot="footer">
-                <button 
+                <button
                     type="button"
                     t-att-class="'btn btn-sm ' + (this.everythingIsUpToDate ? 'btn-primary' : 'btn-secondary')"
                     data-bs-dismiss="modal">

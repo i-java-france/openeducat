@@ -1,5 +1,4 @@
 import hashlib
-from typing import List
 
 from cryptography import x509
 from cryptography.exceptions import InvalidSignature
@@ -42,7 +41,7 @@ def verify_android_key(
     attestation_object: bytes,
     client_data_json: bytes,
     credential_public_key: bytes,
-    pem_root_certs_bytes: List[bytes],
+    pem_root_certs_bytes: list[bytes],
 ) -> bool:
     """Verify an "android-key" attestation statement
 

@@ -1,18 +1,18 @@
-import { usePopover } from "@web/core/popover/popover_hook";
-import { AvatarCardPopover } from "@mail/discuss/web/avatar_card/avatar_card_popover";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {AvatarCardPopover} from "@mail/discuss/web/avatar_card/avatar_card_popover";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class Avatar extends Component {
     static template = "mail.Avatar";
-    static components = { Popover: AvatarCardPopover };
+    static components = {Popover: AvatarCardPopover};
     static props = {
-        resModel: { type: String },
-        resId: { type: Number },
-        canOpenPopover: { type: Boolean, optional: true },
-        cssClass: { type: [String, Object], optional: true },
-        displayName: { type: String, optional: true },
-        noSpacing: { type: Boolean, optional: true },
+        resModel: {type: String},
+        resId: {type: Number},
+        canOpenPopover: {type: Boolean, optional: true},
+        cssClass: {type: [String, Object], optional: true},
+        displayName: {type: String, optional: true},
+        noSpacing: {type: Boolean, optional: true},
     };
     static defaultProps = {
         canOpenPopover: true,

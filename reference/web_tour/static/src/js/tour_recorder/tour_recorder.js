@@ -1,12 +1,12 @@
-import { useService } from "@web/core/utils/hooks";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { browser } from "@web/core/browser/browser";
-import { queryAll, queryFirst, queryOne } from "@odoo/hoot-dom";
-import { Component, useState, useExternalListener } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { x2ManyCommands } from "@web/core/orm_service";
-import { tourRecorderState } from "./tour_recorder_state";
+import {useService} from "@web/core/utils/hooks";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {browser} from "@web/core/browser/browser";
+import {queryAll, queryFirst, queryOne} from "@odoo/hoot-dom";
+import {Component, useState, useExternalListener} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {x2ManyCommands} from "@web/core/orm_service";
+import {tourRecorderState} from "./tour_recorder_state";
 
 const PRECISE_IDENTIFIERS = ["data-menu-xmlid", "name", "contenteditable"];
 const ODOO_CLASS_REGEX = /^oe?(-|_)[\w-]+$/;
@@ -22,7 +22,8 @@ const getShortestSelector = (paths) => {
     let hasOdooClass = false;
     for (
         let currentElem = paths.pop();
-        (currentElem && queryAll(filteredPath.join(" > ")).length !== 1) || !hasOdooClass;
+        (currentElem && queryAll(filteredPath.join(" > ")).length !== 1) ||
+        !hasOdooClass;
         currentElem = paths.pop()
     ) {
         if (currentElem.parentElement.contentEditable === "true") {
@@ -30,7 +31,9 @@ const getShortestSelector = (paths) => {
         }
 
         let currentPredicate = currentElem.tagName.toLowerCase();
-        const odooClass = [...currentElem.classList].find((c) => c.match(ODOO_CLASS_REGEX));
+        const odooClass = [...currentElem.classList].find((c) =>
+            c.match(ODOO_CLASS_REGEX)
+        );
         if (odooClass) {
             currentPredicate = `.${odooClass}`;
             hasOdooClass = true;
@@ -91,9 +94,9 @@ const reducePath = (paths) => {
 
 export class TourRecorder extends Component {
     static template = "web_tour.TourRecorder";
-    static components = { Dropdown, DropdownItem };
+    static components = {Dropdown, DropdownItem};
     static props = {
-        onClose: { type: Function },
+        onClose: {type: Function},
     };
     static defaultState = {
         recording: false,
@@ -113,12 +116,18 @@ export class TourRecorder extends Component {
 
         this.state.steps = tourRecorderState.getCurrentTourRecorder();
         this.state.recording = tourRecorderState.isRecording() === "1";
-        useExternalListener(document, "pointerdown", this.setStartingEvent, { capture: true });
-        useExternalListener(document, "pointerup", this.recordClickEvent, { capture: true });
+        useExternalListener(document, "pointerdown", this.setStartingEvent, {
+            capture: true,
+        });
+        useExternalListener(document, "pointerup", this.recordClickEvent, {
+            capture: true,
+        });
         useExternalListener(document, "keydown", this.recordConfirmationKeyboardEvent, {
             capture: true,
         });
-        useExternalListener(document, "keyup", this.recordKeyboardEvent, { capture: true });
+        useExternalListener(document, "keyup", this.recordKeyboardEvent, {
+            capture: true,
+        });
     }
 
     /**
@@ -244,19 +253,25 @@ export class TourRecorder extends Component {
 
         const result = await this.orm.create("web_tour.tour", [newTour]);
         if (result) {
-            this.notification.add(_t("Custom tour '%s' has been added.", newTour.name), {
-                type: "success",
-            });
+            this.notification.add(
+                _t("Custom tour '%s' has been added.", newTour.name),
+                {
+                    type: "success",
+                }
+            );
             this.resetTourRecorderState();
         } else {
-            this.notification.add(_t("Custom tour '%s' couldn't be saved!", newTour.name), {
-                type: "danger",
-            });
+            this.notification.add(
+                _t("Custom tour '%s' couldn't be saved!", newTour.name),
+                {
+                    type: "danger",
+                }
+            );
         }
     }
 
     resetTourRecorderState() {
-        Object.assign(this.state, { ...TourRecorder.defaultState, steps: [] });
+        Object.assign(this.state, {...TourRecorder.defaultState, steps: []});
         tourRecorderState.clear();
     }
 

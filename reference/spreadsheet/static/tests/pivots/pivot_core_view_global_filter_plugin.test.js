@@ -1,14 +1,14 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { defineSpreadsheetModels } from "@spreadsheet/../tests/helpers/data";
+import {describe, expect, test} from "@odoo/hoot";
+import {defineSpreadsheetModels} from "@spreadsheet/../tests/helpers/data";
 
-import { addGlobalFilterWithoutReload } from "@spreadsheet/../tests/helpers/commands";
-import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/helpers/pivot";
+import {addGlobalFilterWithoutReload} from "@spreadsheet/../tests/helpers/commands";
+import {createSpreadsheetWithPivot} from "@spreadsheet/../tests/helpers/pivot";
 
 describe.current.tags("headless");
 defineSpreadsheetModels();
 
 test("getFiltersMatchingPivotArgs should returns correct value for each filter", async function () {
-    const { model, pivotId } = await createSpreadsheetWithPivot({
+    const {model, pivotId} = await createSpreadsheetWithPivot({
         arch: /* xml */ `
                 <pivot>
                     <field name="product_id" type="col"/>
@@ -25,12 +25,14 @@ test("getFiltersMatchingPivotArgs should returns correct value for each filter",
         },
         {
             pivot: {
-                [pivotId]: { chain: "foo", type: "char" },
+                [pivotId]: {chain: "foo", type: "char"},
             },
         }
     );
     const filters = model.getters.getFiltersMatchingPivotArgs(pivotId, [
-        { field: "foo", type: "char", value: "hello" },
+        {field: "foo", type: "char", value: "hello"},
     ]);
-    expect(filters).toEqual([{ filterId: "1", value: { operator: "ilike", strings: ["hello"] } }]);
+    expect(filters).toEqual([
+        {filterId: "1", value: {operator: "ilike", strings: ["hello"]}},
+    ]);
 });

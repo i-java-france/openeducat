@@ -1,12 +1,12 @@
-import { AttachmentList } from "@mail/core/common/attachment_list";
-import { RelativeTime } from "@mail/core/common/relative_time";
-import { AvatarCardPopover } from "@mail/discuss/web/avatar_card/avatar_card_popover";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { _t } from "@web/core/l10n/translation";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { useService } from "@web/core/utils/hooks";
+import {AttachmentList} from "@mail/core/common/attachment_list";
+import {RelativeTime} from "@mail/core/common/relative_time";
+import {AvatarCardPopover} from "@mail/discuss/web/avatar_card/avatar_card_popover";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {_t} from "@web/core/l10n/translation";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {useService} from "@web/core/utils/hooks";
 
-import { Component, useState } from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 
 export const SCHEDULED_MESSAGE_TRUNCATE_THRESHOLD = 50; // arbitrary, ~ 1 line on large screen
 
@@ -32,7 +32,8 @@ export class ScheduledMessage extends Component {
 
     get isShort() {
         return (
-            this.props.scheduledMessage.textContent.length < SCHEDULED_MESSAGE_TRUNCATE_THRESHOLD
+            this.props.scheduledMessage.textContent.length <
+            SCHEDULED_MESSAGE_TRUNCATE_THRESHOLD
         );
     }
 
@@ -58,7 +59,10 @@ export class ScheduledMessage extends Component {
     }
 
     onClick(ev) {
-        this.props.scheduledMessage.store.handleClickOnLink(ev, this.props.scheduledMessage.thread);
+        this.props.scheduledMessage.store.handleClickOnLink(
+            ev,
+            this.props.scheduledMessage.thread
+        );
     }
 
     async onClickAttachmentUnlink(attachment) {

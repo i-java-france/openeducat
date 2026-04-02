@@ -2,12 +2,13 @@
 
 import base64
 import re
-import requests
 
+import requests
 from werkzeug.urls import url_parse
 
 from odoo import api, models
 from odoo.tools import misc
+
 from odoo.addons.base.models.assetsbundle import EXTENSIONS
 
 _match_asset_file_url_regex = re.compile(r"^(/_custom/([^/]+))?/(\w+)/([/\w]+\.\w+)$")

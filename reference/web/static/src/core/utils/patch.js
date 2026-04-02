@@ -36,7 +36,8 @@ function isClassPrototype(objToPatch) {
     // isClassPrototype(new A()) === false
     // isClassPrototype({}) === false
     return (
-        Object.hasOwn(objToPatch, "constructor") && objToPatch.constructor?.prototype === objToPatch
+        Object.hasOwn(objToPatch, "constructor") &&
+        objToPatch.constructor?.prototype === objToPatch
     );
 }
 

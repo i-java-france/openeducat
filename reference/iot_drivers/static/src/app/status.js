@@ -1,7 +1,7 @@
 /* global owl */
-import { DEVICE_ICONS } from "./components/dialog/DeviceDialog.js";
+import {DEVICE_ICONS} from "./components/dialog/DeviceDialog.js";
 
-const { Component, mount, xml, useState } = owl;
+const {Component, mount, xml, useState} = owl;
 
 const STATUS_POLL_DELAY_MS = 5000;
 
@@ -9,7 +9,7 @@ class StatusPage extends Component {
     static props = {};
 
     setup() {
-        this.state = useState({ data: {}, loading: true });
+        this.state = useState({data: {}, loading: true});
         this.icons = DEVICE_ICONS;
 
         this.loadInitialData();
@@ -77,7 +77,7 @@ class StatusPage extends Component {
                             </p>
                         </div>
                         <!-- If the IoT Box is in access point and not connected to internet yet -->
-                        <div t-elif="state.data.is_access_point_up and state.data.qr_code_wifi and state.data.qr_code_url"> 
+                        <div t-elif="state.data.is_access_point_up and state.data.qr_code_wifi and state.data.qr_code_url">
                             <p>Scan this QR code with your smartphone to connect to the IoT box's <b>Wi-Fi hotspot</b>:</p>
                             <div class="qr-code">
                                 <img t-att-src="state.data.qr_code_wifi" alt="QR Code Access Point"/>
@@ -119,7 +119,7 @@ class StatusPage extends Component {
                 </div>
                 <div class="status-display-box">
                     <h4 class="text-center mb-3">Status display</h4>
-                    
+
                     <h5 class="mb-1">General</h5>
                     <table class="table table-hover table-sm">
                         <tbody>
@@ -137,7 +137,7 @@ class StatusPage extends Component {
                             </tr>
                         </tbody>
                     </table>
-                    
+
                     <h5 class="mb-1" t-if="state.data.network_interfaces.length > 0">Internet Connection</h5>
                     <table class="table table-hover table-sm" t-if="state.data.network_interfaces.length > 0">
                         <tbody>

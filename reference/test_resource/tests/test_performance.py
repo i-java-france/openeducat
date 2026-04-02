@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
 import time
-import pytz
-
 from datetime import datetime
+
+import pytz
 from dateutil.relativedelta import relativedelta
 
 from odoo.tests import TransactionCase, warmup

@@ -1,6 +1,6 @@
-import { after, expect, test } from "@odoo/hoot";
-import { click, queryOne, queryValue, setInputFiles, waitFor } from "@odoo/hoot-dom";
-import { Deferred, animationFrame } from "@odoo/hoot-mock";
+import {after, expect, test} from "@odoo/hoot";
+import {click, queryOne, queryValue, setInputFiles, waitFor} from "@odoo/hoot-dom";
+import {Deferred, animationFrame} from "@odoo/hoot-mock";
 import {
     clickSave,
     contains,
@@ -13,8 +13,8 @@ import {
     pagerNext,
 } from "@web/../tests/web_test_helpers";
 
-import { toBase64Length } from "@web/core/utils/binary";
-import { MAX_FILENAME_SIZE_BYTES } from "@web/views/fields/binary/binary_field";
+import {toBase64Length} from "@web/core/utils/binary";
+import {MAX_FILENAME_SIZE_BYTES} from "@web/views/fields/binary/binary_field";
 
 const BINARY_FILE =
     "R0lGODlhDAAMAKIFAF5LAP/zxAAAANyuAP/gaP///wAAAAAAACH5BAEAAAUALAAAAAAMAAwAAAMlWLPcGjDKFYi9lxKBOaGcF35DhWHamZUW0K4mAbiwWtuf0uxFAgA7";
@@ -22,19 +22,19 @@ const BINARY_FILE =
 class Partner extends models.Model {
     _name = "res.partner";
 
-    foo = fields.Char({ default: "My little Foo Value" });
+    foo = fields.Char({default: "My little Foo Value"});
     document = fields.Binary();
-    product_id = fields.Many2one({ relation: "product" });
+    product_id = fields.Many2one({relation: "product"});
 
-    _records = [{ foo: "coucou.txt", document: "coucou==\n" }];
+    _records = [{foo: "coucou.txt", document: "coucou==\n"}];
 }
 
 class Product extends models.Model {
     name = fields.Char();
 
     _records = [
-        { id: 37, name: "xphone" },
-        { id: 41, name: "xpad" },
+        {id: 37, name: "xphone"},
+        {id: 41, name: "xpad"},
     ];
 }
 
@@ -55,7 +55,7 @@ test("BinaryField is correctly rendered (readonly)", async () => {
             message: "we should download the correct data",
         });
 
-        return new Blob([body.get("data")], { type: "text/plain" });
+        return new Blob([body.get("data")], {type: "text/plain"});
     });
 
     await mountView({
@@ -71,7 +71,8 @@ test("BinaryField is correctly rendered (readonly)", async () => {
     });
 
     expect(`.o_field_widget[name="document"] a > .fa-download`).toHaveCount(1, {
-        message: "the binary field should be rendered as a downloadable link in readonly",
+        message:
+            "the binary field should be rendered as a downloadable link in readonly",
     });
     expect(`.o_field_widget[name="document"]`).toHaveText("coucou.txt", {
         message: "the binary field should display the name of the file in the link",
@@ -112,7 +113,7 @@ test("BinaryField is correctly rendered", async () => {
             message: "we should download the correct data",
         });
 
-        return new Blob([body.get("data")], { type: "text/plain" });
+        return new Blob([body.get("data")], {type: "text/plain"});
     });
 
     await mountView({
@@ -128,11 +129,16 @@ test("BinaryField is correctly rendered", async () => {
     });
 
     expect(`.o_field_widget[name="document"] a > .fa-download`).toHaveCount(0, {
-        message: "the binary field should not be rendered as a downloadable link in edit",
+        message:
+            "the binary field should not be rendered as a downloadable link in edit",
     });
-    expect(`.o_field_widget[name="document"].o_field_binary .o_input`).toHaveValue("coucou.txt", {
-        message: "the binary field should display the file name in the input edit mode",
-    });
+    expect(`.o_field_widget[name="document"].o_field_binary .o_input`).toHaveValue(
+        "coucou.txt",
+        {
+            message:
+                "the binary field should display the file name in the input edit mode",
+        }
+    );
     expect(`.o_field_binary .o_clear_file_button`).toHaveCount(1, {
         message: "there shoud be a button to clear the file",
     });
@@ -160,7 +166,9 @@ test("BinaryField is correctly rendered", async () => {
 
     await click(`.o_field_binary .o_clear_file_button`);
     await animationFrame();
-    expect(`.o_field_binary input`).not.toBeVisible({ message: "the input should be hidden" });
+    expect(`.o_field_binary input`).not.toBeVisible({
+        message: "the input should be hidden",
+    });
     expect(`.o_field_binary .o_select_file_button`).toHaveCount(1, {
         message: "there should be a button to upload the file",
     });
@@ -195,7 +203,7 @@ test("BinaryField is correctly rendered (isDirty)", async () => {
     // Simulate a file upload
     await click(`.o_select_file_button`);
     await animationFrame();
-    const file = new File(["test"], "fake_file.txt", { type: "text/plain" });
+    const file = new File(["test"], "fake_file.txt", {type: "text/plain"});
     await setInputFiles([file]);
     await waitFor(`.o_form_button_save:visible`);
     expect(`.o_field_widget[name="document"] .fa-download`).toHaveCount(0, {
@@ -258,7 +266,7 @@ test("input value is empty when clearing after uploading", async () => {
 
     await click(`.o_select_file_button`);
     await animationFrame();
-    const file = new File(["test"], "fake_file.txt", { type: "text/plain" });
+    const file = new File(["test"], "fake_file.txt", {type: "text/plain"});
     await setInputFiles([file]);
     await waitFor(`.o_form_button_save:visible`);
     expect(`.o_field_binary input[type=text]`).toHaveAttribute("readonly");
@@ -322,7 +330,7 @@ test("readonly in create mode does not download", async () => {
 });
 
 test("BinaryField in list view (formatter)", async () => {
-    Partner._records[0]["document"] = BINARY_FILE;
+    Partner._records[0].document = BINARY_FILE;
     await mountView({
         resModel: "res.partner",
         type: "list",
@@ -332,7 +340,7 @@ test("BinaryField in list view (formatter)", async () => {
 });
 
 test("BinaryField in list view with filename", async () => {
-    Partner._records[0]["document"] = BINARY_FILE;
+    Partner._records[0].document = BINARY_FILE;
     await mountView({
         resModel: "res.partner",
         type: "list",
@@ -358,10 +366,13 @@ test("new record has no download button", async () => {
 
 test("filename doesn't exceed 255 bytes", async () => {
     const LARGE_BINARY_FILE = BINARY_FILE.repeat(5);
-    expect((LARGE_BINARY_FILE.length / 4) * 3).toBeGreaterThan(MAX_FILENAME_SIZE_BYTES, {
-        message:
-            "The initial binary file should be larger than max bytes that can represent the filename",
-    });
+    expect((LARGE_BINARY_FILE.length / 4) * 3).toBeGreaterThan(
+        MAX_FILENAME_SIZE_BYTES,
+        {
+            message:
+                "The initial binary file should be larger than max bytes that can represent the filename",
+        }
+    );
 
     Partner._fields.document.default = LARGE_BINARY_FILE;
     await mountView({
@@ -372,15 +383,16 @@ test("filename doesn't exceed 255 bytes", async () => {
     expect(queryValue(`.o_field_binary input[type=text]`)).toHaveLength(
         toBase64Length(MAX_FILENAME_SIZE_BYTES),
         {
-            message: "The filename shouldn't exceed the maximum size in bytes in base64",
+            message:
+                "The filename shouldn't exceed the maximum size in bytes in base64",
         }
     );
 });
 
 test("filename is updated when using the pager", async () => {
     Partner._records.push(
-        { id: 1, document: "abc", foo: "abc.txt" },
-        { id: 2, document: "def", foo: "def.txt" }
+        {id: 1, document: "abc", foo: "abc.txt"},
+        {id: 2, document: "def", foo: "def.txt"}
     );
     await mountView({
         resModel: "res.partner",
@@ -407,10 +419,10 @@ test("filename is updated when using the pager", async () => {
 test("isUploading state should be set to false after upload", async () => {
     expect.errors(1);
 
-    Partner._records.push({ id: 1 });
+    Partner._records.push({id: 1});
     Partner._onChanges.document = (record) => {
         if (record.document) {
-            throw makeServerError({ type: "ValidationError" });
+            throw makeServerError({type: "ValidationError"});
         }
     };
     await mountView({
@@ -422,7 +434,7 @@ test("isUploading state should be set to false after upload", async () => {
 
     await click(`.o_select_file_button`);
     await animationFrame();
-    const file = new File(["test"], "fake_file.txt", { type: "text/plain" });
+    const file = new File(["test"], "fake_file.txt", {type: "text/plain"});
     await setInputFiles([file]);
     await waitFor(`.o_form_button_save:visible`);
     await animationFrame();
@@ -444,7 +456,7 @@ test("should accept file with allowed MIME type and reject others", async () => 
 
     await click(`.o_select_file_button`);
     await animationFrame();
-    const pdfFile = new File(["test"], "fake_pdf.pdf", { type: "application/pdf" });
+    const pdfFile = new File(["test"], "fake_pdf.pdf", {type: "application/pdf"});
     await setInputFiles([pdfFile]);
 
     await waitFor(`.o_form_button_save:visible`);
@@ -456,7 +468,7 @@ test("should accept file with allowed MIME type and reject others", async () => 
 
     await click(`.o_select_file_button`);
     await animationFrame();
-    const textFile = new File(["test"], "text_file.txt", { type: "text/plain" });
+    const textFile = new File(["test"], "text_file.txt", {type: "text/plain"});
     await setInputFiles([textFile]);
     await animationFrame();
 
@@ -473,7 +485,7 @@ test("doesn't crash if value is not a string", async () => {
         _applyComputesAndValidate() {}
     }
     defineModels([Dummy]);
-    Dummy._records.push({ id: 1, document: {} });
+    Dummy._records.push({id: 1, document: {}});
     await mountView({
         type: "form",
         resModel: "dummy",

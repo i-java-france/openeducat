@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <template>
     <t
         t-name="website_slides_survey.SlideUploadCategory"
@@ -13,9 +13,12 @@
                     required="true"
                     onSelect.bind="onCertificationSelect"
                 >
-                    <t t-out="displayCertificationValue"/>
+                    <t t-out="displayCertificationValue" />
                 </SelectMenu>
-                <span t-if="state.showCertificationRequiredError" class="text-danger">Please select a certification.</span>
+                <span
+                    t-if="state.showCertificationRequiredError"
+                    class="text-danger"
+                >Please select a certification.</span>
             </t>
         </xpath>
     </t>

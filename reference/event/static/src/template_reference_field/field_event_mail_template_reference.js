@@ -1,6 +1,9 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { ReferenceField, referenceField } from "@web/views/fields/reference/reference_field";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {
+    ReferenceField,
+    referenceField,
+} from "@web/views/fields/reference/reference_field";
 
 export class EventMailTemplateReferenceField extends ReferenceField {
     static template = "event.mailTemplateReferenceField";
@@ -35,4 +38,6 @@ export const eventMailTemplateReferenceField = {
     displayName: _t("Event Mail Template Reference"),
 };
 
-registry.category("fields").add("EventMailTemplateReferenceField", eventMailTemplateReferenceField);
+registry
+    .category("fields")
+    .add("EventMailTemplateReferenceField", eventMailTemplateReferenceField);

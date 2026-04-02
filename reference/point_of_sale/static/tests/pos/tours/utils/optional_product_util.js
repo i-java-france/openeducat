@@ -25,7 +25,8 @@ export function addOptionalProduct(productName, quantity, configurable) {
             ...ProductConfigurator.pickRadio("wool"),
             // confirm Attribute Selection dialogue
             {
-                trigger: ".o-overlay-item:nth-child(2) .modal-footer button:contains('Add')",
+                trigger:
+                    ".o-overlay-item:nth-child(2) .modal-footer button:contains('Add')",
                 run: "click",
             }
         );

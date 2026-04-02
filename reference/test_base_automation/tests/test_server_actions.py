@@ -1,6 +1,7 @@
 # # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo.addons.base.models.ir_actions import ServerActionWithWarningsError
 from odoo.exceptions import ValidationError
+
+from odoo.addons.base.models.ir_actions import ServerActionWithWarningsError
 from odoo.addons.base.tests.test_ir_actions import TestServerActionsBase
 
 

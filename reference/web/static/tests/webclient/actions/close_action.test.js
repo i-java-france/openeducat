@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame, Deferred } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {Deferred, animationFrame} from "@odoo/hoot-mock";
 import {
     contains,
     defineActions,
@@ -12,17 +12,17 @@ import {
     webModels,
 } from "@web/../tests/web_test_helpers";
 
-import { listView } from "@web/views/list/list_view";
-import { WebClient } from "@web/webclient/webclient";
+import {listView} from "@web/views/list/list_view";
+import {WebClient} from "@web/webclient/webclient";
 
-const { ResCompany, ResPartner, ResUsers } = webModels;
+const {ResCompany, ResPartner, ResUsers} = webModels;
 
 class Partner extends models.Model {
     _rec_name = "display_name";
 
     _records = [
-        { id: 1, display_name: "First record" },
-        { id: 2, display_name: "Second record" },
+        {id: 1, display_name: "First record"},
+        {id: 2, display_name: "Second record"},
     ];
     _views = {
         form: `
@@ -76,10 +76,10 @@ defineActions([
 
 test("close the currently opened dialog", async () => {
     await mountWithCleanup(WebClient);
-    // execute an action in target="new"
+    // Execute an action in target="new"
     await getService("action").doAction(5);
     expect(".o_technical_modal .o_form_view").toHaveCount(1);
-    // execute an 'ir.actions.act_window_close' action
+    // Execute an 'ir.actions.act_window_close' action
     await getService("action").doAction({
         type: "ir.actions.act_window_close",
     });
@@ -89,37 +89,37 @@ test("close the currently opened dialog", async () => {
 
 test("close dialog by clicking on the header button", async () => {
     await mountWithCleanup(WebClient);
-    // execute an action in target="new"
+    // Execute an action in target="new"
     function onClose() {
         expect.step("on_close");
     }
-    await getService("action").doAction(5, { onClose });
+    await getService("action").doAction(5, {onClose});
     expect(".o_dialog").toHaveCount(1);
     await contains(".o_dialog .modal-header button").click();
     expect(".o_dialog").toHaveCount(0);
     expect.verifySteps(["on_close"]);
 
-    // execute an 'ir.actions.act_window_close' action
+    // Execute an 'ir.actions.act_window_close' action
     // should not call 'on_close' as it was already called.
-    await getService("action").doAction({ type: "ir.actions.act_window_close" });
+    await getService("action").doAction({type: "ir.actions.act_window_close"});
     expect.verifySteps([]);
 });
 
 test('execute "on_close" only if there is no dialog to close', async () => {
     await mountWithCleanup(WebClient);
-    // execute an action in target="new"
+    // Execute an action in target="new"
     await getService("action").doAction(5);
     function onClose() {
         expect.step("on_close");
     }
-    const options = { onClose };
-    // execute an 'ir.actions.act_window_close' action
+    const options = {onClose};
+    // Execute an 'ir.actions.act_window_close' action
     // should not call 'on_close' as there is a dialog to close
-    await getService("action").doAction({ type: "ir.actions.act_window_close" }, options);
+    await getService("action").doAction({type: "ir.actions.act_window_close"}, options);
     expect.verifySteps([]);
-    // execute again an 'ir.actions.act_window_close' action
+    // Execute again an 'ir.actions.act_window_close' action
     // should call 'on_close' as there is no dialog to close
-    await getService("action").doAction({ type: "ir.actions.act_window_close" }, options);
+    await getService("action").doAction({type: "ir.actions.act_window_close"}, options);
     expect.verifySteps(["on_close"]);
 });
 
@@ -163,11 +163,11 @@ test("history back called within on_close", async () => {
         list.env.config.historyBack();
         expect.step("on_close");
     }
-    // open a new dialog form
-    await getService("action").doAction(5, { onClose });
+    // Open a new dialog form
+    await getService("action").doAction(5, {onClose});
 
     await contains(".modal-header button.btn-close").click();
-    // await nextTick();
+    // Await nextTick();
     expect(".modal").toHaveCount(0);
     expect(".o_list_view").toHaveCount(0);
     expect(".o_kanban_view").toHaveCount(1);
@@ -180,23 +180,29 @@ test("web client is not deadlocked when a view crashes", async () => {
     expect.errors(1);
 
     const readOnFirstRecordDef = new Deferred();
-    onRpc("web_read", ({ args }) => {
+    onRpc("web_read", ({args}) => {
         if (args[0][0] === 1) {
             return readOnFirstRecordDef;
         }
     });
     await mountWithCleanup(WebClient);
     await getService("action").doAction(3);
-    // open first record in form view. this will crash and will not
+    // Open first record in form view. this will crash and will not
     // display a form view
     await contains(".o_list_view .o_data_cell").click();
     readOnFirstRecordDef.reject(new Error("not working as intended"));
     await animationFrame();
     expect.verifyErrors(["not working as intended"]);
 
-    expect(".o_list_view").toHaveCount(1, { message: "there should still be a list view in dom" });
-    // open another record, the read will not crash
+    expect(".o_list_view").toHaveCount(1, {
+        message: "there should still be a list view in dom",
+    });
+    // Open another record, the read will not crash
     await contains(".o_list_view .o_data_row:eq(1) .o_data_cell").click();
-    expect(".o_list_view").toHaveCount(0, { message: "there should not be a list view in dom" });
-    expect(".o_form_view").toHaveCount(1, { message: "there should be a form view in dom" });
+    expect(".o_list_view").toHaveCount(0, {
+        message: "there should not be a list view in dom",
+    });
+    expect(".o_form_view").toHaveCount(1, {
+        message: "there should be a form view in dom",
+    });
 });

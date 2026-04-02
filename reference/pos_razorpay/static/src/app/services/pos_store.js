@@ -1,5 +1,5 @@
-import { patch } from "@web/core/utils/patch";
-import { PosStore } from "@point_of_sale/app/services/pos_store";
+import {patch} from "@web/core/utils/patch";
+import {PosStore} from "@point_of_sale/app/services/pos_store";
 
 patch(PosStore.prototype, {
     async pay() {
@@ -15,7 +15,9 @@ patch(PosStore.prototype, {
             if (Math.abs(currentOrder.totalDue) === refundedOrder.amount_total) {
                 paymentIds.forEach((pi) => {
                     if (pi.payment_method_id) {
-                        const result = currentOrder.addPaymentline(pi.payment_method_id);
+                        const result = currentOrder.addPaymentline(
+                            pi.payment_method_id
+                        );
                         if (!result.status) {
                             return;
                         }
@@ -33,12 +35,16 @@ patch(PosStore.prototype, {
                 razorpayPaymentlines.forEach((pi) => {
                     const currentDue = currentOrder.remainingDue;
                     if (currentDue < 0) {
-                        const result = currentOrder.addPaymentline(pi.payment_method_id);
+                        const result = currentOrder.addPaymentline(
+                            pi.payment_method_id
+                        );
                         if (!result.status) {
                             return false;
                         }
 
-                        result.data.setAmount(-Math.min(Math.abs(currentDue), pi.amount));
+                        result.data.setAmount(
+                            -Math.min(Math.abs(currentDue), pi.amount)
+                        );
                         result.data.updateRefundPaymentLine(pi);
                     }
                 });

@@ -1,5 +1,5 @@
-import { PaymentStripe } from "@pos_stripe/app/payment_stripe";
-import { patch } from "@web/core/utils/patch";
+import {PaymentStripe} from "@pos_stripe/app/payment_stripe";
+import {patch} from "@web/core/utils/patch";
 
 patch(PaymentStripe.prototype, {
     async captureAfterPayment(processPayment, line) {

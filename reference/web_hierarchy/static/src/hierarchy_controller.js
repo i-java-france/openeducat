@@ -1,16 +1,19 @@
-import { Component, useRef } from "@odoo/owl";
+import {Component, useRef} from "@odoo/owl";
 
-import { useBus } from "@web/core/utils/hooks";
-import { useModel } from "@web/model/model";
-import { addFieldDependencies, extractFieldsFromArchInfo } from "@web/model/relational_model/utils";
-import { useSetupAction } from "@web/search/action_hook";
-import { CogMenu } from "@web/search/cog_menu/cog_menu";
-import { Layout } from "@web/search/layout";
-import { SearchBar } from "@web/search/search_bar/search_bar";
-import { useSearchBarToggler } from "@web/search/search_bar/search_bar_toggler";
-import { standardViewProps } from "@web/views/standard_view_props";
-import { useViewButtons } from "@web/views/view_button/view_button_hook";
-import { ActionHelper } from "@web/views/action_helper";
+import {useBus} from "@web/core/utils/hooks";
+import {useModel} from "@web/model/model";
+import {
+    addFieldDependencies,
+    extractFieldsFromArchInfo,
+} from "@web/model/relational_model/utils";
+import {useSetupAction} from "@web/search/action_hook";
+import {CogMenu} from "@web/search/cog_menu/cog_menu";
+import {Layout} from "@web/search/layout";
+import {SearchBar} from "@web/search/search_bar/search_bar";
+import {useSearchBarToggler} from "@web/search/search_bar/search_bar_toggler";
+import {standardViewProps} from "@web/views/standard_view_props";
+import {useViewButtons} from "@web/views/view_button/view_button_hook";
+import {ActionHelper} from "@web/views/action_helper";
 
 export class HierarchyController extends Component {
     static components = {
@@ -30,11 +33,14 @@ export class HierarchyController extends Component {
 
     setup() {
         this.rootRef = useRef("root");
-        const { parentFieldName, childFieldName } = this.props.archInfo;
-        const { activeFields, fields } = extractFieldsFromArchInfo(this.props.archInfo, this.props.fields);
-        const additionalFields = [{ name: parentFieldName }];
+        const {parentFieldName, childFieldName} = this.props.archInfo;
+        const {activeFields, fields} = extractFieldsFromArchInfo(
+            this.props.archInfo,
+            this.props.fields
+        );
+        const additionalFields = [{name: parentFieldName}];
         if (childFieldName) {
-            additionalFields.push({ name: childFieldName });
+            additionalFields.push({name: childFieldName});
         }
         addFieldDependencies(activeFields, fields, additionalFields);
         const modelConfig = this.props.state?.modelState?.config || {};
@@ -47,13 +53,9 @@ export class HierarchyController extends Component {
             parentFieldName,
             childFieldName,
         });
-        useBus(
-            this.model.bus,
-            "update",
-            () => {
-                this.render(true);
-            }
-        );
+        useBus(this.model.bus, "update", () => {
+            this.render(true);
+        });
         useViewButtons(this.rootRef, {
             beforeExecuteAction: this.beforeExecuteActionButton.bind(this),
             afterExecuteAction: this.afterExecuteActionButton.bind(this),
@@ -75,7 +77,7 @@ export class HierarchyController extends Component {
 
     async openRecord(node, newWindow) {
         const activeIds = this.model.root.resIds;
-        this.props.selectRecord(node.resId, { activeIds, newWindow });
+        this.props.selectRecord(node.resId, {activeIds, newWindow});
     }
 
     async beforeExecuteActionButton(clickParams) {}

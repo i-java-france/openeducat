@@ -1,7 +1,11 @@
-from requests import Response
 from unittest.mock import patch
-from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCommon
+
+from requests import Response
+
 from odoo.tests.common import tagged
+
+from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCommon
+
 
 @tagged('post_install', '-at_install')
 class TestAdyenPoS(TestPointOfSaleHttpCommon):
@@ -26,7 +30,7 @@ class TestAdyenPoS(TestPointOfSaleHttpCommon):
             # TODO: check that the data passed by pos to adyen is correct
             response = Response()
             response.status_code = 200
-            response._content = "ok".encode()
+            response._content = b"ok"
             return response
 
         with patch('odoo.addons.pos_adyen.models.pos_payment_method.requests.post', post), \

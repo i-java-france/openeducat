@@ -1,8 +1,11 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
 
-import { WebClient } from "@web/webclient/webclient";
-import { clickOnDataset, setupChartJsForTests } from "@web/../tests/views/graph/graph_test_helpers";
+import {WebClient} from "@web/webclient/webclient";
+import {
+    clickOnDataset,
+    setupChartJsForTests,
+} from "@web/../tests/views/graph/graph_test_helpers";
 import {
     contains,
     fields,
@@ -12,21 +15,21 @@ import {
     mountWithCleanup,
 } from "@web/../tests/web_test_helpers";
 
-import { defineProjectModels, projectModels } from "./project_models";
+import {defineProjectModels, projectModels} from "./project_models";
 
 describe.current.tags("desktop");
 
 class ReportProjectTaskUser extends models.Model {
     _name = "report.project.task.user";
-    project_id = fields.Many2one({ relation: "project.project" });
+    project_id = fields.Many2one({relation: "project.project"});
     display_in_project = fields.Boolean();
-    task_id = fields.Many2one({ relation: "project.task" });
-    nbr = fields.Integer({ string: "# of Tasks" });
+    task_id = fields.Many2one({relation: "project.task"});
+    nbr = fields.Integer({string: "# of Tasks"});
 
     _records = [
-        { id: 4, project_id: 1, display_in_project: true },
-        { id: 6, project_id: 1, display_in_project: true },
-        { id: 9, project_id: 2, display_in_project: true },
+        {id: 4, project_id: 1, display_in_project: true},
+        {id: 6, project_id: 1, display_in_project: true},
+        {id: 9, project_id: 2, display_in_project: true},
     ];
     _views = {
         graph: /* xml */ `
@@ -65,7 +68,7 @@ async function mountView(viewName, ctx = {}) {
 
 test("report.project.task.user (graph): clicking on a bar leads to project.task list", async () => {
     mockService("action", {
-        doAction({ res_model }) {
+        doAction({res_model}) {
             expect.step(res_model);
             return super.doAction(...arguments);
         },
@@ -85,7 +88,7 @@ test("report.project.task.user (graph): clicking on a bar leads to project.task 
 
 test("report.project.task.user (pivot): clicking on a cell leads to project.task list", async () => {
     mockService("action", {
-        doAction({ res_model }) {
+        doAction({res_model}) {
             expect.step(res_model);
             return super.doAction(...arguments);
         },
@@ -105,17 +108,23 @@ test("report.project.task.user (pivot): clicking on a cell leads to project.task
 
 test("report.project.task.user: fix the domain, in case field is not present in main model", async () => {
     mockService("action", {
-        doAction({ domain, res_model }) {
+        doAction({domain, res_model}) {
             if (res_model === "project.task") {
-                expect(domain).toEqual(["&", ["display_in_project", "=", true], "&", [1, "=", 1], ["id", "=", 1]]);
+                expect(domain).toEqual([
+                    "&",
+                    ["display_in_project", "=", true],
+                    "&",
+                    [1, "=", 1],
+                    ["id", "=", 1],
+                ]);
             }
             return super.doAction(...arguments);
         },
     });
 
     ReportProjectTaskUser._records = [
-        { id: 1, nbr: 1, task_id: 1, display_in_project: true },
-        { id: 2, nbr: 1, task_id: 2, display_in_project: true },
+        {id: 1, nbr: 1, task_id: 1, display_in_project: true},
+        {id: 2, nbr: 1, task_id: 2, display_in_project: true},
     ];
     ReportProjectTaskUser._views = {
         graph: /* xml */ `
@@ -123,10 +132,10 @@ test("report.project.task.user: fix the domain, in case field is not present in 
                 <field name="task_id"/>
                 <field name="nbr"/>
             </graph>
-        `
+        `,
     };
 
-    const view = await mountView("graph", { group_by: ["task_id", "nbr"] });
+    const view = await mountView("graph", {group_by: ["task_id", "nbr"]});
     await animationFrame();
     await clickOnDataset(view);
     await animationFrame();

@@ -73,7 +73,7 @@ function addBefore(target, operation) {
     if (nodes.length === 0) {
         return;
     }
-    const { previousSibling } = target;
+    const {previousSibling} = target;
     target.before(...nodes);
     if (previousSibling?.nodeType === Node.TEXT_NODE) {
         const [text1, text2] = previousSibling.data.split(RSTRIP_REGEXP);
@@ -113,7 +113,8 @@ function getXpath(operation) {
     if (odoo.debug) {
         if (CLASS_CONTAINS_REGEX.test(xpath)) {
             const parent = operation.closest("t[t-inherit]");
-            const templateName = parent.getAttribute("t-name") || parent.getAttribute("t-inherit");
+            const templateName =
+                parent.getAttribute("t-name") || parent.getAttribute("t-inherit");
             console.warn(
                 `Error-prone use of @class in template "${templateName}" (or one of its inheritors).` +
                     " Use the hasclass(*classes) function to filter elements by their classes"
@@ -126,7 +127,10 @@ function getXpath(operation) {
     return xpath.replaceAll(HASCLASS_REGEXP, (_, capturedGroup) =>
         capturedGroup
             .split(",")
-            .map((c) => `contains(concat(' ', @class, ' '), ' ${c.trim().slice(1, -1)} ')`)
+            .map(
+                (c) =>
+                    `contains(concat(' ', @class, ' '), ' ${c.trim().slice(1, -1)} ')`
+            )
             .join(" and ")
     );
 }
@@ -142,14 +146,22 @@ function getNode(element, operation) {
     doc.appendChild(root); // => root is the documentElement of its ownerDocument (we do that in case root is a clone)
     if (operation.tagName === "xpath") {
         const xpath = getXpath(operation);
-        const result = doc.evaluate(xpath, root, null, XPathResult.FIRST_ORDERED_NODE_TYPE);
+        const result = doc.evaluate(
+            xpath,
+            root,
+            null,
+            XPathResult.FIRST_ORDERED_NODE_TYPE
+        );
         return result.singleNodeValue;
     }
-    const attributes = [...operation.attributes].filter((attr) => !attr.name.startsWith(TCTX));
+    const attributes = [...operation.attributes].filter(
+        (attr) => !attr.name.startsWith(TCTX)
+    );
     for (const elem of root.querySelectorAll(operation.tagName)) {
         if (
             attributes.every(
-                ({ name, value }) => name === "position" || elem.getAttribute(name) === value
+                ({name, value}) =>
+                    name === "position" || elem.getAttribute(name) === value
             )
         ) {
             return elem;
@@ -166,7 +178,9 @@ function getNode(element, operation) {
 function getElement(element, operation) {
     const node = getNode(element, operation);
     if (!node) {
-        throw new Error(`Element '${operation.outerHTML}' cannot be located in element tree`);
+        throw new Error(
+            `Element '${operation.outerHTML}' cannot be located in element tree`
+        );
     }
     if (!(node instanceof Element)) {
         throw new Error(`Found node ${node} instead of an element`);
@@ -182,7 +196,10 @@ function getElement(element, operation) {
 function getNodes(element, operation) {
     const nodes = [];
     for (const childNode of operation.childNodes) {
-        if (childNode.tagName === "xpath" && childNode.getAttribute?.("position") === "move") {
+        if (
+            childNode.tagName === "xpath" &&
+            childNode.getAttribute?.("position") === "move"
+        ) {
             const node = getElement(element, childNode);
             node.setAttribute(TCTX, getTranslationContext(node));
             removeNode(node);
@@ -220,9 +237,10 @@ function modifyAttributes(target, operation) {
             }
             const separator = child.getAttribute("separator") || ",";
             const toRemove = new Set(splitAndTrim(remove, separator));
-            const values = splitAndTrim(target.getAttribute(attributeName) || "", separator).filter(
-                (s) => !toRemove.has(s)
-            );
+            const values = splitAndTrim(
+                target.getAttribute(attributeName) || "",
+                separator
+            ).filter((s) => !toRemove.has(s));
             values.push(...splitAndTrim(add, separator).filter((s) => s));
             value = values.join(separator);
         }
@@ -230,7 +248,10 @@ function modifyAttributes(target, operation) {
         if (value) {
             target.setAttribute(attributeName, value);
             if (!(add || remove)) {
-                target.setAttribute(`t-translation-context-${attributeName}`, translationContext);
+                target.setAttribute(
+                    `t-translation-context-${attributeName}`,
+                    translationContext
+                );
             }
         } else {
             target.removeAttribute(attributeName);
@@ -244,7 +265,7 @@ function modifyAttributes(target, operation) {
  * @param {Node} node
  */
 function removeNode(node) {
-    const { nextSibling, previousSibling } = node;
+    const {nextSibling, previousSibling} = node;
     node.remove();
     if (
         nextSibling?.nodeType === Node.TEXT_NODE &&
@@ -330,7 +351,7 @@ export function applyInheritance(root, operations, url = "") {
 
         if (odoo.debug && url) {
             const attributes = [...operation.attributes].map(
-                ({ name, value }) =>
+                ({name, value}) =>
                     `${name}=${JSON.stringify(name === "position" ? position : value)}`
             );
             const comment = document.createComment(

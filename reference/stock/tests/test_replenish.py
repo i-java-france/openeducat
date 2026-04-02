@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from freezegun import freeze_time
 
-from odoo.addons.stock.tests.common import TestStockCommon
-from odoo.tests import Form
 from odoo import Command, fields
+from odoo.tests import Form
 
+from odoo.addons.stock.tests.common import TestStockCommon
 
 
 class TestStockReplenish(TestStockCommon):

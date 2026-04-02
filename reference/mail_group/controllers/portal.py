@@ -1,17 +1,17 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import babel.dates
 import werkzeug
 
-from odoo import http, fields, tools, models
-from odoo.addons.portal.controllers.portal import pager as portal_pager
+from odoo import fields, http, models, tools
 from odoo.exceptions import AccessError
 from odoo.fields import Domain
-from odoo.http import request, Response
+from odoo.http import Response, request
 from odoo.tools import consteq
-from odoo.tools.translate import LazyTranslate
 from odoo.tools.misc import get_lang
+from odoo.tools.translate import LazyTranslate
+
+from odoo.addons.portal.controllers.portal import pager as portal_pager
 
 _lt = LazyTranslate(__name__)
 

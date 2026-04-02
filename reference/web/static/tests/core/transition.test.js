@@ -1,9 +1,13 @@
-import { test, expect } from "@odoo/hoot";
-import { Transition, useTransition, config as transitionConfig } from "@web/core/transition";
-import { mountWithCleanup, patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {
+    Transition,
+    config as transitionConfig,
+    useTransition,
+} from "@web/core/transition";
+import {mountWithCleanup, patchWithCleanup} from "@web/../tests/web_test_helpers";
 
-import { Component, xml, useState } from "@odoo/owl";
-import { animationFrame, runAllTimers } from "@odoo/hoot-mock";
+import {Component, useState, xml} from "@odoo/owl";
+import {animationFrame, runAllTimers} from "@odoo/hoot-mock";
 
 test("useTransition hook (default params)", async () => {
     patchWithCleanup(transitionConfig, {
@@ -20,9 +24,9 @@ test("useTransition hook (default params)", async () => {
         }
     }
 
-    // noMainContainer, because the await for the mount of the main container
+    // NoMainContainer, because the await for the mount of the main container
     // will already change the transition
-    const parent = await mountWithCleanup(Parent, { noMainContainer: true });
+    const parent = await mountWithCleanup(Parent, {noMainContainer: true});
 
     expect(".test.test-enter-active:not(.test-enter)").toHaveCount(1);
     parent.transition.shouldMount = false;
@@ -53,9 +57,9 @@ test("useTransition hook (initially visible and immediate=true)", async () => {
         }
     }
 
-    // noMainContainer, because the await for the mount of the main container
+    // NoMainContainer, because the await for the mount of the main container
     // will already change the transition
-    const parent = await mountWithCleanup(Parent, { noMainContainer: true });
+    const parent = await mountWithCleanup(Parent, {noMainContainer: true});
 
     // Mounted with -enter but not -enter-active
     expect(".test.test-enter:not(.test-enter-active)").toHaveCount(1);
@@ -90,9 +94,9 @@ test("useTransition hook (initially not visible)", async () => {
         }
     }
 
-    // noMainContainer, because the await for the mount of the main container
+    // NoMainContainer, because the await for the mount of the main container
     // will already change the transition
-    const parent = await mountWithCleanup(Parent, { noMainContainer: true });
+    const parent = await mountWithCleanup(Parent, {noMainContainer: true});
     expect(".test").toHaveCount(0);
 
     parent.transition.shouldMount = true;
@@ -118,19 +122,19 @@ test("Transition HOC", async () => {
                 <div t-att-class="transition.className"/>
             </Transition>
         `;
-        static components = { Transition };
+        static components = {Transition};
         static props = ["*"];
         setup() {
-            this.state = useState({ show: true });
+            this.state = useState({show: true});
         }
         onLeave() {
             expect.step("leave");
         }
     }
 
-    // noMainContainer, because the await for the mount of the main container
+    // NoMainContainer, because the await for the mount of the main container
     // will already change the transition
-    const parent = await mountWithCleanup(Parent, { noMainContainer: true });
+    const parent = await mountWithCleanup(Parent, {noMainContainer: true});
 
     // Mounted with -enter but not -enter-active
     expect(".test.test-enter:not(.test-enter-active)").toHaveCount(1);

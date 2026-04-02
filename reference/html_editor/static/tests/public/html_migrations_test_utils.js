@@ -1,5 +1,5 @@
-import { before } from "@odoo/hoot";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {before} from "@odoo/hoot";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
 
 const migrateCallbacks = {};
 

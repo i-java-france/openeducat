@@ -1,10 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from freezegun import freeze_time
 from unittest.mock import patch
 
-from odoo.addons.website_forum.tests.common import TestForumCommon
+from freezegun import freeze_time
+
 from odoo.tests import tagged
+
+from odoo.addons.website_forum.tests.common import TestForumCommon
 
 
 @tagged('post_install', '-at_install')

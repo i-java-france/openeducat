@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
     Terms to translate for the Gmail plugin
 -->
@@ -22,5 +22,6 @@
     <string>No project found.</string>
     <string>The Contact needs to exist to create Task.</string>
     <string>No project</string>
-    <string>There are no project in your database. Please ask your project manager to create one.</string>
+    <string
+    >There are no project in your database. Please ask your project manager to create one.</string>
 </ressources>

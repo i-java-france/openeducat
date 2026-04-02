@@ -1,18 +1,15 @@
 import json
-from typing import Union, Dict, Any
+from typing import Any
 
+from .bytes_to_base64url import bytes_to_base64url
 from .structs import (
     PublicKeyCredentialCreationOptions,
     PublicKeyCredentialRequestOptions,
 )
-from .bytes_to_base64url import bytes_to_base64url
 
 
 def options_to_json(
-    options: Union[
-        PublicKeyCredentialCreationOptions,
-        PublicKeyCredentialRequestOptions,
-    ]
+    options: PublicKeyCredentialCreationOptions | PublicKeyCredentialRequestOptions
 ) -> str:
     """
     Prepare options for transmission to the front end as JSON
@@ -22,13 +19,13 @@ def options_to_json(
         if options.rp.id:
             _rp["id"] = options.rp.id
 
-        _user: Dict[str, Any] = {
+        _user: dict[str, Any] = {
             "id": bytes_to_base64url(options.user.id),
             "name": options.user.name,
             "displayName": options.user.display_name,
         }
 
-        reg_to_return: Dict[str, Any] = {
+        reg_to_return: dict[str, Any] = {
             "rp": _rp,
             "user": _user,
             "challenge": bytes_to_base64url(options.challenge),
@@ -47,7 +44,7 @@ def options_to_json(
             json_excluded = []
 
             for cred in _excluded:
-                json_excluded_cred: Dict[str, Any] = {
+                json_excluded_cred: dict[str, Any] = {
                     "id": bytes_to_base64url(cred.id),
                     "type": cred.type.value,
                 }
@@ -63,7 +60,7 @@ def options_to_json(
 
         if options.authenticator_selection is not None:
             _selection = options.authenticator_selection
-            json_selection: Dict[str, Any] = {}
+            json_selection: dict[str, Any] = {}
 
             if _selection.authenticator_attachment is not None:
                 json_selection[
@@ -87,7 +84,7 @@ def options_to_json(
         return json.dumps(reg_to_return)
 
     if isinstance(options, PublicKeyCredentialRequestOptions):
-        auth_to_return: Dict[str, Any] = {"challenge": bytes_to_base64url(options.challenge)}
+        auth_to_return: dict[str, Any] = {"challenge": bytes_to_base64url(options.challenge)}
 
         if options.timeout is not None:
             auth_to_return["timeout"] = options.timeout
@@ -100,7 +97,7 @@ def options_to_json(
             json_allowed = []
 
             for cred in _allowed:
-                json_allowed_cred: Dict[str, Any] = {
+                json_allowed_cred: dict[str, Any] = {
                     "id": bytes_to_base64url(cred.id),
                     "type": cred.type.value,
                 }

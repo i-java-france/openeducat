@@ -1,5 +1,5 @@
 /* eslint-env worker */
-/* eslint-disable no-restricted-globals */
+
 
 let intervalId = null;
 let awaitingTock = false;
@@ -19,20 +19,23 @@ function startProcessing(fps) {
         return;
     }
     isRunning = true;
-    intervalId = setInterval(() => {
-        if (awaitingTock) {
-            return;
-        }
-        awaitingTock = true;
-        self.postMessage({ command: "tick" });
-    }, Math.floor(1000 / (fps || 30)));
+    intervalId = setInterval(
+        () => {
+            if (awaitingTock) {
+                return;
+            }
+            awaitingTock = true;
+            self.postMessage({command: "tick"});
+        },
+        Math.floor(1000 / (fps || 30))
+    );
 }
 
 self.onmessage = (e) => {
     if (!e.data?.command) {
         return;
     }
-    const { command, fps } = e.data;
+    const {command, fps} = e.data;
     switch (command) {
         case "start":
             startProcessing(fps);

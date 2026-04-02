@@ -1,6 +1,6 @@
-import { animationFrame } from "@odoo/hoot-mock";
-import { Model } from "@odoo/o-spreadsheet";
-import { OdooDataProvider } from "@spreadsheet/data_sources/odoo_data_provider";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Model} from "@odoo/o-spreadsheet";
+import {OdooDataProvider} from "@spreadsheet/data_sources/odoo_data_provider";
 import {
     defineActions,
     defineMenus,
@@ -8,8 +8,8 @@ import {
     makeMockEnv,
     onRpc,
 } from "@web/../tests/web_test_helpers";
-import { setCellContent } from "./commands";
-import { addRecordsFromServerData, addViewsFromServerData } from "./data";
+import {setCellContent} from "./commands";
+import {addRecordsFromServerData, addViewsFromServerData} from "./data";
 
 /**
  * @typedef {import("@spreadsheet/../tests/helpers/data").ServerData} ServerData
@@ -19,7 +19,7 @@ import { addRecordsFromServerData, addViewsFromServerData } from "./data";
 export function setupDataSourceEvaluation(model) {
     model.config.custom.odooDataProvider.addEventListener("data-source-updated", () => {
         const sheetId = model.getters.getActiveSheetId();
-        model.dispatch("EVALUATE_CELLS", { sheetId });
+        model.dispatch("EVALUATE_CELLS", {sheetId});
     });
 }
 
@@ -51,7 +51,7 @@ export async function createModelWithDataSource(params = {}) {
     // }
     setupDataSourceEvaluation(model);
     await animationFrame(); // initial async formulas loading
-    return { model, env };
+    return {model, env};
 }
 
 /**

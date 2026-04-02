@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 from odoo import Command
-from odoo.addons.account.tests.common import TestTaxCommon
 from odoo.tests import tagged
+
+from odoo.addons.account.tests.common import TestTaxCommon
 
 
 @tagged('post_install', '-at_install')
@@ -12,7 +12,7 @@ class TestTax(TestTaxCommon):
         self.assertAlmostEqual(results['total_included'], expected_values['total_included'])
         self.assertAlmostEqual(results['total_excluded'], expected_values['total_excluded'])
         self.assertEqual(len(results['taxes']), len(expected_values['taxes']))
-        for values, tax_expected_values in zip(results['taxes'], expected_values['taxes']):
+        for values, tax_expected_values in zip(results['taxes'], expected_values['taxes'], strict=False):
             self.assertEqual(round(values['base'], 6), tax_expected_values[0])
             self.assertEqual(round(values['amount'], 6), tax_expected_values[1])
 

@@ -217,7 +217,9 @@ export function convertRgbaToCSSColor(r, g, b, a) {
  */
 export function convertCSSColorToRgba(cssColor = "") {
     // Check if cssColor is a rgba() or rgb() color
-    const rgba = cssColor.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d*(?:\.\d+)?))?\)$/);
+    const rgba = cssColor.match(
+        /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d*(?:\.\d+)?))?\)$/
+    );
     if (rgba) {
         if (rgba[4] === undefined) {
             rgba[4] = 1;
@@ -246,7 +248,10 @@ export function convertCSSColorToRgba(cssColor = "") {
             red: parseInt(cssColor.substr(1, 2), 16),
             green: parseInt(cssColor.substr(3, 2), 16),
             blue: parseInt(cssColor.substr(5, 2), 16),
-            opacity: (cssColor.length === 9 ? parseInt(cssColor.substr(7, 2), 16) / 255 : 1) * 100,
+            opacity:
+                (cssColor.length === 9
+                    ? parseInt(cssColor.substr(7, 2), 16) / 255
+                    : 1) * 100,
         };
     }
 
@@ -377,9 +382,13 @@ export function rgbToHex(rgb = "", node = null) {
                 bgColor = rgbToHex(bgColor, node.parentElement);
             }
             if (bgColor && bgColor.startsWith("#")) {
-                bgRgbValues = (bgColor.match(/[\da-f]{2}/gi) || []).map((val) => parseInt(val, 16));
+                bgRgbValues = (bgColor.match(/[\da-f]{2}/gi) || []).map((val) =>
+                    parseInt(val, 16)
+                );
             } else if (bgColor && bgColor.startsWith("rgb")) {
-                bgRgbValues = (bgColor.match(RGBA_REGEX) || []).map((val) => parseInt(val));
+                bgRgbValues = (bgColor.match(RGBA_REGEX) || []).map((val) =>
+                    parseInt(val)
+                );
             }
         }
         bgRgbValues = bgRgbValues.length ? bgRgbValues : [255, 255, 255]; // Default to white.
@@ -459,9 +468,13 @@ export function blendColors(color, node) {
             bgColor = blendColors(bgColor, node.parentElement);
         }
         if (bgColor.startsWith("#")) {
-            bgRgbValues = (bgColor.match(/[\da-f]{2}/gi) || []).map((val) => parseInt(val, 16));
+            bgRgbValues = (bgColor.match(/[\da-f]{2}/gi) || []).map((val) =>
+                parseInt(val, 16)
+            );
         } else if (bgColor.startsWith("rgb")) {
-            bgRgbValues = (bgColor.match(/[\d.]{1,5}/g) || []).map((val) => parseInt(val));
+            bgRgbValues = (bgColor.match(/[\d.]{1,5}/g) || []).map((val) =>
+                parseInt(val)
+            );
         }
     }
 

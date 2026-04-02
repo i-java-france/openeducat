@@ -6,7 +6,7 @@ from collections import defaultdict
 
 from odoo import api, fields, models
 from odoo.fields import Domain
-from odoo.tools import Query, SQL
+from odoo.tools import SQL, Query
 from odoo.tools.misc import unquote
 from odoo.tools.translate import _
 
@@ -179,7 +179,7 @@ class ProjectProject(models.Model):
     def create(self, vals_list):
         projects = super().create(vals_list)
         sol_ids = set()
-        for project, vals in zip(projects, vals_list):
+        for project, vals in zip(projects, vals_list, strict=False):
             if (vals.get('sale_line_id')):
                 sol_ids.add(vals['sale_line_id'])
             if project.sale_order_id and not project.sale_order_id.project_id:

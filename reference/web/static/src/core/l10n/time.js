@@ -1,6 +1,6 @@
-import { localization } from "@web/core/l10n/localization";
+import {localization} from "@web/core/l10n/localization";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 const NUMERAL_MAPS = [
     "٠١٢٣٤٥٦٧٨٩", // Arabic
@@ -48,7 +48,7 @@ export class Time {
      *  second: 0,
      * }?} params
      */
-    constructor({ hour = 0, minute = 0, second = 0 } = {}) {
+    constructor({hour = 0, minute = 0, second = 0} = {}) {
         /**@type {number} */
         this.hour = hour;
         /**@type {number} */
@@ -171,7 +171,7 @@ export function isMeridiemFormat(format) {
  * @returns {Time | null}
  */
 export function parseTime(value, parseSeconds) {
-    const { isPm, isAm } = meridiemCheck(value);
+    const {isPm, isAm} = meridiemCheck(value);
     value = normalizeTimeStr(value);
 
     if (!value) {
@@ -248,11 +248,18 @@ export function parseTime(value, parseSeconds) {
         hour = 0;
     }
 
-    if (hour >= 0 && hour <= 24 && minute >= 0 && minute < 60 && second >= 0 && second < 60) {
+    if (
+        hour >= 0 &&
+        hour <= 24 &&
+        minute >= 0 &&
+        minute < 60 &&
+        second >= 0 &&
+        second < 60
+    ) {
         if (hour === 24) {
             hour = 0;
         }
-        return new Time({ hour, minute, second });
+        return new Time({hour, minute, second});
     } else {
         return null;
     }
@@ -287,7 +294,8 @@ function normalizeTimeStr(timeStr) {
  * @returns {{ isPm: boolean, isAm: boolean }}
  */
 function meridiemCheck(timeStr) {
-    const amPmMatch = typeof timeStr === "string" ? timeStr.toLowerCase().match(/(am|pm)/g) : false;
+    const amPmMatch =
+        typeof timeStr === "string" ? timeStr.toLowerCase().match(/(am|pm)/g) : false;
     return {
         isPm: amPmMatch && amPmMatch[0] === "pm",
         isAm: amPmMatch && amPmMatch[0] === "am",

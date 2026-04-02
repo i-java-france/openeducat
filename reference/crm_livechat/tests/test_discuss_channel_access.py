@@ -44,7 +44,7 @@ class TestDiscussChannelAccess(HttpCase):
             self.env["discuss.channel"]
             .create(
                 {
-                    "name": f"Visitor #11",
+                    "name": "Visitor #11",
                     "livechat_operator_id": self.env.user.partner_id.id,
                     "channel_type": "livechat",
                 }

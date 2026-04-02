@@ -1,8 +1,8 @@
-import { MegaMenuOption } from "@website/builder/plugins/options/mega_menu_option";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { withSequence } from "@html_editor/utils/resource";
-import { SNIPPET_SPECIFIC_NEXT } from "@html_builder/utils/option_sequence";
+import {MegaMenuOption} from "@website/builder/plugins/options/mega_menu_option";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {withSequence} from "@html_editor/utils/resource";
+import {SNIPPET_SPECIFIC_NEXT} from "@html_builder/utils/option_sequence";
 
 /**
  * @typedef { Object } MegaMenuOptionShared
@@ -26,7 +26,8 @@ export class MegaMenuOptionPlugin extends Plugin {
         no_parent_containers: ".o_mega_menu",
         is_unremovable_selector: ".o_mega_menu > section",
         unsplittable_node_predicates: (node) =>
-            node?.nodeType === Node.ELEMENT_NODE && node.matches(".o_mega_menu .nav > .nav-link"), //avoid merge
+            node?.nodeType === Node.ELEMENT_NODE &&
+            node.matches(".o_mega_menu .nav > .nav-link"), //avoid merge
     };
 
     getTemplatePrefix() {
@@ -43,13 +44,19 @@ export class MegaMenuOptionPlugin extends Plugin {
             // menu itself.
             const classes = [...megaMenuEl.classList].filter(
                 (megaMenuClass) =>
-                    !["dropdown-menu", "o_mega_menu", "o_editable"].includes(megaMenuClass)
+                    !["dropdown-menu", "o_mega_menu", "o_editable"].includes(
+                        megaMenuClass
+                    )
             );
 
             proms.push(
-                this.services.orm.write("website.menu", [parseInt(megaMenuEl.dataset.oeId)], {
-                    mega_menu_classes: classes.join(" "),
-                })
+                this.services.orm.write(
+                    "website.menu",
+                    [parseInt(megaMenuEl.dataset.oeId)],
+                    {
+                        mega_menu_classes: classes.join(" "),
+                    }
+                )
             );
         }
         await Promise.all(proms);

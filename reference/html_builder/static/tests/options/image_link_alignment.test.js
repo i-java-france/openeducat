@@ -1,6 +1,6 @@
-import { setupHTMLBuilder } from "@html_builder/../tests/helpers";
-import { describe, expect, test } from "@odoo/hoot";
-import { contains, onRpc } from "@web/../tests/web_test_helpers";
+import {setupHTMLBuilder} from "@html_builder/../tests/helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {contains, onRpc} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 
@@ -16,7 +16,9 @@ test("image link mirrors alignment classes", async () => {
     await contains("[data-action-id='setLink']").click();
     expect(":iframe .d-flex a").toHaveClass("mx-auto");
     await contains("[data-label='Alignment'] .btn-secondary ").click();
-    await contains("[data-action-id='imageAlignClassAction']:contains('Right')").click();
+    await contains(
+        "[data-action-id='imageAlignClassAction']:contains('Right')"
+    ).click();
     expect(":iframe .d-flex a").toHaveClass("ms-auto");
     expect(":iframe .d-flex a").not.toHaveClass("mx-auto");
 });

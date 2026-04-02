@@ -1,13 +1,14 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime
+
 from odoo import exceptions, tools
+from odoo.tests.common import tagged, users
+from odoo.tools import mute_logger
+
 from odoo.addons.mail.tests.common import MailCommon
 from odoo.addons.mail.tests.common_tracking import MailTrackingDurationMixinCase
 from odoo.addons.test_mail.tests.common import TestRecipients
-from odoo.tests.common import tagged, users
-from odoo.tools import mute_logger
 
 
 @tagged('mail_thread', 'mail_track', 'is_query_count')
@@ -257,5 +258,5 @@ class TestMailThreadCC(MailCommon):
                 'partner_id': False, 'create_values': {},
             }]
         self.assertEqual(len(suggestions), len(expected_list))
-        for suggestion, expected in zip(suggestions, expected_list):
+        for suggestion, expected in zip(suggestions, expected_list, strict=False):
             self.assertDictEqual(suggestion, expected)

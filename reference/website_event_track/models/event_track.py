@@ -1,14 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta
 import logging
-
-from markupsafe import Markup
+from datetime import timedelta
 from random import randint
 from textwrap import shorten
 
-from pytz import timezone, utc
 import werkzeug.urls
+from markupsafe import Markup
+from pytz import timezone, utc
 
 from odoo import api, fields, models, tools
 from odoo.exceptions import UserError

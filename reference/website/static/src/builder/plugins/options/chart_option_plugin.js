@@ -1,7 +1,7 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { ChartOption, DATASET_KEY_PREFIX, getColor } from "./chart_option";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {ChartOption, DATASET_KEY_PREFIX, getColor} from "./chart_option";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 /**
  * @typedef { Object } ChartOptionShared
@@ -51,7 +51,9 @@ export class BaseChartAction extends BuilderAction {
         const datasets = this.getData(editingElement).datasets;
         let dataValues;
         if (!editingElement.dataset.stacked) {
-            dataValues = datasets.flatMap((set) => set.data.map((data) => parseInt(data) || 0));
+            dataValues = datasets.flatMap((set) =>
+                set.data.map((data) => parseInt(data) || 0)
+            );
         } else {
             dataValues = datasets.reduce((acc, set) => {
                 const data = set.data.map((data) => parseInt(data) || 0);
@@ -71,17 +73,20 @@ export class BaseChartAction extends BuilderAction {
 
     randomColor() {
         return (
-            "#" + ("00000" + ((Math.random() * (1 << 24)) | 0).toString(16)).slice(-6).toUpperCase()
+            "#" +
+            ("00000" + ((Math.random() * (1 << 24)) | 0).toString(16))
+                .slice(-6)
+                .toUpperCase()
         );
     }
 }
 
 export class SetChartTypeAction extends BaseChartAction {
     static id = "setChartType";
-    isApplied({ editingElement, value }) {
+    isApplied({editingElement, value}) {
         return editingElement.dataset.type === value;
     }
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         editingElement.dataset.type = value;
 
         const data = this.getData(editingElement);
@@ -107,7 +112,7 @@ export class SetChartTypeAction extends BaseChartAction {
 }
 export class AddColumnAction extends BaseChartAction {
     static id = "addColumn";
-    apply({ editingElement }) {
+    apply({editingElement}) {
         const data = this.getData(editingElement);
         const fillDatasetArray = (value) => Array(data.labels.length).fill(value);
 
@@ -126,7 +131,7 @@ export class AddColumnAction extends BaseChartAction {
 }
 export class RemoveColumnAction extends BaseChartAction {
     static id = "removeColumn";
-    apply({ editingElement, params: { mainParam: key } }) {
+    apply({editingElement, params: {mainParam: key}}) {
         const data = this.getData(editingElement);
         const toRemoveIndex = data.datasets.findIndex((dataset) => dataset.key === key);
         data.datasets.splice(toRemoveIndex, 1);
@@ -135,7 +140,7 @@ export class RemoveColumnAction extends BaseChartAction {
 }
 export class AddRowAction extends BaseChartAction {
     static id = "addRow";
-    apply({ editingElement }) {
+    apply({editingElement}) {
         const data = this.getData(editingElement);
         data.labels.push("");
         data.datasets.forEach((dataset) => {
@@ -150,7 +155,7 @@ export class AddRowAction extends BaseChartAction {
 }
 export class RemoveRowAction extends BaseChartAction {
     static id = "removeRow";
-    apply({ editingElement, params: { mainParam: labelIndex } }) {
+    apply({editingElement, params: {mainParam: labelIndex}}) {
         const data = this.getData(editingElement);
         data.labels.splice(labelIndex, 1);
         data.datasets.forEach((dataset) => {
@@ -165,28 +170,36 @@ export class RemoveRowAction extends BaseChartAction {
 }
 export class UpdateDatasetValueAction extends BaseChartAction {
     static id = "updateDatasetValue";
-    getValue({ editingElement, params: { datasetKey, valueIndex } }) {
+    getValue({editingElement, params: {datasetKey, valueIndex}}) {
         const data = this.getData(editingElement);
-        const targetDataset = data.datasets.find((dataset) => dataset.key === datasetKey);
+        const targetDataset = data.datasets.find(
+            (dataset) => dataset.key === datasetKey
+        );
         return targetDataset?.data[valueIndex] || 0;
     }
-    apply({ editingElement, value, params: { datasetKey, valueIndex } }) {
+    apply({editingElement, value, params: {datasetKey, valueIndex}}) {
         const data = this.getData(editingElement);
-        const targetDataset = data.datasets.find((dataset) => dataset.key === datasetKey);
+        const targetDataset = data.datasets.find(
+            (dataset) => dataset.key === datasetKey
+        );
         targetDataset.data[valueIndex] = value;
         this.updateDOMData(editingElement, data);
     }
 }
 export class UpdateDatasetLabelAction extends BaseChartAction {
     static id = "updateDatasetLabel";
-    getValue({ editingElement, params: { mainParam: datasetKey } }) {
+    getValue({editingElement, params: {mainParam: datasetKey}}) {
         const data = this.getData(editingElement);
-        const targetDataset = data.datasets.find((dataset) => dataset.key === datasetKey);
+        const targetDataset = data.datasets.find(
+            (dataset) => dataset.key === datasetKey
+        );
         return targetDataset?.label;
     }
-    apply({ editingElement, value, params: { mainParam: datasetKey } }) {
+    apply({editingElement, value, params: {mainParam: datasetKey}}) {
         const data = this.getData(editingElement);
-        const targetDataset = data.datasets.find((dataset) => dataset.key === datasetKey);
+        const targetDataset = data.datasets.find(
+            (dataset) => dataset.key === datasetKey
+        );
         targetDataset.label = value;
         this.updateDOMData(editingElement, data);
     }
@@ -194,11 +207,11 @@ export class UpdateDatasetLabelAction extends BaseChartAction {
 
 export class UpdateLabelNameAction extends BaseChartAction {
     static id = "updateLabelName";
-    getValue({ editingElement, params: { mainParam: labelIndex } }) {
+    getValue({editingElement, params: {mainParam: labelIndex}}) {
         const data = this.getData(editingElement);
         return data.labels[labelIndex];
     }
-    apply({ editingElement, value, params: { mainParam: labelIndex } }) {
+    apply({editingElement, value, params: {mainParam: labelIndex}}) {
         const data = this.getData(editingElement);
         data.labels[labelIndex] = value;
         this.updateDOMData(editingElement, data);
@@ -206,7 +219,7 @@ export class UpdateLabelNameAction extends BaseChartAction {
 }
 export class setMinMaxAction extends BaseChartAction {
     static id = "setMinMax";
-    getValue({ editingElement, params: { mainParam: type } }) {
+    getValue({editingElement, params: {mainParam: type}}) {
         if (type === "min") {
             return parseInt(editingElement.dataset.ticksMin) || "";
         }
@@ -214,7 +227,7 @@ export class setMinMaxAction extends BaseChartAction {
             return parseInt(editingElement.dataset.ticksMax) || "";
         }
     }
-    apply({ editingElement, value, params: { mainParam: type } }) {
+    apply({editingElement, value, params: {mainParam: type}}) {
         let minValue, maxValue;
         let noMin = false;
         let noMax = false;
@@ -264,7 +277,7 @@ export class setMinMaxAction extends BaseChartAction {
 }
 export class ColorChangeAction extends BaseChartAction {
     static id = "colorChange";
-    getValue({ editingElement, params: { type, datasetIndex, dataIndex } }) {
+    getValue({editingElement, params: {type, datasetIndex, dataIndex}}) {
         const data = this.getData(editingElement);
         if (this.isPieChart(editingElement)) {
             // TODO: shouldn't getColor be done directly in BuilderColorPicker?
@@ -273,7 +286,7 @@ export class ColorChangeAction extends BaseChartAction {
             return this.getColor(data.datasets[datasetIndex]?.[type]);
         }
     }
-    apply({ editingElement, value, params: { type, datasetIndex, dataIndex } }) {
+    apply({editingElement, value, params: {type, datasetIndex, dataIndex}}) {
         value = value.replace("var(--", "").replace(")", "");
         const data = this.getData(editingElement);
         if (this.isPieChart(editingElement)) {

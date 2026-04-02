@@ -1,7 +1,7 @@
-import { _t } from "@web/core/l10n/translation";
-import { Component } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
+import {_t} from "@web/core/l10n/translation";
+import {Component} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
 
 export class SubtaskCounter extends Component {
     static template = "project.SubtaskCounter";
@@ -39,8 +39,8 @@ export class SubtaskCounter extends Component {
 export const subtaskCounter = {
     component: SubtaskCounter,
     fieldDependencies: [
-        { name: "closed_subtask_count", type: "integer" },
-        { name: "subtask_count", type: "integer" },
+        {name: "closed_subtask_count", type: "integer"},
+        {name: "subtask_count", type: "integer"},
     ],
 };
 

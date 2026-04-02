@@ -69,12 +69,12 @@ function log(obj, depth = 0, maxDepth = 2) {
  */
 function compareObjects(obj1, obj2, visited = new Map(), depth = 0, maxDepth = 10) {
     if (depth > maxDepth) {
-        return { error: "Profondeur de comparaison maximale atteinte." };
+        return {error: "Profondeur de comparaison maximale atteinte."};
     }
     if (visited.has(obj1) || visited.has(obj2)) {
         return visited.get(obj1) === visited.get(obj2)
             ? {}
-            : { error: "Référence circulaire détectée." };
+            : {error: "Référence circulaire détectée."};
     }
     visited.set(obj1, depth);
     visited.set(obj2, depth);
@@ -85,12 +85,18 @@ function compareObjects(obj1, obj2, visited = new Map(), depth = 0, maxDepth = 1
         const val2 = obj2[key];
         if (typeof val1 !== typeof val2 || val1 !== val2) {
             if (val1 && val2 && typeof val1 === "object" && typeof val2 === "object") {
-                const subDiff = compareObjects(val1, val2, visited, depth + 1, maxDepth);
+                const subDiff = compareObjects(
+                    val1,
+                    val2,
+                    visited,
+                    depth + 1,
+                    maxDepth
+                );
                 if (Object.keys(subDiff).length > 0) {
                     differences[key] = subDiff;
                 }
             } else {
-                differences[key] = { obj1: val1, obj2: val2 };
+                differences[key] = {obj1: val1, obj2: val2};
             }
         }
     });

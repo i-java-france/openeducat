@@ -3,8 +3,11 @@ import re
 
 import odoo
 from odoo.tools.misc import file_open
+
 from odoo.addons.base.tests.common import HttpCaseWithUserDemo
-from odoo.addons.cloud_storage_google.tests.test_cloud_storage_google import TestCloudStorageGoogleCommon
+from odoo.addons.cloud_storage_google.tests.test_cloud_storage_google import (
+    TestCloudStorageGoogleCommon,
+)
 
 
 @odoo.tests.tagged("-at_install", "post_install", "mail_controller")

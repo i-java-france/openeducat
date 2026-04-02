@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models, fields, _
-from odoo.exceptions import UserError, ValidationError
+from odoo import _, fields, models
+from odoo.exceptions import UserError
 
 
 class AccountPayment(models.Model):
@@ -48,4 +48,3 @@ class AccountPayment(models.Model):
         if self.move_id.expense_ids:
             return _("Payment created for: %s", self.move_id.expense_ids._get_html_link())
         return super()._creation_message()
-

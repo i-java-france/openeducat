@@ -1,6 +1,6 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { click, edit, press, queryAllValues, queryFirst, select } from "@odoo/hoot-dom";
-import { animationFrame, Deferred, runAllTimers } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {click, edit, press, queryAllValues, queryFirst, select} from "@odoo/hoot-dom";
+import {Deferred, animationFrame, runAllTimers} from "@odoo/hoot-mock";
 import {
     clickSave,
     defineModels,
@@ -14,8 +14,8 @@ import {
 
 class Partner extends models.Model {
     name = fields.Char();
-    foo = fields.Char({ default: "My little Foo Value" });
-    bar = fields.Boolean({ default: true });
+    foo = fields.Char({default: "My little Foo Value"});
+    bar = fields.Boolean({default: true});
     int_field = fields.Integer();
     p = fields.One2many({
         relation: "partner",
@@ -25,7 +25,7 @@ class Partner extends models.Model {
         relation: "turtle",
         relation_field: "turtle_trululu",
     });
-    trululu = fields.Many2one({ relation: "partner" });
+    trululu = fields.Many2one({relation: "partner"});
     color = fields.Selection({
         selection: [
             ["red", "Red"],
@@ -41,7 +41,7 @@ class Partner extends models.Model {
         ],
     });
     reference_char = fields.Char();
-    model_id = fields.Many2one({ relation: "ir.model" });
+    model_id = fields.Many2one({relation: "ir.model"});
 
     _records = [
         {
@@ -76,8 +76,8 @@ class Product extends models.Model {
     name = fields.Char();
 
     _records = [
-        { id: 37, name: "xphone" },
-        { id: 41, name: "xpad" },
+        {id: 37, name: "xphone"},
+        {id: 41, name: "xpad"},
     ];
 }
 
@@ -85,26 +85,26 @@ class PartnerType extends models.Model {
     name = fields.Char();
 
     _records = [
-        { id: 12, name: "gold" },
-        { id: 14, name: "silver" },
+        {id: 12, name: "gold"},
+        {id: 14, name: "silver"},
     ];
 }
 
 class Turtle extends models.Model {
     name = fields.Char();
-    turtle_trululu = fields.Many2one({ relation: "partner" });
+    turtle_trululu = fields.Many2one({relation: "partner"});
     turtle_ref = fields.Reference({
         selection: [
             ["product", "Product"],
             ["partner", "Partner"],
         ],
     });
-    partner_ids = fields.Many2many({ relation: "partner" });
+    partner_ids = fields.Many2many({relation: "partner"});
 
     _records = [
-        { id: 1, name: "leonardo", partner_ids: [] },
-        { id: 2, name: "donatello", partner_ids: [2, 4] },
-        { id: 3, name: "raphael", partner_ids: [], turtle_ref: "product,37" },
+        {id: 1, name: "leonardo", partner_ids: []},
+        {id: 2, name: "donatello", partner_ids: [2, 4]},
+        {id: 3, name: "raphael", partner_ids: [], turtle_ref: "product,37"},
     ];
 }
 
@@ -115,9 +115,9 @@ class IrModel extends models.Model {
     model = fields.Char();
 
     _records = [
-        { id: 17, name: "Partner", model: "partner" },
-        { id: 20, name: "Product", model: "product" },
-        { id: 21, name: "Partner Type", model: "partner.type" },
+        {id: 17, name: "Partner", model: "partner"},
+        {id: 20, name: "Product", model: "product"},
+        {id: 21, name: "Partner Type", model: "partner.type"},
     ];
 }
 
@@ -126,7 +126,7 @@ defineModels([Partner, Product, PartnerType, Turtle, IrModel]);
 describe.current.tags("desktop");
 
 test("ReferenceField can quick create models", async () => {
-    onRpc(({ method }) => expect.step(method));
+    onRpc(({method}) => expect.step(method));
 
     await mountView({
         type: "form",
@@ -149,8 +149,8 @@ test("ReferenceField can quick create models", async () => {
     expect.verifySteps([
         "get_views",
         "onchange",
-        "web_name_search", // for the select
-        "web_name_search", // for the spawned many2one
+        "web_name_search", // For the select
+        "web_name_search", // For the spawned many2one
         "name_create",
         "web_save",
     ]);
@@ -258,19 +258,27 @@ test("ReferenceField in modal write mode", async () => {
     expect(".o_field_widget[name=reference] option:checked").toHaveText("Product", {
         message: "The reference field's model should be Product",
     });
-    expect(".o_field_widget[name=reference] .o-autocomplete--input").toHaveValue("xphone", {
-        message: "The reference field's record should be xphone",
-    });
+    expect(".o_field_widget[name=reference] .o-autocomplete--input").toHaveValue(
+        "xphone",
+        {
+            message: "The reference field's record should be xphone",
+        }
+    );
 
     await click(".o_data_cell");
     await animationFrame();
 
     // In modal
-    expect(".modal-lg").toHaveCount(1, { message: "there should be one modal opened" });
-    expect(".modal-lg .o_field_widget[name=reference] option:checked").toHaveText("Product", {
-        message: "The reference field's model should be Product",
-    });
-    expect(".modal-lg .o_field_widget[name=reference] .o-autocomplete--input").toHaveValue("xpad", {
+    expect(".modal-lg").toHaveCount(1, {message: "there should be one modal opened"});
+    expect(".modal-lg .o_field_widget[name=reference] option:checked").toHaveText(
+        "Product",
+        {
+            message: "The reference field's model should be Product",
+        }
+    );
+    expect(
+        ".modal-lg .o_field_widget[name=reference] .o-autocomplete--input"
+    ).toHaveValue("xpad", {
         message: "The reference field's record should be xpad",
     });
 });
@@ -284,7 +292,7 @@ test("reference in form view", async () => {
         </form>
     `;
 
-    onRpc(({ args, method, model }) => {
+    onRpc(({args, method, model}) => {
         if (method === "get_formview_action") {
             expect(args[0]).toEqual([37], {
                 message: "should call get_formview_action with correct id",
@@ -308,8 +316,10 @@ test("reference in form view", async () => {
             });
         }
         if (method === "web_save") {
-            expect(model).toBe("partner", { message: "should write on the current model" });
-            expect(args).toEqual([[1], { reference: "partner.type,12" }], {
+            expect(model).toBe("partner", {
+                message: "should write on the current model",
+            });
+            expect(args).toEqual([[1], {reference: "partner.type,12"}], {
                 message: "should write the correct value",
             });
         }
@@ -358,14 +368,17 @@ test("reference in form view", async () => {
     await click(".o_external_button");
     await animationFrame();
 
-    expect(".o_dialog:not(.o_inactive_modal) .modal-title").toHaveText("Open: custom label", {
-        message: "dialog title should display the custom string label",
-    });
+    expect(".o_dialog:not(.o_inactive_modal) .modal-title").toHaveText(
+        "Open: custom label",
+        {
+            message: "dialog title should display the custom string label",
+        }
+    );
 
     await click(".o_dialog:not(.o_inactive_modal) .o_form_button_cancel");
     await animationFrame();
 
-    await select("partner.type", { target: ".o_field_widget select" });
+    await select("partner.type", {target: ".o_field_widget select"});
     await animationFrame();
 
     expect(".o_field_widget input").toHaveValue("", {
@@ -385,7 +398,8 @@ test("reference in form view", async () => {
 test("Many2One 'Search more...' updates on resModel change", async () => {
     onRpc("has_group", () => true);
 
-    Product._views[["list", false]] = /* xml */ `<list><field name="display_name"/></list>`;
+    Product._views[["list", false]] =
+        /* Xml */ `<list><field name="display_name"/></list>`;
     Product._views[["search", false]] = /* xml */ `<search/>`;
 
     await mountView({
@@ -422,7 +436,7 @@ test("computed reference field changed by onchange to 'False,0' value", async ()
             obj.reference_char = "False,0";
         }
     };
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1]).toEqual({
             bar: false,
             reference_char: "False,0",
@@ -439,7 +453,7 @@ test("computed reference field changed by onchange to 'False,0' value", async ()
         `,
     });
 
-    // trigger the onchange to set a value for the reference field
+    // Trigger the onchange to set a value for the reference field
     await click(".o_field_boolean input");
     await animationFrame();
 
@@ -454,7 +468,7 @@ test("interact with reference field changed by onchange", async () => {
             obj.reference = "partner,1";
         }
     };
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1]).toEqual({
             bar: false,
             reference: "partner,4",
@@ -471,20 +485,20 @@ test("interact with reference field changed by onchange", async () => {
         `,
     });
 
-    // trigger the onchange to set a value for the reference field
+    // Trigger the onchange to set a value for the reference field
     await click(".o_field_boolean input");
     await animationFrame();
 
     expect(".o_field_widget[name=reference] select").toHaveValue("partner");
 
-    // manually update reference field
+    // Manually update reference field
     queryFirst(".o_field_widget[name=reference] input").tabIndex = 0;
     await click(".o_field_widget[name=reference] input");
     await edit("aaa");
     await runAllTimers();
     await click(".ui-autocomplete .ui-menu-item");
 
-    // save
+    // Save
     await clickSave();
 });
 
@@ -525,9 +539,9 @@ test("default_get and onchange with a reference field", async () => {
         message: "reference field value should be correctly set",
     });
 
-    // trigger onchange
+    // Trigger onchange
     await click(".o_field_widget[name=int_field] input");
-    await edit(12, { confirm: "enter" });
+    await edit(12, {confirm: "enter"});
     await animationFrame();
 
     expect(".o_field_widget[name='reference'] select").toHaveValue("partner.type", {
@@ -542,7 +556,7 @@ test("default_get a reference field in a x2m", async () => {
     Partner._fields.turtles = fields.One2many({
         relation: "turtle",
         relation_field: "turtle_trululu",
-        default: [[0, 0, { turtle_ref: "product,37" }]],
+        default: [[0, 0, {turtle_ref: "product,37"}]],
     });
     Turtle._views[["form", false]] = /* xml */ `
         <form>
@@ -576,7 +590,7 @@ test("ReferenceField on char field, reset by onchange", async () => {
     Partner._records[0].foo = "product,37";
     Partner._onChanges.int_field = (obj) => (obj.foo = "product," + obj.int_field);
     let nbNameGet = 0;
-    onRpc("product", "read", ({ args }) => {
+    onRpc("product", "read", ({args}) => {
         if (args[1].length === 1 && args[1][0] === "display_name") {
             nbNameGet++;
         }
@@ -597,16 +611,16 @@ test("ReferenceField on char field, reset by onchange", async () => {
         `,
     });
 
-    expect(nbNameGet).toBe(1, { message: "the first name_get should have been done" });
+    expect(nbNameGet).toBe(1, {message: "the first name_get should have been done"});
     expect(".o_field_widget[name=foo]").toHaveText("xphone", {
         message: "foo field should be correctly set",
     });
-    // trigger onchange
+    // Trigger onchange
     await click(".o_field_widget[name=int_field] input");
-    await edit(41, { confirm: "enter" });
+    await edit(41, {confirm: "enter"});
     await runAllTimers();
     await animationFrame();
-    expect(nbNameGet).toBe(2, { message: "the second name_get should have been done" });
+    expect(nbNameGet).toBe(2, {message: "the second name_get should have been done"});
     expect(".o_field_widget[name=foo]").toHaveText("xpad", {
         message: "foo field should have been updated",
     });
@@ -625,7 +639,7 @@ test("reference and list navigation", async () => {
         `,
     });
 
-    // edit first row
+    // Edit first row
     await click(".o_data_row .o_data_cell");
     await animationFrame();
     expect(".o_data_row [name='reference'] input").toBeFocused();
@@ -722,12 +736,12 @@ test("Reference field with default value in list view", async () => {
     expect.assertions(1);
 
     onRpc("has_group", () => true);
-    onRpc(({ method, args }) => {
+    onRpc(({method, args}) => {
         if (method === "onchange") {
             return {
                 value: {
                     reference: {
-                        id: { id: 2, model: "partner" },
+                        id: {id: 2, model: "partner"},
                         name: "second record",
                     },
                 },
@@ -862,7 +876,7 @@ test("Change model field of a ReferenceField then select an invalid value (tree 
     await animationFrame();
     await click(".o_list_table .o_list_many2one input");
     await animationFrame();
-    //Select the "Partner" option, different from original "Product"
+    // Select the "Partner" option, different from original "Product"
     await click(
         ".o_list_table .o_list_many2one .o_input_dropdown .dropdown-item:contains(Partner)"
     );
@@ -870,7 +884,7 @@ test("Change model field of a ReferenceField then select an invalid value (tree 
     await animationFrame();
     expect(".reference_field input").toHaveValue("");
     expect(".o_list_many2one input").toHaveValue("Partner");
-    //Void the associated, required, "reference" field and make sure the form marks the field as required
+    // Void the associated, required, "reference" field and make sure the form marks the field as required
     await click(".o_list_table .reference_field input");
     const textInput = queryFirst(".o_list_table .reference_field input");
     textInput.setSelectionRange(0, textInput.value.length);
@@ -883,8 +897,8 @@ test("Change model field of a ReferenceField then select an invalid value (tree 
 });
 
 test("model selector is displayed only when it should be", async () => {
-    //The model selector should be only displayed if
-    //there is no hide_model=True options AND no model_field specified
+    // The model selector should be only displayed if
+    // there is no hide_model=True options AND no model_field specified
     await mountView({
         type: "form",
         resModel: "partner",
@@ -916,7 +930,8 @@ test("model selector is displayed only when it should be", async () => {
             "the selection list of the reference field should not exist when model_field is specified and hide_model=True.",
     });
     expect(".o_inner_group:eq(2) select").toHaveCount(0, {
-        message: "the selection list of the reference field should not exist when hide_model=True.",
+        message:
+            "the selection list of the reference field should not exist when hide_model=True.",
     });
     expect(".o_inner_group:eq(3) select").toHaveCount(1, {
         message:
@@ -954,7 +969,7 @@ test("reference field should await fetch model before render", async () => {
 test("do not ask for display_name if field is invisible", async () => {
     expect.assertions(1);
 
-    onRpc("web_read", ({ kwargs }) => {
+    onRpc("web_read", ({kwargs}) => {
         expect(kwargs.specification).toEqual({
             display_name: {},
             reference: {

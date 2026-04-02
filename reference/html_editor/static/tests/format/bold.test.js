@@ -1,11 +1,16 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { click, manuallyDispatchProgrammaticEvent, press, queryOne } from "@odoo/hoot-dom";
-import { animationFrame, tick } from "@odoo/hoot-mock";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
-import { getContent } from "../_helpers/selection";
-import { expectElementCount } from "../_helpers/ui_expectations";
+import {describe, expect, test} from "@odoo/hoot";
+import {
+    click,
+    manuallyDispatchProgrammaticEvent,
+    press,
+    queryOne,
+} from "@odoo/hoot-dom";
+import {animationFrame, tick} from "@odoo/hoot-mock";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
+import {getContent} from "../_helpers/selection";
+import {expectElementCount} from "../_helpers/ui_expectations";
 import {
     bold,
     insertText,
@@ -66,7 +71,7 @@ test("should make qweb tag bold (2)", async () => {
 });
 
 test("should make qweb tag bold and create a step even with partial selection inside contenteditable false", async () => {
-    const { editor, el } = await setupEditor(
+    const {editor, el} = await setupEditor(
         `<div><p t-esc="'Test'" contenteditable="false">T[e]st</p></div>`
     );
     bold(editor);
@@ -100,12 +105,14 @@ test("should make a whole heading bold after a triple click", async () => {
 
 test.tags("desktop");
 test("should make a whole heading not bold after a triple click (heading is considered bold)", async () => {
-    const { el, editor } = await setupEditor(`<h1>ab</h1><p>cd</p>`, {
+    const {el, editor} = await setupEditor(`<h1>ab</h1><p>cd</p>`, {
         styleContent: styleH1Bold,
     });
     await tripleClick(el.querySelector("h1"));
     bold(editor);
-    expect(getContent(el)).toBe(`<h1><span style="font-weight: normal;">[ab]</span></h1><p>cd</p>`);
+    expect(getContent(el)).toBe(
+        `<h1><span style="font-weight: normal;">[ab]</span></h1><p>cd</p>`
+    );
 });
 
 test("should make a selection starting with bold text fully bold", async () => {
@@ -311,7 +318,7 @@ test("should insert a span zws when toggling a formatting command twice", () =>
             bold(editor);
             bold(editor);
         },
-        // todo: It would be better to remove the zws entirely so that
+        // Todo: It would be better to remove the zws entirely so that
         // the P could have the "/" hint but that behavior might be
         // complex with the current implementation.
         contentAfterEdit: `<p o-we-hint-text='Type "/" for commands' class="o-we-hint"><span data-oe-zws-empty-inline="">[]\u200B</span></p>`,
@@ -321,7 +328,9 @@ test("should insert a span zws when toggling a formatting command twice", () =>
 // default behaviour when typing in a contenteditable=true zone.
 test("should type in bold", async () => {
     async function typeChar(editor, char) {
-        await manuallyDispatchProgrammaticEvent(editor.editable, "keydown", { key: char });
+        await manuallyDispatchProgrammaticEvent(editor.editable, "keydown", {
+            key: char,
+        });
         await manuallyDispatchProgrammaticEvent(editor.editable, "beforeinput", {
             inputType: "insertText",
             data: char,
@@ -329,17 +338,19 @@ test("should type in bold", async () => {
         // Simulate text insertion as done by the contenteditable.
         editor.document.execCommand("insertText", false, char);
         // Input event is dispatched and handlers are called synchronously.
-        await manuallyDispatchProgrammaticEvent(editor.editable, "keyup", { key: char });
+        await manuallyDispatchProgrammaticEvent(editor.editable, "keyup", {key: char});
     }
 
-    const { editor, el } = await setupEditor("<p>ab[]cd</p>");
+    const {editor, el} = await setupEditor("<p>ab[]cd</p>");
 
     /** @todo fix warnings */
-    patchWithCleanup(console, { warn: () => {} });
+    patchWithCleanup(console, {warn: () => {}});
 
     // Toggle bold on.
     bold(editor);
-    expect(getContent(el)).toBe(`<p>ab<strong data-oe-zws-empty-inline="">[]\u200B</strong>cd</p>`);
+    expect(getContent(el)).toBe(
+        `<p>ab<strong data-oe-zws-empty-inline="">[]\u200B</strong>cd</p>`
+    );
 
     // Simulate text insertion as done by the contenteditable.
     await typeChar(editor, "x");
@@ -361,21 +372,27 @@ test("should type in bold", async () => {
 
 test.tags("desktop");
 test("create bold with shortcut + selected with arrow", async () => {
-    const { editor, el } = await setupEditor("<p>ab[]cd</p>");
+    const {editor, el} = await setupEditor("<p>ab[]cd</p>");
     await press(["control", "b"]);
-    expect(getContent(el)).toBe(`<p>ab<strong data-oe-zws-empty-inline="">[]\u200B</strong>cd</p>`);
+    expect(getContent(el)).toBe(
+        `<p>ab<strong data-oe-zws-empty-inline="">[]\u200B</strong>cd</p>`
+    );
 
     await simulateArrowKeyPress(editor, ["Shift", "ArrowRight"]);
-    await tick(); // await selectionchange
+    await tick(); // Await selectionchange
     await animationFrame();
     await expectElementCount(".o-we-toolbar", 1);
-    expect(getContent(el)).toBe(`<p>ab<strong data-oe-zws-empty-inline="">[\u200B</strong>c]d</p>`);
+    expect(getContent(el)).toBe(
+        `<p>ab<strong data-oe-zws-empty-inline="">[\u200B</strong>c]d</p>`
+    );
 
     await simulateArrowKeyPress(editor, ["Shift", "ArrowLeft"]);
-    await tick(); // await selectionchange
+    await tick(); // Await selectionchange
     await animationFrame();
     await expectElementCount(".o-we-toolbar", 0);
-    expect(getContent(el)).toBe(`<p>ab<strong data-oe-zws-empty-inline="">[\u200B]</strong>cd</p>`);
+    expect(getContent(el)).toBe(
+        `<p>ab<strong data-oe-zws-empty-inline="">[\u200B]</strong>cd</p>`
+    );
 });
 
 const styleContentBold = `.boldClass { font-weight: bold; }`;
@@ -438,19 +455,21 @@ describe("inside container font-weight: 500 and strong being strong-weight: 500"
 });
 
 test("should remove empty bold tag when changing selection", async () => {
-    const { editor, el } = await setupEditor("<p>ab[]cd</p>");
+    const {editor, el} = await setupEditor("<p>ab[]cd</p>");
 
     bold(editor);
     await tick();
-    expect(getContent(el)).toBe(`<p>ab<strong data-oe-zws-empty-inline="">[]\u200B</strong>cd</p>`);
+    expect(getContent(el)).toBe(
+        `<p>ab<strong data-oe-zws-empty-inline="">[]\u200B</strong>cd</p>`
+    );
 
     await simulateArrowKeyPress(editor, "ArrowLeft");
-    await tick(); // await selectionchange
+    await tick(); // Await selectionchange
     expect(getContent(el)).toBe(`<p>a[]bcd</p>`);
 });
 
 test("should remove multiple formatted empty bold tag when changing selection", async () => {
-    const { editor, el } = await setupEditor("<p>ab[]cd</p>");
+    const {editor, el} = await setupEditor("<p>ab[]cd</p>");
 
     bold(editor);
     italic(editor);
@@ -460,12 +479,12 @@ test("should remove multiple formatted empty bold tag when changing selection", 
     );
 
     await simulateArrowKeyPress(editor, "ArrowLeft");
-    await tick(); // await selectionchange
+    await tick(); // Await selectionchange
     expect(getContent(el)).toBe(`<p>a[]bcd</p>`);
 });
 
 test("should not remove empty bold tag in an empty block when changing selection", async () => {
-    const { editor, el } = await setupEditor("<p>abcd</p><p>[]<br></p>");
+    const {editor, el} = await setupEditor("<p>abcd</p><p>[]<br></p>");
 
     bold(editor);
     await tick();
@@ -474,22 +493,24 @@ test("should not remove empty bold tag in an empty block when changing selection
     );
 
     await simulateArrowKeyPress(editor, "ArrowUp");
-    await tick(); // await selectionchange
+    await tick(); // Await selectionchange
     expect(getContent(el)).toBe(
         `<p>[]abcd</p><p><strong data-oe-zws-empty-inline="">\u200B</strong></p>`
     );
 });
 
 test("should not add history step for bold on collapsed selection", async () => {
-    const { editor, el } = await setupEditor("<p>abcd[]</p>");
+    const {editor, el} = await setupEditor("<p>abcd[]</p>");
 
-    patchWithCleanup(console, { warn: () => {} });
+    patchWithCleanup(console, {warn: () => {}});
 
     // Collapsed formatting shortcuts (e.g. Ctrl+B) shouldn’t create a history
     // step. The empty inline tag is temporary: auto-cleaned if unused. We want
     // to avoid having a phantom step in the history.
     await press(["ctrl", "b"]);
-    expect(getContent(el)).toBe(`<p>abcd<strong data-oe-zws-empty-inline="">[]\u200B</strong></p>`);
+    expect(getContent(el)).toBe(
+        `<p>abcd<strong data-oe-zws-empty-inline="">[]\u200B</strong></p>`
+    );
 
     await insertText(editor, "A");
     expect(getContent(el)).toBe(`<p>abcd<strong>A[]</strong></p>`);
@@ -499,7 +520,7 @@ test("should not add history step for bold on collapsed selection", async () => 
 });
 
 test("Should properly apply bold format if closest element is bold but not closest block", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         unformat(`
             <blockquote class="blockquote">
                 <em class="h4">
@@ -510,7 +531,7 @@ test("Should properly apply bold format if closest element is bold but not close
         {
             styleContent: `
                 blockquote {
-                    font-weight: 300;   
+                    font-weight: 300;
                 }
             `,
         }

@@ -1,9 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, timedelta
+
 from freezegun import freeze_time
 
-from odoo.tests import HttpCase, tagged, new_test_user
+from odoo.tests import HttpCase, new_test_user, tagged
+
 from ..models.mail_presence import PRESENCE_OUTDATED_TIMER
 
 

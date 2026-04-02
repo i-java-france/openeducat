@@ -1,11 +1,16 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
-import { bold, resetSize, setColor, insertText } from "../_helpers/user_actions";
-import { getContent, setSelection } from "../_helpers/selection";
-import { press, queryAll, manuallyDispatchProgrammaticEvent, click } from "@odoo/hoot-dom";
-import { animationFrame, tick } from "@odoo/hoot-mock";
-import { nodeSize } from "@html_editor/utils/position";
+import {describe, expect, test} from "@odoo/hoot";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
+import {bold, insertText, resetSize, setColor} from "../_helpers/user_actions";
+import {getContent, setSelection} from "../_helpers/selection";
+import {
+    click,
+    manuallyDispatchProgrammaticEvent,
+    press,
+    queryAll,
+} from "@odoo/hoot-dom";
+import {animationFrame, tick} from "@odoo/hoot-mock";
+import {nodeSize} from "@html_editor/utils/position";
 
 function expectContentToBe(el, html) {
     expect(getContent(el)).toBe(unformat(html));
@@ -13,7 +18,7 @@ function expectContentToBe(el, html) {
 
 describe("custom selection", () => {
     test("should indicate selected cells with blue background", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             unformat(`
             <table>
                 <tbody>
@@ -66,7 +71,7 @@ describe("custom selection", () => {
             </table>
         `);
 
-        const { el } = await setupEditor(content);
+        const {el} = await setupEditor(content);
         await tick();
 
         const firstTd = el.querySelector("td");
@@ -1678,7 +1683,7 @@ describe("move cursor with arrow keys", () => {
 
 describe("symmetrical selection", () => {
     test("select cells symmetrically when pressing shift + arrow key", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             unformat(
                 `<table class="table table-bordered o_table">
                     <tbody>
@@ -1771,7 +1776,7 @@ describe("symmetrical selection", () => {
     });
 
     test("select single cell containing text when pressing shift + arrow key", async () => {
-        const { el, editor } = await setupEditor(
+        const {el, editor} = await setupEditor(
             unformat(
                 `<table class="table table-bordered o_table">
                     <tbody>
@@ -1820,7 +1825,7 @@ describe("symmetrical selection", () => {
     });
 
     test("select single cell containing text when pressing shift + arrow key backward", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             unformat(
                 `<table class="table table-bordered o_table">
                     <tbody>
@@ -1873,7 +1878,7 @@ describe("symmetrical selection", () => {
 
 describe("single cell selection", () => {
     test("should select single empty cell on double click", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             unformat(
                 `<table class="table table-bordered o_table">
                     <tbody>
@@ -1916,7 +1921,7 @@ describe("single cell selection", () => {
     });
 
     test("should select single cell containing text on triple click", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             unformat(
                 `<table class="table table-bordered o_table">
                     <tbody>
@@ -1959,7 +1964,7 @@ describe("single cell selection", () => {
     });
 
     test("should not select single cell containing text on double click", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             unformat(
                 `<table class="table table-bordered o_table">
                     <tbody>
@@ -1971,10 +1976,10 @@ describe("single cell selection", () => {
         );
 
         const firstTd = el.querySelector("td");
-        manuallyDispatchProgrammaticEvent(firstTd, "mousedown", { detail: 2 });
+        manuallyDispatchProgrammaticEvent(firstTd, "mousedown", {detail: 2});
         await animationFrame();
 
-        manuallyDispatchProgrammaticEvent(firstTd, "mouseup", { detail: 2 });
+        manuallyDispatchProgrammaticEvent(firstTd, "mouseup", {detail: 2});
         await animationFrame();
 
         expectContentToBe(
@@ -1991,7 +1996,7 @@ describe("single cell selection", () => {
     });
 
     test("should not select cell when double-click occurs on table border", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             unformat(
                 `<table class="table table-bordered o_table">
                     <tbody>
@@ -2004,10 +2009,10 @@ describe("single cell selection", () => {
 
         const firstTd = el.querySelector("td");
 
-        manuallyDispatchProgrammaticEvent(firstTd, "mousedown", { detail: 2 });
+        manuallyDispatchProgrammaticEvent(firstTd, "mousedown", {detail: 2});
         await animationFrame();
 
-        manuallyDispatchProgrammaticEvent(firstTd, "mouseup", { detail: 2 });
+        manuallyDispatchProgrammaticEvent(firstTd, "mouseup", {detail: 2});
         await animationFrame();
 
         expectContentToBe(
@@ -2041,7 +2046,7 @@ describe("single cell selection", () => {
             </table>
         `);
 
-        const { el } = await setupEditor(content);
+        const {el} = await setupEditor(content);
 
         const firstTd = el.querySelector("td");
         const firstP = firstTd.firstElementChild;
@@ -2105,11 +2110,11 @@ describe("single cell selection", () => {
             </table>
         `);
 
-        const { el, editor } = await setupEditor(content);
+        const {el, editor} = await setupEditor(content);
         const firstTd = el.querySelector("td");
         const firstP = firstTd.firstElementChild;
         const textNode = firstP.firstChild;
-        const targetOffset = 4; // abcd[]e
+        const targetOffset = 4; // Abcd[]e
 
         // Dispatch mousedown between "d" and "e"
         const range = document.createRange();
@@ -2135,7 +2140,7 @@ describe("single cell selection", () => {
 
 describe("deselecting table", () => {
     test("deselect table using keyboard if it is fully selected", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             unformat(
                 `<p>[abc</p>
                 <table class="table table-bordered o_table">
@@ -2175,7 +2180,7 @@ describe("deselecting table", () => {
         );
     });
     test("deselect table when clicking outside of editor", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             unformat(
                 `<table class="table table-bordered o_table">
                     <tbody>

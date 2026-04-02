@@ -1,5 +1,5 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 class MassMailingImageSnippetOptionPlugin extends Plugin {
     static id = "mass_mailing.imageSnippetOption";
@@ -8,7 +8,7 @@ class MassMailingImageSnippetOptionPlugin extends Plugin {
         on_snippet_dropped_handlers: this.onSnippetDropped.bind(this),
     };
 
-    async onSnippetDropped({ snippetEl, dragState }) {
+    async onSnippetDropped({snippetEl, dragState}) {
         if (!snippetEl.matches("p:has(> .s_image)")) {
             return;
         }

@@ -1,7 +1,7 @@
-import { OdooViewsDataSource } from "@spreadsheet/data_sources/odoo_views_data_source";
-import { _t } from "@web/core/l10n/translation";
-import { GraphModel as ChartModel } from "@web/views/graph/graph_model";
-import { Domain } from "@web/core/domain";
+import {OdooViewsDataSource} from "@spreadsheet/data_sources/odoo_views_data_source";
+import {_t} from "@web/core/l10n/translation";
+import {GraphModel as ChartModel} from "@web/views/graph/graph_model";
+import {Domain} from "@web/core/domain";
 
 export class ChartDataSource extends OdooViewsDataSource {
     /**
@@ -38,10 +38,10 @@ export class ChartDataSource extends OdooViewsDataSource {
     getData() {
         if (!this.isReady()) {
             this.load();
-            return { datasets: [], labels: [] };
+            return {datasets: [], labels: []};
         }
         if (!this._isValid) {
-            return { datasets: [], labels: [] };
+            return {datasets: [], labels: []};
         }
         return this._model.data;
     }
@@ -49,17 +49,17 @@ export class ChartDataSource extends OdooViewsDataSource {
     getHierarchicalData() {
         if (!this.isReady()) {
             this.load();
-            return { datasets: [], labels: [] };
+            return {datasets: [], labels: []};
         }
         if (!this._isValid) {
-            return { datasets: [], labels: [] };
+            return {datasets: [], labels: []};
         }
         return this._getHierarchicalData();
     }
 
     changeChartType(newMode) {
         this._metaData.mode = newMode;
-        this._model?.updateMetaData({ mode: newMode });
+        this._model?.updateMetaData({mode: newMode});
     }
 
     _getHierarchicalData() {
@@ -69,7 +69,9 @@ export class ChartDataSource extends OdooViewsDataSource {
 
         const dataPoints = this._model.dataPoints;
         const groupBy = this._metaData.groupBy;
-        const datasets = new Array(groupBy.length).fill().map(() => ({ data: [], domains: [] }));
+        const datasets = new Array(groupBy.length)
+            .fill()
+            .map(() => ({data: [], domains: []}));
         const labels = new Array();
         const domainMapping = {};
         for (const gb of groupBy) {
@@ -84,11 +86,13 @@ export class ChartDataSource extends OdooViewsDataSource {
                 const label = point.labels[i];
                 if (!domainMapping[groupBy[i]][label]) {
                     const gb = groupBy[i].split(":")[0];
-                    domainMapping[groupBy[i]][label] = point.domain.filter((d) => d[0] === gb);
+                    domainMapping[groupBy[i]][label] = point.domain.filter(
+                        (d) => d[0] === gb
+                    );
                 }
             }
         }
-        this._hierarchicalData = { datasets, labels };
+        this._hierarchicalData = {datasets, labels};
         this.labelToDomainMapping = domainMapping;
         return this._hierarchicalData;
     }

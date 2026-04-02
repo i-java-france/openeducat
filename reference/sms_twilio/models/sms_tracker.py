@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import fields, models
 
 TWILIO_CODE_TO_FAILURE_TYPE = {
     # https://www.twilio.com/docs/messaging/guides/debugging-tools#error-codes

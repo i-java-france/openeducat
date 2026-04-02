@@ -1,4 +1,4 @@
-import { markEventHandled } from "@web/core/utils/misc";
+import {markEventHandled} from "@web/core/utils/misc";
 
 import {
     App,
@@ -17,15 +17,15 @@ import {
     xml,
 } from "@odoo/owl";
 
-import { loadBundle } from "@web/core/assets";
-import { _t, appTranslateFn } from "@web/core/l10n/translation";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { fuzzyLookup } from "@web/core/utils/search";
-import { useAutofocus, useService } from "@web/core/utils/hooks";
-import { isMobileOS } from "@web/core/browser/feature_detection";
-import { Deferred } from "../utils/concurrency";
-import { Dialog } from "../dialog/dialog";
-import { getTemplate } from "@web/core/templates";
+import {loadBundle} from "@web/core/assets";
+import {_t, appTranslateFn} from "@web/core/l10n/translation";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {fuzzyLookup} from "@web/core/utils/search";
+import {useAutofocus, useService} from "@web/core/utils/hooks";
+import {isMobileOS} from "@web/core/browser/feature_detection";
+import {Deferred} from "../utils/concurrency";
+import {Dialog} from "../dialog/dialog";
+import {getTemplate} from "@web/core/templates";
 
 /**
  * @typedef Emoji
@@ -49,10 +49,10 @@ export const loader = reactive({
 
 /** @returns {Promise<{ categories: Object[], emojis: Emoji[] }>")} */
 export async function loadEmoji() {
-    const res = { categories: [], emojis: [] };
+    const res = {categories: [], emojis: []};
     try {
         await loader.loadEmoji();
-        const { getCategories, getEmojis } = odoo.loader.modules.get(
+        const {getCategories, getEmojis} = odoo.loader.modules.get(
             "@web/core/emoji_picker/emoji_data"
         );
         res.categories = getCategories();
@@ -119,7 +119,7 @@ export class EmojiPicker extends Component {
         this.frequentEmojiService = useService("web.frequent.emoji");
         useAutofocus();
         onWillStart(async () => {
-            const { categories, emojis } = await loadEmoji();
+            const {categories, emojis} = await loadEmoji();
             this.categories = categories;
             this.emojis = emojis;
             this.emojiByCodepoints = Object.fromEntries(
@@ -177,8 +177,12 @@ export class EmojiPicker extends Component {
                 if (!gridEl) {
                     return;
                 }
-                if (activeEl && this.keyboardNavigated && !isElementVisible(activeEl, gridEl)) {
-                    activeEl.scrollIntoView({ block: "center", behavior: "instant" });
+                if (
+                    activeEl &&
+                    this.keyboardNavigated &&
+                    !isElementVisible(activeEl, gridEl)
+                ) {
+                    activeEl.scrollIntoView({block: "center", behavior: "instant"});
                     this.keyboardNavigated = false;
                 }
                 this.state.hoveredEmoji = this.activeEmoji;
@@ -225,7 +229,9 @@ export class EmojiPicker extends Component {
             parseInt(computedStyle.marginLeft) -
             parseInt(computedStyle.paddingLeft) -
             parseInt(computedStyle.marginLeft);
-        const itemWidth = this.navbarRef.el.querySelector(".o-Emoji").getBoundingClientRect().width;
+        const itemWidth = this.navbarRef.el
+            .querySelector(".o-Emoji")
+            .getBoundingClientRect().width;
         const gapWidth = parseInt(computedStyle.gap);
         const maxAvailableNavbarItemAmountAtOnce = Math.floor(
             availableWidth / (itemWidth + gapWidth)
@@ -248,9 +254,9 @@ export class EmojiPicker extends Component {
         if (panel.length > 0) {
             if (repr.length > 0) {
                 panel.push(
-                    ...[...Array(maxAvailableNavbarItemAmountAtOnce - panel.length)].map(
-                        (_, idx) => "empty_" + idx
-                    )
+                    ...[
+                        ...Array(maxAvailableNavbarItemAmountAtOnce - panel.length),
+                    ].map((_, idx) => "empty_" + idx)
                 );
             }
             repr.push(panel);
@@ -265,7 +271,9 @@ export class EmojiPicker extends Component {
         if (this.state.categoryId === null || Number.isNaN(this.state.categoryId)) {
             return this.state.emojiNavbarRepr[0];
         }
-        return this.state.emojiNavbarRepr.find((panel) => panel.includes(this.state.categoryId));
+        return this.state.emojiNavbarRepr.find((panel) =>
+            panel.includes(this.state.categoryId)
+        );
     }
 
     get searchTerm() {
@@ -364,7 +372,10 @@ export class EmojiPicker extends Component {
             case "ArrowDown": {
                 const rowBelow = this.emojiMatrix[currentRow + 1];
                 const rowBelowBelow = this.emojiMatrix[currentRow + 2];
-                if (rowBelow?.length <= currentCol && rowBelowBelow?.length >= currentCol) {
+                if (
+                    rowBelow?.length <= currentCol &&
+                    rowBelowBelow?.length >= currentCol
+                ) {
                     newIdx = rowBelowBelow?.[currentCol];
                 } else {
                     newIdx = rowBelow?.[Math.min(currentCol, rowBelow.length - 1)];
@@ -374,7 +385,10 @@ export class EmojiPicker extends Component {
             case "ArrowUp": {
                 const rowAbove = this.emojiMatrix[currentRow - 1];
                 const rowAboveAbove = this.emojiMatrix[currentRow - 2];
-                if (rowAbove?.length <= currentCol && rowAboveAbove?.length >= currentCol) {
+                if (
+                    rowAbove?.length <= currentCol &&
+                    rowAboveAbove?.length >= currentCol
+                ) {
                     newIdx = rowAboveAbove?.[currentCol];
                 } else {
                     newIdx = rowAbove?.[Math.min(currentCol, rowAbove.length - 1)];
@@ -395,7 +409,9 @@ export class EmojiPicker extends Component {
                 const colLeft = currentCol - 1;
                 if (colLeft < 0) {
                     const rowAboveLeft = this.emojiMatrix[currentRow - 1];
-                    newIdx = rowAboveLeft?.[rowAboveLeft.length - 1] ?? this.state.activeEmojiIndex;
+                    newIdx =
+                        rowAboveLeft?.[rowAboveLeft.length - 1] ??
+                        this.state.activeEmojiIndex;
                 } else {
                     newIdx = this.emojiMatrix[currentRow][colLeft];
                 }
@@ -448,7 +464,9 @@ export class EmojiPicker extends Component {
         let emojisToDisplay = [...this.emojis];
         const recentEmojis = this.recentEmojis;
         if (recentEmojis.length > 0 && this.searchTerm) {
-            emojisToDisplay = emojisToDisplay.filter((emoji) => !recentEmojis.includes(emoji));
+            emojisToDisplay = emojisToDisplay.filter(
+                (emoji) => !recentEmojis.includes(emoji)
+            );
         }
         if (this.searchTerm.length > 0) {
             return fuzzyLookup(this.searchTerm, emojisToDisplay, (emoji) => [
@@ -511,7 +529,7 @@ export class EmojiPicker extends Component {
 export function usePicker(PickerComponent, ref, props, options = {}) {
     const component = useComponent();
     const targets = [];
-    const state = useState({ isOpen: false });
+    const state = useState({isOpen: false});
     const ui = useService("ui");
     const dialog = useService("dialog");
     let remove;
@@ -538,7 +556,7 @@ export function usePicker(PickerComponent, ref, props, options = {}) {
     /**
      * @param {import("@web/core/utils/hooks").Ref} ref
      */
-    function add(ref, onSelect, { show = false } = {}) {
+    function add(ref, onSelect, {show = false} = {}) {
         const toggler = () => toggle(isMobileOS() ? undefined : ref, onSelect);
         targets.push([ref, toggler]);
         if (!ref.el) {
@@ -591,7 +609,7 @@ export function usePicker(PickerComponent, ref, props, options = {}) {
             }
             return def;
         }
-        return popover.open(ref.el, { ...props, ...openProps });
+        return popover.open(ref.el, {...props, ...openProps});
     }
 
     function close() {
@@ -603,7 +621,7 @@ export function usePicker(PickerComponent, ref, props, options = {}) {
         if (state.isOpen) {
             close();
         } else {
-            open(ref, { ...props, onSelect });
+            open(ref, {...props, onSelect});
         }
     }
 
@@ -637,7 +655,7 @@ export function usePicker(PickerComponent, ref, props, options = {}) {
             ref.el.addEventListener("mouseenter", loadEmoji);
         }
     });
-    Object.assign(state, { open, close, toggle });
+    Object.assign(state, {open, close, toggle});
     return state;
 }
 
@@ -657,7 +675,7 @@ class PickerMobile extends Component {
 }
 
 class PickerMobileInDialog extends PickerMobile {
-    static components = { Dialog };
+    static components = {Dialog};
     static props = [...PICKER_PROPS, "onClose?"];
     static template = xml`
         <Dialog size="'lg'" header="false" footer="false" contentClass="'o-discuss-mobileContextMenu d-flex position-absolute bottom-0 rounded-0 h-50 bg-100'" bodyClass="'p-1'">
@@ -678,7 +696,7 @@ class PickerMobileInDialog extends PickerMobile {
                     this.props.close?.();
                 }
             },
-            { capture: true }
+            {capture: true}
         );
     }
 }
@@ -686,9 +704,11 @@ class PickerMobileInDialog extends PickerMobile {
 function isElementVisible(el, holder) {
     const offset = 20;
     holder = holder || document.body;
-    const { top, bottom, height } = el.getBoundingClientRect();
-    let { top: holderTop, bottom: holderBottom } = holder.getBoundingClientRect();
+    const {top, bottom, height} = el.getBoundingClientRect();
+    let {top: holderTop, bottom: holderBottom} = holder.getBoundingClientRect();
     holderTop += offset * 2; // section are position sticky top so emoji can be "visible" under section name. Overestimate to assume invisible.
     holderBottom -= offset;
-    return top - offset <= holderTop ? holderTop - top <= height : bottom - holderBottom <= height;
+    return top - offset <= holderTop
+        ? holderTop - top <= height
+        : bottom - holderBottom <= height;
 }

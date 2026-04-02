@@ -1,8 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields
-from odoo.addons.l10n_tw_edi_ecpay.utils import call_ecpay_api, convert_utc_time_to_tw_time
+from odoo import fields, models
 from odoo.exceptions import UserError
+
+from odoo.addons.l10n_tw_edi_ecpay.utils import (
+    call_ecpay_api,
+    convert_utc_time_to_tw_time,
+)
 
 
 class L10nTwEDIInvoicePrint(models.TransientModel):

@@ -1,7 +1,7 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { press, queryAllTexts, queryOne } from "@odoo/hoot-dom";
-import { animationFrame, runAllTimers } from "@odoo/hoot-mock";
-import { getOrigin } from "@web/core/utils/urls";
+import {describe, expect, test} from "@odoo/hoot";
+import {press, queryAllTexts, queryOne} from "@odoo/hoot-dom";
+import {animationFrame, runAllTimers} from "@odoo/hoot-mock";
+import {getOrigin} from "@web/core/utils/urls";
 
 import {
     clickSave,
@@ -16,21 +16,21 @@ import {
 describe.current.tags("desktop");
 
 class Partner extends models.Model {
-    name = fields.Char({ string: "Displayed name" });
+    name = fields.Char({string: "Displayed name"});
     _records = [
-        { id: 1, name: "first record" },
-        { id: 2, name: "second record" },
-        { id: 4, name: "aaa" },
+        {id: 1, name: "first record"},
+        {id: 2, name: "second record"},
+        {id: 4, name: "aaa"},
     ];
 }
 
 class Turtle extends models.Model {
-    name = fields.Char({ string: "Displayed name" });
-    partner_ids = fields.Many2many({ string: "Partner", relation: "partner" });
+    name = fields.Char({string: "Displayed name"});
+    partner_ids = fields.Many2many({string: "Partner", relation: "partner"});
     _records = [
-        { id: 1, name: "leonardo", partner_ids: [] },
-        { id: 2, name: "donatello", partner_ids: [2, 4] },
-        { id: 3, name: "raphael" },
+        {id: 1, name: "leonardo", partner_ids: []},
+        {id: 2, name: "donatello", partner_ids: [2, 4]},
+        {id: 3, name: "raphael"},
     ];
 }
 
@@ -60,7 +60,10 @@ test("widget many2many_tags_avatar", async () => {
 
     await contains("[name='partner_ids'] .o_input_dropdown input").fill("abc");
     await runAllTimers();
-    expect(queryAllTexts("[name='partner_ids'] .o_tag")).toEqual(["first record", "abc"]);
+    expect(queryAllTexts("[name='partner_ids'] .o_tag")).toEqual([
+        "first record",
+        "abc",
+    ]);
     expect("[name='partner_ids'] .o_input_dropdown input").toHaveValue("");
 });
 
@@ -77,7 +80,9 @@ test("widget many2many_tags_avatar img src", async () => {
         resId: 2,
     });
 
-    expect(".o_field_many2many_tags_avatar.o_field_widget .o_avatar img").toHaveCount(2);
+    expect(".o_field_many2many_tags_avatar.o_field_widget .o_avatar img").toHaveCount(
+        2
+    );
     expect(
         `.o_field_many2many_tags_avatar.o_field_widget .o_avatar:nth-child(1) img[data-src='${getOrigin()}/web/image/partner/2/avatar_128']`
     ).toHaveCount(1);
@@ -151,15 +156,18 @@ test("widget many2many_tags_avatar in list view", async () => {
         ".o_data_row:nth-child(4) .o_field_many2many_tags_avatar .o_m2m_avatar_empty"
     ).toHaveText("+9");
 
-    // check data-tooltip attribute (used by the tooltip service)
+    // Check data-tooltip attribute (used by the tooltip service)
     const tag = queryOne(
         ".o_data_row:nth-child(2) .o_field_many2many_tags_avatar .o_m2m_avatar_empty"
     );
     expect(tag).toHaveAttribute("data-tooltip-template", "web.TagsList.Tooltip");
-    const tooltipInfo = JSON.parse(tag.dataset["tooltipInfo"]);
-    expect(tooltipInfo.tags.map((tag) => tag.text).join(" ")).toBe("record 6 record 7", {
-        message: "shows a tooltip on hover",
-    });
+    const tooltipInfo = JSON.parse(tag.dataset.tooltipInfo);
+    expect(tooltipInfo.tags.map((tag) => tag.text).join(" ")).toBe(
+        "record 6 record 7",
+        {
+            message: "shows a tooltip on hover",
+        }
+    );
 
     await contains(".o_data_row .o_many2many_tags_avatar_cell:eq(0)").click();
     await contains(
@@ -167,7 +175,9 @@ test("widget many2many_tags_avatar in list view", async () => {
     ).click();
     await contains(".o-autocomplete--dropdown-item:eq(1)").click();
     await contains(".o_control_panel_main_buttons .o_list_button_save").click();
-    expect(".o_data_row:eq(0) .o_field_many2many_tags_avatar .o_avatar img").toHaveCount(2);
+    expect(
+        ".o_data_row:eq(0) .o_field_many2many_tags_avatar .o_avatar img"
+    ).toHaveCount(2);
 
     // Edit first row
     await contains(".o_data_row:nth-child(1) .o_data_cell").click();
@@ -183,7 +193,7 @@ test("widget many2many_tags_avatar list view - don't crash on keyboard navigatio
     await mountView({
         type: "list",
         resModel: "turtle",
-        arch: /*xml*/ `
+        arch: /* xml*/ `
                 <list editable="bottom">
                     <field name="partner_ids" widget="many2many_tags_avatar"/>
                 </list>
@@ -195,11 +205,15 @@ test("widget many2many_tags_avatar list view - don't crash on keyboard navigatio
 
     // Pressing left arrow should focus on the right-most (second) tag.
     await press("arrowleft");
-    expect(".o_data_row:nth-child(2) .o_field_tags span:nth-child(2):first").toBeFocused();
+    expect(
+        ".o_data_row:nth-child(2) .o_field_tags span:nth-child(2):first"
+    ).toBeFocused();
 
     // Pressing left arrow again should not crash and should focus on the first tag.
     await press("arrowleft");
-    expect(".o_data_row:nth-child(2) .o_field_tags span:nth-child(1):first").toBeFocused();
+    expect(
+        ".o_data_row:nth-child(2) .o_field_tags span:nth-child(1):first"
+    ).toBeFocused();
 });
 
 test("widget many2many_tags_avatar in kanban view", async () => {
@@ -247,7 +261,9 @@ test("widget many2many_tags_avatar in kanban view", async () => {
             });
         },
     });
-    expect(".o_kanban_record:eq(0) .o_field_many2many_tags_avatar .o_quick_assign").toHaveCount(1);
+    expect(
+        ".o_kanban_record:eq(0) .o_field_many2many_tags_avatar .o_quick_assign"
+    ).toHaveCount(1);
 
     expect(
         ".o_kanban_record:nth-child(2) .o_field_many2many_tags_avatar .o_avatar img"
@@ -277,36 +293,42 @@ test("widget many2many_tags_avatar in kanban view", async () => {
     expect(
         ".o_kanban_record:nth-child(4) .o_field_many2many_tags_avatar .o_m2m_avatar_empty"
     ).toHaveText("9+");
-    expect(".o_field_many2many_tags_avatar .o_field_many2many_selection").toHaveCount(0);
-    await contains(".o_kanban_record:nth-child(3) .o_quick_assign", { visible: false }).click();
+    expect(".o_field_many2many_tags_avatar .o_field_many2many_selection").toHaveCount(
+        0
+    );
+    await contains(".o_kanban_record:nth-child(3) .o_quick_assign", {
+        visible: false,
+    }).click();
     await animationFrame();
     expect(".o-overlay-container input").toBeFocused();
     expect(".o-overlay-container .o_tag").toHaveCount(4);
-    // delete inside the popover
+    // Delete inside the popover
     await contains(".o-overlay-container .o_tag .o_delete:eq(0)", {
         visible: false,
         displayed: true,
     }).click();
     expect(".o-overlay-container .o_tag").toHaveCount(3);
     expect(".o_kanban_record:nth-child(3) .o_tag").toHaveCount(3);
-    // select first non selected input
+    // Select first non selected input
     await contains(".o-overlay-container .o-autocomplete--dropdown-item:eq(4)").click();
     expect(".o-overlay-container .o_tag").toHaveCount(4);
     expect(".o_kanban_record:nth-child(3) .o_tag").toHaveCount(2);
-    // load more
+    // Load more
     await contains(".o-overlay-container .o_m2o_dropdown_option_search_more").click();
-    // first non already selected item
+    // First non already selected item
     await contains(".o_dialog .o_list_table .o_data_row .o_data_cell:eq(3)").click();
     expect(".o-overlay-container .o_tag").toHaveCount(5);
     expect(".o_kanban_record:nth-child(3) .o_tag").toHaveCount(2);
     expect(
         `.o_kanban_record:nth-child(2) img.o_m2m_avatar[data-src='${getOrigin()}/web/image/partner/4/avatar_128']`
     ).toHaveCount(1);
-    await contains(".o_kanban_record .o_field_many2many_tags_avatar img.o_m2m_avatar").click();
+    await contains(
+        ".o_kanban_record .o_field_many2many_tags_avatar img.o_m2m_avatar"
+    ).click();
 });
 
 test("widget many2many_tags_avatar add/remove tags in kanban view", async () => {
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         const command = args[1].partner_ids[0];
         expect.step(`web_save: ${command[0]}-${command[1]}`);
     });
@@ -325,10 +347,10 @@ test("widget many2many_tags_avatar add/remove tags in kanban view", async () => 
                 </templates>
             </kanban>`,
     });
-    await contains(".o_kanban_record:eq(0) .o_quick_assign", { visible: false }).click();
-    // add and directly remove an item
+    await contains(".o_kanban_record:eq(0) .o_quick_assign", {visible: false}).click();
+    // Add and directly remove an item
     await contains(".o_popover .o-autocomplete--dropdown-item:eq(0)").click();
-    await contains(".o_popover .o_tag .o_delete", { visible: false }).click();
+    await contains(".o_popover .o_tag .o_delete", {visible: false}).click();
     expect.verifySteps(["web_save: 4-1", "web_save: 3-1"]);
 });
 
@@ -372,13 +394,17 @@ test("widget many2many_tags_avatar quick add tags and close in kanban view with 
                 </templates>
             </kanban>`,
     });
-    await contains(".o_kanban_record:eq(0) .o_quick_assign", { visible: false }).click();
-    // add and directly close the dropdown
+    await contains(".o_kanban_record:eq(0) .o_quick_assign", {visible: false}).click();
+    // Add and directly close the dropdown
     await press("Tab");
     await press("Enter");
     await animationFrame();
-    expect(".o_kanban_record:eq(0) .o_field_many2many_tags_avatar .o_tag").toHaveCount(1);
-    expect(".o_kanban_record:eq(0) .o_field_many2many_tags_avatar .o_popover").toHaveCount(0);
+    expect(".o_kanban_record:eq(0) .o_field_many2many_tags_avatar .o_tag").toHaveCount(
+        1
+    );
+    expect(
+        ".o_kanban_record:eq(0) .o_field_many2many_tags_avatar .o_popover"
+    ).toHaveCount(0);
 });
 
 test("widget many2many_tags_avatar in kanban view missing access rights", async () => {
@@ -399,7 +425,9 @@ test("widget many2many_tags_avatar in kanban view missing access rights", async 
             </kanban>`,
     });
 
-    expect(".o_kanban_record:eq(0) .o_field_many2many_tags_avatar .o_quick_assign").toHaveCount(0);
+    expect(
+        ".o_kanban_record:eq(0) .o_field_many2many_tags_avatar .o_quick_assign"
+    ).toHaveCount(0);
 });
 
 test("Many2ManyTagsAvatarField: make sure that the arch context is passed to the form view call", async () => {
@@ -407,7 +435,10 @@ test("Many2ManyTagsAvatarField: make sure that the arch context is passed to the
         form: `<form><field name="name"/></form>`,
     };
     onRpc("onchange", (args) => {
-        if (args.model === "partner" && args.kwargs.context.append_coucou === "test_value") {
+        if (
+            args.model === "partner" &&
+            args.kwargs.context.append_coucou === "test_value"
+        ) {
             expect.step("onchange with context given");
         }
     });
@@ -421,7 +452,9 @@ test("Many2ManyTagsAvatarField: make sure that the arch context is passed to the
     });
 
     await contains("div[name=partner_ids]").click();
-    await contains(`div[name="partner_ids"] input`).edit("A new partner", { confirm: false });
+    await contains(`div[name="partner_ids"] input`).edit("A new partner", {
+        confirm: false,
+    });
     await runAllTimers();
     await contains(".o_m2o_dropdown_option_create_edit").click();
 

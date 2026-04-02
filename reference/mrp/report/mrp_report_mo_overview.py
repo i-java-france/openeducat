@@ -1,12 +1,19 @@
-# -*- coding: utf-8 -*-
 
 import copy
 import json
 from collections import defaultdict
-from odoo import _, api, fields, models
-from odoo.tools import float_compare, float_repr, float_round, float_is_zero, format_date, get_lang
 from datetime import datetime, timedelta
 from math import log10
+
+from odoo import _, api, fields, models
+from odoo.tools import (
+    float_compare,
+    float_is_zero,
+    float_repr,
+    float_round,
+    format_date,
+    get_lang,
+)
 
 
 class ReportMrpReport_Mo_Overview(models.AbstractModel):

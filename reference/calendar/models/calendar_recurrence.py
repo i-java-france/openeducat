@@ -1,18 +1,17 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime, time
-import pytz
 import re
+from datetime import datetime, time
 
+import pytz
 from dateutil import rrule
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.misc import clean_context
 
 from odoo.addons.base.models.res_partner import _tz_get
-
 
 MAX_RECURRENT_EVENT = 720
 
@@ -295,7 +294,7 @@ class CalendarRecurrence(models.Model):
 
         self.env.cr.execute("""
             SELECT DISTINCT ON (recurrence_id) id event_id, recurrence_id
-                    FROM calendar_event 
+                    FROM calendar_event
                    WHERE start > %s
                      AND id IN %s
                 ORDER BY recurrence_id,start ASC;

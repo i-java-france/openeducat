@@ -1,11 +1,11 @@
 /** @typedef {import("./record").Record} Record */
 /** @typedef {import("./record_list").RecordList} RecordList */
 
-import { onChange } from "@mail/utils/common/misc";
-import { IS_DELETED_SYM, IS_RECORD_SYM, isRelation } from "./misc";
-import { RecordList } from "./record_list";
-import { reactive, toRaw } from "@odoo/owl";
-import { RecordUses } from "./record_uses";
+import {onChange} from "@mail/utils/common/misc";
+import {IS_DELETED_SYM, IS_RECORD_SYM, isRelation} from "./misc";
+import {RecordList} from "./record_list";
+import {reactive, toRaw} from "@odoo/owl";
+import {RecordUses} from "./record_uses";
 
 export class RecordInternal {
     [IS_RECORD_SYM] = true;
@@ -148,7 +148,7 @@ export class RecordInternal {
         }
     }
 
-    requestCompute(record, fieldName, { force = false } = {}) {
+    requestCompute(record, fieldName, {force = false} = {}) {
         if (record[IS_DELETED_SYM]) {
             return;
         }
@@ -160,14 +160,17 @@ export class RecordInternal {
         if (store._.UPDATE !== 0 && !force) {
             store._.ADD_QUEUE("compute", record, fieldName);
         } else {
-            if (Model._.fieldsEager.get(fieldName) || this.fieldsComputeInNeed.get(fieldName)) {
+            if (
+                Model._.fieldsEager.get(fieldName) ||
+                this.fieldsComputeInNeed.get(fieldName)
+            ) {
                 this.compute(record, fieldName);
             } else {
                 this.fieldsComputeOnNeed.set(fieldName, true);
             }
         }
     }
-    requestSort(record, fieldName, { force } = {}) {
+    requestSort(record, fieldName, {force} = {}) {
         if (record[IS_DELETED_SYM]) {
             return;
         }
@@ -179,7 +182,10 @@ export class RecordInternal {
         if (store._.UPDATE !== 0 && !force) {
             store._.ADD_QUEUE("sort", record, fieldName);
         } else {
-            if (Model._.fieldsEager.get(fieldName) || this.fieldsSortInNeed.get(fieldName)) {
+            if (
+                Model._.fieldsEager.get(fieldName) ||
+                this.fieldsSortInNeed.get(fieldName)
+            ) {
                 this.sort(record, fieldName);
             } else {
                 this.fieldsSortOnNeed.set(fieldName, true);
@@ -232,7 +238,9 @@ export class RecordInternal {
             // sort on copy of list so that reactive observers not triggered while sorting
             const copy = [...proxy2Sort[fieldName]];
             copy.sort(func);
-            const hasChanged = copy.some((item, index) => item !== record[fieldName][index]);
+            const hasChanged = copy.some(
+                (item, index) => item !== record[fieldName][index]
+            );
             if (hasChanged) {
                 proxy2Sort[fieldName] = copy;
             }

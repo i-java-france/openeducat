@@ -2,6 +2,7 @@
 
 from odoo.tests.common import tagged
 from odoo.tools import mute_logger
+
 from .common import TestPosQrCommon
 
 

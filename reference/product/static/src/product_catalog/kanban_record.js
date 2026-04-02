@@ -1,8 +1,8 @@
-import { useSubEnv } from "@odoo/owl";
-import { rpc } from "@web/core/network/rpc";
-import { useDebounced } from "@web/core/utils/timing";
-import { KanbanRecord } from "@web/views/kanban/kanban_record";
-import { ProductCatalogOrderLine } from "./order_line/order_line";
+import {useSubEnv} from "@odoo/owl";
+import {rpc} from "@web/core/network/rpc";
+import {useDebounced} from "@web/core/utils/timing";
+import {KanbanRecord} from "@web/views/kanban/kanban_record";
+import {ProductCatalogOrderLine} from "./order_line/order_line";
 
 export class ProductCatalogKanbanRecord extends KanbanRecord {
     static template = "ProductCatalogKanbanRecord";
@@ -64,7 +64,10 @@ export class ProductCatalogKanbanRecord extends KanbanRecord {
     }
 
     _updateQuantityAndGetPrice() {
-        return rpc("/product/catalog/update_order_line_info", this._getUpdateQuantityAndGetPriceParams());
+        return rpc(
+            "/product/catalog/update_order_line_info",
+            this._getUpdateQuantityAndGetPriceParams()
+        );
     }
 
     _getUpdateQuantityAndGetPriceParams() {
@@ -74,7 +77,7 @@ export class ProductCatalogKanbanRecord extends KanbanRecord {
             quantity: this.productCatalogData.quantity,
             res_model: this.env.orderResModel,
             child_field: this.env.childField,
-        }
+        };
     }
 
     //--------------------------------------------------------------------------
@@ -92,7 +95,7 @@ export class ProductCatalogKanbanRecord extends KanbanRecord {
     /**
      * Add the product to the order
      */
-    addProduct(qty=1) {
+    addProduct(qty = 1) {
         this.updateQuantity(qty);
     }
 
@@ -106,7 +109,7 @@ export class ProductCatalogKanbanRecord extends KanbanRecord {
     /**
      * Increase the quantity of the product on the order line.
      */
-    increaseQuantity(qty=1) {
+    increaseQuantity(qty = 1) {
         this.updateQuantity(this.productCatalogData.quantity + qty);
     }
 

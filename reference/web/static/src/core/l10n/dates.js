@@ -1,9 +1,9 @@
-import { localization } from "@web/core/l10n/localization";
-import { _t } from "@web/core/l10n/translation";
-import { memoize } from "@web/core/utils/functions";
-import { ensureArray } from "../utils/arrays";
+import {localization} from "@web/core/l10n/localization";
+import {_t} from "@web/core/l10n/translation";
+import {memoize} from "@web/core/utils/functions";
+import {ensureArray} from "../utils/arrays";
 
-const { DateTime, Settings } = luxon;
+const {DateTime, Settings} = luxon;
 
 /**
  * @typedef ConversionOptions
@@ -42,8 +42,8 @@ const { DateTime, Settings } = luxon;
  * This is needed because the server only understands 4-digit years.
  * Note: both of these are in the local timezone
  */
-export const MIN_VALID_DATE = DateTime.fromObject({ year: 1000 });
-export const MAX_VALID_DATE = DateTime.fromObject({ year: 9999 }).endOf("year");
+export const MIN_VALID_DATE = DateTime.fromObject({year: 1000});
+export const MAX_VALID_DATE = DateTime.fromObject({year: 9999}).endOf("year");
 
 const SERVER_DATE_FORMAT = "yyyy-MM-dd";
 const SERVER_TIME_FORMAT = "HH:mm:ss";
@@ -122,7 +122,10 @@ export function areDatesEqual(d1, d2) {
         // One of the values is a date range -> checks deep equality between the ranges
         d1 = ensureArray(d1);
         d2 = ensureArray(d2);
-        return d1.length === d2.length && d1.every((d1Val, i) => areDatesEqual(d1Val, d2[i]));
+        return (
+            d1.length === d2.length &&
+            d1.every((d1Val, i) => areDatesEqual(d1Val, d2[i]))
+        );
     }
     if (d1 instanceof DateTime && d2 instanceof DateTime && d1 !== d2) {
         // Both values are DateTime objects -> use Luxon's comparison
@@ -161,19 +164,21 @@ export function getLocalYearAndWeek(date) {
     if (!date.isLuxonDateTime) {
         date = DateTime.fromJSDate(date);
     }
-    const { weekStart } = localization;
+    const {weekStart} = localization;
     // go to start of week
-    const startDate = date.minus({ days: (date.weekday + 7 - weekStart) % 7 });
+    const startDate = date.minus({days: (date.weekday + 7 - weekStart) % 7});
     // go to nearest Monday, up to 3 days back- or forwards
     date =
         weekStart > 1 && weekStart < 5 // if firstDay after Mon & before Fri
-            ? startDate.minus({ days: (startDate.weekday + 6) % 7 }) // then go back 1-3 days
-            : startDate.plus({ days: (8 - startDate.weekday) % 7 }); // else go forwards 0-3 days
-    date = date.plus({ days: 6 }); // go to last weekday of ISO week
+            ? startDate.minus({days: (startDate.weekday + 6) % 7}) // then go back 1-3 days
+            : startDate.plus({days: (8 - startDate.weekday) % 7}); // else go forwards 0-3 days
+    date = date.plus({days: 6}); // go to last weekday of ISO week
     const jan4 = DateTime.local(date.year, 1, 4);
     // count from previous year if week falls before Jan 4
     const diffDays =
-        date < jan4 ? date.diff(jan4.minus({ years: 1 }), "day").days : date.diff(jan4, "day").days;
+        date < jan4
+            ? date.diff(jan4.minus({years: 1}), "day").days
+            : date.diff(jan4, "day").days;
     return {
         year: date.year,
         week: Math.trunc(diffDays / 7) + 1,
@@ -194,9 +199,9 @@ export function getLocalYearAndWeek(date) {
  * @returns {luxon.DateTime}
  */
 export function getStartOfLocalWeek(date) {
-    const { weekStart } = localization;
+    const {weekStart} = localization;
     const weekday = date.weekday < weekStart ? weekStart - 7 : weekStart;
-    return date.set({ weekday }).startOf("day");
+    return date.set({weekday}).startOf("day");
 }
 
 /**
@@ -212,7 +217,7 @@ export function getStartOfLocalWeek(date) {
  * @returns {luxon.DateTime}
  */
 export function getEndOfLocalWeek(date) {
-    return getStartOfLocalWeek(date).plus({ days: 6 }).endOf("day");
+    return getStartOfLocalWeek(date).plus({days: 6}).endOf("day");
 }
 
 /**
@@ -303,11 +308,12 @@ function parseSmartDateInput(value) {
         // Weekday
         const dayname = term.slice(1);
         if (Object.hasOwn(smartWeekdays, dayname) || dayname === "week_start") {
-            const { weekStart } = localization;
+            const {weekStart} = localization;
             const weekdayNumber =
                 dayname === "week_start" ? weekStart : smartWeekdays[dayname];
             let weekdayOffset =
-                ((weekdayNumber - weekStart + 7) % 7) - ((now.weekday - weekStart + 7) % 7);
+                ((weekdayNumber - weekStart + 7) % 7) -
+                ((now.weekday - weekStart + 7) % 7);
             if (operator == "+" || operator == "-") {
                 if (weekdayOffset > 0 && operator == "-") {
                     weekdayOffset -= 7;
@@ -317,7 +323,7 @@ function parseSmartDateInput(value) {
             } else {
                 now = now.startOf("day");
             }
-            now = now.plus({ days: weekdayOffset });
+            now = now.plus({days: weekdayOffset});
             continue;
         }
 
@@ -329,18 +335,22 @@ function parseSmartDateInput(value) {
                 return false;
             }
             if (operator == "+") {
-                now = now.plus({ [field_name]: number });
+                now = now.plus({[field_name]: number});
             } else if (operator == "-") {
-                now = now.minus({ [field_name]: number });
+                now = now.minus({[field_name]: number});
             } else if (operator == "=") {
-                if (field_name == "seconds" || field_name == "minutes" || field_name == "hours") {
+                if (
+                    field_name == "seconds" ||
+                    field_name == "minutes" ||
+                    field_name == "hours"
+                ) {
                     now = now.startOf(field_name);
                 } else if (field_name == "weeks") {
                     return false; // unsupported
                 } else {
                     now = now.startOf("day");
                 }
-                now = now.set({ [field_name]: number });
+                now = now.set({[field_name]: number});
             }
         } catch {
             return false;
@@ -440,7 +450,7 @@ export function toLocaleDateString(value) {
     if (!value) {
         return "";
     }
-    const format = { ...DateTime.DATE_MED };
+    const format = {...DateTime.DATE_MED};
     if (today().year === value.year) {
         delete format.year;
     }
@@ -458,12 +468,12 @@ export function toLocaleDateString(value) {
  */
 export function toLocaleDateTimeString(
     value,
-    options = { showDate: true, showTime: true, showSeconds: false }
+    options = {showDate: true, showTime: true, showSeconds: false}
 ) {
     if (!value) {
         return "";
     }
-    const format = { ...DateTime.DATETIME_MED_WITH_SECONDS };
+    const format = {...DateTime.DATETIME_MED_WITH_SECONDS};
     if (!options.showSeconds) {
         delete format.second;
     }
@@ -517,11 +527,17 @@ export function formatDuration(seconds, showFullDuration) {
     }
     seconds -= seconds % 60;
 
-    let duration = luxon.Duration.fromObject({ seconds: seconds }).shiftTo(...durationKeys);
+    let duration = luxon.Duration.fromObject({seconds: seconds}).shiftTo(
+        ...durationKeys
+    );
     duration = duration.shiftTo(...durationKeys.filter((key) => duration.get(key)));
-    const durationSplit = duration.toHuman({ unitDisplay: displayStyle }).split(",");
+    const durationSplit = duration.toHuman({unitDisplay: displayStyle}).split(",");
 
-    if (!showFullDuration && duration.loc.locale.includes("en") && duration.months > 0) {
+    if (
+        !showFullDuration &&
+        duration.loc.locale.includes("en") &&
+        duration.months > 0
+    ) {
         durationSplit[0] = durationSplit[0].replace("m", "M");
     }
     return durationSplit.slice(0, numberOfValuesToDisplay).join(",");
@@ -534,7 +550,10 @@ export function formatDuration(seconds, showFullDuration) {
  */
 export function serializeDate(value) {
     if (!dateCache.has(value)) {
-        dateCache.set(value, value.toFormat(SERVER_DATE_FORMAT, { numberingSystem: "latn" }));
+        dateCache.set(
+            value,
+            value.toFormat(SERVER_DATE_FORMAT, {numberingSystem: "latn"})
+        );
     }
     return dateCache.get(value);
 }
@@ -548,7 +567,9 @@ export function serializeDateTime(value) {
     if (!dateTimeCache.has(value)) {
         dateTimeCache.set(
             value,
-            value.setZone("utc").toFormat(SERVER_DATETIME_FORMAT, { numberingSystem: "latn" })
+            value
+                .setZone("utc")
+                .toFormat(SERVER_DATETIME_FORMAT, {numberingSystem: "latn"})
         );
     }
     return dateTimeCache.get(value);
@@ -604,7 +625,8 @@ export function parseDateTime(value, options = {}) {
         setZone: true,
         zone: options.tz || "default",
     };
-    const switchToLatin = Settings.defaultNumberingSystem !== "latn" && /[0-9]/.test(value);
+    const switchToLatin =
+        Settings.defaultNumberingSystem !== "latn" && /[0-9]/.test(value);
 
     // Force numbering system to latin if actual numbers are found in the value
     if (switchToLatin) {
@@ -690,7 +712,7 @@ export function parseDateTime(value, options = {}) {
  * @param {string} value serialized date string, e.g. "2018-01-01"
  */
 export function deserializeDate(value, options = {}) {
-    options = { numberingSystem: "latn", zone: "default", ...options };
+    options = {numberingSystem: "latn", zone: "default", ...options};
     return DateTime.fromSQL(value, options).reconfigure({
         numberingSystem: Settings.defaultNumberingSystem,
     });
@@ -701,7 +723,7 @@ export function deserializeDate(value, options = {}) {
  * @param {string} value serialized datetime string, e.g. "2018-01-01 00:00:00", expressed in UTC
  */
 export function deserializeDateTime(value, options = {}) {
-    return DateTime.fromSQL(value, { numberingSystem: "latn", zone: "utc" })
+    return DateTime.fromSQL(value, {numberingSystem: "latn", zone: "utc"})
         .setZone(options?.tz || "default")
         .reconfigure({
             numberingSystem: Settings.defaultNumberingSystem,

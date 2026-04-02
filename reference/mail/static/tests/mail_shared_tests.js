@@ -1,11 +1,17 @@
-import { click, contains, openDiscuss, start, startServer } from "@mail/../tests/mail_test_helpers";
-import { expect, mockTouch, mockUserAgent, queryFirst } from "@odoo/hoot";
+import {
+    click,
+    contains,
+    openDiscuss,
+    start,
+    startServer,
+} from "@mail/../tests/mail_test_helpers";
+import {expect, mockTouch, mockUserAgent, queryFirst} from "@odoo/hoot";
 
 export async function mailCanAddMessageReactionMobile() {
     mockTouch(true);
     mockUserAgent("android");
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     pyEnv["mail.message"].create([
         {
             body: "Hello world",
@@ -22,15 +28,18 @@ export async function mailCanAddMessageReactionMobile() {
     ]);
     await start();
     await openDiscuss(channelId);
-    await contains(".o-mail-Message", { count: 2 });
+    await contains(".o-mail-Message", {count: 2});
     await contains(".o-mail-Message:contains('Hello world')");
     await click(".o-mail-Message:contains('Hello world') [title='Expand']");
     await click(".o-dropdown-item:contains('Add a Reaction')");
     await contains(".o-overlay-item:has(.modal .o-EmojiPicker)");
     const emojiPickerZIndex = parseInt(
-        getComputedStyle(queryFirst(".o-overlay-item:has(.modal .o-EmojiPicker)")).zIndex
+        getComputedStyle(queryFirst(".o-overlay-item:has(.modal .o-EmojiPicker)"))
+            .zIndex
     );
-    const chatWindowZIndex = parseInt(getComputedStyle(queryFirst(".o-mail-ChatWindow")).zIndex);
+    const chatWindowZIndex = parseInt(
+        getComputedStyle(queryFirst(".o-mail-ChatWindow")).zIndex
+    );
     expect(chatWindowZIndex).toBeLessThan(emojiPickerZIndex, {
         message: "emoji picker modal should be above chat window",
     });
@@ -47,7 +56,7 @@ export async function mailCanCopyTextToClipboardMobile() {
     mockTouch(true);
     mockUserAgent("android");
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     pyEnv["mail.message"].create([
         {
             body: "Hello world",
@@ -64,7 +73,7 @@ export async function mailCanCopyTextToClipboardMobile() {
     ]);
     await start();
     await openDiscuss(channelId);
-    await contains(".o-mail-Message", { count: 2 });
+    await contains(".o-mail-Message", {count: 2});
     await contains(".o-mail-Message:contains('Hello world')");
     await click(".o-mail-Message:contains('Hello world') [title='Expand']");
     await contains(".o-dropdown-item:contains('Copy to Clipboard')");

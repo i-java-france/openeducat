@@ -2,7 +2,7 @@
 
 from markupsafe import Markup
 
-from odoo import fields, models, _
+from odoo import _, fields, models
 from odoo.tools import html2plaintext
 
 

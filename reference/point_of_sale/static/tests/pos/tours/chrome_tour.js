@@ -6,9 +6,9 @@ import * as PaymentScreen from "@point_of_sale/../tests/pos/tours/utils/payment_
 import * as TicketScreen from "@point_of_sale/../tests/pos/tours/utils/ticket_screen_util";
 import * as Chrome from "@point_of_sale/../tests/pos/tours/utils/chrome_util";
 import * as Utils from "@point_of_sale/../tests/pos/tours/utils/common";
-import { refresh } from "@point_of_sale/../tests/generic_helpers/utils";
-import { registry } from "@web/core/registry";
-import { inLeftSide } from "@point_of_sale/../tests/pos/tours/utils/common";
+import {refresh} from "@point_of_sale/../tests/generic_helpers/utils";
+import {registry} from "@web/core/registry";
+import {inLeftSide} from "@point_of_sale/../tests/pos/tours/utils/common";
 import * as PartnerList from "@point_of_sale/../tests/pos/tours/utils/partner_list_util";
 
 registry.category("web_tour.tours").add("ChromeTour", {
@@ -39,7 +39,7 @@ registry.category("web_tour.tours").add("ChromeTour", {
             Chrome.createFloatingOrder(),
             ProductScreen.addOrderline("Whiteboard Pen", "5", "6", "30.0"),
             ProductScreen.clickPayButton(),
-            PaymentScreen.clickPaymentMethod("Bank", true, { remaining: "0.0" }),
+            PaymentScreen.clickPaymentMethod("Bank", true, {remaining: "0.0"}),
             PaymentScreen.validateButtonIsHighlighted(true),
             PaymentScreen.clickValidate(),
             ReceiptScreen.isShown(),
@@ -75,7 +75,7 @@ registry.category("web_tour.tours").add("ChromeTour", {
             ProductScreen.isShown(),
             ProductScreen.clickPayButton(),
             PaymentScreen.clickPaymentMethod("Cash"),
-            PaymentScreen.enterPaymentLineAmount("Cash", "20", true, { change: "18.0" }),
+            PaymentScreen.enterPaymentLineAmount("Cash", "20", true, {change: "18.0"}),
             PaymentScreen.validateButtonIsHighlighted(true),
             PaymentScreen.clickValidate(),
             ReceiptScreen.totalAmountContains("2.0"),
@@ -113,7 +113,7 @@ registry.category("web_tour.tours").add("ChromeTour", {
             PaymentScreen.clickInvoiceButton(),
             PaymentScreen.clickValidate(),
             ReceiptScreen.isShown(),
-            { trigger: ".receipt-screen .pos-config-name:contains(Shop)" },
+            {trigger: ".receipt-screen .pos-config-name:contains(Shop)"},
 
             // Cancelling a floating order should remove it from the floating orders list.
             ReceiptScreen.clickNextOrder(),
@@ -128,14 +128,14 @@ registry.category("web_tour.tours").add("OrderModificationAfterValidationError",
             Dialog.confirm("Open Register"),
             ProductScreen.clickDisplayedProduct("Test Product", true, "1"),
             ProductScreen.clickPayButton(),
-            PaymentScreen.clickPaymentMethod("Bank", true, { remaining: "0.0" }),
+            PaymentScreen.clickPaymentMethod("Bank", true, {remaining: "0.0"}),
             PaymentScreen.clickValidate(),
 
             // Dialog showing the error
             Dialog.confirm(),
 
             PaymentScreen.clickBack(),
-            { ...ProductScreen.back(), isActive: ["mobile"] },
+            {...ProductScreen.back(), isActive: ["mobile"]},
             ProductScreen.isShown(),
 
             // Allow order changes after the error
@@ -173,32 +173,34 @@ registry.category("web_tour.tours").add("test_tracking_number_closing_session", 
         ].flat(),
 });
 
-registry.category("web_tour.tours").add("test_reload_page_before_payment_with_customer_account", {
-    steps: () =>
-        [
-            Chrome.startPoS(),
-            Dialog.confirm("Open Register"),
-            ProductScreen.clickDisplayedProduct("Desk Organizer", true, "1.0"),
-            refresh(),
-            ProductScreen.productIsDisplayed("Desk Organizer"),
-            ProductScreen.clickPartnerButton(),
-            ProductScreen.clickCustomer("Partner Test 1"),
-            ProductScreen.clickPayButton(),
-            PaymentScreen.clickPaymentMethod("Customer Account"),
-            PaymentScreen.clickValidate(),
-            ReceiptScreen.clickNextOrder(),
-            ProductScreen.isShown(),
-            ProductScreen.clickDisplayedProduct("Desk Organizer", true, "1.0"),
-            ProductScreen.clickPayButton(),
-            PaymentScreen.clickPaymentMethod("Customer Account"),
-            PaymentScreen.clickValidate(),
-            Dialog.cancel(),
-            PaymentScreen.clickValidate(),
-            Dialog.confirm("Ok"),
-            PaymentScreen.clickCustomer("Partner Test 1"),
-            PaymentScreen.clickValidate(),
-        ].flat(),
-});
+registry
+    .category("web_tour.tours")
+    .add("test_reload_page_before_payment_with_customer_account", {
+        steps: () =>
+            [
+                Chrome.startPoS(),
+                Dialog.confirm("Open Register"),
+                ProductScreen.clickDisplayedProduct("Desk Organizer", true, "1.0"),
+                refresh(),
+                ProductScreen.productIsDisplayed("Desk Organizer"),
+                ProductScreen.clickPartnerButton(),
+                ProductScreen.clickCustomer("Partner Test 1"),
+                ProductScreen.clickPayButton(),
+                PaymentScreen.clickPaymentMethod("Customer Account"),
+                PaymentScreen.clickValidate(),
+                ReceiptScreen.clickNextOrder(),
+                ProductScreen.isShown(),
+                ProductScreen.clickDisplayedProduct("Desk Organizer", true, "1.0"),
+                ProductScreen.clickPayButton(),
+                PaymentScreen.clickPaymentMethod("Customer Account"),
+                PaymentScreen.clickValidate(),
+                Dialog.cancel(),
+                PaymentScreen.clickValidate(),
+                Dialog.confirm("Ok"),
+                PaymentScreen.clickCustomer("Partner Test 1"),
+                PaymentScreen.clickValidate(),
+            ].flat(),
+    });
 
 registry.category("web_tour.tours").add("test_cash_in_out", {
     steps: () =>
@@ -255,7 +257,7 @@ registry.category("web_tour.tours").add("SessionStatisticsDisplay", {
             PaymentScreen.clickValidate(),
             ReceiptScreen.clickNextOrder(),
             ProductScreen.isShown(),
-            Chrome.clickMenuOption("Backend", { expectUnloadPage: true }),
+            Chrome.clickMenuOption("Backend", {expectUnloadPage: true}),
             {
                 trigger: `[name=opening_cash]:contains(100.00)`,
             },
@@ -298,7 +300,9 @@ registry.category("web_tour.tours").add("test_ctrl_number_ignored", {
             {
                 trigger: "body",
                 run: () => {
-                    window.dispatchEvent(new KeyboardEvent("keyup", { key: "5", ctrlKey: true }));
+                    window.dispatchEvent(
+                        new KeyboardEvent("keyup", {key: "5", ctrlKey: true})
+                    );
                 },
             },
             {
@@ -309,8 +313,12 @@ registry.category("web_tour.tours").add("test_ctrl_number_ignored", {
                     }),
             },
             inLeftSide([
-                { ...ProductScreen.clickLine("Whiteboard Pen")[0], isActive: ["mobile"] },
-                ...ProductScreen.selectedOrderlineHasDirect("Whiteboard Pen", "1", "6.0"),
+                {...ProductScreen.clickLine("Whiteboard Pen")[0], isActive: ["mobile"]},
+                ...ProductScreen.selectedOrderlineHasDirect(
+                    "Whiteboard Pen",
+                    "1",
+                    "6.0"
+                ),
             ]),
         ].flat(),
 });

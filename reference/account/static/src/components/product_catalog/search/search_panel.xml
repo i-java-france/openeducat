@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
     <t
         t-name="account.ProductCatalogSearchPanelContent"
@@ -9,7 +8,7 @@
         <section position="before">
             <section t-if="showSections" class="o_search_panel_sections mt-5">
                 <header class="d-flex align-items-center cursor-default gap-2 mb-3">
-                    <i class="fa fa-filter"/>
+                    <i class="fa fa-filter" />
                     <span class="text-uppercase fw-bold">Sections</span>
                     <div class="d-flex align-items-center ms-auto">
                         <span class="me-2">Filter</span>
@@ -40,7 +39,10 @@
                         t-on-drop="(e) => this.onDrop(sectionId, e)"
                     >
                         <div class="d-flex align-items-center">
-                            <t t-set="section" t-value="this.state.sections.get(sectionId)"/>
+                            <t
+                                t-set="section"
+                                t-value="this.state.sections.get(sectionId)"
+                            />
                             <span
                                 t-if="sectionId"
                                 class="o_row_handle oi oi-draggable ui-sortable-handle"
@@ -66,8 +68,14 @@
                                 )"
                                 t-att-title="section.name"
                             >
-                                <span class="o_section_name text-truncate" t-out="section.name"/>
-                                <span class="mx-2 text-muted" t-out="section.line_count"/>
+                                <span
+                                    class="o_section_name text-truncate"
+                                    t-out="section.name"
+                                />
+                                <span
+                                    class="mx-2 text-muted"
+                                    t-out="section.line_count"
+                                />
                             </div>
                         </div>
                     </li>
@@ -93,13 +101,19 @@
         </section>
 
         <div class="o_search_panel_empty_state me-3" position="attributes">
-            <attribute name="class" add="d-none" separator=" "/>
+            <attribute name="class" add="d-none" separator=" " />
         </div>
     </t>
 
-    <t t-name="account.ProductCatalogSearchPanel" t-inherit="web.SearchPanel" t-inherit-mode="primary">
+    <t
+        t-name="account.ProductCatalogSearchPanel"
+        t-inherit="web.SearchPanel"
+        t-inherit-mode="primary"
+    >
         <t t-call="web.SearchPanel.Regular" position="attributes">
-            <attribute name="t-call">account.ProductCatalogSearchPanelContent</attribute>
+            <attribute
+                name="t-call"
+            >account.ProductCatalogSearchPanelContent</attribute>
         </t>
     </t>
 </templates>

@@ -1,6 +1,6 @@
-import { test, describe, expect } from "@odoo/hoot";
-import { setupPosEnv, getFilledOrder } from "@point_of_sale/../tests/unit/utils";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {describe, expect, test} from "@odoo/hoot";
+import {getFilledOrder, setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
 
 definePosModels();
 
@@ -52,7 +52,7 @@ describe("pos.order restaurant patches", () => {
     test("getName returns formatted name for table + children", async () => {
         const store = await setupPosEnv();
         const table = store.models["restaurant.table"].get(2);
-        const order = store.addNewOrder({ table_id: table });
+        const order = store.addNewOrder({table_id: table});
         const child = store.models["restaurant.table"].get(3);
         let name = order.getName();
         expect(name).toBe("T 1");

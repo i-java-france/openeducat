@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <odoo>
     <data>
         <record id="im_livechat_expertise_view_list" model="ir.ui.view">
@@ -6,8 +6,13 @@
             <field name="model">im_livechat.expertise</field>
             <field name="arch" type="xml">
                 <list editable="bottom">
-                    <field name="name"/>
-                    <field name="user_ids" widget="many2many_tags" options="{'no_create': True}" domain="[['all_group_ids', 'in', %(im_livechat.im_livechat_group_user)d]]"/>
+                    <field name="name" />
+                    <field
+                        name="user_ids"
+                        widget="many2many_tags"
+                        options="{'no_create': True}"
+                        domain="[['all_group_ids', 'in', %(im_livechat.im_livechat_group_user)d]]"
+                    />
                 </list>
             </field>
         </record>
@@ -19,8 +24,13 @@
                 <form>
                     <sheet>
                         <group>
-                            <field name="name"/>
-                            <field name="user_ids" widget="many2many_tags" options="{'no_create': True}" domain="[['all_group_ids', 'in', %(im_livechat.im_livechat_group_user)d]]"/>
+                            <field name="name" />
+                            <field
+                                name="user_ids"
+                                widget="many2many_tags"
+                                options="{'no_create': True}"
+                                domain="[['all_group_ids', 'in', %(im_livechat.im_livechat_group_user)d]]"
+                            />
                         </group>
                     </sheet>
                 </form>

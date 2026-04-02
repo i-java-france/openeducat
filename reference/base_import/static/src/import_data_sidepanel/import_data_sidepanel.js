@@ -1,22 +1,22 @@
-import { Component } from "@odoo/owl";
-import { CheckBox } from "@web/core/checkbox/checkbox";
-import { _t } from "@web/core/l10n/translation";
-import { DocumentationLink } from "@web/views/widgets/documentation_link/documentation_link";
+import {Component} from "@odoo/owl";
+import {CheckBox} from "@web/core/checkbox/checkbox";
+import {_t} from "@web/core/l10n/translation";
+import {DocumentationLink} from "@web/views/widgets/documentation_link/documentation_link";
 
 export class ImportDataSidepanel extends Component {
     static template = "ImportDataSidepanel";
-    static components = { CheckBox, DocumentationLink };
+    static components = {CheckBox, DocumentationLink};
     static props = {
-        filename: { type: String },
-        formattingOptions: { type: Object, optional: true },
-        options: { type: Object },
-        importTemplates: { type: Array, optional: true },
-        isBatched: { type: Boolean, optional: true },
-        onOptionChanged: { type: Function },
-        onReload: { type: Function },
-        hasBinaryFields: { type: Boolean },
-        binaryFilesParams: { type: Object },
-        onBinaryFilesParamsChanged: { type: Function },
+        filename: {type: String},
+        formattingOptions: {type: Object, optional: true},
+        options: {type: Object},
+        importTemplates: {type: Array, optional: true},
+        isBatched: {type: Boolean, optional: true},
+        onOptionChanged: {type: Function},
+        onReload: {type: Function},
+        hasBinaryFields: {type: Boolean},
+        binaryFilesParams: {type: Object},
+        onBinaryFilesParamsChanged: {type: Function},
     };
 
     get fileName() {
@@ -35,7 +35,10 @@ export class ImportDataSidepanel extends Component {
     }
 
     setOptionValue(name, value) {
-        this.props.onOptionChanged(name, isNaN(parseFloat(value)) ? value : Number(value));
+        this.props.onOptionChanged(
+            name,
+            isNaN(parseFloat(value)) ? value : Number(value)
+        );
     }
 
     // Start at row 1 = skip 0 lines
@@ -47,7 +50,7 @@ export class ImportDataSidepanel extends Component {
         const files = this.props.binaryFilesParams.binaryFiles.value;
         const number = Object.keys(files).length;
         if (number > 0) {
-            return _t("%(number)s file(s) selected", { number });
+            return _t("%(number)s file(s) selected", {number});
         }
         return _t("No file selected");
     }

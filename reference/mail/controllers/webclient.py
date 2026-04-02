@@ -4,8 +4,9 @@ from collections import defaultdict
 
 from odoo import http
 from odoo.http import request
+
 from odoo.addons.mail.controllers.thread import ThreadController
-from odoo.addons.mail.tools.discuss import add_guest_to_context, Store
+from odoo.addons.mail.tools.discuss import Store, add_guest_to_context
 
 
 class WebclientController(ThreadController):

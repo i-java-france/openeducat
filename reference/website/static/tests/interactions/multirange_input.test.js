@@ -1,7 +1,10 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { queryAll } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryAll} from "@odoo/hoot-dom";
 
 setupInteractionWhiteList("website.multirange_input");
 
@@ -9,7 +12,7 @@ describe.current.tags("interaction_dev");
 
 test("multirange_input lib gets initialised", async () => {
     document.querySelector("html").setAttribute("lang", "en_US");
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <div id="wrapwrap">
             <input type="range" multiple="multiple"
                 class="form-range range-with-input"

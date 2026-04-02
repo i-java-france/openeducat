@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { rpc } from "@web/core/network/rpc";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {rpc} from "@web/core/network/rpc";
 
 export class SaveTranslationPlugin extends Plugin {
     static id = "saveTranslation";
@@ -9,7 +9,10 @@ export class SaveTranslationPlugin extends Plugin {
     /** @type {import("plugins").WebsiteResources} */
     resources = {
         pre_save_handlers: this.saveDelayTranslations.bind(this),
-        save_elements_overrides: withSequence(20, this.saveTranslationElements.bind(this)),
+        save_elements_overrides: withSequence(
+            20,
+            this.saveTranslationElements.bind(this)
+        ),
     };
 
     async saveDelayTranslations(groupedDirtyElements) {
@@ -49,12 +52,14 @@ export class SaveTranslationPlugin extends Plugin {
     async saveTranslationElements(els) {
         if (els[0].dataset["oeTranslationSourceSha"]) {
             const translations = {};
-            translations[this.services.website.currentWebsite.metadata.lang] = Object.assign(
-                {},
-                ...els.map((el) => ({
-                    [el.dataset["oeTranslationSourceSha"]]: this.getEscapedElement(el).innerHTML,
-                }))
-            );
+            translations[this.services.website.currentWebsite.metadata.lang] =
+                Object.assign(
+                    {},
+                    ...els.map((el) => ({
+                        [el.dataset["oeTranslationSourceSha"]]:
+                            this.getEscapedElement(el).innerHTML,
+                    }))
+                );
             return rpc("/website/field/translation/update", {
                 model: els[0].dataset["oeModel"],
                 record_id: [Number(els[0].dataset["oeId"])],

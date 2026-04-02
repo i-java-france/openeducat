@@ -7,79 +7,79 @@
       "colNumber": 8,
       "rowNumber": 85,
       "rows": {
-        "6": { "size": 38 },
-        "23": { "size": 40 },
-        "24": { "size": 21 },
-        "25": { "size": 21 },
-        "26": { "size": 21 },
-        "27": { "size": 21 },
-        "28": { "size": 21 },
-        "29": { "size": 21 },
-        "30": { "size": 21 },
-        "31": { "size": 21 },
-        "32": { "size": 21 },
-        "33": { "size": 21 },
-        "34": { "size": 21 },
-        "35": { "size": 21 },
-        "36": { "size": 21 },
-        "37": { "size": 21 },
-        "38": { "size": 21 },
-        "39": { "size": 21 },
-        "40": { "size": 21 },
-        "41": { "size": 21 },
-        "42": { "size": 41 },
-        "43": { "size": 21 },
-        "44": { "size": 21 },
-        "45": { "size": 21 },
-        "46": { "size": 21 },
-        "47": { "size": 21 },
-        "48": { "size": 21 },
-        "49": { "size": 21 },
-        "50": { "size": 21 },
-        "51": { "size": 21 },
-        "52": { "size": 21 },
-        "53": { "size": 21 },
-        "54": { "size": 21 },
-        "55": { "size": 21 },
-        "56": { "size": 21 },
-        "57": { "size": 21 },
-        "58": { "size": 21 },
-        "59": { "size": 21 },
-        "60": { "size": 36 },
-        "61": { "size": 38 },
-        "62": { "size": 27 },
-        "63": { "size": 27 },
-        "64": { "size": 27 },
-        "65": { "size": 27 },
-        "66": { "size": 27 },
-        "67": { "size": 27 },
-        "68": { "size": 27 },
-        "69": { "size": 27 },
-        "70": { "size": 27 },
-        "71": { "size": 27 },
-        "72": { "size": 21 },
-        "73": { "size": 21 },
-        "74": { "size": 21 },
-        "75": { "size": 21 },
-        "76": { "size": 21 },
-        "77": { "size": 21 },
-        "78": { "size": 21 },
-        "79": { "size": 21 },
-        "80": { "size": 21 },
-        "81": { "size": 21 },
-        "82": { "size": 21 },
-        "83": { "size": 21 },
-        "84": { "size": 21 }
+        "6": {"size": 38},
+        "23": {"size": 40},
+        "24": {"size": 21},
+        "25": {"size": 21},
+        "26": {"size": 21},
+        "27": {"size": 21},
+        "28": {"size": 21},
+        "29": {"size": 21},
+        "30": {"size": 21},
+        "31": {"size": 21},
+        "32": {"size": 21},
+        "33": {"size": 21},
+        "34": {"size": 21},
+        "35": {"size": 21},
+        "36": {"size": 21},
+        "37": {"size": 21},
+        "38": {"size": 21},
+        "39": {"size": 21},
+        "40": {"size": 21},
+        "41": {"size": 21},
+        "42": {"size": 41},
+        "43": {"size": 21},
+        "44": {"size": 21},
+        "45": {"size": 21},
+        "46": {"size": 21},
+        "47": {"size": 21},
+        "48": {"size": 21},
+        "49": {"size": 21},
+        "50": {"size": 21},
+        "51": {"size": 21},
+        "52": {"size": 21},
+        "53": {"size": 21},
+        "54": {"size": 21},
+        "55": {"size": 21},
+        "56": {"size": 21},
+        "57": {"size": 21},
+        "58": {"size": 21},
+        "59": {"size": 21},
+        "60": {"size": 36},
+        "61": {"size": 38},
+        "62": {"size": 27},
+        "63": {"size": 27},
+        "64": {"size": 27},
+        "65": {"size": 27},
+        "66": {"size": 27},
+        "67": {"size": 27},
+        "68": {"size": 27},
+        "69": {"size": 27},
+        "70": {"size": 27},
+        "71": {"size": 27},
+        "72": {"size": 21},
+        "73": {"size": 21},
+        "74": {"size": 21},
+        "75": {"size": 21},
+        "76": {"size": 21},
+        "77": {"size": 21},
+        "78": {"size": 21},
+        "79": {"size": 21},
+        "80": {"size": 21},
+        "81": {"size": 21},
+        "82": {"size": 21},
+        "83": {"size": 21},
+        "84": {"size": 21}
       },
       "cols": {
-        "0": { "size": 332 },
-        "1": { "size": 100 },
-        "2": { "size": 69 },
-        "3": { "size": 40 },
-        "4": { "size": 50 },
-        "5": { "size": 275 },
-        "6": { "size": 100 },
-        "7": { "size": 72 }
+        "0": {"size": 332},
+        "1": {"size": 100},
+        "2": {"size": 69},
+        "3": {"size": 40},
+        "4": {"size": 50},
+        "5": {"size": 275},
+        "6": {"size": 100},
+        "7": {"size": 72}
       },
       "merges": [],
       "cells": {
@@ -109,7 +109,7 @@
         "C63:H72": 7
       },
       "formats": {},
-      "borders": { "A43:C43": 1, "E43:H43": 1, "A44:C44": 2, "E44:H44": 2 },
+      "borders": {"A43:C43": 1, "E43:H43": 1, "A44:C44": 2, "E44:H44": 2},
       "conditionalFormats": [],
       "dataValidationRules": [],
       "figures": [
@@ -135,7 +135,7 @@
             "humanize": false,
             "chartId": "833374d1-d09f-4a4e-bb09-2831ceee5465"
           },
-          "offset": { "x": 246, "y": 9 },
+          "offset": {"x": 246, "y": 9},
           "col": 0,
           "row": 0
         },
@@ -161,7 +161,7 @@
             "humanize": false,
             "chartId": "de7010e1-2cdc-4e19-a1de-1c7fd4795bf4"
           },
-          "offset": { "x": 0, "y": 9 },
+          "offset": {"x": 0, "y": 9},
           "col": 0,
           "row": 0
         },
@@ -171,7 +171,7 @@
           "height": 335,
           "tag": "chart",
           "data": {
-            "title": { "text": "" },
+            "title": {"text": ""},
             "background": "#FFFFFF",
             "legendPosition": "none",
             "metaData": {
@@ -189,9 +189,7 @@
                 "inventory_mode": true,
                 "inventory_report_mode": true
               },
-              "domain": [
-                ["location_id.usage", "=", "internal"]
-              ],
+              "domain": [["location_id.usage", "=", "internal"]],
               "groupBy": ["create_date:quarter", "product_id"],
               "orderBy": []
             },
@@ -243,22 +241,37 @@
             "stacked": true,
             "axesDesign": {
               "x": {
-                "title": { "text": "Creation Date" }
+                "title": {"text": "Creation Date"}
               },
               "y": {
-                "title": { "text": "Stock Quantity" }
+                "title": {"text": "Stock Quantity"}
               }
             },
             "chartId": "fad86b76-037f-4b7f-8afc-bc028c2536de",
             "fieldMatching": {
-              "feeb0d08-4596-4e7c-b478-a3c659189cdd": { "chain": "warehouse_id", "type": "many2one" },
-              "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": { "chain": "location_id", "type": "many2one" },
-              "7ff87378-db1d-4725-bf25-6eee704b15a5": { "chain": "product_categ_id", "type": "many2one" },
-              "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": { "chain": "product_id", "type": "many2one" },
-              "0725cf6d-c980-46a1-bd7b-bd75e34348e7": { "chain": "lot_id", "type": "many2one" }
+              "feeb0d08-4596-4e7c-b478-a3c659189cdd": {
+                "chain": "warehouse_id",
+                "type": "many2one"
+              },
+              "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": {
+                "chain": "location_id",
+                "type": "many2one"
+              },
+              "7ff87378-db1d-4725-bf25-6eee704b15a5": {
+                "chain": "product_categ_id",
+                "type": "many2one"
+              },
+              "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": {
+                "chain": "product_id",
+                "type": "many2one"
+              },
+              "0725cf6d-c980-46a1-bd7b-bd75e34348e7": {
+                "chain": "lot_id",
+                "type": "many2one"
+              }
             }
           },
-          "offset": { "x": 0, "y": 0 },
+          "offset": {"x": 0, "y": 0},
           "col": 0,
           "row": 43
         },
@@ -268,7 +281,7 @@
           "height": 335,
           "tag": "chart",
           "data": {
-            "title": { "text": "" },
+            "title": {"text": ""},
             "background": "#FFFFFF",
             "legendPosition": "none",
             "metaData": {
@@ -286,9 +299,7 @@
                 "inventory_mode": true,
                 "inventory_report_mode": true
               },
-              "domain": [
-                ["location_id.usage", "=", "internal"]
-              ],
+              "domain": [["location_id.usage", "=", "internal"]],
               "groupBy": ["create_date:quarter", "product_id"],
               "orderBy": []
             },
@@ -340,22 +351,37 @@
             "stacked": true,
             "axesDesign": {
               "x": {
-                "title": { "text": "Creation Date" }
+                "title": {"text": "Creation Date"}
               },
               "y": {
-                "title": { "text": "Stock Value" }
+                "title": {"text": "Stock Value"}
               }
             },
             "chartId": "73f61914-d895-4484-b3ba-585107daeb44",
             "fieldMatching": {
-              "feeb0d08-4596-4e7c-b478-a3c659189cdd": { "chain": "warehouse_id", "type": "many2one" },
-              "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": { "chain": "location_id", "type": "many2one" },
-              "7ff87378-db1d-4725-bf25-6eee704b15a5": { "chain": "product_categ_id", "type": "many2one" },
-              "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": { "chain": "product_id", "type": "many2one" },
-              "0725cf6d-c980-46a1-bd7b-bd75e34348e7": { "chain": "lot_id", "type": "many2one" }
+              "feeb0d08-4596-4e7c-b478-a3c659189cdd": {
+                "chain": "warehouse_id",
+                "type": "many2one"
+              },
+              "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": {
+                "chain": "location_id",
+                "type": "many2one"
+              },
+              "7ff87378-db1d-4725-bf25-6eee704b15a5": {
+                "chain": "product_categ_id",
+                "type": "many2one"
+              },
+              "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": {
+                "chain": "product_id",
+                "type": "many2one"
+              },
+              "0725cf6d-c980-46a1-bd7b-bd75e34348e7": {
+                "chain": "lot_id",
+                "type": "many2one"
+              }
             }
           },
-          "offset": { "x": 36, "y": 0 },
+          "offset": {"x": 36, "y": 0},
           "col": 3,
           "row": 43
         },
@@ -380,7 +406,7 @@
             "humanize": true,
             "chartId": "639d221d-d74d-4762-984e-9debac4f5a82"
           },
-          "offset": { "x": 492, "y": 9 },
+          "offset": {"x": 492, "y": 9},
           "col": 0,
           "row": 0
         },
@@ -388,7 +414,7 @@
           "id": "b2df71e9-7cf7",
           "col": 0,
           "row": 61,
-          "offset": { "x": 0, "y": 0 },
+          "offset": {"x": 0, "y": 0},
           "width": 500,
           "height": 314,
           "tag": "carousel",
@@ -397,9 +423,7 @@
               "07303ff1-4288": {
                 "type": "sunburst",
                 "dataSetsHaveTitle": false,
-                "dataSets": [
-                  { "dataRange": "A63:A72" }
-                ],
+                "dataSets": [{"dataRange": "A63:A72"}],
                 "legendPosition": "none",
                 "labelRange": "B63:B72",
                 "title": {},
@@ -407,8 +431,8 @@
               }
             },
             "items": [
-              { "type": "chart", "chartId": "07303ff1-4288", "title": "Chart" },
-              { "type": "carouselDataView", "title": "Top 10" }
+              {"type": "chart", "chartId": "07303ff1-4288", "title": "Chart"},
+              {"type": "carouselDataView", "title": "Top 10"}
             ],
             "fieldMatching": {},
             "title": {
@@ -423,7 +447,7 @@
           "id": "01127dd6-be32",
           "col": 0,
           "row": 6,
-          "offset": { "x": 0, "y": 11 },
+          "offset": {"x": 0, "y": 11},
           "width": 1035,
           "height": 372,
           "tag": "carousel",
@@ -433,8 +457,8 @@
                 "type": "bar",
                 "dataSetsHaveTitle": true,
                 "dataSets": [
-                  { "dataRange": "'Stock location Qty'!B1:B11" },
-                  { "dataRange": "'Stock location Qty'!C1:C11" }
+                  {"dataRange": "'Stock location Qty'!B1:B11"},
+                  {"dataRange": "'Stock location Qty'!C1:C11"}
                 ],
                 "legendPosition": "top",
                 "labelRange": "'Stock location Qty'!A1:A11",
@@ -443,10 +467,10 @@
                 "aggregated": false,
                 "axesDesign": {
                   "x": {
-                    "title": { "text": "Top Locations" }
+                    "title": {"text": "Top Locations"}
                   },
                   "y": {
-                    "title": { "text": "Stock Quantity" }
+                    "title": {"text": "Stock Quantity"}
                   }
                 },
                 "humanize": true
@@ -455,8 +479,8 @@
                 "type": "bar",
                 "dataSetsHaveTitle": true,
                 "dataSets": [
-                  { "dataRange": "'Stock location Qty'!F1:F11" },
-                  { "dataRange": "'Stock location Qty'!G1:G11" }
+                  {"dataRange": "'Stock location Qty'!F1:F11"},
+                  {"dataRange": "'Stock location Qty'!G1:G11"}
                 ],
                 "legendPosition": "top",
                 "labelRange": "'Stock location Qty'!E1:E11",
@@ -465,10 +489,10 @@
                 "aggregated": false,
                 "axesDesign": {
                   "x": {
-                    "title": { "text": "Top Products" }
+                    "title": {"text": "Top Products"}
                   },
                   "y": {
-                    "title": { "text": "Stock Quantity" }
+                    "title": {"text": "Stock Quantity"}
                   }
                 },
                 "humanize": true
@@ -499,7 +523,7 @@
           "id": "c8d9f32a-11d4",
           "col": 0,
           "row": 23,
-          "offset": { "x": 0, "y": 10 },
+          "offset": {"x": 0, "y": 10},
           "width": 1035,
           "height": 388,
           "tag": "carousel",
@@ -509,8 +533,8 @@
                 "type": "bar",
                 "dataSetsHaveTitle": true,
                 "dataSets": [
-                  { "dataRange": "'Stock location Value'!B1:B12" },
-                  { "dataRange": "'Stock location Value'!C1:C12" }
+                  {"dataRange": "'Stock location Value'!B1:B12"},
+                  {"dataRange": "'Stock location Value'!C1:C12"}
                 ],
                 "legendPosition": "top",
                 "labelRange": "'Stock location Value'!A1:A12",
@@ -519,10 +543,10 @@
                 "aggregated": false,
                 "axesDesign": {
                   "x": {
-                    "title": { "text": "Top Locations" }
+                    "title": {"text": "Top Locations"}
                   },
                   "y": {
-                    "title": { "text": "Stock Value" }
+                    "title": {"text": "Stock Value"}
                   }
                 },
                 "humanize": true
@@ -531,8 +555,8 @@
                 "type": "bar",
                 "dataSetsHaveTitle": true,
                 "dataSets": [
-                  { "dataRange": "'Stock location Value'!I1:I11" },
-                  { "dataRange": "'Stock location Value'!J1:J11" }
+                  {"dataRange": "'Stock location Value'!I1:I11"},
+                  {"dataRange": "'Stock location Value'!J1:J11"}
                 ],
                 "legendPosition": "top",
                 "labelRange": "'Stock location Value'!H1:H11",
@@ -541,10 +565,10 @@
                 "aggregated": false,
                 "axesDesign": {
                   "x": {
-                    "title": { "text": "Top Products" }
+                    "title": {"text": "Top Products"}
                   },
                   "y": {
-                    "title": { "text": "Stock Value" }
+                    "title": {"text": "Stock Value"}
                   }
                 },
                 "humanize": true
@@ -619,12 +643,12 @@
       "rowNumber": 82,
       "rows": {},
       "cols": {
-        "0": { "size": 227 },
-        "1": { "size": 136 },
-        "2": { "size": 111 },
-        "3": { "size": 113 },
-        "4": { "size": 205 },
-        "6": { "size": 107 }
+        "0": {"size": 227},
+        "1": {"size": 136},
+        "2": {"size": 111},
+        "3": {"size": 113},
+        "4": {"size": 205},
+        "6": {"size": 107}
       },
       "merges": [],
       "cells": {
@@ -646,8 +670,8 @@
         "E3": "=TEXT(C3,\"#,##0\")&\" out of \" &TEXT(D3,\"#,##0\")",
         "E4": "=Iferror(TEXT(C4,\"#,##0\")&\" out of \" &TEXT(D4,\"#,##0\"),\"No data\")"
       },
-      "styles": { "A1:D1": 8, "A2:A5": 9 },
-      "formats": { "B3:B4": 1, "B5:C5": 2 },
+      "styles": {"A1:D1": 8, "A2:A5": 9},
+      "formats": {"B3:B4": 1, "B5:C5": 2},
       "borders": {},
       "conditionalFormats": [],
       "dataValidationRules": [],
@@ -668,13 +692,13 @@
       "rowNumber": 99,
       "rows": {},
       "cols": {
-        "0": { "size": 134 },
-        "1": { "size": 112 },
-        "2": { "size": 115 },
-        "3": { "size": 55 },
-        "4": { "size": 316 },
-        "5": { "size": 112 },
-        "6": { "size": 115 }
+        "0": {"size": 134},
+        "1": {"size": 112},
+        "2": {"size": 115},
+        "3": {"size": 55},
+        "4": {"size": 316},
+        "5": {"size": 112},
+        "6": {"size": 115}
       },
       "merges": [],
       "cells": {
@@ -745,7 +769,7 @@
         "G11": "=PIVOT.VALUE(9,\"reserved_quantity\",\"#product_id\",10)"
       },
       "styles": {},
-      "formats": { "F2:G12": 2 },
+      "formats": {"F2:G12": 2},
       "borders": {},
       "conditionalFormats": [],
       "dataValidationRules": [],
@@ -795,34 +819,34 @@
       "rowNumber": 99,
       "rows": {},
       "cols": {
-        "0": { "size": 113 },
-        "1": { "size": 98 },
-        "2": { "size": 97 },
-        "3": { "size": 72 },
-        "4": { "size": 72 },
-        "5": { "size": 115 },
-        "6": { "size": 92 },
-        "7": { "size": 207 },
-        "8": { "size": 139 },
-        "9": { "size": 139 },
-        "10": { "size": 139 },
-        "11": { "size": 139 },
-        "12": { "size": 139 },
-        "13": { "size": 139 },
-        "14": { "size": 139 },
-        "15": { "size": 139 },
-        "16": { "size": 139 },
-        "17": { "size": 139 },
-        "18": { "size": 139 },
-        "19": { "size": 139 },
-        "20": { "size": 139 },
-        "21": { "size": 139 },
-        "22": { "size": 139 },
-        "23": { "size": 139 },
-        "24": { "size": 139 },
-        "25": { "size": 139 },
-        "26": { "size": 139 },
-        "27": { "size": 139 }
+        "0": {"size": 113},
+        "1": {"size": 98},
+        "2": {"size": 97},
+        "3": {"size": 72},
+        "4": {"size": 72},
+        "5": {"size": 115},
+        "6": {"size": 92},
+        "7": {"size": 207},
+        "8": {"size": 139},
+        "9": {"size": 139},
+        "10": {"size": 139},
+        "11": {"size": 139},
+        "12": {"size": 139},
+        "13": {"size": 139},
+        "14": {"size": 139},
+        "15": {"size": 139},
+        "16": {"size": 139},
+        "17": {"size": 139},
+        "18": {"size": 139},
+        "19": {"size": 139},
+        "20": {"size": 139},
+        "21": {"size": 139},
+        "22": {"size": 139},
+        "23": {"size": 139},
+        "24": {"size": 139},
+        "25": {"size": 139},
+        "26": {"size": 139},
+        "27": {"size": 139}
       },
       "merges": [],
       "cells": {
@@ -964,7 +988,7 @@
         "M11": "=PIVOT.VALUE(20,\"reserved_quantity\",\"#product_id\",10)"
       },
       "styles": {},
-      "formats": { "D4:E11": 2, "B2:B3": 3, "C2:C12": 3, "D2:F3": 3, "J2:J11": 3 },
+      "formats": {"D4:E11": 2, "B2:B3": 3, "C2:C12": 3, "D2:F3": 3, "J2:J11": 3},
       "borders": {},
       "conditionalFormats": [],
       "dataValidationRules": [],
@@ -1009,28 +1033,28 @@
     }
   ],
   "styles": {
-    "1": { "fontSize": 14, "textColor": "#01666B", "bold": true },
-    "2": { "fontSize": 16, "textColor": "#01666B", "bold": true },
-    "3": { "textColor": "#434343", "bold": true, "fontSize": 11 },
-    "4": { "verticalAlign": "middle", "textColor": "#434343" },
-    "5": { "fontSize": 16 },
+    "1": {"fontSize": 14, "textColor": "#01666B", "bold": true},
+    "2": {"fontSize": 16, "textColor": "#01666B", "bold": true},
+    "3": {"textColor": "#434343", "bold": true, "fontSize": 11},
+    "4": {"verticalAlign": "middle", "textColor": "#434343"},
+    "5": {"fontSize": 16},
     "6": {
       "textColor": "#434343",
       "bold": true,
       "fontSize": 11,
       "align": "center"
     },
-    "7": { "verticalAlign": "middle" },
-    "8": { "bold": true, "fillColor": "#E6F2F3" },
-    "9": { "fillColor": "#E6F2F3" }
+    "7": {"verticalAlign": "middle"},
+    "8": {"bold": true, "fillColor": "#E6F2F3"},
+    "9": {"fillColor": "#E6F2F3"}
   },
-  "formats": { "1": "0.00%", "2": "#,##0.00", "3": "#,##0" },
+  "formats": {"1": "0.00%", "2": "#,##0.00", "3": "#,##0"},
   "borders": {
     "1": {
-      "bottom": { "style": "thin", "color": "#CCCCCC" }
+      "bottom": {"style": "thin", "color": "#CCCCCC"}
     },
     "2": {
-      "top": { "style": "thin", "color": "#CCCCCC" }
+      "top": {"style": "thin", "color": "#CCCCCC"}
     }
   },
   "revisionId": "START_REVISION",
@@ -1050,9 +1074,7 @@
   "pivots": {
     "c14d538a-a794-4ea2-ab95-70089c764c85": {
       "type": "ODOO",
-      "domain": [
-        ["location_id.usage", "=", "internal"]
-      ],
+      "domain": [["location_id.usage", "=", "internal"]],
       "context": {
         "mail_notify_force_send": false,
         "always_show_loc": 1,
@@ -1065,7 +1087,7 @@
         "domain": []
       },
       "measures": [
-        { "id": "quantity", "fieldName": "quantity", "aggregator": "sum" },
+        {"id": "quantity", "fieldName": "quantity", "aggregator": "sum"},
         {
           "id": "reserved_quantity",
           "fieldName": "reserved_quantity",
@@ -1096,30 +1118,38 @@
           "fieldName": "inventory_quantity_auto_apply",
           "aggregator": "sum"
         },
-        { "id": "value", "fieldName": "value", "aggregator": "sum" },
-        { "id": "__count", "fieldName": "__count" }
+        {"id": "value", "fieldName": "value", "aggregator": "sum"},
+        {"id": "__count", "fieldName": "__count"}
       ],
       "model": "stock.quant",
       "columns": [],
-      "rows": [
-        { "fieldName": "location_id" }
-      ],
+      "rows": [{"fieldName": "location_id"}],
       "name": "Inventory - locations",
       "actionXmlId": "stock.dashboard_open_quants",
       "formulaId": "8",
       "fieldMatching": {
-        "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": { "chain": "location_id", "type": "many2one" },
-        "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": { "chain": "product_id", "type": "many2one" },
-        "0725cf6d-c980-46a1-bd7b-bd75e34348e7": { "chain": "lot_id", "type": "many2one" },
-        "7ff87378-db1d-4725-bf25-6eee704b15a5": { "chain": "product_categ_id", "type": "many2one" },
-        "feeb0d08-4596-4e7c-b478-a3c659189cdd": { "chain": "warehouse_id", "type": "many2one" }
+        "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": {
+          "chain": "location_id",
+          "type": "many2one"
+        },
+        "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "0725cf6d-c980-46a1-bd7b-bd75e34348e7": {"chain": "lot_id", "type": "many2one"},
+        "7ff87378-db1d-4725-bf25-6eee704b15a5": {
+          "chain": "product_categ_id",
+          "type": "many2one"
+        },
+        "feeb0d08-4596-4e7c-b478-a3c659189cdd": {
+          "chain": "warehouse_id",
+          "type": "many2one"
+        }
       }
     },
     "4f0d7a37-943e-4289-ac4b-3cf1b56ca17a": {
       "type": "ODOO",
-      "domain": [
-        ["location_id.usage", "=", "internal"]
-      ],
+      "domain": [["location_id.usage", "=", "internal"]],
       "context": {
         "mail_notify_force_send": false,
         "always_show_loc": 1,
@@ -1132,7 +1162,7 @@
         "domain": []
       },
       "measures": [
-        { "id": "quantity", "fieldName": "quantity", "aggregator": "sum" },
+        {"id": "quantity", "fieldName": "quantity", "aggregator": "sum"},
         {
           "id": "reserved_quantity",
           "fieldName": "reserved_quantity",
@@ -1163,23 +1193,33 @@
           "fieldName": "inventory_quantity_auto_apply",
           "aggregator": "sum"
         },
-        { "id": "value", "fieldName": "value", "aggregator": "sum" },
-        { "id": "__count", "fieldName": "__count" }
+        {"id": "value", "fieldName": "value", "aggregator": "sum"},
+        {"id": "__count", "fieldName": "__count"}
       ],
       "model": "stock.quant",
       "columns": [],
-      "rows": [
-        { "fieldName": "product_id" }
-      ],
+      "rows": [{"fieldName": "product_id"}],
       "name": "Inventory - products sort by Qty",
       "actionXmlId": "stock.dashboard_open_quants",
       "formulaId": "9",
       "fieldMatching": {
-        "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": { "chain": "location_id", "type": "many2one" },
-        "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": { "chain": "product_id", "type": "many2one" },
-        "0725cf6d-c980-46a1-bd7b-bd75e34348e7": { "chain": "lot_id", "type": "many2one" },
-        "7ff87378-db1d-4725-bf25-6eee704b15a5": { "chain": "product_categ_id", "type": "many2one" },
-        "feeb0d08-4596-4e7c-b478-a3c659189cdd": { "chain": "warehouse_id", "type": "many2one" }
+        "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": {
+          "chain": "location_id",
+          "type": "many2one"
+        },
+        "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "0725cf6d-c980-46a1-bd7b-bd75e34348e7": {"chain": "lot_id", "type": "many2one"},
+        "7ff87378-db1d-4725-bf25-6eee704b15a5": {
+          "chain": "product_categ_id",
+          "type": "many2one"
+        },
+        "feeb0d08-4596-4e7c-b478-a3c659189cdd": {
+          "chain": "warehouse_id",
+          "type": "many2one"
+        }
       }
     },
     "22f3a887-f193-4be2-a4af-e991b7ccc65e": {
@@ -1201,7 +1241,7 @@
         "domain": []
       },
       "measures": [
-        { "id": "quantity", "fieldName": "quantity", "aggregator": "sum" },
+        {"id": "quantity", "fieldName": "quantity", "aggregator": "sum"},
         {
           "id": "reserved_quantity",
           "fieldName": "reserved_quantity",
@@ -1232,30 +1272,38 @@
           "fieldName": "inventory_quantity_auto_apply",
           "aggregator": "sum"
         },
-        { "id": "value", "fieldName": "value", "aggregator": "sum" },
-        { "id": "__count", "fieldName": "__count" }
+        {"id": "value", "fieldName": "value", "aggregator": "sum"},
+        {"id": "__count", "fieldName": "__count"}
       ],
       "model": "stock.quant",
       "columns": [],
-      "rows": [
-        { "fieldName": "location_id" }
-      ],
+      "rows": [{"fieldName": "location_id"}],
       "name": "Inventory - locations (reserved stock)",
       "actionXmlId": "stock.dashboard_open_quants",
       "formulaId": "18",
       "fieldMatching": {
-        "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": { "chain": "location_id", "type": "many2one" },
-        "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": { "chain": "product_id", "type": "many2one" },
-        "0725cf6d-c980-46a1-bd7b-bd75e34348e7": { "chain": "lot_id", "type": "many2one" },
-        "7ff87378-db1d-4725-bf25-6eee704b15a5": { "chain": "product_categ_id", "type": "many2one" },
-        "feeb0d08-4596-4e7c-b478-a3c659189cdd": { "chain": "warehouse_id", "type": "many2one" }
+        "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": {
+          "chain": "location_id",
+          "type": "many2one"
+        },
+        "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "0725cf6d-c980-46a1-bd7b-bd75e34348e7": {"chain": "lot_id", "type": "many2one"},
+        "7ff87378-db1d-4725-bf25-6eee704b15a5": {
+          "chain": "product_categ_id",
+          "type": "many2one"
+        },
+        "feeb0d08-4596-4e7c-b478-a3c659189cdd": {
+          "chain": "warehouse_id",
+          "type": "many2one"
+        }
       }
     },
     "858023a6-cd63-47d6-9bce-759b488c2b75": {
       "type": "ODOO",
-      "domain": [
-        ["location_id.usage", "=", "internal"]
-      ],
+      "domain": [["location_id.usage", "=", "internal"]],
       "context": {
         "mail_notify_force_send": false,
         "always_show_loc": 1,
@@ -1268,8 +1316,8 @@
         "domain": []
       },
       "measures": [
-        { "id": "value", "fieldName": "value", "aggregator": "sum" },
-        { "id": "quantity", "fieldName": "quantity", "aggregator": "sum" },
+        {"id": "value", "fieldName": "value", "aggregator": "sum"},
+        {"id": "quantity", "fieldName": "quantity", "aggregator": "sum"},
         {
           "id": "reserved_quantity",
           "fieldName": "reserved_quantity",
@@ -1278,25 +1326,33 @@
       ],
       "model": "stock.quant",
       "columns": [],
-      "rows": [
-        { "fieldName": "product_id" }
-      ],
+      "rows": [{"fieldName": "product_id"}],
       "name": "Inventory by Product sort by value",
       "actionXmlId": "stock.dashboard_open_quants",
       "formulaId": "20",
       "fieldMatching": {
-        "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": { "chain": "location_id", "type": "many2one" },
-        "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": { "chain": "product_id", "type": "many2one" },
-        "0725cf6d-c980-46a1-bd7b-bd75e34348e7": { "chain": "lot_id", "type": "many2one" },
-        "7ff87378-db1d-4725-bf25-6eee704b15a5": { "chain": "product_categ_id", "type": "many2one" },
-        "feeb0d08-4596-4e7c-b478-a3c659189cdd": { "chain": "warehouse_id", "type": "many2one" }
+        "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": {
+          "chain": "location_id",
+          "type": "many2one"
+        },
+        "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "0725cf6d-c980-46a1-bd7b-bd75e34348e7": {"chain": "lot_id", "type": "many2one"},
+        "7ff87378-db1d-4725-bf25-6eee704b15a5": {
+          "chain": "product_categ_id",
+          "type": "many2one"
+        },
+        "feeb0d08-4596-4e7c-b478-a3c659189cdd": {
+          "chain": "warehouse_id",
+          "type": "many2one"
+        }
       }
     },
     "37e97fb2-1885-4dbd-9632-ec5c54a776f4": {
       "type": "ODOO",
-      "domain": [
-        ["location_id.usage", "=", "internal"]
-      ],
+      "domain": [["location_id.usage", "=", "internal"]],
       "context": {
         "mail_notify_force_send": false,
         "always_show_loc": 1,
@@ -1314,32 +1370,38 @@
           "fieldName": "reserved_quantity",
           "aggregator": "sum"
         },
-        { "id": "quantity", "fieldName": "quantity", "aggregator": "sum" },
-        { "id": "value", "fieldName": "value", "aggregator": "sum" }
+        {"id": "quantity", "fieldName": "quantity", "aggregator": "sum"},
+        {"id": "value", "fieldName": "value", "aggregator": "sum"}
       ],
       "model": "stock.quant",
       "columns": [],
-      "rows": [
-        { "fieldName": "location_id" }
-      ],
+      "rows": [{"fieldName": "location_id"}],
       "name": "Inventory by Location sort by value",
       "actionXmlId": "stock.dashboard_open_quants",
       "formulaId": "21",
       "fieldMatching": {
-        "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": { "chain": "location_id", "type": "many2one" },
-        "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": { "chain": "product_id", "type": "many2one" },
-        "0725cf6d-c980-46a1-bd7b-bd75e34348e7": { "chain": "lot_id", "type": "many2one" },
-        "7ff87378-db1d-4725-bf25-6eee704b15a5": { "chain": "product_categ_id", "type": "many2one" },
-        "feeb0d08-4596-4e7c-b478-a3c659189cdd": { "chain": "warehouse_id", "type": "many2one" }
+        "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": {
+          "chain": "location_id",
+          "type": "many2one"
+        },
+        "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "0725cf6d-c980-46a1-bd7b-bd75e34348e7": {"chain": "lot_id", "type": "many2one"},
+        "7ff87378-db1d-4725-bf25-6eee704b15a5": {
+          "chain": "product_categ_id",
+          "type": "many2one"
+        },
+        "feeb0d08-4596-4e7c-b478-a3c659189cdd": {
+          "chain": "warehouse_id",
+          "type": "many2one"
+        }
       }
     },
     "8f099f8d-362a-41e5-b676-75ab717cfc1e": {
       "type": "ODOO",
-      "domain": [
-        "&",
-        ["location_id.usage", "=", "internal"],
-        ["quantity", "<", 0]
-      ],
+      "domain": ["&", ["location_id.usage", "=", "internal"], ["quantity", "<", 0]],
       "context": {
         "mail_notify_force_send": false,
         "always_show_loc": 1,
@@ -1347,23 +1409,33 @@
         "inventory_report_mode": true
       },
       "measures": [
-        { "id": "quantity", "fieldName": "quantity", "aggregator": "sum" },
-        { "id": "__count", "fieldName": "__count" }
+        {"id": "quantity", "fieldName": "quantity", "aggregator": "sum"},
+        {"id": "__count", "fieldName": "__count"}
       ],
       "model": "stock.quant",
       "columns": [],
-      "rows": [
-        { "fieldName": "product_id" }
-      ],
+      "rows": [{"fieldName": "product_id"}],
       "name": "Products",
       "actionXmlId": "stock.dashboard_open_quants",
       "formulaId": "22",
       "fieldMatching": {
-        "feeb0d08-4596-4e7c-b478-a3c659189cdd": { "chain": "warehouse_id", "type": "many2one" },
-        "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": { "chain": "location_id", "type": "many2one" },
-        "7ff87378-db1d-4725-bf25-6eee704b15a5": { "chain": "product_categ_id", "type": "many2one" },
-        "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": { "chain": "product_id", "type": "many2one" },
-        "0725cf6d-c980-46a1-bd7b-bd75e34348e7": { "chain": "lot_id", "type": "many2one" }
+        "feeb0d08-4596-4e7c-b478-a3c659189cdd": {
+          "chain": "warehouse_id",
+          "type": "many2one"
+        },
+        "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": {
+          "chain": "location_id",
+          "type": "many2one"
+        },
+        "7ff87378-db1d-4725-bf25-6eee704b15a5": {
+          "chain": "product_categ_id",
+          "type": "many2one"
+        },
+        "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "0725cf6d-c980-46a1-bd7b-bd75e34348e7": {"chain": "lot_id", "type": "many2one"}
       }
     },
     "0885aadb-2384-4300-a531-893035a13173": {
@@ -1390,23 +1462,33 @@
           "fieldName": "reserved_quantity",
           "aggregator": "sum"
         },
-        { "id": "quantity", "fieldName": "quantity", "aggregator": "sum" },
-        { "id": "value", "fieldName": "value", "aggregator": "sum" }
+        {"id": "quantity", "fieldName": "quantity", "aggregator": "sum"},
+        {"id": "value", "fieldName": "value", "aggregator": "sum"}
       ],
       "model": "stock.quant",
       "columns": [],
-      "rows": [
-        { "fieldName": "location_id" }
-      ],
+      "rows": [{"fieldName": "location_id"}],
       "name": "Inventory by Location sort by value (reserved stock)",
       "actionXmlId": "stock.dashboard_open_quants",
       "formulaId": "23",
       "fieldMatching": {
-        "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": { "chain": "location_id", "type": "many2one" },
-        "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": { "chain": "product_id", "type": "many2one" },
-        "0725cf6d-c980-46a1-bd7b-bd75e34348e7": { "chain": "lot_id", "type": "many2one" },
-        "7ff87378-db1d-4725-bf25-6eee704b15a5": { "chain": "product_categ_id", "type": "many2one" },
-        "feeb0d08-4596-4e7c-b478-a3c659189cdd": { "chain": "warehouse_id", "type": "many2one" }
+        "62f6d1bd-9c76-48d7-b95a-3f5d6cb505df": {
+          "chain": "location_id",
+          "type": "many2one"
+        },
+        "8dea5478-ff09-41fc-ada0-cf23c66e4f8b": {
+          "chain": "product_id",
+          "type": "many2one"
+        },
+        "0725cf6d-c980-46a1-bd7b-bd75e34348e7": {"chain": "lot_id", "type": "many2one"},
+        "7ff87378-db1d-4725-bf25-6eee704b15a5": {
+          "chain": "product_categ_id",
+          "type": "many2one"
+        },
+        "feeb0d08-4596-4e7c-b478-a3c659189cdd": {
+          "chain": "warehouse_id",
+          "type": "many2one"
+        }
       }
     }
   },

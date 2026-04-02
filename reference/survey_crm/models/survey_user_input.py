@@ -1,6 +1,6 @@
 from markupsafe import Markup, escape
 
-from odoo import fields, models, _
+from odoo import _, fields, models
 
 
 class SurveyUser_Input(models.Model):
@@ -42,7 +42,7 @@ class SurveyUser_Input(models.Model):
         # queries to the db if no lead needs to be created.
         if lead_create_vals:
             leads = self.env['crm.lead'].sudo().create(list(lead_create_vals.values()))
-            for user_input, lead in zip(lead_create_vals.keys(), leads):
+            for user_input, lead in zip(lead_create_vals.keys(), leads, strict=False):
                 user_input.lead_id = lead
 
     def _prepare_common_survey_lead_values(self, survey):

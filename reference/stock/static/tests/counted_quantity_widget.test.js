@@ -1,6 +1,12 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { expect, test } from "@odoo/hoot";
-import { contains, defineModels, fields, models, mountView } from "@web/../tests/web_test_helpers";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {
+    contains,
+    defineModels,
+    fields,
+    models,
+    mountView,
+} from "@web/../tests/web_test_helpers";
 
 class Quant extends models.Model {
     quantity = fields.Float();
@@ -13,9 +19,9 @@ class Quant extends models.Model {
     inventory_quantity_set = fields.Boolean({
         string: "Inventory quantity set",
     });
-    inventory_diff_quantity = fields.Float({ string: "Difference" });
+    inventory_diff_quantity = fields.Float({string: "Difference"});
 
-    _records = [{ id: 1, quantity: 50 }];
+    _records = [{id: 1, quantity: 50}];
 }
 defineModels([Quant]);
 defineMailModels();

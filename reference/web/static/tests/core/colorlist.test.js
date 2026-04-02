@@ -1,8 +1,8 @@
-import { expect, test } from "@odoo/hoot";
-import { Component, xml } from "@odoo/owl";
-import { contains, mountWithCleanup } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {Component, xml} from "@odoo/owl";
+import {contains, mountWithCleanup} from "@web/../tests/web_test_helpers";
 
-import { ColorList } from "@web/core/colorlist/colorlist";
+import {ColorList} from "@web/core/colorlist/colorlist";
 
 class Parent extends Component {
     static template = xml`
@@ -16,7 +16,7 @@ class Parent extends Component {
     }
 
     get componentProps() {
-        const props = { ...this.props };
+        const props = {...this.props};
         delete props.Component;
         if (!props.onColorSelected) {
             props.onColorSelected = () => {};
@@ -45,7 +45,8 @@ test("color click does not open the list if canToggle props is not given", async
         props: {
             colors: [4, 5, 6],
             selectedColor: selectedColorId,
-            onColorSelected: (colorId) => expect.step("color #" + colorId + " is selected"),
+            onColorSelected: (colorId) =>
+                expect.step("color #" + colorId + " is selected"),
         },
     });
     expect(".o_colorlist").toHaveCount(1);
@@ -62,11 +63,14 @@ test("open the list of colors if canToggle props is given", async function () {
             canToggle: true,
             colors: [4, 5, 6],
             selectedColor: selectedColorId,
-            onColorSelected: (colorId) => expect.step("color #" + colorId + " is selected"),
+            onColorSelected: (colorId) =>
+                expect.step("color #" + colorId + " is selected"),
         },
     });
     expect(".o_colorlist").toHaveCount(1);
-    expect(".o_colorlist button").toHaveClass("o_colorlist_item_color_" + selectedColorId);
+    expect(".o_colorlist button").toHaveClass(
+        "o_colorlist_item_color_" + selectedColorId
+    );
 
     await contains(".o_colorlist button").click();
     expect("button.o_colorlist_toggler").toHaveCount(0);

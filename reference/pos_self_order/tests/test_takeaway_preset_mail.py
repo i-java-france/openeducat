@@ -1,4 +1,5 @@
 import odoo.tests
+
 from odoo.addons.mail.tests.common import MailCase
 from odoo.addons.pos_self_order.tests.test_self_order_preset import TestSelfOrderPreset
 

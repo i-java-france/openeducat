@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { SIZES } from "@web/core/ui/ui_service";
+import {registry} from "@web/core/registry";
+import {SIZES} from "@web/core/ui/ui_service";
 import {
     append,
     combineAttributes,
@@ -7,7 +7,7 @@ import {
     createTextNode,
     getTag,
 } from "@web/core/utils/xml";
-import { toStringExpression } from "@web/views/utils";
+import {toStringExpression} from "@web/views/utils";
 import {
     copyAttributes,
     getModifier,
@@ -15,8 +15,8 @@ import {
     isTextNode,
     makeSeparator,
 } from "@web/views/view_compiler";
-import { ViewCompiler } from "../view_compiler";
-import { exprToBoolean } from "@web/core/utils/strings";
+import {ViewCompiler} from "../view_compiler";
+import {exprToBoolean} from "@web/core/utils/strings";
 
 const compilersRegistry = registry.category("form_compilers");
 
@@ -50,16 +50,16 @@ export class FormCompiler extends ViewCompiler {
         this.noteBookId = 0;
         this.compilers.push(
             ...compilersRegistry.getAll(),
-            { selector: "div[name='button_box']", fn: this.compileButtonBox },
-            { selector: "footer", fn: this.compileFooter },
-            { selector: "form", fn: this.compileForm, doNotCopyAttributes: true },
-            { selector: "group", fn: this.compileGroup },
-            { selector: "header", fn: this.compileHeader },
-            { selector: "label", fn: this.compileLabel, doNotCopyAttributes: true },
-            { selector: "notebook", fn: this.compileNotebook },
-            { selector: "setting", fn: this.compileSetting },
-            { selector: "separator", fn: this.compileSeparator },
-            { selector: "sheet", fn: this.compileSheet }
+            {selector: "div[name='button_box']", fn: this.compileButtonBox},
+            {selector: "footer", fn: this.compileFooter},
+            {selector: "form", fn: this.compileForm, doNotCopyAttributes: true},
+            {selector: "group", fn: this.compileGroup},
+            {selector: "header", fn: this.compileHeader},
+            {selector: "label", fn: this.compileLabel, doNotCopyAttributes: true},
+            {selector: "notebook", fn: this.compileNotebook},
+            {selector: "setting", fn: this.compileSetting},
+            {selector: "separator", fn: this.compileSeparator},
+            {selector: "sheet", fn: this.compileSheet}
         );
     }
 
@@ -135,7 +135,10 @@ export class FormCompiler extends ViewCompiler {
         let hasContent = false;
         for (const child of el.children) {
             const invisible = getModifier(child, "invisible");
-            if (!params.compileInvisibleNodes && (invisible === "True" || invisible === "1")) {
+            if (
+                !params.compileInvisibleNodes &&
+                (invisible === "True" || invisible === "1")
+            ) {
                 continue;
             }
             hasContent = true;
@@ -189,10 +192,16 @@ export class FormCompiler extends ViewCompiler {
         const labelsForAttr = el.getAttribute("id") || fieldName;
         const labels = this.getLabels(labelsForAttr);
         const dynamicLabel = (label) => {
-            const formLabel = this.createLabelFromField(fieldId, fieldName, fieldString, label, {
-                ...params,
-                currentFieldArchNode: el,
-            });
+            const formLabel = this.createLabelFromField(
+                fieldId,
+                fieldName,
+                fieldString,
+                label,
+                {
+                    ...params,
+                    currentFieldArchNode: el,
+                }
+            );
             if (formLabel) {
                 label.replaceWith(formLabel);
             } else {
@@ -299,7 +308,7 @@ export class FormCompiler extends ViewCompiler {
         }
 
         if (el.hasAttribute("string")) {
-            const titleSlot = createElement("t", { "t-set-slot": "title" }, [
+            const titleSlot = createElement("t", {"t-set-slot": "title"}, [
                 makeSeparator(el.getAttribute("string")),
             ]);
             append(formGroup, titleSlot);
@@ -313,7 +322,10 @@ export class FormCompiler extends ViewCompiler {
             }
 
             const invisible = getModifier(child, "invisible");
-            if (!params.compileInvisibleNodes && (invisible === "True" || invisible === "1")) {
+            if (
+                !params.compileInvisibleNodes &&
+                (invisible === "True" || invisible === "1")
+            ) {
                 continue;
             }
 
@@ -343,8 +355,17 @@ export class FormCompiler extends ViewCompiler {
                 const addLabel = child.hasAttribute("nolabel")
                     ? child.getAttribute("nolabel") !== "1"
                     : true;
-                slotContent = this.compileNode(child, { ...params, currentSlot: mainSlot }, false);
-                if (slotContent && addLabel && !isOuterGroup && !isTextNode(slotContent)) {
+                slotContent = this.compileNode(
+                    child,
+                    {...params, currentSlot: mainSlot},
+                    false
+                );
+                if (
+                    slotContent &&
+                    addLabel &&
+                    !isOuterGroup &&
+                    !isTextNode(slotContent)
+                ) {
                     itemSpan = itemSpan === 1 ? itemSpan + 1 : itemSpan;
                     const fieldName = child.getAttribute("name");
                     const fieldId = slotContent.getAttribute("id") || fieldName;
@@ -358,7 +379,10 @@ export class FormCompiler extends ViewCompiler {
                         fieldInfo: `__comp__.props.archInfo.fieldNodes[${fieldId}]`,
                     };
                     mainSlot.setAttribute("props", objectToString(props));
-                    mainSlot.setAttribute("Component", "__comp__.constructor.components.FormLabel");
+                    mainSlot.setAttribute(
+                        "Component",
+                        "__comp__.constructor.components.FormLabel"
+                    );
                     mainSlot.setAttribute("subType", "'item_component'");
                 }
             } else {
@@ -371,7 +395,11 @@ export class FormCompiler extends ViewCompiler {
                     mainSlot.setAttribute("subType", "'label'");
                     child.classList.remove("o_wrap_label");
                 }
-                slotContent = this.compileNode(child, { ...params, currentSlot: mainSlot }, false);
+                slotContent = this.compileNode(
+                    child,
+                    {...params, currentSlot: mainSlot},
+                    false
+                );
             }
 
             if (slotContent && !isTextNode(slotContent)) {
@@ -516,7 +544,10 @@ export class FormCompiler extends ViewCompiler {
         const noteBook = createElement("Notebook");
 
         if (el.hasAttribute("class")) {
-            noteBook.setAttribute("className", toStringExpression(el.getAttribute("class")));
+            noteBook.setAttribute(
+                "className",
+                toStringExpression(el.getAttribute("class"))
+            );
             el.removeAttribute("class");
         }
 
@@ -534,7 +565,10 @@ export class FormCompiler extends ViewCompiler {
                 continue;
             }
             const invisible = getModifier(child, "invisible");
-            if (!params.compileInvisibleNodes && (invisible === "True" || invisible === "1")) {
+            if (
+                !params.compileInvisibleNodes &&
+                (invisible === "True" || invisible === "1")
+            ) {
                 continue;
             }
 
@@ -575,9 +609,15 @@ export class FormCompiler extends ViewCompiler {
 
             params.notebookPageFields = [];
             for (const contents of child.children) {
-                append(pageSlot, this.compileNode(contents, { ...params, currentSlot: pageSlot }));
+                append(
+                    pageSlot,
+                    this.compileNode(contents, {...params, currentSlot: pageSlot})
+                );
             }
-            pageSlot.setAttribute("fieldNames", `${JSON.stringify(params.notebookPageFields)}`);
+            pageSlot.setAttribute(
+                "fieldNames",
+                `${JSON.stringify(params.notebookPageFields)}`
+            );
         }
 
         return noteBook;
@@ -604,7 +644,7 @@ export class FormCompiler extends ViewCompiler {
         let addLabel = true;
         Array.from(el.children).forEach((child, index) => {
             if (getTag(child, true) === "field" && index === 0) {
-                const fieldSlot = createElement("t", { "t-set-slot": "fieldSlot" });
+                const fieldSlot = createElement("t", {"t-set-slot": "fieldSlot"});
                 const field = this.compileNode(child, params);
                 if (field) {
                     append(fieldSlot, field);

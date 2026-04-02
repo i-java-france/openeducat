@@ -1,5 +1,5 @@
-import { Component } from "@odoo/owl";
-import { formatCurrency } from "@web/core/currency";
+import {Component} from "@odoo/owl";
+import {formatCurrency} from "@web/core/currency";
 
 export class AddToCartNotification extends Component {
     static template = "website_sale.addToCartNotification";
@@ -10,19 +10,19 @@ export class AddToCartNotification extends Component {
                 type: Object,
                 shape: {
                     id: Number,
-                    linked_line_id: { type: Number, optional: true },
+                    linked_line_id: {type: Number, optional: true},
                     image_url: String,
                     quantity: Number,
-                    uom_name: { type: String, optional: true },
-                    combination_name: { type: String, optional: true },
+                    uom_name: {type: String, optional: true},
+                    combination_name: {type: String, optional: true},
                     name: String,
-                    description: { type: String, optional: true },
+                    description: {type: String, optional: true},
                     price_total: Number,
                 },
             },
         },
         currency_id: Number,
-    }
+    };
 
     /**
      * Return the lines which aren't linked to other lines.
@@ -30,7 +30,7 @@ export class AddToCartNotification extends Component {
      * @return {Object[]} The lines which aren't linked to other lines.
      */
     get mainLines() {
-        return this.props.lines.filter(line => !line.linked_line_id);
+        return this.props.lines.filter((line) => !line.linked_line_id);
     }
 
     /**
@@ -40,7 +40,7 @@ export class AddToCartNotification extends Component {
      * @return {Object[]} The lines which aren't linked to other lines.
      */
     getLinkedLines(lineId) {
-        return this.props.lines.filter(line => line.linked_line_id === lineId);
+        return this.props.lines.filter((line) => line.linked_line_id === lineId);
     }
 
     /**
@@ -52,9 +52,11 @@ export class AddToCartNotification extends Component {
     getFormattedPrice(line) {
         const linkedLines = this.getLinkedLines(line.id);
         const price = linkedLines.length
-            ? linkedLines.reduce((price, linkedLine) => price + linkedLine.price_total, 0)
+            ? linkedLines.reduce(
+                  (price, linkedLine) => price + linkedLine.price_total,
+                  0
+              )
             : line.price_total;
         return formatCurrency(price, this.props.currency_id);
     }
-
 }

@@ -1,5 +1,5 @@
-import { EventBus } from "@odoo/owl";
-import { batched } from "@web/core/utils/timing";
+import {EventBus} from "@odoo/owl";
+import {batched} from "@web/core/utils/timing";
 
 /**
  * @typedef { Object } BuilderOptionDependency

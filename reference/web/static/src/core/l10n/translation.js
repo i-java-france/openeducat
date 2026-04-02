@@ -1,8 +1,8 @@
-import { formatList } from "@web/core/l10n/utils";
-import { isIterable } from "@web/core/utils/arrays";
-import { Deferred } from "@web/core/utils/concurrency";
-import { htmlSprintf, isMarkup } from "@web/core/utils/html";
-import { mapSubstitutions, sprintf } from "@web/core/utils/strings";
+import {formatList} from "@web/core/l10n/utils";
+import {isIterable} from "@web/core/utils/arrays";
+import {Deferred} from "@web/core/utils/concurrency";
+import {htmlSprintf, isMarkup} from "@web/core/utils/html";
+import {mapSubstitutions, sprintf} from "@web/core/utils/strings";
 
 /**
  * @typedef {ReturnType<markup>} Markup
@@ -165,10 +165,14 @@ export class TranslatedString extends String {
         if (this.lazy && !translatedTerms[translationLoaded]) {
             // Evaluate lazy translated string while translations are not loaded
             // -> error
-            throw new Error(`Cannot translate string: translations have not been loaded`);
+            throw new Error(
+                `Cannot translate string: translations have not been loaded`
+            );
         }
         const translation =
-            translatedTerms[this.context]?.[source] ?? translatedTermsGlobal[source] ?? source;
+            translatedTerms[this.context]?.[source] ??
+            translatedTermsGlobal[source] ??
+            source;
         if (this.substitutions.length) {
             return translationSprintf(translation, this.substitutions);
         } else {

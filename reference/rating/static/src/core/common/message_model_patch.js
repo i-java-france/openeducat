@@ -1,7 +1,7 @@
-import { Message } from "@mail/core/common/message_model";
-import { fields } from "@mail/core/common/record";
+import {Message} from "@mail/core/common/message_model";
+import {fields} from "@mail/core/common/record";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 patch(Message.prototype, {
     setup() {
@@ -14,6 +14,6 @@ patch(Message.prototype, {
     },
 
     get removeParams() {
-        return { ...super.removeParams, rating_value: false };
+        return {...super.removeParams, rating_value: false};
     },
 });

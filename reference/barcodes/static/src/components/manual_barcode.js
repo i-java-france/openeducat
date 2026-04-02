@@ -1,13 +1,13 @@
-import { BarcodeDialog } from "@web/core/barcode/barcode_dialog";
-import { Component, onMounted, useRef, useState } from "@odoo/owl";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { _t } from "@web/core/l10n/translation";
+import {BarcodeDialog} from "@web/core/barcode/barcode_dialog";
+import {Component, onMounted, useRef, useState} from "@odoo/owl";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {_t} from "@web/core/l10n/translation";
 
 export class BarcodeInput extends Component {
     static template = "barcodes.BarcodeInput";
     static props = {
         onSubmit: Function,
-        placeholder: { type: String, optional: true },
+        placeholder: {type: String, optional: true},
     };
     static defaultProps = {
         placeholder: _t("Enter a barcode..."),

@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
 from datetime import datetime
+
 from pytz import timezone
 
 from odoo import api, fields, models
@@ -71,7 +71,7 @@ class ResourceResource(models.Model):
         }
         return self.filtered(
             lambda r: not r.employee_id
-                   or not r.employee_id.id in employee_ids_with_active_contracts
+                   or r.employee_id.id not in employee_ids_with_active_contracts
         )
 
     def _get_contracts_valid_periods(self, start, end):

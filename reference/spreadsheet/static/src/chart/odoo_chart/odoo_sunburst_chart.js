@@ -1,9 +1,9 @@
-import { registries, chartHelpers } from "@odoo/o-spreadsheet";
-import { _t } from "@web/core/l10n/translation";
-import { OdooChart } from "./odoo_chart";
-import { onOdooChartItemHover, onSunburstOdooChartItemClick } from "./odoo_chart_helpers";
+import {registries, chartHelpers} from "@odoo/o-spreadsheet";
+import {_t} from "@web/core/l10n/translation";
+import {OdooChart} from "./odoo_chart";
+import {onOdooChartItemHover, onSunburstOdooChartItemClick} from "./odoo_chart_helpers";
 
-const { chartRegistry } = registries;
+const {chartRegistry} = registries;
 
 const {
     getSunburstChartDatasets,
@@ -42,7 +42,8 @@ chartRegistry.add("odoo_sunburst", {
     getChartRuntime: createOdooChartRuntime,
     validateChartDefinition: (validator, definition) =>
         OdooSunburstChart.validateChartDefinition(validator, definition),
-    transformDefinition: (definition) => OdooSunburstChart.transformDefinition(definition),
+    transformDefinition: (definition) =>
+        OdooSunburstChart.transformDefinition(definition),
     getChartDefinitionFromContextCreation: () =>
         OdooSunburstChart.getDefinitionFromContextCreation(),
     name: _t("Sunburst"),
@@ -50,14 +51,14 @@ chartRegistry.add("odoo_sunburst", {
 
 function createOdooChartRuntime(chart, getters) {
     const background = chart.background || "#FFFFFF";
-    const { datasets, labels } = chart.dataSource.getHierarchicalData();
+    const {datasets, labels} = chart.dataSource.getHierarchicalData();
 
     const definition = chart.getDefinition();
     const locale = getters.getLocale();
 
     const chartData = {
         labels,
-        dataSetsValues: datasets.map((ds) => ({ data: ds.data, label: ds.label })),
+        dataSetsValues: datasets.map((ds) => ({data: ds.data, label: ds.label})),
         locale,
     };
 
@@ -69,19 +70,22 @@ function createOdooChartRuntime(chart, getters) {
         },
         options: {
             ...CHART_COMMON_OPTIONS,
-            cutout: chart.pieHolePercentage === undefined ? "25%" : `${chart.pieHolePercentage}%`,
+            cutout:
+                chart.pieHolePercentage === undefined
+                    ? "25%"
+                    : `${chart.pieHolePercentage}%`,
             layout: getChartLayout(definition, chartData),
             plugins: {
                 title: getChartTitle(definition, getters),
                 legend: getSunburstChartLegend(definition, chartData),
                 tooltip: getSunburstChartTooltip(definition, chartData),
                 sunburstLabelsPlugin: getSunburstShowValues(definition, chartData),
-                sunburstHoverPlugin: { enabled: true },
+                sunburstHoverPlugin: {enabled: true},
             },
             onHover: onOdooChartItemHover(),
             onClick: onSunburstOdooChartItemClick(getters, chart),
         },
     };
 
-    return { background, chartJsConfig: config };
+    return {background, chartJsConfig: config};
 }

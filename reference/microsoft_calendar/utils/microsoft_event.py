@@ -1,8 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import json
-
 from collections import abc
-from typing import Iterator, Mapping
+from collections.abc import Iterator, Mapping
 
 from odoo.tools import email_normalize
 from odoo.tools.misc import ReadonlyDict

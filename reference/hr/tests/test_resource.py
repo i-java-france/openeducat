@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime, date
-from pytz import utc, timezone
+from datetime import date, datetime
 
-from odoo.tools.intervals import Intervals
+from pytz import timezone, utc
+
 from odoo.fields import Date
 from odoo.tools.date_utils import sum_intervals
+from odoo.tools.intervals import Intervals
 
 from .common import TestHrCommon
 
@@ -15,7 +15,7 @@ class TestResource(TestHrCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestResource, cls).setUpClass()
+        super().setUpClass()
         cls.calendar_40h = cls.env['resource.calendar'].create({'name': 'Default calendar'})
         cls.employee_niv = cls.env['hr.employee'].create({
             'name': 'Sharlene Rhodes',

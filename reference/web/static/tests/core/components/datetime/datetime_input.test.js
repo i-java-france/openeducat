@@ -1,12 +1,12 @@
-import { test, expect, describe } from "@odoo/hoot";
-import { Component, xml } from "@odoo/owl";
+import {describe, expect, test} from "@odoo/hoot";
+import {Component, xml} from "@odoo/owl";
 import {
     assertDateTimePicker,
     editTime,
     getPickerCell,
 } from "../../datetime/datetime_test_helpers";
-import { animationFrame } from "@odoo/hoot-mock";
-import { DateTimeInput } from "@web/core/datetime/datetime_input";
+import {animationFrame} from "@odoo/hoot-mock";
+import {DateTimeInput} from "@web/core/datetime/datetime_input";
 import {
     contains,
     defineParams,
@@ -14,12 +14,12 @@ import {
     mountWithCleanup,
     serverState,
 } from "@web/../tests/web_test_helpers";
-import { click, edit, queryFirst } from "@odoo/hoot-dom";
+import {click, edit, queryFirst} from "@odoo/hoot-dom";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 class DateTimeInputComp extends Component {
-    static components = { DateTimeInput };
+    static components = {DateTimeInput};
     static template = xml`<DateTimeInput t-props="props" />`;
     static props = ["*"];
 }
@@ -219,7 +219,7 @@ describe("DateTimeInput (date)", () => {
     test.tags("mobile");
     test("popover should have enough space to be displayed", async () => {
         class Root extends Component {
-            static components = { DateTimeInput };
+            static components = {DateTimeInput};
             static template = xml`<div class="d-flex"><DateTimeInput t-props="props" /></div>`;
             static props = ["*"];
         }
@@ -232,7 +232,7 @@ describe("DateTimeInput (date)", () => {
         const parent = queryFirst(".o_datetime_input").parentElement;
         const initialParentHeight = parent.clientHeight;
 
-        await contains(".o_datetime_input", { root: parent }).click();
+        await contains(".o_datetime_input", {root: parent}).click();
 
         const pickerRectHeight = queryFirst(".o_datetime_picker").clientHeight;
 
@@ -256,7 +256,10 @@ describe("DateTimeInput (datetime)", () => {
     test("basic rendering", async () => {
         await mountWithCleanup(DateTimeInputComp, {
             props: {
-                value: DateTime.fromFormat("09/01/1997 12:30:01", "dd/MM/yyyy HH:mm:ss"),
+                value: DateTime.fromFormat(
+                    "09/01/1997 12:30:01",
+                    "dd/MM/yyyy HH:mm:ss"
+                ),
                 type: "datetime",
             },
         });
@@ -293,7 +296,10 @@ describe("DateTimeInput (datetime)", () => {
 
         await mountWithCleanup(DateTimeInputComp, {
             props: {
-                value: DateTime.fromFormat("09/01/1997 12:30:01", "dd/MM/yyyy HH:mm:ss"),
+                value: DateTime.fromFormat(
+                    "09/01/1997 12:30:01",
+                    "dd/MM/yyyy HH:mm:ss"
+                ),
                 type: "datetime",
                 onChange: (date) => expect.step(date.toSQL().split(".")[0]),
             },
@@ -319,7 +325,10 @@ describe("DateTimeInput (datetime)", () => {
 
         await mountWithCleanup(DateTimeInputComp, {
             props: {
-                value: DateTime.fromFormat("09/01/1997 12:30:01", "dd/MM/yyyy HH:mm:ss"),
+                value: DateTime.fromFormat(
+                    "09/01/1997 12:30:01",
+                    "dd/MM/yyyy HH:mm:ss"
+                ),
                 type: "datetime",
                 format: "dd MMM, yyyy HH:mm",
                 onChange: (date) => expect.step(date.toSQL().split(".")[0]),
@@ -375,14 +384,20 @@ describe("DateTimeInput (datetime)", () => {
 
         await mountWithCleanup(DateTimeInputComp, {
             props: {
-                value: DateTime.fromFormat("09/01/1997 12:30:01", "dd/MM/yyyy HH:mm:ss"),
+                value: DateTime.fromFormat(
+                    "09/01/1997 12:30:01",
+                    "dd/MM/yyyy HH:mm:ss"
+                ),
                 format: "dd/MM/yyyy HH:mm:ss",
                 type: "datetime",
                 onChange: (date) => {
                     expect.step("datetime-changed");
-                    expect(date.toFormat("dd/MM/yyyy HH:mm:ss")).toBe("08/02/1997 15:45:05", {
-                        message: "Event should transmit the correct date",
-                    });
+                    expect(date.toFormat("dd/MM/yyyy HH:mm:ss")).toBe(
+                        "08/02/1997 15:45:05",
+                        {
+                            message: "Event should transmit the correct date",
+                        }
+                    );
                 },
             },
         });
@@ -408,7 +423,10 @@ describe("DateTimeInput (datetime)", () => {
     test("Date time format is correctly set", async () => {
         await mountWithCleanup(DateTimeInputComp, {
             props: {
-                value: DateTime.fromFormat("09/01/1997 12:30:01", "dd/MM/yyyy HH:mm:ss"),
+                value: DateTime.fromFormat(
+                    "09/01/1997 12:30:01",
+                    "dd/MM/yyyy HH:mm:ss"
+                ),
                 type: "datetime",
                 format: "HH:mm:ss yyyy/MM/dd",
             },
@@ -429,7 +447,10 @@ describe("DateTimeInput (datetime)", () => {
 
         await mountWithCleanup(DateTimeInputComp, {
             props: {
-                value: DateTime.fromFormat("09/04/1997 12:30:01", "dd/MM/yyyy HH:mm:ss"),
+                value: DateTime.fromFormat(
+                    "09/04/1997 12:30:01",
+                    "dd/MM/yyyy HH:mm:ss"
+                ),
                 type: "datetime",
                 format: "dd MMM, yyyy",
                 onChange(date) {
@@ -456,7 +477,10 @@ describe("DateTimeInput (datetime)", () => {
     test("Datepicker works with dots and commas in format", async () => {
         await mountWithCleanup(DateTimeInputComp, {
             props: {
-                value: DateTime.fromFormat("10/03/2023 13:14:27", "dd/MM/yyyy HH:mm:ss"),
+                value: DateTime.fromFormat(
+                    "10/03/2023 13:14:27",
+                    "dd/MM/yyyy HH:mm:ss"
+                ),
                 type: "datetime",
                 format: "dd.MM,yyyy",
             },
@@ -502,7 +526,10 @@ describe("DateTimeInput (datetime)", () => {
     test("Clicking clear button closes datetime picker", async () => {
         await mountWithCleanup(DateTimeInputComp, {
             props: {
-                value: DateTime.fromFormat("09/01/1997 12:30:01", "dd/MM/yyyy HH:mm:ss"),
+                value: DateTime.fromFormat(
+                    "09/01/1997 12:30:01",
+                    "dd/MM/yyyy HH:mm:ss"
+                ),
                 type: "datetime",
                 format: "dd MMM, yyyy HH:mm:ss",
             },
@@ -516,7 +543,10 @@ describe("DateTimeInput (datetime)", () => {
     test("Clicking apply button closes datetime picker", async () => {
         await mountWithCleanup(DateTimeInputComp, {
             props: {
-                value: DateTime.fromFormat("09/01/1997 12:30:01", "dd/MM/yyyy HH:mm:ss"),
+                value: DateTime.fromFormat(
+                    "09/01/1997 12:30:01",
+                    "dd/MM/yyyy HH:mm:ss"
+                ),
                 type: "datetime",
                 format: "dd MMM, yyyy HH:mm:ss",
             },
@@ -565,7 +595,7 @@ describe("DateTimeInput (datetime)", () => {
         await changeLang("ar-001");
 
         await mountWithCleanup(DateTimeInputComp, {
-            props: { rounding: 0 },
+            props: {rounding: 0},
         });
 
         await contains(".o_datetime_input").click();

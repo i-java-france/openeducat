@@ -1,7 +1,7 @@
-import { Dialog } from "@web/core/dialog/dialog";
-import { Component, useState } from "@odoo/owl";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { ProductInfoBanner } from "@point_of_sale/app/components/product_info_banner/product_info_banner";
+import {Dialog} from "@web/core/dialog/dialog";
+import {Component, useState} from "@odoo/owl";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {ProductInfoBanner} from "@point_of_sale/app/components/product_info_banner/product_info_banner";
 
 export class BaseProductAttribute extends Component {
     static template = "";
@@ -38,7 +38,9 @@ export class SelectProductAttribute extends BaseProductAttribute {
 
     onChange(event) {
         this.props.setSelected(
-            this.props.attribute.values().find((value) => value.id == event.target.value)
+            this.props.attribute
+                .values()
+                .find((value) => value.id == event.target.value)
         );
     }
 }
@@ -66,9 +68,12 @@ export class MultiProductAttribute extends BaseProductAttribute {
     }
 
     onChange(value) {
-        this.state.is_value_selected[value.id] = !this.state.is_value_selected[value.id];
+        this.state.is_value_selected[value.id] =
+            !this.state.is_value_selected[value.id];
         this.props.setSelected(
-            this.props.attribute.values().filter((val) => this.state.is_value_selected[val.id])
+            this.props.attribute
+                .values()
+                .filter((val) => this.state.is_value_selected[val.id])
         );
     }
 }
@@ -89,9 +94,9 @@ export class ProductConfiguratorPopup extends Component {
         productTemplate: Object,
         getPayload: Function,
         close: Function,
-        hideAlwaysVariants: { type: Boolean, optional: true },
-        forceVariantValue: { type: Object, optional: true },
-        line: { type: Object, optional: true },
+        hideAlwaysVariants: {type: Boolean, optional: true},
+        forceVariantValue: {type: Object, optional: true},
+        line: {type: Object, optional: true},
     };
 
     setup() {
@@ -99,13 +104,16 @@ export class ProductConfiguratorPopup extends Component {
         this.state = useState({
             attributes:
                 this.props.line?.selectedAttributes ||
-                this.props.productTemplate.attribute_line_ids.reduce((acc, attribute) => {
-                    acc[attribute.attribute_id.id] = {
-                        selected: [],
-                        custom_value: "",
-                    };
-                    return acc;
-                }, {}),
+                this.props.productTemplate.attribute_line_ids.reduce(
+                    (acc, attribute) => {
+                        acc[attribute.attribute_id.id] = {
+                            selected: [],
+                            custom_value: "",
+                        };
+                        return acc;
+                    },
+                    {}
+                ),
         });
 
         if (!this.props.line?.selectedAttributes) {
@@ -119,7 +127,10 @@ export class ProductConfiguratorPopup extends Component {
 
     get selectedValues() {
         return this.props.productTemplate.attribute_line_ids
-            .map((attrLine) => this.state.attributes[attrLine.attribute_id.id]?.selected || [])
+            .map(
+                (attrLine) =>
+                    this.state.attributes[attrLine.attribute_id.id]?.selected || []
+            )
             .flat();
     }
 
@@ -130,11 +141,11 @@ export class ProductConfiguratorPopup extends Component {
         );
 
         if (hasVariants) {
-            const selectedAttributeValuesIds = this.selectedValues.map(({ id }) => id);
+            const selectedAttributeValuesIds = this.selectedValues.map(({id}) => id);
             product = this.props.productTemplate.product_variant_ids.find(
                 (product) =>
                     product.product_template_variant_value_ids?.length > 0 &&
-                    product.product_template_variant_value_ids.every(({ id }) =>
+                    product.product_template_variant_value_ids.every(({id}) =>
                         selectedAttributeValuesIds.includes(id)
                     )
             );
@@ -147,14 +158,20 @@ export class ProductConfiguratorPopup extends Component {
 
         let combination;
         while ((combination = getNext()) !== null) {
-            if (!combination.some((value) => this.pos.doHaveConflictWith(value, combination))) {
+            if (
+                !combination.some((value) =>
+                    this.pos.doHaveConflictWith(value, combination)
+                )
+            ) {
                 combination.forEach((value) => {
                     const forceVariant = this.props.forceVariantValue
                         ? Object.values(this.props.forceVariantValue).find(
-                              (att) => att.attribute_line_id.id == value.attribute_line_id.id
+                              (att) =>
+                                  att.attribute_line_id.id == value.attribute_line_id.id
                           )
                         : false;
-                    this.state.attributes[value.attribute_id.id].selected = forceVariant || value;
+                    this.state.attributes[value.attribute_id.id].selected =
+                        forceVariant || value;
                 });
                 break;
             }
@@ -163,7 +180,7 @@ export class ProductConfiguratorPopup extends Component {
 
     generateCombinations(attributes) {
         const values = attributes
-            .filter(({ attribute_id }) => attribute_id.display_type !== "multi")
+            .filter(({attribute_id}) => attribute_id.display_type !== "multi")
             .map((attribute) => attribute.values());
         const indices = new Array(values.length).fill(0);
         let done = false;
@@ -210,7 +227,8 @@ export class ProductConfiguratorPopup extends Component {
                     custom_value: "",
                 };
             }
-            this.state.attributes[attribute.attribute_id.id].custom_value = custom_value;
+            this.state.attributes[attribute.attribute_id.id].custom_value =
+                custom_value;
         };
     }
 
@@ -219,7 +237,7 @@ export class ProductConfiguratorPopup extends Component {
             attribute_value_ids: this.selectedValues.map((val) => val.id),
             attribute_custom_values: Object.values(this.state.attributes)
                 .filter((attribute) => attribute.selected.is_custom)
-                .reduce((acc, { selected, custom_value }) => {
+                .reduce((acc, {selected, custom_value}) => {
                     acc[selected.id] = custom_value;
                     return acc;
                 }, []),
@@ -230,7 +248,7 @@ export class ProductConfiguratorPopup extends Component {
     isArchivedCombination() {
         const selectedValuesIds = this.selectedValues
             .filter((value) => value.attribute_id.create_variant === "always")
-            .map(({ id }) => id);
+            .map(({id}) => id);
         return (
             selectedValuesIds.length > 0 &&
             this.props.productTemplate._isArchivedCombination(selectedValuesIds)
@@ -258,8 +276,10 @@ export class ProductConfiguratorPopup extends Component {
         overridedValues.priceExtra = this.priceExtra;
 
         const product = this.product || this.props.productTemplate;
-        const info = product.getTaxDetails({ overridedValues });
-        const total = this.env.utils.formatCurrency(info?.raw_total_included_currency || 0.0);
+        const info = product.getTaxDetails({overridedValues});
+        const total = this.env.utils.formatCurrency(
+            info?.raw_total_included_currency || 0.0
+        );
         return `${this.props.productTemplate.display_name} | ${total}`;
     }
     get showInfoBanner() {

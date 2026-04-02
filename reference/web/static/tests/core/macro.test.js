@@ -1,9 +1,16 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { advanceTime, animationFrame, click, edit, queryOne, queryText } from "@odoo/hoot-dom";
-import { Component, useState, xml } from "@odoo/owl";
-import { mountWithCleanup, patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {
+    advanceTime,
+    animationFrame,
+    click,
+    edit,
+    queryOne,
+    queryText,
+} from "@odoo/hoot-dom";
+import {Component, useState, xml} from "@odoo/owl";
+import {mountWithCleanup, patchWithCleanup} from "@web/../tests/web_test_helpers";
 
-import { Macro } from "@web/core/macro";
+import {Macro} from "@web/core/macro";
 
 let macro;
 async function waitForMacro() {
@@ -39,7 +46,7 @@ class TestComponent extends Component {
         </div>`;
     static props = ["*"];
     setup() {
-        this.state = useState({ value: 0 });
+        this.state = useState({value: 0});
     }
 }
 
@@ -55,7 +62,7 @@ test("simple use", async () => {
                 },
             },
         ],
-        async onStep({ trigger }) {
+        async onStep({trigger}) {
             await animationFrame();
             expect.step(queryText("span.value"));
         },
@@ -91,7 +98,7 @@ test("multiple steps", async () => {
                 },
             },
         ],
-        async onStep({ index }) {
+        async onStep({index}) {
             await animationFrame();
             if (index % 2 === 0) {
                 expect.step(queryText("span.value"));
@@ -112,7 +119,7 @@ test("can input values", async () => {
                 trigger: "div.counter input",
                 async action(trigger) {
                     await click(trigger);
-                    await edit("aaron", { confirm: "blur" });
+                    await edit("aaron", {confirm: "blur"});
                 },
             },
         ],
@@ -128,16 +135,16 @@ test("a step can have no trigger", async () => {
     new Macro({
         name: "test",
         steps: [
-            { action: () => expect.step("1") },
-            { action: () => expect.step("2") },
+            {action: () => expect.step("1")},
+            {action: () => expect.step("2")},
             {
                 trigger: "div.counter input",
                 async action(trigger) {
                     await click(trigger);
-                    await edit("aaron", { confirm: "blur" });
+                    await edit("aaron", {confirm: "blur"});
                 },
             },
-            { action: () => expect.step("3") },
+            {action: () => expect.step("3")},
         ],
     }).start(queryOne(".counter"));
     expect(input).toHaveValue("");
@@ -153,7 +160,7 @@ test("onStep function is called at each step", async () => {
 
     new Macro({
         name: "test",
-        onStep: ({ index }) => {
+        onStep: ({index}) => {
             expect.step(index);
         },
         steps: [
@@ -240,7 +247,7 @@ test("macro timeout if element is not visible", async () => {
                 },
             },
         ],
-        onError: ({ error }) => {
+        onError: ({error}) => {
             expect.step(error.message);
         },
     });

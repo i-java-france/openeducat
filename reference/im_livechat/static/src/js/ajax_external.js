@@ -1,4 +1,4 @@
-import { assets } from "@web/core/assets";
+import {assets} from "@web/core/assets";
 
 /**
  * This file should be used in the context of an external widget loading (e.g: live chat in a non-Odoo website)

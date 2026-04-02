@@ -1,10 +1,13 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { click, press, queryAll, queryOne } from "@odoo/hoot-dom";
-import { advanceTime } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {click, press, queryAll, queryOne} from "@odoo/hoot-dom";
+import {advanceTime} from "@odoo/hoot-mock";
 
-import { onRpc } from "@web/../tests/web_test_helpers";
+import {onRpc} from "@web/../tests/web_test_helpers";
 
 setupInteractionWhiteList("website.search_bar");
 
@@ -71,7 +74,7 @@ function supportAutocomplete() {
 
 test("searchbar triggers a search when text is entered", async () => {
     supportAutocomplete();
-    const { core } = await startInteractions(searchTemplate);
+    const {core} = await startInteractions(searchTemplate);
     expect(core.interactions).toHaveLength(1);
     await click("form input[type=search]");
     await press("x");

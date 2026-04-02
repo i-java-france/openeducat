@@ -1,13 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import datetime
+from unittest.mock import patch
+from urllib.parse import urlparse
+
 import odoo.tests
 from odoo import http
 
-from urllib.parse import urlparse
-from odoo.addons.pos_self_order.tests.self_order_common_test import SelfOrderCommonTest
 from odoo.addons.pos_self_order.controllers.orders import PosSelfOrderController
-from unittest.mock import patch
-from datetime import datetime
+from odoo.addons.pos_self_order.tests.self_order_common_test import SelfOrderCommonTest
 
 
 @odoo.tests.tagged("post_install", "-at_install")

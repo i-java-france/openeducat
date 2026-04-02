@@ -1,11 +1,13 @@
 import logging
 import re
+
 from stdnum.in_ import pan
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError, AccessError, ValidationError
-from odoo.addons.l10n_in.models.iap_account import IAP_SERVICE_NAME
+from odoo import _, api, fields, models
+from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tools.misc import clean_context
+
+from odoo.addons.l10n_in.models.iap_account import IAP_SERVICE_NAME
 
 _logger = logging.getLogger(__name__)
 

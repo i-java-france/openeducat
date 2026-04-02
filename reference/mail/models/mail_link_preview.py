@@ -1,17 +1,18 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
-import requests
-
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
-from lxml import html
 from urllib.parse import urlparse
 
-from odoo import api, models, fields, tools
+import requests
+from dateutil.relativedelta import relativedelta
+from lxml import html
+
+from odoo import api, fields, models, tools
 from odoo.tools.misc import OrderedSet
-from odoo.addons.mail.tools.link_preview import get_link_preview_from_url
+
 from odoo.addons.mail.tools.discuss import Store
+from odoo.addons.mail.tools.link_preview import get_link_preview_from_url
 
 
 class MailLinkPreview(models.Model):
@@ -108,7 +109,7 @@ class MailLinkPreview(models.Model):
 
     def _is_domain_thottled(self, url):
         domain = urlparse(url).netloc
-        date_interval = fields.Datetime.to_string((datetime.now() - relativedelta(seconds=10)))
+        date_interval = fields.Datetime.to_string(datetime.now() - relativedelta(seconds=10))
         call_counter = self.env["mail.link.preview"].search_count(
             [("source_url", "ilike", domain), ("create_date", ">", date_interval)]
         )

@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 
-import { FileModel } from "@web/core/file_viewer/file_model";
+import {FileModel} from "@web/core/file_viewer/file_model";
 
 test("url query params of FileModel returns proper params", () => {
     const attachmentData = {

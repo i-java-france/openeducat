@@ -10,10 +10,11 @@
 .o-mail-MessageInReply-core {
     --border-color: var(--o-message-bubble-border-color);
     border-width: $border-width $border-width $border-width ($border-width * 3) !important;
-    border-left-color: var(--o-message-bubble-color-base) !important;;
-    background-color: rgba($o-view-background-color, .5) !important;
+    border-left-color: var(--o-message-bubble-color-base) !important;
+    background-color: rgba($o-view-background-color, 0.5) !important;
 
-    &:hover, &:focus-visible {
+    &:hover,
+    &:focus-visible {
         transform: translateY(#{$border-width * -2});
         transition: $transition-base;
     }

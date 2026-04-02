@@ -209,7 +209,7 @@ class SaleAdvancePaymentInv(models.TransientModel):
             **order._prepare_invoice(),
             'invoice_line_ids': [
                 Command.create(self._prepare_down_payment_invoice_line_values(order, so_line, self.company_id.downpayment_account_id or account))
-                for so_line, account in zip(so_lines, accounts)
+                for so_line, account in zip(so_lines, accounts, strict=False)
             ],
         }
 

@@ -1,9 +1,9 @@
-import { test, expect, animationFrame } from "@odoo/hoot";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { OrderSummary } from "@point_of_sale/app/screens/product_screen/order_summary/order_summary";
-import { setupPosEnv, getFilledOrder } from "../utils";
-import { definePosModels } from "../data/generate_model_definitions";
-import { queryAll, queryOne } from "@odoo/hoot-dom";
+import {animationFrame, expect, test} from "@odoo/hoot";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {OrderSummary} from "@point_of_sale/app/screens/product_screen/order_summary/order_summary";
+import {getFilledOrder, setupPosEnv} from "../utils";
+import {definePosModels} from "../data/generate_model_definitions";
+import {queryAll, queryOne} from "@odoo/hoot-dom";
 
 definePosModels();
 

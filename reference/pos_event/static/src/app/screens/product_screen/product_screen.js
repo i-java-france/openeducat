@@ -1,11 +1,11 @@
-import { ProductScreen } from "@point_of_sale/app/screens/product_screen/product_screen";
-import { makeAwaitable } from "@point_of_sale/app/utils/make_awaitable_dialog";
-import { patch } from "@web/core/utils/patch";
-import { EventConfiguratorPopup } from "@pos_event/app/components/popup/event_configurator_popup/event_configurator_popup";
-import { EventRegistrationPopup } from "../../components/popup/event_registration_popup/event_registration_popup";
-import { EventSlotSelectionPopup } from "../../components/popup/event_slot_selection_popup/event_slot_selection_popup";
+import {ProductScreen} from "@point_of_sale/app/screens/product_screen/product_screen";
+import {makeAwaitable} from "@point_of_sale/app/utils/make_awaitable_dialog";
+import {patch} from "@web/core/utils/patch";
+import {EventConfiguratorPopup} from "@pos_event/app/components/popup/event_configurator_popup/event_configurator_popup";
+import {EventRegistrationPopup} from "../../components/popup/event_registration_popup/event_registration_popup";
+import {EventSlotSelectionPopup} from "../../components/popup/event_slot_selection_popup/event_slot_selection_popup";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 patch(ProductScreen.prototype, {
     get products() {
@@ -33,7 +33,8 @@ patch(ProductScreen.prototype, {
 
         const event = product.event_id;
         const tickets = event.event_ticket_ids.filter(
-            (ticket) => ticket.product_id && ticket.product_id.service_tracking === "event"
+            (ticket) =>
+                ticket.product_id && ticket.product_id.service_tracking === "event"
         );
 
         // Multi Slot
@@ -66,26 +67,31 @@ patch(ProductScreen.prototype, {
                 "get_slot_tickets_availability_pos",
                 [event.id, slotTickets]
             );
-            const eventSeats = event.seats_limited ? event.seats_available : "unlimited";
-            avaibilityByTicket = slotTicketAvailabilities.reduce((acc, availability, idx) => {
-                const ticketsData = slotTickets[idx];
-                const slotId = ticketsData[0];
-                const ticketId = ticketsData[1];
-                if (!acc[ticketId]) {
-                    acc[ticketId] = {};
-                }
-                if (!acc[ticketId][slotId]) {
-                    acc[ticketId][slotId] = {};
-                }
-                if (availability === null) {
-                    acc[ticketId][slotId] = "unlimited";
-                } else if (typeof availability === "number") {
-                    acc[ticketId][slotId] = availability;
-                } else {
-                    acc[ticketId][slotId] = 0;
-                }
-                return acc;
-            }, {});
+            const eventSeats = event.seats_limited
+                ? event.seats_available
+                : "unlimited";
+            avaibilityByTicket = slotTicketAvailabilities.reduce(
+                (acc, availability, idx) => {
+                    const ticketsData = slotTickets[idx];
+                    const slotId = ticketsData[0];
+                    const ticketId = ticketsData[1];
+                    if (!acc[ticketId]) {
+                        acc[ticketId] = {};
+                    }
+                    if (!acc[ticketId][slotId]) {
+                        acc[ticketId][slotId] = {};
+                    }
+                    if (availability === null) {
+                        acc[ticketId][slotId] = "unlimited";
+                    } else if (typeof availability === "number") {
+                        acc[ticketId][slotId] = availability;
+                    } else {
+                        acc[ticketId][slotId] = 0;
+                    }
+                    return acc;
+                },
+                {}
+            );
             const isAvailable = Object.values(avaibilityByTicket).some((av) =>
                 Object.values(av).some((a) => typeof a === "number" && a > 0)
             );
@@ -97,20 +103,22 @@ patch(ProductScreen.prototype, {
             }
             const availabilityPerSlot = Object.values(avaibilityByTicket).reduce(
                 (acc, ticketAvailability) => {
-                    Object.entries(ticketAvailability).forEach(([slotId, availability]) => {
-                        if (!acc[slotId]) {
-                            acc[slotId] = 0;
-                        } else if (acc[slotId] === "unlimited") {
-                            return acc;
+                    Object.entries(ticketAvailability).forEach(
+                        ([slotId, availability]) => {
+                            if (!acc[slotId]) {
+                                acc[slotId] = 0;
+                            } else if (acc[slotId] === "unlimited") {
+                                return acc;
+                            }
+                            if (availability === "unlimited") {
+                                acc[slotId] = "unlimited";
+                            } else if (typeof availability === "number") {
+                                acc[slotId] = Math.max(acc[slotId], availability);
+                            } else {
+                                acc[slotId] = Math.max(acc[slotId], 0);
+                            }
                         }
-                        if (availability === "unlimited") {
-                            acc[slotId] = "unlimited";
-                        } else if (typeof availability === "number") {
-                            acc[slotId] = Math.max(acc[slotId], availability);
-                        } else {
-                            acc[slotId] = Math.max(acc[slotId], 0);
-                        }
-                    });
+                    );
                     return acc;
                 },
                 {}
@@ -126,7 +134,9 @@ patch(ProductScreen.prototype, {
         } else {
             avaibilityByTicket = tickets.reduce((acc, ticket) => {
                 if (ticket.seats_max === 0) {
-                    acc[ticket.id] = event.seats_limited ? event.seats_available : "unlimited";
+                    acc[ticket.id] = event.seats_limited
+                        ? event.seats_available
+                        : "unlimited";
                 } else {
                     acc[ticket.id] = ticket.seats_available;
                 }
@@ -148,16 +158,24 @@ patch(ProductScreen.prototype, {
             data: ticketResult,
         });
 
-        if (!result || !result.byRegistration || !Object.keys(result.byRegistration).length) {
+        if (
+            !result ||
+            !result.byRegistration ||
+            !Object.keys(result.byRegistration).length
+        ) {
             return;
         }
 
         const globalIdentificationAnswers = {};
         const identificationQuestionTypes = ["name", "email", "phone", "company_name"];
 
-        const { globalSimpleChoice, globalTextAnswer } = Object.entries(result.byOrder).reduce(
+        const {globalSimpleChoice, globalTextAnswer} = Object.entries(
+            result.byOrder
+        ).reduce(
             (acc, [questionId, answer]) => {
-                const question = this.pos.models["event.question"].get(parseInt(questionId));
+                const question = this.pos.models["event.question"].get(
+                    parseInt(questionId)
+                );
                 if (
                     question.question_type === "simple_choice" &&
                     this.pos.models["event.question.answer"].get(parseInt(answer))
@@ -175,11 +193,13 @@ patch(ProductScreen.prototype, {
 
                 return acc;
             },
-            { globalSimpleChoice: {}, globalTextAnswer: {} }
+            {globalSimpleChoice: {}, globalTextAnswer: {}}
         );
 
         for (const [ticketId, data] of Object.entries(result.byRegistration)) {
-            const ticket = this.pos.models["event.event.ticket"].get(parseInt(ticketId));
+            const ticket = this.pos.models["event.event.ticket"].get(
+                parseInt(ticketId)
+            );
             const line = await this.pos.addLineToCurrentOrder({
                 product_id: ticket.product_id,
                 product_tmpl_id: ticket.product_id.product_tmpl_id,
@@ -192,9 +212,11 @@ patch(ProductScreen.prototype, {
 
             for (const registration of data) {
                 // Global answers have precedence for identification question types.
-                const userData = { ...globalIdentificationAnswers };
+                const userData = {...globalIdentificationAnswers};
                 for (const [questionId, answer] of Object.entries(registration)) {
-                    const question = this.pos.models["event.question"].get(parseInt(questionId));
+                    const question = this.pos.models["event.question"].get(
+                        parseInt(questionId)
+                    );
 
                     if (
                         !question ||
@@ -216,14 +238,16 @@ patch(ProductScreen.prototype, {
                     }
                 }
 
-                const { simpleChoice, textAnswer } = Object.entries(registration).reduce(
+                const {simpleChoice, textAnswer} = Object.entries(registration).reduce(
                     (acc, [questionId, answer]) => {
                         const question = this.pos.models["event.question"].get(
                             parseInt(questionId)
                         );
                         if (
                             question.question_type === "simple_choice" &&
-                            this.pos.models["event.question.answer"].get(parseInt(answer))
+                            this.pos.models["event.question.answer"].get(
+                                parseInt(answer)
+                            )
                         ) {
                             acc.simpleChoice[questionId] = answer;
                         } else if (answer) {
@@ -232,7 +256,7 @@ patch(ProductScreen.prototype, {
 
                         return acc;
                     },
-                    { simpleChoice: {}, textAnswer: {} }
+                    {simpleChoice: {}, textAnswer: {}}
                 );
                 // This will throw an error on creation if not possible (python constraint)
                 this.pos.models["event.registration"].create({
@@ -263,9 +287,9 @@ patch(ProductScreen.prototype, {
                             question_id: this.pos.models["event.question"].get(
                                 parseInt(questionId)
                             ),
-                            value_answer_id: this.pos.models["event.question.answer"].get(
-                                parseInt(answer)
-                            ),
+                            value_answer_id: this.pos.models[
+                                "event.question.answer"
+                            ].get(parseInt(answer)),
                         },
                     ]),
                 });

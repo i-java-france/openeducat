@@ -1,8 +1,8 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { user } from "@web/core/user";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {user} from "@web/core/user";
 
 /**
  * This widget is responsible of displaying quiz questions and propositions. Submitting the quiz will fetch the
@@ -91,7 +91,9 @@ export class Quiz extends Interaction {
      * Get the quiz answers filled in by the User
      */
     getQuizAnswers() {
-        return [...this.el.querySelectorAll("input[type=radio]:checked")].map((el) => parseInt(el.value));
+        return [...this.el.querySelectorAll("input[type=radio]:checked")].map((el) =>
+            parseInt(el.value)
+        );
     }
 
     /**
@@ -102,21 +104,31 @@ export class Quiz extends Interaction {
         for (const questionEl of this.el.querySelectorAll(".o_quiz_js_quiz_question")) {
             const questionId = questionEl.dataset.questionId;
             const answer = this.quiz.answers[questionId];
-            for (const answerEl of questionEl.querySelectorAll("a.o_quiz_quiz_answer")) {
+            for (const answerEl of questionEl.querySelectorAll(
+                "a.o_quiz_quiz_answer"
+            )) {
                 for (const iEl of answerEl.querySelectorAll("i.fa")) {
                     iEl.classList.add("d-none");
                 }
                 if (answerEl.querySelector("input[type=radio]").checked) {
                     if (answer.is_correct) {
-                        answerEl.querySelector("i.fa-check-circle").classList.remove("d-none");
+                        answerEl
+                            .querySelector("i.fa-check-circle")
+                            .classList.remove("d-none");
                     } else {
                         answerEl.querySelector("label input").checked = false;
-                        answerEl.querySelector("i.fa-times-circle").classList.remove("d-none");
+                        answerEl
+                            .querySelector("i.fa-times-circle")
+                            .classList.remove("d-none");
                     }
                     if (answer.awarded_points > 0) {
-                        this.renderAt("quiz.badge", {
-                            "answer": answer,
-                        }, answerEl);
+                        this.renderAt(
+                            "quiz.badge",
+                            {
+                                answer: answer,
+                            },
+                            answerEl
+                        );
                     }
                 } else {
                     answerEl.querySelector("i.fa-circle").classList.remove("d-none");
@@ -124,9 +136,13 @@ export class Quiz extends Interaction {
             }
             const listEl = questionEl.querySelector(".list-group");
             if (listEl) {
-                this.renderAt("quiz.comment", {
-                    "answer": answer,
-                }, listEl);
+                this.renderAt(
+                    "quiz.comment",
+                    {
+                        answer: answer,
+                    },
+                    listEl
+                );
             }
         }
     }
@@ -137,9 +153,13 @@ export class Quiz extends Interaction {
     renderValidationInfo() {
         const validationEl = this.el.querySelector(".o_quiz_js_quiz_validation");
         validationEl.replaceChildren();
-        this.renderAt("quiz.validation", {
-            "widget": this,
-        }, validationEl);
+        this.renderAt(
+            "quiz.validation",
+            {
+                widget: this,
+            },
+            validationEl
+        );
     }
 
     /**
@@ -147,7 +167,9 @@ export class Quiz extends Interaction {
      */
     resetQuiz() {
         for (const questionEl of this.el.querySelectorAll(".o_quiz_js_quiz_question")) {
-            for (const answerEl of questionEl.querySelectorAll("a.o_quiz_quiz_answer")) {
+            for (const answerEl of questionEl.querySelectorAll(
+                "a.o_quiz_quiz_answer"
+            )) {
                 for (const iEl of answerEl.querySelectorAll("i.fa")) {
                     iEl.classList.add("d-none");
                 }
@@ -167,11 +189,13 @@ export class Quiz extends Interaction {
      * according to quiz result.
      */
     async onSubmitQuizClick() {
-        const data = await this.waitFor(rpc("/event_track/quiz/submit", {
-            event_id: this.track.eventId,
-            track_id: this.track.id,
-            answer_ids: this.getQuizAnswers(),
-        }));
+        const data = await this.waitFor(
+            rpc("/event_track/quiz/submit", {
+                event_id: this.track.eventId,
+                track_id: this.track.id,
+                answer_ids: this.getQuizAnswers(),
+            })
+        );
         if (data.error) {
             this.alertShow(data.error);
         } else {
@@ -228,14 +252,14 @@ export class Quiz extends Interaction {
      * the quiz again
      */
     async onResetQuizClick() {
-        await this.waitFor(rpc("/event_track/quiz/reset", {
-            event_id: this.track.eventId,
-            track_id: this.track.id
-        }));
+        await this.waitFor(
+            rpc("/event_track/quiz/reset", {
+                event_id: this.track.eventId,
+                track_id: this.track.id,
+            })
+        );
         this.resetQuiz();
     }
 }
 
-registry
-    .category("public.interactions")
-    .add("website_event_track_quiz.quiz", Quiz);
+registry.category("public.interactions").add("website_event_track_quiz.quiz", Quiz);

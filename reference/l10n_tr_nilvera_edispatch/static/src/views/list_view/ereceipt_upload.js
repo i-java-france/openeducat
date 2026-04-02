@@ -1,22 +1,22 @@
 /** @odoo-module */
 
-import { _t } from "@web/core/l10n/translation";
-import { Component, onWillStart } from "@odoo/owl";
-import { FileUploader } from "@web/views/fields/file_handler";
-import { ListController } from "@web/views/list/list_controller";
-import { registry } from "@web/core/registry";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
-import { useService } from "@web/core/utils/hooks";
-import { user } from "@web/core/user";
-import { StockListView } from "@stock/views/stock_empty_list_help";
+import {_t} from "@web/core/l10n/translation";
+import {Component, onWillStart} from "@odoo/owl";
+import {FileUploader} from "@web/views/fields/file_handler";
+import {ListController} from "@web/views/list/list_controller";
+import {registry} from "@web/core/registry";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
+import {useService} from "@web/core/utils/hooks";
+import {user} from "@web/core/user";
+import {StockListView} from "@stock/views/stock_empty_list_help";
 
 export class L10nTrEreceiptUploader extends Component {
     static template = "l10n_tr_nilvera_edispatch.L10nTrEreceiptUploader";
-    static components = { FileUploader };
+    static components = {FileUploader};
     static props = {
         ...standardWidgetProps,
-        slots: { type: Object, optional: true },
-        record: { type: Object, optional: true },
+        slots: {type: Object, optional: true},
+        record: {type: Object, optional: true},
     };
 
     setup() {
@@ -44,7 +44,10 @@ export class L10nTrEreceiptUploader extends Component {
     async onEreceiptUploadComplete() {
         if (this.invalidAttachments.length !== 0) {
             this.notification.add(
-                _t("The file(s): %s must be of type XML.", this.invalidAttachments.join(", ")),
+                _t(
+                    "The file(s): %s must be of type XML.",
+                    this.invalidAttachments.join(", ")
+                ),
                 {
                     title: _t("Only XML files can be uploaded"),
                     type: "danger",
@@ -56,10 +59,11 @@ export class L10nTrEreceiptUploader extends Component {
             return;
         }
         try {
-            const result = await this.orm.call("stock.picking", "l10n_tr_import_ereceipts", [
-                "",
-                this.attachmentIdsToProcess,
-            ]);
+            const result = await this.orm.call(
+                "stock.picking",
+                "l10n_tr_import_ereceipts",
+                ["", this.attachmentIdsToProcess]
+            );
 
             if (result) {
                 if (result.action) {
@@ -74,7 +78,11 @@ export class L10nTrEreceiptUploader extends Component {
                             "Error occured in reading following XML file(s): %s",
                             result.skipped_xmls.join(", ")
                         ),
-                        { type: "danger", title: "e-Receipt(s) were not imported", sticky: true }
+                        {
+                            type: "danger",
+                            title: "e-Receipt(s) were not imported",
+                            sticky: true,
+                        }
                     );
                 }
             }
@@ -123,4 +131,6 @@ export const L10nTrNilveraEdispatchListView = {
     buttonTemplate: "l10n_tr_nilvera_edispatch.ListView.buttons",
 };
 
-registry.category("views").add("l10n_tr_edispatch_tree", L10nTrNilveraEdispatchListView);
+registry
+    .category("views")
+    .add("l10n_tr_edispatch_tree", L10nTrNilveraEdispatchListView);

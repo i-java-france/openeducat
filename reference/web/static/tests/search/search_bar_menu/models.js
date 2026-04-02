@@ -1,11 +1,11 @@
-import { defineModels, fields, models } from "@web/../tests/web_test_helpers";
+import {defineModels, fields, models} from "@web/../tests/web_test_helpers";
 
 export class Foo extends models.Model {
-    bar = fields.Many2one({ relation: "partner" });
+    bar = fields.Many2one({relation: "partner"});
     foo = fields.Char();
     birthday = fields.Date();
-    date_field = fields.Date({ string: "Date" });
-    parent_id = fields.Many2one({ string: "Parent", relation: "parent.model" });
+    date_field = fields.Date({string: "Date"});
+    parent_id = fields.Many2one({string: "Parent", relation: "parent.model"});
     properties = fields.Properties({
         definition_record: "parent_id",
         definition_record_field: "properties_definition",

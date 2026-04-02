@@ -1,21 +1,25 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import json
-import requests
-
-from datetime import datetime, timezone, timedelta
-from requests import Response
-from unittest.mock import patch
 import base64
+import json
+from datetime import datetime, timedelta, timezone
+from unittest.mock import patch
+
+import requests
+from requests import Response
+
+from odoo.exceptions import UserError, ValidationError
+from odoo.tests import Form
+from odoo.tests.common import TransactionCase
 
 from odoo.addons.mail.tests.common import MockEmail
-from odoo.tests.common import TransactionCase
-from odoo.tests import Form
-from odoo.exceptions import ValidationError, UserError
 
-from ..utils.cloud_storage_azure_utils import UserDelegationKey
 from .. import uninstall_hook
-from ..models.ir_attachment import CloudStorageAzureUserDelegationKeys, get_cloud_storage_azure_user_delegation_key
+from ..models.ir_attachment import (
+    CloudStorageAzureUserDelegationKeys,
+    get_cloud_storage_azure_user_delegation_key,
+)
+from ..utils.cloud_storage_azure_utils import UserDelegationKey
 
 
 class TestCloudStorageAzureCommon(TransactionCase):
@@ -245,7 +249,7 @@ class TestCloudStorageAzure(TestCloudStorageAzureCommon, MockEmail):
             composer._action_send_mail()
         self.assertEqual(len(self._mails), 2, "Two emails should be sent.")
 
-        for body, attachment in zip([m["body"] for m in self._mails], self._new_mails.attachment_ids):
+        for body, attachment in zip([m["body"] for m in self._mails], self._new_mails.attachment_ids, strict=False):
             large_attachment_link = str(self.env["ir.qweb"]._render("mail.mail_attachment_links", {"attachments": attachment}))
             self.assertEqual(body.count(large_attachment_link), 1,
                     "Sending mail with cloud_storage attachment should rendered it as a link in the outgoing email.",
@@ -282,7 +286,7 @@ class TestCloudStorageAzure(TestCloudStorageAzureCommon, MockEmail):
             self.assertIn(small_attachment.name, str(mail['attachments']),
                 "Only text attachment should be sent in the message")
 
-        for body, attachment in zip([m["body"] for m in self._mails], self._new_mails.attachment_ids):
+        for body, attachment in zip([m["body"] for m in self._mails], self._new_mails.attachment_ids, strict=False):
             large_attachment_link = str(self.env["ir.qweb"]._render("mail.mail_attachment_links", {"attachments": cloud_attachment}))
             self.assertEqual(body.count(large_attachment_link), 1,
                     "Sending mail with cloud_storage attachment should rendered it as a link in the outgoing email.",
@@ -321,7 +325,7 @@ class TestCloudStorageAzure(TestCloudStorageAzureCommon, MockEmail):
         with self.mock_mail_gateway(mail_unlink_sent=False):
             composer._action_send_mail()
 
-        for body, attachment in zip([m["body"] for m in self._mails], self._new_mails.attachment_ids):
+        for body, attachment in zip([m["body"] for m in self._mails], self._new_mails.attachment_ids, strict=False):
             cloud_attachment_present = body.count(cloud_attachment.access_token) == body.count(cloud_attachment.name) == 1
             cloud_attachment2_present = body.count(cloud_attachment2.access_token) == body.count(cloud_attachment2.name) == 1
             large_attachment_link = str(self.env["ir.qweb"]._render("mail.mail_attachment_links", {"attachments": large_attachment}))

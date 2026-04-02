@@ -1,15 +1,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
-
 from collections import OrderedDict
-from lxml import etree
 from re import search
 
+from lxml import etree
+
 from odoo import Command
-from odoo.tools import mute_logger, config
 from odoo.exceptions import AccessError
 from odoo.tests import HttpCase, tagged
+from odoo.tools import config, mute_logger
 
 from .test_project_sharing import TestProjectSharingCommon
 

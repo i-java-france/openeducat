@@ -1,7 +1,7 @@
-import { Message } from "@mail/core/common/message_model";
-import { fields } from "@mail/core/common/record";
+import {Message} from "@mail/core/common/message_model";
+import {fields} from "@mail/core/common/record";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {import("models").Message} */
 const messagePatch = {
@@ -24,7 +24,9 @@ const messagePatch = {
             /** @this {import("models").Message} */
             compute() {
                 return this.thread?.channel_member_ids.some(
-                    (m) => m.persona.notEq(this.author) && m.fetched_message_id?.id >= this.id
+                    (m) =>
+                        m.persona.notEq(this.author) &&
+                        m.fetched_message_id?.id >= this.id
                 );
             },
         });
@@ -47,7 +49,9 @@ const messagePatch = {
         });
         /** @type {Promise<Thread>[]} @deprecated */
         this.mentionedChannelPromises = [];
-        this.threadAsFirstUnread = fields.One("Thread", { inverse: "firstUnreadMessage" });
+        this.threadAsFirstUnread = fields.One("Thread", {
+            inverse: "firstUnreadMessage",
+        });
     },
     /** @returns {import("models").ChannelMember[]} */
     get channelMemberHaveSeen() {
@@ -61,7 +65,7 @@ const messagePatch = {
     async edit(
         body,
         attachments = [],
-        { mentionedChannels = [], mentionedPartners = [], mentionedRoles = [] } = {}
+        {mentionedChannels = [], mentionedPartners = [], mentionedRoles = []} = {}
     ) {
         return await super.edit(body, attachments, {
             mentionedChannels,

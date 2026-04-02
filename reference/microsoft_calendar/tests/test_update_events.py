@@ -1,20 +1,28 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime, timedelta
-from dateutil.parser import parse
 import logging
+from datetime import datetime, timedelta
+from unittest.mock import ANY, patch
+
 import pytz
-from unittest.mock import patch, ANY
+from dateutil.parser import parse
 from freezegun import freeze_time
 
 from odoo import Command
+from odoo.exceptions import UserError, ValidationError
 
 from odoo.addons.microsoft_calendar.models.microsoft_sync import MicrosoftCalendarSync
-from odoo.addons.microsoft_calendar.utils.microsoft_calendar import MicrosoftCalendarService
-from odoo.addons.microsoft_calendar.utils.microsoft_event import MicrosoftEvent
 from odoo.addons.microsoft_calendar.models.res_users import ResUsers
-from odoo.addons.microsoft_calendar.tests.common import TestCommon, mock_get_token, _modified_date_in_the_future, patch_api
-from odoo.exceptions import UserError, ValidationError
+from odoo.addons.microsoft_calendar.tests.common import (
+    TestCommon,
+    _modified_date_in_the_future,
+    mock_get_token,
+    patch_api,
+)
+from odoo.addons.microsoft_calendar.utils.microsoft_calendar import (
+    MicrosoftCalendarService,
+)
+from odoo.addons.microsoft_calendar.utils.microsoft_event import MicrosoftEvent
 
 _logger = logging.getLogger(__name__)
 
@@ -24,7 +32,7 @@ class TestUpdateEvents(TestCommon):
 
     @patch_api
     def setUp(self):
-        super(TestUpdateEvents, self).setUp()
+        super().setUp()
         self.create_events_for_tests()
 
     # -------------------------------------------------------------------------------

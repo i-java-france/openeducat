@@ -4,19 +4,19 @@ import {
     toLocaleDateString,
     toLocaleDateTimeString,
 } from "@web/core/l10n/dates";
-import { localization as l10n } from "@web/core/l10n/localization";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { isBinarySize } from "@web/core/utils/binary";
+import {localization as l10n} from "@web/core/l10n/localization";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {isBinarySize} from "@web/core/utils/binary";
 import {
     formatFloat as formatFloatNumber,
     humanNumber,
     insertThousandsSep,
 } from "@web/core/utils/numbers";
-import { exprToBoolean } from "@web/core/utils/strings";
+import {exprToBoolean} from "@web/core/utils/strings";
 
-import { markup } from "@odoo/owl";
-import { formatCurrency } from "@web/core/currency";
+import {markup} from "@odoo/owl";
+import {formatCurrency} from "@web/core/currency";
 
 // -----------------------------------------------------------------------------
 // Helpers
@@ -79,7 +79,7 @@ export function formatChar(value, options) {
     }
     return value || "";
 }
-formatChar.extractOptions = ({ attrs }) => ({
+formatChar.extractOptions = ({attrs}) => ({
     isPassword: exprToBoolean(attrs.password),
 });
 
@@ -90,7 +90,7 @@ export function formatDate(value, options = {}) {
         return toLocaleDateString(value);
     }
 }
-formatDate.extractOptions = ({ options }) => ({
+formatDate.extractOptions = ({options}) => ({
     numeric: exprToBoolean(options.numeric ?? false),
 });
 
@@ -104,8 +104,8 @@ export function formatDateTime(value, options = {}) {
         return toLocaleDateTimeString(value, options);
     }
 }
-formatDateTime.extractOptions = ({ attrs, options }) => ({
-    ...formatDate.extractOptions({ attrs, options }),
+formatDateTime.extractOptions = ({attrs, options}) => ({
+    ...formatDate.extractOptions({attrs, options}),
     showSeconds: exprToBoolean(options.show_seconds ?? false),
     showTime: exprToBoolean(options.show_time ?? true),
     showDate: exprToBoolean(options.show_date ?? true),
@@ -144,7 +144,7 @@ export function formatFloat(value, options = {}) {
     }
     return formatFloatNumber(value, options);
 }
-formatFloat.extractOptions = ({ attrs, options }) => {
+formatFloat.extractOptions = ({attrs, options}) => {
     // Sadly, digits param was available as an option and an attr.
     // The option version could be removed with some xml refactoring.
     let digits;
@@ -157,7 +157,7 @@ formatFloat.extractOptions = ({ attrs, options }) => {
     const humanReadable = !!options.human_readable;
     const decimals = options.decimals || 0;
     const trailingZeros = !options.hide_trailing_zeros;
-    return { decimals, digits, minDigits, humanReadable, trailingZeros };
+    return {decimals, digits, minDigits, humanReadable, trailingZeros};
 };
 
 /**
@@ -179,8 +179,8 @@ export function formatFloatFactor(value, options = {}) {
     }
     return formatFloatNumber(value * factor, options);
 }
-formatFloatFactor.extractOptions = ({ attrs, options }) => ({
-    ...formatFloat.extractOptions({ attrs, options }),
+formatFloatFactor.extractOptions = ({attrs, options}) => ({
+    ...formatFloat.extractOptions({attrs, options}),
     factor: options.factor,
 });
 
@@ -226,7 +226,7 @@ export function formatFloatTime(value, options = {}) {
     }
     return `${isNegative ? "-" : ""}${hour}:${min}${sec}`;
 }
-formatFloatTime.extractOptions = ({ options }) => ({
+formatFloatTime.extractOptions = ({options}) => ({
     displaySeconds: options.displaySeconds,
 });
 
@@ -256,10 +256,11 @@ export function formatInteger(value, options = {}) {
         return humanNumber(value, options);
     }
     const grouping = options.grouping || l10n.grouping;
-    const thousandsSep = "thousandsSep" in options ? options.thousandsSep : l10n.thousandsSep;
+    const thousandsSep =
+        "thousandsSep" in options ? options.thousandsSep : l10n.thousandsSep;
     return insertThousandsSep(value.toFixed(0), thousandsSep, grouping);
 }
-formatInteger.extractOptions = ({ attrs, options }) => ({
+formatInteger.extractOptions = ({attrs, options}) => ({
     decimals: options.decimals || 0,
     humanReadable: !!options.human_readable,
     isPassword: exprToBoolean(attrs.password),
@@ -350,7 +351,7 @@ export function formatMonetary(value, options = {}) {
     }
     return formatCurrency(value, currencyId, options);
 }
-formatMonetary.extractOptions = ({ options }) => ({
+formatMonetary.extractOptions = ({options}) => ({
     noSymbol: options.no_symbol,
     currencyField: options.currency_field,
     trailingZeros: !options.hide_trailing_zeros,
@@ -367,7 +368,7 @@ formatMonetary.extractOptions = ({ options }) => ({
  */
 export function formatPercentage(value, options = {}) {
     value = value || 0;
-    options = Object.assign({ trailingZeros: false, thousandsSep: "" }, options);
+    options = Object.assign({trailingZeros: false, thousandsSep: ""}, options);
     if (!options.digits && options.field) {
         options.digits = options.field.digits;
     }
@@ -400,7 +401,7 @@ function formatProperties(value, field) {
  */
 export function formatReference(value, options) {
     return formatMany2one(
-        value ? { id: value.resId, display_name: value.displayName } : false,
+        value ? {id: value.resId, display_name: value.displayName} : false,
         options
     );
 }
@@ -412,7 +413,9 @@ export function formatReference(value, options) {
  * @returns {string}
  */
 export function formatMany2oneReference(value) {
-    return value ? formatMany2one({ id: value.resId, display_name: value.displayName }) : "";
+    return value
+        ? formatMany2one({id: value.resId, display_name: value.displayName})
+        : "";
 }
 
 /**
@@ -424,7 +427,8 @@ export function formatMany2oneReference(value) {
  * @returns {string}
  */
 export function formatSelection(value, options = {}) {
-    const selection = options.selection || (options.field && options.field.selection) || [];
+    const selection =
+        options.selection || (options.field && options.field.selection) || [];
     const option = selection.find((option) => option[0] === value);
     return option ? option[1] : "";
 }

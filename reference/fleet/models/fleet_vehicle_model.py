@@ -5,7 +5,6 @@ from datetime import datetime
 from odoo import _, api, fields, models
 from odoo.fields import Domain
 
-
 FUEL_TYPES = [
     ('diesel', 'Diesel'),
     ('gasoline', 'Gasoline'),

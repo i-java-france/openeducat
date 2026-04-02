@@ -1,15 +1,20 @@
-import { Component, onWillStart, onWillUpdateProps } from "@odoo/owl";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { cloneTree, connector, isTree, TRUE_TREE } from "@web/core/tree_editor/condition_tree";
+import {Component, onWillStart, onWillUpdateProps} from "@odoo/owl";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {
+    cloneTree,
+    connector,
+    isTree,
+    TRUE_TREE,
+} from "@web/core/tree_editor/condition_tree";
 import {
     getDefaultValue,
     getValueEditorInfo,
 } from "@web/core/tree_editor/tree_editor_value_editors";
-import { getResModel } from "@web/core/tree_editor/utils";
-import { areEquivalentTrees } from "@web/core/tree_editor/virtual_operators";
-import { useService } from "@web/core/utils/hooks";
-import { shallowEqual } from "@web/core/utils/objects";
+import {getResModel} from "@web/core/tree_editor/utils";
+import {areEquivalentTrees} from "@web/core/tree_editor/virtual_operators";
+import {useService} from "@web/core/utils/hooks";
+import {shallowEqual} from "@web/core/utils/objects";
 
 export class TreeEditor extends Component {
     static template = "web.TreeEditor";
@@ -26,11 +31,11 @@ export class TreeEditor extends Component {
         getPathEditorInfo: Function,
         getOperatorEditorInfo: Function,
         getDefaultOperator: Function,
-        readonly: { type: Boolean, optional: true },
-        slots: { type: Object, optional: true },
-        isDebugMode: { type: Boolean, optional: true },
-        defaultConnector: { type: [{ value: "&" }, { value: "|" }], optional: true },
-        isSubTree: { type: Boolean, optional: true },
+        readonly: {type: Boolean, optional: true},
+        slots: {type: Object, optional: true},
+        isDebugMode: {type: Boolean, optional: true},
+        defaultConnector: {type: [{value: "&"}, {value: "|"}], optional: true},
+        isSubTree: {type: Boolean, optional: true},
     };
     static defaultProps = {
         defaultConnector: "&",
@@ -74,10 +79,11 @@ export class TreeEditor extends Component {
         this.defaultCondition = props.getDefaultCondition(fieldDefs);
 
         if (props.readonly) {
-            this.getConditionDescription = await this.treeProcessor.makeGetConditionDescription(
-                props.resModel,
-                this.tree
-            );
+            this.getConditionDescription =
+                await this.treeProcessor.makeGetConditionDescription(
+                    props.resModel,
+                    this.tree
+                );
         }
     }
 
@@ -86,7 +92,9 @@ export class TreeEditor extends Component {
     }
 
     get isDebugMode() {
-        return this.props.isDebugMode !== undefined ? this.props.isDebugMode : !!this.env.debug;
+        return this.props.isDebugMode !== undefined
+            ? this.props.isDebugMode
+            : !!this.env.debug;
     }
 
     notifyChanges() {
@@ -181,7 +189,10 @@ export class TreeEditor extends Component {
     }
 
     async _updatePath(node, path) {
-        const { fieldDef } = await this.fieldService.loadFieldInfo(this.props.resModel, path);
+        const {fieldDef} = await this.fieldService.loadFieldInfo(
+            this.props.resModel,
+            path
+        );
         node.path = path;
         node.negate = false;
         node.operator = this.props.getDefaultOperator(fieldDef);

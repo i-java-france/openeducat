@@ -1,13 +1,13 @@
-import { Component, useEffect, useState } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
-import { _t } from "@web/core/l10n/translation";
-import { browser } from "@web/core/browser/browser";
-import { useService } from "@web/core/utils/hooks";
-import { downloadFile } from "@web/core/network/download";
-import { Logger } from "@bus/workers/bus_worker_utils";
-import { GloryService } from "@pos_glory_cash/glory_service";
-import { GLORY_STATUS_STRING } from "@pos_glory_cash/utils/constants";
+import {Component, useEffect, useState} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
+import {_t} from "@web/core/l10n/translation";
+import {browser} from "@web/core/browser/browser";
+import {useService} from "@web/core/utils/hooks";
+import {downloadFile} from "@web/core/network/download";
+import {Logger} from "@bus/workers/bus_worker_utils";
+import {GloryService} from "@pos_glory_cash/glory_service";
+import {GLORY_STATUS_STRING} from "@pos_glory_cash/utils/constants";
 
 export class GloryAdminButtons extends Component {
     static template = `pos_glory_cash.GloryAdminButtons`;
@@ -19,12 +19,14 @@ export class GloryAdminButtons extends Component {
         super.setup();
         this.notification = useService("notification");
         this.logger = new Logger("pos_glory_cash");
-        this.gloryService = new GloryService((newStatus) => (this.state.status = newStatus));
-        this.state = useState({ status: "DISCONNECTED", resetInProgress: false });
+        this.gloryService = new GloryService(
+            (newStatus) => (this.state.status = newStatus)
+        );
+        this.state = useState({status: "DISCONNECTED", resetInProgress: false});
 
         useEffect(
             () => {
-                const { glory_websocket_address, glory_username, glory_password } =
+                const {glory_websocket_address, glory_username, glory_password} =
                     this.props.record.data;
                 if (glory_websocket_address) {
                     this.gloryService.connect(
@@ -53,29 +55,35 @@ export class GloryAdminButtons extends Component {
 
     async resetCashMachine() {
         if (["DISCONNECTED", "BAD_CREDENTIALS"].includes(this.state.status)) {
-            this.notification.add(_t("Cash machine is disconnected"), { type: "danger" });
+            this.notification.add(_t("Cash machine is disconnected"), {type: "danger"});
             return;
         }
 
         this.state.resetInProgress = true;
-        const clearNotification = this.notification.add(_t("Resetting cash machine..."), {
-            type: "info",
-            sticky: true,
-        });
+        const clearNotification = this.notification.add(
+            _t("Resetting cash machine..."),
+            {
+                type: "info",
+                sticky: true,
+            }
+        );
 
         await this.gloryService.reset();
 
         this.state.resetInProgress = false;
         clearNotification();
-        this.notification.add(_t("Reset complete"), { type: "info" });
+        this.notification.add(_t("Reset complete"), {type: "info"});
     }
 
     openAdminPage() {
         const gloryIp = this.props.record.data.glory_websocket_address;
         if (!gloryIp) {
-            this.notification.add("Please configure the IP address before opening the admin page", {
-                type: "warning",
-            });
+            this.notification.add(
+                "Please configure the IP address before opening the admin page",
+                {
+                    type: "warning",
+                }
+            );
             return;
         }
         const protocol = window.location.protocol;
@@ -89,4 +97,6 @@ export class GloryAdminButtons extends Component {
 export const GloryAdminButtonsWidget = {
     component: GloryAdminButtons,
 };
-registry.category("view_widgets").add("pos_glory_cash_admin_buttons", GloryAdminButtonsWidget);
+registry
+    .category("view_widgets")
+    .add("pos_glory_cash_admin_buttons", GloryAdminButtonsWidget);

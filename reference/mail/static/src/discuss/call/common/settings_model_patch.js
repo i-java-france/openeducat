@@ -1,6 +1,6 @@
-import { Settings } from "@mail/core/common/settings_model";
+import {Settings} from "@mail/core/common/settings_model";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {import("models").Settings} */
 const SettingsPatch = {

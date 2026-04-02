@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
-import { Component } from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
+import {Component} from "@odoo/owl";
 
 class IAPActionButtonsWidget extends Component {
     static template = "iap.ActionButtonsWidget";
@@ -21,7 +21,9 @@ class IAPActionButtonsWidget extends Component {
     }
 
     async onManageServiceLinkClicked() {
-        const account_id = await this.orm.silent.call("iap.account", "get_account_id", [this.props.serviceName]);
+        const account_id = await this.orm.silent.call("iap.account", "get_account_id", [
+            this.props.serviceName,
+        ]);
         this.action.doAction({
             type: "ir.actions.act_window",
             res_model: "iap.account",
@@ -33,7 +35,7 @@ class IAPActionButtonsWidget extends Component {
 
 export const iapActionButtonsWidget = {
     component: IAPActionButtonsWidget,
-    extractProps: ({ attrs }) => {
+    extractProps: ({attrs}) => {
         return {
             serviceName: attrs.service_name,
             showServiceButtons: !Boolean(attrs.hide_service),

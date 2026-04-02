@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
 
-from odoo import api, Command, fields, models, SUPERUSER_ID, _
-from odoo.fields import Domain
-from odoo.tools.float_utils import float_compare, float_repr
+from odoo import SUPERUSER_ID, Command, _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.fields import Domain
+from odoo.tools.float_utils import float_repr
 from odoo.tools.misc import OrderedSet
 
 
@@ -95,7 +94,7 @@ class PurchaseOrder(models.Model):
         if vals.get('order_line') and self.state == 'purchase':
             for order in self:
                 pre_order_line_qty = {order_line: order_line.product_qty for order_line in order.mapped('order_line')}
-        res = super(PurchaseOrder, self).write(vals)
+        res = super().write(vals)
         if vals.get('order_line') and self.state == 'purchase':
             for order in self:
                 to_log = {}
@@ -175,7 +174,7 @@ class PurchaseOrder(models.Model):
         return sum({"CREATE": 1, "UNLINK": -1}.get(line[0].name, 0) for line in po_lines_commands)
 
     def button_approve(self, force=False):
-        result = super(PurchaseOrder, self).button_approve(force=force)
+        result = super().button_approve(force=force)
         self._create_picking()
         return result
 

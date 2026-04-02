@@ -1,19 +1,20 @@
-import { testEditor } from "../_helpers/editor";
-import { test } from "@odoo/hoot";
+import {testEditor} from "../_helpers/editor";
+import {test} from "@odoo/hoot";
 import {
     setColor,
     splitBlock,
     toggleOrderedList,
     toggleUnorderedList,
 } from "../_helpers/user_actions";
-import { execCommand } from "../_helpers/userCommands";
-import { unformat } from "../_helpers/format";
+import {execCommand} from "../_helpers/userCommands";
+import {unformat} from "../_helpers/format";
 
 test("should apply color to completely selected list item", async () => {
     await testEditor({
         contentBefore: "<ol><li>[abc]</li><li>def</li></ol>",
         stepFunction: setColor("rgb(255, 0, 0)", "color"),
-        contentAfter: '<ol><li style="color: rgb(255, 0, 0);">[abc]</li><li>def</li></ol>',
+        contentAfter:
+            '<ol><li style="color: rgb(255, 0, 0);">[abc]</li><li>def</li></ol>',
     });
 });
 
@@ -72,7 +73,8 @@ test("should apply color to completely selected list items and paragraph tag", a
 
 test("should carry list item color to new list item", async () => {
     await testEditor({
-        contentBefore: '<ol><li>abc</li><li style="color: rgb(255, 0, 0);">def[]</li></ol>',
+        contentBefore:
+            '<ol><li>abc</li><li style="color: rgb(255, 0, 0);">def[]</li></ol>',
         stepFunction: splitBlock,
         contentAfter:
             '<ol><li>abc</li><li style="color: rgb(255, 0, 0);">def</li><li style="color: rgb(255, 0, 0);">[]<br></li></ol>',
@@ -81,7 +83,8 @@ test("should carry list item color to new list item", async () => {
 
 test("should carry list item color to new list item (2)", async () => {
     await testEditor({
-        contentBefore: '<ul><li style="color: rgb(255, 0, 0);">[]abc</li><li>def</li></ul>',
+        contentBefore:
+            '<ul><li style="color: rgb(255, 0, 0);">[]abc</li><li>def</li></ul>',
         stepFunction: splitBlock,
         contentAfter:
             '<ul><li style="color: rgb(255, 0, 0);"><br></li><li style="color: rgb(255, 0, 0);">[]abc</li><li>def</li></ul>',
@@ -118,7 +121,8 @@ test("should carry color of paragraph to list item (3)", async () => {
 
 test("should carry color of list item to paragraph", async () => {
     await testEditor({
-        contentBefore: '<ol><li style="color: rgb(255, 0, 0);">[]abc</li><li>def</li></ol>',
+        contentBefore:
+            '<ol><li style="color: rgb(255, 0, 0);">[]abc</li><li>def</li></ol>',
         stepFunction: toggleOrderedList,
         contentAfter:
             '<p><font style="color: rgb(255, 0, 0);">[]abc</font></p><ol><li>def</li></ol>',
@@ -159,7 +163,8 @@ test("should carry class-defined color of list item to paragraph", async () => {
     await testEditor({
         contentBefore: '<ol><li class="text-o-color-1">[]abc</li><li>def</li></ol>',
         stepFunction: toggleOrderedList,
-        contentAfter: '<p><font class="text-o-color-1">[]abc</font></p><ol><li>def</li></ol>',
+        contentAfter:
+            '<p><font class="text-o-color-1">[]abc</font></p><ol><li>def</li></ol>',
     });
 });
 
@@ -181,7 +186,8 @@ test("remove color from list item", async () => {
         contentBefore:
             '<ul><li style="color: rgb(255, 0, 0);">abc</li><li style="color: rgb(255, 0, 0);">[ghi]</li></ul>',
         stepFunction: (editor) => execCommand(editor, "removeFormat"),
-        contentAfter: '<ul><li style="color: rgb(255, 0, 0);">abc</li><li>[ghi]</li></ul>',
+        contentAfter:
+            '<ul><li style="color: rgb(255, 0, 0);">abc</li><li>[ghi]</li></ul>',
     });
 });
 

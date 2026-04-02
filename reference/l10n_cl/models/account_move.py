@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import re
 
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-from odoo import models, fields, api, _
-from odoo.tools.misc import formatLang
 from odoo.tools.float_utils import float_repr, float_round
+from odoo.tools.misc import formatLang
 
 SII_VAT = '60805000-0'
 
@@ -131,7 +130,7 @@ class AccountMove(models.Model):
         return super()._get_starting_sequence()
 
     def _get_last_sequence_domain(self, relaxed=False):
-        where_string, param = super(AccountMove, self)._get_last_sequence_domain(relaxed)
+        where_string, param = super()._get_last_sequence_domain(relaxed)
         if self.company_id.account_fiscal_country_id.code == "CL" and self.l10n_latam_use_documents:
             where_string = where_string.replace('journal_id = %(journal_id)s AND', '')
             where_string += ' AND l10n_latam_document_type_id = %(l10n_latam_document_type_id)s AND ' \

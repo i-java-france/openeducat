@@ -1,5 +1,5 @@
-import { Component } from "@odoo/owl";
-import { AnimatedNumber } from "./animated_number";
+import {Component} from "@odoo/owl";
+import {AnimatedNumber} from "./animated_number";
 
 export class ColumnProgress extends Component {
     static components = {
@@ -7,10 +7,10 @@ export class ColumnProgress extends Component {
     };
     static template = "web.ColumnProgress";
     static props = {
-        aggregate: { type: Object },
-        group: { type: Object },
-        onBarClicked: { type: Function, optional: true },
-        progressBar: { type: Object },
+        aggregate: {type: Object},
+        group: {type: Object},
+        onBarClicked: {type: Function, optional: true},
+        progressBar: {type: Object},
     };
     static defaultProps = {
         onBarClicked: () => {},

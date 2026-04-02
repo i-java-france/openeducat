@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { queryAllTexts } from "@odoo/hoot-dom";
-import { animationFrame, runAllTimers } from "@odoo/hoot-mock";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {queryAllTexts} from "@odoo/hoot-dom";
+import {animationFrame, runAllTimers} from "@odoo/hoot-mock";
 import {
     contains,
     mountWithCleanup,
@@ -8,14 +8,14 @@ import {
     serverState,
 } from "@web/../tests/web_test_helpers";
 
-import { cookie } from "@web/core/browser/cookie";
-import { user } from "@web/core/user";
-import { MobileSwitchCompanyMenu } from "@web/webclient/burger_menu/mobile_switch_company_menu/mobile_switch_company_menu";
+import {cookie} from "@web/core/browser/cookie";
+import {user} from "@web/core/user";
+import {MobileSwitchCompanyMenu} from "@web/webclient/burger_menu/mobile_switch_company_menu/mobile_switch_company_menu";
 
 const ORIGINAL_TOGGLE_DELAY = MobileSwitchCompanyMenu.toggleDelay;
 
-async function createSwitchCompanyMenu(options = { toggleDelay: 0 }) {
-    patchWithCleanup(MobileSwitchCompanyMenu, { toggleDelay: options.toggleDelay });
+async function createSwitchCompanyMenu(options = {toggleDelay: 0}) {
+    patchWithCleanup(MobileSwitchCompanyMenu, {toggleDelay: options.toggleDelay});
     await mountWithCleanup(MobileSwitchCompanyMenu);
 }
 
@@ -28,19 +28,20 @@ function patchUserActiveCompanies(cids) {
 
 describe.current.tags("mobile");
 
-const clickConfirm = () => contains(".o_switch_company_menu_buttons button:first").click();
+const clickConfirm = () =>
+    contains(".o_switch_company_menu_buttons button:first").click();
 
 /**
- * @param {number} index
+ * @param {Number} index
  */
 const toggleCompany = async (index) =>
     contains(`[data-company-id] [role=menuitemcheckbox]:eq(${index})`).click();
 
 beforeEach(() => {
     serverState.companies = [
-        { id: 1, name: "Hermit", parent_id: false, child_ids: [] },
-        { id: 2, name: "Herman's", parent_id: false, child_ids: [] },
-        { id: 3, name: "Heroes TM", parent_id: false, child_ids: [] },
+        {id: 1, name: "Hermit", parent_id: false, child_ids: []},
+        {id: 2, name: "Herman's", parent_id: false, child_ids: []},
+        {id: 3, name: "Heroes TM", parent_id: false, child_ids: []},
     ];
 });
 
@@ -63,7 +64,9 @@ test("basic rendering", async () => {
     expect(".o_switch_company_item i:eq(1)").toHaveClass("fa-square-o");
     expect(".o_switch_company_item i:eq(2)").toHaveClass("fa-square-o");
 
-    expect(".o_burger_menu_companies").toHaveText("Companies\nHermit\nHerman's\nHeroes TM");
+    expect(".o_burger_menu_companies").toHaveText(
+        "Companies\nHermit\nHerman's\nHeroes TM"
+    );
 });
 
 test("companies can be toggled: toggle a second company", async () => {
@@ -93,7 +96,7 @@ test("companies can be toggled: toggle a second company", async () => {
 });
 
 test("can toggle multiple companies at once", async () => {
-    await createSwitchCompanyMenu({ toggleDelay: ORIGINAL_TOGGLE_DELAY });
+    await createSwitchCompanyMenu({toggleDelay: ORIGINAL_TOGGLE_DELAY});
     /**
      *   [x] **Company 1**
      *   [ ] Company 2
@@ -223,7 +226,7 @@ test("multi company mode: log into an already selected company", async () => {
 });
 
 test("companies can be logged in even if some toggled within delay", async () => {
-    await createSwitchCompanyMenu({ toggleDelay: ORIGINAL_TOGGLE_DELAY });
+    await createSwitchCompanyMenu({toggleDelay: ORIGINAL_TOGGLE_DELAY});
 
     /**
      *   [x] **Company 1**
@@ -264,16 +267,22 @@ test("No collapse and no search input when less that 10 companies", async () => 
 
 test("Show search input when more that 10 companies & search filters items but ignore case and spaces", async () => {
     serverState.companies = [
-        { id: 3, name: "Hermit", sequence: 1, parent_id: false, child_ids: [] },
-        { id: 2, name: "Herman's", sequence: 2, parent_id: false, child_ids: [] },
-        { id: 1, name: "Heroes TM", sequence: 3, parent_id: false, child_ids: [4, 5] },
-        { id: 4, name: "Hercules", sequence: 4, parent_id: 1, child_ids: [] },
-        { id: 5, name: "Hulk", sequence: 5, parent_id: 1, child_ids: [] },
-        { id: 6, name: "Random Company a", sequence: 6, parent_id: false, child_ids: [7, 8] },
-        { id: 7, name: "Random Company aa", sequence: 7, parent_id: 6, child_ids: [] },
-        { id: 8, name: "Random Company ab", sequence: 8, parent_id: 6, child_ids: [] },
-        { id: 9, name: "Random d", sequence: 9, parent_id: false, child_ids: [] },
-        { id: 10, name: "Random e", sequence: 10, parent_id: false, child_ids: [] },
+        {id: 3, name: "Hermit", sequence: 1, parent_id: false, child_ids: []},
+        {id: 2, name: "Herman's", sequence: 2, parent_id: false, child_ids: []},
+        {id: 1, name: "Heroes TM", sequence: 3, parent_id: false, child_ids: [4, 5]},
+        {id: 4, name: "Hercules", sequence: 4, parent_id: 1, child_ids: []},
+        {id: 5, name: "Hulk", sequence: 5, parent_id: 1, child_ids: []},
+        {
+            id: 6,
+            name: "Random Company a",
+            sequence: 6,
+            parent_id: false,
+            child_ids: [7, 8],
+        },
+        {id: 7, name: "Random Company aa", sequence: 7, parent_id: 6, child_ids: []},
+        {id: 8, name: "Random Company ab", sequence: 8, parent_id: 6, child_ids: []},
+        {id: 9, name: "Random d", sequence: 9, parent_id: false, child_ids: []},
+        {id: 10, name: "Random e", sequence: 10, parent_id: false, child_ids: []},
     ];
     await createSwitchCompanyMenu();
     await contains(".o_burger_menu_companies > div").click();

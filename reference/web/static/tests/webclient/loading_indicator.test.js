@@ -1,5 +1,5 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { advanceTime, animationFrame, runAllTimers } from "@odoo/hoot-mock";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {advanceTime, animationFrame, runAllTimers} from "@odoo/hoot-mock";
 import {
     getService,
     mountWithCleanup,
@@ -7,18 +7,18 @@ import {
     serverState,
 } from "@web/../tests/web_test_helpers";
 
-import { rpcBus } from "@web/core/network/rpc";
-import { config as transitionConfig } from "@web/core/transition";
-import { LoadingIndicator } from "@web/webclient/loading_indicator/loading_indicator";
+import {rpcBus} from "@web/core/network/rpc";
+import {config as transitionConfig} from "@web/core/transition";
+import {LoadingIndicator} from "@web/webclient/loading_indicator/loading_indicator";
 
-const payload = (id) => ({ data: { id, params: { model: "", method: "" } }, settings: {} });
+const payload = (id) => ({data: {id, params: {model: "", method: ""}}, settings: {}});
 
 beforeEach(() => {
-    patchWithCleanup(transitionConfig, { disabled: true });
+    patchWithCleanup(transitionConfig, {disabled: true});
 });
 
 test("displays the loading indicator in non debug mode", async () => {
-    await mountWithCleanup(LoadingIndicator, { noMainContainer: true });
+    await mountWithCleanup(LoadingIndicator, {noMainContainer: true});
     expect(".o_loading_indicator").toHaveCount(0, {
         message: "the loading indicator should not be displayed",
     });
@@ -41,7 +41,7 @@ test("displays the loading indicator in non debug mode", async () => {
 
 test("displays the loading indicator for one rpc in debug mode", async () => {
     serverState.debug = "1";
-    await mountWithCleanup(LoadingIndicator, { noMainContainer: true });
+    await mountWithCleanup(LoadingIndicator, {noMainContainer: true});
     expect(".o_loading_indicator").toHaveCount(0, {
         message: "the loading indicator should not be displayed",
     });
@@ -64,7 +64,7 @@ test("displays the loading indicator for one rpc in debug mode", async () => {
 
 test("displays the loading indicator for multi rpc in debug mode", async () => {
     serverState.debug = "1";
-    await mountWithCleanup(LoadingIndicator, { noMainContainer: true });
+    await mountWithCleanup(LoadingIndicator, {noMainContainer: true});
     expect(".o_loading_indicator").toHaveCount(0, {
         message: "the loading indicator should not be displayed",
     });
@@ -112,7 +112,7 @@ test("displays the loading indicator for multi rpc in debug mode", async () => {
 });
 
 test("loading indicator is not displayed immediately", async () => {
-    await mountWithCleanup(LoadingIndicator, { noMainContainer: true });
+    await mountWithCleanup(LoadingIndicator, {noMainContainer: true});
     const ui = getService("ui");
     ui.bus.addEventListener("BLOCK", () => {
         expect.step("block");

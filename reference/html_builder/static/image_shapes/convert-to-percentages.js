@@ -58,7 +58,7 @@ submitButton.addEventListener("click", async (ev) => {
         // We add the SVG to the body so we can take measurements of its
         // original size
         document.body.appendChild(svg.documentElement);
-        const { x, y, width, height } = svgDocumentElement.getBBox();
+        const {x, y, width, height} = svgDocumentElement.getBBox();
         const scalers = toUserSpace(x, y, width, height);
 
         // Converts the clipPath in values between 0 and 1 so we can use
@@ -67,7 +67,11 @@ submitButton.addEventListener("click", async (ev) => {
         const commands = path
             .getAttribute("d")
             .match(/[a-z][^a-z]*/gi)
-            .map((c) => c.split(/[, ]|(?=-)|(?<=[a-z])(?=[0-9])/i).filter((part) => !!part.length));
+            .map((c) =>
+                c
+                    .split(/[, ]|(?=-)|(?<=[a-z])(?=[0-9])/i)
+                    .filter((part) => Boolean(part.length))
+            );
         const relSpaceCommands = commands.map(([command, ...nums]) => {
             const axes = commandAxes[command];
             const relSpaceNums = nums.map((n, i) => {
@@ -130,8 +134,15 @@ submitButton.addEventListener("click", async (ev) => {
 
         defsEl.appendChild(path);
         // Setting the clip path for use and for preview
-        const useClipPathEl = document.createElementNS("http://www.w3.org/2000/svg", "use");
-        useClipPathEl.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#filterPath");
+        const useClipPathEl = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "use"
+        );
+        useClipPathEl.setAttributeNS(
+            "http://www.w3.org/1999/xlink",
+            "href",
+            "#filterPath"
+        );
         useClipPathEl.setAttribute("fill", "none");
         clipPathEl.appendChild(useClipPathEl);
 
@@ -140,7 +151,11 @@ submitButton.addEventListener("click", async (ev) => {
         svgPreviewEl.setAttribute("width", "600");
         svgPreviewEl.setAttribute("height", "600");
         svgPreviewEl.setAttribute("id", "preview");
-        svgPreviewEl.setAttributeNS("http://www.w3.org/2000/svg", "preserveAspectRatio", "none");
+        svgPreviewEl.setAttributeNS(
+            "http://www.w3.org/2000/svg",
+            "preserveAspectRatio",
+            "none"
+        );
         const previewUseEl = useClipPathEl.cloneNode(true);
         previewUseEl.setAttribute("fill", "darkgrey");
         svgPreviewEl.appendChild(previewUseEl);
@@ -154,9 +169,13 @@ submitButton.addEventListener("click", async (ev) => {
         svgDocumentElement.setAttribute("width", "600");
         svgDocumentElement.setAttribute("height", "600");
 
-        const outFile = new File([svgDocumentElement.outerHTML], filePicker.files[0].name, {
-            type: "image/svg+xml",
-        });
+        const outFile = new File(
+            [svgDocumentElement.outerHTML],
+            filePicker.files[0].name,
+            {
+                type: "image/svg+xml",
+            }
+        );
         const outFileReader = new FileReader();
         const outReaderPromise = new Promise((resolve, reject) => {
             outFileReader.addEventListener("load", () => resolve(outFileReader.result));

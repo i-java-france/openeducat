@@ -89,7 +89,9 @@ export function getTableHtml(matrix, containerWidth) {
                         .map((col, iCol) =>
                             getTdHtml(
                                 col[0],
-                                typeof col[2] === "string" ? col[2] : `(${iRow}, ${iCol})`,
+                                typeof col[2] === "string"
+                                    ? col[2]
+                                    : `(${iRow}, ${iCol})`,
                                 containerWidth
                             )
                         )

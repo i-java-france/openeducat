@@ -1,8 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import http
-from odoo.addons.pos_self_order.controllers.orders import PosSelfOrderController
 from werkzeug.exceptions import NotFound
+
+from odoo import http
+
+from odoo.addons.pos_self_order.controllers.orders import PosSelfOrderController
 
 
 class PosSelfOrderPineLabsController(PosSelfOrderController):

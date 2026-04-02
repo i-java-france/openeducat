@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import uuid
-from typing import Dict, Callable, List, Optional
 
 from odoo import api, fields, models
 

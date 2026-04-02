@@ -1,10 +1,10 @@
-import { before, WIDTH } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { fonts } from "@html_editor/utils/fonts";
-import { registry } from "@web/core/registry";
-import { withSequence } from "@html_editor/utils/resource";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {before, WIDTH} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {fonts} from "@html_editor/utils/fonts";
+import {registry} from "@web/core/registry";
+import {withSequence} from "@html_editor/utils/resource";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 class AlertOptionPlugin extends Plugin {
     static id = "alertOption";
@@ -26,7 +26,7 @@ export class AlertOption extends BaseOptionComponent {
 
 export class AlertIconAction extends BuilderAction {
     static id = "alertIcon";
-    apply({ editingElement, params: { mainParam: className } }) {
+    apply({editingElement, params: {mainParam: className}}) {
         const icon = editingElement.querySelector(".s_alert_icon");
         if (!icon) {
             return;
@@ -36,14 +36,14 @@ export class AlertIconAction extends BuilderAction {
         icon.classList.remove(...allFaIcons);
         icon.classList.add(className);
     }
-    clean({ editingElement, params: { mainParam: className } }) {
+    clean({editingElement, params: {mainParam: className}}) {
         const icon = editingElement.querySelector(".s_alert_icon");
         if (!icon) {
             return;
         }
         icon.classList.remove(className);
     }
-    isApplied({ editingElement, params: { mainParam: className } }) {
+    isApplied({editingElement, params: {mainParam: className}}) {
         const iconEl = editingElement.querySelector(".s_alert_icon");
         if (!iconEl) {
             return;

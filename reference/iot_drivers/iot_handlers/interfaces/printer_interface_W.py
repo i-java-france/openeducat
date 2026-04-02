@@ -2,6 +2,7 @@
 
 import logging
 from threading import Lock
+
 import win32print
 
 from odoo.addons.iot_drivers.interface import Interface

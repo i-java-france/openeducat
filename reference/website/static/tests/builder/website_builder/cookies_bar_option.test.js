@@ -1,8 +1,8 @@
-import { setSelection } from "@html_editor/../tests/_helpers/selection";
-import { insertText } from "@html_editor/../tests/_helpers/user_actions";
-import { describe, expect, test } from "@odoo/hoot";
-import { queryOne, waitFor } from "@odoo/hoot-dom";
-import { contains } from "@web/../tests/web_test_helpers";
+import {setSelection} from "@html_editor/../tests/_helpers/selection";
+import {insertText} from "@html_editor/../tests/_helpers/user_actions";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryOne, waitFor} from "@odoo/hoot-dom";
+import {contains} from "@web/../tests/web_test_helpers";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
@@ -75,7 +75,7 @@ describe("Cookies bar popup options", () => {
             }
         }
 
-        const { getEditor } = await setupWebsiteBuilder(cookiesBarTemplate, {
+        const {getEditor} = await setupWebsiteBuilder(cookiesBarTemplate, {
             loadIframeBundles: true,
             loadAssetsFrontendJS: true,
         });

@@ -76,7 +76,7 @@ export function closestScrollableY(el) {
  * @param {number} [options.offset] applies a vertical offset
  */
 export function scrollTo(element, options = {}) {
-    const { behavior = "auto", isAnchor = false, offset = 0 } = options;
+    const {behavior = "auto", isAnchor = false, offset = 0} = options;
     const scrollable = closestScrollableY(options.scrollable || element.parentElement);
     if (!scrollable) {
         return;
@@ -93,7 +93,7 @@ export function scrollTo(element, options = {}) {
         // The scroll place the element at the bottom border of the scrollable
         scrollPromises.push(
             new Promise((resolve) => {
-                scrollable.addEventListener("scrollend", () => resolve(), { once: true });
+                scrollable.addEventListener("scrollend", () => resolve(), {once: true});
             })
         );
 
@@ -110,7 +110,7 @@ export function scrollTo(element, options = {}) {
         // The scroll place the element at the top of the scrollable
         scrollPromises.push(
             new Promise((resolve) => {
-                scrollable.addEventListener("scrollend", () => resolve(), { once: true });
+                scrollable.addEventListener("scrollend", () => resolve(), {once: true});
             })
         );
 
@@ -162,8 +162,12 @@ export function compensateScrollbar(
     const style = window.getComputedStyle(el);
     // Round up to the nearest integer to be as close as possible to
     // the correct value in case of browser zoom.
-    const borderLeftWidth = Math.ceil(parseFloat(style.borderLeftWidth.replace("px", "")));
-    const borderRightWidth = Math.ceil(parseFloat(style.borderRightWidth.replace("px", "")));
+    const borderLeftWidth = Math.ceil(
+        parseFloat(style.borderLeftWidth.replace("px", ""))
+    );
+    const borderRightWidth = Math.ceil(
+        parseFloat(style.borderRightWidth.replace("px", ""))
+    );
     const bordersWidth = borderLeftWidth + borderRightWidth;
     const newValue =
         parseInt(style[cssProperty]) +
@@ -195,5 +199,7 @@ export function getScrollingElement(document = window.document) {
 
 export function getScrollingTarget(scrollingElement = window.document) {
     const document = scrollingElement.ownerDocument;
-    return scrollingElement === document.scrollingElement ? document.defaultView : scrollingElement;
+    return scrollingElement === document.scrollingElement
+        ? document.defaultView
+        : scrollingElement;
 }

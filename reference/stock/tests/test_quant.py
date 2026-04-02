@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from ast import literal_eval
 from contextlib import closing
@@ -6,10 +5,11 @@ from datetime import datetime, timedelta
 from unittest.mock import patch
 
 from odoo import Command, fields
-from odoo.addons.mail.tests.common import mail_new_test_user
-from odoo.addons.stock.tests.common import TestStockCommon
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tests import Form
+
+from odoo.addons.mail.tests.common import mail_new_test_user
+from odoo.addons.stock.tests.common import TestStockCommon
 
 
 class TestStockQuant(TestStockCommon):

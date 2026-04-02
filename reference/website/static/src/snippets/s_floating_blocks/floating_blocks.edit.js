@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { FloatingBlocks } from "./floating_blocks";
+import {registry} from "@web/core/registry";
+import {FloatingBlocks} from "./floating_blocks";
 
 const FloatingBlocksEdit = (I) =>
     class extends I {
@@ -38,8 +38,11 @@ const FloatingBlocksEdit = (I) =>
             super.start();
         }
         onAddCard() {
-            const applySpec = { editingElement: this.el };
-            this.services["website_edit"].applyAction("addFloatingBlockCard", applySpec);
+            const applySpec = {editingElement: this.el};
+            this.services["website_edit"].applyAction(
+                "addFloatingBlockCard",
+                applySpec
+            );
         }
     };
 

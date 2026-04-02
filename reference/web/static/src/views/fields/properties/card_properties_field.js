@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { propertiesField, PropertiesField } from "./properties_field";
+import {registry} from "@web/core/registry";
+import {propertiesField, PropertiesField} from "./properties_field";
 
 export class CardPropertiesField extends PropertiesField {
     static template = "web.CardPropertiesField";

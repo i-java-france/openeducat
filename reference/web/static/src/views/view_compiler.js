@@ -5,7 +5,7 @@ import {
     createTextNode,
     getTag,
 } from "@web/core/utils/xml";
-import { toStringExpression, BUTTON_CLICK_PARAMS } from "./utils";
+import {toStringExpression, BUTTON_CLICK_PARAMS} from "./utils";
 
 /**
  * @typedef Compiler
@@ -15,7 +15,7 @@ import { toStringExpression, BUTTON_CLICK_PARAMS } from "./utils";
  * @property {boolean} [doNotCopyAttributes]
  */
 
-import { xml } from "@odoo/owl";
+import {xml} from "@odoo/owl";
 
 const BUTTON_STRING_PROPS = ["string", "size", "title", "icon", "id", "disabled"];
 const INTERP_REGEXP = /(\{\{|#\{)(.*?)(\}{1,2})/g;
@@ -74,7 +74,7 @@ function appendToStringifiedObject(originalTattr, string) {
  */
 export function assignOwlDirectives(target, ...sources) {
     for (const source of sources) {
-        for (const { name, value } of source.attributes) {
+        for (const {name, value} of source.attributes) {
             if (name.startsWith("t-attf-")) {
                 const propName = name.slice(7);
                 const interpolatedExpression = toInterpolatedStringExpression(value);
@@ -100,7 +100,10 @@ export function copyAttributes(el, compiled) {
     if (classes) {
         if (isComponent) {
             const cls = compiled.className;
-            compiled.setAttribute("class", cls ? `'${classes} ' + ${cls}` : `'${classes}'`);
+            compiled.setAttribute(
+                "class",
+                cls ? `'${classes} ' + ${cls}` : `'${classes}'`
+            );
         } else {
             compiled.classList.add(...classes.split(/\s+/).filter(Boolean));
         }
@@ -183,7 +186,8 @@ export function isTextNode(node) {
  */
 export function makeSeparator(title) {
     const separator = createElement("div");
-    separator.className = "o_horizontal_separator mt-4 mb-3 text-uppercase fw-bolder small";
+    separator.className =
+        "o_horizontal_separator mt-4 mb-3 text-uppercase fw-bolder small";
     separator.textContent = title;
     return separator;
 }
@@ -195,7 +199,8 @@ export class ViewCompiler {
         /** @type {Compiler[]} */
         this.compilers = [
             {
-                selector: "a[type]:not([data-bs-toggle]),a[data-type]:not([data-bs-toggle])",
+                selector:
+                    "a[type]:not([data-bs-toggle]),a[data-type]:not([data-bs-toggle])",
                 fn: this.compileButton,
             },
             {
@@ -203,15 +208,14 @@ export class ViewCompiler {
                 fn: this.compileButton,
                 doNotCopyAttributes: true,
             },
-            { selector: "field", fn: this.compileField },
-            { selector: "widget", fn: this.compileWidget },
+            {selector: "field", fn: this.compileField},
+            {selector: "widget", fn: this.compileWidget},
         ];
         this.templates = templates;
-        this.ctx = { readonly: "__comp__.props.readonly" };
+        this.ctx = {readonly: "__comp__.props.readonly"};
 
-        this.owlDirectiveRegexesWhitelist = this.constructor.OWL_DIRECTIVE_WHITELIST.map(
-            (d) => new RegExp(d)
-        );
+        this.owlDirectiveRegexesWhitelist =
+            this.constructor.OWL_DIRECTIVE_WHITELIST.map((d) => new RegExp(d));
         this.setup();
     }
 
@@ -275,7 +279,10 @@ export class ViewCompiler {
         let invisible;
         if (evalInvisible) {
             invisible = getModifier(node, "invisible");
-            if (!params.compileInvisibleNodes && (invisible === "True" || invisible === "1")) {
+            if (
+                !params.compileInvisibleNodes &&
+                (invisible === "True" || invisible === "1")
+            ) {
                 return;
             }
         }
@@ -331,7 +338,7 @@ export class ViewCompiler {
 
         const clickParams = {};
         const attrs = {};
-        for (const { name, value } of el.attributes) {
+        for (const {name, value} of el.attributes) {
             if (BUTTON_CLICK_PARAMS.includes(name)) {
                 clickParams[name] = value;
             } else if (BUTTON_STRING_PROPS.includes(name)) {
@@ -376,7 +383,10 @@ export class ViewCompiler {
         field.setAttribute("id", `'${fieldId}'`);
         field.setAttribute("name", `'${fieldName}'`);
         field.setAttribute("record", recordExpr);
-        field.setAttribute("fieldInfo", `__comp__.props.archInfo.fieldNodes['${fieldId}']`);
+        field.setAttribute(
+            "fieldInfo",
+            `__comp__.props.archInfo.fieldNodes['${fieldId}']`
+        );
         field.setAttribute("readonly", `__comp__.props.readonly`);
 
         if (el.hasAttribute("widget")) {
@@ -416,7 +426,7 @@ export class ViewCompiler {
      */
     compileWidget(el) {
         const widgetId = el.getAttribute("widget_id");
-        const props = { record: "__comp__.props.record" };
+        const props = {record: "__comp__.props.record"};
         if (el.hasAttribute("name")) {
             props.name = `'${el.getAttribute("name")}'`;
         }

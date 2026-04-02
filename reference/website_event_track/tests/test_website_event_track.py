@@ -1,6 +1,7 @@
+from odoo.tests.common import HttpCase, freeze_time, tagged
+
 from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.addons.website_event.tests.common import TestEventOnlineCommon
-from odoo.tests.common import HttpCase, freeze_time, tagged
 
 
 @tagged('post_install', '-at_install')

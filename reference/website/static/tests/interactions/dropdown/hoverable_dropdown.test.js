@@ -1,7 +1,10 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { hover, leave } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {hover, leave} from "@odoo/hoot-dom";
 
 setupInteractionWhiteList("website.hoverable_dropdown");
 
@@ -21,7 +24,7 @@ const dropdownTemplate = `
 `;
 
 test("hoverable_dropdown is started when there is an element header.o_hoverable_dropdown", async () => {
-    const { core } = await startInteractions(dropdownTemplate);
+    const {core} = await startInteractions(dropdownTemplate);
     expect(core.interactions).toHaveLength(1);
 });
 

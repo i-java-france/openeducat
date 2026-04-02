@@ -1,23 +1,28 @@
-import { useService, useAutofocus } from "@web/core/utils/hooks";
-import { useNestedSortable } from "@web/core/utils/nested_sortable";
+import {useService, useAutofocus} from "@web/core/utils/hooks";
+import {useNestedSortable} from "@web/core/utils/nested_sortable";
 import wUtils from "@website/js/utils";
-import { WebsiteDialog } from "./dialog";
-import { Component, useState, useEffect, onWillStart, useRef, reactive } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { isEmail } from "@web/core/utils/strings";
-import { AddPageDialog } from "@website/components/dialog/add_page_dialog";
-import { isAbsoluteURLInCurrentDomain } from "@html_editor/utils/url";
-import { useDebounced } from "@web/core/utils/timing";
-import { KeepLast } from "@web/core/utils/concurrency";
-import { effect } from "@web/core/utils/reactive";
+import {WebsiteDialog} from "./dialog";
+import {Component, useState, useEffect, onWillStart, useRef, reactive} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {isEmail} from "@web/core/utils/strings";
+import {AddPageDialog} from "@website/components/dialog/add_page_dialog";
+import {isAbsoluteURLInCurrentDomain} from "@html_editor/utils/url";
+import {useDebounced} from "@web/core/utils/timing";
+import {KeepLast} from "@web/core/utils/concurrency";
+import {effect} from "@web/core/utils/reactive";
 
 function urlToCheck(url) {
     let relativeUrl = false;
 
     // Do not check if the page exists if the input is empty, an anchor, an
     // email, or a phone number.
-    if (!url.trim() || url.startsWith("#") || isEmail(url) || /^(mailto:|tel:)/.test(url)) {
+    if (
+        !url.trim() ||
+        url.startsWith("#") ||
+        isEmail(url) ||
+        /^(mailto:|tel:)/.test(url)
+    ) {
         return false;
     }
 
@@ -38,7 +43,9 @@ function urlToCheck(url) {
     relativeUrl = relativeUrl.startsWith("/") ? relativeUrl : "/" + relativeUrl;
     // Remove trailing slash if it's not the root "/".
     relativeUrl =
-        relativeUrl.endsWith("/") && relativeUrl !== "/" ? relativeUrl.slice(0, -1) : relativeUrl;
+        relativeUrl.endsWith("/") && relativeUrl !== "/"
+            ? relativeUrl.slice(0, -1)
+            : relativeUrl;
     return relativeUrl;
 }
 
@@ -47,7 +54,7 @@ async function checkUrlExists(link) {
     if (normLink === false) {
         return true;
     } else {
-        return await rpc("/website/check_existing_link", { link: normLink });
+        return await rpc("/website/check_existing_link", {link: normLink});
     }
 }
 
@@ -60,11 +67,11 @@ const toRelativeIfSameDomain = (url) => {
 
 export class MenuDialog extends Component {
     static template = "website.MenuDialog";
-    static components = { WebsiteDialog };
+    static components = {WebsiteDialog};
     static props = {
-        name: { type: String, optional: true },
-        url: { type: String, optional: true },
-        isMegaMenu: { type: Boolean, optional: true },
+        name: {type: String, optional: true},
+        url: {type: String, optional: true},
+        isMegaMenu: {type: Boolean, optional: true},
         save: Function,
         close: Function,
     };
@@ -87,9 +94,11 @@ export class MenuDialog extends Component {
 
         const keepLast = new KeepLast();
         const updatePageNotFound = (url) =>
-            keepLast.add(checkUrlExists(url)).then((exists) => (this.state.pageNotFound = !exists));
+            keepLast
+                .add(checkUrlExists(url))
+                .then((exists) => (this.state.pageNotFound = !exists));
         const debouncedUpdatePageNotFound = useDebounced(updatePageNotFound, 500);
-        effect(({ url }) => debouncedUpdatePageNotFound(url), [this.state]);
+        effect(({url}) => debouncedUpdatePageNotFound(url), [this.state]);
 
         useEffect(
             (input) => {
@@ -194,14 +203,14 @@ export class EditMenuDialog extends Component {
 
         this.menuEditor = useRef("menu-editor");
 
-        this.state = useState({ rootMenu: {} });
+        this.state = useState({rootMenu: {}});
 
         onWillStart(async () => {
             const menu = await this.orm.call(
                 "website.menu",
                 "get_tree",
                 [this.website.currentWebsite.id, this.props.rootID],
-                { context: { lang: this.website.currentWebsite.metadata.lang } }
+                {context: {lang: this.website.currentWebsite.metadata.lang}}
             );
             await this.markPageNotFound(menu);
             this.state.rootMenu = menu;
@@ -223,12 +232,14 @@ export class EditMenuDialog extends Component {
              * @param {DOMElement} parent - parent element of where the element was moved
              * @param {DOMElement} placeholder - hint element showing the current position
              */
-            onMove: ({ element, placeholder, parent }) => {
+            onMove: ({element, placeholder, parent}) => {
                 // Adapt the dragged menu item to match the width and position
                 // of the placeholder.
                 element.style.width = getComputedStyle(placeholder).width;
                 element.style.marginLeft =
-                    parent && element.parentElement === this.menuEditor.el ? "2rem" : "";
+                    parent && element.parentElement === this.menuEditor.el
+                        ? "2rem"
+                        : "";
             },
             preventDrag: (el) => el.querySelector(":scope > button"),
         });
@@ -243,7 +254,10 @@ export class EditMenuDialog extends Component {
 
     async markPageNotFound(menu) {
         function menuFlattened(menu) {
-            return [menu, ...(menu.children ? menu.children.flatMap(menuFlattened) : [])];
+            return [
+                menu,
+                ...(menu.children ? menu.children.flatMap(menuFlattened) : []),
+            ];
         }
         await Promise.all(
             menuFlattened(menu)
@@ -263,7 +277,8 @@ export class EditMenuDialog extends Component {
                 ) === null
             );
         }
-        const isDropOnRoot = current.placeHolder.parentNode.closest(elementSelector) === null;
+        const isDropOnRoot =
+            current.placeHolder.parentNode.closest(elementSelector) === null;
         return currentIsMegaMenu && isDropOnRoot;
     }
 
@@ -273,14 +288,16 @@ export class EditMenuDialog extends Component {
         return isNaN(menuId) ? menuIdStr : menuId;
     }
 
-    _moveMenu({ element, parent, previous }) {
+    _moveMenu({element, parent, previous}) {
         const menuId = this._getMenuIdForElement(element);
         const menu = this.map.get(menuId);
 
         // Remove element from parent's children (since we are moving it, this is the mandatory first step)
         const parentId = menu.fields["parent_id"] || this.state.rootMenu.fields["id"];
         let parentMenu = this.map.get(parentId);
-        parentMenu.children = parentMenu.children.filter((m) => m.fields["id"] !== menuId);
+        parentMenu.children = parentMenu.children.filter(
+            (m) => m.fields["id"] !== menuId
+        );
 
         // Determine next parent
         const menuParentId = parent
@@ -292,7 +309,9 @@ export class EditMenuDialog extends Component {
         // Determine at which position we should place the element
         if (previous) {
             const previousMenu = this.map.get(this._getMenuIdForElement(previous));
-            const index = parentMenu.children.findIndex((menu) => menu === previousMenu);
+            const index = parentMenu.children.findIndex(
+                (menu) => menu === previousMenu
+            );
             parentMenu.children.splice(index + 1, 0, menu);
         } else {
             parentMenu.children.unshift(menu);
@@ -357,7 +376,8 @@ export class EditMenuDialog extends Component {
             this.deleteMenu(child.fields.id);
         }
 
-        const parentId = menuToDelete.fields["parent_id"] || this.state.rootMenu.fields["id"];
+        const parentId =
+            menuToDelete.fields["parent_id"] || this.state.rootMenu.fields["id"];
         const parent = this.map.get(parentId);
         parent.children = parent.children.filter((menu) => menu.fields["id"] !== id);
         this.map.delete(id);
@@ -371,7 +391,8 @@ export class EditMenuDialog extends Component {
         this.map.forEach((menu, id) => {
             if (this.state.rootMenu.fields["id"] !== id) {
                 const menuFields = menu.fields;
-                const parentId = menuFields.parent_id || this.state.rootMenu.fields["id"];
+                const parentId =
+                    menuFields.parent_id || this.state.rootMenu.fields["id"];
                 const parentMenu = this.map.get(parentId);
                 menuFields["sequence"] = parentMenu.children.findIndex(
                     (m) => m.fields["id"] === id
@@ -391,7 +412,7 @@ export class EditMenuDialog extends Component {
                     to_delete: this.toDelete,
                 },
             ],
-            { context: { lang: this.website.currentWebsite.metadata.lang } }
+            {context: {lang: this.website.currentWebsite.metadata.lang}}
         );
         if (this.props.save) {
             this.props.save(url);

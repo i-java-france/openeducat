@@ -1,7 +1,7 @@
-import { Component, useRef, useState, useEffect } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { getLastConnectedUsers, setLastConnectedUsers } from "@web/core/user";
-import { imageUrl } from "@web/core/utils/urls";
+import {Component, useRef, useState, useEffect} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {getLastConnectedUsers, setLastConnectedUsers} from "@web/core/user";
+import {imageUrl} from "@web/core/utils/urls";
 
 export class UserSwitch extends Component {
     static template = "web.login_user_switch";
@@ -24,13 +24,14 @@ export class UserSwitch extends Component {
     }
 
     toggleFormDisplay() {
-        this.state.displayUserChoice = !this.state.displayUserChoice && this.state.users.length;
+        this.state.displayUserChoice =
+            !this.state.displayUserChoice && this.state.users.length;
         this.form.classList.toggle("d-none", this.state.displayUserChoice);
         this.form.querySelector(":placeholder-shown")?.focus();
     }
 
-    getAvatarUrl({ partnerId, partnerWriteDate: unique }) {
-        return imageUrl("res.partner", partnerId, "avatar_128", { unique });
+    getAvatarUrl({partnerId, partnerWriteDate: unique}) {
+        return imageUrl("res.partner", partnerId, "avatar_128", {unique});
     }
 
     remove(deletedUser) {

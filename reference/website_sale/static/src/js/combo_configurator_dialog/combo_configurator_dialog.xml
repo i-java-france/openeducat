@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-inherit="sale.ComboConfiguratorDialog" t-inherit-mode="extension">
         <span name="sale_combo_configurator_title" position="attributes">
-            <attribute name="class" remove="h4" add="h5" separator=" "/>
+            <attribute name="class" remove="h4" add="h5" separator=" " />
         </span>
         <span name="preselected_product_title" position="attributes">
-            <attribute name="class" remove="h5" add="h6" separator=" "/>
+            <attribute name="class" remove="h5" add="h6" separator=" " />
         </span>
         <span name="sale_combo_configurator_total" position="attributes">
-            <attribute name="class" remove="h4" add="h5" separator=" "/>
+            <attribute name="class" remove="h4" add="h5" separator=" " />
         </span>
         <button name="sale_combo_configurator_confirm_button" position="attributes">
             <attribute name="t-if">!this.props.isFrontend</attribute>
@@ -24,7 +24,7 @@
                 t-on-click="() => this.confirm({goToCart: false})"
                 t-att-disabled="!areAllCombosSelected"
             >
-                <i class="fa fa-shopping-cart me-2"/>
+                <i class="fa fa-shopping-cart me-2" />
                 Add to Cart
             </button>
             <button
@@ -35,7 +35,7 @@
                 t-att-disabled="!areAllCombosSelected"
             >
                 Go to Checkout
-                <i class="fa fa-angle-right ms-2"/>
+                <i class="fa fa-angle-right ms-2" />
             </button>
         </button>
     </t>

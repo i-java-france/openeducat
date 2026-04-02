@@ -1,6 +1,6 @@
 /* global posmodel */
 
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import * as PaymentScreen from "@point_of_sale/../tests/pos/tours/utils/payment_screen_util";
 import * as ReceiptScreen from "@point_of_sale/../tests/pos/tours/utils/receipt_screen_util";
 import * as FloorScreen from "@pos_restaurant/../tests/tours/utils/floor_screen_util";
@@ -9,8 +9,8 @@ import * as ChromeRestaurant from "@pos_restaurant/../tests/tours/utils/chrome";
 import * as ProductScreenPos from "@point_of_sale/../tests/pos/tours/utils/product_screen_util";
 import * as ProductScreenResto from "@pos_restaurant/../tests/tours/utils/product_screen_util";
 
-const Chrome = { ...ChromePos, ...ChromeRestaurant };
-const ProductScreen = { ...ProductScreenPos, ...ProductScreenResto };
+const Chrome = {...ChromePos, ...ChromeRestaurant};
+const ProductScreen = {...ProductScreenPos, ...ProductScreenResto};
 
 const getRandomTable = () => {
     const tables = posmodel.currentFloor.table_ids;

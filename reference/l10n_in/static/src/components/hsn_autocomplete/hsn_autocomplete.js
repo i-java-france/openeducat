@@ -1,11 +1,12 @@
-import { AutoComplete } from "@web/core/autocomplete/autocomplete";
-import { useChildRef } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { CharField, charField } from "@web/views/fields/char/char_field";
-import { useInputField } from "@web/views/fields/input_field_hook";
+import {AutoComplete} from "@web/core/autocomplete/autocomplete";
+import {useChildRef} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {CharField, charField} from "@web/views/fields/char/char_field";
+import {useInputField} from "@web/views/fields/input_field_hook";
 
-const l10N_IN_HSN_SERVICE_URL = "https://services.gst.gov.in/commonservices/hsn/search/qsearch";
+const l10N_IN_HSN_SERVICE_URL =
+    "https://services.gst.gov.in/commonservices/hsn/search/qsearch";
 
 export class L10nInHsnAutoComplete extends CharField {
     static template = "l10n_in.hsnAutoComplete";
@@ -15,7 +16,7 @@ export class L10nInHsnAutoComplete extends CharField {
     };
     static props = {
         ...CharField.props,
-        l10nInHsnDescription: { type: String, optional: true },
+        l10nInHsnDescription: {type: String, optional: true},
     };
 
     setup() {
@@ -32,9 +33,9 @@ export class L10nInHsnAutoComplete extends CharField {
         const suggestions = [];
         const onlyDigits = !isNaN(value) && value.indexOf(" ") < 0;
         const params = [
-            { type: "byCode", category: "null" }, // For code
-            { type: "byDesc", category: "P" }, // For products
-            { type: "byDesc", category: "S" }, // For services
+            {type: "byCode", category: "null"}, // For code
+            {type: "byDesc", category: "P"}, // For products
+            {type: "byDesc", category: "S"}, // For services
         ];
         const filteredParams = onlyDigits ? [params[0]] : params.slice(1);
         try {
@@ -45,7 +46,7 @@ export class L10nInHsnAutoComplete extends CharField {
                     setTimeout(() => controller.abort(), 5000);
                     const res = await fetch(
                         `${l10N_IN_HSN_SERVICE_URL}?inputText=${value}&selectedType=${param.type}&category=${param.category}`,
-                        { signal }
+                        {signal}
                     );
                     if (!res.ok) {
                         throw new Error(res.statusText);
@@ -90,7 +91,7 @@ export class L10nInHsnAutoComplete extends CharField {
     }
 
     selectSuggestion(label, description) {
-        const data = { [this.props.name]: label };
+        const data = {[this.props.name]: label};
         if (this.props.l10nInHsnDescription) {
             data[this.props.l10nInHsnDescription] = description;
         }
@@ -108,7 +109,7 @@ export const l10nInHsnAutoComplete = {
             type: "string",
         },
     ],
-    extractProps: ({ options }) => ({
+    extractProps: ({options}) => ({
         l10nInHsnDescription: options.hsn_description_field,
     }),
 };

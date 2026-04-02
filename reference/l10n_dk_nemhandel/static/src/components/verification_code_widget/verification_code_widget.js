@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+import {registry} from "@web/core/registry";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
 
-import { Component, useRef } from "@odoo/owl";
+import {Component, useRef} from "@odoo/owl";
 
 class VerificationCodeWidget extends Component {
     static props = {
@@ -25,7 +25,7 @@ class VerificationCodeWidget extends Component {
         }
         ev.preventDefault();
 
-        const pastedData = ev.clipboardData.getData('text').split('');
+        const pastedData = ev.clipboardData.getData("text").split("");
         const target = ev.target;
         for (let i = target.id; i < this.inputs.length; i++) {
             this.inputs[i].el.value = pastedData.shift() || null;
@@ -38,7 +38,11 @@ class VerificationCodeWidget extends Component {
     onKeyUp(ev) {
         if (ev.target.value.length === 1 && ev.target.id < 5) {
             ev.target.nextElementSibling.focus();
-        } else if (ev.key === "Backspace" && ev.target.value === "" && ev.target.id > 0) {
+        } else if (
+            ev.key === "Backspace" &&
+            ev.target.value === "" &&
+            ev.target.id > 0
+        ) {
             ev.target.previousElementSibling.focus();
         }
     }
@@ -46,7 +50,7 @@ class VerificationCodeWidget extends Component {
     _save() {
         let verificationCode = [...this.inputs.map((i) => i.el.value)].join("");
         if (verificationCode.length === 6) {
-            this.props.record.update({ verification_code: verificationCode });
+            this.props.record.update({verification_code: verificationCode});
         }
     }
 }

@@ -1,18 +1,18 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { formatFloatFactor } from "../formatters";
-import { standardFieldProps } from "../standard_field_props";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {formatFloatFactor} from "../formatters";
+import {standardFieldProps} from "../standard_field_props";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class FloatToggleField extends Component {
     static template = "web.FloatToggleField";
     static props = {
         ...standardFieldProps,
-        digits: { type: Array, optional: true },
-        range: { type: Array, optional: true },
-        factor: { type: Number, optional: true },
-        disableReadOnly: { type: Boolean, optional: true },
+        digits: {type: Array, optional: true},
+        range: {type: Array, optional: true},
+        factor: {type: Number, optional: true},
+        disableReadOnly: {type: Boolean, optional: true},
     };
     static defaultProps = {
         range: [0.0, 0.5, 1.0],
@@ -80,7 +80,7 @@ export const floatToggleField = {
     ],
     supportedTypes: ["float"],
     isEmpty: () => false,
-    extractProps: ({ attrs, options }) => {
+    extractProps: ({attrs, options}) => {
         // Sadly, digits param was available as an option and an attr.
         // The option version could be removed with some xml refactoring.
         let digits;

@@ -1,5 +1,5 @@
-import { FloatField, floatField } from "@web/views/fields/float/float_field";
-import { roundPrecision } from "@web/core/utils/numbers";
+import {FloatField, floatField} from "@web/views/fields/float/float_field";
+import {roundPrecision} from "@web/core/utils/numbers";
 import {registry} from "@web/core/registry";
 
 export class AccountTaxRepartitionLineFactorPercent extends FloatField {
@@ -23,7 +23,10 @@ export class AccountTaxRepartitionLineFactorPercent extends FloatField {
         if (!trailingZeroMatch) {
             return value;
         }
-        const nbTrailingZeroToRemove = Math.min(trailingZeroMatch[1].length, trailingNumbersMatch[1].length - 2);
+        const nbTrailingZeroToRemove = Math.min(
+            trailingZeroMatch[1].length,
+            trailingNumbersMatch[1].length - 2
+        );
         return value.substring(0, value.length - nbTrailingZeroToRemove);
     }
 
@@ -44,11 +47,14 @@ export class AccountTaxRepartitionLineFactorPercent extends FloatField {
     }
 }
 
-
 export const accountTaxRepartitionLineFactorPercent = {
     ...floatField,
     component: AccountTaxRepartitionLineFactorPercent,
 };
 
-
-registry.category("fields").add("account_tax_repartition_line_factor_percent", accountTaxRepartitionLineFactorPercent);
+registry
+    .category("fields")
+    .add(
+        "account_tax_repartition_line_factor_percent",
+        accountTaxRepartitionLineFactorPercent
+    );

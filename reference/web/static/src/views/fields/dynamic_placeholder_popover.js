@@ -1,27 +1,31 @@
-import { useAutofocus } from "@web/core/utils/hooks";
-import { ModelFieldSelectorPopover } from "@web/core/model_field_selector/model_field_selector_popover";
-import { Component, onWillStart, useState } from "@odoo/owl";
-import { user } from "@web/core/user";
-import { registry } from "@web/core/registry";
+import {useAutofocus} from "@web/core/utils/hooks";
+import {ModelFieldSelectorPopover} from "@web/core/model_field_selector/model_field_selector_popover";
+import {Component, onWillStart, useState} from "@odoo/owl";
+import {user} from "@web/core/user";
+import {registry} from "@web/core/registry";
 
 const allowedQwebExpressionsService = {
     dependencies: ["orm"],
-    start(env, { orm }) {
+    start(env, {orm}) {
         const cache = new Map();
         return (resModel) => {
             if (cache.has(resModel)) {
                 return cache.get(resModel);
             }
-            const prom = orm.call(resModel, "mail_allowed_qweb_expressions").catch((e) => {
-                cache.delete(resModel);
-                return Promise.reject(e);
-            });
+            const prom = orm
+                .call(resModel, "mail_allowed_qweb_expressions")
+                .catch((e) => {
+                    cache.delete(resModel);
+                    return Promise.reject(e);
+                });
             cache.set(resModel, prom);
             return prom;
         };
     },
 };
-registry.category("services").add("allowed_qweb_expressions", allowedQwebExpressionsService);
+registry
+    .category("services")
+    .add("allowed_qweb_expressions", allowedQwebExpressionsService);
 
 export class DynamicPlaceholderPopover extends Component {
     static template = "web.DynamicPlaceholderPopover";
@@ -56,7 +60,10 @@ export class DynamicPlaceholderPopover extends Component {
         if (fieldDef.is_property && fieldDef.type === "separator") {
             return false;
         }
-        return !["one2many", "boolean", "many2many"].includes(fieldDef.type) && fieldDef.searchable;
+        return (
+            !["one2many", "boolean", "many2many"].includes(fieldDef.type) &&
+            fieldDef.searchable
+        );
     }
     closeFieldSelector(isPathSelected = false) {
         if (isPathSelected) {
@@ -68,7 +75,7 @@ export class DynamicPlaceholderPopover extends Component {
     setPath(path, fieldInfo) {
         this.state.path = path;
         this.state.fieldName = fieldInfo?.string;
-        this.fieldType = fieldInfo?.type
+        this.fieldType = fieldInfo?.type;
     }
     setDefaultValue(value) {
         this.state.defaultValue = value;

@@ -1,5 +1,5 @@
-import { DocumentSelector } from "@html_editor/main/media/media_dialog/document_selector";
-import { renderToElement } from "@web/core/utils/render";
+import {DocumentSelector} from "@html_editor/main/media/media_dialog/document_selector";
+import {renderToElement} from "@web/core/utils/render";
 
 /**
  * Override the @see DocumentSelector to render the uploaded file as embedded
@@ -33,6 +33,6 @@ export function renderEmbeddedFileBox(attachment) {
         url: attachment.url || "",
     };
     return renderToElement("html_editor.EmbeddedFileBlueprint", {
-        embeddedProps: JSON.stringify({ fileData }),
+        embeddedProps: JSON.stringify({fileData}),
     });
 }

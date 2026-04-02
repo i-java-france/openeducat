@@ -48,7 +48,7 @@
 
     .controls {
         grid-template-columns: auto auto;
-        grid-template-areas: 
+        grid-template-areas:
             "buttons pagination"
             "search search";
     }
@@ -56,4 +56,3 @@
         z-index: 2;
     }
 }
-

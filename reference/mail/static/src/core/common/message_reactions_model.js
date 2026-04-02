@@ -1,5 +1,5 @@
-import { AND, fields, Record } from "@mail/core/common/record";
-import { rpc } from "@web/core/network/rpc";
+import {AND, fields, Record} from "@mail/core/common/record";
+import {rpc} from "@web/core/network/rpc";
 
 export class MessageReactions extends Record {
     static id = AND("message", "content");
@@ -29,7 +29,7 @@ export class MessageReactions extends Record {
                     message_id: this.message.id,
                     ...this.message.thread.rpcParams,
                 },
-                { silent: true }
+                {silent: true}
             )
         );
     }

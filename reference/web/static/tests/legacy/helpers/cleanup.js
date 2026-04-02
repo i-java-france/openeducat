@@ -45,14 +45,18 @@ if (window.QUnit) {
      */
     const validElements = [
         // always in the body:
-        { tagName: "DIV", attr: "id", value: "qunit", keep: true },
-        { tagName: "DIV", attr: "id", value: "qunit-fixture", keep: true },
+        {tagName: "DIV", attr: "id", value: "qunit", keep: true},
+        {tagName: "DIV", attr: "id", value: "qunit-fixture", keep: true},
         // shouldn't be in the body after a test but are tolerated:
-        { tagName: "SCRIPT", attr: "id", value: "" },
-        { tagName: "DIV", attr: "class", value: "o_notification_manager" },
-        { tagName: "DIV", attr: "class", value: "tooltip fade bs-tooltip-auto" },
-        { tagName: "DIV", attr: "class", value: "tooltip fade bs-tooltip-auto show" },
-        { tagName: "DIV", attr: "class", value: "tooltip tooltip-field-info fade bs-tooltip-auto" },
+        {tagName: "SCRIPT", attr: "id", value: ""},
+        {tagName: "DIV", attr: "class", value: "o_notification_manager"},
+        {tagName: "DIV", attr: "class", value: "tooltip fade bs-tooltip-auto"},
+        {tagName: "DIV", attr: "class", value: "tooltip fade bs-tooltip-auto show"},
+        {
+            tagName: "DIV",
+            attr: "class",
+            value: "tooltip tooltip-field-info fade bs-tooltip-auto",
+        },
         {
             tagName: "DIV",
             attr: "class",
@@ -60,7 +64,7 @@ if (window.QUnit) {
         },
 
         // Due to a Document Kanban bug (already present in 12.0)
-        { tagName: "DIV", attr: "class", value: "ui-helper-hidden-accessible" },
+        {tagName: "DIV", attr: "class", value: "ui-helper-hidden-accessible"},
         {
             tagName: "UL",
             attr: "class",
@@ -89,7 +93,9 @@ if (window.QUnit) {
         // check for leftover elements in the body
         for (const bodyChild of document.body.children) {
             const tolerated = validElements.find(
-                (e) => e.tagName === bodyChild.tagName && bodyChild.getAttribute(e.attr) === e.value
+                (e) =>
+                    e.tagName === bodyChild.tagName &&
+                    bodyChild.getAttribute(e.attr) === e.value
             );
             if (!failed && !tolerated) {
                 QUnit.pushFailure(

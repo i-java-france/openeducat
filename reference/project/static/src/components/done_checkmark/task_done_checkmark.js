@@ -1,6 +1,9 @@
-import { useState, onRendered } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { BooleanToggleField, booleanToggleField } from "@web/views/fields/boolean_toggle/boolean_toggle_field";
+import {useState, onRendered} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {
+    BooleanToggleField,
+    booleanToggleField,
+} from "@web/views/fields/boolean_toggle/boolean_toggle_field";
 
 export class TaskCheckMark extends BooleanToggleField {
     static template = "project.TaskCheckMark";
@@ -16,13 +19,13 @@ export class TaskCheckMark extends BooleanToggleField {
     }
 
     async onChange(ev) {
-        const { record, name } = this.props;
+        const {record, name} = this.props;
         const value = !record.data[name];
         const recordUpdate = record.update.bind(record);
-        if (['kanban', 'list'].includes(this.env.config.viewType)) {
-            await recordUpdate({ [name]: value }, { save: true });
+        if (["kanban", "list"].includes(this.env.config.viewType)) {
+            await recordUpdate({[name]: value}, {save: true});
         } else {
-            await recordUpdate({ [name]: value });
+            await recordUpdate({[name]: value});
         }
     }
 }
@@ -30,6 +33,6 @@ export class TaskCheckMark extends BooleanToggleField {
 export const taskCheckMark = {
     ...booleanToggleField,
     component: TaskCheckMark,
-}
+};
 
 registry.category("fields").add("task_done_checkmark", taskCheckMark);

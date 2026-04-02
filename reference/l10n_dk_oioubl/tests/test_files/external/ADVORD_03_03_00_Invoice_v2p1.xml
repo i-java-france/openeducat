@@ -4,10 +4,10 @@
 <!--
 ******************************************************************************************************************
 
-		OIOUBL Instance Documentation	
+		OIOUBL Instance Documentation
 
-		title= ADVORD_03_03_00_Invoice_v2p1.xml	
-		replaces= ADVORD_03_03_00_Invoice_v2p1.xml	
+		title= ADVORD_03_03_00_Invoice_v2p1.xml
+		replaces= ADVORD_03_03_00_Invoice_v2p1.xml
 		publisher= "IT og Telestyrelsen"
 		Creator= "Finn Christensen"
 		created= 2006-09-08
@@ -16,15 +16,15 @@
 		conformsTo= OIOUBL_ScenarioPackage_ADVORD
 		description= "This document is produced as part of the OIOUBL Advanced Ordering procurement scenario package"
 		rights= "It can be used following the Common Creative Licence"
-		
+
 		all terms derived from http://dublincore.org/documents/dcmi-terms/
 
 		For more information, see www.oioubl.dk	or email oioubl@itst.dk
-		
+
 ******************************************************************************************************************
 -->
 <!-- The following TestInstance process instruction is for customization usage. It indicates that the instance is for testing purposes -->
-<?TestInstance 
+<?TestInstance
 	ResponseTo="smtp:test@company.dk"
 	description= "apply your comment here"
 ?>

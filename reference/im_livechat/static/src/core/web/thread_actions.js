@@ -1,24 +1,24 @@
-import { registerThreadAction } from "@mail/core/common/thread_actions";
+import {registerThreadAction} from "@mail/core/common/thread_actions";
 
-import { LIVECHAT_INFO_DEFAULT_OPEN_LS } from "@im_livechat/core/public_web/discuss_app_model_patch";
-import { LivechatChannelInfoList } from "@im_livechat/core/web/livechat_channel_info_list";
+import {LIVECHAT_INFO_DEFAULT_OPEN_LS} from "@im_livechat/core/public_web/discuss_app_model_patch";
+import {LivechatChannelInfoList} from "@im_livechat/core/web/livechat_channel_info_list";
 
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
 registerThreadAction("livechat-info", {
     actionPanelComponent: LivechatChannelInfoList,
-    condition: ({ owner, store, thread }) =>
+    condition: ({owner, store, thread}) =>
         thread?.channel_type === "livechat" &&
         store.self_partner?.main_user_id?.share === false &&
         !owner.isDiscussSidebarChannelActions,
     panelOuterClass: "o-livechat-ChannelInfoList bg-inherit",
     icon: "fa fa-fw fa-info",
     name: _t("Information"),
-    open: ({ store }) => {
+    open: ({store}) => {
         store.discuss.isLivechatInfoPanelOpenByDefault = true;
         localStorage.removeItem(LIVECHAT_INFO_DEFAULT_OPEN_LS);
     },
-    close: ({ action, store }) => {
+    close: ({action, store}) => {
         if (action.condition) {
             store.discuss.isLivechatInfoPanelOpenByDefault = false;
             localStorage.setItem(LIVECHAT_INFO_DEFAULT_OPEN_LS, "false");
@@ -30,7 +30,7 @@ registerThreadAction("livechat-info", {
 });
 registerThreadAction("livechat-status", {
     actionPanelComponent: LivechatChannelInfoList,
-    condition: ({ owner, store, thread }) =>
+    condition: ({owner, store, thread}) =>
         thread?.channel_type === "livechat" &&
         store.has_access_livechat &&
         !thread.livechat_end_dt &&
@@ -38,9 +38,9 @@ registerThreadAction("livechat-status", {
     dropdown: true,
     dropdownMenuClass: "p-0",
     dropdownTemplate: "im_livechat.LivechatStatusSelection",
-    dropdownTemplateParams: ({ thread }) => ({ livechatThread: thread }),
+    dropdownTemplateParams: ({thread}) => ({livechatThread: thread}),
     panelOuterClass: "o-livechat-ChannelInfoList bg-inherit",
-    icon: ({ store, thread }) => {
+    icon: ({store, thread}) => {
         const btn = store.livechatStatusButtons.find(
             (btn) => btn.status === thread.livechat_status
         );
@@ -49,24 +49,24 @@ registerThreadAction("livechat-status", {
         }
         return {
             template: "im_livechat.LivechatStatusLabel",
-            params: { btn, inThreadActions: true },
+            params: {btn, inThreadActions: true},
         };
     },
-    name: ({ thread }) => thread.livechatStatusLabel,
+    name: ({thread}) => thread.livechatStatusLabel,
     nameClass: "fst-italic small",
-    sequence: ({ owner }) => (owner.isDiscussSidebarChannelActions ? 10 : 5),
-    sequenceGroup: ({ owner }) => (owner.isDiscussSidebarChannelActions ? 5 : 7),
+    sequence: ({owner}) => (owner.isDiscussSidebarChannelActions ? 10 : 5),
+    sequenceGroup: ({owner}) => (owner.isDiscussSidebarChannelActions ? 5 : 7),
     toggle: true,
 });
 registerThreadAction("join-livechat-needing-help", {
-    condition: ({ owner, thread }) =>
+    condition: ({owner, thread}) =>
         thread?.livechat_status === "need_help" &&
         !thread?.self_member_id &&
         !owner.isDiscussSidebarChannelActions,
     icon: "fa fa-fw fa-sign-in",
     name: _t("Join Chat"),
     nameClass: "text-success",
-    open: async ({ store, thread }) => {
+    open: async ({store, thread}) => {
         const hasJoined = await store.env.services.orm.call(
             "discuss.channel",
             "livechat_join_channel_needing_help",
@@ -75,7 +75,7 @@ registerThreadAction("join-livechat-needing-help", {
         if (!hasJoined && thread.isDisplayed) {
             store.env.services.notification.add(
                 _t("Someone has already joined this conversation"),
-                { type: "warning" }
+                {type: "warning"}
             );
         }
     },

@@ -1,12 +1,15 @@
-import { useState, onRendered, onMounted } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { StateSelectionField, stateSelectionField } from "@web/views/fields/state_selection/state_selection_field";
+import {useState, onRendered, onMounted} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {
+    StateSelectionField,
+    stateSelectionField,
+} from "@web/views/fields/state_selection/state_selection_field";
 
 export class TodoDoneCheckmark extends StateSelectionField {
     static template = "project_todo.TodoDoneCheckmark";
     static props = {
         ...stateSelectionField.component.props,
-        viewType: { type: String },
+        viewType: {type: String},
     };
     setup() {
         super.setup();
@@ -15,12 +18,13 @@ export class TodoDoneCheckmark extends StateSelectionField {
             notReloadState: false, //used to avoid a change of the checkmark when re-rendering the form
         });
         onMounted(() => {
-            const fieldValue = this.props.record.data[this.props.name]
-            this.notDoneState = fieldValue == '1_done' ? '01_in_progress' : fieldValue;
+            const fieldValue = this.props.record.data[this.props.name];
+            this.notDoneState = fieldValue == "1_done" ? "01_in_progress" : fieldValue;
         });
         onRendered(() => {
             if (!this.stateDone.notReloadState) {
-                this.stateDone.isDone = this.props.record.data[this.props.name] == '1_done';
+                this.stateDone.isDone =
+                    this.props.record.data[this.props.name] == "1_done";
             }
         });
     }
@@ -46,11 +50,13 @@ export class TodoDoneCheckmark extends StateSelectionField {
      * @param {InputEvent} ev
      */
     async onDoneToggled(ev) {
-        const value = this.props.record.data[this.props.name] != '1_done' ? '1_done' : this.notDoneState;
-        if (['kanban', 'list'].includes(this.props.viewType)) {
+        const value =
+            this.props.record.data[this.props.name] != "1_done"
+                ? "1_done"
+                : this.notDoneState;
+        if (["kanban", "list"].includes(this.props.viewType)) {
             await super.updateRecord(value);
-        }
-        else {
+        } else {
             await this.props.record.update({
                 [this.props.name]: value,
             });
@@ -66,6 +72,6 @@ export const todoDoneCheckmark = {
         props.viewType = fieldInfo.viewType;
         return props;
     },
-}
+};
 
 registry.category("fields").add("todo_done_checkmark", todoDoneCheckmark);

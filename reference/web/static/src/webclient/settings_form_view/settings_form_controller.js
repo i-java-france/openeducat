@@ -1,11 +1,11 @@
-import { _t } from "@web/core/l10n/translation";
-import { useAutofocus } from "@web/core/utils/hooks";
-import { pick } from "@web/core/utils/objects";
-import { formView } from "@web/views/form/form_view";
-import { SettingsConfirmationDialog } from "./settings_confirmation_dialog";
-import { SettingsFormRenderer } from "./settings_form_renderer";
+import {_t} from "@web/core/l10n/translation";
+import {useAutofocus} from "@web/core/utils/hooks";
+import {pick} from "@web/core/utils/objects";
+import {formView} from "@web/views/form/form_view";
+import {SettingsConfirmationDialog} from "./settings_confirmation_dialog";
+import {SettingsFormRenderer} from "./settings_form_renderer";
 
-import { useSubEnv, useState, useRef, useEffect } from "@odoo/owl";
+import {useSubEnv, useState, useRef, useEffect} from "@odoo/owl";
 
 export class SettingsFormController extends formView.Controller {
     static template = "web.SettingsFormView";
@@ -17,16 +17,18 @@ export class SettingsFormController extends formView.Controller {
     setup() {
         super.setup();
         useAutofocus();
-        this.state = useState({ displayNoContent: false });
-        this.searchState = useState({ value: "" });
+        this.state = useState({displayNoContent: false});
+        this.searchState = useState({value: ""});
         this.rootRef = useRef("root");
         this.canCreate = false;
-        useSubEnv({ searchState: this.searchState });
+        useSubEnv({searchState: this.searchState});
         useEffect(
             () => {
                 if (this.searchState.value) {
                     if (
-                        this.rootRef.el.querySelector(".o_settings_container:not(.d-none)") ||
+                        this.rootRef.el.querySelector(
+                            ".o_settings_container:not(.d-none)"
+                        ) ||
                         this.rootRef.el.querySelector(
                             ".settings .o_settings_container:not(.d-none) .o_setting_box.o_searchable_setting"
                         )
@@ -47,7 +49,8 @@ export class SettingsFormController extends formView.Controller {
             }
         });
 
-        this.initialApp = "module" in this.props.context ? this.props.context.module : "";
+        this.initialApp =
+            "module" in this.props.context ? this.props.context.module : "";
     }
 
     get modelParams() {
@@ -103,7 +106,14 @@ export class SettingsFormController extends formView.Controller {
                 type: "object",
             },
             getResParams: () =>
-                pick(this.model.root, "context", "evalContext", "resModel", "resId", "resIds"),
+                pick(
+                    this.model.root,
+                    "context",
+                    "evalContext",
+                    "resModel",
+                    "resId",
+                    "resIds"
+                ),
         });
     }
 
@@ -115,7 +125,14 @@ export class SettingsFormController extends formView.Controller {
                 special: "cancel",
             },
             getResParams: () =>
-                pick(this.model.root, "context", "evalContext", "resModel", "resId", "resIds"),
+                pick(
+                    this.model.root,
+                    "context",
+                    "evalContext",
+                    "resModel",
+                    "resId",
+                    "resIds"
+                ),
         });
     }
 

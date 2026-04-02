@@ -1,12 +1,12 @@
-import { BasePrinter } from "@point_of_sale/app/utils/printer/base_printer";
-import { logPosMessage } from "@point_of_sale/app/utils/pretty_console_log";
-import { _t } from "@web/core/l10n/translation";
+import {BasePrinter} from "@point_of_sale/app/utils/printer/base_printer";
+import {logPosMessage} from "@point_of_sale/app/utils/pretty_console_log";
+import {_t} from "@web/core/l10n/translation";
 
 const CONSOLE_COLOR = "#28ffeb";
 
 /* global IminPrinter */
 export class IminPrinterAdapter extends BasePrinter {
-    setup({ fallbackPrinter } = {}) {
+    setup({fallbackPrinter} = {}) {
         super.setup(...arguments);
         this.fallbackPrinter = fallbackPrinter;
         this.iminPrinter = new IminPrinter();
@@ -49,7 +49,7 @@ export class IminPrinterAdapter extends BasePrinter {
 
     async printerStatus() {
         if (!this.isConnected) {
-            return { value: -1 };
+            return {value: -1};
         }
         try {
             return await this.iminPrinter.getPrinterStatus();
@@ -61,7 +61,7 @@ export class IminPrinterAdapter extends BasePrinter {
                 CONSOLE_COLOR,
                 [error]
             );
-            return { value: -1 };
+            return {value: -1};
         }
     }
 
@@ -91,13 +91,13 @@ export class IminPrinterAdapter extends BasePrinter {
         try {
             const status = await this.printerStatus();
             if (status.value !== 0) {
-                return { result: false, errorCode: status.value, canRetry: true };
+                return {result: false, errorCode: status.value, canRetry: true};
             }
             await this.iminPrinter.printSingleBitmap(img);
             this.iminPrinter.printAndLineFeed();
             this.iminPrinter.printAndLineFeed();
             this.iminPrinter.printAndLineFeed();
-            return { result: true };
+            return {result: true};
         } catch (error) {
             logPosMessage(
                 "IminPrinterAdapter",
@@ -106,7 +106,7 @@ export class IminPrinterAdapter extends BasePrinter {
                 CONSOLE_COLOR,
                 [error]
             );
-            return { result: false, errorCode: error.message, canRetry: true };
+            return {result: false, errorCode: error.message, canRetry: true};
         }
     }
 

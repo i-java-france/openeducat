@@ -1,4 +1,4 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 import {
     basicContainerBuilderComponentProps,
     getAllActionsAndOperations,
@@ -8,46 +8,47 @@ import {
     useDomState,
     useHasPreview,
 } from "../utils";
-import { BuilderComponent } from "./builder_component";
-import { SelectMany2X } from "./select_many2x";
-import { useCachedModel } from "../cached_model_utils";
+import {BuilderComponent} from "./builder_component";
+import {SelectMany2X} from "./select_many2x";
+import {useCachedModel} from "../cached_model_utils";
 
 export class BuilderMany2One extends Component {
     static template = "html_builder.BuilderMany2One";
     static props = {
         ...basicContainerBuilderComponentProps,
         model: String,
-        fields: { type: Array, element: String, optional: true },
-        domain: { type: Array, optional: true },
-        limit: { type: Number, optional: true },
-        id: { type: String, optional: true },
-        allowUnselect: { type: Boolean, optional: true },
-        defaultMessage: { type: String, optional: true },
-        createAction: { type: String, optional: true },
-        nullText: { type: String, optional: true },
+        fields: {type: Array, element: String, optional: true},
+        domain: {type: Array, optional: true},
+        limit: {type: Number, optional: true},
+        id: {type: String, optional: true},
+        allowUnselect: {type: Boolean, optional: true},
+        defaultMessage: {type: String, optional: true},
+        createAction: {type: String, optional: true},
+        nullText: {type: String, optional: true},
     };
     static defaultProps = {
         ...BuilderComponent.defaultProps,
         allowUnselect: true,
     };
-    static components = { BuilderComponent, SelectMany2X };
+    static components = {BuilderComponent, SelectMany2X};
 
     setup() {
         useBuilderComponent();
-        const { getAllActions, callOperation } = getAllActionsAndOperations(this);
+        const {getAllActions, callOperation} = getAllActionsAndOperations(this);
         this.cachedModel = useCachedModel();
         this.callOperation = callOperation;
         this.hasPreview = useHasPreview(getAllActions);
-        this.applyOperation = this.env.editor.shared.history.makePreviewableAsyncOperation(
-            this.callApply.bind(this)
-        );
+        this.applyOperation =
+            this.env.editor.shared.history.makePreviewableAsyncOperation(
+                this.callApply.bind(this)
+            );
         const getAction = this.env.editor.shared.builderActions.getAction;
         const actionWithGetValue = getAllActions().find(
-            ({ actionId }) => getAction(actionId).getValue
+            ({actionId}) => getAction(actionId).getValue
         );
-        const { actionId, actionParam } = actionWithGetValue;
+        const {actionId, actionParam} = actionWithGetValue;
         const getValue = (el) =>
-            getAction(actionId).getValue({ editingElement: el, params: actionParam });
+            getAction(actionId).getValue({editingElement: el, params: actionParam});
         this.domState = useDomState(async (el) => {
             const selectedString = getValue(el);
             const selected = selectedString && JSON.parse(selectedString);
@@ -70,7 +71,7 @@ export class BuilderMany2One extends Component {
                 Object.assign(selected, value);
             }
 
-            return { selected };
+            return {selected};
         });
         if (this.props.id) {
             useDependencyDefinition(this.props.id, {
@@ -82,9 +83,10 @@ export class BuilderMany2One extends Component {
             this.createAction = this.env.editor.shared.builderActions.getAction(
                 this.props.createAction
             );
-            this.createOperation = this.env.editor.shared.history.makePreviewableOperation(
-                this.createAction.apply
-            );
+            this.createOperation =
+                this.env.editor.shared.history.makePreviewableOperation(
+                    this.createAction.apply
+                );
         }
     }
     callApply(applySpecs, isPreviewing) {
@@ -131,10 +133,12 @@ export class BuilderMany2One extends Component {
         revertPreview(this.env.editor);
     }
     create(name) {
-        const args = { editingElement: this.env.getEditingElement(), value: name };
+        const args = {editingElement: this.env.getEditingElement(), value: name};
         this.env.editor.shared.operation.next(() => this.createOperation.commit(args), {
             load: () =>
-                this.createAction.load?.(args).then((loadResult) => (args.loadResult = loadResult)),
+                this.createAction
+                    .load?.(args)
+                    .then((loadResult) => (args.loadResult = loadResult)),
         });
     }
 }

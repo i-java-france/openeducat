@@ -1,14 +1,14 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { useAutoresize } from "@web/core/utils/autoresize";
-import { useSpellCheck } from "@web/core/utils/hooks";
-import { useDynamicPlaceholder } from "../dynamic_placeholder_hook";
-import { useInputField } from "../input_field_hook";
-import { parseInteger } from "../parsers";
-import { standardFieldProps } from "../standard_field_props";
-import { TranslationButton } from "../translation_button";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useAutoresize} from "@web/core/utils/autoresize";
+import {useSpellCheck} from "@web/core/utils/hooks";
+import {useDynamicPlaceholder} from "../dynamic_placeholder_hook";
+import {useInputField} from "../input_field_hook";
+import {parseInteger} from "../parsers";
+import {standardFieldProps} from "../standard_field_props";
+import {TranslationButton} from "../translation_button";
 
-import { Component, useExternalListener, useEffect, useRef } from "@odoo/owl";
+import {Component, useExternalListener, useEffect, useRef} from "@odoo/owl";
 
 export class TextField extends Component {
     static template = "web.TextField";
@@ -17,11 +17,11 @@ export class TextField extends Component {
     };
     static props = {
         ...standardFieldProps,
-        lineBreaks: { type: Boolean, optional: true },
-        placeholder: { type: String, optional: true },
-        dynamicPlaceholder: { type: Boolean, optional: true },
-        dynamicPlaceholderModelReferenceField: { type: String, optional: true },
-        rowCount: { type: Number, optional: true },
+        lineBreaks: {type: Boolean, optional: true},
+        placeholder: {type: String, optional: true},
+        dynamicPlaceholder: {type: Boolean, optional: true},
+        dynamicPlaceholderModelReferenceField: {type: String, optional: true},
+        rowCount: {type: Number, optional: true},
     };
     static defaultProps = {
         lineBreaks: true,
@@ -47,9 +47,9 @@ export class TextField extends Component {
             parse: (v) => this.parse(v),
             preventLineBreaks: !this.props.lineBreaks,
         });
-        useSpellCheck({ refName: "textarea" });
+        useSpellCheck({refName: "textarea"});
 
-        useAutoresize(this.textareaRef, { minimumHeight: this.minimumHeight });
+        useAutoresize(this.textareaRef, {minimumHeight: this.minimumHeight});
 
         this.selectionStart = this.props.record.data[this.props.name]?.length || 0;
     }
@@ -123,13 +123,14 @@ export const textField = {
         },
     ],
     supportedTypes: ["html", "text", "char"],
-    extractProps: ({ attrs, options, placeholder }) => ({
+    extractProps: ({attrs, options, placeholder}) => ({
         placeholder,
         dynamicPlaceholder: options?.dynamic_placeholder || false,
         dynamicPlaceholderModelReferenceField:
             options?.dynamic_placeholder_model_reference_field || "",
         rowCount: attrs.rows && parseInteger(attrs.rows),
-        lineBreaks: options?.line_breaks !== undefined ? Boolean(options.line_breaks) : true,
+        lineBreaks:
+            options?.line_breaks !== undefined ? Boolean(options.line_breaks) : true,
     }),
 };
 

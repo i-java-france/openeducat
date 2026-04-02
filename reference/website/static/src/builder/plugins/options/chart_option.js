@@ -1,8 +1,8 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { getCSSVariableValue } from "@html_editor/utils/formatting";
-import { useState } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { isCSSColor } from "@web/core/utils/colors";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {getCSSVariableValue} from "@html_editor/utils/formatting";
+import {useState} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {isCSSColor} from "@web/core/utils/colors";
 
 export const DATASET_KEY_PREFIX = "chart_dataset_";
 
@@ -28,7 +28,7 @@ export class ChartOption extends BaseOptionComponent {
             this.prepareData(this.env.getEditingElement())
         );
 
-        this.state = useState({ currentCell: {} });
+        this.state = useState({currentCell: {}});
 
         this.domState = useDomState((editingElement) => ({
             data: this.getData(editingElement),
@@ -42,7 +42,7 @@ export class ChartOption extends BaseOptionComponent {
      * and sets the colorpicker labels based on chart type.
      */
     setDefaultState() {
-        const { backgroundLabel, borderLabel } = this.getColorpickersLabels(
+        const {backgroundLabel, borderLabel} = this.getColorpickersLabels(
             this.domState.isPieChart
         );
         this.updateCurrentCell({
@@ -77,19 +77,21 @@ export class ChartOption extends BaseOptionComponent {
         return data;
     }
     isPieChart(editingElement) {
-        const isPieChart = this.dependencies.chartOptionPlugin.isPieChart(editingElement);
+        const isPieChart =
+            this.dependencies.chartOptionPlugin.isPieChart(editingElement);
         if (!this.domState || this.domState.isPieChart !== isPieChart) {
             // Pie charts set color on a data cell basis, whereas the
             // other ones set it on a dataset basis
-            const { backgroundLabel, borderLabel } = this.getColorpickersLabels(isPieChart);
-            this.updateCurrentCell({ backgroundLabel, borderLabel });
+            const {backgroundLabel, borderLabel} =
+                this.getColorpickersLabels(isPieChart);
+            this.updateCurrentCell({backgroundLabel, borderLabel});
         }
         return isPieChart;
     }
     getColorpickersLabels(isPieChart) {
         const backgroundLabel = isPieChart ? _t("Data Color") : _t("Dataset Color");
         const borderLabel = isPieChart ? _t("Data Border") : _t("Dataset Border");
-        return { backgroundLabel, borderLabel };
+        return {backgroundLabel, borderLabel};
     }
     getColor(color) {
         return getColor(color, this.window, this.document);
@@ -105,8 +107,12 @@ export class ChartOption extends BaseOptionComponent {
         const colorSet = new Set();
         for (const dataset of data.datasets) {
             if (this.isPieChart(editingElement)) {
-                dataset.backgroundColor.forEach((color) => colorSet.add(this.getColor(color)));
-                dataset.borderColor.forEach((color) => colorSet.add(this.getColor(color)));
+                dataset.backgroundColor.forEach((color) =>
+                    colorSet.add(this.getColor(color))
+                );
+                dataset.borderColor.forEach((color) =>
+                    colorSet.add(this.getColor(color))
+                );
             } else {
                 colorSet.add(this.getColor(dataset.backgroundColor));
                 colorSet.add(this.getColor(dataset.borderColor));
@@ -149,7 +155,7 @@ export class ChartOption extends BaseOptionComponent {
             if (cellSectionEl.tagName === "TBODY") {
                 dataIndex = [...cellSectionEl.children].indexOf(cellRowEl);
             }
-            return { cellEl, cellSectionEl, datasetIndex, dataIndex };
+            return {cellEl, cellSectionEl, datasetIndex, dataIndex};
         }
         return {};
     }
@@ -177,7 +183,7 @@ export class ChartOption extends BaseOptionComponent {
         if (this.isTableButton(ev.target)) {
             return;
         }
-        const { cellEl, cellSectionEl, datasetIndex, dataIndex } = this.getCellInfo(ev);
+        const {cellEl, cellSectionEl, datasetIndex, dataIndex} = this.getCellInfo(ev);
         if (!cellEl) {
             return;
         }
@@ -189,8 +195,11 @@ export class ChartOption extends BaseOptionComponent {
             });
         }
         // click on a table inner cell
-        else if (datasetIndex !== -1 && datasetIndex !== cellRowEl.children.length - 2) {
-            this.updateCurrentCell({ datasetIndex, dataIndex });
+        else if (
+            datasetIndex !== -1 &&
+            datasetIndex !== cellRowEl.children.length - 2
+        ) {
+            this.updateCurrentCell({datasetIndex, dataIndex});
         }
     }
     /**
@@ -202,32 +211,36 @@ export class ChartOption extends BaseOptionComponent {
         if (!this.isTableButton(ev.target)) {
             return;
         }
-        const { cellEl, cellSectionEl, datasetIndex, dataIndex } = this.getCellInfo(ev);
+        const {cellEl, cellSectionEl, datasetIndex, dataIndex} = this.getCellInfo(ev);
         const isColumnButton = dataIndex === cellSectionEl.children.length - 1;
         const isRowButton = datasetIndex === cellEl.parentElement.children.length - 2;
 
         if (isColumnButton) {
             if (ev.target.classList.contains("add_row")) {
-                this.updateCurrentCell({ datasetIndex: 0, dataIndex });
+                this.updateCurrentCell({datasetIndex: 0, dataIndex});
             }
             // if we delete a column with the current cell
             else if (datasetIndex === this.state.currentCell.datasetIndex) {
                 this.setDefaultState();
             } else if (datasetIndex < this.state.currentCell.datasetIndex) {
-                this.updateCurrentCell({ datasetIndex: this.state.currentCell.datasetIndex - 1 });
+                this.updateCurrentCell({
+                    datasetIndex: this.state.currentCell.datasetIndex - 1,
+                });
             }
             return;
         }
 
         if (isRowButton) {
             if (ev.target.classList.contains("add_column")) {
-                this.updateCurrentCell({ datasetIndex, dataIndex: 0 });
+                this.updateCurrentCell({datasetIndex, dataIndex: 0});
             }
             // if we delete a row with the current cell
             else if (dataIndex === this.state.currentCell.dataIndex) {
                 this.setDefaultState();
             } else if (dataIndex < this.state.currentCell.dataIndex) {
-                this.updateCurrentCell({ dataIndex: this.state.currentCell.dataIndex - 1 });
+                this.updateCurrentCell({
+                    dataIndex: this.state.currentCell.dataIndex - 1,
+                });
             }
         }
     }
@@ -238,7 +251,7 @@ export class ChartOption extends BaseOptionComponent {
      * @param {Event} ev - The event triggered on the thead cell.
      */
     onDatasetLabelClick(ev) {
-        const { datasetIndex } = this.getCellInfo(ev);
+        const {datasetIndex} = this.getCellInfo(ev);
         this.updateCurrentCell({
             datasetIndex: this.domState.isPieChart ? null : datasetIndex,
             dataIndex: this.domState.isPieChart ? null : 0,
@@ -247,10 +260,14 @@ export class ChartOption extends BaseOptionComponent {
 
     onTableMouseoutOrFocusout(ev) {
         ev.currentTarget
-            .querySelector(".o_builder_matrix_remove_col:not(.visually-hidden-focusable)")
+            .querySelector(
+                ".o_builder_matrix_remove_col:not(.visually-hidden-focusable)"
+            )
             ?.classList.add("visually-hidden-focusable");
         ev.currentTarget
-            .querySelector(".o_builder_matrix_remove_row:not(.visually-hidden-focusable)")
+            .querySelector(
+                ".o_builder_matrix_remove_row:not(.visually-hidden-focusable)"
+            )
             ?.classList.add("visually-hidden-focusable");
     }
     /**

@@ -1,21 +1,31 @@
-import { CountryFlag } from "@mail/core/common/country_flag";
-import { ImStatus } from "@mail/core/common/im_status";
-import { NotificationItem } from "@mail/core/public_web/notification_item";
-import { useDiscussSystray } from "@mail/utils/common/hooks";
+import {CountryFlag} from "@mail/core/common/country_flag";
+import {ImStatus} from "@mail/core/common/im_status";
+import {NotificationItem} from "@mail/core/public_web/notification_item";
+import {useDiscussSystray} from "@mail/utils/common/hooks";
 
-import { Component, useExternalListener, useRef, useState, useSubEnv } from "@odoo/owl";
+import {Component, useExternalListener, useRef, useState, useSubEnv} from "@odoo/owl";
 
-import { hasTouch, isDisplayStandalone, isIOS } from "@web/core/browser/feature_detection";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { DiscussContent } from "./discuss_content";
+import {
+    hasTouch,
+    isDisplayStandalone,
+    isIOS,
+} from "@web/core/browser/feature_detection";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {DiscussContent} from "./discuss_content";
 
 export class MessagingMenu extends Component {
-    static components = { CountryFlag, DiscussContent, Dropdown, NotificationItem, ImStatus };
+    static components = {
+        CountryFlag,
+        DiscussContent,
+        Dropdown,
+        NotificationItem,
+        ImStatus,
+    };
     static props = [];
     static template = "mail.MessagingMenu";
 
@@ -32,7 +42,7 @@ export class MessagingMenu extends Component {
         });
         this.dropdown = useDropdownState();
         this.notificationList = useRef("notification-list");
-        useSubEnv({ inMessagingMenu: { dropdown: this.dropdown } });
+        useSubEnv({inMessagingMenu: {dropdown: this.dropdown}});
 
         useExternalListener(window, "keydown", this.onKeydown, true);
     }
@@ -44,7 +54,7 @@ export class MessagingMenu extends Component {
                 this.store.inbox.open();
                 return;
             }
-            thread.open({ focus: true, fromMessagingMenu: true, bypassCompact: true });
+            thread.open({focus: true, fromMessagingMenu: true, bypassCompact: true});
             this.dropdown.close();
             return;
         }
@@ -57,7 +67,7 @@ export class MessagingMenu extends Component {
             this.env.services.action.doAction({
                 tag: "mail.action_discuss",
                 type: "ir.actions.client",
-                context: { active_id: "mail.box_inbox" },
+                context: {active_id: "mail.box_inbox"},
             });
             return;
         }
@@ -74,7 +84,8 @@ export class MessagingMenu extends Component {
         if (this.notificationItems.length === 0) {
             return;
         }
-        const activeOptionId = this.state.activeIndex !== null ? this.state.activeIndex : 0;
+        const activeOptionId =
+            this.state.activeIndex !== null ? this.state.activeIndex : 0;
         let targetId = undefined;
         switch (direction) {
             case "first":
@@ -101,7 +112,7 @@ export class MessagingMenu extends Component {
                 return;
         }
         this.state.activeIndex = targetId;
-        this.notificationItems[targetId]?.scrollIntoView({ block: "nearest" });
+        this.notificationItems[targetId]?.scrollIntoView({block: "nearest"});
     }
 
     onKeydown(ev) {
@@ -185,7 +196,8 @@ export class MessagingMenu extends Component {
         this.store.discuss.activeTab = tabId;
         if (
             this.store.discuss.activeTab === "inbox" &&
-            (!this.store.discuss.thread || this.store.discuss.thread.model !== "mail.box")
+            (!this.store.discuss.thread ||
+                this.store.discuss.thread.model !== "mail.box")
         ) {
             this.store.inbox.setAsDiscussThread();
         }
@@ -204,4 +216,4 @@ export class MessagingMenu extends Component {
 
 registry
     .category("systray")
-    .add("mail.messaging_menu", { Component: MessagingMenu }, { sequence: 25 });
+    .add("mail.messaging_menu", {Component: MessagingMenu}, {sequence: 25});

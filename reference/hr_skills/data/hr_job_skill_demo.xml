@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <odoo noupdate="1">
     <record id="hr.job_developer" model="hr.job">
         <field name="user_id" ref="base.user_admin" />

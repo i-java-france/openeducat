@@ -1,6 +1,6 @@
-import { registry } from "@web/core/registry";
-import { WORKER_STATE } from "@bus/workers/websocket_worker";
-import { whenReady } from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {WORKER_STATE} from "@bus/workers/websocket_worker";
+import {whenReady} from "@odoo/owl";
 
 function logout() {
     return [
@@ -11,7 +11,7 @@ function logout() {
                 await new Promise((resolve) => requestAnimationFrame(resolve));
                 await new Promise((resolve) => {
                     const bus = odoo.__WOWL_DEBUG__.root.env.services.bus_service;
-                    bus.addEventListener("BUS:CONNECT", resolve, { once: true });
+                    bus.addEventListener("BUS:CONNECT", resolve, {once: true});
                     if (bus.workerState === WORKER_STATE.CONNECTED) {
                         resolve();
                     }
@@ -89,11 +89,13 @@ registry.category("web_tour.tours").add("test_user_switch", {
         ...logout(),
         {
             content: "Check if there is Mitchell Admin in user list selection",
-            trigger: ".o_user_switch .list-group-item:nth-child(1):contains('Mitchell Admin')",
+            trigger:
+                ".o_user_switch .list-group-item:nth-child(1):contains('Mitchell Admin')",
         },
         {
             content: "Check if there is Marc Demo in user list selection",
-            trigger: ".o_user_switch .list-group-item:nth-child(2):contains('Marc Demo')",
+            trigger:
+                ".o_user_switch .list-group-item:nth-child(2):contains('Marc Demo')",
         },
         {
             content: "Choice demo",
@@ -120,7 +122,8 @@ registry.category("web_tour.tours").add("test_user_switch", {
         },
         {
             content: "Click on Mitchell Admin",
-            trigger: ".o_user_switch .list-group-item:nth-child(1):contains('Mitchell Admin')",
+            trigger:
+                ".o_user_switch .list-group-item:nth-child(1):contains('Mitchell Admin')",
             run: "click",
         },
         {

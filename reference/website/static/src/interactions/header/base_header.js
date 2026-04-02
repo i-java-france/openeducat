@@ -1,7 +1,7 @@
-import { Interaction } from "@web/public/interaction";
+import {Interaction} from "@web/public/interaction";
 
-import { SIZES, utils as uiUtils } from "@web/core/ui/ui_service";
-import { compensateScrollbar } from "@web/core/utils/scrolling";
+import {SIZES, utils as uiUtils} from "@web/core/ui/ui_service";
+import {compensateScrollbar} from "@web/core/utils/scrolling";
 
 export class BaseHeader extends Interaction {
     dynamicContent = {
@@ -60,7 +60,9 @@ export class BaseHeader extends Interaction {
 
         this.transformValue = "";
 
-        this.isOverlay = !!this.el.closest(".o_header_overlay, .o_header_overlay_theme");
+        this.isOverlay = !!this.el.closest(
+            ".o_header_overlay, .o_header_overlay_theme"
+        );
 
         this.mainEl = this.el.parentElement.querySelector("main");
         this.hideEl = this.el.querySelector(".o_header_hide_on_scroll");
@@ -137,9 +139,11 @@ export class BaseHeader extends Interaction {
         }
 
         if (this.closeDropdowns) {
-            this.el.querySelectorAll(".dropdown-toggle.show").forEach((dropdownToggleEl) => {
-                Dropdown.getOrCreateInstance(dropdownToggleEl).hide();
-            });
+            this.el
+                .querySelectorAll(".dropdown-toggle.show")
+                .forEach((dropdownToggleEl) => {
+                    Dropdown.getOrCreateInstance(dropdownToggleEl).hide();
+                });
         }
     }
 

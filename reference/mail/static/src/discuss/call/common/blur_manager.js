@@ -1,6 +1,6 @@
-import { closeStream } from "@mail/utils/common/misc";
+import {closeStream} from "@mail/utils/common/misc";
 
-import { browser } from "@web/core/browser/browser";
+import {browser} from "@web/core/browser/browser";
 
 const FPS = 30; // Frames per second for the blurred background stream
 
@@ -42,7 +42,12 @@ export class BlurManager {
 
     constructor(
         stream,
-        { backgroundBlur = 10, edgeBlur = 10, modelSelection = 1, selfieMode = false } = {}
+        {
+            backgroundBlur = 10,
+            edgeBlur = 10,
+            modelSelection = 1,
+            selfieMode = false,
+        } = {}
     ) {
         this.edgeBlur = edgeBlur;
         this.backgroundBlur = backgroundBlur;
@@ -61,7 +66,9 @@ export class BlurManager {
             resolveStreamPromise,
         });
         try {
-            this.worker = new Worker("/mail/static/src/discuss/call/common/tick_worker.js");
+            this.worker = new Worker(
+                "/mail/static/src/discuss/call/common/tick_worker.js"
+            );
             this.worker.onmessage = (e) => this._handleWorkerMessage(e);
             this.worker.onerror = () => {
                 this._terminateWorker();
@@ -91,7 +98,9 @@ export class BlurManager {
         this._terminateWorker();
         if (this.rejectStreamPromise) {
             this.rejectStreamPromise(
-                new Error("The source stream was removed before the beginning of the blur process")
+                new Error(
+                    "The source stream was removed before the beginning of the blur process"
+                )
             );
         }
     }
@@ -103,7 +112,7 @@ export class BlurManager {
     async _handleWorkerMessage(e) {
         if (e.data.command === "tick") {
             await this._onFrame();
-            this.worker.postMessage({ command: "tock" });
+            this.worker.postMessage({command: "tock"});
         }
     }
 
@@ -112,7 +121,7 @@ export class BlurManager {
      */
     _terminateWorker() {
         if (this.worker) {
-            this.worker.postMessage({ command: "stop" });
+            this.worker.postMessage({command: "stop"});
             this.worker.terminate();
         }
         this.worker = null;
@@ -129,7 +138,7 @@ export class BlurManager {
     _onVideoPlay() {
         this.isVideoDataLoaded = true;
         if (this.worker) {
-            this.worker.postMessage({ command: "start", fps: FPS });
+            this.worker.postMessage({command: "start", fps: FPS});
         } else {
             this._requestFrame();
         }
@@ -148,7 +157,7 @@ export class BlurManager {
         if (!this.isVideoDataLoaded) {
             return;
         }
-        await this.selfieSegmentation.send({ image: this.video });
+        await this.selfieSegmentation.send({image: this.video});
     }
 
     /**
@@ -158,7 +167,11 @@ export class BlurManager {
         drawAndBlurImageOnCanvas(results.image, this.backgroundBlur, this.canvasBlur);
         this.canvas.width = this.canvasBlur.width;
         this.canvas.height = this.canvasBlur.height;
-        drawAndBlurImageOnCanvas(results.segmentationMask, this.edgeBlur, this.canvasMask);
+        drawAndBlurImageOnCanvas(
+            results.segmentationMask,
+            this.edgeBlur,
+            this.canvasMask
+        );
         this.canvas.getContext("2d").save();
         this.canvas
             .getContext("2d")

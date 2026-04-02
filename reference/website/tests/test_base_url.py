@@ -8,7 +8,7 @@ from odoo.exceptions import ValidationError
 
 class TestUrlCommon(odoo.tests.HttpCase):
     def setUp(self):
-        super(TestUrlCommon, self).setUp()
+        super().setUp()
         self.domain = 'http://' + odoo.tests.HOST
         self.website = self.env['website'].create({
             'name': 'test base url',

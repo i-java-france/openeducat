@@ -1,16 +1,16 @@
-import { expect, test } from "@odoo/hoot";
-import { click, manuallyDispatchProgrammaticEvent, press, waitFor } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { setupEditor } from "./_helpers/editor";
-import { getContent, setSelection } from "./_helpers/selection";
-import { insertText } from "./_helpers/user_actions";
-import { loader } from "@web/core/emoji_picker/emoji_picker";
-import { execCommand } from "./_helpers/userCommands";
-import { unformat } from "./_helpers/format";
-import { expectElementCount } from "./_helpers/ui_expectations";
+import {expect, test} from "@odoo/hoot";
+import {click, manuallyDispatchProgrammaticEvent, press, waitFor} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {setupEditor} from "./_helpers/editor";
+import {getContent, setSelection} from "./_helpers/selection";
+import {insertText} from "./_helpers/user_actions";
+import {loader} from "@web/core/emoji_picker/emoji_picker";
+import {execCommand} from "./_helpers/userCommands";
+import {unformat} from "./_helpers/format";
+import {expectElementCount} from "./_helpers/ui_expectations";
 
 test("should insert a banner with focus inside followed by a paragraph", async () => {
-    const { el, editor } = await setupEditor("<p>Test[]</p>");
+    const {el, editor} = await setupEditor("<p>Test[]</p>");
     await insertText(editor, "/banner");
     await animationFrame();
     expect(".active .o-we-command-name").toHaveText("Banner Info");
@@ -37,7 +37,7 @@ test("should insert a banner with focus inside followed by a paragraph", async (
 });
 
 test("press 'ctrl+a' inside a banner should select all the banner content", async () => {
-    const { el, editor } = await setupEditor("<p>Test[]</p>");
+    const {el, editor} = await setupEditor("<p>Test[]</p>");
     await insertText(editor, "/bannerinfo");
     await press("enter");
     await manuallyDispatchProgrammaticEvent(editor.editable, "beforeinput", {
@@ -62,7 +62,7 @@ test("press 'ctrl+a' inside a banner should select all the banner content", asyn
 });
 
 test("remove all content should preserve the first paragraph tag inside the banner", async () => {
-    const { el, editor } = await setupEditor("<p>Test[]</p>");
+    const {el, editor} = await setupEditor("<p>Test[]</p>");
     await insertText(editor, "/bannerinfo");
     await press("enter");
     await manuallyDispatchProgrammaticEvent(editor.editable, "beforeinput", {
@@ -97,7 +97,7 @@ test("remove all content should preserve the first paragraph tag inside the bann
 });
 
 test("Inserting a banner at the top of the editable also inserts a paragraph above it", async () => {
-    const { el, editor } = await setupEditor("<p>test[]</p>");
+    const {el, editor} = await setupEditor("<p>test[]</p>");
     await insertText(editor, "/bannerinfo");
     await press("enter");
     expect(unformat(getContent(el))).toBe(
@@ -115,7 +115,7 @@ test("Inserting a banner at the top of the editable also inserts a paragraph abo
 });
 
 test("Everything gets selected with ctrl+a, including a contenteditable=false as first element", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         `<div class="o_editor_banner user-select-none o-contenteditable-false lh-1 d-flex align-items-center alert alert-info pb-0 pt-3" data-oe-role="status" contenteditable="false" role="status">
                 <i class="o_editor_banner_icon mb-3 fst-normal" data-oe-aria-label="Banner Info" aria-label="Banner Info">💡</i>
                 <div class="w-100 px-3" contenteditable="true">
@@ -136,11 +136,11 @@ test("Everything gets selected with ctrl+a, including a contenteditable=false as
 });
 
 test("Everything gets selected with ctrl+a, including a banner", async () => {
-    const { el, editor } = await setupEditor("<p>test[]</p>");
+    const {el, editor} = await setupEditor("<p>test[]</p>");
     await insertText(editor, "/bannerinfo");
     await press("enter");
     // Move the selection outside of the banner
-    setSelection({ anchorNode: el.querySelectorAll("p")[2], anchorOffset: 0 });
+    setSelection({anchorNode: el.querySelectorAll("p")[2], anchorOffset: 0});
     await insertText(editor, "Test1");
     await manuallyDispatchProgrammaticEvent(editor.editable, "beforeinput", {
         inputType: "insertParagraph",
@@ -154,7 +154,7 @@ test("Everything gets selected with ctrl+a, including a banner", async () => {
                     <p>test</p>
                 </div>
             </div><p>Test1</p><p>Test2]</p>`,
-        { message: "should select everything" }
+        {message: "should select everything"}
     );
     await press("Backspace");
     expect(getContent(el)).toBe(
@@ -163,7 +163,7 @@ test("Everything gets selected with ctrl+a, including a banner", async () => {
 });
 
 test("Everything gets selected with ctrl+a, including a contenteditable=false as first two elements", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         '<div data-oe-role="status" contenteditable="false" role="status">a</div><div data-oe-role="status" contenteditable="false" role="status">b</div><p>cd[]</p>'
     );
     await press(["ctrl", "a"]);
@@ -178,7 +178,7 @@ test("Everything gets selected with ctrl+a, including a contenteditable=false as
 });
 
 test("should convert empty banner into basecontainer on backspace", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         `<div class="o_editor_banner user-select-none o-contenteditable-false lh-1 d-flex align-items-center alert alert-info pb-0 pt-3" data-oe-role="status" contenteditable="false" role="status">
             <i class="o_editor_banner_icon mb-3 fst-normal" data-oe-aria-label="Banner Info" aria-label="Banner Info">💡</i>
             <div class="o_editor_banner_content o-contenteditable-true w-100 px-3" contenteditable="true">
@@ -193,7 +193,7 @@ test("should convert empty banner into basecontainer on backspace", async () => 
 });
 
 test("Can change an emoji banner", async () => {
-    const { editor } = await setupEditor("<p>Test[]</p>");
+    const {editor} = await setupEditor("<p>Test[]</p>");
     await insertText(editor, "/bannerinfo");
     await press("enter");
     expect("i.o_editor_banner_icon").toHaveText("💡");
@@ -210,13 +210,18 @@ test("Can change an emoji banner", async () => {
 });
 
 test("toolbar should be closed when you open the emojipicker", async () => {
-    const { editor, el } = await setupEditor(`<p class="test">Test</p><p>a[]</p>`);
+    const {editor, el} = await setupEditor(`<p class="test">Test</p><p>a[]</p>`);
     await insertText(editor, "/bannerinfo");
     await press("enter");
 
     // Move the selection to open the toolbar
     const textNode = el.querySelector(".test").childNodes[0];
-    setSelection({ anchorNode: textNode, anchorOffset: 0, focusNode: textNode, focusOffset: 2 });
+    setSelection({
+        anchorNode: textNode,
+        anchorOffset: 0,
+        focusNode: textNode,
+        focusOffset: 2,
+    });
     await waitFor(".o-we-toolbar");
 
     await loader.loadEmoji();
@@ -229,15 +234,20 @@ test("toolbar should be closed when you open the emojipicker", async () => {
 
 test.tags("desktop", "iframe");
 test("toolbar should be closed when you open the emojipicker (iframe)", async () => {
-    const { editor, el } = await setupEditor(`<p class="test">Test</p><p>a[]</p>`, {
-        props: { iframe: true },
+    const {editor, el} = await setupEditor(`<p class="test">Test</p><p>a[]</p>`, {
+        props: {iframe: true},
     });
     await insertText(editor, "/bannerinfo");
     await press("enter");
 
     // Move the selection to open the toolbar
     const textNode = el.querySelector(".test").childNodes[0];
-    setSelection({ anchorNode: textNode, anchorOffset: 0, focusNode: textNode, focusOffset: 2 });
+    setSelection({
+        anchorNode: textNode,
+        anchorOffset: 0,
+        focusNode: textNode,
+        focusOffset: 2,
+    });
     await waitFor(".o-we-toolbar");
 
     await loader.loadEmoji();
@@ -249,7 +259,7 @@ test("toolbar should be closed when you open the emojipicker (iframe)", async ()
 });
 
 test("add banner inside empty list", async () => {
-    const { el, editor } = await setupEditor("<ul><li>[]<br></li></ul>");
+    const {el, editor} = await setupEditor("<ul><li>[]<br></li></ul>");
     await insertText(editor, "/bannerinfo");
     await press("enter");
     await animationFrame();
@@ -266,7 +276,7 @@ test("add banner inside empty list", async () => {
 });
 
 test("add banner inside non-empty list", async () => {
-    const { el, editor } = await setupEditor("<ul><li>Test[]</li></ul>");
+    const {el, editor} = await setupEditor("<ul><li>Test[]</li></ul>");
     await insertText(editor, "/bannerinfo");
     await press("enter");
     await animationFrame();
@@ -283,7 +293,7 @@ test("add banner inside non-empty list", async () => {
 });
 
 test("should move heading element inside the banner, with paragraph element after the banner", async () => {
-    const { el, editor } = await setupEditor("<h1>Test[]</h1>");
+    const {el, editor} = await setupEditor("<h1>Test[]</h1>");
     await insertText(editor, "/banner");
     await animationFrame();
     expect(".active .o-we-command-name").toHaveText("Banner Info");
@@ -300,7 +310,7 @@ test("should move heading element inside the banner, with paragraph element afte
 });
 
 test("Inserting a banner should not remove the next sibling block", async () => {
-    const { el, editor } = await setupEditor("<p><br>[]</p><p>b</p>");
+    const {el, editor} = await setupEditor("<p><br>[]</p><p>b</p>");
     await insertText(editor, "/banner");
     await animationFrame();
     expect(".active .o-we-command-name").toHaveText("Banner Info");
@@ -316,7 +326,7 @@ test("Inserting a banner should not remove the next sibling block", async () => 
 });
 
 test("Monospace banner should have no emoji", async () => {
-    const { el, editor } = await setupEditor("<p>test[]</p>");
+    const {el, editor} = await setupEditor("<p>test[]</p>");
     await insertText(editor, "/monospace");
     await press("enter");
     expect(unformat(getContent(el))).toBe(

@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from markupsafe import Markup
-from odoo import api, fields, models, _
+
+from odoo import _, fields, models
 from odoo.tools.mail import is_html_empty
 
 

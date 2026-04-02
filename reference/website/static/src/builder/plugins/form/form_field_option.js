@@ -1,7 +1,7 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { onWillStart, onWillUpdateProps, useState } from "@odoo/owl";
-import { FormActionFieldsOption } from "./form_action_fields_option";
-import { FormModelRequiredFieldAlert } from "./form_model_required_field_alert";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {onWillStart, onWillUpdateProps, useState} from "@odoo/owl";
+import {FormActionFieldsOption} from "./form_action_fields_option";
+import {FormModelRequiredFieldAlert} from "./form_model_required_field_alert";
 import {
     getDependencyEl,
     getFieldName,
@@ -10,21 +10,21 @@ import {
     getCurrentFieldInputEl,
     getModelName,
 } from "./utils";
-import { formatDate, formatDateTime } from "@web/core/l10n/dates";
+import {formatDate, formatDateTime} from "@web/core/l10n/dates";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class FormFieldOption extends BaseOptionComponent {
     static template = "website.s_website_form_field_option";
     static dependencies = ["websiteFormOption"];
     static props = {
-        redrawSequence: { type: Number, optional: true },
+        redrawSequence: {type: Number, optional: true},
     };
-    static components = { FormActionFieldsOption, FormModelRequiredFieldAlert };
+    static components = {FormActionFieldsOption, FormModelRequiredFieldAlert};
 
     setup() {
         super.setup();
-        const { loadFieldOptionData } = this.dependencies.websiteFormOption;
+        const {loadFieldOptionData} = this.dependencies.websiteFormOption;
         this.state = useState({
             availableFields: [],
             conditionInputs: [],
@@ -36,7 +36,7 @@ export class FormFieldOption extends BaseOptionComponent {
             const modelName = getModelName(el.closest("form"));
             const fieldName = getFieldName(el);
             return {
-                elDataset: { ...el.dataset },
+                elDataset: {...el.dataset},
                 elClassList: [...el.classList],
                 fieldName,
                 modelName,
@@ -44,7 +44,8 @@ export class FormFieldOption extends BaseOptionComponent {
             };
         });
         this.format = {
-            date: (value) => (value ? formatDate(DateTime.fromSeconds(parseInt(value))) : ""),
+            date: (value) =>
+                value ? formatDate(DateTime.fromSeconds(parseInt(value))) : "",
             datetime: (value) =>
                 value ? formatDateTime(DateTime.fromSeconds(parseInt(value))) : "",
         };
@@ -66,10 +67,12 @@ export class FormFieldOption extends BaseOptionComponent {
                 type: dependencyEl.type,
                 nodeName: dependencyEl.nodeName,
                 isRecordField:
-                    dependencyEl.closest(".s_website_form_field")?.dataset.type === "record",
+                    dependencyEl.closest(".s_website_form_field")?.dataset.type ===
+                    "record",
                 isFormDate: !!dependencyEl.closest(".s_website_form_date"),
                 isFormDateTime: !!dependencyEl.closest(".s_website_form_datetime"),
-                hasDateTimePicker: dependencyEl.classList.contains("datetimepicker-input"),
+                hasDateTimePicker:
+                    dependencyEl.classList.contains("datetimepicker-input"),
             };
         });
 
@@ -90,10 +93,14 @@ export class FormFieldOption extends BaseOptionComponent {
                 type: currentFieldInputEl.type,
                 nodeName: currentFieldInputEl.nodeName,
                 isRecordField:
-                    currentFieldInputEl.closest(".s_website_form_field")?.dataset.type === "record",
+                    currentFieldInputEl.closest(".s_website_form_field")?.dataset
+                        .type === "record",
                 isFormDate: !!currentFieldInputEl.closest(".s_website_form_date"),
-                isFormDateTime: !!currentFieldInputEl.closest(".s_website_form_datetime"),
-                hasDateTimePicker: currentFieldInputEl.classList.contains("datetimepicker-input"),
+                isFormDateTime: !!currentFieldInputEl.closest(
+                    ".s_website_form_datetime"
+                ),
+                hasDateTimePicker:
+                    currentFieldInputEl.classList.contains("datetimepicker-input"),
                 isTextArea: currentFieldInputEl.nodeName === "TEXTAREA",
             };
         });
@@ -174,13 +181,17 @@ export class FormFieldOption extends BaseOptionComponent {
         }
         return (
             !dependencyEl ||
-            ["text", "email", "tel", "url", "search", "password"].includes(dependencyEl.type) ||
+            ["text", "email", "tel", "url", "search", "password"].includes(
+                dependencyEl.type
+            ) ||
             dependencyEl.nodeName === "TEXTAREA"
         );
     }
     get isExistingFieldSelectType() {
         const el = this.env.getEditingElement();
-        return !isFieldCustom(el) && ["selection", "many2one"].includes(el.dataset.type);
+        return (
+            !isFieldCustom(el) && ["selection", "many2one"].includes(el.dataset.type)
+        );
     }
     get isMultipleInputs() {
         const el = this.env.getEditingElement();

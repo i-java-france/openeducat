@@ -1,16 +1,16 @@
-import { leftPos, rightPos } from "@html_editor/utils/position";
-import { expect, test } from "@odoo/hoot";
-import { animationFrame, pointerDown, pointerUp, waitForNone } from "@odoo/hoot-dom";
-import { tick } from "@odoo/hoot-mock";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { getContent, setSelection } from "../_helpers/selection";
-import { unformat } from "../_helpers/format";
+import {leftPos, rightPos} from "@html_editor/utils/position";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame, pointerDown, pointerUp, waitForNone} from "@odoo/hoot-dom";
+import {tick} from "@odoo/hoot-mock";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {getContent, setSelection} from "../_helpers/selection";
+import {unformat} from "../_helpers/format";
 
 /**
  * Simulates placing the cursor at the editable root after a mouse click.
  *
  * @param {HTMLElement} node
- * @param {boolean} [before=false] whether to place the cursor after the node
+ * @param {Boolean} [before=false] whether to place the cursor after the node
  */
 async function simulateMouseClick(node, before = false) {
     await pointerDown(node);
@@ -124,7 +124,7 @@ test("should insert a paragraph between the two non-P blocks and place cursor in
 });
 
 test("should insert a paragraph before the table, then one after it", async () => {
-    const { el } = await setupEditor("<table></table>");
+    const {el} = await setupEditor("<table></table>");
     const table = el.querySelector("table");
     await simulateMouseClick(table, true);
     expect(getContent(el)).toBe(
@@ -138,7 +138,7 @@ test("should insert a paragraph before the table, then one after it", async () =
 
 test.tags("desktop");
 test("should have collapsed selection when mouse down on a table cell", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         `<table class="table table-bordered o_table"><tbody><tr><td><p><br></p></td><td><p><br>[</p></td><td><p>]<br></p></td></tr></tbody></table>`
     );
     const lastCell = el.querySelector("td:last-child");

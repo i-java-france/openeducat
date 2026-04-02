@@ -5,6 +5,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 from odoo import Command
 from odoo.http import request, route
+
 from odoo.addons.mail.controllers.discuss.channel import ChannelController
 
 

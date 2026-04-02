@@ -1,6 +1,6 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { unformat } from "../_helpers/format";
-import { base64Img } from "../_helpers/editor";
+import {describe, expect, test} from "@odoo/hoot";
+import {unformat} from "../_helpers/format";
+import {base64Img} from "../_helpers/editor";
 
 describe("unformat", () => {
     test("should trim space between a tag name and an attribute", () => {
@@ -40,7 +40,7 @@ describe("unformat", () => {
         expect(
             unformat(
                 `<div>
-                    text     \ufeff     
+                    text     \ufeff
                 </div>`
             )
         ).toBe(`<div>text     \ufeff</div>`);

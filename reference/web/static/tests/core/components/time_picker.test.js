@@ -1,10 +1,17 @@
-import { Component, useState, xml } from "@odoo/owl";
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { click, queryAllTexts, edit, press, animationFrame, runAllTimers } from "@odoo/hoot-dom";
-import { mockDate } from "@odoo/hoot-mock";
-import { mountWithCleanup, defineParams } from "@web/../tests/web_test_helpers";
-import { TimePicker } from "@web/core/time_picker/time_picker";
-import { Dropdown } from "@web/core/dropdown/dropdown";
+import {Component, useState, xml} from "@odoo/owl";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {
+    animationFrame,
+    click,
+    edit,
+    press,
+    queryAllTexts,
+    runAllTimers,
+} from "@odoo/hoot-dom";
+import {mockDate} from "@odoo/hoot-mock";
+import {defineParams, mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {TimePicker} from "@web/core/time_picker/time_picker";
+import {Dropdown} from "@web/core/dropdown/dropdown";
 
 /**
  * @param {any} value
@@ -13,10 +20,11 @@ const pad2 = (value) => String(value).padStart(2, "0");
 
 /**
  * @template {any} [T=number]
- * @param {number} length
+ * @param {Number} length
  * @param {(index: number) => T} mapping
  */
-const range = (length, mapping = (n) => n) => [...Array(length)].map((_, i) => mapping(i));
+const range = (length, mapping = (n) => n) =>
+    [...Array(length)].map((_, i) => mapping(i));
 
 const getTimeOptions = (rounding = 15) => {
     const _hours = range(24, String);
@@ -104,7 +112,8 @@ test("seconds only shown and usable when 'showSeconds' is true", async () => {
     await mountWithCleanup(TimePicker, {
         props: {
             showSeconds: true,
-            onChange: (value) => expect.step(`${value.hour}:${value.minute}:${value.second}`),
+            onChange: (value) =>
+                expect.step(`${value.hour}:${value.minute}:${value.second}`),
         },
     });
 
@@ -120,7 +129,7 @@ test("seconds only shown and usable when 'showSeconds' is true", async () => {
     expect.verifySteps(["12:15:0"]);
 
     await click(".o_time_picker_input");
-    await edit("15:25:33", { confirm: "enter" });
+    await edit("15:25:33", {confirm: "enter"});
     await animationFrame();
     expect("input.o_time_picker_input").toHaveValue("15:25:33");
     expect.verifySteps(["15:25:33"]);
@@ -149,18 +158,22 @@ test("handle 12h (am/pm) time format", async () => {
         .map((i) => pad2(i));
     const H = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
     const options = [];
-    ["am", "pm"].forEach((a) => H.forEach((h) => M.forEach((m) => options.push(`${h}:${m}${a}`))));
-    expect(queryAllTexts(".o_time_picker_dropdown .o_time_picker_option")).toEqual(options);
+    ["am", "pm"].forEach((a) =>
+        H.forEach((h) => M.forEach((m) => options.push(`${h}:${m}${a}`)))
+    );
+    expect(queryAllTexts(".o_time_picker_dropdown .o_time_picker_option")).toEqual(
+        options
+    );
 
-    await edit("4:15pm", { confirm: "enter" });
+    await edit("4:15pm", {confirm: "enter"});
     await animationFrame();
     expect("input.o_time_picker_input").toHaveValue("4:15pm");
-    // actual data is always in 24h format
+    // Actual data is always in 24h format
     expect.verifySteps(["16:15"]);
 
-    await edit("8:30", { confirm: "enter" });
+    await edit("8:30", {confirm: "enter"});
     await animationFrame();
-    // default to am when no meridiem is provided
+    // Default to am when no meridiem is provided
     expect("input.o_time_picker_input").toHaveValue("8:30am");
     expect.verifySteps(["8:30"]);
 });
@@ -176,7 +189,7 @@ test("validity updated on input and cannot apply non-valid time strings", async 
     await click(".o_time_picker_input");
     await animationFrame();
 
-    await edit("gg ez", { confirm: false });
+    await edit("gg ez", {confirm: false});
     await animationFrame();
     expect("input.o_time_picker_input").toHaveClass("o_invalid");
 
@@ -184,7 +197,7 @@ test("validity updated on input and cannot apply non-valid time strings", async 
     await animationFrame();
     expect.verifySteps([]);
 
-    await edit("12:30", { confirm: false });
+    await edit("12:30", {confirm: false});
     await animationFrame();
     expect("input.o_time_picker_input").not.toHaveClass("o_invalid");
     expect.verifySteps([]);
@@ -248,7 +261,7 @@ test("if typing after navigating, enter validates input value", async () => {
     await animationFrame();
     expect("input.o_time_picker_input").toHaveValue("0:45");
 
-    await edit("12:5", { confirm: false });
+    await edit("12:5", {confirm: false});
     await press("enter");
     await animationFrame();
     // Enter validates the edited input
@@ -263,7 +276,7 @@ test("typing a value that is in the suggestions will focus it in the dropdown", 
     await runAllTimers();
     expect(".o_time_picker_option.focus").toHaveText("0:00");
 
-    await edit("12:3", { confirm: false });
+    await edit("12:3", {confirm: false});
     await animationFrame();
     expect(".o_time_picker_option.focus").toHaveText("12:30");
     expect(".o_time_picker_option.focus").toBeVisible();
@@ -271,7 +284,7 @@ test("typing a value that is in the suggestions will focus it in the dropdown", 
 
 test("false, null and undefined are accepted values", async () => {
     class Parent extends Component {
-        static components = { TimePicker };
+        static components = {TimePicker};
         static props = {};
         static template = xml`<TimePicker value="state.value"/>`;
 
@@ -296,7 +309,7 @@ test("false, null and undefined are accepted values", async () => {
 
 test("click-out triggers onChange", async () => {
     class Parent extends Component {
-        static components = { TimePicker, Dropdown };
+        static components = {TimePicker, Dropdown};
         static props = {};
         static template = xml`
             <div>
@@ -324,7 +337,7 @@ test("click-out triggers onChange", async () => {
     await animationFrame();
     expect(".o_time_picker_option.focus").toHaveText("0:00");
 
-    await edit("12:3", { confirm: false });
+    await edit("12:3", {confirm: false});
     await animationFrame();
     expect.verifySteps([]);
 
@@ -336,7 +349,7 @@ test("click-out triggers onChange", async () => {
 
 test("changing the props value updates the input", async () => {
     class Parent extends Component {
-        static components = { TimePicker };
+        static components = {TimePicker};
         static props = {};
         static template = xml`<TimePicker value="state.value" onChange.bind="onChange"/>`;
 
@@ -377,12 +390,12 @@ test("changing the props value updates the input", async () => {
 
 test("ensure placeholder is customizable", async () => {
     class Parent extends Component {
-        static components = { TimePicker };
+        static components = {TimePicker};
         static props = {};
         static template = xml`<TimePicker placeholder="state.placeholder"/>`;
 
         setup() {
-            this.state = useState({ placeholder: undefined });
+            this.state = useState({placeholder: undefined});
         }
     }
 
@@ -397,7 +410,7 @@ test("ensure placeholder is customizable", async () => {
 
 test("add a custom class", async () => {
     class Parent extends Component {
-        static components = { TimePicker };
+        static components = {TimePicker};
         static props = {};
         static template = xml`<TimePicker cssClass="'o_custom_class'"/>`;
     }
@@ -408,7 +421,7 @@ test("add a custom class", async () => {
 
 test("add a custom input class", async () => {
     class Parent extends Component {
-        static components = { TimePicker };
+        static components = {TimePicker};
         static props = {};
         static template = xml`<TimePicker inputCssClass="'o_custom_class'"/>`;
     }

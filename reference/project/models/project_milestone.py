@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
@@ -129,7 +128,7 @@ class ProjectMilestone(models.Model):
         default = dict(default or {})
         new_milestones = super().copy(default)
         milestone_mapping = self.env.context.get('milestone_mapping', {})
-        for old_milestone, new_milestone in zip(self, new_milestones):
+        for old_milestone, new_milestone in zip(self, new_milestones, strict=False):
             if old_milestone.project_id.allow_milestones:
                 milestone_mapping[old_milestone.id] = new_milestone.id
         return new_milestones

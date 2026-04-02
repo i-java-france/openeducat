@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError, ValidationError, RedirectWarning
-from odoo.tools.misc import formatLang, format_date
+from odoo import _, api, fields, models
+from odoo.exceptions import RedirectWarning, UserError, ValidationError
+from odoo.tools.misc import format_date, formatLang
 from odoo.tools.sql import column_exists, create_column
 
 INV_LINES_PER_STUB = 9
@@ -157,7 +156,7 @@ class AccountPayment(models.Model):
         for payment in self.filtered(lambda p: p.payment_method_id == payment_method_check and p.check_manual_sequencing):
             sequence = payment.journal_id.check_sequence_id
             payment.check_number = sequence.next_by_id()
-        return super(AccountPayment, self).action_post()
+        return super().action_post()
 
     def print_checks(self):
         """ Check that the recordset is valid, set the payments state to sent and call print_checks() """

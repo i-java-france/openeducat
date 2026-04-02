@@ -1,5 +1,5 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { _t } from "@web/core/l10n/translation";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {_t} from "@web/core/l10n/translation";
 
 export class ProductPageOption extends BaseOptionComponent {
     static template = "website_sale.ProductPageOption";
@@ -23,8 +23,8 @@ export class ProductPageOption extends BaseOptionComponent {
             );
             const multipleImages =
                 hasImages &&
-                productDetailMainEl.querySelector(".o_wsale_product_images")?.dataset.imageAmount >
-                    1;
+                productDetailMainEl.querySelector(".o_wsale_product_images")?.dataset
+                    .imageAmount > 1;
             const isGrid = !!productDetailMainEl.querySelector("#o-grid-product");
             const hasCarousel = !!productPageCarouselEl;
             const hasGrid = !!productPageGridEl;

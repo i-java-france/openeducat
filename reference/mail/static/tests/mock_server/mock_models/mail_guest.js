@@ -1,4 +1,4 @@
-import { getKwArgs, models } from "@web/../tests/web_test_helpers";
+import {getKwArgs, models} from "@web/../tests/web_test_helpers";
 
 export class MailGuest extends models.ServerModel {
     _name = "mail.guest";

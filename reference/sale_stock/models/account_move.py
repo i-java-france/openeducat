@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
 
-from odoo import models, api
-from odoo.tools import float_is_zero, float_compare
+from odoo import api, models
 from odoo.tools.misc import formatLang
 
 

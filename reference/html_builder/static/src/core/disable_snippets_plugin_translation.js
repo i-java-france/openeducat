@@ -1,4 +1,4 @@
-import { Plugin } from "@html_editor/plugin";
+import {Plugin} from "@html_editor/plugin";
 
 export class DisableSnippetsPlugin extends Plugin {
     static id = "disableSnippets";

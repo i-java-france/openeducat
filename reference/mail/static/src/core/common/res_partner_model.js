@@ -1,9 +1,9 @@
-import { Store } from "@mail/core/common/store_service";
-import { fields, Record } from "@mail/core/common/record";
-import { imageUrl } from "@web/core/utils/urls";
-import { debounce } from "@web/core/utils/timing";
+import {Store} from "@mail/core/common/store_service";
+import {fields, Record} from "@mail/core/common/record";
+import {imageUrl} from "@web/core/utils/urls";
+import {debounce} from "@web/core/utils/timing";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class ResPartner extends Record {
     static id = "id";
@@ -23,7 +23,9 @@ export class ResPartner extends Record {
         },
         onUpdate() {
             if (this.previousPresencechannel) {
-                this.store.env.services.bus_service.deleteChannel(this.previousPresencechannel);
+                this.store.env.services.bus_service.deleteChannel(
+                    this.previousPresencechannel
+                );
             }
             if (this._triggerPresenceSubscription) {
                 this.store.env.services.bus_service.addChannel(this.presenceChannel);
@@ -46,7 +48,7 @@ export class ResPartner extends Record {
      * @type {string}
      */
     function;
-    group_ids = fields.Many("res.groups", { inverse: "partners" });
+    group_ids = fields.Many("res.groups", {inverse: "partners"});
     /** @type {number} */
     id;
     /** @type {ImStatus} */
@@ -124,7 +126,8 @@ export class ResPartner extends Record {
 
     searchChat() {
         return Object.values(this.store.Thread.records).find(
-            (thread) => thread.channel_type === "chat" && thread.correspondent?.persona.eq(this)
+            (thread) =>
+                thread.channel_type === "chat" && thread.correspondent?.persona.eq(this)
         );
     }
 

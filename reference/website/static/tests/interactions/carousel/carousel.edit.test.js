@@ -1,14 +1,17 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
-import { describe, expect, test } from "@odoo/hoot";
-import { switchToEditMode } from "../../helpers";
-import { queryAll } from "@odoo/hoot-dom";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {switchToEditMode} from "../../helpers";
+import {queryAll} from "@odoo/hoot-dom";
 
 setupInteractionWhiteList("website.carousel_edit");
 
 describe.current.tags("interaction_dev");
 
 test("[EDIT] carousel_edit resets slide to attributes", async () => {
-    const { core } = await startInteractions(
+    const {core} = await startInteractions(
         `
         <section>
             <div id="slideshow_sample" class="carousel carousel-dark slide" data-bs-ride="ride" data-bs-interval="0">
@@ -41,7 +44,7 @@ test("[EDIT] carousel_edit resets slide to attributes", async () => {
             </div>
         </section>
     `,
-        { waitForStart: true, editMode: true }
+        {waitForStart: true, editMode: true}
     );
     await switchToEditMode(core);
 

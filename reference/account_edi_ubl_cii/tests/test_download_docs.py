@@ -3,8 +3,12 @@ from zipfile import ZipFile
 
 from odoo.fields import Command
 from odoo.tests.common import tagged
-from odoo.addons.account_edi_ubl_cii.tests.common import TestUblBis3Common, TestUblCiiBECommon
+
 from odoo.addons.account.tests.common import AccountTestInvoicingHttpCommon
+from odoo.addons.account_edi_ubl_cii.tests.common import (
+    TestUblBis3Common,
+    TestUblCiiBECommon,
+)
 
 
 @tagged('post_install', '-at_install')

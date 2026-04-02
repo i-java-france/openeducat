@@ -1,16 +1,16 @@
-import { test, expect } from "@odoo/hoot";
-import { click, press, queryOne } from "@odoo/hoot-dom";
-import { animationFrame, runAllTimers } from "@odoo/hoot-mock";
-import { Component, xml } from "@odoo/owl";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { AccordionItem } from "@web/core/dropdown/accordion_item";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+import {expect, test} from "@odoo/hoot";
+import {click, press, queryOne} from "@odoo/hoot-dom";
+import {animationFrame, runAllTimers} from "@odoo/hoot-mock";
+import {Component, xml} from "@odoo/owl";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {AccordionItem} from "@web/core/dropdown/accordion_item";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 
 test("accordion can be rendered", async () => {
     class Parent extends Component {
         static template = xml`<AccordionItem description="'Test'" class="'text-primary'" selected="false"><h5>In accordion</h5></AccordionItem>`;
-        static components = { AccordionItem };
+        static components = {AccordionItem};
         static props = ["*"];
     }
 
@@ -40,7 +40,7 @@ test("dropdown with accordion keyboard navigation", async () => {
                 </t>
             </Dropdown>
         `;
-        static components = { Dropdown, DropdownItem, AccordionItem };
+        static components = {Dropdown, DropdownItem, AccordionItem};
         static props = ["*"];
     }
 
@@ -51,27 +51,27 @@ test("dropdown with accordion keyboard navigation", async () => {
     expect(".dropdown-menu > .focus").toHaveCount(0);
 
     const scenarioSteps = [
-        { key: "arrowdown", expected: "item 1" },
-        { key: "arrowdown", expected: "item 2" },
-        { key: "arrowdown", expected: "item 3" },
-        { key: "arrowdown", expected: "item 1" },
-        { key: "tab", expected: "item 2" },
-        { key: "enter", expected: "item 2" },
-        { key: "tab", expected: "item 2-1" },
-        { key: "tab", expected: "item 2-2" },
-        { key: "tab", expected: "item 3" },
-        { key: "tab", expected: "item 1" },
-        { key: "arrowup", expected: "item 3" },
-        { key: "arrowup", expected: "item 2-2" },
-        { key: "arrowup", expected: "item 2-1" },
-        { key: "arrowup", expected: "item 2" },
-        { key: "enter", expected: "item 2" },
-        { key: "arrowup", expected: "item 1" },
-        { key: "shift+tab", expected: "item 3" },
-        { key: "shift+tab", expected: "item 2" },
-        { key: "shift+tab", expected: "item 1" },
-        { key: "end", expected: "item 3" },
-        { key: "home", expected: "item 1" },
+        {key: "arrowdown", expected: "item 1"},
+        {key: "arrowdown", expected: "item 2"},
+        {key: "arrowdown", expected: "item 3"},
+        {key: "arrowdown", expected: "item 1"},
+        {key: "tab", expected: "item 2"},
+        {key: "enter", expected: "item 2"},
+        {key: "tab", expected: "item 2-1"},
+        {key: "tab", expected: "item 2-2"},
+        {key: "tab", expected: "item 3"},
+        {key: "tab", expected: "item 1"},
+        {key: "arrowup", expected: "item 3"},
+        {key: "arrowup", expected: "item 2-2"},
+        {key: "arrowup", expected: "item 2-1"},
+        {key: "arrowup", expected: "item 2"},
+        {key: "enter", expected: "item 2"},
+        {key: "arrowup", expected: "item 1"},
+        {key: "shift+tab", expected: "item 3"},
+        {key: "shift+tab", expected: "item 2"},
+        {key: "shift+tab", expected: "item 1"},
+        {key: "end", expected: "item 3"},
+        {key: "home", expected: "item 1"},
     ];
 
     for (let i = 0; i < scenarioSteps.length; i++) {

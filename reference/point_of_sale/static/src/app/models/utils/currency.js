@@ -1,4 +1,4 @@
-import { formatMonetary } from "@web/views/fields/formatters";
+import {formatMonetary} from "@web/views/fields/formatters";
 
 export const formatCurrency = (value, currency, hasSymbol = true) =>
     formatMonetary(value, {

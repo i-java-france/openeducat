@@ -1,9 +1,9 @@
-import { DiscussClientAction } from "@mail/core/public_web/discuss_client_action";
-import { WelcomePage } from "@mail/discuss/core/public/welcome_page";
-import { browser } from "@web/core/browser/browser";
-import { patch } from "@web/core/utils/patch";
+import {DiscussClientAction} from "@mail/core/public_web/discuss_client_action";
+import {WelcomePage} from "@mail/discuss/core/public/welcome_page";
+import {browser} from "@web/core/browser/browser";
+import {patch} from "@web/core/utils/patch";
 
-DiscussClientAction.components = { ...DiscussClientAction.components, WelcomePage };
+DiscussClientAction.components = {...DiscussClientAction.components, WelcomePage};
 patch(DiscussClientAction.prototype, {
     setup() {
         super.setup(...arguments);
@@ -18,7 +18,9 @@ patch(DiscussClientAction.prototype, {
         const url = new URL(browser.location.href);
         url.searchParams.delete("email_token");
         browser.history.replaceState(browser.history.state, null, url.toString());
-        browser.addEventListener("popstate", () => this.restoreDiscussThread(this.props));
+        browser.addEventListener("popstate", () =>
+            this.restoreDiscussThread(this.props)
+        );
     },
     getActiveId() {
         const currentURL = new URL(browser.location);

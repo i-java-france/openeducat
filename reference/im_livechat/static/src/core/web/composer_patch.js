@@ -1,7 +1,7 @@
-import { Composer } from "@mail/core/common/composer";
-import { _t } from "@web/core/l10n/translation";
+import {Composer} from "@mail/core/common/composer";
+import {_t} from "@web/core/l10n/translation";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 patch(Composer.prototype, {
     onKeydown(ev) {

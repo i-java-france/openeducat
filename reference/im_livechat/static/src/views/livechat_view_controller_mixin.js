@@ -1,4 +1,4 @@
-import { useService } from "@web/core/utils/hooks";
+import {useService} from "@web/core/utils/hooks";
 
 export const LivechatViewControllerMixin = (ViewController) =>
     class extends ViewController {

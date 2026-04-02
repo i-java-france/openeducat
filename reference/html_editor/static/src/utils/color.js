@@ -1,6 +1,6 @@
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { isColorGradient } from "@web/core/utils/colors";
-import { isElement } from "./dom_info";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {isColorGradient} from "@web/core/utils/colors";
+import {isElement} from "./dom_info";
 
 export const COLOR_PALETTE_COMPATIBILITY_COLOR_NAMES = [
     "primary",
@@ -168,11 +168,13 @@ export function getTextColorOrClass(node) {
         return null;
     }
     if (node.style.color) {
-        return { type: "style", value: node.style.color };
+        return {type: "style", value: node.style.color};
     }
-    const textColorClass = [...node.classList].find((cls) => TEXT_CLASSES_REGEX.test(cls));
+    const textColorClass = [...node.classList].find((cls) =>
+        TEXT_CLASSES_REGEX.test(cls)
+    );
     if (textColorClass) {
-        return { type: "class", value: textColorClass };
+        return {type: "class", value: textColorClass};
     }
     return null;
 }

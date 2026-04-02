@@ -1,15 +1,16 @@
-from markupsafe import Markup
-from unittest.mock import patch
-from unittest.mock import DEFAULT
 import base64
+from unittest.mock import DEFAULT, patch
+
+from markupsafe import Markup
 
 from odoo import exceptions, tools
-from odoo.addons.mail.tests.common import mail_new_test_user, MailCommon
+from odoo.tests import Form, tagged, users, warmup
+from odoo.tools import mute_logger
+
+from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
+from odoo.addons.mail.tools.discuss import Store
 from odoo.addons.test_mail.models.test_mail_models import MailTestSimple
 from odoo.addons.test_mail.tests.common import TestRecipients
-from odoo.addons.mail.tools.discuss import Store
-from odoo.tests import Form, users, warmup, tagged
-from odoo.tools import mute_logger
 
 
 class ThreadRecipients(MailCommon, TestRecipients):
@@ -248,7 +249,7 @@ class TestAPI(ThreadRecipients):
             (self.test_partner, [{}]),
             (self.env['res.partner'], []),
         ]
-        for ticket, (exp_partners, exp_values_list) in zip(tickets, expected_all):
+        for ticket, (exp_partners, exp_values_list) in zip(tickets, expected_all, strict=False):
             partners = res[ticket.id]
             with self.subTest(ticket_name=ticket.name):
                 self.assertEqual(partners, exp_partners, f'Found {partners.name} instead of {exp_partners.name}')
@@ -1010,7 +1011,7 @@ class TestChatterTweaks(ThreadRecipients):
 
     @classmethod
     def setUpClass(cls):
-        super(TestChatterTweaks, cls).setUpClass()
+        super().setUpClass()
         cls.test_record = cls.env['mail.test.simple'].with_context(cls._test_context).create({'name': 'Test', 'email_from': 'ignasse@example.com'})
 
     @users('employee')
@@ -1162,7 +1163,7 @@ class TestDiscuss(MailCommon, TestRecipients):
 
     @classmethod
     def setUpClass(cls):
-        super(TestDiscuss, cls).setUpClass()
+        super().setUpClass()
         cls.test_record = cls.env['mail.test.simple'].with_context(cls._test_context).create({
             'name': 'Test',
             'email_from': 'ignasse@example.com'

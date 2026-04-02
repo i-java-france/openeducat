@@ -1,11 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import logging
-from threading import Thread, Event
+from threading import Event, Thread
 
-from odoo.addons.iot_drivers.main import drivers, iot_devices
-from odoo.addons.iot_drivers.event_manager import event_manager
-from odoo.addons.iot_drivers.tools.helpers import toggleable
 from odoo.tools.lru import LRU
+
+from odoo.addons.iot_drivers.event_manager import event_manager
+from odoo.addons.iot_drivers.main import drivers, iot_devices
+from odoo.addons.iot_drivers.tools.helpers import toggleable
 
 _logger = logging.getLogger(__name__)
 

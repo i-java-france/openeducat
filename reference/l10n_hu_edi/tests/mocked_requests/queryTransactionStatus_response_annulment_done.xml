@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns2:QueryTransactionStatusResponse xmlns="http://schemas.nav.gov.hu/NTCA/1.0/common"
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<ns2:QueryTransactionStatusResponse
+    xmlns="http://schemas.nav.gov.hu/NTCA/1.0/common"
     xmlns:ns2="http://schemas.nav.gov.hu/OSA/3.0/api"
     xmlns:ns3="http://schemas.nav.gov.hu/OSA/3.0/base"
-    xmlns:ns4="http://schemas.nav.gov.hu/OSA/3.0/data">
+    xmlns:ns4="http://schemas.nav.gov.hu/OSA/3.0/data"
+>
     <header>
         <requestId>ODOO88f933af5e3345188d56a53b59</requestId>
         <timestamp>2024-03-12T10:50:56.365Z</timestamp>
@@ -28,7 +30,8 @@
             <ns2:invoiceStatus>DONE</ns2:invoiceStatus>
             <ns2:businessValidationMessages>
                 <ns2:validationResultCode>INFO</ns2:validationResultCode>
-                <ns2:validationErrorCode>INFO_SINGLE_INVOICE_ANNULMENT</ns2:validationErrorCode>
+                <ns2:validationErrorCode
+                >INFO_SINGLE_INVOICE_ANNULMENT</ns2:validationErrorCode>
                 <ns2:message>Egyedi számla technikai érvénytelenítése</ns2:message>
                 <ns2:pointer>
                     <ns2:tag>InvoiceData/invoiceNumber</ns2:tag>
@@ -39,7 +42,8 @@
         </ns2:processingResult>
         <ns2:originalRequestVersion>3.0</ns2:originalRequestVersion>
         <ns2:annulmentData>
-            <ns2:annulmentVerificationStatus>VERIFICATION_DONE</ns2:annulmentVerificationStatus>
+            <ns2:annulmentVerificationStatus
+            >VERIFICATION_DONE</ns2:annulmentVerificationStatus>
         </ns2:annulmentData>
     </ns2:processingResults>
 </ns2:QueryTransactionStatusResponse>

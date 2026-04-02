@@ -1,15 +1,18 @@
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { computeM2OProps, Many2One } from "@web/views/fields/many2one/many2one";
-import { buildM2OFieldDescription, Many2OneField } from "@web/views/fields/many2one/many2one_field";
-import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
-import { user } from "@web/core/user";
-import { Component } from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {computeM2OProps, Many2One} from "@web/views/fields/many2one/many2one";
+import {
+    buildM2OFieldDescription,
+    Many2OneField,
+} from "@web/views/fields/many2one/many2one_field";
+import {FormViewDialog} from "@web/views/view_dialogs/form_view_dialog";
+import {user} from "@web/core/user";
+import {Component} from "@odoo/owl";
 
 export class SoLineCreateButton extends Component {
     static template = "sale_timesheet.SoLineCreateButton";
-    static components = { Many2One };
-    static props = { ...Many2OneField.props };
+    static components = {Many2One};
+    static props = {...Many2OneField.props};
 
     setup() {
         super.setup();
@@ -17,7 +20,7 @@ export class SoLineCreateButton extends Component {
     }
 
     openSalesOrderDialog() {
-        const { context, record } = this.props;
+        const {context, record} = this.props;
         this.dialogService.add(FormViewDialog, {
             title: "Create Sales Order",
             resModel: "sale.order",
@@ -34,7 +37,7 @@ export class SoLineCreateButton extends Component {
                     "get_first_service_line",
                     [rec.resId]
                 );
-                record.update({ sale_line_id: { id: service_line_id[0] } });
+                record.update({sale_line_id: {id: service_line_id[0]}});
             },
         });
     }

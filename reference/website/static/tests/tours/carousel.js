@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { delay } from "@web/core/utils/concurrency";
+import {delay} from "@web/core/utils/concurrency";
 import {
     insertSnippet,
     clickOnSnippet,
@@ -47,7 +47,8 @@ registerWebsitePreviewTour(
             groupName: "People",
         }),
         {
-            trigger: ":iframe .s_quotes_carousel_wrapper .carousel-item.active .s_blockquote",
+            trigger:
+                ":iframe .s_quotes_carousel_wrapper .carousel-item.active .s_blockquote",
             content: "Select the blockquote.",
             run: "click",
         },
@@ -59,7 +60,8 @@ registerWebsitePreviewTour(
         {
             trigger:
                 ":iframe .s_quotes_carousel_wrapper .carousel-item.active:not(:has(.s_blockquote))",
-            content: "Check that the blockquote has been removed and the carousel item is empty.",
+            content:
+                "Check that the blockquote has been removed and the carousel item is empty.",
         },
     ]
 );
@@ -86,7 +88,7 @@ registerWebsitePreviewTour(
         edition: true,
     },
     () => [
-        ...insertSnippet({ id: "s_carousel", name: "Carousel", groupName: "Intro" }),
+        ...insertSnippet({id: "s_carousel", name: "Carousel", groupName: "Intro"}),
         ...clickOnSnippet(".carousel .carousel-item.active"),
         // Slide to the right.
         changeOption("Slide (1/3)", "[aria-label='Move Forward']"),
@@ -167,7 +169,8 @@ const setSlideUrl = (urlText, matchText) => [
 
 const checkSlideNotClickable = () => ({
     content: "Check that the 'clickable-slide' class and anchor tag are removed",
-    trigger: ":iframe .carousel-item.active:not(.clickable-slide):not(:has(a.slide-link))",
+    trigger:
+        ":iframe .carousel-item.active:not(.clickable-slide):not(:has(a.slide-link))",
 });
 
 registerWebsitePreviewTour(
@@ -177,14 +180,15 @@ registerWebsitePreviewTour(
         edition: true,
     },
     () => [
-        ...insertSnippet({ id: "s_carousel", name: "Carousel", groupName: "Intro" }),
+        ...insertSnippet({id: "s_carousel", name: "Carousel", groupName: "Intro"}),
         ...clickOnSnippet(".carousel .carousel-item.active"),
 
         // Make the Slide clickable
         changeOption("Slide (1/3)", "[data-action-id='makeSlideClickable'] input"),
 
         {
-            content: "Check that the 'clickable-slide' class is added to the carousel item",
+            content:
+                "Check that the 'clickable-slide' class is added to the carousel item",
             trigger: ":iframe .carousel-item.active.clickable-slide",
         },
         ...setSlideUrl("/contactus", "/contactus-thank-you"),
@@ -209,8 +213,10 @@ registerWebsitePreviewTour(
         ...clickOnEditAndWaitEditMode(),
         ...clickOnSnippet(".carousel .carousel-item.active"),
         {
-            content: "Check that the entered URL is correctly shown in the option and remove it",
-            trigger: "div[data-action-id='setSlideAnchorUrl'] input:value(/contactus-thank-you)",
+            content:
+                "Check that the entered URL is correctly shown in the option and remove it",
+            trigger:
+                "div[data-action-id='setSlideAnchorUrl'] input:value(/contactus-thank-you)",
             run: "edit ",
         },
         {
@@ -220,7 +226,8 @@ registerWebsitePreviewTour(
         },
         {
             content: "Check that the anchor tag is removed",
-            trigger: ":iframe .carousel-item.active.clickable-slide:not(:has(a.slide-link))",
+            trigger:
+                ":iframe .carousel-item.active.clickable-slide:not(:has(a.slide-link))",
         },
         {
             content: "Check that the 'Open in New Tab' option is no longer visible",

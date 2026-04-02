@@ -1,14 +1,14 @@
-import { browser } from "../browser/browser";
-import { registry } from "../registry";
-import { Transition } from "../transition";
-import { useBus } from "../utils/hooks";
+import {browser} from "../browser/browser";
+import {registry} from "../registry";
+import {Transition} from "../transition";
+import {useBus} from "../utils/hooks";
 
-import { Component, useState } from "@odoo/owl";
-import { PAGER_UPDATED_EVENT, pagerBus } from "./pager";
+import {Component, useState} from "@odoo/owl";
+import {PAGER_UPDATED_EVENT, pagerBus} from "./pager";
 
 export class PagerIndicator extends Component {
     static template = "web.PagerIndicator";
-    static components = { Transition };
+    static components = {Transition};
     static props = {};
 
     setup() {
@@ -21,7 +21,7 @@ export class PagerIndicator extends Component {
         useBus(pagerBus, PAGER_UPDATED_EVENT, this.pagerUpdate);
     }
 
-    pagerUpdate({ detail }) {
+    pagerUpdate({detail}) {
         this.state.value = detail.value;
         this.state.total = detail.total;
         browser.clearTimeout(this.startShowTimer);

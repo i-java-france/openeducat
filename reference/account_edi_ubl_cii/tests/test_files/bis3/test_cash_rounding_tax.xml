@@ -1,8 +1,11 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<Invoice xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
-         xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
-         xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2">
-    <cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0
+<?xml version='1.0' encoding='UTF-8' ?>
+<Invoice
+    xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+    xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+    xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+>
+    <cbc:CustomizationID
+    >urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0
     </cbc:CustomizationID>
     <cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
     <cbc:ID>___ignore___</cbc:ID>
@@ -16,7 +19,10 @@
     <cac:AdditionalDocumentReference>
         <cbc:ID>___ignore___</cbc:ID>
         <cac:Attachment>
-            <cbc:EmbeddedDocumentBinaryObject mimeCode="___ignore___" filename="___ignore___">
+            <cbc:EmbeddedDocumentBinaryObject
+                mimeCode="___ignore___"
+                filename="___ignore___"
+            >
                 ___ignore___
             </cbc:EmbeddedDocumentBinaryObject>
         </cac:Attachment>

@@ -4,10 +4,12 @@ from datetime import datetime, timedelta
 from unittest import skip
 
 from odoo import Command, fields
+from odoo.tests import Form, freeze_time, tagged
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
-from odoo.addons.stock_account.tests.test_anglo_saxon_valuation_reconciliation_common import ValuationReconciliationTestCommon
-from odoo.exceptions import UserError
-from odoo.tests import Form, tagged, freeze_time
+
+from odoo.addons.stock_account.tests.test_anglo_saxon_valuation_reconciliation_common import (
+    ValuationReconciliationTestCommon,
+)
 
 
 @freeze_time("2021-01-14 09:12:15")

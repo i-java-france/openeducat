@@ -1,5 +1,5 @@
-import { advanceTime, animationFrame, scroll } from "@odoo/hoot-dom";
-import { defineStyle } from "@web/../tests/web_test_helpers";
+import {advanceTime, animationFrame, scroll} from "@odoo/hoot-dom";
+import {defineStyle} from "@web/../tests/web_test_helpers";
 
 export async function endTransition() {
     // Ensure we finish the transition
@@ -27,7 +27,7 @@ export async function setupTest(core, wrapwrap) {
  * @param {Parameters<scroll>[1]} target
  */
 export async function simpleScroll(wrapwrapEl, target) {
-    await scroll(wrapwrapEl, target, { scrollable: false });
+    await scroll(wrapwrapEl, target, {scrollable: false});
     await endTransition();
 }
 
@@ -40,7 +40,7 @@ export async function simpleScroll(wrapwrapEl, target) {
  * @param {number} source
  */
 export async function doubleScroll(wrapwrapEl, target, source) {
-    await scroll(wrapwrapEl, { y: source + (target > source ? 1 : -1) });
-    await scroll(wrapwrapEl, { y: target });
+    await scroll(wrapwrapEl, {y: source + (target > source ? 1 : -1)});
+    await scroll(wrapwrapEl, {y: target});
     await endTransition();
 }

@@ -1,5 +1,5 @@
-import { useService } from "@web/core/utils/hooks";
-import { FormController } from "@web/views/form/form_controller";
+import {useService} from "@web/core/utils/hooks";
+import {FormController} from "@web/views/form/form_controller";
 
 export class LivechatSessionFormController extends FormController {
     setup() {

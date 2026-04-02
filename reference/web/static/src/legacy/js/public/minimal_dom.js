@@ -1,7 +1,8 @@
-import { addLoadingEffect } from '@web/core/utils/ui';
+import {addLoadingEffect} from "@web/core/utils/ui";
 
 export const DEBOUNCE = 400;
-export const BUTTON_HANDLER_SELECTOR = 'a, button, input[type="submit"], input[type="button"], .btn';
+export const BUTTON_HANDLER_SELECTOR =
+    'a, button, input[type="submit"], input[type="button"], .btn';
 
 /**
  * Protects a function which is to be used as a handler by preventing its
@@ -21,7 +22,12 @@ export const BUTTON_HANDLER_SELECTOR = 'a, button, input[type="submit"], input[t
  * @param {function|boolean} stopPropagation
  * @param {function|boolean} stopImmediatePropagation
  */
-export function makeAsyncHandler(fct, preventDefault, stopPropagation, stopImmediatePropagation) {
+export function makeAsyncHandler(
+    fct,
+    preventDefault,
+    stopPropagation,
+    stopImmediatePropagation
+) {
     let pending = false;
     function _isLocked() {
         return pending;
@@ -33,13 +39,16 @@ export function makeAsyncHandler(fct, preventDefault, stopPropagation, stopImmed
         pending = false;
     }
     return function (ev) {
-        if (preventDefault === true || preventDefault && preventDefault()) {
+        if (preventDefault === true || (preventDefault && preventDefault())) {
             ev.preventDefault();
         }
-        if (stopPropagation === true || stopPropagation && stopPropagation()) {
+        if (stopPropagation === true || (stopPropagation && stopPropagation())) {
             ev.stopPropagation();
         }
-        if (stopImmediatePropagation === true || stopImmediatePropagation && stopImmediatePropagation()) {
+        if (
+            stopImmediatePropagation === true ||
+            (stopImmediatePropagation && stopImmediatePropagation())
+        ) {
             ev.stopImmediatePropagation();
         }
 
@@ -73,11 +82,21 @@ export function makeAsyncHandler(fct, preventDefault, stopPropagation, stopImmed
  * @param {function|boolean} stopPropagation
  * @param {function|boolean} stopImmediatePropagation
  */
-export function makeButtonHandler(fct, preventDefault, stopPropagation, stopImmediatePropagation) {
+export function makeButtonHandler(
+    fct,
+    preventDefault,
+    stopPropagation,
+    stopImmediatePropagation
+) {
     // Fallback: if the final handler is not bound to a button, at least
     // make it an async handler (also handles the case where some events
     // might ignore the disabled state of the button).
-    fct = makeAsyncHandler(fct, preventDefault, stopPropagation, stopImmediatePropagation);
+    fct = makeAsyncHandler(
+        fct,
+        preventDefault,
+        stopPropagation,
+        stopImmediatePropagation
+    );
 
     return function (ev) {
         const result = fct.apply(this, arguments);
@@ -92,7 +111,7 @@ export function makeButtonHandler(fct, preventDefault, stopPropagation, stopImme
         // a 'real' debounce creation useless. Also, during the debouncing
         // part, the button is disabled without any visual effect.
         buttonEl.classList.add("pe-none");
-        new Promise(resolve => setTimeout(resolve, DEBOUNCE)).then(() => {
+        new Promise((resolve) => setTimeout(resolve, DEBOUNCE)).then(() => {
             buttonEl.classList.remove("pe-none");
             const restore = addLoadingEffect(buttonEl);
             return Promise.resolve(result).then(restore, restore);

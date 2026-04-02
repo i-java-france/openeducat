@@ -1,14 +1,14 @@
-import { expect, onError, test } from "@odoo/hoot";
-import { on } from "@odoo/hoot-dom";
-import { Component, useRef, xml } from "@odoo/owl";
-import { contains, getMockEnv, mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { useDraggable } from "@web/core/utils/draggable";
+import {expect, onError, test} from "@odoo/hoot";
+import {on} from "@odoo/hoot-dom";
+import {Component, useRef, xml} from "@odoo/owl";
+import {contains, getMockEnv, mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {useDraggable} from "@web/core/utils/draggable";
 
 test("contains: all actions", async () => {
     class Container extends Component {
-        static components = { Dropdown, DropdownItem };
+        static components = {Dropdown, DropdownItem};
         static props = [];
         static template = xml`
             <div class="container" style="height: 10px; overflow: scroll">
@@ -39,7 +39,11 @@ test("contains: all actions", async () => {
         // Pointer-based
         ["button", CLICK, (t) => contains(t).click()],
         ["button", ["pointerdown"], (t) => contains(t).drag()],
-        ["button", ["pointerdown", "pointerup"], (t) => contains(t).dragAndDrop("button")],
+        [
+            "button",
+            ["pointerdown", "pointerup"],
+            (t) => contains(t).dragAndDrop("button"),
+        ],
         ["input[type=checkbox]", CLICK, (t) => contains(t).check()],
         ["input[type=checkbox]", CLICK, (t) => contains(t).uncheck()],
         ["button", ["pointerdown", "focus"], (t) => contains(t).focus()],
@@ -49,7 +53,7 @@ test("contains: all actions", async () => {
         [
             "input[type=text]",
             [
-                ...KEY_PRESS, // a
+                ...KEY_PRESS, // A
                 ...KEY_PRESS_WITH_CHANGE, // Enter
             ],
             (t) => contains(t).edit("a"),
@@ -57,7 +61,7 @@ test("contains: all actions", async () => {
         [
             "input[type=text]",
             [
-                ...KEY_PRESS, // b
+                ...KEY_PRESS, // B
                 ...KEY_PRESS_WITH_CHANGE, // Enter
             ],
             (t) => contains(t).fill("b"),
@@ -76,7 +80,7 @@ test("contains: all actions", async () => {
         ["button", KEY_PRESS, (t) => contains(t).press("a")],
 
         // Other
-        [".container", ["scroll"], (t) => contains(t).scroll({ top: 10 })],
+        [".container", ["scroll"], (t) => contains(t).scroll({top: 10})],
         ["select", ["change"], (t) => contains(t).select("a")],
         [
             ".container",

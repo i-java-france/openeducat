@@ -1,14 +1,14 @@
-import { Component, toRaw, useRef, useState } from "@odoo/owl";
+import {Component, toRaw, useRef, useState} from "@odoo/owl";
 import * as BarcodeScanner from "@web/core/barcode/barcode_dialog";
-import { isBarcodeScannerSupported } from "@web/core/barcode/barcode_video_scanner";
-import { isMobileOS } from "@web/core/browser/feature_detection";
-import { makeContext } from "@web/core/context";
-import { _t } from "@web/core/l10n/translation";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { evaluateBooleanExpr } from "@web/core/py_js/py";
-import { useService } from "@web/core/utils/hooks";
-import { getFieldDomain } from "@web/model/relational_model/utils";
-import { Many2XAutocomplete, useOpenMany2XRecord } from "../relational_utils";
+import {isBarcodeScannerSupported} from "@web/core/barcode/barcode_video_scanner";
+import {isMobileOS} from "@web/core/browser/feature_detection";
+import {makeContext} from "@web/core/context";
+import {_t} from "@web/core/l10n/translation";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {evaluateBooleanExpr} from "@web/core/py_js/py";
+import {useService} from "@web/core/utils/hooks";
+import {getFieldDomain} from "@web/model/relational_model/utils";
+import {Many2XAutocomplete, useOpenMany2XRecord} from "../relational_utils";
 
 ///////////////////////////////////////////////////////////////////////////////
 // UTILS
@@ -21,14 +21,16 @@ function extractData(record) {
     } else if ("name" in record) {
         name = record.name.id ? record.name.display_name : record.name;
     }
-    return { id: record.id, display_name: name };
+    return {id: record.id, display_name: name};
 }
 
 export function computeM2OProps(fieldProps) {
     const computeLinkCssClass = () => {
         const evalContext = fieldProps.record.evalContextWithVirtualIds;
         for (const decorationName in fieldProps.decorations) {
-            if (evaluateBooleanExpr(fieldProps.decorations[decorationName], evalContext)) {
+            if (
+                evaluateBooleanExpr(fieldProps.decorations[decorationName], evalContext)
+            ) {
                 return `text-${decorationName}`;
             }
         }
@@ -43,12 +45,13 @@ export function computeM2OProps(fieldProps) {
         canScanBarcode: fieldProps.canScanBarcode,
         canWrite: fieldProps.canWrite,
         context: fieldProps.context,
-        domain: () => getFieldDomain(fieldProps.record, fieldProps.name, fieldProps.domain),
+        domain: () =>
+            getFieldDomain(fieldProps.record, fieldProps.name, fieldProps.domain),
         id: fieldProps.id,
         linkCssClass: computeLinkCssClass(),
         nameCreateField: fieldProps.nameCreateField,
         openActionContext: () => {
-            const { context, name, openActionContext, record } = fieldProps;
+            const {context, name, openActionContext, record} = fieldProps;
             return makeContext(
                 [openActionContext || context, record.fields[name].context],
                 record.evalContext
@@ -59,9 +62,10 @@ export function computeM2OProps(fieldProps) {
         relation: fieldProps.record.fields[fieldProps.name].relation,
         searchThreshold: fieldProps.searchThreshold,
         preventMemoization: fieldProps.preventMemoization,
-        string: fieldProps.string || fieldProps.record.fields[fieldProps.name].string || "",
+        string:
+            fieldProps.string || fieldProps.record.fields[fieldProps.name].string || "",
         update: (value, options = {}) =>
-            fieldProps.record.update({ [fieldProps.name]: value }, options),
+            fieldProps.record.update({[fieldProps.name]: value}, options),
         value: toRaw(fieldProps.record.data[fieldProps.name]),
     };
 }
@@ -72,35 +76,35 @@ export function computeM2OProps(fieldProps) {
 
 export class Many2One extends Component {
     static template = "web.Many2One";
-    static components = { Many2XAutocomplete };
+    static components = {Many2XAutocomplete};
     static props = {
-        canCreate: { type: Boolean, optional: true },
-        canCreateEdit: { type: Boolean, optional: true },
-        canOpen: { type: Boolean, optional: true },
-        canQuickCreate: { type: Boolean, optional: true },
-        canScanBarcode: { type: Boolean, optional: true },
-        canWrite: { type: Boolean, optional: true },
-        context: { type: Object, optional: true },
-        createAction: { type: Function, optional: true },
-        cssClass: { type: String, optional: true },
-        domain: { type: Function, optional: true },
-        id: { type: String, optional: true },
-        linkCssClass: { type: String, optional: true },
-        nameCreateField: { type: String, optional: true },
-        openActionContext: { type: Function, optional: true },
-        openRecordAction: { type: Function, optional: true },
-        otherSources: { type: Array, optional: true },
-        placeholder: { type: String, optional: true },
-        readonly: { type: Boolean, optional: true },
-        relation: { type: String },
-        searchMoreLabel: { type: String, optional: true },
-        searchThreshold: { type: Number, optional: true },
-        preventMemoization: { type: Boolean, optional: true },
-        slots: { type: Object, optional: true },
-        specification: { type: Object, optional: true },
-        string: { type: String, optional: true },
-        update: { type: Function },
-        value: { type: [Array, Object, { value: false }], optional: true },
+        canCreate: {type: Boolean, optional: true},
+        canCreateEdit: {type: Boolean, optional: true},
+        canOpen: {type: Boolean, optional: true},
+        canQuickCreate: {type: Boolean, optional: true},
+        canScanBarcode: {type: Boolean, optional: true},
+        canWrite: {type: Boolean, optional: true},
+        context: {type: Object, optional: true},
+        createAction: {type: Function, optional: true},
+        cssClass: {type: String, optional: true},
+        domain: {type: Function, optional: true},
+        id: {type: String, optional: true},
+        linkCssClass: {type: String, optional: true},
+        nameCreateField: {type: String, optional: true},
+        openActionContext: {type: Function, optional: true},
+        openRecordAction: {type: Function, optional: true},
+        otherSources: {type: Array, optional: true},
+        placeholder: {type: String, optional: true},
+        readonly: {type: Boolean, optional: true},
+        relation: {type: String},
+        searchMoreLabel: {type: String, optional: true},
+        searchThreshold: {type: Number, optional: true},
+        preventMemoization: {type: Boolean, optional: true},
+        slots: {type: Object, optional: true},
+        specification: {type: Object, optional: true},
+        string: {type: String, optional: true},
+        update: {type: Function},
+        value: {type: [Array, Object, {value: false}], optional: true},
     };
     static defaultProps = {
         canCreate: true,
@@ -126,7 +130,7 @@ export class Many2One extends Component {
         this.notification = useService("notification");
         this.orm = useService("orm");
 
-        this.state = useState({ isFloating: false });
+        this.state = useState({isFloating: false});
 
         this.recordDialog = {
             open: useOpenMany2XRecord({
@@ -140,9 +144,14 @@ export class Many2One extends Component {
                     const resId = this.props.value?.id;
                     const fieldNames = ["display_name"];
                     // use unity read + relatedFields from Field Component
-                    const records = await this.orm.read(this.props.relation, [resId], fieldNames, {
-                        context: this.props.context,
-                    });
+                    const records = await this.orm.read(
+                        this.props.relation,
+                        [resId],
+                        fieldNames,
+                        {
+                            context: this.props.context,
+                        }
+                    );
                     await this.update(records[0] ? extractData(records[0]) : false);
                 },
                 onRecordDiscarded: () => {},
@@ -171,7 +180,9 @@ export class Many2One extends Component {
             nameCreateField: this.props.nameCreateField,
             otherSources: this.props.otherSources,
             placeholder: this.props.placeholder,
-            quickCreate: this.props.canQuickCreate ? (name) => this.quickCreate(name) : null,
+            quickCreate: this.props.canQuickCreate
+                ? (name) => this.quickCreate(name)
+                : null,
             resModel: this.props.relation,
             searchMoreLabel: this.props.searchMoreLabel,
             searchThreshold: this.props.searchThreshold,
@@ -182,7 +193,8 @@ export class Many2One extends Component {
             slots: this.props.slots,
             specification: this.props.specification,
             update: (records) => {
-                const idNamePair = records && records[0] ? extractData(records[0]) : false;
+                const idNamePair =
+                    records && records[0] ? extractData(records[0]) : false;
                 return this.update(idNamePair);
             },
             value: this.displayName,
@@ -213,7 +225,12 @@ export class Many2One extends Component {
 
     get hasBarcodeButton() {
         const supported = isBarcodeScannerSupported();
-        return this.props.canScanBarcode && isMobileOS() && supported && !this.hasLinkButton;
+        return (
+            this.props.canScanBarcode &&
+            isMobileOS() &&
+            supported &&
+            !this.hasLinkButton
+        );
     }
 
     get hasLinkButton() {
@@ -244,7 +261,7 @@ export class Many2One extends Component {
         } else {
             /** @type {any} */
             const message = _t("Please, scan again!");
-            this.notification.add(message, { type: "warning" });
+            this.notification.add(message, {type: "warning"});
         }
     }
 
@@ -271,9 +288,9 @@ export class Many2One extends Component {
             this.props.relation,
             "get_formview_action",
             [[this.props.value?.id]],
-            { context: this.props.openActionContext() }
+            {context: this.props.openActionContext()}
         );
-        await this.action.doAction(action, { newWindow });
+        await this.action.doAction(action, {newWindow});
     }
 
     async openRecordInDialog() {
@@ -294,7 +311,7 @@ export class Many2One extends Component {
         const validPairs = pairs.filter(([id]) => !!id);
         if (validPairs.length === 1) {
             const pair = validPairs[0];
-            return this.update({ id: pair[0], display_name: pair[1] });
+            return this.update({id: pair[0], display_name: pair[1]});
         } else {
             const input = this.input;
             input.value = barcode;
@@ -306,7 +323,7 @@ export class Many2One extends Component {
     }
 
     quickCreate(name) {
-        return this.update({ id: false, display_name: name });
+        return this.update({id: false, display_name: name});
     }
 
     update(idNamePair) {
@@ -331,7 +348,7 @@ class KanbanMany2OneAssignPopover extends Many2One {
 
 export class KanbanMany2One extends Component {
     static template = "web.KanbanMany2One";
-    static props = { ...Many2One.props };
+    static props = {...Many2One.props};
 
     setup() {
         this.assignPopover = usePopover(KanbanMany2OneAssignPopover, {
@@ -348,7 +365,7 @@ export class KanbanMany2One extends Component {
             placeholder: this.props.placeholder || _t("Search user..."),
             readonly: false,
             update: async (value) => {
-                await this.props.update(value, { save: true });
+                await this.props.update(value, {save: true});
                 this.assignPopover.close();
             },
         });

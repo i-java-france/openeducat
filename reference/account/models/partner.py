@@ -2,14 +2,15 @@
 
 import logging
 import re
-
 from collections import defaultdict
+
 from psycopg2 import errors as pgerrors
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
 from odoo.tools import SQL, unique
+
 from odoo.addons.account.models.account_move import BYPASS_LOCK_CHECK
 from odoo.addons.base_vat.models.res_partner import _ref_vat
 
@@ -203,7 +204,7 @@ class AccountFiscalPosition(models.Model):
         if zip_from or zip_to:
             for rec in self:
                 vals['zip_from'], vals['zip_to'] = self._convert_zip_values(zip_from or rec.zip_from, zip_to or rec.zip_to)
-        return super(AccountFiscalPosition, self).write(vals)
+        return super().write(vals)
 
     def _get_first_matching_fpos(self, partner):
         sorted_fpos = self.sorted(key=lambda f: (-len(f.company_id.parent_ids), f.sequence))  # company specific first, then sequence
@@ -704,7 +705,7 @@ class ResPartner(models.Model):
 
     @api.model
     def _commercial_fields(self):
-        return super(ResPartner, self)._commercial_fields() + \
+        return super()._commercial_fields() + \
             ['property_account_payable_id', 'property_account_receivable_id', 'property_account_position_id',
              'property_payment_term_id', 'property_supplier_payment_term_id', 'credit_limit']
 

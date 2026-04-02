@@ -1,12 +1,12 @@
-import { useAttachmentUploader } from "@mail/core/common/attachment_uploader_hook";
-import { ActivityMailTemplate } from "@mail/core/web/activity_mail_template";
-import { ActivityMarkAsDone } from "@mail/core/web/activity_markasdone_popover";
-import { computeDelay } from "@mail/utils/common/dates";
+import {useAttachmentUploader} from "@mail/core/common/attachment_uploader_hook";
+import {ActivityMailTemplate} from "@mail/core/web/activity_mail_template";
+import {ActivityMarkAsDone} from "@mail/core/web/activity_markasdone_popover";
+import {computeDelay} from "@mail/utils/common/dates";
 
-import { Component, useState } from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
-import { FileUploader } from "@web/views/fields/file_handler";
+import {_t} from "@web/core/l10n/translation";
+import {FileUploader} from "@web/views/fields/file_handler";
 
 /**
  * @typedef {Object} Props
@@ -17,7 +17,7 @@ import { FileUploader } from "@web/views/fields/file_handler";
  * @extends {Component<Props, Env>}
  */
 export class ActivityListPopoverItem extends Component {
-    static components = { ActivityMailTemplate, ActivityMarkAsDone, FileUploader };
+    static components = {ActivityMailTemplate, ActivityMarkAsDone, FileUploader};
     static props = [
         "activity",
         "onActivityChanged?",
@@ -28,7 +28,7 @@ export class ActivityListPopoverItem extends Component {
 
     setup() {
         super.setup();
-        this.state = useState({ hasMarkDoneView: false });
+        this.state = useState({hasMarkDoneView: false});
         if (this.props.activity.activity_category === "upload_file") {
             this.attachmentUploader = useAttachmentUploader(
                 this.env.services["mail.store"].Thread.insert({
@@ -71,7 +71,9 @@ export class ActivityListPopoverItem extends Component {
 
     get hasFileUploader() {
         const activity = this.props.activity;
-        return activity.state !== "done" && activity.activity_category === "upload_file";
+        return (
+            activity.state !== "done" && activity.activity_category === "upload_file"
+        );
     }
 
     get hasMarkDoneButton() {
@@ -88,7 +90,7 @@ export class ActivityListPopoverItem extends Component {
     }
 
     async onFileUploaded(data) {
-        const { id: attachmentId } = await this.attachmentUploader.uploadData(data, {
+        const {id: attachmentId} = await this.attachmentUploader.uploadData(data, {
             activity: this.props.activity,
         });
         await this.props.activity.markAsDone([attachmentId]);

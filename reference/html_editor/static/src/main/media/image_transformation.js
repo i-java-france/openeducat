@@ -23,10 +23,10 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Component, onMounted, useExternalListener, useRef } from "@odoo/owl";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
-import { usePositionHook } from "@html_editor/position_hook";
-import { closestElement } from "@html_editor/utils/dom_traversal";
+import {Component, onMounted, useExternalListener, useRef} from "@odoo/owl";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
+import {usePositionHook} from "@html_editor/position_hook";
+import {closestElement} from "@html_editor/utils/dom_traversal";
 
 const rad = Math.PI / 180;
 const MIN_IMAGE_SIZE = 20;
@@ -34,13 +34,13 @@ const MIN_IMAGE_SIZE = 20;
 export class ImageTransformation extends Component {
     static template = "html_editor.ImageTransformation";
     static props = {
-        document: { validate: (p) => p.nodeType === Node.DOCUMENT_NODE },
-        editable: { validate: (p) => p.nodeType === Node.ELEMENT_NODE },
-        image: { validate: (p) => p.tagName === "IMG" },
-        destroy: { type: Function },
-        onChange: { type: Function },
-        onApply: { type: Function, optional: true },
-        onComponentMounted: { type: Function, optional: true },
+        document: {validate: (p) => p.nodeType === Node.DOCUMENT_NODE},
+        editable: {validate: (p) => p.nodeType === Node.ELEMENT_NODE},
+        image: {validate: (p) => p.tagName === "IMG"},
+        destroy: {type: Function},
+        onChange: {type: Function},
+        onApply: {type: Function, optional: true},
+        onComponentMounted: {type: Function, optional: true},
     };
     static defaultProps = {
         onComponentMounted: () => {},
@@ -76,7 +76,7 @@ export class ImageTransformation extends Component {
             }
         });
         useHotkey("escape", () => this.destroy());
-        usePositionHook({ el: this.props.editable }, this.document, () => {
+        usePositionHook({el: this.props.editable}, this.document, () => {
             if (!this.isCurrentlyTransforming) {
                 this.resetHandlers();
             }
@@ -93,7 +93,7 @@ export class ImageTransformation extends Component {
             return;
         }
         ev.preventDefault();
-        const { pageX, pageY } = this.normalizeCoordinates(ev);
+        const {pageX, pageY} = this.normalizeCoordinates(ev);
         const settings = this.transfo.settings;
         const center = this.transfo.active.center;
         const cdx = center.left - pageX;
@@ -255,7 +255,7 @@ export class ImageTransformation extends Component {
             type = "mr";
         }
 
-        const { pageX, pageY } = this.normalizeCoordinates(ev);
+        const {pageX, pageY} = this.normalizeCoordinates(ev);
         this.transfo.active = {
             type: type,
             pageX: pageX,
@@ -292,14 +292,19 @@ export class ImageTransformation extends Component {
             this.transfo.settings.translatex =
                 (this.transfo.settings.translatexp / 100) * this.transfo.settings.width;
         } else {
-            this.transfo.settings.translatex = translatex ? parseFloat(translatex[1]) : 0;
+            this.transfo.settings.translatex = translatex
+                ? parseFloat(translatex[1])
+                : 0;
         }
         if (translatey && translatey[2] === "%") {
             this.transfo.settings.translateyp = parseFloat(translatey[1]);
             this.transfo.settings.translatey =
-                (this.transfo.settings.translateyp / 100) * this.transfo.settings.height;
+                (this.transfo.settings.translateyp / 100) *
+                this.transfo.settings.height;
         } else {
-            this.transfo.settings.translatey = translatey ? parseFloat(translatey[1]) : 0;
+            this.transfo.settings.translatey = translatey
+                ? parseFloat(translatey[1])
+                : 0;
         }
 
         this.transfo.settings.css = window.getComputedStyle(this.image, null);
@@ -360,20 +365,28 @@ export class ImageTransformation extends Component {
         if (evView === iframeWindow && frameElement) {
             const frameRect = frameElement.getBoundingClientRect();
             return {
-                pageX: ev.clientX + frameRect.left + frameElement.clientLeft + window.pageXOffset,
-                pageY: ev.clientY + frameRect.top + frameElement.clientTop + window.pageYOffset,
+                pageX:
+                    ev.clientX +
+                    frameRect.left +
+                    frameElement.clientLeft +
+                    window.pageXOffset,
+                pageY:
+                    ev.clientY +
+                    frameRect.top +
+                    frameElement.clientTop +
+                    window.pageYOffset,
             };
         }
-        return { pageX: ev.pageX, pageY: ev.pageY };
+        return {pageX: ev.pageX, pageY: ev.pageY};
     }
 
     getOffset(target) {
         if (!target.getClientRects().length) {
-            return { top: 0, left: 0 };
+            return {top: 0, left: 0};
         } else {
             const rect = target.getBoundingClientRect();
             const frameElement = target.ownerDocument.defaultView.frameElement;
-            const offset = { top: 0, left: 0 };
+            const offset = {top: 0, left: 0};
             if (frameElement) {
                 const frameRect = frameElement.getBoundingClientRect();
                 offset.left += frameRect.left + frameElement.clientLeft;

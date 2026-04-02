@@ -1,9 +1,9 @@
-import { test, expect } from "@odoo/hoot";
-import { mockDate } from "@odoo/hoot-mock";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { getFilledOrder, setupPosEnv } from "@point_of_sale/../tests/unit/utils";
-import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
-import { ManageGiftCardPopup } from "@pos_loyalty/app/components/popups/manage_giftcard_popup/manage_giftcard_popup";
+import {expect, test} from "@odoo/hoot";
+import {mockDate} from "@odoo/hoot-mock";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {getFilledOrder, setupPosEnv} from "@point_of_sale/../tests/unit/utils";
+import {definePosModels} from "@point_of_sale/../tests/unit/data/generate_model_definitions";
+import {ManageGiftCardPopup} from "@pos_loyalty/app/components/popups/manage_giftcard_popup/manage_giftcard_popup";
 
 definePosModels();
 
@@ -21,7 +21,7 @@ test("addBalance", async () => {
             line: order.lines[0],
             title: "Sell/Manage physical gift card",
             getPayload: (code, amount, expDate) => {
-                payloadResult = { code, amount, expDate };
+                payloadResult = {code, amount, expDate};
             },
             close: () => {},
         },
@@ -43,6 +43,6 @@ test("addBalance", async () => {
 
     expect(payloadResult.code).toBe("101");
     expect(payloadResult.amount).toBe(100);
-    // expiration is +1 year
+    // Expiration is +1 year
     expect(payloadResult.expDate).toBe("2026-01-01");
 });

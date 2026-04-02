@@ -1,10 +1,10 @@
-import { _t } from "@web/core/l10n/translation";
-import { editModelDebug } from "@web/core/debug/debug_utils";
-import { registry } from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {editModelDebug} from "@web/core/debug/debug_utils";
+import {registry} from "@web/core/registry";
 
 const debugRegistry = registry.category("debug");
 
-function editAction({ action, env }) {
+function editAction({action, env}) {
     if (!action.id) {
         return null;
     }
@@ -20,7 +20,7 @@ function editAction({ action, env }) {
     };
 }
 
-function viewFields({ action, env }) {
+function viewFields({action, env}) {
     if (!action.res_model) {
         return null;
     }
@@ -30,9 +30,13 @@ function viewFields({ action, env }) {
         description,
         callback: async () => {
             const modelId = (
-                await env.services.orm.search("ir.model", [["model", "=", action.res_model]], {
-                    limit: 1,
-                })
+                await env.services.orm.search(
+                    "ir.model",
+                    [["model", "=", action.res_model]],
+                    {
+                        limit: 1,
+                    }
+                )
             )[0];
             env.services.action.doAction({
                 res_model: "ir.model.fields",
@@ -53,7 +57,7 @@ function viewFields({ action, env }) {
     };
 }
 
-function ViewModel({ action, env }) {
+function ViewModel({action, env}) {
     if (!action.res_model) {
         return null;
     }
@@ -74,7 +78,7 @@ function ViewModel({ action, env }) {
     };
 }
 
-function manageFilters({ action, env }) {
+function manageFilters({action, env}) {
     if (!action.res_model) {
         return null;
     }
@@ -103,7 +107,7 @@ function manageFilters({ action, env }) {
     };
 }
 
-function viewAccessRights({ accessRights, action, env }) {
+function viewAccessRights({accessRights, action, env}) {
     if (!action.res_model || !accessRights.canSeeModelAccess) {
         return null;
     }
@@ -113,9 +117,13 @@ function viewAccessRights({ accessRights, action, env }) {
         description,
         callback: async () => {
             const modelId = (
-                await env.services.orm.search("ir.model", [["model", "=", action.res_model]], {
-                    limit: 1,
-                })
+                await env.services.orm.search(
+                    "ir.model",
+                    [["model", "=", action.res_model]],
+                    {
+                        limit: 1,
+                    }
+                )
             )[0];
             env.services.action.doAction({
                 res_model: "ir.model.access",
@@ -136,7 +144,7 @@ function viewAccessRights({ accessRights, action, env }) {
     };
 }
 
-function viewRecordRules({ accessRights, action, env }) {
+function viewRecordRules({accessRights, action, env}) {
     if (!action.res_model || !accessRights.canSeeRecordRules) {
         return null;
     }
@@ -146,9 +154,13 @@ function viewRecordRules({ accessRights, action, env }) {
         description: _t("Record Rules"),
         callback: async () => {
             const modelId = (
-                await env.services.orm.search("ir.model", [["model", "=", action.res_model]], {
-                    limit: 1,
-                })
+                await env.services.orm.search(
+                    "ir.model",
+                    [["model", "=", action.res_model]],
+                    {
+                        limit: 1,
+                    }
+                )
             )[0];
             env.services.action.doAction({
                 res_model: "ir.rule",

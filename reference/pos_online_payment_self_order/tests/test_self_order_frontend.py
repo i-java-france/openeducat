@@ -1,14 +1,18 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from unittest.mock import patch
 
 import odoo.tests
 from odoo import Command
-from odoo.addons.pos_online_payment.tests.online_payment_common import OnlinePaymentCommon
-from odoo.addons.pos_restaurant.tests.test_frontend import TestFrontendCommon
-from odoo.addons.pos_self_order.tests.self_order_common_test import SelfOrderCommonTest
-from unittest.mock import patch
+
 from odoo.addons.http_routing.models import ir_http
 from odoo.addons.pos_online_payment.controllers.payment_portal import PaymentPortal
+from odoo.addons.pos_online_payment.tests.online_payment_common import (
+    OnlinePaymentCommon,
+)
+from odoo.addons.pos_restaurant.tests.test_frontend import TestFrontendCommon
+from odoo.addons.pos_self_order.tests.self_order_common_test import SelfOrderCommonTest
+
 
 @odoo.tests.tagged("post_install", "-at_install")
 class TestSelfOrderFrontendMobile(SelfOrderCommonTest):

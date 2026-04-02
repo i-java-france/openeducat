@@ -1,37 +1,43 @@
-import { mailDataHelpers } from "@mail/../tests/mock_server/mail_mock_server";
+import {mailDataHelpers} from "@mail/../tests/mock_server/mail_mock_server";
 
-import { Command, fields, getKwArgs, makeKwArgs, models } from "@web/../tests/web_test_helpers";
+import {
+    Command,
+    fields,
+    getKwArgs,
+    makeKwArgs,
+    models,
+} from "@web/../tests/web_test_helpers";
 
 export class LivechatChannel extends models.ServerModel {
     _name = "im_livechat.channel";
 
-    available_operator_ids = fields.Many2many({ relation: "res.users" }); // FIXME: somehow not fetched properly
-    user_ids = fields.Many2many({ relation: "res.users" }); // FIXME: somehow not fetched properly
+    available_operator_ids = fields.Many2many({relation: "res.users"}); // FIXME: somehow not fetched properly
+    user_ids = fields.Many2many({relation: "res.users"}); // FIXME: somehow not fetched properly
 
     /** @param {integer} id */
     action_join(id) {
-        this.write([id], { user_ids: [Command.link(this.env.user.id)] });
+        this.write([id], {user_ids: [Command.link(this.env.user.id)]});
         const [partner] = this.env["res.partner"].read(this.env.user.partner_id);
         this.env["bus.bus"]._sendone(
             partner,
             "mail.record/insert",
             new mailDataHelpers.Store(
                 this.browse(id),
-                makeKwArgs({ fields: ["are_you_inside", "name"] })
+                makeKwArgs({fields: ["are_you_inside", "name"]})
             ).get_result()
         );
     }
 
     /** @param {integer} id */
     action_quit(id) {
-        this.write(id, { user_ids: [Command.unlink(this.env.user.id)] });
+        this.write(id, {user_ids: [Command.unlink(this.env.user.id)]});
         const [partner] = this.env["res.partner"].read(this.env.user.partner_id);
         this.env["bus.bus"]._sendone(
             partner,
             "mail.record/insert",
             new mailDataHelpers.Store(
                 this.browse(id),
-                makeKwArgs({ fields: ["are_you_inside", "name"] })
+                makeKwArgs({fields: ["are_you_inside", "name"]})
             ).get_result()
         );
     }
@@ -61,14 +67,19 @@ export class LivechatChannel extends models.ServerModel {
                 unpin_dt: "2021-01-01 12:00:00",
             }),
         ];
-        const guest = ResUsers._is_public(this.env.uid) && MailGuest._get_guest_from_context();
+        const guest =
+            ResUsers._is_public(this.env.uid) && MailGuest._get_guest_from_context();
         if (guest) {
             membersToAdd.push(
-                Command.create({ guest_id: guest.id, livechat_member_type: "visitor" })
+                Command.create({guest_id: guest.id, livechat_member_type: "visitor"})
             );
         }
         let visitorUser;
-        if (this.env.user && !ResUsers._is_public(this.env.uid) && this.env.user !== agent) {
+        if (
+            this.env.user &&
+            !ResUsers._is_public(this.env.uid) &&
+            this.env.user !== agent
+        ) {
             visitorUser = this.env.user;
             membersToAdd.push(
                 Command.create({
@@ -101,8 +112,9 @@ export class LivechatChannel extends models.ServerModel {
     _get_operator(id, previous_operator_id) {
         const availableUsers = this._compute_available_operator_ids(id);
         return (
-            availableUsers.find((operator) => operator.partner_id === previous_operator_id) ??
-            availableUsers[0]
+            availableUsers.find(
+                (operator) => operator.partner_id === previous_operator_id
+            ) ?? availableUsers[0]
         );
     }
 

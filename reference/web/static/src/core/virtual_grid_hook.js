@@ -1,6 +1,6 @@
-import { useComponent, useEffect, useExternalListener } from "@odoo/owl";
-import { pick, shallowEqual } from "@web/core/utils/objects";
-import { useThrottleForAnimation } from "@web/core/utils/timing";
+import {useComponent, useEffect, useExternalListener} from "@odoo/owl";
+import {pick, shallowEqual} from "@web/core/utils/objects";
+import {useThrottleForAnimation} from "@web/core/utils/timing";
 
 /**
  * @template T
@@ -61,7 +61,13 @@ const BUFFER_COEFFICIENT = 1;
  * @param {GetIndexesParams} param0
  * @returns {[number, number] | undefined} the indexes of the visible items with a surrounding buffer of totalSize on each side.
  */
-function getIndexes({ sizes, start, span, prevStartIndex, bufferCoef = BUFFER_COEFFICIENT }) {
+function getIndexes({
+    sizes,
+    start,
+    span,
+    prevStartIndex,
+    bufferCoef = BUFFER_COEFFICIENT,
+}) {
     if (!sizes || !sizes.length) {
         return [];
     }
@@ -105,11 +111,11 @@ function getIndexes({ sizes, start, span, prevStartIndex, bufferCoef = BUFFER_CO
  * @param {VirtualGridParams<T>} params
  * @returns {VirtualGridIndexes & VirtualGridSetters}
  */
-export function useVirtualGrid({ scrollableRef, initialScroll, onChange, bufferCoef }) {
+export function useVirtualGrid({scrollableRef, initialScroll, onChange, bufferCoef}) {
     const comp = useComponent();
     onChange ||= () => comp.render();
 
-    const current = { scroll: { left: 0, top: 0, ...initialScroll } };
+    const current = {scroll: {left: 0, top: 0, ...initialScroll}};
     const computeColumnsIndexes = () => {
         return getIndexes({
             sizes: current.summedColumnsWidths,

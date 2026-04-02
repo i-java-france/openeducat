@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.crm.tests.common import INCOMING_EMAIL, TestCrmCommon
 from odoo.tests import tagged, users
-from odoo.tools import email_normalize, formataddr, mute_logger
+from odoo.tools import email_normalize, mute_logger
+
+from odoo.addons.crm.tests.common import INCOMING_EMAIL, TestCrmCommon
 
 
 @tagged('mail_thread', 'mail_gateway')
@@ -13,7 +13,7 @@ class NewLeadNotification(TestCrmCommon):
     @classmethod
     def setUpClass(cls):
         """ Activate some langs to test lang propagation in various mail flows """
-        super(NewLeadNotification, cls).setUpClass()
+        super().setUpClass()
         cls._activate_multi_company()
 
         cls.test_email = '"Test Email" <test.email@example.com>'
@@ -180,11 +180,11 @@ class NewLeadNotification(TestCrmCommon):
                     'create_values': {},
                 },
             ],
-        ]):
+        ], strict=False):
             with self.subTest(lead_name=lead.name, email_from=lead.email_from):
                 res = lead._message_get_suggested_recipients(no_create=True)
                 self.assertEqual(len(res), len(expected_suggested))
-                for received, expected in zip(res, expected_suggested):
+                for received, expected in zip(res, expected_suggested, strict=False):
                     self.assertDictEqual(received, expected)
 
     @users('user_sales_manager')

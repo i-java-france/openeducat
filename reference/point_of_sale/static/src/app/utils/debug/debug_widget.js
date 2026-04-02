@@ -1,11 +1,18 @@
-import { _t } from "@web/core/l10n/translation";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { useRef, useState, Component, onMounted, onWillDestroy, useEffect } from "@odoo/owl";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { serializeDateTime } from "@web/core/l10n/dates";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { downloadPosLogs } from "../pretty_console_log";
-const { DateTime } = luxon;
+import {_t} from "@web/core/l10n/translation";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {
+    useRef,
+    useState,
+    Component,
+    onMounted,
+    onWillDestroy,
+    useEffect,
+} from "@odoo/owl";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {serializeDateTime} from "@web/core/l10n/dates";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {downloadPosLogs} from "../pretty_console_log";
+const {DateTime} = luxon;
 
 export class DebugWidget extends Component {
     static template = "point_of_sale.DebugWidget";
@@ -37,11 +44,17 @@ export class DebugWidget extends Component {
                 return;
             }
 
-            this.importOrderInput.el.addEventListener("click", this.handleFileOrderImport);
+            this.importOrderInput.el.addEventListener(
+                "click",
+                this.handleFileOrderImport
+            );
         });
         onWillDestroy(() => {
             if (this.importOrderInput?.el) {
-                this.importOrderInput.el.removeEventListener("click", this.handleFileOrderImport);
+                this.importOrderInput.el.removeEventListener(
+                    "click",
+                    this.handleFileOrderImport
+                );
             }
         });
 
@@ -90,7 +103,9 @@ export class DebugWidget extends Component {
         if (!this.barcodeReader) {
             return;
         }
-        const ean = this.barcodeReader.parser.sanitize_ean(this.state.barcodeInput || "0");
+        const ean = this.barcodeReader.parser.sanitize_ean(
+            this.state.barcodeInput || "0"
+        );
         this.state.barcodeInput = ean;
         await this.barcodeReader.scan(ean);
     }
@@ -100,7 +115,7 @@ export class DebugWidget extends Component {
         }
         return new Blob([contents]);
     }
-    deleteOrders({ paid = true } = {}) {
+    deleteOrders({paid = true} = {}) {
         this.dialog.add(ConfirmationDialog, {
             title: _t("Delete Orders?"),
             body: _t(
@@ -166,7 +181,7 @@ export class DebugWidget extends Component {
     async downloadLogs() {
         await downloadPosLogs();
     }
-    _onBufferUpdate({ detail: value }) {
+    _onBufferUpdate({detail: value}) {
         this.state.buffer = value;
     }
     get bufferRepr() {

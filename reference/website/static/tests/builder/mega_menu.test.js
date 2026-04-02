@@ -1,15 +1,15 @@
-import { expect, test } from "@odoo/hoot";
-import { defineWebsiteModels, setupWebsiteBuilder } from "./website_helpers";
-import { contains, onRpc } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {defineWebsiteModels, setupWebsiteBuilder} from "./website_helpers";
+import {contains, onRpc} from "@web/../tests/web_test_helpers";
 
 defineWebsiteModels();
 
 test("Save several megamenu", async () => {
     const savedMenus = new Set();
 
-    onRpc("ir.ui.view", "save", ({ args }) => true);
-    onRpc("website.menu", "write", ({ args: [[id], value] }) => {
-        expect(value).toEqual({ mega_menu_classes: "o_mega_menu_container_size" });
+    onRpc("ir.ui.view", "save", ({args}) => true);
+    onRpc("website.menu", "write", ({args: [[id], value]}) => {
+        expect(value).toEqual({mega_menu_classes: "o_mega_menu_container_size"});
         savedMenus.add(id);
         expect.step(`save mega menu`);
         return true;
@@ -44,5 +44,5 @@ test("Save several megamenu", async () => {
     await contains("[data-action=save]").click();
 
     await expect.waitForSteps(["save mega menu", "save mega menu"]);
-    expect(savedMenus).toEqual(new Set([1, 2]), { message: "both menu have been saved" });
+    expect(savedMenus).toEqual(new Set([1, 2]), {message: "both menu have been saved"});
 });

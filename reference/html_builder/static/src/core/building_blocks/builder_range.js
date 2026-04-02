@@ -1,4 +1,4 @@
-import { Component, useRef } from "@odoo/owl";
+import {Component, useRef} from "@odoo/owl";
 import {
     basicContainerBuilderComponentProps,
     useActionInfo,
@@ -6,18 +6,18 @@ import {
     useInputBuilderComponent,
     useInputDebouncedCommit,
 } from "../utils";
-import { BuilderComponent } from "./builder_component";
+import {BuilderComponent} from "./builder_component";
 
 export class BuilderRange extends Component {
     static template = "html_builder.BuilderRange";
     static props = {
         ...basicContainerBuilderComponentProps,
-        min: { type: Number, optional: true },
-        max: { type: Number, optional: true },
-        step: { type: Number, optional: true },
-        displayRangeValue: { type: Boolean, optional: true },
-        computedOutput: { type: Function, optional: true },
-        unit: { type: String, optional: true },
+        min: {type: Number, optional: true},
+        max: {type: Number, optional: true},
+        step: {type: Number, optional: true},
+        displayRangeValue: {type: Boolean, optional: true},
+        computedOutput: {type: Function, optional: true},
+        unit: {type: String, optional: true},
     };
     static defaultProps = {
         ...BuilderComponent.defaultProps,
@@ -26,12 +26,12 @@ export class BuilderRange extends Component {
         step: 1,
         displayRangeValue: false,
     };
-    static components = { BuilderComponent };
+    static components = {BuilderComponent};
 
     setup() {
         this.info = useActionInfo();
         useBuilderComponent();
-        const { state, commit, preview } = useInputBuilderComponent({
+        const {state, commit, preview} = useInputBuilderComponent({
             id: this.props.id,
             formatRawValue: this.formatRawValue.bind(this),
             parseDisplayValue: this.parseDisplayValue.bind(this),
@@ -105,7 +105,9 @@ export class BuilderRange extends Component {
 
     get className() {
         const baseClasses = "p-0 border-0";
-        return this.props.min > this.props.max ? `${baseClasses} o_we_inverted_range` : baseClasses;
+        return this.props.min > this.props.max
+            ? `${baseClasses} o_we_inverted_range`
+            : baseClasses;
     }
 
     get min() {

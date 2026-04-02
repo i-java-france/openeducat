@@ -1,4 +1,4 @@
-import { run } from "@point_of_sale/../tests/generic_helpers/utils";
+import {run} from "@point_of_sale/../tests/generic_helpers/utils";
 
 export function postMessage(message, description = "") {
     return run(() => {
@@ -19,7 +19,9 @@ export function addProduct(product, description = "") {
     return {
         trigger: "div:contains('Welcome.')",
         run: async () => {
-            window.customerDisplayChannel = new BroadcastChannel("UPDATE_CUSTOMER_DISPLAY");
+            window.customerDisplayChannel = new BroadcastChannel(
+                "UPDATE_CUSTOMER_DISPLAY"
+            );
             postMessage(product, description).run();
         },
     };
@@ -33,7 +35,7 @@ export const ADD_PRODUCT_SELECTED =
 
 export const ADD_MULTI_PRODUCTS = (() => {
     const count = 20;
-    const lines = Array.from({ length: count }, (_, i) => {
+    const lines = Array.from({length: count}, (_, i) => {
         const price = (Math.random() * 100 + 1).toFixed(2);
         return {
             productName: `Product ${i + 1}`,
@@ -95,7 +97,7 @@ export const PAY_WITH_CARD = {
     ],
     finalized: false,
     amount: "2,972.75",
-    paymentLines: [{ name: "CARD", amount: "2,972.75" }],
+    paymentLines: [{name: "CARD", amount: "2,972.75"}],
     change: 0,
     onlinePaymentData: {},
     qrPaymentData: null,
@@ -121,7 +123,7 @@ export const SEND_QR = {
     ],
     finalized: false,
     amount: "2,972.75",
-    paymentLines: [{ name: "CARD", amount: "2,972.75" }],
+    paymentLines: [{name: "CARD", amount: "2,972.75"}],
     change: 0,
     onlinePaymentData: {},
     qrPaymentData: {
@@ -151,7 +153,7 @@ export const PAY_ONLINE = {
     ],
     finalized: false,
     amount: "2,972.75",
-    paymentLines: [{ name: "ONLINE", amount: "2,972.75" }],
+    paymentLines: [{name: "ONLINE", amount: "2,972.75"}],
     change: 0,
     onlinePaymentData: {
         formattedAmount: "$ 2,972.75",
@@ -180,7 +182,7 @@ export const PAID = {
     ],
     finalized: false,
     amount: "2,972.75",
-    paymentLines: [{ name: "ONLINE", amount: "2,972.75" }],
+    paymentLines: [{name: "ONLINE", amount: "2,972.75"}],
     change: 0,
     onlinePaymentData: {},
 };

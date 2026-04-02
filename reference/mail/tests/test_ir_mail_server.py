@@ -1,16 +1,15 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
-
 from contextlib import contextmanager
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
-from odoo.addons.mail.tests.common import MailCommon
 from odoo.exceptions import UserError
 from odoo.tests import tagged, users
 from odoo.tools import config, mute_logger, split_every
+
+from odoo.addons.mail.tests.common import MailCommon
 
 
 @tagged('mail_server')
@@ -118,7 +117,7 @@ class TestIrMailServer(MailCommon):
                 "icp@test.mycompany.com",
                 "settings@example.com",
                 "settings@example.com",
-            ],
+            ], strict=False,
         ):
             with self.subTest(default_from=default_from, domain_name=domain_name):
                 if domain_name:
@@ -173,7 +172,7 @@ class TestIrMailServer(MailCommon):
                 # allows to use the entire domain
                 (self.default_bounce_address, f'"test" <{self.default_from}@{self.alias_domain}>'),
                 (self.default_bounce_address, f'"Formatted Name" <{self.default_from}@{self.alias_domain}>'),
-            ]
+            ], strict=False
         ):
             for provide_smtp in [False, True]:  # providing smtp session should ont impact test
                 with self.subTest(mail_from=mail_from, provide_smtp=provide_smtp):
@@ -241,7 +240,7 @@ class TestIrMailServer(MailCommon):
                 self.env.user.email,
                 self.env.user.email,
                 self.env.user.email,
-            ],
+            ], strict=False,
         ):
             with self.subTest(default_from=default_from, from_filter=from_filter):
                 self.mail_alias_domain.default_from = default_from
@@ -302,7 +301,7 @@ class TestIrMailServer(MailCommon):
                 # mail_server_user multiple from_filter check
                 (self.mail_server_user, '"Example" <test@domain2.com>'),
                 (self.mail_server_user, '"Example" <test@domain1.com>'),
-            ],
+            ], strict=False,
         ):
             with self.subTest(email_from=email_from):
                 mail_server, mail_from = self.env['ir.mail_server']._find_mail_server(email_from=email_from)
@@ -332,7 +331,7 @@ class TestIrMailServer(MailCommon):
                 # A mail server is configured for the entire domain name, so we can use the bounce
                 # email address because the mail server supports it
                 (self.default_bounce_address, '"Name" <unknown_name@test.mycompany.com>', self.mail_server_domain),
-            ],
+            ], strict=False,
         ):
             # test with and without providing an SMTP session, which should not impact test
             for provide_smtp in [True, False]:

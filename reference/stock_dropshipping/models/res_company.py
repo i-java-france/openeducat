@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, models
@@ -31,7 +30,7 @@ class ResCompany(models.Model):
         company_todo_sequence._create_dropship_sequence()
 
     def _create_per_company_sequences(self):
-        super(ResCompany, self)._create_per_company_sequences()
+        super()._create_per_company_sequences()
         self._create_dropship_sequence()
 
     # -------------------------------------------------------------------------
@@ -68,7 +67,7 @@ class ResCompany(models.Model):
         company_todo_picking_type._create_dropship_picking_type()
 
     def _create_per_company_picking_types(self):
-        super(ResCompany, self)._create_per_company_picking_types()
+        super()._create_per_company_picking_types()
         self._create_dropship_picking_type()
 
     # -------------------------------------------------------------------------
@@ -111,5 +110,5 @@ class ResCompany(models.Model):
         company_todo_rule._create_dropship_rule()
 
     def _create_per_company_rules(self):
-        super(ResCompany, self)._create_per_company_rules()
+        super()._create_per_company_rules()
         self._create_dropship_rule()

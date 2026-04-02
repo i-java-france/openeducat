@@ -1,13 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
-import pytz
 import re
-from datetime import datetime, timedelta
+from datetime import datetime
+
+import pytz
 from dateutil.parser import parse
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
 from odoo.tools import email_normalize
@@ -82,7 +83,7 @@ class CalendarEvent(models.Model):
             self._forbid_recurrence_creation()
 
         vals_check_organizer = self._check_organizer_validation_conditions(vals_list)
-        for vals in [vals for vals, check_organizer in zip(vals_list, vals_check_organizer) if check_organizer]:
+        for vals in [vals for vals, check_organizer in zip(vals_list, vals_check_organizer, strict=False) if check_organizer]:
             # If event has a different organizer, check its sync status and verify if the user is listed as attendee.
             sender_user, partner_ids = self._get_organizer_user_change_info(vals)
             partner_included = partner_ids and len(partner_ids) > 0 and sender_user.partner_id.id in partner_ids
@@ -173,7 +174,7 @@ class CalendarEvent(models.Model):
         if self._check_microsoft_sync_status():
             recurrency_in_batch = self.filtered(lambda ev: ev.recurrency)
             recurrence_update_attempt = recurrence_update_setting or 'recurrency' in values or recurrency_in_batch and len(recurrency_in_batch) > 0
-            if not notify_context and recurrence_update_attempt and not 'active' in values:
+            if not notify_context and recurrence_update_attempt and 'active' not in values:
                 self._forbid_recurrence_update()
 
         # When changing the organizer, check its sync status and verify if the user is listed as attendee.
@@ -409,7 +410,7 @@ class CalendarEvent(models.Model):
         partners = self.env['mail.thread']._partner_find_from_emails_single(emails, no_create=False)
         attendees_by_emails = {a.email: a for a in existing_attendees}
         partners_by_emails = {p.email_normalized: p for p in partners}
-        for email, attendee_info in zip(emails, microsoft_attendees):
+        for email, attendee_info in zip(emails, microsoft_attendees, strict=False):
             partner = partners_by_emails.get(email_normalize(email) or email, self.env['res.partner'])
             # Responses from external invitations are stored in the 'responseStatus' field.
             # This field only carries the current user's event status because Microsoft hides other user's status.

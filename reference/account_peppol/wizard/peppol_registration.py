@@ -1,6 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import contextlib
 import logging
+
 try:
     import phonenumbers
 except ImportError:

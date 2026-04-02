@@ -8,21 +8,17 @@ import inspect
 import json
 import logging
 import re
-import requests
 import threading
 import types
-import werkzeug.routing
-
 from collections import defaultdict
-from lxml import etree, html
 from urllib.parse import urlparse
+
+import requests
+import werkzeug.routing
+from lxml import etree, html
 from werkzeug import urls
 
-from odoo import api, fields, models, tools, release
-from odoo.addons.website.models.ir_http import sitemap_qs2dom
-from odoo.addons.website.tools import similarity_score, text_from_html, get_base_domain
-from odoo.addons.portal.controllers.portal import pager
-from odoo.addons.iap.tools import iap_tools
+from odoo import api, fields, models, release, tools
 from odoo.exceptions import AccessError, MissingError, UserError, ValidationError
 from odoo.fields import Domain
 from odoo.http import request
@@ -31,6 +27,11 @@ from odoo.tools import SQL, Query
 from odoo.tools.image import image_process
 from odoo.tools.sql import escape_psql
 from odoo.tools.translate import _
+
+from odoo.addons.iap.tools import iap_tools
+from odoo.addons.portal.controllers.portal import pager
+from odoo.addons.website.models.ir_http import sitemap_qs2dom
+from odoo.addons.website.tools import get_base_domain, similarity_score, text_from_html
 
 logger = logging.getLogger(__name__)
 

@@ -1,6 +1,6 @@
 /** @odoo-module alias=@web/../tests/core/utils/nested_sortable_tests default=false */
 
-import { drag, getFixture } from "@web/../tests/helpers/utils";
+import {drag, getFixture} from "@web/../tests/helpers/utils";
 
 /**
  * Dragging methods taking into account the fact that it's the top of the
@@ -14,7 +14,7 @@ export const sortableDrag = async (from) => {
     const fixture = getFixture();
     const fromEl = fixture.querySelector(from);
     const fromRect = fromEl.getBoundingClientRect();
-    const { drop, moveTo } = await drag(from);
+    const {drop, moveTo} = await drag(from);
     let isFirstMove = true;
 
     /**
@@ -51,5 +51,5 @@ export const sortableDrag = async (from) => {
         isFirstMove = false;
     };
 
-    return { moveAbove, moveUnder, drop };
+    return {moveAbove, moveUnder, drop};
 };

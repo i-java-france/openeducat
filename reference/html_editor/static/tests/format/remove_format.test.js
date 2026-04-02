@@ -1,13 +1,13 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { getContent } from "../_helpers/selection";
-import { click, press, queryAll, waitFor } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { execCommand } from "../_helpers/userCommands";
-import { expandToolbar } from "../_helpers/toolbar";
-import { unformat } from "../_helpers/format";
-import { expectElementCount } from "../_helpers/ui_expectations";
-import { FONT_SIZE_CLASSES } from "@html_editor/utils/formatting";
+import {describe, expect, test} from "@odoo/hoot";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {getContent} from "../_helpers/selection";
+import {click, press, queryAll, waitFor} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {execCommand} from "../_helpers/userCommands";
+import {expandToolbar} from "../_helpers/toolbar";
+import {unformat} from "../_helpers/format";
+import {expectElementCount} from "../_helpers/ui_expectations";
+import {FONT_SIZE_CLASSES} from "@html_editor/utils/formatting";
 
 test("should do nothing if no format is set", async () => {
     await testEditor({
@@ -265,14 +265,16 @@ test("should remove underline format (7)", async () => {
 });
 test("should remove underline format (8)", async () => {
     await testEditor({
-        contentBefore: '<div>ab<font style="text-decoration: underline">[cd]</font>ef</div>',
+        contentBefore:
+            '<div>ab<font style="text-decoration: underline">[cd]</font>ef</div>',
         stepFunction: (editor) => execCommand(editor, "removeFormat"),
         contentAfter: "<div>ab[cd]ef</div>",
     });
 });
 test("should remove underline format (9)", async () => {
     await testEditor({
-        contentBefore: '<div>a<font style="text-decoration: underline">b[cd]e</font>f</div>',
+        contentBefore:
+            '<div>a<font style="text-decoration: underline">b[cd]e</font>f</div>',
         stepFunction: (editor) => execCommand(editor, "removeFormat"),
         contentAfter:
             '<div>a<font style="text-decoration: underline">b</font>[cd]<font style="text-decoration: underline">e</font>f</div>',
@@ -280,7 +282,8 @@ test("should remove underline format (9)", async () => {
 });
 test("should remove underline format (10)", async () => {
     await testEditor({
-        contentBefore: '<div>a<font style="text-decoration-line: underline">b[cd]e</font>f</div>',
+        contentBefore:
+            '<div>a<font style="text-decoration-line: underline">b[cd]e</font>f</div>',
         stepFunction: (editor) => execCommand(editor, "removeFormat"),
         contentAfter:
             '<div>a<font style="text-decoration-line: underline">b</font>[cd]<font style="text-decoration-line: underline">e</font>f</div>',
@@ -344,14 +347,16 @@ test("should remove striketrough format (7)", async () => {
 });
 test("should remove striketrough format (8)", async () => {
     await testEditor({
-        contentBefore: '<div>ab<font style="text-decoration: line-through">[cd]</font>ef</div>',
+        contentBefore:
+            '<div>ab<font style="text-decoration: line-through">[cd]</font>ef</div>',
         stepFunction: (editor) => execCommand(editor, "removeFormat"),
         contentAfter: "<div>ab[cd]ef</div>",
     });
 });
 test("should remove striketrough format (9)", async () => {
     await testEditor({
-        contentBefore: '<div>a<font style="text-decoration: line-through">b[cd]e</font>f</div>',
+        contentBefore:
+            '<div>a<font style="text-decoration: line-through">b[cd]e</font>f</div>',
         stepFunction: (editor) => execCommand(editor, "removeFormat"),
         contentAfter:
             '<div>a<font style="text-decoration: line-through">b</font>[cd]<font style="text-decoration: line-through">e</font>f</div>',
@@ -368,7 +373,8 @@ test("should remove striketrough format (10)", async () => {
 });
 test("should remove text color (1)", async () => {
     await testEditor({
-        contentBefore: '<div>ab<font style="color: rgb(255, 0, 0);">[cd]</font>ef</div>',
+        contentBefore:
+            '<div>ab<font style="color: rgb(255, 0, 0);">[cd]</font>ef</div>',
         stepFunction: (editor) => execCommand(editor, "removeFormat"),
         contentAfter: "<div>ab[cd]ef</div>",
     });
@@ -396,7 +402,8 @@ test("should remove text color (4)", async () => {
 });
 test("should remove text color (5)", async () => {
     await testEditor({
-        contentBefore: '<div>a<font style="color: rgb(255, 0, 0);">b[cd]e</font>f</div>',
+        contentBefore:
+            '<div>a<font style="color: rgb(255, 0, 0);">b[cd]e</font>f</div>',
         stepFunction: (editor) => execCommand(editor, "removeFormat"),
         contentAfter:
             '<div>a<font style="color: rgb(255, 0, 0);">b</font>[cd]<font style="color: rgb(255, 0, 0);">e</font>f</div>',
@@ -428,14 +435,16 @@ test("should remove text color (8)", async () => {
 });
 test("should remove text color with shortcut", async () => {
     await testEditor({
-        contentBefore: '<div>ab<font style="color: rgb(255, 0, 0);">[cd]</font>ef</div>',
+        contentBefore:
+            '<div>ab<font style="color: rgb(255, 0, 0);">[cd]</font>ef</div>',
         stepFunction: () => press(["control", "Space"]),
         contentAfter: "<div>ab[cd]ef</div>",
     });
 });
 test("should remove background color (1)", async () => {
     await testEditor({
-        contentBefore: '<div>ab<font style="background: rgb(0, 0, 255);">[cd]</font>ef</div>',
+        contentBefore:
+            '<div>ab<font style="background: rgb(0, 0, 255);">[cd]</font>ef</div>',
         stepFunction: (editor) => execCommand(editor, "removeFormat"),
         contentAfter: "<div>ab[cd]ef</div>",
     });
@@ -456,7 +465,8 @@ test("should remove background color (3)", async () => {
 });
 test("should remove background color (4)", async () => {
     await testEditor({
-        contentBefore: '<div>ab<font style="background-color: #00f">[cd]</font>ef</div>',
+        contentBefore:
+            '<div>ab<font style="background-color: #00f">[cd]</font>ef</div>',
         stepFunction: (editor) => execCommand(editor, "removeFormat"),
         contentAfter: "<div>ab[cd]ef</div>",
     });
@@ -470,7 +480,8 @@ test("should remove background color (5)", async () => {
 });
 test("should remove background color (6)", async () => {
     await testEditor({
-        contentBefore: '<div>a<font style="background: rgb(255, 0, 0);">b[cd]e</font>f</div>',
+        contentBefore:
+            '<div>a<font style="background: rgb(255, 0, 0);">b[cd]e</font>f</div>',
         stepFunction: (editor) => execCommand(editor, "removeFormat"),
         contentAfter:
             '<div>a<font style="background: rgb(255, 0, 0);">b</font>[cd]<font style="background: rgb(255, 0, 0);">e</font>f</div>',
@@ -494,7 +505,8 @@ test("should remove background color (8)", async () => {
 });
 test("should remove background color (9)", async () => {
     await testEditor({
-        contentBefore: '<div>a<font style="background-color: #ff0000">b[cd]e</font>f</div>',
+        contentBefore:
+            '<div>a<font style="background-color: #ff0000">b[cd]e</font>f</div>',
         stepFunction: (editor) => execCommand(editor, "removeFormat"),
         contentAfter:
             '<div>a<font style="background-color: #ff0000">b</font>[cd]<font style="background-color: #ff0000">e</font>f</div>',
@@ -510,7 +522,8 @@ test("should remove background color (10)", async () => {
 });
 test("should remove background color with shortcut", async () => {
     await testEditor({
-        contentBefore: '<div>ab<font style="background: rgb(0, 0, 255);">[cd]</font>ef</div>',
+        contentBefore:
+            '<div>ab<font style="background: rgb(0, 0, 255);">[cd]</font>ef</div>',
         stepFunction: () => press(["control", "Space"]),
         contentAfter: "<div>ab[cd]ef</div>",
     });
@@ -596,14 +609,16 @@ test("should remove multiple format (2)", async () => {
 });
 test("should remove multiple format (3)", async () => {
     await testEditor({
-        contentBefore: "<div><p><b>a[bc</b></p><p>de<br>fg<br></p><p><i>ij</i>sd]fsf</p></div>",
+        contentBefore:
+            "<div><p><b>a[bc</b></p><p>de<br>fg<br></p><p><i>ij</i>sd]fsf</p></div>",
         stepFunction: (editor) => execCommand(editor, "removeFormat"),
         contentAfter: "<div><p><b>a</b>[bc</p><p>de<br>fg<br></p><p>ijsd]fsf</p></div>",
     });
 });
 test("should remove multiple format with shortcut", async () => {
     await testEditor({
-        contentBefore: "<div><p><b>a[bc</b></p><p>de<br>fg<br></p><p><i>ij</i>sd]fsf</p></div>",
+        contentBefore:
+            "<div><p><b>a[bc</b></p><p>de<br>fg<br></p><p><i>ij</i>sd]fsf</p></div>",
         stepFunction: () => press(["control", "Space"]),
         contentAfter: "<div><p><b>a</b>[bc</p><p>de<br>fg<br></p><p>ijsd]fsf</p></div>",
     });
@@ -721,7 +736,8 @@ test("should remove font-size style from selected text", async () => {
 
 test("should remove font-size style from multiple formatted selected text", async () => {
     await testEditor({
-        contentBefore: '<p>a<strong>bc<span style="font-size: 10px;">[de]</span>fg</strong>h</p>',
+        contentBefore:
+            '<p>a<strong>bc<span style="font-size: 10px;">[de]</span>fg</strong>h</p>',
         stepFunction: (editor) => execCommand(editor, "removeFormat"),
         contentAfter: "<p>a<strong>bc</strong>[de]<strong>fg</strong>h</p>",
     });
@@ -729,7 +745,8 @@ test("should remove font-size style from multiple formatted selected text", asyn
 
 test("should remove font-size style from multiple formatted selected text with shortcut", async () => {
     await testEditor({
-        contentBefore: '<p>a<strong>bc<span style="font-size: 10px;">[de]</span>fg</strong>h</p>',
+        contentBefore:
+            '<p>a<strong>bc<span style="font-size: 10px;">[de]</span>fg</strong>h</p>',
         stepFunction: () => press(["control", "Space"]),
         contentAfter: "<p>a<strong>bc</strong>[de]<strong>fg</strong>h</p>",
     });
@@ -908,23 +925,23 @@ describe("Toolbar", () => {
     async function removeFormatClick() {
         await expandToolbar();
         await expectElementCount(".o-we-toolbar", 1);
-        expect(".btn[name='remove_format']").toHaveCount(1); // remove format
-        expect(".btn[name='remove_format']").not.toHaveClass("disabled"); // remove format button should not be disabled
+        expect(".btn[name='remove_format']").toHaveCount(1); // Remove format
+        expect(".btn[name='remove_format']").not.toHaveClass("disabled"); // Remove format button should not be disabled
 
         await click(".btn[name='remove_format']");
         await waitFor(".btn[name='remove_format'].disabled");
         await expectElementCount(".o-we-toolbar", 1);
-        expect(".btn[name='remove_format']").toHaveClass("disabled"); // remove format button should be disabled
+        expect(".btn[name='remove_format']").toHaveClass("disabled"); // Remove format button should be disabled
     }
 
     test("Should remove bold from selection", async () => {
-        const { el } = await setupEditor(`<p>this <b>is[ a ]UX</b> test.</p>`);
+        const {el} = await setupEditor(`<p>this <b>is[ a ]UX</b> test.</p>`);
         await removeFormatClick();
         expect(getContent(el)).toBe(`<p>this <b>is</b>[ a ]<b>UX</b> test.</p>`);
     });
 
     test("Should remove color from selection", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             `<p>this <span style="color:red">is[ a ]UX</span> test.</p>`
         );
         await removeFormatClick();
@@ -938,7 +955,7 @@ describe("Toolbar", () => {
     });
 
     test("Should remove background color from selection", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             `<p>this <span style="background:green">is[ a ]UX</span> test.</p>`
         );
         await removeFormatClick();
@@ -948,7 +965,7 @@ describe("Toolbar", () => {
     });
 
     test("Should remove background class color from selection", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             `<p>this <font class="text-o-color-1">is[ a ]UX</font> test.</p>`
         );
         await removeFormatClick();
@@ -958,41 +975,43 @@ describe("Toolbar", () => {
     });
 
     test("Should do nothing when no format in selection", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             `<p>this <span class="random-class">is[ a ]UX</span> test.</p>`
         );
         await expandToolbar();
         await expectElementCount(".o-we-toolbar", 1);
-        expect(".btn[name='remove_format']").toHaveCount(1); // remove format
-        expect(".btn[name='remove_format']").toHaveClass("disabled"); // remove format button should be disabled when no format
+        expect(".btn[name='remove_format']").toHaveCount(1); // Remove format
+        expect(".btn[name='remove_format']").toHaveClass("disabled"); // Remove format button should be disabled when no format
 
         await click(".btn[name='remove_format']");
         await animationFrame();
         await expectElementCount(".o-we-toolbar", 1);
-        expect(".btn[name='remove_format']").toHaveClass("disabled"); // remove format button should still be disabled
+        expect(".btn[name='remove_format']").toHaveClass("disabled"); // Remove format button should still be disabled
         expect(getContent(el)).toBe(
             `<p>this <span class="random-class">is[ a ]UX</span> test.</p>`
         );
     });
 
     test("Remove format button should be available if selection contains formatted nodes among unformatted nodes", async () => {
-        const { el } = await setupEditor(`<p>this <b>is[ a UX</b> te]st.</p>`);
+        const {el} = await setupEditor(`<p>this <b>is[ a UX</b> te]st.</p>`);
         await expandToolbar();
         await expectElementCount(".o-we-toolbar", 1);
-        expect(".btn[name='remove_format']").toHaveCount(1); // remove format
-        expect(".btn[name='remove_format']").not.toHaveClass("disabled"); // remove format button should not be disabled
+        expect(".btn[name='remove_format']").toHaveCount(1); // Remove format
+        expect(".btn[name='remove_format']").not.toHaveClass("disabled"); // Remove format button should not be disabled
 
         await click(".btn[name='remove_format']");
         await waitFor(".btn[name='remove_format'].disabled");
         await expectElementCount(".o-we-toolbar", 1);
-        expect(".btn[name='remove_format']").toHaveClass("disabled"); // remove format button should now be disabled
+        expect(".btn[name='remove_format']").toHaveClass("disabled"); // Remove format button should now be disabled
         expect(getContent(el)).toBe(`<p>this <b>is</b>[ a UX te]st.</p>`);
     });
 
     test("Remove format button should be the last one in the decoration button group", async () => {
         await setupEditor("<p>[abc]</p>");
         await expandToolbar();
-        const formatButtons = queryAll(".o-we-toolbar .btn-group[name='decoration'] .btn");
+        const formatButtons = queryAll(
+            ".o-we-toolbar .btn-group[name='decoration'] .btn"
+        );
         expect(formatButtons.at(-1)).toHaveAttribute("name", "remove_format");
     });
 
@@ -1004,7 +1023,7 @@ describe("Toolbar", () => {
     });
 
     test("Should remove background color of text within a fully selected table", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             `<table class="table table-bordered o_table o_selected_table"><tbody><tr><td class="o_selected_td"><p><font style="background-color: rgb(255, 0, 0);">[abc</font></p></td><td class="o_selected_td"><p><br></p></td></tr></tbody></table><p>]<br></p>`
         );
         await removeFormatClick();
@@ -1014,7 +1033,7 @@ describe("Toolbar", () => {
     });
 
     test("Should remove background color of a table cell", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             `<table class="table table-bordered o_table o_selected_table"><tbody><tr><td style="background-color: rgb(255, 0, 0);" class="o_selected_td"><p>[<br></p></td><td style="background-color: rgb(255, 0, 0);" class="o_selected_td"><p>]<br></p></td></tr></tbody></table>`
         );
         await removeFormatClick();
@@ -1024,7 +1043,7 @@ describe("Toolbar", () => {
     });
 
     test("Should remove vertical-align style from table cells", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             unformat(`
                 <table class="table table-bordered o_table o_selected_table">
                     <tbody>
@@ -1062,7 +1081,7 @@ describe("Toolbar", () => {
     });
 
     test("Should remove text-align style from a block", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             `<p style="text-align: right;">[test</p><p style="text-align: right;"><br>]</p>`
         );
         await removeFormatClick();
@@ -1198,8 +1217,8 @@ describe("typography classes", () => {
         );
         await expandToolbar();
         await expectElementCount(".o-we-toolbar", 1);
-        expect(".btn[name='remove_format']").toHaveCount(1); // remove format
-        expect(".btn[name='remove_format']").toHaveClass("disabled"); // remove format button should be disabled
+        expect(".btn[name='remove_format']").toHaveCount(1); // Remove format
+        expect(".btn[name='remove_format']").toHaveClass("disabled"); // Remove format button should be disabled
     });
     test("should not remove style if applied using typography classes", async () => {
         await testEditor({

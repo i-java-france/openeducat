@@ -1,6 +1,9 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
-import { describe, expect, test } from "@odoo/hoot";
-import { keyDown, queryOne, pointerDown } from "@odoo/hoot-dom";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {keyDown, pointerDown, queryOne} from "@odoo/hoot-dom";
 
 setupInteractionWhiteList("web.caps_lock_warning");
 
@@ -16,7 +19,7 @@ const template = `
     </div>`;
 
 test("caps_lock_warning is started when there is a presence of password input field inside `.o_caps_lock_warning`", async () => {
-    const { core } = await startInteractions(template);
+    const {core} = await startInteractions(template);
     expect(core.interactions).toHaveLength(1);
 });
 

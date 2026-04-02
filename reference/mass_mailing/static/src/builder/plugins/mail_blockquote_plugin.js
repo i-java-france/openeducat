@@ -1,5 +1,5 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 class AlertOptionPlugin extends Plugin {
     static id = "mass_mailing.MailBlockquotePlugin";
@@ -8,7 +8,7 @@ class AlertOptionPlugin extends Plugin {
         clean_for_save_handlers: this.cleanForSave.bind(this),
     };
 
-    cleanForSave({ root }) {
+    cleanForSave({root}) {
         for (const quote of root.querySelectorAll("blockquote")) {
             quote.dataset.oMailQuoteNode = "1";
             quote.dataset.oMailQuote = "1";

@@ -1,4 +1,4 @@
-import { session } from "@web/session";
+import {session} from "@web/session";
 import {
     setUtmsHtmlDataset,
     getClosestLiEls,
@@ -7,7 +7,7 @@ import {
 
 // TODO: remove this export after refactor of `slides_course_fullscreen_player.js`
 // into Interaction
-export { unhideConditionalElements };
+export {unhideConditionalElements};
 
 document.addEventListener("DOMContentLoaded", () => {
     // Transfer cookie/session data as HTML element's attributes so that CSS

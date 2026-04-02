@@ -1,17 +1,17 @@
-import { Component, onWillStart, useRef, useState } from "@odoo/owl";
-import { useDropzone } from "@web/core/dropzone/dropzone_hook";
-import { FileInput } from "@web/core/file_input/file_input";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { useFileUploader } from "@web/core/utils/files";
-import { useService } from "@web/core/utils/hooks";
-import { Layout } from "@web/search/layout";
-import { DocumentationLink } from "@web/views/widgets/documentation_link/documentation_link";
-import { standardActionServiceProps } from "@web/webclient/actions/action_service";
-import { ImportDataContent } from "../import_data_content/import_data_content";
-import { ImportDataProgress } from "../import_data_progress/import_data_progress";
-import { ImportDataSidepanel } from "../import_data_sidepanel/import_data_sidepanel";
-import { useImportModel } from "../import_model";
+import {Component, onWillStart, useRef, useState} from "@odoo/owl";
+import {useDropzone} from "@web/core/dropzone/dropzone_hook";
+import {FileInput} from "@web/core/file_input/file_input";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useFileUploader} from "@web/core/utils/files";
+import {useService} from "@web/core/utils/hooks";
+import {Layout} from "@web/search/layout";
+import {DocumentationLink} from "@web/views/widgets/documentation_link/documentation_link";
+import {standardActionServiceProps} from "@web/webclient/actions/action_service";
+import {ImportDataContent} from "../import_data_content/import_data_content";
+import {ImportDataProgress} from "../import_data_progress/import_data_progress";
+import {ImportDataSidepanel} from "../import_data_sidepanel/import_data_sidepanel";
+import {useImportModel} from "../import_model";
 
 export class ImportAction extends Component {
     static template = "ImportAction";
@@ -23,7 +23,7 @@ export class ImportAction extends Component {
         Layout,
         DocumentationLink,
     };
-    static props = { ...standardActionServiceProps };
+    static props = {...standardActionServiceProps};
     static path = "import";
     static displayName = _t("Import a File");
 
@@ -51,10 +51,12 @@ export class ImportAction extends Component {
 
         this.uploadFiles = useFileUploader();
         useDropzone(useRef("root"), async (event) => {
-            const { files } = event.dataTransfer;
+            const {files} = event.dataTransfer;
             if (files.length === 0) {
                 this.notification.add(
-                    _t("Please upload an Excel (.xls or .xlsx) or .csv file to import."),
+                    _t(
+                        "Please upload an Excel (.xls or .xlsx) or .csv file to import."
+                    ),
                     {
                         type: "danger",
                     }
@@ -71,7 +73,9 @@ export class ImportAction extends Component {
                     file.name.endsWith(".xlsx");
                 if (!isValidFile) {
                     this.notification.add(
-                        _t("Please upload an Excel (.xls or .xlsx) or .csv file to import."),
+                        _t(
+                            "Please upload an Excel (.xls or .xlsx) or .csv file to import."
+                        ),
                         {
                             type: "danger",
                         }
@@ -98,17 +102,22 @@ export class ImportAction extends Component {
             this.props.action.params?.model || this.props.action.params?.active_model;
         if (activeModel) {
             this.resModel = activeModel;
-            if (action?.type === "ir.actions.act_window" && action?.res_model === this.resModel) {
+            if (
+                action?.type === "ir.actions.act_window" &&
+                action?.res_model === this.resModel
+            ) {
                 this.action = action;
             } else {
-                this.props.updateActionState({ active_model: this.resModel });
+                this.props.updateActionState({active_model: this.resModel});
             }
         } else {
             if (!action) {
                 return this.env.config.historyBack();
             }
             if (action.type !== "ir.actions.act_window") {
-                return this.actionService.restore(this.actionService.currentController.jsId);
+                return this.actionService.restore(
+                    this.actionService.currentController.jsId
+                );
             }
             this.action = action;
             this.resModel = this.action.res_model;
@@ -164,7 +173,9 @@ export class ImportAction extends Component {
     }
 
     get totalSteps() {
-        return this.isBatched ? Math.ceil(this.totalToImport / this.importOptions.limit) : 1;
+        return this.isBatched
+            ? Math.ceil(this.totalToImport / this.importOptions.limit)
+            : 1;
     }
 
     get importOptions() {
@@ -185,7 +196,7 @@ export class ImportAction extends Component {
         this.model.block();
         const result = await this.model.setOption(name, value, fieldName);
         if (result) {
-            const { res, error } = result;
+            const {res, error} = result;
             if (!error && res.num_rows) {
                 this.state.numRows = res.num_rows;
                 this.state.previewError = undefined;
@@ -215,7 +226,7 @@ export class ImportAction extends Component {
         this.state.importMessages = [];
 
         this.model.block(_t("Loading file..."));
-        const { res, error } = await this.model.updateData(true);
+        const {res, error} = await this.model.updateData(true);
 
         if (error) {
             this.state.previewError = error;
@@ -244,7 +255,7 @@ export class ImportAction extends Component {
 
         this.model.block(message, blockComponent);
 
-        let res = { ids: [] };
+        let res = {ids: []};
         try {
             const data = await this.model.executeImport(
                 isTest,
@@ -265,9 +276,12 @@ export class ImportAction extends Component {
                 if (res.hasError) {
                     return;
                 }
-                this.notification.add(_t("%s records successfully imported", res.ids.length), {
-                    type: "success",
-                });
+                this.notification.add(
+                    _t("%s records successfully imported", res.ids.length),
+                    {
+                        type: "success",
+                    }
+                );
                 if (!this.state.isPaused) {
                     this.openRecords(res.ids);
                 }

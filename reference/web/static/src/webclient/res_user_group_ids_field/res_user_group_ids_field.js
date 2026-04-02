@@ -1,14 +1,14 @@
-import { _t } from "@web/core/l10n/translation";
-import { x2ManyCommands } from "@web/core/orm_service";
-import { registry } from "@web/core/registry";
-import { deepCopy } from "@web/core/utils/objects";
-import { parseXML } from "@web/core/utils/xml";
-import { Record } from "@web/model/record";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
-import { FormArchParser } from "@web/views/form/form_arch_parser";
-import { FormRenderer } from "@web/views/form/form_renderer";
+import {_t} from "@web/core/l10n/translation";
+import {x2ManyCommands} from "@web/core/orm_service";
+import {registry} from "@web/core/registry";
+import {deepCopy} from "@web/core/utils/objects";
+import {parseXML} from "@web/core/utils/xml";
+import {Record} from "@web/model/record";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
+import {FormArchParser} from "@web/views/form/form_arch_parser";
+import {FormRenderer} from "@web/views/form/form_renderer";
 
-import { Component, onWillRender, toRaw, useChildSubEnv } from "@odoo/owl";
+import {Component, onWillRender, toRaw, useChildSubEnv} from "@odoo/owl";
 
 /**
  * This widget is only used for the 'group_ids' field of the 'res.users'
@@ -17,11 +17,11 @@ import { Component, onWillRender, toRaw, useChildSubEnv } from "@odoo/owl";
  */
 class ResUserGroupIdsField extends Component {
     static template = "web.ResUserGroupIdsField";
-    static components = { Record, FormRenderer };
-    static props = { ...standardFieldProps };
+    static components = {Record, FormRenderer};
+    static props = {...standardFieldProps};
 
     setup() {
-        const { groups, privileges, categories } = toRaw(
+        const {groups, privileges, categories} = toRaw(
             this.props.record.data.view_group_hierarchy
         );
 
@@ -33,7 +33,9 @@ class ResUserGroupIdsField extends Component {
             categories.push({
                 id: "other",
                 name: _t("Other"),
-                privilege_ids: privilegesWithoutCategory.map((privilege) => privilege.id),
+                privilege_ids: privilegesWithoutCategory.map(
+                    (privilege) => privilege.id
+                ),
             });
         }
 
@@ -70,7 +72,10 @@ class ResUserGroupIdsField extends Component {
                         helpLines.push(`- ${groups[gid].name}: ${groups[gid].comment}`);
                     }
                 }
-                const selection = privilege.group_ids.map((gId) => [gId, groups[gId].name]);
+                const selection = privilege.group_ids.map((gId) => [
+                    gId,
+                    groups[gId].name,
+                ]);
                 selection.unshift([false, privilege.placeholder || ""]);
                 this._fields[this.getFieldName(privilege)] = {
                     help: helpLines.join("\n"),
@@ -91,7 +96,7 @@ class ResUserGroupIdsField extends Component {
         this.fields = deepCopy(this._fields); // dynamically modifed before each rendering w.r.t. to current groups
 
         // Generate archInfo to provide to the FormRenderer
-        const models = { main: { fields: this._fields } };
+        const models = {main: {fields: this._fields}};
         const arch = `
             <t>
                 <group>
@@ -121,7 +126,9 @@ class ResUserGroupIdsField extends Component {
             //  - `impliedByIds` only contain *selected* group ids that imply the given group
             //  - `disjointIds` is only set for *selected* or *implied* groups
             //  - `implyIds` doesn't contain itself, because it's useless and easier later
-            const selectedIds = new Set(this.props.record.data[this.props.name].currentIds);
+            const selectedIds = new Set(
+                this.props.record.data[this.props.name].currentIds
+            );
             for (const group of Object.values(groups)) {
                 const selected = selectedIds.has(group.id);
                 this.info.groups[group.id] = {
@@ -140,7 +147,7 @@ class ResUserGroupIdsField extends Component {
             }
             for (const group of Object.values(groups)) {
                 let disjointIds = [];
-                const { selected, impliedByIds } = this.info.groups[group.id];
+                const {selected, impliedByIds} = this.info.groups[group.id];
                 if (selected || impliedByIds.length) {
                     disjointIds = group.disjoint_ids.filter(
                         (gid) =>
@@ -160,7 +167,9 @@ class ResUserGroupIdsField extends Component {
                         // i > 0 to omit "false" option
                         const group = this.info.groups[options[i][0]];
                         const isImplied = group.impliedByIds.some(
-                            (gid) => this.info.groups[gid].privilege_id !== group.privilege_id
+                            (gid) =>
+                                this.info.groups[gid].privilege_id !==
+                                group.privilege_id
                         );
                         if (isImplied) {
                             this.fields[fieldName].selection = options.slice(i);
@@ -176,7 +185,8 @@ class ResUserGroupIdsField extends Component {
             for (const category of categories) {
                 for (const privilege of category.privileges) {
                     let groupId =
-                        privilege.group_ids.findLast((gId) => selectedIds.has(gId)) || false;
+                        privilege.group_ids.findLast((gId) => selectedIds.has(gId)) ||
+                        false;
                     const fieldName = this.getFieldName(privilege);
                     const options = this.fields[fieldName].selection;
                     if (groupId && !options.some((option) => option[0] === groupId)) {
@@ -190,7 +200,9 @@ class ResUserGroupIdsField extends Component {
             }
             if (this.extraCategory) {
                 for (const privilege of this.extraCategory.privileges) {
-                    this.values[this.getFieldName(privilege)] = selectedIds.has(privilege.groupId);
+                    this.values[this.getFieldName(privilege)] = selectedIds.has(
+                        privilege.groupId
+                    );
                 }
             }
         });
@@ -236,11 +248,13 @@ class ResUserGroupIdsField extends Component {
 
     onRecordChanged(_, values) {
         let selectedGroupIds = Object.entries(values)
-            .filter(([fieldName, gid]) => this.fields[fieldName].type === "selection" && gid)
+            .filter(
+                ([fieldName, gid]) => this.fields[fieldName].type === "selection" && gid
+            )
             .map(([_, gid]) => gid);
         // Keep shadowed groups, except if an higher level group has been set, in which case they
         // are not shadowed anymore
-        const { groups, privileges } = this.info;
+        const {groups, privileges} = this.info;
         const shadowedGroupIds = this.shadowedGroupIds.filter(
             (gid) => !values[this.getFieldName(privileges[groups[gid].privilege_id])]
         );
@@ -258,7 +272,7 @@ class ResUserGroupIdsField extends Component {
 
 const resUserGroupIdsField = {
     component: ResUserGroupIdsField,
-    fieldDependencies: [{ name: "view_group_hierarchy", type: "json", readonly: true }],
+    fieldDependencies: [{name: "view_group_hierarchy", type: "json", readonly: true}],
     additionalClasses: ["w-100"],
 };
 

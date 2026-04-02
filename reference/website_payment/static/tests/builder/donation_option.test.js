@@ -1,10 +1,10 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { contains } from "@web/../tests/web_test_helpers";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {contains} from "@web/../tests/web_test_helpers";
 import {
     defineWebsiteModels,
     setupWebsiteBuilderWithSnippet,
 } from "@website/../tests/builder/website_helpers";
-import { queryAll } from "@odoo/hoot-dom";
+import {queryAll} from "@odoo/hoot-dom";
 
 defineWebsiteModels();
 
@@ -26,10 +26,14 @@ test("display/hide donation options", async () => {
 test("display/hide prefilled options", async () => {
     await contains(":iframe .s_donation").click();
     expect(":iframe .s_donation_prefilled_buttons").not.toBeEmpty();
-    await contains("div:has(> span:contains('Pre-filled Options')) + div input").click();
+    await contains(
+        "div:has(> span:contains('Pre-filled Options')) + div input"
+    ).click();
     expect(":iframe .s_donation_prefilled_buttons").toHaveInnerHTML("");
     expect(":iframe .s_donation_range_slider_wrap").toBeVisible();
-    await contains("div:has(> span:contains('Pre-filled Options')) + div input").click();
+    await contains(
+        "div:has(> span:contains('Pre-filled Options')) + div input"
+    ).click();
     expect(":iframe .s_donation_prefilled_buttons").not.toBeEmpty();
 });
 

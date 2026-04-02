@@ -1,4 +1,4 @@
-import { HIGHLIGHT_CLASS, searchHighlight } from "@mail/core/common/message_search_hook";
+import {HIGHLIGHT_CLASS, searchHighlight} from "@mail/core/common/message_search_hook";
 import {
     SIZES,
     click,
@@ -13,10 +13,10 @@ import {
     triggerHotkey,
 } from "@mail/../tests/mail_test_helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { markup } from "@odoo/owl";
+import {describe, expect, test} from "@odoo/hoot";
+import {markup} from "@odoo/owl";
 
-import { serverState } from "@web/../tests/web_test_helpers";
+import {serverState} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 defineMailModels();
@@ -110,15 +110,15 @@ test("Search highlight", async () => {
             searchTerm: "test hello",
         },
     ];
-    for (const { input, output, searchTerm } of testCases) {
+    for (const {input, output, searchTerm} of testCases) {
         expect(searchHighlight(searchTerm, input).toString()).toBe(output);
     }
 });
 
 test("Display highlighted search in chatter", async () => {
-    patchUiSize({ size: SIZES.XXL });
+    patchUiSize({size: SIZES.XXL});
     const pyEnv = await startServer();
-    const partnerId = pyEnv["res.partner"].create({ name: "John Doe" });
+    const partnerId = pyEnv["res.partner"].create({name: "John Doe"});
     pyEnv["mail.message"].create({
         body: "not empty",
         model: "res.partner",
@@ -129,13 +129,15 @@ test("Display highlighted search in chatter", async () => {
     await click("[title='Search Messages']");
     await insertText(".o_searchview_input", "empty");
     triggerHotkey("Enter");
-    await contains(`.o-mail-SearchMessageResult .o-mail-Message span.${HIGHLIGHT_CLASS}`);
+    await contains(
+        `.o-mail-SearchMessageResult .o-mail-Message span.${HIGHLIGHT_CLASS}`
+    );
 });
 
 test("Display multiple highlighted search in chatter", async () => {
-    patchUiSize({ size: SIZES.XXL });
+    patchUiSize({size: SIZES.XXL});
     const pyEnv = await startServer();
-    const partnerId = pyEnv["res.partner"].create({ name: "John Doe" });
+    const partnerId = pyEnv["res.partner"].create({name: "John Doe"});
     pyEnv["mail.message"].create({
         body: "not test empty",
         model: "res.partner",
@@ -146,14 +148,17 @@ test("Display multiple highlighted search in chatter", async () => {
     await click("[title='Search Messages']");
     await insertText(".o_searchview_input", "not empty");
     triggerHotkey("Enter");
-    await contains(`.o-mail-SearchMessageResult .o-mail-Message span.${HIGHLIGHT_CLASS}`, {
-        count: 2,
-    });
+    await contains(
+        `.o-mail-SearchMessageResult .o-mail-Message span.${HIGHLIGHT_CLASS}`,
+        {
+            count: 2,
+        }
+    );
 });
 
 test("Display highlighted search in Discuss", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     pyEnv["mail.message"].create({
         author_id: serverState.partnerId,
         body: "not empty",
@@ -168,12 +173,14 @@ test("Display highlighted search in Discuss", async () => {
     await click("button[title='Search Messages']");
     await insertText(".o_searchview_input", "empty");
     triggerHotkey("Enter");
-    await contains(`.o-mail-SearchMessagesPanel .o-mail-Message span.${HIGHLIGHT_CLASS}`);
+    await contains(
+        `.o-mail-SearchMessagesPanel .o-mail-Message span.${HIGHLIGHT_CLASS}`
+    );
 });
 
 test("Display multiple highlighted search in Discuss", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     pyEnv["mail.message"].create({
         author_id: serverState.partnerId,
         body: "not prout empty",
@@ -188,15 +195,18 @@ test("Display multiple highlighted search in Discuss", async () => {
     await click("button[title='Search Messages']");
     await insertText(".o_searchview_input", "not empty");
     triggerHotkey("Enter");
-    await contains(`.o-mail-SearchMessagesPanel .o-mail-Message span.${HIGHLIGHT_CLASS}`, {
-        count: 2,
-    });
+    await contains(
+        `.o-mail-SearchMessagesPanel .o-mail-Message span.${HIGHLIGHT_CLASS}`,
+        {
+            count: 2,
+        }
+    );
 });
 
 test("Display highlighted with escaped character must ignore them", async () => {
-    patchUiSize({ size: SIZES.XXL });
+    patchUiSize({size: SIZES.XXL});
     const pyEnv = await startServer();
-    const partnerId = pyEnv["res.partner"].create({ name: "John Doe" });
+    const partnerId = pyEnv["res.partner"].create({name: "John Doe"});
     pyEnv["mail.message"].create({
         body: "<p>&lt;strong&gt;test&lt;/strong&gt; hello</p>",
         model: "res.partner",
@@ -207,8 +217,11 @@ test("Display highlighted with escaped character must ignore them", async () => 
     await click("[title='Search Messages']");
     await insertText(".o_searchview_input", "test hello");
     triggerHotkey("Enter");
-    await contains(`.o-mail-SearchMessageResult .o-mail-Message span.${HIGHLIGHT_CLASS}`, {
-        count: 2,
-    });
-    await contains(`.o-mail-Message-body`, { text: "<strong>test</strong> hello" });
+    await contains(
+        `.o-mail-SearchMessageResult .o-mail-Message span.${HIGHLIGHT_CLASS}`,
+        {
+            count: 2,
+        }
+    );
+    await contains(`.o-mail-Message-body`, {text: "<strong>test</strong> hello"});
 });

@@ -1,4 +1,4 @@
-import { useEnv } from "@odoo/owl";
+import {useEnv} from "@odoo/owl";
 
 export function useCachedModel() {
     return useEnv().editor.shared.cachedModel;
@@ -19,7 +19,7 @@ export class ModelEdit {
     }
     init(field, value) {
         value = JSON.stringify(value);
-        this.values[field] = { initial: value, current: value };
+        this.values[field] = {initial: value, current: value};
     }
     set(field, value) {
         const previous = this.values[field].current;

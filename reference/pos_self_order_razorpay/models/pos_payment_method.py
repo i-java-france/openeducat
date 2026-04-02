@@ -1,5 +1,6 @@
 import uuid
-from odoo import models, api
+
+from odoo import api, models
 from odoo.fields import Domain
 
 

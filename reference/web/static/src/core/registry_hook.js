@@ -1,8 +1,8 @@
-import { useState, onWillStart, onWillDestroy } from "@odoo/owl";
+import {useState, onWillStart, onWillDestroy} from "@odoo/owl";
 
 export function useRegistry(registry) {
-    const state = useState({ entries: registry.getEntries() });
-    const listener = ({ detail }) => {
+    const state = useState({entries: registry.getEntries()});
+    const listener = ({detail}) => {
         const index = state.entries.findIndex(([k]) => k === detail.key);
         if (detail.operation === "add" && index === -1) {
             // push the new entry at the right place

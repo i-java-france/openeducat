@@ -1,5 +1,5 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class CookiesWarning extends Interaction {
     static selector = ".o_no_optional_cookie";
@@ -8,7 +8,10 @@ export class CookiesWarning extends Interaction {
         _iframe: () => (this.keptIframeEl ??= this.el.previousElementSibling),
     };
     dynamicContent = {
-        _root: { "t-on-click": () => this.services.website_cookies.bus.trigger("cookiesBar.show") },
+        _root: {
+            "t-on-click": () =>
+                this.services.website_cookies.bus.trigger("cookiesBar.show"),
+        },
         _iframe: {
             "t-att-class": () => ({
                 "d-none": !!this.el.parentElement,

@@ -12,11 +12,14 @@
                 t-else=""
                 class="d-flex justify-content-center align-items-center flex-grow-1 w-100 bg-200"
             >
-                <span t-out="errorMessage"/>
+                <span t-out="errorMessage" />
             </div>
 
             <!-- Desktop infos -->
-            <div t-if="selectedLocation" class="d-none d-md-flex justify-content-between flex-column flex-lg-row gap-3 gap-lg-0 p-4">
+            <div
+                t-if="selectedLocation"
+                class="d-none d-md-flex justify-content-between flex-column flex-lg-row gap-3 gap-lg-0 p-4"
+            >
                 <div class="col-lg-5 d-flex flex-column justify-content-between">
                     <div class="d-flex gap-2">
                         <strong
@@ -25,9 +28,9 @@
                             t-out="this.props.locations.indexOf(selectedLocation) + 1"
                         />
                         <div class="d-flex flex-column flex-grow-1">
-                            <strong class="h5 fw-bold" t-out="selectedLocation.name"/>
-                            <small t-out="selectedLocation.street"/>
-                            <small t-out="this.getCityAndZipCode(selectedLocation)"/>
+                            <strong class="h5 fw-bold" t-out="selectedLocation.name" />
+                            <small t-out="selectedLocation.street" />
+                            <small t-out="this.getCityAndZipCode(selectedLocation)" />
                         </div>
                     </div>
                     <!-- large screen and + -->
@@ -37,7 +40,8 @@
                         class="btn btn-primary d-none d-lg-block mt-3"
                         t-att-disabled="!this.props.selectedLocationId"
                         t-on-click="this.props.validateSelection"
-                        t-out="chooseLocationButtonLabel"/>
+                        t-out="chooseLocationButtonLabel"
+                    />
                 </div>
 
                 <!-- Schedule -->
@@ -53,7 +57,8 @@
                     class="btn btn-primary d-block d-lg-none align-self-stretch ms-lg-4"
                     t-att-disabled="!this.props.selectedLocationId"
                     t-on-click="this.props.validateSelection"
-                    t-out="chooseLocationButtonLabel"/>
+                    t-out="chooseLocationButtonLabel"
+                />
             </div>
 
             <!-- Mobile infos -->
@@ -72,21 +77,28 @@
                 />
                 <span class="d-flex flex-column gap-1 w-100">
                     <span class="d-flex flex-column">
-                        <strong class="fw-bold" t-out="selectedLocation.name"/>
+                        <strong class="fw-bold" t-out="selectedLocation.name" />
                         <small class="text-muted">
-                            <span t-out="selectedLocation.street"/>
-                            <span class="d-block" t-out="this.getCityAndZipCode(selectedLocation)"/>
+                            <span t-out="selectedLocation.street" />
+                            <span
+                                class="d-block"
+                                t-out="this.getCityAndZipCode(selectedLocation)"
+                            />
                         </small>
                     </span>
                     <span class="d-flex align-items-center gap-1 small fw-bold">
-                        <i class="fa fa-clock-o" role="img"/>
-                        <t t-out="openingHoursLabel"/>
-                        <i class="o_location_selector_hours_caret fa fa-caret-up ms-auto transition-base"/>
+                        <i class="fa fa-clock-o" role="img" />
+                        <t t-out="openingHoursLabel" />
+                        <i
+                            class="o_location_selector_hours_caret fa fa-caret-up ms-auto transition-base"
+                        />
                     </span>
 
                     <!-- Schedule -->
                     <span class="collapse" id="map_collapseHours">
-                        <LocationSchedule openingHours="selectedLocation.opening_hours"/>
+                        <LocationSchedule
+                            openingHours="selectedLocation.opening_hours"
+                        />
                     </span>
                 </span>
             </button>

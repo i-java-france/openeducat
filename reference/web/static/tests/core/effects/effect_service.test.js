@@ -1,10 +1,14 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { click, manuallyDispatchProgrammaticEvent, queryOne } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, markup, xml } from "@odoo/owl";
-import { getService, mountWithCleanup, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { MainComponentsContainer } from "@web/core/main_components_container";
-import { user } from "@web/core/user";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {click, manuallyDispatchProgrammaticEvent, queryOne} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Component, markup, xml} from "@odoo/owl";
+import {
+    getService,
+    mountWithCleanup,
+    patchWithCleanup,
+} from "@web/../tests/web_test_helpers";
+import {MainComponentsContainer} from "@web/core/main_components_container";
+import {user} from "@web/core/user";
 
 let effectParams;
 
@@ -24,7 +28,7 @@ test("effect service displays a rainbowman by default", async () => {
 });
 
 test("rainbowman effect with show_effect: false", async () => {
-    patchWithCleanup(user, { showEffect: false });
+    patchWithCleanup(user, {showEffect: false});
 
     getService("effect").add();
     await animationFrame();
@@ -71,7 +75,7 @@ test("rendering a rainbowman with an escaped message", async () => {
 
 test("rendering a rainbowman with a custom component", async () => {
     expect.assertions(2);
-    const props = { foo: "bar" };
+    const props = {foo: "bar"};
 
     class Custom extends Component {
         static template = xml`<div class="custom">foo is <t t-esc="props.foo"/></div>`;
@@ -81,8 +85,10 @@ test("rendering a rainbowman with a custom component", async () => {
         }
     }
 
-    getService("effect").add({ Component: Custom, props });
+    getService("effect").add({Component: Custom, props});
     await animationFrame();
 
-    expect(".o_reward_msg_content").toHaveInnerHTML(`<div class="custom">foo is bar</div>`);
+    expect(".o_reward_msg_content").toHaveInnerHTML(
+        `<div class="custom">foo is bar</div>`
+    );
 });

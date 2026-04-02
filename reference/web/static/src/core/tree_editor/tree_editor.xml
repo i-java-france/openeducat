@@ -3,10 +3,15 @@
 
     <t t-name="web.TreeEditor">
         <div class="o_tree_editor w-100" aria-atomic="true" t-att-class="className">
-            <div t-attf-class="o_tree_editor_node d-flex flex-column #{props.readonly ? (props.isSubTree ? 'gap-0' : 'gap-2') : 'gap-1'}">
-                <t t-set="ancestors" t-value="[]"/>
+            <div
+                t-attf-class="o_tree_editor_node d-flex flex-column #{props.readonly ? (props.isSubTree ? 'gap-0' : 'gap-2') : 'gap-1'}"
+            >
+                <t t-set="ancestors" t-value="[]" />
                 <t t-set="node" t-value="tree" />
-                <div class="o_tree_editor_row o_tree_editor_connector d-flex align-items-center flex-wrap" t-att-class="{'ps-4': props.isSubTree}">
+                <div
+                    class="o_tree_editor_row o_tree_editor_connector d-flex align-items-center flex-wrap"
+                    t-att-class="{'ps-4': props.isSubTree}"
+                >
                     <div class="d-flex flex-grow-1 align-items-center">
                         <t t-if="node.children.length">
                             <span t-if="!props.isSubTree">Match</span>
@@ -15,18 +20,34 @@
                             <span t-else="">of the following rules:</span>
                         </t>
                         <t t-elif="node.value === '|' ? node.negate : !node.negate">
-                            <span><span t-if="!props.isSubTree">Match </span><strong>all records</strong></span>
+                            <span>
+                                <span t-if="!props.isSubTree">Match </span>
+                                <strong>all records</strong>
+                            </span>
                         </t>
                         <t t-else="">
-                            <span><span t-if="!props.isSubTree">Match </span><strong>no records</strong></span>
+                            <span>
+                                <span t-if="!props.isSubTree">Match </span>
+                                <strong>no records</strong>
+                            </span>
                         </t>
                     </div>
-                    <t t-slot="default"/>
+                    <t t-slot="default" />
                 </div>
-                <t t-if="node.children.length" t-call="web.TreeEditor.connector.children" />
+                <t
+                    t-if="node.children.length"
+                    t-call="web.TreeEditor.connector.children"
+                />
                 <t t-if="!props.readonly">
-                    <div class="o_tree_editor_row d-flex align-items-center" t-att-class="{ 'ps-4': addPadding || props.isSubTree }">
-                        <a href="#" role="button" t-on-click="() => this.addNewCondition(node)">New Rule</a>
+                    <div
+                        class="o_tree_editor_row d-flex align-items-center"
+                        t-att-class="{ 'ps-4': addPadding || props.isSubTree }"
+                    >
+                        <a
+                            href="#"
+                            role="button"
+                            t-on-click="() => this.addNewCondition(node)"
+                        >New Rule</a>
                     </div>
                 </t>
             </div>
@@ -34,7 +55,11 @@
     </t>
 
     <t t-name="web.TreeEditor.controls">
-        <div class="o_tree_editor_node_control_panel d-flex" role="toolbar" aria-label="Domain node">
+        <div
+            class="o_tree_editor_node_control_panel d-flex"
+            role="toolbar"
+            aria-label="Domain node"
+        >
             <t t-if="node.type !== 'connector'">
                 <button
                     t-if="ancestors.length === 1"
@@ -88,21 +113,31 @@
         </t>
         <t t-if="props.readonly">
             <div class="o_tree_editor_connector_value px-1">
-                <strong class="text-primary" t-esc="title"/>
+                <strong class="text-primary" t-esc="title" />
             </div>
         </t>
         <t t-else="">
             <div class="o_tree_editor_connector_value px-1" aria-atomic="true">
-                <button class="btn o-dropdown o-dropdown-caret p-0 opacity-75" t-on-click="() => this.updateConnector(node)">
-                    <strong class="text-primary" t-esc="title"/>
+                <button
+                    class="btn o-dropdown o-dropdown-caret p-0 opacity-75"
+                    t-on-click="() => this.updateConnector(node)"
+                >
+                    <strong class="text-primary" t-esc="title" />
                 </button>
             </div>
         </t>
     </t>
 
     <t t-name="web.TreeEditor.connector.children">
-        <t t-foreach="node.children" t-as="child" t-key="child.type + '_' + child_index">
-            <div class="o_tree_editor_node" t-att-class="{ 'ps-4': addPadding || props.isSubTree }">
+        <t
+            t-foreach="node.children"
+            t-as="child"
+            t-key="child.type + '_' + child_index"
+        >
+            <div
+                class="o_tree_editor_node"
+                t-att-class="{ 'ps-4': addPadding || props.isSubTree }"
+            >
                 <t t-call="web.TreeEditor.{{ child.type }}">
                     <t t-set="ancestors" t-value="[...ancestors, node]" />
                     <t t-set="parent" t-value="node" />
@@ -113,7 +148,9 @@
     </t>
 
     <t t-name="web.TreeEditor.connector">
-        <div class="o_tree_editor_row o_tree_editor_connector d-flex align-items-center">
+        <div
+            class="o_tree_editor_row o_tree_editor_connector d-flex align-items-center"
+        >
             <div class="d-flex flex-grow-1">
                 <t t-call="web.TreeEditor.connector.value" />
                 <span>of:</span>
@@ -138,7 +175,8 @@
             </t>
         </div>
         <t t-if="isTree(node.value)">
-            <TreeEditor t-props="props"
+            <TreeEditor
+                t-props="props"
                 update="(value) => this.updateLeafValue(node, value)"
                 slots="{}"
                 isSubTree="true"
@@ -152,15 +190,25 @@
         <t t-set="description" t-value="getConditionDescription(node)" />
         <div class="o_tree_editor_condition d-flex gap-1 px-2 border bg-100">
             <div class="fw-bolder text-nowrap" t-esc="description.pathDescription" />
-            <div class="fst-italic text-nowrap" t-esc="description.operatorDescription" />
+            <div
+                class="fst-italic text-nowrap"
+                t-esc="description.operatorDescription"
+            />
             <t t-if="description.valueDescription">
                 <t t-set="values" t-value="description.valueDescription.values" />
                 <t t-set="join" t-value="description.valueDescription.join" />
-                <t t-set="addParenthesis" t-value="description.valueDescription.addParenthesis" />
+                <t
+                    t-set="addParenthesis"
+                    t-value="description.valueDescription.addParenthesis"
+                />
                 <t t-if="addParenthesis">( </t>
                 <t t-foreach="values" t-as="val" t-key="val_index">
-                    <span class="text-primary fw-bolder"><t t-esc="val" /></span>
-                    <t t-if="!val_last"> <t t-esc="join" /> </t>
+                    <span class="text-primary fw-bolder">
+                        <t t-esc="val" />
+                    </span>
+                    <t t-if="!val_last">
+                        <t t-esc="join" />
+                    </t>
                 </t>
                 <t t-if="addParenthesis"> )</t>
             </t>
@@ -171,15 +219,29 @@
         <t t-if="!info.isSupported(value)">
             <div t-attf-class="o_tree_editor_editor #{_classes}">
                 <div class="o_input d-flex align-items-center">
-                    <span class="flex-grow-1 text-truncate" t-esc="info.stringify(value)" />
-                    <i role="alert" class="fa fa-exclamation-triangle text-warning mx-2" t-att-data-tooltip="(typeof info.message === 'function') ? info.message(value) : info.message" />
-                    <i class="fa fa-times" data-tooltip="Clear" t-on-click="() => update(info.defaultValue())" />
+                    <span
+                        class="flex-grow-1 text-truncate"
+                        t-esc="info.stringify(value)"
+                    />
+                    <i
+                        role="alert"
+                        class="fa fa-exclamation-triangle text-warning mx-2"
+                        t-att-data-tooltip="(typeof info.message === 'function') ? info.message(value) : info.message"
+                    />
+                    <i
+                        class="fa fa-times"
+                        data-tooltip="Clear"
+                        t-on-click="() => update(info.defaultValue())"
+                    />
                 </div>
             </div>
         </t>
         <t t-elif="info.component">
             <div t-attf-class="o_tree_editor_editor #{_classes}">
-                <t t-component="info.component" t-props="info.extractProps({ update, value, displayPlaceholder })" />
+                <t
+                    t-component="info.component"
+                    t-props="info.extractProps({ update, value, displayPlaceholder })"
+                />
             </div>
         </t>
     </t>
@@ -196,13 +258,19 @@
                 <t t-set="_classes" t-value="'col col-md-2 px-3'" />
                 <t t-set="info" t-value="getOperatorEditorInfo(node)" />
                 <t t-set="value" t-value="[node.operator, node.negate]" />
-                <t t-set="update" t-value="(operator, negate) => this.updateLeafOperator(node, operator, negate)" />
+                <t
+                    t-set="update"
+                    t-value="(operator, negate) => this.updateLeafOperator(node, operator, negate)"
+                />
             </t>
             <t t-call="web.TreeEditor.Editor">
                 <t t-set="_classes" t-value="'col ps-0 overflow-hidden'" />
                 <t t-set="info" t-value="getValueEditorInfo(node)" />
                 <t t-set="value" t-value="node.value" />
-                <t t-set="update" t-value="(value) => this.updateLeafValue(node, value)" />
+                <t
+                    t-set="update"
+                    t-value="(value) => this.updateLeafValue(node, value)"
+                />
             </t>
         </div>
     </t>
@@ -210,7 +278,12 @@
     <t t-name="web.TreeEditor.complex_condition">
         <div class="o_tree_editor_row d-flex align-items-center">
             <div class="o_tree_editor_complex_condition flex-grow-1">
-                <input class="o_input w-100" t-att-value="node.value" t-att-readonly="props.readonly or !isDebugMode" t-on-change="(ev) => this.updateComplexCondition(node, ev.target.value)" />
+                <input
+                    class="o_input w-100"
+                    t-att-value="node.value"
+                    t-att-readonly="props.readonly or !isDebugMode"
+                    t-on-change="(ev) => this.updateComplexCondition(node, ev.target.value)"
+                />
             </div>
             <t t-call="web.TreeEditor.controls" />
         </div>

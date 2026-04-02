@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const htmlEl = document.documentElement;
-    const editTranslations = !!htmlEl.dataset.edit_translations;
+    const editTranslations = Boolean(htmlEl.dataset.edit_translations);
     // Hack: on translation editor, textareas with translatable text content
     // will get a `<span/>` as translation value which stays visible until
     // the values are updated on the editor. The same issue was fixed on CSS

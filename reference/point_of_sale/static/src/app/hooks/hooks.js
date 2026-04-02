@@ -1,6 +1,9 @@
-import { _t } from "@web/core/l10n/translation";
-import { ConfirmationDialog, AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { ErrorDialog } from "@web/core/errors/error_dialogs";
+import {_t} from "@web/core/l10n/translation";
+import {
+    ConfirmationDialog,
+    AlertDialog,
+} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {ErrorDialog} from "@web/core/errors/error_dialogs";
 import {
     useEnv,
     onMounted,
@@ -10,7 +13,7 @@ import {
     useState,
     useExternalListener,
 } from "@odoo/owl";
-import { KeepLast } from "@web/core/utils/concurrency";
+import {KeepLast} from "@web/core/utils/concurrency";
 
 /**
  * Introduce error handlers in the component.
@@ -52,7 +55,9 @@ export function useErrorHandlers() {
             // ???
             await dialog.add(AlertDialog, {
                 title: _t("Unknown Error"),
-                body: _t("The order could not be sent to the server due to an unknown error"),
+                body: _t(
+                    "The order could not be sent to the server due to an unknown error"
+                ),
                 showReloadButton: true,
             });
         }
@@ -125,7 +130,7 @@ export function useTrackedAsync(asyncFn, options = {}) {
         lastArgs: null,
     });
 
-    const { keepLast = false } = options;
+    const {keepLast = false} = options;
 
     const baseMethod = async (...args) => {
         state.status = "loading";

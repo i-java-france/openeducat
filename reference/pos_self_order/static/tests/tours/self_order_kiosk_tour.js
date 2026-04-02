@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import * as Utils from "@pos_self_order/../tests/tours/utils/common";
 import * as CartPage from "@pos_self_order/../tests/tours/utils/cart_page_util";
 import * as ConfirmationPage from "@pos_self_order/../tests/tours/utils/confirmation_page_util";
@@ -170,8 +170,8 @@ registry.category("web_tour.tours").add("test_self_order_kiosk_combo_sides", {
             trigger: `button:disabled:contains("Next")`,
         },
         ...ProductPage.setupAttribute([
-            { name: "Size", value: "M" },
-            { name: "Fabric", value: "Leather" },
+            {name: "Size", value: "M"},
+            {name: "Fabric", value: "Leather"},
         ]),
         Utils.clickBtn("Add to cart"),
     ],

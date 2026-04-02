@@ -294,7 +294,7 @@ class LoyaltyReward(models.Model):
         # Make sure we create the product that will be used for our discounts
         rewards = self.filtered(lambda r: not r.discount_line_product_id)
         products = self.env['product.product'].create(rewards._get_discount_product_values())
-        for reward, product in zip(rewards, products):
+        for reward, product in zip(rewards, products, strict=False):
             reward.discount_line_product_id = product
 
     @api.model_create_multi

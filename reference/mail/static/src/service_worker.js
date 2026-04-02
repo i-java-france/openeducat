@@ -1,10 +1,10 @@
 /* eslint-env serviceworker */
-/* eslint-disable no-restricted-globals */
+
 /* global idbKeyval */
 importScripts("/mail/static/lib/idb-keyval/idb-keyval.js");
 
 const MESSAGE_TYPE = {
-    UNEXPECTED_CALL_TERMINATION: "UNEXPECTED_CALL_TERMINATION", // deprecated
+    UNEXPECTED_CALL_TERMINATION: "UNEXPECTED_CALL_TERMINATION", // Deprecated
     POST_RTC_LOGS: "POST_RTC_LOGS",
 };
 const PUSH_NOTIFICATION_TYPE = {
@@ -16,7 +16,7 @@ const PUSH_NOTIFICATION_ACTION = {
     DECLINE: "DECLINE",
 };
 
-const { Store, set, get } = idbKeyval;
+const {Store, set, get} = idbKeyval;
 const LOG_AGE_LIMIT = 24 * 60 * 60 * 1000; // 24h
 let db;
 const unread_store = new Store("odoo-mail-unread-db", "odoo-mail-unread-store");
@@ -28,8 +28,11 @@ async function openDatabase() {
         request.onupgradeneeded = function (event) {
             const db = event.target.result;
             if (!db.objectStoreNames.contains("logs")) {
-                const store = db.createObjectStore("logs", { keyPath: "id", autoIncrement: true });
-                store.createIndex("timestamp", "timestamp", { unique: false });
+                const store = db.createObjectStore("logs", {
+                    keyPath: "id",
+                    autoIncrement: true,
+                });
+                store.createIndex("timestamp", "timestamp", {unique: false});
             }
         };
         request.onsuccess = async function (event) {
@@ -72,12 +75,12 @@ async function cleanupLogs(dataBase) {
     });
 }
 
-async function storeLogs(logs, { download = false } = {}) {
+async function storeLogs(logs, {download = false} = {}) {
     if (!db) {
         await openDatabase();
     }
     if (interactionSinceCleanupCount > 30) {
-        // cleanup logs in case the service worker lives for a long time
+        // Cleanup logs in case the service worker lives for a long time
         interactionSinceCleanupCount = 0;
         await cleanupLogs(db);
     }
@@ -90,7 +93,7 @@ async function storeLogs(logs, { download = false } = {}) {
             if (!log) {
                 continue;
             }
-            const { type, entry, value } = log;
+            const {type, entry, value} = log;
             const request = store.add({
                 type: type,
                 entry: entry,
@@ -113,7 +116,7 @@ async function storeLogs(logs, { download = false } = {}) {
                     }
                 });
                 request.onerror = (event) => reject(event.target.error);
-                output = { timelines, snapshots };
+                output = {timelines, snapshots};
             };
         }
         tx.oncomplete = () => resolve(output);
@@ -122,13 +125,13 @@ async function storeLogs(logs, { download = false } = {}) {
 }
 
 /**
- * @param {number} channelId id of the mail discuss channel
+ * @param {Number} channelId id of the mail discuss channel
  * @param {Object} param1
- * @param {string} [param1.action] odoo client action
- * @param {boolean} [param1.joinCall] whether we want to join a call on that channel
+ * @param {String} [param1.action] odoo client action
+ * @param {Boolean} [param1.joinCall] whether we want to join a call on that channel
  * @param {Client | ServiceWorker | MessagePort} [source] if set, will not open the channel on the source
  */
-async function openDiscussChannel(channelId, { action, joinCall = false, source } = {}) {
+async function openDiscussChannel(channelId, {action, joinCall = false, source} = {}) {
     const discussURLRegexes = [new RegExp("/odoo/discuss")];
     if (action) {
         discussURLRegexes.push(
@@ -144,12 +147,18 @@ async function openDiscussChannel(channelId, { action, joinCall = false, source 
         if (source && source.id === client.id) {
             continue;
         }
-        if (!targetClient || discussURLRegexes.some((r) => r.test(new URL(client.url).pathname))) {
+        if (
+            !targetClient ||
+            discussURLRegexes.some((r) => r.test(new URL(client.url).pathname))
+        ) {
             targetClient = client;
         }
     }
     if (targetClient) {
-        targetClient.postMessage({ action: "OPEN_CHANNEL", data: { id: channelId, joinCall } });
+        targetClient.postMessage({
+            action: "OPEN_CHANNEL",
+            data: {id: channelId, joinCall},
+        });
         targetClient.focus().catch();
         return;
     }
@@ -166,17 +175,17 @@ async function openDiscussChannel(channelId, { action, joinCall = false, source 
 self.addEventListener("notificationclick", (event) => {
     event.notification.close();
     if (event.notification.data) {
-        const { action, model, res_id } = event.notification.data;
+        const {action, model, res_id} = event.notification.data;
         if (model === "discuss.channel") {
             if (event.action === PUSH_NOTIFICATION_ACTION.DECLINE) {
                 event.waitUntil(
                     fetch("/mail/rtc/channel/leave_call", {
-                        headers: { "Content-type": "application/json" },
+                        headers: {"Content-type": "application/json"},
                         body: JSON.stringify({
                             id: 1,
                             jsonrpc: "2.0",
                             method: "call",
-                            params: { channel_id: res_id },
+                            params: {channel_id: res_id},
                         }),
                         method: "POST",
                         mode: "cors",
@@ -201,12 +210,18 @@ self.addEventListener("push", async (event) => {
     const notification = event.data.json();
     switch (notification.options?.data?.type) {
         case PUSH_NOTIFICATION_TYPE.CALL:
-            if (notification.options.actions && navigator.userAgent.includes("Android")) {
-                // action "accept" is disabled on mobile until: https://issues.chromium.org/issues/40286493 is fixed.
+            if (
+                notification.options.actions &&
+                navigator.userAgent.includes("Android")
+            ) {
+                // Action "accept" is disabled on mobile until: https://issues.chromium.org/issues/40286493 is fixed.
                 delete notification.options.actions.accept;
             }
             event.waitUntil(
-                self.registration.showNotification(notification.title, notification.options || {})
+                self.registration.showNotification(
+                    notification.title,
+                    notification.options || {}
+                )
             );
             return;
         case PUSH_NOTIFICATION_TYPE.CANCEL: {
@@ -225,13 +240,13 @@ self.addEventListener("push", async (event) => {
 /** @type {Map<string, Function>} string is correlationId and Function is handler */
 self.handlePushEventMessageFns = new Map();
 
-self.addEventListener("message", ({ data }) => {
-    const { type, payload } = data;
+self.addEventListener("message", ({data}) => {
+    const {type, payload} = data;
     if (type === "notification-display-response") {
         const fn = self.handlePushEventMessageFns.get(payload.correlationId);
         if (fn) {
             self.handlePushEventMessageFns.delete(payload.correlationId);
-            fn({ data });
+            fn({data});
         }
     }
 });
@@ -244,13 +259,16 @@ async function incrementUnread() {
 }
 
 async function handlePushEvent(notification) {
-    const { model, res_id } = notification.options?.data || {};
+    const {model, res_id} = notification.options?.data || {};
     const correlationId = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
     let timeoutId;
     let promResolve;
-    const onHandlePushEventMessage = ({ data = {} }) => {
-        const { type, payload } = data;
-        if (type === "notification-display-response" && payload.correlationId === correlationId) {
+    const onHandlePushEventMessage = ({data = {}}) => {
+        const {type, payload} = data;
+        if (
+            type === "notification-display-response" &&
+            payload.correlationId === correlationId
+        ) {
             clearTimeout(timeoutId);
             promResolve?.();
         }
@@ -258,25 +276,34 @@ async function handlePushEvent(notification) {
     return new Promise((resolve) => {
         promResolve = resolve;
         self.handlePushEventMessageFns.set(correlationId, onHandlePushEventMessage);
-        self.clients.matchAll({ includeUncontrolled: true, type: "window" }).then((clients) => {
-            clients.forEach((client) =>
-                client.postMessage({
-                    type: "notification-display-request",
-                    payload: { correlationId, model, res_id },
-                })
-            );
-        });
-        timeoutId = setTimeout(async () => {
-            await incrementUnread();
-            self.clients.matchAll({ includeUncontrolled: true, type: "window" }).then((clients) => {
+        self.clients
+            .matchAll({includeUncontrolled: true, type: "window"})
+            .then((clients) => {
                 clients.forEach((client) =>
                     client.postMessage({
-                        type: "notification-displayed",
-                        payload: { model, res_id },
+                        type: "notification-display-request",
+                        payload: {correlationId, model, res_id},
                     })
                 );
             });
-            resolve(self.registration.showNotification(notification.title, notification.options));
+        timeoutId = setTimeout(async () => {
+            await incrementUnread();
+            self.clients
+                .matchAll({includeUncontrolled: true, type: "window"})
+                .then((clients) => {
+                    clients.forEach((client) =>
+                        client.postMessage({
+                            type: "notification-displayed",
+                            payload: {model, res_id},
+                        })
+                    );
+                });
+            resolve(
+                self.registration.showNotification(
+                    notification.title,
+                    notification.options
+                )
+            );
         }, 500);
     });
 }
@@ -311,16 +338,16 @@ self.addEventListener("pushsubscriptionchange", async (event) => {
         credentials: "include",
     });
 });
-self.addEventListener("message", async ({ data, source }) => {
+self.addEventListener("message", async ({data, source}) => {
     switch (data.name) {
         case MESSAGE_TYPE.UNEXPECTED_CALL_TERMINATION:
-            // deprecated
-            openDiscussChannel(data.channelId, { joinCall: true, source });
+            // Deprecated
+            openDiscussChannel(data.channelId, {joinCall: true, source});
             break;
         case MESSAGE_TYPE.POST_RTC_LOGS: {
-            const { logs, download } = data;
+            const {logs, download} = data;
             try {
-                const data = await storeLogs(logs, { download });
+                const data = await storeLogs(logs, {download});
                 if (download) {
                     source.postMessage({
                         action: "POST_RTC_LOGS",

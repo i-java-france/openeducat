@@ -1,8 +1,8 @@
-import { _t } from "@web/core/l10n/translation";
-import { browser } from "@web/core/browser/browser";
-import { rpc } from "@web/core/network/rpc";
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {browser} from "@web/core/browser/browser";
+import {rpc} from "@web/core/network/rpc";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 class WebsiteLinksCodeEditor extends Interaction {
     static selector = "#wrapwrap";
@@ -10,17 +10,19 @@ class WebsiteLinksCodeEditor extends Interaction {
     dynamicContent = {
         ".copy-to-clipboard": {
             "t-on-click.prevent": this.onCopyToClipboardClick,
-            "t-att-class": () => ({ "d-none": this.editing }),
+            "t-att-class": () => ({"d-none": this.editing}),
         },
         ".o_website_links_edit_code": {
             "t-on-click": this.onEditCodeClick,
-            "t-att-class": () => ({ "d-none": this.editing }),
+            "t-att-class": () => ({"d-none": this.editing}),
         },
-        ".o_website_links_edit_tools": { "t-att-class": () => ({ "d-none": !this.editing }) },
-        ".o_website_links_code_error": { "t-att-class": () => ({ "d-none": !this.error }) },
-        ".o_website_links_cancel_edit": { "t-on-click.prevent": this.onCancelEditClick },
-        "#edit-code-form": { "t-on-submit.prevent": this.onEditCodeFormSubmit },
-        ".o_website_links_ok_edit": { "t-on-click.prevent": this.onEditCodeFormSubmit },
+        ".o_website_links_edit_tools": {
+            "t-att-class": () => ({"d-none": !this.editing}),
+        },
+        ".o_website_links_code_error": {"t-att-class": () => ({"d-none": !this.error})},
+        ".o_website_links_cancel_edit": {"t-on-click.prevent": this.onCancelEditClick},
+        "#edit-code-form": {"t-on-submit.prevent": this.onEditCodeFormSubmit},
+        ".o_website_links_ok_edit": {"t-on-click.prevent": this.onEditCodeFormSubmit},
     };
 
     setup() {
@@ -63,7 +65,9 @@ class WebsiteLinksCodeEditor extends Interaction {
     }
 
     onCancelEditClick() {
-        this.codeEl.replaceChildren(this.codeEl.querySelector("#edit-code-form #init_code").value);
+        this.codeEl.replaceChildren(
+            this.codeEl.querySelector("#edit-code-form #init_code").value
+        );
         this.editing = false;
         this.error = false;
     }

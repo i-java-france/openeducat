@@ -1,5 +1,5 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 const monetarySel = "[data-oe-field][data-oe-type=monetary]";
 
@@ -16,7 +16,7 @@ export class MonetaryFieldPlugin extends Plugin {
         const handleEvent = (ev, condition) => {
             const fieldEl = ev.target.closest(monetarySel);
             const amountEl = fieldEl?.querySelector(".oe_currency_value");
-            if (amountEl?.isContentEditable && condition({ fieldEl, amountEl })) {
+            if (amountEl?.isContentEditable && condition({fieldEl, amountEl})) {
                 this.dependencies.selection.setSelection({
                     anchorNode: amountEl,
                     anchorOffset: 0,
@@ -26,12 +26,15 @@ export class MonetaryFieldPlugin extends Plugin {
             }
         };
         this.addDomListener(this.editable, "focusin", (ev) =>
-            handleEvent(ev, ({ fieldEl }) => fieldEl !== ev.relatedTarget?.closest(monetarySel))
+            handleEvent(
+                ev,
+                ({fieldEl}) => fieldEl !== ev.relatedTarget?.closest(monetarySel)
+            )
         );
         this.addDomListener(this.editable, "click", (ev) =>
             handleEvent(
                 ev,
-                ({ amountEl }) =>
+                ({amountEl}) =>
                     !this.dependencies.selection
                         .getTargetedNodes()
                         .some((node) => amountEl.contains(node))

@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import odoo
 
-from odoo import tools
 from odoo.addons.point_of_sale.tests.common import TestPoSCommon
+
 
 @odoo.tests.tagged('post_install', '-at_install')
 class TestPoSMultipleReceivableAccounts(TestPoSCommon):
@@ -21,7 +20,7 @@ class TestPoSMultipleReceivableAccounts(TestPoSCommon):
     """
 
     def setUp(self):
-        super(TestPoSMultipleReceivableAccounts, self).setUp()
+        super().setUp()
         self.config = self.basic_config
         self.product1 = self.create_product(
             'Product 1',

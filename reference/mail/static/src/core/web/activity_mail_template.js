@@ -1,7 +1,7 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
-import { useService } from "@web/core/utils/hooks";
-import { _t } from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
 
 /**
  * @typedef {Object} Props
@@ -65,10 +65,11 @@ export class ActivityMailTemplate extends Component {
             model: this.props.activity.res_model,
             id: this.props.activity.res_id,
         });
-        await this.env.services.orm.call(this.props.activity.res_model, "activity_send_mail", [
-            [this.props.activity.res_id],
-            mailTemplate.id,
-        ]);
+        await this.env.services.orm.call(
+            this.props.activity.res_model,
+            "activity_send_mail",
+            [[this.props.activity.res_id], mailTemplate.id]
+        );
         this.props.onActivityChanged?.(thread);
     }
 }

@@ -10,12 +10,12 @@ import {
     startServer,
     triggerHotkey,
 } from "@mail/../tests/mail_test_helpers";
-import { Composer } from "@mail/core/common/composer";
-import { Message } from "@mail/core/common/message";
-import { describe, expect, test } from "@odoo/hoot";
-import { onMounted, onPatched } from "@odoo/owl";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { range } from "@web/core/utils/numbers";
+import {Composer} from "@mail/core/common/composer";
+import {Message} from "@mail/core/common/message";
+import {describe, expect, test} from "@odoo/hoot";
+import {onMounted, onPatched} from "@odoo/owl";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {range} from "@web/core/utils/numbers";
 
 describe.current.tags("desktop");
 defineMailModels();
@@ -23,7 +23,7 @@ defineMailModels();
 test("posting new message should only render relevant part", async () => {
     // For example, it should not render old messages again
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "general" });
+    const channelId = pyEnv["discuss.channel"].create({name: "general"});
     const messageIds = [];
     for (let i = 0; i < 10; i++) {
         messageIds.push(
@@ -34,7 +34,7 @@ test("posting new message should only render relevant part", async () => {
             })
         );
     }
-    messageIds.pop(); // remove last as it might need re-render (it was the newest message before)
+    messageIds.pop(); // Remove last as it might need re-render (it was the newest message before)
     let posting = false;
     prepareObserveRenders();
     patchWithCleanup(Message.prototype, {
@@ -56,7 +56,7 @@ test("posting new message should only render relevant part", async () => {
     await start();
     const stopObserve1 = observeRenders();
     await openDiscuss(channelId);
-    await contains(".o-mail-Message", { count: 10 });
+    await contains(".o-mail-Message", {count: 10});
     await insertText(".o-mail-Composer-input", "Test");
     const result1 = stopObserve1();
     // LessThan because renders could be batched
@@ -64,7 +64,7 @@ test("posting new message should only render relevant part", async () => {
     const stopObserve2 = observeRenders();
     posting = true;
     triggerHotkey("Enter");
-    await contains(".o-mail-Message", { count: 11 });
+    await contains(".o-mail-Message", {count: 11});
     posting = false;
     const result2 = stopObserve2();
     expect(result2.get(Composer)).toBeLessThan(3); // 2: temp disabling + clear content
@@ -74,11 +74,15 @@ test("posting new message should only render relevant part", async () => {
 test("replying to message should only render relevant part", async () => {
     // For example, it should not render all messages when selecting message to reply
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "general" });
+    const channelId = pyEnv["discuss.channel"].create({name: "general"});
     const messageIds = range(0, 10).map((i) =>
-        pyEnv["mail.message"].create({ body: `${i}`, model: "discuss.channel", res_id: channelId })
+        pyEnv["mail.message"].create({
+            body: `${i}`,
+            model: "discuss.channel",
+            res_id: channelId,
+        })
     );
-    messageIds.pop(); // remove last as this is the one to be replied to
+    messageIds.pop(); // Remove last as this is the one to be replied to
     let replying = false;
     prepareObserveRenders();
     patchWithCleanup(Message.prototype, {
@@ -99,7 +103,7 @@ test("replying to message should only render relevant part", async () => {
     });
     await start();
     await openDiscuss(channelId);
-    await contains(".o-mail-Message", { count: 10 });
+    await contains(".o-mail-Message", {count: 10});
     const stopObserve = observeRenders();
     replying = true;
     await click(".o-mail-Message:last [title='Reply']");

@@ -1,8 +1,8 @@
-import { baseContainerGlobalSelector } from "@html_editor/utils/base_container";
-import { Plugin } from "../plugin";
-import { childNodes } from "@html_editor/utils/dom_traversal";
-import { isEmptyBlock } from "@html_editor/utils/dom_info";
-import { withSequence } from "@html_editor/utils/resource";
+import {baseContainerGlobalSelector} from "@html_editor/utils/base_container";
+import {Plugin} from "../plugin";
+import {childNodes} from "@html_editor/utils/dom_traversal";
+import {isEmptyBlock} from "@html_editor/utils/dom_info";
+import {withSequence} from "@html_editor/utils/resource";
 
 export class PlaceholderPlugin extends Plugin {
     static id = "placeholder";

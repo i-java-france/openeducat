@@ -1,5 +1,5 @@
-import { useService } from "@web/core/utils/hooks";
-import { GroupConfigMenu } from "@web/views/view_components/group_config_menu";
+import {useService} from "@web/core/utils/hooks";
+import {GroupConfigMenu} from "@web/views/view_components/group_config_menu";
 
 export class ProjectProjectGroupConfigMenu extends GroupConfigMenu {
     setup() {
@@ -13,7 +13,7 @@ export class ProjectProjectGroupConfigMenu extends GroupConfigMenu {
                 this.group.groupByField.relation,
                 "unlink_wizard",
                 [this.group.value],
-                { context: this.group.context }
+                {context: this.group.context}
             );
             this.action.doAction(action);
             return;

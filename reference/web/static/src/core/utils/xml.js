@@ -1,4 +1,4 @@
-import { isIterable } from "./arrays";
+import {isIterable} from "./arrays";
 
 /**
  * XML document to create new elements from. The fact that this is a "text/xml"

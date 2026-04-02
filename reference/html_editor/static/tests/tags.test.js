@@ -1,13 +1,13 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { press, queryFirst } from "@odoo/hoot-dom";
-import { setupEditor, testEditor } from "./_helpers/editor";
-import { getContent, setSelection } from "./_helpers/selection";
-import { insertText, tripleClick, undo } from "./_helpers/user_actions";
-import { animationFrame } from "@odoo/hoot-mock";
-import { defineStyle } from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {press, queryFirst} from "@odoo/hoot-dom";
+import {setupEditor, testEditor} from "./_helpers/editor";
+import {getContent, setSelection} from "./_helpers/selection";
+import {insertText, tripleClick, undo} from "./_helpers/user_actions";
+import {animationFrame} from "@odoo/hoot-mock";
+import {defineStyle} from "@web/../tests/web_test_helpers";
 
 function setTag(tagName) {
-    return (editor) => editor.shared.dom.setBlock({ tagName });
+    return (editor) => editor.shared.dom.setBlock({tagName});
 }
 
 describe("to paragraph", () => {
@@ -77,7 +77,7 @@ describe("to paragraph", () => {
             contentBefore: "<div><small>[abc]</small></div>",
             stepFunction: setTag("p"),
             contentAfter: "<div><p><small>[abc]</small></p></div>",
-            config: { baseContainers: ["P"] },
+            config: {baseContainers: ["P"]},
         });
     });
 
@@ -137,12 +137,13 @@ describe("to paragraph", () => {
             contentBefore:
                 '<h1>[before</h1><h1 contenteditable="false">noneditable</h1><h1>after]</h1>',
             stepFunction: setTag("p"),
-            contentAfter: '<p>[before</p><h1 contenteditable="false">noneditable</h1><p>after]</p>',
+            contentAfter:
+                '<p>[before</p><h1 contenteditable="false">noneditable</h1><p>after]</p>',
         });
     });
 
     test("apply 'Text' command", async () => {
-        const { el, editor } = await setupEditor("<h1>ab[]cd</h1>");
+        const {el, editor} = await setupEditor("<h1>ab[]cd</h1>");
         await insertText(editor, "/text");
         await animationFrame();
         expect(".active .o-we-command-name").toHaveText("Text");
@@ -156,7 +157,8 @@ describe("to paragraph", () => {
             contentBefore:
                 '<h3 class="h4-fs" style="text-align: center;">[abc<span style="font-size: 32px;">de</span><strong>fg</strong>]</h3>',
             stepFunction: setTag("p"),
-            contentAfter: '<p style="text-align: center;">[abcde<strong>fg</strong>]</p>',
+            contentAfter:
+                '<p style="text-align: center;">[abcde<strong>fg</strong>]</p>',
         });
     });
 });
@@ -240,7 +242,7 @@ describe("to heading 1", () => {
             contentBefore: "<div><small>[abc]</small></div>",
             stepFunction: setTag("h1"),
             contentAfter: "<div><h1><small>[abc]</small></h1></div>",
-            config: { baseContainers: ["P"] },
+            config: {baseContainers: ["P"]},
         });
     });
 
@@ -276,7 +278,8 @@ describe("to heading 1", () => {
             contentBefore:
                 '<h2 class="h4-fs" style="text-align: center;">[abc<span style="font-size: 32px;">de</span><strong>fg</strong>]</h2>',
             stepFunction: setTag("h1"),
-            contentAfter: '<h1 style="text-align: center;">[abcde<strong>fg</strong>]</h1>',
+            contentAfter:
+                '<h1 style="text-align: center;">[abcde<strong>fg</strong>]</h1>',
         });
     });
 });
@@ -308,7 +311,7 @@ describe("to heading 2", () => {
 
     test.tags("desktop");
     test("should turn a paragraph into a heading 2 after a triple click", async () => {
-        const { el, editor } = await setupEditor("<p>ab</p><h1>cd</h1>");
+        const {el, editor} = await setupEditor("<p>ab</p><h1>cd</h1>");
         await tripleClick(el.querySelector("p"));
         setTag("h2")(editor);
         expect(getContent(el)).toBe("<h2>[ab]</h2><h1>cd</h1>");
@@ -346,7 +349,8 @@ describe("to heading 2", () => {
             contentBefore:
                 '<h3 class="h4-fs" style="text-align: center;">[abc<span style="font-size: 32px;">de</span><strong>fg</strong>]</h3>',
             stepFunction: setTag("h2"),
-            contentAfter: '<h2 style="text-align: center;">[abcde<strong>fg</strong>]</h2>',
+            contentAfter:
+                '<h2 style="text-align: center;">[abcde<strong>fg</strong>]</h2>',
         });
     });
 });
@@ -420,7 +424,8 @@ describe("to heading 3", () => {
             contentBefore:
                 '<h2 class="h4-fs" style="text-align: center;">[abc<span style="font-size: 32px;">de</span><strong>fg]</strong></h2>',
             stepFunction: setTag("h3"),
-            contentAfter: '<h3 style="text-align: center;">[abcde<strong>fg]</strong></h3>',
+            contentAfter:
+                '<h3 style="text-align: center;">[abcde<strong>fg]</strong></h3>',
         });
     });
 });
@@ -473,12 +478,13 @@ describe("to pre", () => {
         await testEditor({
             contentBefore: '<ul><li class="nav-item" id="test">[abcd]</li></ul>',
             stepFunction: setTag("pre"),
-            contentAfter: '<ul><li class="nav-item" id="test"><pre>[abcd]</pre></li></ul>',
+            contentAfter:
+                '<ul><li class="nav-item" id="test"><pre>[abcd]</pre></li></ul>',
         });
     });
 
     test("apply 'Code' command", async () => {
-        const { el, editor } = await setupEditor("<p>ab[]cd</p>");
+        const {el, editor} = await setupEditor("<p>ab[]cd</p>");
         await insertText(editor, "/code");
         await animationFrame();
         expect(".active .o-we-command-name").toHaveText("Code");
@@ -492,7 +498,8 @@ describe("to pre", () => {
             contentBefore:
                 '<h3 class="h4-fs" style="text-align: center;">[abc<span style="font-size: 32px;">de</span><strong>fg</strong>]</h3>',
             stepFunction: setTag("pre"),
-            contentAfter: '<pre style="text-align: center;">[abcde<strong>fg</strong>]</pre>',
+            contentAfter:
+                '<pre style="text-align: center;">[abcde<strong>fg</strong>]</pre>',
         });
     });
 });
@@ -556,7 +563,8 @@ describe("to blockquote", () => {
 
     test("should not transfer attributes of list to blockquote", async () => {
         await testEditor({
-            contentBefore: '<ul><li class="nav-item" style="color: red;">[abcd]</li></ul>',
+            contentBefore:
+                '<ul><li class="nav-item" style="color: red;">[abcd]</li></ul>',
             stepFunction: setTag("blockquote"),
             contentAfter:
                 '<ul><li class="nav-item" style="color: red;"><blockquote>[abcd]</blockquote></li></ul>',
@@ -564,7 +572,7 @@ describe("to blockquote", () => {
     });
 
     test("setTag should work when we remove the selection", async () => {
-        const { editor, el } = await setupEditor("<p>ab[]cd</p>");
+        const {editor, el} = await setupEditor("<p>ab[]cd</p>");
         editor.document.getSelection().removeAllRanges();
         expect(getContent(el)).toBe("<p>abcd</p>");
 
@@ -573,9 +581,9 @@ describe("to blockquote", () => {
     });
 
     test("setTag should work when we move the selection outside of the editor", async () => {
-        const { editor, el } = await setupEditor("<p>ab[]cd</p>");
+        const {editor, el} = await setupEditor("<p>ab[]cd</p>");
         const anchorNode = queryFirst(".odoo-editor-editable").parentElement;
-        setSelection({ anchorNode, anchorOffset: 0 });
+        setSelection({anchorNode, anchorOffset: 0});
         expect(getContent(el)).toBe("<p>abcd</p>");
 
         setTag("h1")(editor);
@@ -584,7 +592,7 @@ describe("to blockquote", () => {
 
     test.tags("desktop");
     test("triple click with setTag should only switch the tag on the selected line", async () => {
-        const { editor, el } = await setupEditor("<p>ab[]cd</p><p>Plop</p>");
+        const {editor, el} = await setupEditor("<p>ab[]cd</p><p>Plop</p>");
         await tripleClick(queryFirst("div p"));
         expect(getContent(el)).toBe("<p>[abcd]</p><p>Plop</p>");
 
@@ -594,7 +602,7 @@ describe("to blockquote", () => {
 
     test.tags("desktop");
     test("6 click with setTag should only switch the tag on the selected line", async () => {
-        const { editor, el } = await setupEditor("<p>ab[]cd</p><p>Plop</p>");
+        const {editor, el} = await setupEditor("<p>ab[]cd</p><p>Plop</p>");
         const anchorNode = queryFirst("div p");
         await tripleClick(anchorNode);
         await tripleClick(anchorNode);
@@ -605,7 +613,7 @@ describe("to blockquote", () => {
     });
 
     test("apply 'Quote' command", async () => {
-        const { el, editor } = await setupEditor("<p>ab[]cd</p>");
+        const {el, editor} = await setupEditor("<p>ab[]cd</p>");
         await insertText(editor, "/quote");
         await animationFrame();
         expect(".active .o-we-command-name").toHaveText("Quote");
@@ -615,7 +623,7 @@ describe("to blockquote", () => {
     });
 
     test("setTag should work after control+a", async () => {
-        const { el, editor } = await setupEditor("<p>[]abcd</p>");
+        const {el, editor} = await setupEditor("<p>[]abcd</p>");
         await press(["ctrl", "a"]);
         expect(getContent(el)).toBe("<p>[abcd]</p>");
         setTag("h1")(editor);
@@ -625,28 +633,34 @@ describe("to blockquote", () => {
 
 describe("transform", () => {
     test("should transform space preceding by a hashtag to heading 1", async () => {
-        const { el, editor } = await setupEditor("<p>[]</p>");
+        const {el, editor} = await setupEditor("<p>[]</p>");
         await insertText(editor, "# ");
-        expect(getContent(el)).toBe(`<h1 o-we-hint-text="Heading 1" class="o-we-hint">[]<br></h1>`);
+        expect(getContent(el)).toBe(
+            `<h1 o-we-hint-text="Heading 1" class="o-we-hint">[]<br></h1>`
+        );
 
         undo(editor);
         expect(getContent(el)).toBe(`<p># []</p>`);
     });
 
     test("should transform space preceding by two hashtags to heading 2", async () => {
-        const { el, editor } = await setupEditor("<p>[]</p>");
+        const {el, editor} = await setupEditor("<p>[]</p>");
         await insertText(editor, "## ");
-        expect(getContent(el)).toBe(`<h2 o-we-hint-text="Heading 2" class="o-we-hint">[]<br></h2>`);
+        expect(getContent(el)).toBe(
+            `<h2 o-we-hint-text="Heading 2" class="o-we-hint">[]<br></h2>`
+        );
     });
 
     test("should transform space preceding by three hashtags to heading 3", async () => {
-        const { el, editor } = await setupEditor("<p>[]<br></p>");
+        const {el, editor} = await setupEditor("<p>[]<br></p>");
         await insertText(editor, "### ");
-        expect(getContent(el)).toBe(`<h3 o-we-hint-text="Heading 3" class="o-we-hint">[]<br></h3>`);
+        expect(getContent(el)).toBe(
+            `<h3 o-we-hint-text="Heading 3" class="o-we-hint">[]<br></h3>`
+        );
     });
 
     test("should transform space preceding by a hashtag at the starting of text to heading 1", async () => {
-        const { el, editor } = await setupEditor("<p>[]abc</p>");
+        const {el, editor} = await setupEditor("<p>[]abc</p>");
         await insertText(editor, "# ");
         expect(getContent(el)).toBe(`<h1>[]abc</h1>`);
 
@@ -655,25 +669,25 @@ describe("transform", () => {
     });
 
     test("should transform space preceding by two hashtags at the starting of text to heading 2", async () => {
-        const { el, editor } = await setupEditor("<p>[]abc</p>");
+        const {el, editor} = await setupEditor("<p>[]abc</p>");
         await insertText(editor, "## ");
         expect(getContent(el)).toBe(`<h2>[]abc</h2>`);
     });
 
     test("should transform space preceding by three hashtags at the starting of text to heading 3", async () => {
-        const { el, editor } = await setupEditor("<p>[]abc</p>");
+        const {el, editor} = await setupEditor("<p>[]abc</p>");
         await insertText(editor, "### ");
         expect(getContent(el)).toBe(`<h3>[]abc</h3>`);
     });
 
     test("typing space inside formated text with a hashtag at the starting of text should not transform to heading", async () => {
-        const { el, editor } = await setupEditor("<p># a<strong>b[]cd</strong>e</p>");
+        const {el, editor} = await setupEditor("<p># a<strong>b[]cd</strong>e</p>");
         await insertText(editor, " ");
         expect(getContent(el)).toBe(`<p># a<strong>b []cd</strong>e</p>`);
     });
 
     test("should transform three dashes in an empty block to separator before the block", async () => {
-        const { el, editor } = await setupEditor("<p>[]<br></p>");
+        const {el, editor} = await setupEditor("<p>[]<br></p>");
         await insertText(editor, "--- ");
         expect(getContent(el)).toBe(
             `<p data-selection-placeholder="" style="margin: 8px 0px -9px;"><br></p><hr contenteditable="false"><p o-we-hint-text='Type "/" for commands' class="o-we-hint">[]<br></p>`
@@ -681,7 +695,7 @@ describe("transform", () => {
     });
 
     test("should transform three dashes at the start of text to separator before the block", async () => {
-        const { el, editor } = await setupEditor("<p>[]abc</p>");
+        const {el, editor} = await setupEditor("<p>[]abc</p>");
         await insertText(editor, "--- ");
         expect(getContent(el)).toBe(
             `<p data-selection-placeholder="" style="margin: 8px 0px -9px;"><br></p><hr contenteditable="false"><p>[]abc</p>`
@@ -689,7 +703,7 @@ describe("transform", () => {
     });
 
     test("should transform space preceding by greater-than symbol to blockquote", async () => {
-        const { el, editor } = await setupEditor("<p>[]<br></p>");
+        const {el, editor} = await setupEditor("<p>[]<br></p>");
         await insertText(editor, "> ");
         expect(getContent(el)).toBe(
             `<blockquote o-we-hint-text="Quote" class="o-we-hint">[]<br></blockquote>`
@@ -697,7 +711,7 @@ describe("transform", () => {
     });
 
     test("should transform space preceding by a greater-than symbol at the starting of text to blockquote", async () => {
-        const { el, editor } = await setupEditor("<p>[]abc</p>");
+        const {el, editor} = await setupEditor("<p>[]abc</p>");
         await insertText(editor, "> ");
         expect(getContent(el)).toBe(`<blockquote>[]abc</blockquote>`);
 

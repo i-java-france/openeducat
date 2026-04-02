@@ -4,7 +4,7 @@ import {
     registerWebsitePreviewTour,
     clickToolbarButton,
 } from "@website/js/tours/tour_utils";
-import { FONT_SIZE_CLASSES } from "@html_editor/utils/formatting";
+import {FONT_SIZE_CLASSES} from "@html_editor/utils/formatting";
 
 const classNameInfo = new Map();
 classNameInfo.set("display-1-fs", {
@@ -101,7 +101,7 @@ function checkComputedFontSize(fontSizeClass, stage) {
 
 function getFontSizeTestSteps(fontSizeClass) {
     return [
-        ...insertSnippet({ id: "s_text_block", name: "Text", groupName: "Text" }),
+        ...insertSnippet({id: "s_text_block", name: "Text", groupName: "Text"}),
         ...clickToolbarButton(
             `text block first paragraph [${fontSizeClass}]`,
             ".s_text_block p",

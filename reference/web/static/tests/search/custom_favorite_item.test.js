@@ -1,5 +1,5 @@
-import { after, expect, test } from "@odoo/hoot";
-import { Component, xml } from "@odoo/owl";
+import {after, expect, test} from "@odoo/hoot";
+import {Component, xml} from "@odoo/owl";
 import {
     defineModels,
     editFavoriteName,
@@ -10,20 +10,20 @@ import {
     models,
     mountWithSearch,
     onRpc,
-    saveFavorite,
     saveAndEditFavorite,
+    saveFavorite,
     toggleSaveFavorite,
     toggleSearchBarMenu,
     validateSearch,
 } from "@web/../tests/web_test_helpers";
 
-import { useSetupAction } from "@web/search/action_hook";
-import { SearchBar } from "@web/search/search_bar/search_bar";
-import { SearchBarMenu } from "@web/search/search_bar_menu/search_bar_menu";
-import { rpcBus } from "@web/core/network/rpc";
+import {useSetupAction} from "@web/search/action_hook";
+import {SearchBar} from "@web/search/search_bar/search_bar";
+import {SearchBarMenu} from "@web/search/search_bar_menu/search_bar_menu";
+import {rpcBus} from "@web/core/network/rpc";
 
 class Foo extends models.Model {
-    bar = fields.Many2one({ relation: "partner" });
+    bar = fields.Many2one({relation: "partner"});
     birthday = fields.Date();
     date_field = fields.Date();
     float_field = fields.Float();
@@ -49,32 +49,38 @@ test("simple rendering", async () => {
 
     await toggleSearchBarMenu();
     await toggleSaveFavorite();
-    expect(`.o_add_favorite + .o_accordion_values input[type="text"]`).toHaveValue("Action Name");
-    expect(`.o_add_favorite + .o_accordion_values input[type="checkbox"]`).toHaveCount(1);
-    expect(`.o_add_favorite + .o_accordion_values .form-check label`).toHaveText("Default filter");
+    expect(`.o_add_favorite + .o_accordion_values input[type="text"]`).toHaveValue(
+        "Action Name"
+    );
+    expect(`.o_add_favorite + .o_accordion_values input[type="checkbox"]`).toHaveCount(
+        1
+    );
+    expect(`.o_add_favorite + .o_accordion_values .form-check label`).toHaveText(
+        "Default filter"
+    );
 });
 
 test("save filter", async () => {
     class TestComponent extends Component {
-        static components = { SearchBarMenu };
+        static components = {SearchBarMenu};
         static template = xml`<div><SearchBarMenu/></div>`;
         static props = ["*"];
         setup() {
             useSetupAction({
-                getContext: () => ({ someKey: "foo" }),
+                getContext: () => ({someKey: "foo"}),
             });
         }
     }
-    onRpc("create_filter", ({ args, route }) => {
+    onRpc("create_filter", ({args, route}) => {
         expect.step(route);
         const irFilter = args[0];
-        expect(irFilter.context).toEqual({ group_by: [], someKey: "foo" });
-        return [7]; // fake serverSideId
+        expect(irFilter.context).toEqual({group_by: [], someKey: "foo"});
+        return [7]; // Fake serverSideId
     });
 
     await mountWithSearch(TestComponent, {
         resModel: "foo",
-        context: { someOtherKey: "bar" }, // should not end up in filter's context
+        context: {someOtherKey: "bar"}, // Should not end up in filter's context
         searchViewId: false,
     });
     const clearCacheListener = () => expect.step("CLEAR-CACHES");
@@ -86,25 +92,28 @@ test("save filter", async () => {
     await toggleSaveFavorite();
     await editFavoriteName("aaa");
     await saveFavorite();
-    expect.verifySteps(["/web/dataset/call_kw/ir.filters/create_filter", "CLEAR-CACHES"]);
+    expect.verifySteps([
+        "/web/dataset/call_kw/ir.filters/create_filter",
+        "CLEAR-CACHES",
+    ]);
 });
 
 test("save and edit filter", async () => {
     class TestComponent extends Component {
-        static components = { SearchBarMenu };
+        static components = {SearchBarMenu};
         static template = xml`<div><SearchBarMenu/></div>`;
         static props = ["*"];
         setup() {
             useSetupAction({
-                getContext: () => ({ someKey: "foo" }),
+                getContext: () => ({someKey: "foo"}),
             });
         }
     }
-    onRpc("create_filter", ({ args, route }) => {
+    onRpc("create_filter", ({args, route}) => {
         expect.step(route);
         const irFilter = args[0];
-        expect(irFilter.context).toEqual({ group_by: [], someKey: "foo" });
-        return [7]; // fake serverSideId
+        expect(irFilter.context).toEqual({group_by: [], someKey: "foo"});
+        return [7]; // Fake serverSideId
     });
     mockService("action", {
         doAction(action) {
@@ -123,7 +132,7 @@ test("save and edit filter", async () => {
 
     await mountWithSearch(TestComponent, {
         resModel: "foo",
-        context: { someOtherKey: "bar" }, // should not end up in filter's context
+        context: {someOtherKey: "bar"}, // Should not end up in filter's context
         searchViewId: false,
     });
     const clearCacheListener = () => expect.step("CLEAR-CACHES");
@@ -143,18 +152,18 @@ test("save and edit filter", async () => {
 });
 
 test("dynamic filters are saved dynamic", async () => {
-    onRpc("create_filter", ({ args, route }) => {
+    onRpc("create_filter", ({args, route}) => {
         expect.step(route);
         const irFilter = args[0];
         expect(irFilter.domain).toBe(
             `[("date_field", ">=", (context_today() + relativedelta()).strftime("%Y-%m-%d"))]`
         );
-        return [7]; // fake serverSideId
+        return [7]; // Fake serverSideId
     });
 
     await mountWithSearch(SearchBar, {
         resModel: "foo",
-        context: { search_default_filter: 1 },
+        context: {search_default_filter: 1},
         searchMenuTypes: ["filter", "favorite"],
         searchViewId: false,
         searchViewArch: `
@@ -174,11 +183,11 @@ test("dynamic filters are saved dynamic", async () => {
 });
 
 test("save filters created via autocompletion works", async () => {
-    onRpc("create_filter", ({ args, route }) => {
+    onRpc("create_filter", ({args, route}) => {
         expect.step(route);
         const irFilter = args[0];
         expect(irFilter.domain).toBe(`[("foo", "ilike", "a")]`);
-        return [7]; // fake serverSideId
+        return [7]; // Fake serverSideId
     });
 
     await mountWithSearch(SearchBar, {
@@ -206,11 +215,11 @@ test("undefined name for filter shows notification and not error", async () => {
         add(message, options) {
             expect.step("notification");
             expect(message).toBe("A name for your favorite filter is required.");
-            expect(options).toEqual({ type: "danger" });
+            expect(options).toEqual({type: "danger"});
         },
     });
 
-    onRpc("create_filter", () => [7]); // fake serverSideId
+    onRpc("create_filter", () => [7]); // Fake serverSideId
 
     await mountWithSearch(SearchBarMenu, {
         resModel: "foo",

@@ -1,7 +1,7 @@
-import { RelationalModel } from "@web/model/relational_model/relational_model";
-import { Record } from "@web/model/relational_model/record";
-import { makeActiveField } from "@web/model/relational_model/utils";
-import { ProjectTaskRelationalModel } from "../project_task_relational_model";
+import {RelationalModel} from "@web/model/relational_model/relational_model";
+import {Record} from "@web/model/relational_model/record";
+import {makeActiveField} from "@web/model/relational_model/utils";
+import {ProjectTaskRelationalModel} from "../project_task_relational_model";
 
 export class ProjectTaskKanbanDynamicGroupList extends RelationalModel.DynamicGroupList {
     get isGroupedByStage() {
@@ -17,8 +17,9 @@ export class ProjectTaskRecord extends Record {
     }
 
     async toggleSubtasksList() {
-        const { display_name, project_id, state, user_ids, sequence } = this.config.fields;
-        const activeField = makeActiveField({ onChange: true });
+        const {display_name, project_id, state, user_ids, sequence} =
+            this.config.fields;
+        const activeField = makeActiveField({onChange: true});
         activeField.related = {
             activeFields: {
                 display_name: makeActiveField(),
@@ -36,7 +37,7 @@ export class ProjectTaskRecord extends Record {
             },
         };
         await this._load({
-            activeFields: { ...this.config.activeFields, child_ids: activeField },
+            activeFields: {...this.config.activeFields, child_ids: activeField},
         });
         this.displaySubtasks = !this.displaySubtasks;
     }

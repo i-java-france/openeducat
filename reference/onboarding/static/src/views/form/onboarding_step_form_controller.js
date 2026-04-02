@@ -1,5 +1,5 @@
-import { FormController } from "@web/views/form/form_controller";
-import { useService } from "@web/core/utils/hooks";
+import {FormController} from "@web/views/form/form_controller";
+import {useService} from "@web/core/utils/hooks";
 
 /**
  * Controller to use for an onboarding step dialog, not the
@@ -8,26 +8,29 @@ import { useService } from "@web/core/utils/hooks";
 export default class OnboardingStepFormController extends FormController {
     setup() {
         super.setup();
-        this.action = useService('action');
-        this.orm = useService('orm');
+        this.action = useService("action");
+        this.orm = useService("orm");
     }
     /**
      * If necessary, mark the step as done and reload the main view.
      * @override
      */
-    async save({ closable, ...otherParams }) {
+    async save({closable, ...otherParams}) {
         const saved = await super.save(otherParams);
         if (saved) {
-            const { reloadOnFirstValidation, reloadAlways } = this.stepConfig;
+            const {reloadOnFirstValidation, reloadAlways} = this.stepConfig;
             const validationResponse = await this.orm.call(
-                'onboarding.onboarding.step',
-                'action_validate_step',
-                [this.stepName],
+                "onboarding.onboarding.step",
+                "action_validate_step",
+                [this.stepName]
             );
-            if (reloadAlways || (reloadOnFirstValidation && validationResponse === "JUST_DONE")) {
+            if (
+                reloadAlways ||
+                (reloadOnFirstValidation && validationResponse === "JUST_DONE")
+            ) {
                 this.action.restore(this.action.currentController.jsId);
             } else if (closable) {
-                this.action.doAction({ type: "ir.actions.act_window_close" });
+                this.action.doAction({type: "ir.actions.act_window_close"});
             }
         }
         return saved;
@@ -39,7 +42,7 @@ export default class OnboardingStepFormController extends FormController {
      * @return {string}
      */
     get stepName() {
-        return ''
+        return "";
     }
     /**
      *  Returns whether to reload the page (useful if the current
@@ -48,6 +51,6 @@ export default class OnboardingStepFormController extends FormController {
      * @returns {{reloadAlways: boolean, reloadOnFirstValidation: boolean}}
      */
     get stepConfig() {
-        return { reloadAlways: false, reloadOnFirstValidation: false };
+        return {reloadAlways: false, reloadOnFirstValidation: false};
     }
 }

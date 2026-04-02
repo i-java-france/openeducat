@@ -1,5 +1,5 @@
-import { Component, onMounted, useExternalListener, useRef } from "@odoo/owl";
-import { Toolbar } from "./toolbar";
+import {Component, onMounted, useExternalListener, useRef} from "@odoo/owl";
+import {Toolbar} from "./toolbar";
 
 export class ToolbarMobile extends Component {
     static template = "html_editor.MobileToolbar";
@@ -22,7 +22,8 @@ export class ToolbarMobile extends Component {
      */
     fixToolbarPosition() {
         const keyboardHeight =
-            window.innerHeight - (window.visualViewport.height + window.visualViewport.offsetTop);
+            window.innerHeight -
+            (window.visualViewport.height + window.visualViewport.offsetTop);
         if (keyboardHeight > 0) {
             this.toolbar.el.style.bottom = `${keyboardHeight}px`;
         } else {

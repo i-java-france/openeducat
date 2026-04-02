@@ -1,5 +1,5 @@
-import { setSelection } from "@html_editor/../tests/_helpers/selection";
-import { describe, expect, test } from "@odoo/hoot";
+import {setSelection} from "@html_editor/../tests/_helpers/selection";
+import {describe, expect, test} from "@odoo/hoot";
 import {
     advanceTime,
     animationFrame,
@@ -9,29 +9,29 @@ import {
     queryAll,
     queryFirst,
     queryOne,
+    setInputRange,
     waitFor,
     waitForNone,
-    setInputRange,
 } from "@odoo/hoot-dom";
-import { contains, onRpc } from "@web/../tests/web_test_helpers";
+import {contains, onRpc} from "@web/../tests/web_test_helpers";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
     setupWebsiteBuilderOeId,
 } from "./website_helpers";
-import { dummyBase64Img } from "@html_builder/../tests/helpers";
-import { testImg } from "./image_test_helpers";
-import { expectElementCount } from "@html_editor/../tests/_helpers/ui_expectations";
+import {dummyBase64Img} from "@html_builder/../tests/helpers";
+import {testImg} from "./image_test_helpers";
+import {expectElementCount} from "@html_editor/../tests/_helpers/ui_expectations";
 
 defineWebsiteModels();
 
 test("click on Image shouldn't open toolbar", async () => {
-    const { getEditor } = await setupWebsiteBuilder(
+    const {getEditor} = await setupWebsiteBuilder(
         `<div><p>a</p><img class=a_nice_img src='${dummyBase64Img}'></div>`
     );
     const editor = getEditor();
     const p = editor.editable.querySelector("p");
-    setSelection({ anchorNode: p, anchorOffset: 0, focusNode: p, focusOffset: 1 });
+    setSelection({anchorNode: p, anchorOffset: 0, focusNode: p, focusOffset: 1});
     await expectElementCount(".o-we-toolbar", 1);
 
     await contains(":iframe img.a_nice_img").click();
@@ -50,13 +50,15 @@ test("Double click on image and replace it", async () => {
             public: true,
         },
     ]);
-    const { waitSidebarUpdated } = await setupWebsiteBuilder(
+    const {waitSidebarUpdated} = await setupWebsiteBuilder(
         `<div><img class=a_nice_img src='${dummyBase64Img}'></div>`
     );
     expect(".modal-content").toHaveCount(0);
     await dblclick(":iframe img.a_nice_img");
     await animationFrame();
-    expect(".modal-content:contains(Select a media) .o_upload_media_button").toHaveCount(1);
+    expect(
+        ".modal-content:contains(Select a media) .o_upload_media_button"
+    ).toHaveCount(1);
     expect("div.o-tooltip").toHaveCount(0);
     await contains(".o_select_media_dialog .o_button_area[aria-label='logo']").click();
     await waitSidebarUpdated();
@@ -67,7 +69,9 @@ test("Double click on image and replace it", async () => {
 });
 
 test("simple click on Image", async () => {
-    await setupWebsiteBuilder(`<div><img class=a_nice_img src='${dummyBase64Img}'></div>`);
+    await setupWebsiteBuilder(
+        `<div><img class=a_nice_img src='${dummyBase64Img}'></div>`
+    );
     await click(":iframe img.a_nice_img");
     await waitFor("div.o-tooltip");
     expect("div.o-tooltip").toHaveCount(1);
@@ -84,7 +88,7 @@ test("double click on text", async () => {
 });
 
 test("image should not be draggable", async () => {
-    const { getEditor } = await setupWebsiteBuilder(
+    const {getEditor} = await setupWebsiteBuilder(
         `<div><p>a</p><img class=a_nice_img src='${dummyBase64Img}'></div>`
     );
     const editor = getEditor();
@@ -101,7 +105,7 @@ test("image should not be draggable", async () => {
 function pasteFile(editor, file) {
     const clipboardData = new DataTransfer();
     clipboardData.items.add(file);
-    const pasteEvent = new ClipboardEvent("paste", { clipboardData, bubbles: true });
+    const pasteEvent = new ClipboardEvent("paste", {clipboardData, bubbles: true});
     editor.editable.dispatchEvent(pasteEvent);
 }
 
@@ -111,12 +115,12 @@ function createBase64ImageFile(base64ImageData, filename) {
     for (let i = 0; i < binaryImageData.length; i++) {
         uint8Array[i] = binaryImageData.charCodeAt(i);
     }
-    return new File([uint8Array], filename ?? "test_image.png", { type: "image/png" });
+    return new File([uint8Array], filename ?? "test_image.png", {type: "image/png"});
 }
 
 test("pasted/dropped images are converted to attachments on save in website editor", async () => {
     onRpc("/html_editor/attachment/add_data", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect(
             params.data ===
                 "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII="
@@ -131,13 +135,13 @@ test("pasted/dropped images are converted to attachments on save in website edit
         };
     });
 
-    onRpc("ir.ui.view", "save", ({ args }) => {
+    onRpc("ir.ui.view", "save", ({args}) => {
         expect.step("save");
         expect(args[1]).toInclude('src="/test_image_url.png?access_token=1234"');
         return true;
     });
 
-    const { getEditor } = await setupWebsiteBuilder(`
+    const {getEditor} = await setupWebsiteBuilder(`
         <section>
             <p>Text</p>
             <p><br></p>
@@ -149,7 +153,7 @@ test("pasted/dropped images are converted to attachments on save in website edit
 
     // Paste image
     var p = queryOne(":iframe section > p:has(br)");
-    setSelection({ anchorNode: p, anchorOffset: 0 });
+    setSelection({anchorNode: p, anchorOffset: 0});
     pasteFile(
         editor,
         createBase64ImageFile(
@@ -160,7 +164,9 @@ test("pasted/dropped images are converted to attachments on save in website edit
     // Check if image is set to be saved as attachment
     await waitFor(":iframe img.o_b64_image_to_save");
     expect(
-        queryOne(":iframe img.o_b64_image_to_save").src.startsWith("data:image/png;base64,")
+        queryOne(":iframe img.o_b64_image_to_save").src.startsWith(
+            "data:image/png;base64,"
+        )
     ).toBe(true);
 
     // Save and check if image has been saved as attachment
@@ -172,7 +178,7 @@ test("pasted/dropped images are converted to attachments on snippet save", async
     const imageData =
         "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII";
     onRpc("/html_editor/attachment/add_data", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect(params.data).toBe(imageData + "=");
         expect.step(`add_data ${params.name}`);
         return {
@@ -182,20 +188,20 @@ test("pasted/dropped images are converted to attachments on snippet save", async
         };
     });
 
-    onRpc("ir.ui.view", "save_snippet", ({ kwargs }) => {
+    onRpc("ir.ui.view", "save_snippet", ({kwargs}) => {
         expect.step("save snippet");
         expect(kwargs.arch).toInclude('src="/url_image-1.png?access_token=1234"');
         return "Custom Cover";
     });
 
-    onRpc("ir.ui.view", "save", ({ args }) => {
+    onRpc("ir.ui.view", "save", ({args}) => {
         expect.step("save");
         expect(args[1]).toInclude('src="/url_image-1.png?access_token=1234"');
         expect(args[1]).toInclude('src="/url_image-2.png?access_token=1234"');
         return true;
     });
 
-    const { getEditor } = await setupWebsiteBuilder(`
+    const {getEditor} = await setupWebsiteBuilder(`
         <section data-snippet="s_cover" test-id="1">
             <p>Text</p>
             <p><br></p>
@@ -212,24 +218,22 @@ test("pasted/dropped images are converted to attachments on snippet save", async
 
     // Paste images
     let p = queryOne(":iframe section[test-id='1'] > p:has(br)");
-    setSelection({ anchorNode: p, anchorOffset: 0 });
+    setSelection({anchorNode: p, anchorOffset: 0});
     pasteFile(editor, createBase64ImageFile(imageData, "image-1.png"));
 
     // Check if image is set to be saved as attachment
-    expect(await waitFor(":iframe [test-id='1'] img.o_b64_image_to_save")).toHaveAttribute(
-        "src",
-        /^data:image\/png;base64,/
-    );
+    expect(
+        await waitFor(":iframe [test-id='1'] img.o_b64_image_to_save")
+    ).toHaveAttribute("src", /^data:image\/png;base64,/);
 
     p = queryOne(":iframe section[test-id='2'] > p:has(br)");
-    setSelection({ anchorNode: p, anchorOffset: 0 });
+    setSelection({anchorNode: p, anchorOffset: 0});
     pasteFile(editor, createBase64ImageFile(imageData, "image-2.png"));
 
     // Check if image is set to be saved as attachment
-    expect(await waitFor(":iframe [test-id='2'] img.o_b64_image_to_save")).toHaveAttribute(
-        "src",
-        /^data:image\/png;base64,/
-    );
+    expect(
+        await waitFor(":iframe [test-id='2'] img.o_b64_image_to_save")
+    ).toHaveAttribute("src", /^data:image\/png;base64,/);
 
     // Save snippet of section 1 and check if its image has been saved as attachment
     await contains(":iframe [test-id='1']").click();
@@ -244,7 +248,7 @@ test("pasted/dropped images are converted to attachments on snippet save", async
 
 describe("Image format/optimize", () => {
     test("Should format an image to be 800px", async () => {
-        const { getEditor, waitSidebarUpdated } = await setupWebsiteBuilder(`
+        const {getEditor, waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -257,19 +261,30 @@ describe("Image format/optimize", () => {
         queryAll(`[data-action-id="setImageFormat"]`)
             .find((el) => el.textContent.includes("800px"))
             .click();
-        // ensure the shape action has been applied
+        // Ensure the shape action has been applied
         await editor.shared.operation.next(() => {});
 
         const img = queryFirst(":iframe .test-options-target img");
-        expect(":iframe .test-options-target img").toHaveAttribute("data-attachment-id", "1");
-        expect(":iframe .test-options-target img").toHaveAttribute("data-original-id", "1");
-        expect(":iframe .test-options-target img").toHaveAttribute("data-mimetype", "image/webp");
+        expect(":iframe .test-options-target img").toHaveAttribute(
+            "data-attachment-id",
+            "1"
+        );
+        expect(":iframe .test-options-target img").toHaveAttribute(
+            "data-original-id",
+            "1"
+        );
+        expect(":iframe .test-options-target img").toHaveAttribute(
+            "data-mimetype",
+            "image/webp"
+        );
         expect(img.src.startsWith("data:image/webp;base64,")).toBe(true);
         await waitFor("[data-label='Format']");
-        expect(queryFirst("[data-label='Format'] .dropdown").textContent).toMatch(/800px/);
+        expect(queryFirst("[data-label='Format'] .dropdown").textContent).toMatch(
+            /800px/
+        );
     });
     test("should set the quality of an image to 50", async () => {
-        const { getEditor, waitSidebarUpdated } = await setupWebsiteBuilder(`
+        const {getEditor, waitSidebarUpdated} = await setupWebsiteBuilder(`
         <div class="test-options-target">
             ${testImg}
         </div>
@@ -280,7 +295,7 @@ describe("Image format/optimize", () => {
         await contains(":iframe .test-options-target img").click();
         await waitSidebarUpdated();
         await setInputRange(`[data-action-id="setImageQuality"] input`, 50);
-        // ensure the shape action has been applied
+        // Ensure the shape action has been applied
         await editor.shared.operation.next(() => {});
 
         expect(img.dataset.quality).toBe("50");
@@ -290,7 +305,7 @@ describe("Image format/optimize", () => {
 test("Save image with correct parameter", async () => {
     const originalId = 1;
     onRpc(`/html_editor/modify_image/${originalId}`, async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect(params.res_id).toBe(setupWebsiteBuilderOeId);
         expect(params.res_model).toBe("ir.ui.view");
         expect.step("modify_image");
@@ -300,7 +315,7 @@ test("Save image with correct parameter", async () => {
             public: false,
         };
     });
-    onRpc("ir.ui.view", "save", ({ args }) => true);
+    onRpc("ir.ui.view", "save", ({args}) => true);
     await setupWebsiteBuilder(`
         <div class="test-options-target">
             <img src='${dummyBase64Img}'

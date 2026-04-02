@@ -1,9 +1,9 @@
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { user } from "@web/core/user";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
-import { useService } from "@web/core/utils/hooks";
-import { Component } from "@odoo/owl";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {user} from "@web/core/user";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
+import {useService} from "@web/core/utils/hooks";
+import {Component} from "@odoo/owl";
 
 const providerData = {
     google: {
@@ -45,7 +45,7 @@ export class CalendarConnectProvider extends Component {
             [this.props.record.resId]
         );
         // See google/microsoft_calendar for the origin of this shortened version
-        const { restart_sync_method, sync_route } =
+        const {restart_sync_method, sync_route} =
             providerData[this.props.record.data.external_calendar_provider];
         await this.orm.call("res.users", restart_sync_method, [[user.userId]]);
         const response = await rpc(sync_route, {
@@ -72,4 +72,6 @@ export class CalendarConnectProvider extends Component {
 const calendarConnectProvider = {
     component: CalendarConnectProvider,
 };
-registry.category("view_widgets").add("calendar_connect_provider", calendarConnectProvider);
+registry
+    .category("view_widgets")
+    .add("calendar_connect_provider", calendarConnectProvider);

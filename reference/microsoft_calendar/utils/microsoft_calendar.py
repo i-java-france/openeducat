@@ -1,14 +1,18 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import requests
 import json
 import logging
 
+import requests
 from werkzeug import urls
 
 from odoo import fields
+
+from odoo.addons.microsoft_account.models.microsoft_service import (
+    RESOURCE_NOT_FOUND_STATUSES,
+    TIMEOUT,
+)
 from odoo.addons.microsoft_calendar.utils.microsoft_event import MicrosoftEvent
-from odoo.addons.microsoft_account.models.microsoft_service import TIMEOUT, RESOURCE_NOT_FOUND_STATUSES
 
 _logger = logging.getLogger(__name__)
 
@@ -38,7 +42,7 @@ class InvalidSyncToken(Exception):
 #  - 'occurrence' and 'exception' events are retrieved through the end-point `/v1.0/me/events/{serieMaster.id}/instances`,
 #  using the corresponding serie master ID.
 
-class MicrosoftCalendarService():
+class MicrosoftCalendarService:
 
     def __init__(self, microsoft_service):
         self.microsoft_service = microsoft_service

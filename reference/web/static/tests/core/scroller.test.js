@@ -1,17 +1,17 @@
-import { expect, test } from "@odoo/hoot";
-import { Component, xml } from "@odoo/owl";
-import { getService, mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { click, queryOne } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { browser } from "@web/core/browser/browser";
-import { scrollTo } from "@web/core/utils/scrolling";
-import { WebClient } from "@web/webclient/webclient";
-import { registry } from "@web/core/registry";
-import { redirect } from "@web/core/utils/urls";
+import {expect, test} from "@odoo/hoot";
+import {Component, xml} from "@odoo/owl";
+import {getService, mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {click, queryOne} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {browser} from "@web/core/browser/browser";
+import {scrollTo} from "@web/core/utils/scrolling";
+import {WebClient} from "@web/webclient/webclient";
+import {registry} from "@web/core/registry";
+import {redirect} from "@web/core/utils/urls";
 
 test("Ignore empty hrefs", async () => {
     class MyComponent extends Component {
-        static template = xml/* xml */ `
+        static template = xml /* xml */ `
             <div class="my_component">
                 <a href="#" class="inactive_link">This link does nothing</a>
                 <button class="btn btn-secondary">
@@ -38,7 +38,7 @@ test("Ignore empty hrefs", async () => {
 
 test("Simple rendering with a scroll", async () => {
     class MyComponent extends Component {
-        static template = xml/* xml */ `
+        static template = xml /* xml */ `
             <div id="scroller" style="overflow: scroll; width: 400px; height: 150px">
                 <div class="o_content">
                     <a href="#scrollToHere"  class="btn btn-primary">sroll to ...</a>
@@ -92,7 +92,7 @@ test("clicking to scroll on a web client shouldn't open the default app", async 
     expect.assertions(2);
 
     class MyComponent extends Component {
-        static template = xml/* xml */ `
+        static template = xml /* xml */ `
             <div class="o_content" style="overflow:scroll;height:150px;width:400px">
                 <a href="#scrollToHere"  class="alert-link" role="button">sroll to ...</a>
                 <p>
@@ -145,7 +145,7 @@ test("clicking to scroll on a web client shouldn't open the default app", async 
 
 test("Rendering with multiple anchors and scrolls", async () => {
     class MyComponent extends Component {
-        static template = xml/* xml */ `
+        static template = xml /* xml */ `
             <div id="scroller" style="overflow: scroll; width: 400px; height: 150px">
                 <div class="o_content">
                     <h2 id="anchor3">ANCHOR 3</h2>
@@ -206,8 +206,10 @@ test("Rendering with multiple anchors and scrolls", async () => {
     const isVisible = (selector) => {
         const el = queryOne(selector);
         return (
-            el.getBoundingClientRect().bottom <= scrollableParent.getBoundingClientRect().bottom &&
-            el.getBoundingClientRect().top >= scrollableParent.getBoundingClientRect().top
+            el.getBoundingClientRect().bottom <=
+                scrollableParent.getBoundingClientRect().bottom &&
+            el.getBoundingClientRect().top >=
+                scrollableParent.getBoundingClientRect().top
         );
     };
 
@@ -222,7 +224,7 @@ test("Rendering with multiple anchors and scrolls", async () => {
 
 test("clicking anchor when no scrollable", async () => {
     class MyComponent extends Component {
-        static template = xml/* xml */ `
+        static template = xml /* xml */ `
             <div id="scroller" style="overflow: auto; width: 400px; height: 150px">
                 <div class="o_content">
                     <a href="#scrollToHere"  class="btn btn-primary">scroll to ...</a>
@@ -252,16 +254,18 @@ test("clicking anchor when no scrollable", async () => {
     expect(scrollableParent.scrollTop).toBe(0);
     await click(".btn.btn-primary");
     await animationFrame();
-    expect(scrollableParent.scrollTop).toBe(0, { message: "no scroll happened" });
+    expect(scrollableParent.scrollTop).toBe(0, {message: "no scroll happened"});
     queryOne(".inactive-container").style.maxHeight = "unset";
     await click(".btn.btn-primary");
     await animationFrame();
-    expect(scrollableParent.scrollTop).toBeGreaterThan(0, { message: "a scroll happened" });
+    expect(scrollableParent.scrollTop).toBeGreaterThan(0, {
+        message: "a scroll happened",
+    });
 });
 
 test("clicking anchor when multi levels scrollables", async () => {
     class MyComponent extends Component {
-        static template = xml/* xml */ `
+        static template = xml /* xml */ `
         <div id="scroller" style="overflow: auto; width: 400px; height: 150px">
             <div class="o_content scrollable-1">
                 <a href="#scroll1"  class="btn1 btn btn-primary">go to level 2 anchor</a>
@@ -352,7 +356,7 @@ test("clicking anchor when multi levels scrollables", async () => {
 
 test("Simple scroll to HTML elements", async () => {
     class MyComponent extends Component {
-        static template = xml/* xml */ `
+        static template = xml /* xml */ `
             <div id="scroller" style="overflow: auto; width: 400px; height: 150px">
                 <div class="o_content">
                     <p>
@@ -431,8 +435,10 @@ test("Simple scroll to HTML elements", async () => {
     const isVisible = (selector) => {
         const el = queryOne(selector);
         return (
-            el.getBoundingClientRect().bottom <= scrollableParent.getBoundingClientRect().bottom &&
-            el.getBoundingClientRect().top >= scrollableParent.getBoundingClientRect().top
+            el.getBoundingClientRect().bottom <=
+                scrollableParent.getBoundingClientRect().bottom &&
+            el.getBoundingClientRect().top >=
+                scrollableParent.getBoundingClientRect().top
         );
     };
 
@@ -470,7 +476,7 @@ test("Simple scroll to HTML elements", async () => {
 
     // Specify a scrollable which can not be scrolled, the effective scrollable
     // should be its closest actually scrollable parent.
-    scrollTo(queryOne("#o-div-3"), { scrollable: queryOne("#fake-scrollable") });
+    scrollTo(queryOne("#o-div-3"), {scrollable: queryOne("#fake-scrollable")});
     expect(isVisible("#o-div-3")).toBe(true);
     expect(isVisible("#o-div-4")).toBe(false);
     expect(border("#o-div-3").bottom).toBe(0);
@@ -484,7 +490,7 @@ test("Simple scroll to HTML elements", async () => {
     // Scrolling should be recursive in case of a hierarchy of
     // scrollables, if `isAnchor` is set to `true`, and it must be scrolled
     // to the top even if it was positioned below the scroll view.
-    scrollTo(queryOne("#o-div-4"), { isAnchor: true });
+    scrollTo(queryOne("#o-div-4"), {isAnchor: true});
     expect(isVisible("#o-div-4")).toBe(true);
     expect(border("#o-div-4").top).toBe(0);
     expect(border("#sub-scrollable").top).toBe(0);
@@ -492,7 +498,7 @@ test("Simple scroll to HTML elements", async () => {
 
 test("scroll to anchor from load", async () => {
     class MyComponent extends Component {
-        static template = xml/* xml */ `
+        static template = xml /* xml */ `
             <div class="o_content" style="overflow:scroll;height:150px;width:400px">
                 <a href="#scrollToHere"  class="alert-link" role="button">sroll to ...</a>
                 <p>

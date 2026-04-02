@@ -1,15 +1,15 @@
-import { getRow } from "@html_builder/utils/column_layout_utils";
+import {getRow} from "@html_builder/utils/column_layout_utils";
 import {
     convertToNormalColumn,
     reloadLazyImages,
     toggleGridMode,
 } from "@html_builder/utils/grid_layout_utils";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { LayoutGridOption, LayoutOption } from "./layout_option";
-import { withSequence } from "@html_editor/utils/resource";
-import { LAYOUT, LAYOUT_GRID } from "@website/builder/option_sequence";
-import { BuilderAction } from "@html_builder/core/builder_action";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {LayoutGridOption, LayoutOption} from "./layout_option";
+import {withSequence} from "@html_editor/utils/resource";
+import {LAYOUT, LAYOUT_GRID} from "@website/builder/option_sequence";
+import {BuilderAction} from "@html_builder/core/builder_action";
 
 class LayoutOptionPlugin extends Plugin {
     static id = "LayoutOption";
@@ -26,7 +26,7 @@ class LayoutOptionPlugin extends Plugin {
             SetColumnLayoutAction,
         },
     };
-    onCloned({ cloneEl }) {
+    onCloned({cloneEl}) {
         const cloneElClassList = cloneEl.classList;
         const offsetClasses = [...cloneElClassList].filter((cls) =>
             cls.match(/^offset-(lg-)?([0-9]{1,2})$/)
@@ -42,7 +42,7 @@ const isGrid = (el) => {
 export class SetGridLayoutAction extends BuilderAction {
     static id = "setGridLayout";
     static dependencies = ["selection"];
-    apply({ editingElement }) {
+    apply({editingElement}) {
         // TODO no preview/apply if it s isApplied
         if (isGrid(editingElement)) {
             return;
@@ -53,13 +53,13 @@ export class SetGridLayoutAction extends BuilderAction {
             this.config.mobileBreakpoint
         );
     }
-    isApplied({ editingElement }) {
+    isApplied({editingElement}) {
         return isGrid(editingElement);
     }
 }
 export class SetColumnLayoutAction extends BuilderAction {
     static id = "setColumnLayout";
-    apply({ editingElement }) {
+    apply({editingElement}) {
         const rowEl = getRow(editingElement);
         // TODO no preview/apply if it s isApplied
         if (!isGrid(editingElement)) {
@@ -83,7 +83,7 @@ export class SetColumnLayoutAction extends BuilderAction {
         rowEl.style.removeProperty("--grid-item-padding-y");
         rowEl.style.removeProperty("gap");
     }
-    isApplied({ editingElement }) {
+    isApplied({editingElement}) {
         return !isGrid(editingElement);
     }
 }

@@ -4,23 +4,23 @@
  */
 
 // jQuery selectors extensions
-$.extend($.expr[':'], {
+$.extend($.expr[":"], {
     data: function (element, index, matches) {
         return $(element).data(matches[3]);
     },
 });
 
-// jQuery functions extensions
+// JQuery functions extensions
 $.fn.extend({
     /**
      * Makes DOM elements bounce the way Odoo decided it.
      *
-     * @param {string} [extraClass]
+     * @param {String} [extraClass]
      */
     odooBounce: function (extraClass) {
         for (const el of this) {
-            el.classList.add('o_catch_attention', extraClass);
-            setTimeout(() => el.classList.remove('o_catch_attention', extraClass), 400);
+            el.classList.add("o_catch_attention", extraClass);
+            setTimeout(() => el.classList.remove("o_catch_attention", extraClass), 400);
         }
         return this;
     },
@@ -34,13 +34,13 @@ $.fn.extend({
     prependEvent: function (events, selector, data, handler) {
         this.on.apply(this, arguments);
 
-        events = events.split(' ');
+        events = events.split(" ");
         return this.each(function () {
             var el = this;
             events.forEach((evNameNamespaced) => {
-                var evName = evNameNamespaced.split('.')[0];
-                var handler = $._data(el, 'events')[evName].pop();
-                $._data(el, 'events')[evName].unshift(handler);
+                var evName = evNameNamespaced.split(".")[0];
+                var handler = $._data(el, "events")[evName].pop();
+                $._data(el, "events")[evName].unshift(handler);
             });
         });
     },
@@ -51,8 +51,10 @@ $.fn.extend({
      */
     getScrollingElement(document = window.document) {
         const $baseScrollingElement = $(document.scrollingElement);
-        if ($baseScrollingElement.isScrollable()
-                && $baseScrollingElement.hasScrollableContent()) {
+        if (
+            $baseScrollingElement.isScrollable() &&
+            $baseScrollingElement.hasScrollableContent()
+        ) {
             return $baseScrollingElement;
         }
         const bodyHeight = $(document.body).height();
@@ -77,40 +79,43 @@ $.fn.extend({
      */
     getScrollingTarget(contextItem = window.document) {
         // Cannot use `instanceof` because of cross-frame issues.
-        const isElement = obj => obj && obj.nodeType === Node.ELEMENT_NODE;
-        const isJQuery = obj => obj && ('jquery' in obj);
+        const isElement = (obj) => obj && obj.nodeType === Node.ELEMENT_NODE;
+        const isJQuery = (obj) => obj && "jquery" in obj;
 
         const $scrollingElement = isElement(contextItem)
             ? $(contextItem)
             : isJQuery(contextItem)
-            ? contextItem
-            : $().getScrollingElement(contextItem);
+              ? contextItem
+              : $().getScrollingElement(contextItem);
         const document = $scrollingElement[0].ownerDocument;
         return $scrollingElement.is(document.scrollingElement)
             ? $(document.defaultView)
             : $scrollingElement;
     },
     /**
-     * @return {boolean}
+     * @returns {Boolean}
      */
     hasScrollableContent() {
         return this[0].scrollHeight > this[0].clientHeight;
     },
     /**
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     isScrollable() {
         if (!this.length) {
             return false;
         }
-        const overflow = this.css('overflow-y');
+        const overflow = this.css("overflow-y");
         const el = this[0];
-        return overflow === 'auto' || overflow === 'scroll'
-            || (overflow === 'visible' && el === el.ownerDocument.scrollingElement);
+        return (
+            overflow === "auto" ||
+            overflow === "scroll" ||
+            (overflow === "visible" && el === el.ownerDocument.scrollingElement)
+        );
     },
 });
 
-// jQuery functions monkey-patching
+// JQuery functions monkey-patching
 
 // Some magic to ensure scrollTop and animate on html/body animate the top level
 // scrollable element even if not html or body. Note: we should consider
@@ -121,31 +126,42 @@ $.fn.extend({
 // fate of getScrollingElement and related code the moment we get rid of jQuery.
 const originalScrollTop = $.fn.scrollTop;
 $.fn.scrollTop = function (value) {
-    if (value !== undefined && this.filter('html, body').length) {
+    if (value !== undefined && this.filter("html, body").length) {
         // The caller wants to scroll a set of elements including html and/or
         // body to a specific point -> do that but make sure to add the real
         // top level element to that set of elements if any different is found.
-        const $withRealScrollable = this.not('html, body').add($().getScrollingElement(this[0].ownerDocument));
+        const $withRealScrollable = this.not("html, body").add(
+            $().getScrollingElement(this[0].ownerDocument)
+        );
         originalScrollTop.apply($withRealScrollable, arguments);
         return this;
-    } else if (value === undefined && this.eq(0).is('html, body')) {
+    } else if (value === undefined && this.eq(0).is("html, body")) {
         // The caller wants to get the scroll point of a set of elements, jQuery
         // will return the scroll point of the first one, if it is html or body
         // return the scroll point of the real top level element.
-        return originalScrollTop.apply($().getScrollingElement(this[0].ownerDocument), arguments);
+        return originalScrollTop.apply(
+            $().getScrollingElement(this[0].ownerDocument),
+            arguments
+        );
     }
     return originalScrollTop.apply(this, arguments);
 };
 const originalAnimate = $.fn.animate;
 $.fn.animate = function (properties, ...rest) {
     const props = Object.assign({}, properties);
-    if ('scrollTop' in props && this.filter('html, body').length) {
+    if ("scrollTop" in props && this.filter("html, body").length) {
         // The caller wants to scroll a set of elements including html and/or
         // body to a specific point -> do that but make sure to add the real
         // top level element to that set of elements if any different is found.
-        const $withRealScrollable = this.not('html, body').add($().getScrollingElement(this[0].ownerDocument));
-        originalAnimate.call($withRealScrollable, {'scrollTop': props['scrollTop']}, ...rest);
-        delete props['scrollTop'];
+        const $withRealScrollable = this.not("html, body").add(
+            $().getScrollingElement(this[0].ownerDocument)
+        );
+        originalAnimate.call(
+            $withRealScrollable,
+            {scrollTop: props.scrollTop},
+            ...rest
+        );
+        delete props.scrollTop;
     }
     if (!Object.keys(props).length) {
         return this;

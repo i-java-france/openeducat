@@ -1,13 +1,15 @@
-import { Sidebar } from "@portal/interactions/sidebar";
-import { registry } from "@web/core/registry";
+import {Sidebar} from "@portal/interactions/sidebar";
+import {registry} from "@web/core/registry";
 
-import { scrollTo } from "@web/core/utils/scrolling";
+import {scrollTo} from "@web/core/utils/scrolling";
 
 export class AccountSidebar extends Sidebar {
     static selector = ".o_portal_invoice_sidebar";
     dynamicContent = {
-        _window: { "t-on-resize": this.updateIframeSize },
-        ".o_portal_invoice_print": { "t-on-click.prevent.withTarget": this.onInvoicePrintClick },
+        _window: {"t-on-resize": this.updateIframeSize},
+        ".o_portal_invoice_print": {
+            "t-on-click.prevent.withTarget": this.onInvoicePrintClick,
+        },
     };
 
     setup() {
@@ -17,9 +19,11 @@ export class AccountSidebar extends Sidebar {
 
     start() {
         super.start();
-        this.invoiceHTMLEl = document.getElementById('invoice_html');
-        const iframeDoc = this.invoiceHTMLEl.contentDocument || this.invoiceHTMLEl.contentWindow.document;
-        if (iframeDoc.readyState === 'complete') {
+        this.invoiceHTMLEl = document.getElementById("invoice_html");
+        const iframeDoc =
+            this.invoiceHTMLEl.contentDocument ||
+            this.invoiceHTMLEl.contentWindow.document;
+        if (iframeDoc.readyState === "complete") {
             this.updateIframeSize();
         } else {
             this.addListener(this.invoiceHTMLEl, "load", this.updateIframeSize);
@@ -31,12 +35,13 @@ export class AccountSidebar extends Sidebar {
      * The goal is to expand the iframe height to display the full report without scrollbar.
      */
     updateIframeSize() {
-        const wrapwrapEl = this.invoiceHTMLEl.contentDocument.querySelector("div#wrapwrap");
+        const wrapwrapEl =
+            this.invoiceHTMLEl.contentDocument.querySelector("div#wrapwrap");
         // Set it to 0 first to handle the case where scrollHeight is too big for its content.
         this.invoiceHTMLEl.height = 0;
         this.invoiceHTMLEl.height = wrapwrapEl.scrollHeight;
         // scroll to the right place after iframe resize
-        const isAnchor = /^#[\w-]+$/.test(window.location.hash)
+        const isAnchor = /^#[\w-]+$/.test(window.location.hash);
         if (!isAnchor) {
             return;
         }
@@ -44,7 +49,7 @@ export class AccountSidebar extends Sidebar {
         if (!targetEl) {
             return;
         }
-        scrollTo(targetEl, { behavior: "instant" });
+        scrollTo(targetEl, {behavior: "instant"});
     }
 
     /**
@@ -56,6 +61,4 @@ export class AccountSidebar extends Sidebar {
     }
 }
 
-registry
-    .category("public.interactions")
-    .add("account.account_sidebar", AccountSidebar);
+registry.category("public.interactions").add("account.account_sidebar", AccountSidebar);

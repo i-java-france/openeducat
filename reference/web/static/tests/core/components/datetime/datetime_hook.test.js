@@ -1,23 +1,23 @@
-import { expect, test } from "@odoo/hoot";
-import { click, edit } from "@odoo/hoot-dom";
-import { animationFrame, tick } from "@odoo/hoot-mock";
-import { Component, reactive, useState, xml } from "@odoo/owl";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { DateTimeInput } from "@web/core/datetime/datetime_input";
-import { useDateTimePicker } from "@web/core/datetime/datetime_picker_hook";
-import { usePopover } from "@web/core/popover/popover_hook";
+import {expect, test} from "@odoo/hoot";
+import {click, edit} from "@odoo/hoot-dom";
+import {animationFrame, tick} from "@odoo/hoot-mock";
+import {Component, reactive, useState, xml} from "@odoo/owl";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {DateTimeInput} from "@web/core/datetime/datetime_input";
+import {useDateTimePicker} from "@web/core/datetime/datetime_picker_hook";
+import {usePopover} from "@web/core/popover/popover_hook";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 /**
  * @param {() => any} setup
  */
 const mountInput = async (setup) => {
-    await mountWithCleanup(Root, { props: { setup } });
+    await mountWithCleanup(Root, {props: {setup}});
 };
 
 class Root extends Component {
-    static components = { DateTimeInput };
+    static components = {DateTimeInput};
     static template = xml`<input type="text" class="datetime_hook_input" t-ref="start-date"/>`;
     static props = ["*"];
 
@@ -33,7 +33,7 @@ test("reactivity: update inert object", async () => {
     };
 
     await mountInput(() => {
-        useDateTimePicker({ pickerProps });
+        useDateTimePicker({pickerProps});
     });
 
     expect(".datetime_hook_input").toHaveValue("");
@@ -52,7 +52,7 @@ test("reactivity: useState & update getter object", async () => {
 
     await mountInput(() => {
         const state = useState(pickerProps);
-        state.value; // artificially subscribe to value
+        state.value; // Artificially subscribe to value
 
         useDateTimePicker({
             get pickerProps() {
@@ -77,7 +77,7 @@ test("reactivity: update reactive object returned by the hook", async () => {
     };
 
     await mountInput(() => {
-        pickerProps = useDateTimePicker({ pickerProps: defaultPickerProps }).state;
+        pickerProps = useDateTimePicker({pickerProps: defaultPickerProps}).state;
     });
 
     expect(".datetime_hook_input").toHaveValue("");
@@ -97,7 +97,7 @@ test("returned value is updated when input has changed", async () => {
     };
 
     await mountInput(() => {
-        pickerProps = useDateTimePicker({ pickerProps: defaultPickerProps }).state;
+        pickerProps = useDateTimePicker({pickerProps: defaultPickerProps}).state;
     });
 
     expect(".datetime_hook_input").toHaveValue("");
@@ -145,9 +145,9 @@ test("value is not updated if it did not change", async () => {
     expect.verifySteps(["2023-07-07"]);
 });
 
-test("close popover when owner component is unmounted", async() => {
+test("close popover when owner component is unmounted", async () => {
     class Child extends Component {
-        static components = { DateTimeInput };
+        static components = {DateTimeInput};
         static props = [];
         static template = xml`
             <div>
@@ -162,15 +162,15 @@ test("close popover when owner component is unmounted", async() => {
                     value: [false, false],
                     type: "date",
                     range: true,
-                }
+                },
             });
         }
     }
 
-    const { resolve: hidePopover, promise } = Promise.withResolvers();
+    const {resolve: hidePopover, promise} = Promise.withResolvers();
 
     class DateTimeToggler extends Component {
-        static components = { Child };
+        static components = {Child};
         static props = [];
         static template = xml`<Child t-if="!state.hidden"/>`;
 
@@ -190,7 +190,7 @@ test("close popover when owner component is unmounted", async() => {
     await animationFrame();
     expect(".o_datetime_picker").toHaveCount(1);
 
-    // we can't simply add a button because `useClickAway` will be triggered, thus closing the popover properly
+    // We can't simply add a button because `useClickAway` will be triggered, thus closing the popover properly
     hidePopover();
     await animationFrame();
     await animationFrame();

@@ -1,11 +1,11 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { animationFrame, manuallyDispatchProgrammaticEvent } from "@odoo/hoot-dom";
-import { mockFetch } from "@odoo/hoot-mock";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {animationFrame, manuallyDispatchProgrammaticEvent} from "@odoo/hoot-dom";
+import {mockFetch} from "@odoo/hoot-mock";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
 
 import {
-    assets,
     assetCacheByDocument,
+    assets,
     globalBundleCache,
     loadBundle,
     loadCSS,
@@ -25,10 +25,10 @@ const mockHeadAppendChild = (callback) => {
 
 const bundles = {
     "/web/bundle/test.bundle": [
-        { type: "link", src: "file1.css" },
-        { type: "link", src: "file2.css" },
-        { type: "script", src: "file1.js" },
-        { type: "script", src: "file2.js" },
+        {type: "link", src: "file1.css"},
+        {type: "link", src: "file2.css"},
+        {type: "script", src: "file1.js"},
+        {type: "script", src: "file2.js"},
     ],
 };
 
@@ -51,14 +51,14 @@ test("loadJS: load invalid JS lib", async () => {
 
     await expect(loadJS("/some/invalid/file.js")).rejects.toThrow(
         /The loading of \/some\/invalid\/file.js failed/,
-        { message: "Trying to load an invalid file rejects the promise" }
+        {message: "Trying to load an invalid file rejects the promise"}
     );
 });
 
 test("loadCSS: load invalid CSS lib", async () => {
     expect.assertions(4 * 4 + 1);
 
-    assets.retries = { count: 3, delay: 1, extraDelay: 1 }; // Fail fast.
+    assets.retries = {count: 3, delay: 1, extraDelay: 1}; // Fail fast.
 
     mockHeadAppendChild((node) => {
         expect(node).toBeInstanceOf(HTMLLinkElement);
@@ -72,7 +72,7 @@ test("loadCSS: load invalid CSS lib", async () => {
 
     await expect(loadCSS("/some/invalid/file.css")).rejects.toThrow(
         /The loading of \/some\/invalid\/file.css failed/,
-        { message: "Trying to load an invalid file rejects the promise" }
+        {message: "Trying to load an invalid file rejects the promise"}
     );
 });
 
@@ -84,7 +84,9 @@ test("loadBundle: load js and css files", async () => {
 
     mockHeadAppendChild(async (node) => {
         const srcAttribute = node.tagName === "LINK" ? "href" : "src";
-        expect.step(`add ${node.tagName} - ${node.type} - ${node.getAttribute(srcAttribute)}`);
+        expect.step(
+            `add ${node.tagName} - ${node.type} - ${node.getAttribute(srcAttribute)}`
+        );
     });
 
     loadBundle("test.bundle");
@@ -106,10 +108,12 @@ test("loadBundle: load only js files", async () => {
 
     mockHeadAppendChild(async (node) => {
         const srcAttribute = node.tagName === "LINK" ? "href" : "src";
-        expect.step(`add ${node.tagName} - ${node.type} - ${node.getAttribute(srcAttribute)}`);
+        expect.step(
+            `add ${node.tagName} - ${node.type} - ${node.getAttribute(srcAttribute)}`
+        );
     });
 
-    loadBundle("test.bundle", { css: false });
+    loadBundle("test.bundle", {css: false});
     await animationFrame();
     expect.verifySteps([
         "fetch bundle: /web/bundle/test.bundle",
@@ -126,10 +130,12 @@ test("loadBundle: load only css files", async () => {
 
     mockHeadAppendChild(async (node) => {
         const srcAttribute = node.tagName === "LINK" ? "href" : "src";
-        expect.step(`add ${node.tagName} - ${node.type} - ${node.getAttribute(srcAttribute)}`);
+        expect.step(
+            `add ${node.tagName} - ${node.type} - ${node.getAttribute(srcAttribute)}`
+        );
     });
 
-    loadBundle("test.bundle", { js: false });
+    loadBundle("test.bundle", {js: false});
     await animationFrame();
     expect.verifySteps([
         "fetch bundle: /web/bundle/test.bundle",
@@ -175,10 +181,10 @@ test("loadBundle: load same bundle in main document and an iframe", async () => 
         "add document SCRIPT - text/javascript - file2.js",
     ]);
 
-    loadBundle("test.bundle", { targetDoc: iframeDocument });
+    loadBundle("test.bundle", {targetDoc: iframeDocument});
     await animationFrame();
     expect.verifySteps([
-        // no fetching as the bundle is cached globally
+        // No fetching as the bundle is cached globally
         "add iframe document LINK - text/css - file1.css",
         "add iframe document LINK - text/css - file2.css",
         "add iframe document SCRIPT - text/javascript - file1.js",
@@ -228,7 +234,7 @@ test("loadBundle: load same bundles in 2 iframes", async () => {
         },
     });
 
-    loadBundle("test.bundle", { targetDoc: iframeDocumentFirst });
+    loadBundle("test.bundle", {targetDoc: iframeDocumentFirst});
     await animationFrame();
     expect.verifySteps([
         "fetch bundle: /web/bundle/test.bundle",
@@ -238,7 +244,7 @@ test("loadBundle: load same bundles in 2 iframes", async () => {
         "add iframe document SCRIPT - text/javascript - file2.js",
     ]);
 
-    loadBundle("test.bundle", { targetDoc: iframeDocumentSecond });
+    loadBundle("test.bundle", {targetDoc: iframeDocumentSecond});
     await animationFrame();
     expect.verifySteps([
         "add iframe document LINK - text/css - file1.css",

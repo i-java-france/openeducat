@@ -1,5 +1,5 @@
-import { visitXML } from "@web/core/utils/xml";
-import { Field } from "@web/views/fields/field";
+import {visitXML} from "@web/core/utils/xml";
+import {Field} from "@web/views/fields/field";
 
 export class ActivityArchParser {
     parse(xmlDoc, models, modelName) {
@@ -40,7 +40,7 @@ export class ActivityArchParser {
                     /\bactivity_image\b/.test(attSrc) &&
                     !Object.values(fieldNodes).some((f) => f.name === "write_date")
                 ) {
-                    fieldNodes.write_date_0 = { name: "write_date", type: "datetime" };
+                    fieldNodes.write_date_0 = {name: "write_date", type: "datetime"};
                 }
             }
         });

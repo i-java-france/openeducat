@@ -1,12 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-    <div t-name="web.CalendarPropertiesField" t-ref="properties" class="d-flex flex-column gap-3">
-        <div class="o_calendar_property_field d-flex"
+    <div
+        t-name="web.CalendarPropertiesField"
+        t-ref="properties"
+        class="d-flex flex-column gap-3"
+    >
+        <div
+            class="o_calendar_property_field d-flex"
             t-foreach="propertiesList"
             t-as="propertyConfiguration"
             t-key="propertyConfiguration.name"
-            t-if="propertyConfiguration.value and propertyConfiguration.view_in_cards">
-            <span class="fw-bold me-2" t-out="propertyConfiguration.string"/>
+            t-if="propertyConfiguration.value and propertyConfiguration.view_in_cards"
+        >
+            <span class="fw-bold me-2" t-out="propertyConfiguration.string" />
             <div class="text-truncate">
                 <PropertyValue
                     id="generateUniqueDomID()"
@@ -25,7 +31,11 @@
                     record="props.record"
                 />
             </div>
-            <span class="o_property_field_value_suffix" t-if="propertyConfiguration.suffix" t-out="propertyConfiguration.suffix"/>
+            <span
+                class="o_property_field_value_suffix"
+                t-if="propertyConfiguration.suffix"
+                t-out="propertyConfiguration.suffix"
+            />
         </div>
     </div>
 </templates>

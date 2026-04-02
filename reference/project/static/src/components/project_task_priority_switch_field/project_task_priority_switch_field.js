@@ -1,6 +1,6 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { PriorityField, priorityField } from "@web/views/fields/priority/priority_field";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {PriorityField, priorityField} from "@web/views/fields/priority/priority_field";
 
 export class PrioritySwitchField extends PriorityField {
     get commands() {
@@ -19,7 +19,7 @@ export class PrioritySwitchField extends PriorityField {
 export const prioritySwitchField = {
     ...priorityField,
     component: PrioritySwitchField,
-    extractProps({ viewType }) {
+    extractProps({viewType}) {
         const props = priorityField.extractProps(...arguments);
         props.withCommand = viewType === "form";
         return props;

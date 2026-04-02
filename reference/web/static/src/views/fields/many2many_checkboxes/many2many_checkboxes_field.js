@@ -1,25 +1,25 @@
-import { Component, onWillUnmount } from "@odoo/owl";
-import { CheckBox } from "@web/core/checkbox/checkbox";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { useBus } from "@web/core/utils/hooks";
-import { debounce } from "@web/core/utils/timing";
-import { getFieldDomain } from "@web/model/relational_model/utils";
-import { useSpecialData } from "@web/views/fields/relational_utils";
-import { standardFieldProps } from "../standard_field_props";
+import {Component, onWillUnmount} from "@odoo/owl";
+import {CheckBox} from "@web/core/checkbox/checkbox";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useBus} from "@web/core/utils/hooks";
+import {debounce} from "@web/core/utils/timing";
+import {getFieldDomain} from "@web/model/relational_model/utils";
+import {useSpecialData} from "@web/views/fields/relational_utils";
+import {standardFieldProps} from "../standard_field_props";
 
 export class Many2ManyCheckboxesField extends Component {
     static template = "web.Many2ManyCheckboxesField";
-    static components = { CheckBox };
+    static components = {CheckBox};
     static props = {
         ...standardFieldProps,
-        domain: { type: [Array, Function], optional: true },
-        context: { type: Object, optional: true },
+        domain: {type: [Array, Function], optional: true},
+        context: {type: Object, optional: true},
     };
 
     setup() {
         this.specialData = useSpecialData((orm, props) => {
-            const { relation } = props.record.fields[props.name];
+            const {relation} = props.record.fields[props.name];
             const domain = getFieldDomain(props.record, props.name, props.domain);
             return orm.call(relation, "name_search", ["", domain], {
                 context: this.props.context || {},
@@ -31,7 +31,11 @@ export class Many2ManyCheckboxesField extends Component {
         this.idsToAdd = new Set();
         this.idsToRemove = new Set();
         this.debouncedCommitChanges = debounce(this.commitChanges.bind(this), 500);
-        useBus(this.props.record.model.bus, "NEED_LOCAL_CHANGES", this.commitChanges.bind(this));
+        useBus(
+            this.props.record.model.bus,
+            "NEED_LOCAL_CHANGES",
+            this.commitChanges.bind(this)
+        );
         onWillUnmount(this.commitChanges.bind(this));
     }
 

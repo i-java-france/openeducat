@@ -1,18 +1,18 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from datetime import timedelta
 
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo import Command, fields
 from odoo.exceptions import UserError
 from odoo.tests import Form, tagged
-from odoo import Command, fields
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
 class TestPurchaseToInvoiceCommon(AccountTestInvoicingCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestPurchaseToInvoiceCommon, cls).setUpClass()
+        super().setUpClass()
         cls.other_currency = cls.setup_other_currency('EUR')
         cls.env.user.group_ids += cls.env.ref('uom.group_uom')
         uom_unit = cls.env.ref('uom.product_uom_unit')

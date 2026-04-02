@@ -1,13 +1,13 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { SignatureDialog } from "@web/core/signature/signature_dialog";
-import { useService } from "@web/core/utils/hooks";
-import { imageUrl } from "@web/core/utils/urls";
-import { isBinarySize } from "@web/core/utils/binary";
-import { fileTypeMagicWordMap } from "@web/views/fields/image/image_field";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {SignatureDialog} from "@web/core/signature/signature_dialog";
+import {useService} from "@web/core/utils/hooks";
+import {imageUrl} from "@web/core/utils/urls";
+import {isBinarySize} from "@web/core/utils/binary";
+import {fileTypeMagicWordMap} from "@web/views/fields/image/image_field";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
 
-import { Component, useState } from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 
 const placeholder = "/web/static/img/placeholder.png";
 
@@ -15,12 +15,12 @@ export class SignatureField extends Component {
     static template = "web.SignatureField";
     static props = {
         ...standardFieldProps,
-        defaultFont: { type: String },
-        fullName: { type: String, optional: true },
-        height: { type: Number, optional: true },
-        previewImage: { type: String, optional: true },
-        width: { type: Number, optional: true },
-        type: { validate: (t) => ["initial", "signature"].includes(t), optional: true },
+        defaultFont: {type: String},
+        fullName: {type: String, optional: true},
+        height: {type: Number, optional: true},
+        previewImage: {type: String, optional: true},
+        width: {type: Number, optional: true},
+        type: {validate: (t) => ["initial", "signature"].includes(t), optional: true},
     };
     static defaultProps = {
         type: "signature",
@@ -40,7 +40,7 @@ export class SignatureField extends Component {
     }
 
     get getUrl() {
-        const { name, previewImage, record } = this.props;
+        const {name, previewImage, record} = this.props;
         if (this.state.isValid && this.value) {
             if (isBinarySize(this.value)) {
                 return imageUrl(record.resModel, record.resId, previewImage || name, {
@@ -56,7 +56,7 @@ export class SignatureField extends Component {
     }
 
     get sizeStyle() {
-        let { width, height } = this.props;
+        let {width, height} = this.props;
 
         if (!this.value) {
             if (width && height) {
@@ -90,7 +90,7 @@ export class SignatureField extends Component {
                 signatureType: this.props.type,
                 noInputName: true,
             };
-            const { fullName, record } = this.props;
+            const {fullName, record} = this.props;
             let defaultName = "";
             if (fullName) {
                 let signName;
@@ -127,7 +127,7 @@ export class SignatureField extends Component {
      *
      * @private
      */
-    uploadSignature({ signatureImage }) {
+    uploadSignature({signatureImage}) {
         return this.props.record.update({
             [this.props.name]: signatureImage.split(",")[1] || false,
         });
@@ -136,7 +136,7 @@ export class SignatureField extends Component {
 
 export const signatureField = {
     component: SignatureField,
-    fieldDependencies: [{ name: "write_date", type: "datetime" }],
+    fieldDependencies: [{name: "write_date", type: "datetime"}],
     supportedTypes: ["binary"],
     supportedOptions: [
         {
@@ -156,9 +156,9 @@ export const signatureField = {
             name: "size",
             type: "selection",
             choices: [
-                { label: _t("Small"), value: "[0,90]" },
-                { label: _t("Medium"), value: "[0,180]" },
-                { label: _t("Large"), value: "[0,270]" },
+                {label: _t("Small"), value: "[0,90]"},
+                {label: _t("Medium"), value: "[0,180]"},
+                {label: _t("Large"), value: "[0,270]"},
             ],
         },
         {
@@ -168,7 +168,7 @@ export const signatureField = {
             availableTypes: ["binary"],
         },
     ],
-    extractProps: ({ attrs, options }) => ({
+    extractProps: ({attrs, options}) => ({
         defaultFont: options.default_font || "",
         fullName: options.full_name,
         height: options.size ? options.size[1] || undefined : attrs.height,

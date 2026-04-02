@@ -1,5 +1,5 @@
-import { Component, onWillStart, onWillUpdateProps, useState } from "@odoo/owl";
-import { getSnippetName, isElementInViewport } from "@html_builder/utils/utils";
+import {Component, onWillStart, onWillUpdateProps, useState} from "@odoo/owl";
+import {getSnippetName, isElementInViewport} from "@html_builder/utils/utils";
 
 /**
  * @typedef {((snippetEl: HTMLElement) => void)[]} on_reveal_target_handlers
@@ -8,17 +8,17 @@ import { getSnippetName, isElementInViewport } from "@html_builder/utils/utils";
 export class InvisibleElementsPanel extends Component {
     static template = "html_builder.InvisibleElementsPanel";
     static props = {
-        invisibleEls: { type: Array },
-        invisibleSelector: { type: String },
+        invisibleEls: {type: Array},
+        invisibleSelector: {type: String},
     };
 
     setup() {
-        this.state = useState({ invisibleEntries: null });
+        this.state = useState({invisibleEntries: null});
 
         onWillStart(() => this.updateInvisibleElementsPanel(this.props.invisibleEls));
 
         onWillUpdateProps((nextProps) => {
-            const { invisibleEls, invisibleSelector } = nextProps;
+            const {invisibleEls, invisibleSelector} = nextProps;
             this.updateInvisibleElementsPanel(invisibleEls, invisibleSelector);
         });
     }
@@ -27,7 +27,10 @@ export class InvisibleElementsPanel extends Component {
         return this.env.editor.shared;
     }
 
-    updateInvisibleElementsPanel(invisibleEls, invisibleSelector = this.props.invisibleSelector) {
+    updateInvisibleElementsPanel(
+        invisibleEls,
+        invisibleSelector = this.props.invisibleSelector
+    ) {
         // descendantPerSnippet: a map with its keys set to invisible
         // snippets that have invisible descendants. The value corresponding
         // to an invisible snippet element is a list filled with all its
@@ -38,11 +41,13 @@ export class InvisibleElementsPanel extends Component {
         // and create the map ("descendantPerSnippet") of the snippets and
         // their descendant snippets.
         const rootInvisibleSnippetEls = invisibleEls.filter((invisibleSnippetEl) => {
-            const ancestorInvisibleEl = invisibleSnippetEl.parentElement.closest(invisibleSelector);
+            const ancestorInvisibleEl =
+                invisibleSnippetEl.parentElement.closest(invisibleSelector);
             if (!ancestorInvisibleEl) {
                 return true;
             }
-            const descendantSnippets = descendantPerSnippet.get(ancestorInvisibleEl) || [];
+            const descendantSnippets =
+                descendantPerSnippet.get(ancestorInvisibleEl) || [];
             descendantPerSnippet.set(ancestorInvisibleEl, [
                 ...descendantSnippets,
                 invisibleSnippetEl,
@@ -99,7 +104,7 @@ export class InvisibleElementsPanel extends Component {
             // Scroll to the target if not visible.
             if (!isElementInViewport(snippetEl) && !snippetEl.matches(".s_popup")) {
                 // Firefox mis-scrolls with block "center" on tall snippets; keep "start".
-                snippetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+                snippetEl.scrollIntoView({behavior: "smooth", block: "start"});
             }
         }
         this.shared.disableSnippets.disableUndroppableSnippets();

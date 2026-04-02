@@ -1,7 +1,8 @@
 
-from odoo.addons.account.controllers.portal import PortalAccount
 from odoo import http
 from odoo.http import request
+
+from odoo.addons.account.controllers.portal import PortalAccount
 
 
 class Portal(PortalAccount):

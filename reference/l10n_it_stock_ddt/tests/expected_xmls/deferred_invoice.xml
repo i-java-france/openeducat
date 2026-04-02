@@ -1,4 +1,10 @@
-<p:FatturaElettronica xmlns:p="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xsi:schemaLocation="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.2 http://www.fatturapa.gov.it/export/fatturazione/sdi/fatturapa/v1.2/Schema_del_file_xml_FatturaPA_versione_1.2.xsd" versione="FPR12">
+<p:FatturaElettronica
+    xmlns:p="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+    xsi:schemaLocation="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.2 http://www.fatturapa.gov.it/export/fatturazione/sdi/fatturapa/v1.2/Schema_del_file_xml_FatturaPA_versione_1.2.xsd"
+    versione="FPR12"
+>
     <FatturaElettronicaHeader>
         <DatiTrasmissione>
             <IdTrasmittente>
@@ -61,7 +67,7 @@
                 <ImportoTotaleDocumento>2427.80</ImportoTotaleDocumento>
             </DatiGeneraliDocumento>
             <DatiOrdineAcquisto>
-               <IdDocumento>SO-ITDDT0001</IdDocumento>
+                <IdDocumento>SO-ITDDT0001</IdDocumento>
             </DatiOrdineAcquisto>
             <DatiDDT>
                 <NumeroDDT>compa/OUT/DDT00001</NumeroDDT>
@@ -83,7 +89,8 @@
                     <CodiceTipo>INTERNAL</CodiceTipo>
                     <CodiceValore>PRE-PAID</CodiceValore>
                 </CodiceArticolo>
-                <Descrizione>[PRE-PAID] product_service_order product_service_order</Descrizione>
+                <Descrizione
+                >[PRE-PAID] product_service_order product_service_order</Descrizione>
                 <Quantita>5.00</Quantita>
                 <UnitaMisura>Hours</UnitaMisura>
                 <PrezzoUnitario>90.00000000</PrezzoUnitario>
@@ -108,7 +115,8 @@
                     <CodiceTipo>INTERNAL</CodiceTipo>
                     <CodiceValore>FURN_7777</CodiceValore>
                 </CodiceArticolo>
-                <Descrizione>[FURN_7777] product_delivery_no product_delivery_no</Descrizione>
+                <Descrizione
+                >[FURN_7777] product_delivery_no product_delivery_no</Descrizione>
                 <Quantita>2.00</Quantita>
                 <PrezzoUnitario>70.00000000</PrezzoUnitario>
                 <PrezzoTotale>140.00000000</PrezzoTotale>
@@ -116,19 +124,19 @@
             </DettaglioLinee>
             <DatiRiepilogo>
                 <AliquotaIVA>22.00</AliquotaIVA>
-                    <ImponibileImporto>1990.00</ImponibileImporto>
-                    <Imposta>437.80</Imposta>
+                <ImponibileImporto>1990.00</ImponibileImporto>
+                <Imposta>437.80</Imposta>
                 <EsigibilitaIVA>I</EsigibilitaIVA>
             </DatiRiepilogo>
         </DatiBeniServizi>
         <DatiPagamento>
             <CondizioniPagamento>TP02</CondizioniPagamento>
-                <DettaglioPagamento>
-                    <ModalitaPagamento>MP05</ModalitaPagamento>
-                    <DataScadenzaPagamento>2020-02-03</DataScadenzaPagamento>
-                    <ImportoPagamento>2427.80</ImportoPagamento>
-                    <CodicePagamento>INV/2020/00001</CodicePagamento>
-                </DettaglioPagamento>
+            <DettaglioPagamento>
+                <ModalitaPagamento>MP05</ModalitaPagamento>
+                <DataScadenzaPagamento>2020-02-03</DataScadenzaPagamento>
+                <ImportoPagamento>2427.80</ImportoPagamento>
+                <CodicePagamento>INV/2020/00001</CodicePagamento>
+            </DettaglioPagamento>
         </DatiPagamento>
     </FatturaElettronicaBody>
 </p:FatturaElettronica>

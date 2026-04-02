@@ -8,7 +8,7 @@ websiteSlidesQuizNoFullscreen.include({
             currencyName: slideData.currencyName,
             currencySymbol: slideData.currencySymbol,
             price: slideData.price,
-            hasDiscountedPrice: slideData.hasDiscountedPrice
+            hasDiscountedPrice: slideData.hasDiscountedPrice,
         });
-    }
+    },
 });

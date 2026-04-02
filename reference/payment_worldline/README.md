@@ -2,11 +2,12 @@
 
 ## Technical details
 
-API: [Worldline Direct API](https://docs.direct.worldline-solutions.com/en/api-reference)
+API:
+[Worldline Direct API](https://docs.direct.worldline-solutions.com/en/api-reference)
 version `2`
 
-This module integrates Worldline using the generic payment with redirection flow based on form
-submission provided by the `payment` module.
+This module integrates Worldline using the generic payment with redirection flow based
+on form submission provided by the `payment` module.
 
 This is achieved by following the [Hosted Checkout Page]
 (https://docs.direct.worldline-solutions.com/en/integration/basic-integration-methods/hosted-checkout-page)

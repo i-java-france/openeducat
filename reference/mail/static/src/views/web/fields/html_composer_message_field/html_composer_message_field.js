@@ -1,12 +1,12 @@
-import { DYNAMIC_PLACEHOLDER_PLUGINS } from "@html_editor/backend/plugin_sets";
-import { isEmpty } from "@html_editor/utils/dom_info";
-import { registry } from "@web/core/registry";
-import { useBus } from "@web/core/utils/hooks";
-import { HtmlMailField, htmlMailField } from "../html_mail_field/html_mail_field";
-import { MentionPlugin } from "./mention_plugin";
-import { ContentExpandablePlugin } from "./content_expandable_plugin";
-import { fillEmpty } from "@html_editor/utils/dom";
-import { markup } from "@odoo/owl";
+import {DYNAMIC_PLACEHOLDER_PLUGINS} from "@html_editor/backend/plugin_sets";
+import {isEmpty} from "@html_editor/utils/dom_info";
+import {registry} from "@web/core/registry";
+import {useBus} from "@web/core/utils/hooks";
+import {HtmlMailField, htmlMailField} from "../html_mail_field/html_mail_field";
+import {MentionPlugin} from "./mention_plugin";
+import {ContentExpandablePlugin} from "./content_expandable_plugin";
+import {fillEmpty} from "@html_editor/utils/dom";
+import {markup} from "@odoo/owl";
 
 export class HtmlComposerMessageField extends HtmlMailField {
     setup() {
@@ -21,7 +21,7 @@ export class HtmlComposerMessageField extends HtmlMailField {
                     this.editor.editable.querySelector(".o-signature-container")
                 );
                 const composerHtml = markup(this.getNoSignatureElContent().innerHTML);
-                ev.detail.onSaveContent({ composerHtml, emailAddSignature });
+                ev.detail.onSaveContent({composerHtml, emailAddSignature});
             });
             useBus(this.env.fullComposerBus, "ATTACHMENT_REMOVED", (ev) => {
                 const attachmentElements = this.editor.editable.querySelectorAll(
@@ -78,7 +78,11 @@ export class HtmlComposerMessageField extends HtmlMailField {
 
 export const htmlComposerMessageField = {
     ...htmlMailField,
-    additionalClasses: [...htmlMailField.additionalClasses, "ps-0", "o_mail_composer_message"],
+    additionalClasses: [
+        ...htmlMailField.additionalClasses,
+        "ps-0",
+        "o_mail_composer_message",
+    ],
     component: HtmlComposerMessageField,
 };
 

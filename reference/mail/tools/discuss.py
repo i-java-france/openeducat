@@ -4,6 +4,7 @@ import os
 from collections import defaultdict
 from datetime import date, datetime
 from functools import wraps
+
 from markupsafe import Markup
 
 import odoo
@@ -11,7 +12,9 @@ from odoo import models
 from odoo.exceptions import MissingError
 from odoo.http import request
 from odoo.tools import groupby
+
 from odoo.addons.bus.websocket import wsrequest
+
 
 def add_guest_to_context(func):
     """ Decorate a function to extract the guest from the request.
@@ -159,7 +162,7 @@ class Store:
         if not fields:
             return self
         fields = self._format_fields(records, fields)
-        for record, record_data_list in zip(records, self._get_records_data_list(records, fields)):
+        for record, record_data_list in zip(records, self._get_records_data_list(records, fields), strict=False):
             for record_data in record_data_list:
                 if as_thread:
                     self.add_model_values(
@@ -269,7 +272,7 @@ class Store:
                 [f for f in fields if f not in abstract_fields], load=False,
             )
         ]
-        for record, record_data_list in zip(records, records_data_list):
+        for record, record_data_list in zip(records, records_data_list, strict=False):
             for field in abstract_fields:
                 if isinstance(field, dict):
                     record_data_list.append(field)

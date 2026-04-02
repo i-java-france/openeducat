@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -32,7 +31,7 @@ class CrmLeadForwardToPartner(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        res = super(CrmLeadForwardToPartner, self).default_get(fields)
+        res = super().default_get(fields)
         active_ids = self.env.context.get('active_ids')
         if 'body' in fields:
             template = self.env.ref('website_crm_partner_assign.email_template_lead_forward_mail', False)

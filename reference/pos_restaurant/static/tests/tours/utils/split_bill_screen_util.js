@@ -1,7 +1,7 @@
 import * as Order from "@point_of_sale/../tests/generic_helpers/order_widget_util";
 
 export function clickOrderline(productName) {
-    return Order.hasLine({ productName, run: "click" });
+    return Order.hasLine({productName, run: "click"});
 }
 export function clickBack() {
     return [
@@ -25,7 +25,8 @@ export function clickButton(name) {
 export function orderlineHas(name, totalQuantity, splitQuantity) {
     return Order.hasLine({
         productName: name,
-        quantity: splitQuantity != 0 ? `${splitQuantity} / ${totalQuantity}` : totalQuantity,
+        quantity:
+            splitQuantity != 0 ? `${splitQuantity} / ${totalQuantity}` : totalQuantity,
     });
 }
 export function subtotalIs(amount) {

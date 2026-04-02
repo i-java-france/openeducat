@@ -4,6 +4,7 @@ from werkzeug.exceptions import NotFound
 
 from odoo import http
 from odoo.http import request
+
 from odoo.addons.mail.tools.discuss import add_guest_to_context
 
 

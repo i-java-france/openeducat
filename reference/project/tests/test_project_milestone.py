@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from dateutil.relativedelta import relativedelta
 
 from odoo import fields
 from odoo.tests import Form, tagged
-from dateutil.relativedelta import relativedelta
 
 from .test_project_base import TestProjectCommon
 

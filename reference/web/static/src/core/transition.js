@@ -1,4 +1,4 @@
-import { browser } from "./browser/browser";
+import {browser} from "./browser/browser";
 
 import {
     Component,
@@ -132,15 +132,15 @@ export class Transition extends Component {
     static template = xml`<t t-slot="default" t-if="transition.shouldMount" className="transition.className"/>`;
     static props = {
         name: String,
-        visible: { type: Boolean, optional: true },
-        immediate: { type: Boolean, optional: true },
-        leaveDuration: { type: Number, optional: true },
-        onLeave: { type: Function, optional: true },
+        visible: {type: Boolean, optional: true},
+        immediate: {type: Boolean, optional: true},
+        leaveDuration: {type: Number, optional: true},
+        onLeave: {type: Function, optional: true},
         slots: Object,
     };
 
     setup() {
-        const { immediate, visible, leaveDuration, name, onLeave } = this.props;
+        const {immediate, visible, leaveDuration, name, onLeave} = this.props;
         this.transition = useTransition({
             initialVisibility: visible,
             immediate,
@@ -148,7 +148,7 @@ export class Transition extends Component {
             name,
             onLeave,
         });
-        onWillUpdateProps(({ visible = true }) => {
+        onWillUpdateProps(({visible = true}) => {
             this.transition.shouldMount = visible;
         });
     }

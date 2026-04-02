@@ -1,18 +1,18 @@
-import { isCSSVariable, setBuilderCSSVariables } from "@html_builder/utils/utils_css";
-import { Plugin } from "@html_editor/plugin";
-import { getCSSVariableValue, getHtmlStyle } from "@html_editor/utils/formatting";
-import { parseHTML } from "@html_editor/utils/html";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { isColorGradient, isCSSColor } from "@web/core/utils/colors";
-import { Deferred } from "@web/core/utils/concurrency";
-import { debounce } from "@web/core/utils/timing";
-import { withSequence } from "@html_editor/utils/resource";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { renderToElement } from "@web/core/utils/render";
-import { CompositeAction } from "@html_builder/core/composite_action_plugin";
+import {isCSSVariable, setBuilderCSSVariables} from "@html_builder/utils/utils_css";
+import {Plugin} from "@html_editor/plugin";
+import {getCSSVariableValue, getHtmlStyle} from "@html_editor/utils/formatting";
+import {parseHTML} from "@html_editor/utils/html";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {isColorGradient, isCSSColor} from "@web/core/utils/colors";
+import {Deferred} from "@web/core/utils/concurrency";
+import {debounce} from "@web/core/utils/timing";
+import {withSequence} from "@html_editor/utils/resource";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {renderToElement} from "@web/core/utils/render";
+import {CompositeAction} from "@html_builder/core/composite_action_plugin";
 
 /**
  * @typedef { Object } CustomizeWebsiteShared
@@ -37,7 +37,12 @@ export const NO_IMAGE_SELECTION = Symbol.for("NoImageSelection");
 
 export class CustomizeWebsitePlugin extends Plugin {
     static id = "customizeWebsite";
-    static dependencies = ["builderActions", "history", "savePlugin", "edit_interaction"];
+    static dependencies = [
+        "builderActions",
+        "history",
+        "savePlugin",
+        "edit_interaction",
+    ];
     static shared = [
         "customizeWebsiteColors",
         "customizeWebsiteVariables",
@@ -173,7 +178,13 @@ export class CustomizeWebsitePlugin extends Plugin {
     }, 0);
     async customizeWebsiteColors(
         colors = {},
-        { colorType, combinationColor, nullValue, resetCcOnEmpty, reloadBundles = true } = {}
+        {
+            colorType,
+            combinationColor,
+            nullValue,
+            resetCcOnEmpty,
+            reloadBundles = true,
+        } = {}
     ) {
         const baseURL = "/website/static/src/scss/options/colors/";
         colorType = colorType ? colorType + "_" : "";
@@ -189,7 +200,8 @@ export class CustomizeWebsitePlugin extends Plugin {
                     finalColors[colorName] = "";
                 } else if (isCSSVariable(color)) {
                     const customProperty = color.match(/var\(--(.+?)\)/)[1];
-                    finalColors[colorName] = this.getWebsiteVariableValue(customProperty);
+                    finalColors[colorName] =
+                        this.getWebsiteVariableValue(customProperty);
                 } else if (!isCSSColor(color)) {
                     finalColors[colorName] = `'${color}'`;
                 }
@@ -215,7 +227,10 @@ export class CustomizeWebsitePlugin extends Plugin {
         Object.keys(values).forEach((key) => {
             values[key] = values[key] || defaultValue;
         });
-        await this.services.orm.call("website.assets", "make_scss_customization", [url, values]);
+        await this.services.orm.call("website.assets", "make_scss_customization", [
+            url,
+            values,
+        ]);
     }
     reloadBundles = debounce(this._reloadBundles.bind(this), 0);
     async _reloadBundles() {
@@ -270,7 +285,10 @@ export class CustomizeWebsitePlugin extends Plugin {
                             record = record.substring(1);
                         }
                         if (!(record in this.cache)) {
-                            this.cache[record] = this._loadBatchKey(record, paramName === "views");
+                            this.cache[record] = this._loadBatchKey(
+                                record,
+                                paramName === "views"
+                            );
                         }
                         return this.cache[record];
                     })
@@ -281,7 +299,9 @@ export class CustomizeWebsitePlugin extends Plugin {
     }
 
     _loadBatchKey(key, isViewData) {
-        const pendingRequests = isViewData ? this.pendingViewRequests : this.pendingAssetRequests;
+        const pendingRequests = isViewData
+            ? this.pendingViewRequests
+            : this.pendingAssetRequests;
         pendingRequests.add(key);
         return new Promise((resolve) => {
             this.resolves[key] = resolve;
@@ -316,10 +336,10 @@ export class CustomizeWebsitePlugin extends Plugin {
         const applyFn = action.apply.bind(action);
         action.apply = async (arg) => {
             const oldValue = action.getValue(arg);
-            const { value } = arg;
+            const {value} = arg;
             const blockedApply = (v) => {
-                this.services.ui.block({ delay: 2500 });
-                return applyFn({ ...arg, value: v })
+                this.services.ui.block({delay: 2500});
+                return applyFn({...arg, value: v})
                     .then(() => {
                         this.dispatchTo("trigger_dom_updated");
                     })
@@ -360,7 +380,10 @@ export class CustomizeWebsitePlugin extends Plugin {
         }
 
         // Empty the container and add the template content
-        const templateFragment = parseHTML(this.document, this.getTemplateKey(action.params.view));
+        const templateFragment = parseHTML(
+            this.document,
+            this.getTemplateKey(action.params.view)
+        );
         action.editingElement.replaceChildren(templateFragment.firstElementChild);
     }
     getTemplateKey(key) {
@@ -456,18 +479,22 @@ export class AddLanguageAction extends BuilderAction {
         await this.config.builderSidebar.withHiddenSidebar(() =>
             this.dependencies.savePlugin.save({
                 shouldSkipAfterSaveHandlers: async () => {
-                    await this.services.action.doAction("base.action_view_base_language_install", {
-                        additionalContext: {
-                            params: {
-                                website_id: websiteId,
-                                url_return: "[lang]",
+                    await this.services.action.doAction(
+                        "base.action_view_base_language_install",
+                        {
+                            additionalContext: {
+                                params: {
+                                    website_id: websiteId,
+                                    url_return: "[lang]",
+                                },
                             },
-                        },
-                        // The `noReload` in the params of the close callback
-                        // are the only way we have to know whether the modal
-                        // dialog has been cancelled
-                        onClose: (closeParams) => def.resolve(!!closeParams?.noReload),
-                    });
+                            // The `noReload` in the params of the close callback
+                            // are the only way we have to know whether the modal
+                            // dialog has been cancelled
+                            onClose: (closeParams) =>
+                                def.resolve(!!closeParams?.noReload),
+                        }
+                    );
                     return await def;
                 },
             })
@@ -478,7 +505,7 @@ export class AddLanguageAction extends BuilderAction {
 export class CustomizeBodyBgTypeAction extends BuilderAction {
     static id = "customizeBodyBgType";
     static dependencies = ["builderActions", "history", "customizeWebsite"];
-    isApplied({ value }) {
+    isApplied({value}) {
         const getAction = this.dependencies.builderActions.getAction;
         const currentValue = getAction("customizeBodyBgType").getValue();
         // NONE has no extra quote, other values have
@@ -494,9 +521,9 @@ export class CustomizeBodyBgTypeAction extends BuilderAction {
         const style = getHtmlStyle(this.document);
         return getCSSVariableValue("body-image-type", style);
     }
-    async load({ editingElement: el, params, value, historyImageSrc }) {
+    async load({editingElement: el, params, value, historyImageSrc}) {
         const getAction = this.dependencies.builderActions.getAction;
-        const oldValue = getAction("customizeBodyBgType").getValue({ params });
+        const oldValue = getAction("customizeBodyBgType").getValue({params});
         const oldImageSrc =
             this.dependencies.customizeWebsite.getWebsiteVariableValue("body-image");
         let imageSrc = "";
@@ -506,7 +533,8 @@ export class CustomizeBodyBgTypeAction extends BuilderAction {
                 "body-image": "",
             });
         } else {
-            const imageEl = historyImageSrc || (await getAction("replaceBgImage").load({ el }));
+            const imageEl =
+                historyImageSrc || (await getAction("replaceBgImage").load({el}));
             if (imageEl) {
                 imageSrc = imageEl.src;
                 await this.dependencies.customizeWebsite.customizeWebsiteVariables({
@@ -517,25 +545,30 @@ export class CustomizeBodyBgTypeAction extends BuilderAction {
                 imageSrc = NO_IMAGE_SELECTION;
             }
         }
-        return { imageSrc, oldImageSrc, oldValue };
+        return {imageSrc, oldImageSrc, oldValue};
     }
-    apply({ editingElement, params, value, loadResult: { imageSrc, oldImageSrc, oldValue } }) {
+    apply({
+        editingElement,
+        params,
+        value,
+        loadResult: {imageSrc, oldImageSrc, oldValue},
+    }) {
         if (imageSrc === NO_IMAGE_SELECTION) {
             return;
         }
         const getAction = this.dependencies.builderActions.getAction;
         this.dependencies.history.addCustomMutation({
             apply: () => {
-                this.services.ui.block({ delay: 2500 });
+                this.services.ui.block({delay: 2500});
                 getAction("customizeBodyBgType")
-                    .load({ editingElement, params, value, historyImageSrc: imageSrc })
+                    .load({editingElement, params, value, historyImageSrc: imageSrc})
                     .then(() => {
                         this.dispatchTo("trigger_dom_updated");
                     })
                     .finally(() => this.services.ui.unblock());
             },
             revert: () => {
-                this.services.ui.block({ delay: 2500 });
+                this.services.ui.block({delay: 2500});
                 getAction("customizeBodyBgType")
                     .load({
                         editingElement,
@@ -559,14 +592,14 @@ export class WebsiteConfigAction extends BuilderAction {
         this.reload = {};
         this.preview = false;
     }
-    async prepare({ actionParam }) {
+    async prepare({actionParam}) {
         return this.dependencies.customizeWebsite.loadConfigKey(actionParam);
     }
-    getPriority({ params }) {
+    getPriority({params}) {
         const records = [...(params.views || []), ...(params.assets || [])];
         return records.length;
     }
-    isApplied({ params }) {
+    isApplied({params}) {
         const records = [...(params.views || []), ...(params.assets || [])];
         const configKeysIsApplied = records.every((v) =>
             this.dependencies.customizeWebsite.getConfigKey(v)
@@ -577,7 +610,9 @@ export class WebsiteConfigAction extends BuilderAction {
                 Object.entries(params.vars || {}).every(
                     ([variable, value]) =>
                         value ===
-                        this.dependencies.customizeWebsite.getWebsiteVariableValue(variable)
+                        this.dependencies.customizeWebsite.getWebsiteVariableValue(
+                            variable
+                        )
                 )
             );
         }
@@ -603,12 +638,12 @@ export class WebsiteConfigAction extends BuilderAction {
                       apply
                   )
                 : action.params.vars
-                ? this.dependencies.customizeWebsite.customizeWebsiteVariables(
-                      action.params.vars,
-                      "null",
-                      !apply
-                  )
-                : Promise.resolve();
+                  ? this.dependencies.customizeWebsite.customizeWebsiteVariables(
+                        action.params.vars,
+                        "null",
+                        !apply
+                    )
+                  : Promise.resolve();
         await Promise.all([updateViews, updateAssets, updateVars]);
         if (this.dependencies.customizeWebsite.isPluginDestroyed()) {
             return true;
@@ -649,8 +684,13 @@ export class WebsiteConfigAction extends BuilderAction {
                         }
                     } else if (getAction(a.actionId) instanceof CompositeAction) {
                         for (const itemAction of a.actionParam.mainParam) {
-                            if (getAction(itemAction.action) instanceof WebsiteConfigAction) {
-                                for (const record of itemAction.actionParam[paramName] || []) {
+                            if (
+                                getAction(itemAction.action) instanceof
+                                WebsiteConfigAction
+                            ) {
+                                for (const record of itemAction.actionParam[
+                                    paramName
+                                ] || []) {
                                     prepareRecord(record, true);
                                 }
                             }
@@ -713,7 +753,9 @@ export class WebsiteConfigAction extends BuilderAction {
                 this.dependencies.customizeWebsite
                     .getPendingThemeRequests()
                     .filter(
-                        (req) => req.isViewData !== isViewData || req.shouldReset !== shouldReset
+                        (req) =>
+                            req.isViewData !== isViewData ||
+                            req.shouldReset !== shouldReset
                     )
             );
             if (!aggregatedToEnable.size && !aggregatedToDisable.size) {
@@ -741,16 +783,20 @@ export class PreviewableWebsiteConfigAction extends BuilderAction {
         // we need this so autoHideMenu recomputes the layout after our changes
         this.dispatchResize = () => this.window.dispatchEvent(new Event("resize"));
     }
-    getPriority({ params }) {
-        return (params.previewClass || "")?.trim().split(/\s+/).filter(Boolean).length || 0;
+    getPriority({params}) {
+        return (
+            (params.previewClass || "")?.trim().split(/\s+/).filter(Boolean).length || 0
+        );
     }
-    isApplied({ editingElement: el, params }) {
+    isApplied({editingElement: el, params}) {
         if (params.previewClass === undefined || params.previewClass === "") {
             return true;
         }
-        return params.previewClass.split(/\s+/).every((cls) => el.classList.contains(cls));
+        return params.previewClass
+            .split(/\s+/)
+            .every((cls) => el.classList.contains(cls));
     }
-    apply({ editingElement: el, isPreviewing, params }) {
+    apply({editingElement: el, isPreviewing, params}) {
         if (params.previewClass) {
             params.previewClass.split(/\s+/).forEach((cls) => el.classList.add(cls));
         }
@@ -763,10 +809,11 @@ export class PreviewableWebsiteConfigAction extends BuilderAction {
             let undoApplyCallback;
             this.dependencies.history.applyCustomMutation({
                 apply: () => {
-                    undoApplyCallback = this.dependencies.customizeWebsite.setViewsOnSave(
-                        viewsToApply,
-                        true
-                    );
+                    undoApplyCallback =
+                        this.dependencies.customizeWebsite.setViewsOnSave(
+                            viewsToApply,
+                            true
+                        );
                 },
                 revert: () => {
                     undoApplyCallback();
@@ -774,7 +821,7 @@ export class PreviewableWebsiteConfigAction extends BuilderAction {
             });
         }
     }
-    clean({ editingElement: el, isPreviewing, params }) {
+    clean({editingElement: el, isPreviewing, params}) {
         if (params.previewClass) {
             params.previewClass.split(/\s+/).forEach((cls) => el.classList.remove(cls));
         }
@@ -787,10 +834,11 @@ export class PreviewableWebsiteConfigAction extends BuilderAction {
             let undoCleanCallback;
             this.dependencies.history.applyCustomMutation({
                 apply: () => {
-                    undoCleanCallback = this.dependencies.customizeWebsite.setViewsOnSave(
-                        viewsToClean,
-                        false
-                    );
+                    undoCleanCallback =
+                        this.dependencies.customizeWebsite.setViewsOnSave(
+                            viewsToClean,
+                            false
+                        );
                 },
                 revert: () => {
                     undoCleanCallback();
@@ -822,19 +870,25 @@ class TemplatePreviewableWebsiteConfigAction extends WebsiteConfigAction {
         }
     }
 
-    async renderPreview({ editingElement: el, params }) {
+    async renderPreview({editingElement: el, params}) {
         if (params.templateId && !el.closest(params.placeExcludeRootClosest)) {
             const renderedEl = renderToElement(params.templateId);
             const targetEl = el;
             if (targetEl) {
                 if (params.placeBefore) {
                     for (const el of targetEl.querySelectorAll(params.placeBefore)) {
-                        el.insertAdjacentElement("beforebegin", renderedEl.cloneNode(true));
+                        el.insertAdjacentElement(
+                            "beforebegin",
+                            renderedEl.cloneNode(true)
+                        );
                     }
                 }
                 if (params.placeAfter) {
                     for (const el of targetEl.querySelectorAll(params.placeAfter)) {
-                        el.insertAdjacentElement("afterend", renderedEl.cloneNode(true));
+                        el.insertAdjacentElement(
+                            "afterend",
+                            renderedEl.cloneNode(true)
+                        );
                     }
                 }
             }
@@ -851,10 +905,12 @@ class TemplatePreviewableWebsiteConfigAction extends WebsiteConfigAction {
 export class SelectTemplateAction extends BuilderAction {
     static id = "selectTemplate";
     static dependencies = ["customizeWebsite"];
-    async prepare({ actionParam }) {
-        return await this.dependencies.customizeWebsite.loadTemplateKey(actionParam.view);
+    async prepare({actionParam}) {
+        return await this.dependencies.customizeWebsite.loadTemplateKey(
+            actionParam.view
+        );
     }
-    isApplied({ editingElement, params: { templateClass } }) {
+    isApplied({editingElement, params: {templateClass}}) {
         if (templateClass) {
             return !!editingElement.querySelector(`.${templateClass}`);
         }
@@ -875,18 +931,20 @@ export class CustomizeWebsiteVariableAction extends BuilderAction {
         this.preview = false;
         this.dependencies.customizeWebsite.withCustomHistory(this);
     }
-    isApplied({ params: { mainParam: variable } = {}, value }) {
-        const currentValue = this.dependencies.customizeWebsite.getWebsiteVariableValue(variable);
+    isApplied({params: {mainParam: variable} = {}, value}) {
+        const currentValue =
+            this.dependencies.customizeWebsite.getWebsiteVariableValue(variable);
         return (
             // There might be unquoted values in existing databases.
             currentValue === value || `'${currentValue}'` === value
         );
     }
-    getValue({ params: { mainParam: variable } }) {
-        const currentValue = this.dependencies.customizeWebsite.getWebsiteVariableValue(variable);
+    getValue({params: {mainParam: variable}}) {
+        const currentValue =
+            this.dependencies.customizeWebsite.getWebsiteVariableValue(variable);
         return currentValue;
     }
-    async apply({ params: { mainParam: variable, nullValue = "null" }, value }) {
+    async apply({params: {mainParam: variable, nullValue = "null"}, value}) {
         await this.dependencies.customizeWebsite.customizeWebsiteVariables(
             {
                 [variable]: value,
@@ -903,11 +961,13 @@ export class CustomizeWebsiteColorAction extends BuilderAction {
         this.preview = false;
         this.dependencies.customizeWebsite.withCustomHistory(this);
     }
-    getValue({ params: { mainParam: color, colorType, gradientColor, combinationColor } }) {
+    getValue({params: {mainParam: color, colorType, gradientColor, combinationColor}}) {
         const style = getHtmlStyle(this.document);
         if (gradientColor) {
             const gradientValue =
-                this.dependencies.customizeWebsite.getWebsiteVariableValue(gradientColor);
+                this.dependencies.customizeWebsite.getWebsiteVariableValue(
+                    gradientColor
+                );
             if (gradientValue) {
                 // Pass through style to restore rgb/a which might
                 // have been lost during SCSS generation process.
@@ -921,7 +981,13 @@ export class CustomizeWebsiteColorAction extends BuilderAction {
         return getCSSVariableValue(color, style);
     }
     async apply({
-        params: { mainParam: color, colorType, gradientColor, combinationColor, nullValue },
+        params: {
+            mainParam: color,
+            colorType,
+            gradientColor,
+            combinationColor,
+            nullValue,
+        },
         value,
     }) {
         if (gradientColor) {
@@ -948,12 +1014,14 @@ export class CustomizeWebsiteColorAction extends BuilderAction {
                 }
             );
             await this.dependencies.customizeWebsite.customizeWebsiteVariables({
-                [gradientColor]: isColorCombination ? nullValue : gradientValue || nullValue,
+                [gradientColor]: isColorCombination
+                    ? nullValue
+                    : gradientValue || nullValue,
             }); // reloads bundles
         } else {
             await this.dependencies.customizeWebsite.customizeWebsiteColors(
-                { [color]: value },
-                { colorType, combinationColor, resetCcOnEmpty: true, nullValue }
+                {[color]: value},
+                {colorType, combinationColor, resetCcOnEmpty: true, nullValue}
             );
         }
         setBuilderCSSVariables(getHtmlStyle(this.document));
@@ -967,16 +1035,16 @@ export class CustomizeButtonStyleAction extends BuilderAction {
         this.preview = false;
         this.dependencies.customizeWebsite.withCustomHistory(this);
     }
-    isApplied({ params, value }) {
-        return this.getValue({ params }) === value;
+    isApplied({params, value}) {
+        return this.getValue({params}) === value;
     }
-    getValue({ params: { mainParam: which } }) {
+    getValue({params: {mainParam: which}}) {
         const style = getHtmlStyle(this.document);
         const isOutline = getCSSVariableValue(`btn-${which}-outline`, style);
         const isFlat = getCSSVariableValue(`btn-${which}-flat`, style);
         return isFlat === "true" ? "flat" : isOutline === "true" ? "outline" : "fill";
     }
-    async apply({ params: { mainParam: which, nullValue }, value }) {
+    async apply({params: {mainParam: which, nullValue}, value}) {
         await this.dependencies.customizeWebsite.customizeWebsiteVariables(
             {
                 [`btn-${which}-outline`]: value === "outline" ? "true" : "false",
@@ -987,4 +1055,6 @@ export class CustomizeButtonStyleAction extends BuilderAction {
     }
 }
 
-registry.category("website-plugins").add(CustomizeWebsitePlugin.id, CustomizeWebsitePlugin);
+registry
+    .category("website-plugins")
+    .add(CustomizeWebsitePlugin.id, CustomizeWebsitePlugin);

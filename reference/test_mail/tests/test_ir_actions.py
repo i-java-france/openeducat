@@ -1,17 +1,17 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo.tests import tagged
+from odoo.tools import mute_logger
 
 from odoo.addons.base.tests.test_ir_actions import TestServerActionsBase
 from odoo.addons.mail.tests.common import MailCommon
-from odoo.tests import tagged
-from odoo.tools import mute_logger
 
 
 @tagged('ir_actions')
 class TestServerActionsEmail(MailCommon, TestServerActionsBase):
 
     def setUp(self):
-        super(TestServerActionsEmail, self).setUp()
+        super().setUp()
         self.template = self._create_template(
             'res.partner',
             {'email_from': '{{ object.user_id.email_formatted or object.company_id.email_formatted or user.email_formatted }}',

@@ -1,9 +1,9 @@
-import { PaymentInterface } from "@point_of_sale/app/utils/payment/payment_interface";
-import { CancelDialog } from "@pos_glory_cash/app/components/cancel_dialog";
-import { GLORY_STATUS_STRING } from "@pos_glory_cash/utils/constants";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { _t } from "@web/core/l10n/translation";
-import { GloryService } from "@pos_glory_cash/glory_service";
+import {PaymentInterface} from "@point_of_sale/app/utils/payment/payment_interface";
+import {CancelDialog} from "@pos_glory_cash/app/components/cancel_dialog";
+import {GLORY_STATUS_STRING} from "@pos_glory_cash/utils/constants";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {_t} from "@web/core/l10n/translation";
+import {GloryService} from "@pos_glory_cash/glory_service";
 
 const CONNECT_TIMEOUT_MS = 5000;
 
@@ -70,7 +70,9 @@ export class PaymentGlory extends PaymentInterface {
     }
 
     get status() {
-        return GLORY_STATUS_STRING[this.gloryService.status] ?? this.gloryService.status;
+        return (
+            GLORY_STATUS_STRING[this.gloryService.status] ?? this.gloryService.status
+        );
     }
 
     get amountInserted() {
@@ -120,7 +122,9 @@ export class PaymentGlory extends PaymentInterface {
         }
 
         if (this.paymentLine.amount < 0 && this.pos.getCashier()._role !== "manager") {
-            this.showError(_t("Only managers can withdraw cash from the cash machine."));
+            this.showError(
+                _t("Only managers can withdraw cash from the cash machine.")
+            );
             return false;
         }
 
@@ -165,15 +169,19 @@ export class PaymentGlory extends PaymentInterface {
             }
             case "CHANGE_SHORTAGE":
                 this.setPaymentInfo(paymentResult, false);
-                await this.pos.printReceipt({ printBillActionTriggered: true });
-                this.showError(_t("There is insufficient cash in the machine to give change."));
+                await this.pos.printReceipt({printBillActionTriggered: true});
+                this.showError(
+                    _t("There is insufficient cash in the machine to give change.")
+                );
                 return false;
             case "OCCUPIED_BY_OTHER":
                 this.showError(_t("The cash machine is in use by another POS."));
                 return false;
             case "EXCLUSIVE_ERROR": {
                 this.showCancelDialog(
-                    _t("The cash machine is busy with another operation. Do you want to cancel it?")
+                    _t(
+                        "The cash machine is busy with another operation. Do you want to cancel it?"
+                    )
                 );
                 return false;
             }
@@ -190,7 +198,10 @@ export class PaymentGlory extends PaymentInterface {
             }
             default: {
                 this.showError(
-                    _t("The payment failed for an unknown reason: %s", paymentResult.status)
+                    _t(
+                        "The payment failed for an unknown reason: %s",
+                        paymentResult.status
+                    )
                 );
                 return false;
             }
@@ -216,11 +227,16 @@ export class PaymentGlory extends PaymentInterface {
      */
     setPaymentInfo(paymentResponse) {
         const isSuccessful = paymentResponse.status === "SUCCESS";
-        const { transactionId, cashGiven, cashReturned } = paymentResponse;
+        const {transactionId, cashGiven, cashReturned} = paymentResponse;
         this.paymentLine.transaction_id = transactionId;
         this.paymentLine.setAmount(this.gloryAmountToPosAmount(cashGiven));
         this.paymentLine.setReceiptInfo(
-            this.makeReceiptMessage(transactionId, cashGiven, cashReturned, isSuccessful)
+            this.makeReceiptMessage(
+                transactionId,
+                cashGiven,
+                cashReturned,
+                isSuccessful
+            )
         );
     }
 

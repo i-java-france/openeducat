@@ -1,9 +1,9 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { rpc } from "@web/core/network/rpc";
-import { ProductsItemOption } from "./products_item_option";
-import { reactive } from "@odoo/owl";
-import { BuilderAction } from "@html_builder/core/builder_action";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {rpc} from "@web/core/network/rpc";
+import {ProductsItemOption} from "./products_item_option";
+import {reactive} from "@odoo/owl";
+import {BuilderAction} from "@html_builder/core/builder_action";
 
 class ProductsItemOptionPlugin extends Plugin {
     static id = "productsItemOptionPlugin";
@@ -15,7 +15,7 @@ class ProductsItemOptionPlugin extends Plugin {
         "getItemSize",
         "getCount",
     ];
-    itemSize = reactive({ x: 1, y: 1 });
+    itemSize = reactive({x: 1, y: 1});
 
     resources = {
         builder_options: [ProductsItemOption],
@@ -71,7 +71,7 @@ export class SetItemSizeAction extends BuilderAction {
         this.productItemPlugin = this.dependencies.productsItemOptionPlugin;
         this.reload = {};
     }
-    isApplied({ editingElement, value: [i, j] }) {
+    isApplied({editingElement, value: [i, j]}) {
         if (
             parseInt(editingElement.dataset.rowspan || 1) - 1 === i &&
             parseInt(editingElement.dataset.colspan || 1) - 1 === j
@@ -81,7 +81,7 @@ export class SetItemSizeAction extends BuilderAction {
         }
         return false;
     }
-    apply({ editingElement, value: [i, j] }) {
+    apply({editingElement, value: [i, j]}) {
         const x = j + 1;
         const y = i + 1;
 
@@ -106,7 +106,7 @@ export class ChangeSequenceAction extends BuilderAction {
         this.productItemPlugin = this.dependencies.productsItemOptionPlugin;
         this.reload = {};
     }
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         this.productItemPlugin.setProductTemplateID(
             parseInt(
                 editingElement
@@ -121,4 +121,6 @@ export class ChangeSequenceAction extends BuilderAction {
     }
 }
 
-registry.category("website-plugins").add(ProductsItemOptionPlugin.id, ProductsItemOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(ProductsItemOptionPlugin.id, ProductsItemOptionPlugin);

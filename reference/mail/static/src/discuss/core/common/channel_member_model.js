@@ -1,11 +1,11 @@
-import { Store } from "@mail/core/common/store_service";
-import { fields, Record } from "@mail/core/common/record";
+import {Store} from "@mail/core/common/store_service";
+import {fields, Record} from "@mail/core/common/record";
 
-import { browser } from "@web/core/browser/browser";
-import { deserializeDateTime } from "@web/core/l10n/dates";
-import { user } from "@web/core/user";
+import {browser} from "@web/core/browser/browser";
+import {deserializeDateTime} from "@web/core/l10n/dates";
+import {user} from "@web/core/user";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class ChannelMember extends Record {
     static _name = "discuss.channel.member";
@@ -44,7 +44,7 @@ export class ChannelMember extends Record {
     get persona() {
         return this.partner_id || this.guest_id;
     }
-    channel_id = fields.One("Thread", { inverse: "channel_member_ids" });
+    channel_id = fields.One("Thread", {inverse: "channel_member_ids"});
     threadAsSelf = fields.One("Thread", {
         compute() {
             if (this.store.self?.eq(this.persona)) {
@@ -87,7 +87,8 @@ export class ChannelMember extends Record {
             browser.clearTimeout(this.typingTimeoutId);
             if (
                 !this.is_typing_dt ||
-                DateTime.now().diff(this.is_typing_dt).milliseconds > Store.OTHER_LONG_TYPING
+                DateTime.now().diff(this.is_typing_dt).milliseconds >
+                    Store.OTHER_LONG_TYPING
             ) {
                 this.isTyping = false;
             }
@@ -142,7 +143,9 @@ export class ChannelMember extends Record {
      * @param {import("models").Message} message
      */
     hasSeen(message) {
-        return this.persona.eq(message.author) || this.seen_message_id?.id >= message.id;
+        return (
+            this.persona.eq(message.author) || this.seen_message_id?.id >= message.id
+        );
     }
     get lastSeenDt() {
         return this.last_seen_dt

@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { _t } from "@web/core/l10n/translation";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {_t} from "@web/core/l10n/translation";
 
 /**
  * @typedef { Object } SetupEditorShared
@@ -53,7 +53,9 @@ export class SetupEditorPlugin extends Plugin {
 
         // Add automatic editor message on the editables where we can drag and
         // drop elements.
-        editableEls = this.getEditableElements('.oe_structure.oe_empty, [data-oe-type="html"]');
+        editableEls = this.getEditableElements(
+            '.oe_structure.oe_empty, [data-oe-type="html"]'
+        );
         editableEls.forEach((el) => {
             if (!el.hasAttribute("data-editor-message")) {
                 el.setAttribute("data-editor-message-default", true);
@@ -72,7 +74,7 @@ export class SetupEditorPlugin extends Plugin {
         return editableEls;
     }
 
-    cleanForSave({ root }) {
+    cleanForSave({root}) {
         root.classList.remove("o_editable");
         root.querySelectorAll(".o_editable").forEach((el) => {
             el.classList.remove("o_editable");

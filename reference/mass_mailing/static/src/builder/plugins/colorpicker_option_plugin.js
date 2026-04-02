@@ -1,8 +1,8 @@
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { before, VERTICAL_ALIGNMENT } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {before, VERTICAL_ALIGNMENT} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
 
 export class ColorPickerOption extends BaseOptionComponent {
     static template = "mass_mailing.ColorPickerOption";
@@ -11,7 +11,8 @@ export class ColorPickerOption extends BaseOptionComponent {
         .note-editable .oe_structure > .o_mail_snippet_general,
         .note-editable .oe_structure > .o_mail_snippet_general .o_cc,
         .s_mail_color_blocks_2 .row > div, table td, .s_cta_badge`;
-    static exclude = ".o_mail_no_colorpicker, .o_mail_no_options, .s_mail_color_blocks_2";
+    static exclude =
+        ".o_mail_no_colorpicker, .o_mail_no_options, .s_mail_color_blocks_2";
 }
 
 export class ColorPickerOption2 extends BaseOptionComponent {
@@ -33,4 +34,6 @@ class ColorPickerOptionPlugin extends Plugin {
     };
 }
 
-registry.category("mass_mailing-plugins").add(ColorPickerOptionPlugin.id, ColorPickerOptionPlugin);
+registry
+    .category("mass_mailing-plugins")
+    .add(ColorPickerOptionPlugin.id, ColorPickerOptionPlugin);

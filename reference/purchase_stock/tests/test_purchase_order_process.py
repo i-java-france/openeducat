@@ -1,4 +1,4 @@
-from odoo import Command, fields
+from odoo import Command
 from odoo.tests import Form, tagged, users
 from odoo.tools import float_compare
 

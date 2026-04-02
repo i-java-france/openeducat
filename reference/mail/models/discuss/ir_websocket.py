@@ -3,7 +3,6 @@
 import re
 
 from odoo import models
-from odoo.fields import Domain
 
 
 class IrWebsocket(models.AbstractModel):

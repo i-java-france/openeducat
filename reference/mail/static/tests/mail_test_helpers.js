@@ -1,7 +1,7 @@
-import { addBusMessageHandler, busModels } from "@bus/../tests/bus_test_helpers";
-import { after, before, expect, getFixture, registerDebugInfo, test } from "@odoo/hoot";
-import { hover as hootHover, queryFirst, resize } from "@odoo/hoot-dom";
-import { Deferred, microTick } from "@odoo/hoot-mock";
+import {addBusMessageHandler, busModels} from "@bus/../tests/bus_test_helpers";
+import {after, before, expect, getFixture, registerDebugInfo, test} from "@odoo/hoot";
+import {hover as hootHover, queryFirst, resize} from "@odoo/hoot-dom";
+import {Deferred, microTick} from "@odoo/hoot-mock";
 import {
     MockServer,
     asyncStep,
@@ -22,62 +22,62 @@ import {
     webModels,
 } from "@web/../tests/web_test_helpers";
 
-import { CHAT_HUB_KEY } from "@mail/core/common/chat_hub_model";
-import { click, contains } from "./mail_test_helpers_contains";
+import {CHAT_HUB_KEY} from "@mail/core/common/chat_hub_model";
+import {click, contains} from "./mail_test_helpers_contains";
 
-import { closeStream, mailGlobal } from "@mail/utils/common/misc";
-import { Component, onMounted, onPatched, onWillDestroy, status } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { loadEmoji } from "@web/core/emoji_picker/emoji_picker";
-import { registry } from "@web/core/registry";
-import { MEDIAS_BREAKPOINTS, utils as uiUtils } from "@web/core/ui/ui_service";
-import { useServiceProtectMethodHandling } from "@web/core/utils/hooks";
-import { session } from "@web/session";
-import { WebClient } from "@web/webclient/webclient";
-export { SIZES } from "@web/core/ui/ui_service";
+import {closeStream, mailGlobal} from "@mail/utils/common/misc";
+import {Component, onMounted, onPatched, onWillDestroy, status} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {loadEmoji} from "@web/core/emoji_picker/emoji_picker";
+import {registry} from "@web/core/registry";
+import {MEDIAS_BREAKPOINTS, utils as uiUtils} from "@web/core/ui/ui_service";
+import {useServiceProtectMethodHandling} from "@web/core/utils/hooks";
+import {session} from "@web/session";
+import {WebClient} from "@web/webclient/webclient";
+export {SIZES} from "@web/core/ui/ui_service";
 
 import {
     DISCUSS_ACTION_ID,
     authenticateGuest,
     mailDataHelpers,
 } from "./mock_server/mail_mock_server";
-import { Base } from "./mock_server/mock_models/base";
-import { DiscussChannel } from "./mock_server/mock_models/discuss_channel";
-import { DiscussChannelMember } from "./mock_server/mock_models/discuss_channel_member";
-import { DiscussChannelRtcSession } from "./mock_server/mock_models/discuss_channel_rtc_session";
-import { DiscussGifFavorite } from "./mock_server/mock_models/discuss_gif_favorite";
-import { DiscussVoiceMetadata } from "./mock_server/mock_models/discuss_voice_metadata";
-import { IrAttachment } from "./mock_server/mock_models/ir_attachment";
-import { IrWebSocket } from "./mock_server/mock_models/ir_websocket";
-import { M2xAvatarUser } from "./mock_server/mock_models/m2x_avatar_user";
-import { MailActivity } from "./mock_server/mock_models/mail_activity";
-import { MailActivitySchedule } from "./mock_server/mock_models/mail_activity_schedule";
-import { MailActivityType } from "./mock_server/mock_models/mail_activity_type";
-import { MailCannedResponse } from "./mock_server/mock_models/mail_canned_response";
-import { MailComposeMessage } from "./mock_server/mock_models/mail_composer_message";
-import { MailFollowers } from "./mock_server/mock_models/mail_followers";
-import { MailGuest } from "./mock_server/mock_models/mail_guest";
-import { MailLinkPreview } from "./mock_server/mock_models/mail_link_preview";
-import { MailMessage } from "./mock_server/mock_models/mail_message";
-import { MailMessageLinkPreview } from "./mock_server/mock_models/mail_message_link_preview";
-import { MailMessageReaction } from "./mock_server/mock_models/mail_message_reaction";
-import { MailMessageSubtype } from "./mock_server/mock_models/mail_message_subtype";
-import { MailNotification } from "./mock_server/mock_models/mail_notification";
-import { MailPushDevice } from "./mock_server/mock_models/mail_push_device";
-import { MailScheduledMessage } from "./mock_server/mock_models/mail_scheduled_message";
-import { MailTemplate } from "./mock_server/mock_models/mail_template";
-import { MailThread } from "./mock_server/mock_models/mail_thread";
-import { MailTrackingValue } from "./mock_server/mock_models/mail_tracking_value";
-import { ResCountry } from "./mock_server/mock_models/res_country";
-import { ResFake } from "./mock_server/mock_models/res_fake";
-import { ResLang } from "./mock_server/mock_models/res_lang";
-import { ResPartner } from "./mock_server/mock_models/res_partner";
-import { ResRole } from "./mock_server/mock_models/res_role";
-import { ResUsers } from "./mock_server/mock_models/res_users";
-import { ResUsersSettings } from "./mock_server/mock_models/res_users_settings";
-import { ResUsersSettingsVolumes } from "./mock_server/mock_models/res_users_settings_volumes";
-import { Network, Rtc } from "@mail/discuss/call/common/rtc_service";
-import { UPDATE_EVENT } from "@mail/discuss/call/common/peer_to_peer";
+import {Base} from "./mock_server/mock_models/base";
+import {DiscussChannel} from "./mock_server/mock_models/discuss_channel";
+import {DiscussChannelMember} from "./mock_server/mock_models/discuss_channel_member";
+import {DiscussChannelRtcSession} from "./mock_server/mock_models/discuss_channel_rtc_session";
+import {DiscussGifFavorite} from "./mock_server/mock_models/discuss_gif_favorite";
+import {DiscussVoiceMetadata} from "./mock_server/mock_models/discuss_voice_metadata";
+import {IrAttachment} from "./mock_server/mock_models/ir_attachment";
+import {IrWebSocket} from "./mock_server/mock_models/ir_websocket";
+import {M2xAvatarUser} from "./mock_server/mock_models/m2x_avatar_user";
+import {MailActivity} from "./mock_server/mock_models/mail_activity";
+import {MailActivitySchedule} from "./mock_server/mock_models/mail_activity_schedule";
+import {MailActivityType} from "./mock_server/mock_models/mail_activity_type";
+import {MailCannedResponse} from "./mock_server/mock_models/mail_canned_response";
+import {MailComposeMessage} from "./mock_server/mock_models/mail_composer_message";
+import {MailFollowers} from "./mock_server/mock_models/mail_followers";
+import {MailGuest} from "./mock_server/mock_models/mail_guest";
+import {MailLinkPreview} from "./mock_server/mock_models/mail_link_preview";
+import {MailMessage} from "./mock_server/mock_models/mail_message";
+import {MailMessageLinkPreview} from "./mock_server/mock_models/mail_message_link_preview";
+import {MailMessageReaction} from "./mock_server/mock_models/mail_message_reaction";
+import {MailMessageSubtype} from "./mock_server/mock_models/mail_message_subtype";
+import {MailNotification} from "./mock_server/mock_models/mail_notification";
+import {MailPushDevice} from "./mock_server/mock_models/mail_push_device";
+import {MailScheduledMessage} from "./mock_server/mock_models/mail_scheduled_message";
+import {MailTemplate} from "./mock_server/mock_models/mail_template";
+import {MailThread} from "./mock_server/mock_models/mail_thread";
+import {MailTrackingValue} from "./mock_server/mock_models/mail_tracking_value";
+import {ResCountry} from "./mock_server/mock_models/res_country";
+import {ResFake} from "./mock_server/mock_models/res_fake";
+import {ResLang} from "./mock_server/mock_models/res_lang";
+import {ResPartner} from "./mock_server/mock_models/res_partner";
+import {ResRole} from "./mock_server/mock_models/res_role";
+import {ResUsers} from "./mock_server/mock_models/res_users";
+import {ResUsersSettings} from "./mock_server/mock_models/res_users_settings";
+import {ResUsersSettingsVolumes} from "./mock_server/mock_models/res_users_settings_volumes";
+import {Network, Rtc} from "@mail/discuss/call/common/rtc_service";
+import {UPDATE_EVENT} from "@mail/discuss/call/common/peer_to_peer";
 
 export * from "./mail_test_helpers_contains";
 
@@ -102,14 +102,14 @@ addBusMessageHandler("mail.record/insert", (_env, _id, payload) => {
 //-----------------------------------------------------------------------------
 
 export function defineMailModels() {
-    defineParams({ suite: "mail" }, "replace");
+    defineParams({suite: "mail"}, "replace");
     return defineModels(mailModels);
 }
 
 export function getChannelCommandsForThread(threadId) {
     const store = getService("mail.store");
     const suggestionService = getService("mail.suggestion");
-    const thread = store.Thread.get({ model: "discuss.channel", id: threadId });
+    const thread = store.Thread.get({model: "discuss.channel", id: threadId});
     return suggestionService.getChannelCommands(thread);
 }
 
@@ -165,10 +165,12 @@ export const mailModels = {
 export function onRpcBefore(route, callback) {
     if (typeof route === "string") {
         const handler = registry.category("mail.mock_rpc").get(route);
-        patchWithCleanup(handler, { before: callback });
+        patchWithCleanup(handler, {before: callback});
     } else {
-        const onRpcBeforeGlobal = registry.category("mail.on_rpc_before_global").get(true);
-        patchWithCleanup(onRpcBeforeGlobal, { cb: route });
+        const onRpcBeforeGlobal = registry
+            .category("mail.on_rpc_before_global")
+            .get(true);
+        patchWithCleanup(onRpcBeforeGlobal, {cb: route});
     }
 }
 
@@ -181,7 +183,7 @@ export function onRpcBefore(route, callback) {
  */
 export function onRpcAfter(route, callback) {
     const handler = registry.category("mail.mock_rpc").get(route);
-    patchWithCleanup(handler, { after: callback });
+    patchWithCleanup(handler, {after: callback});
 }
 
 let archs = {};
@@ -198,10 +200,10 @@ export function onlineTest(...args) {
     }
 }
 
-export async function openDiscuss(activeId, { target } = {}) {
+export async function openDiscuss(activeId, {target} = {}) {
     const actionService = target?.services.action ?? getService("action");
     await actionService.doAction({
-        context: { active_id: activeId },
+        context: {active_id: activeId},
         id: DISCUSS_ACTION_ID,
         tag: "mail.action_discuss",
         type: "ir.actions.client",
@@ -233,7 +235,7 @@ export async function openListView(resModel, params) {
     });
 }
 
-export async function openView({ context, res_model, res_id, views, domain, ...params }) {
+export async function openView({context, res_model, res_id, views, domain, ...params}) {
     const [[viewId, type]] = views;
     const action = {
         context,
@@ -247,11 +249,12 @@ export async function openView({ context, res_model, res_id, views, domain, ...p
         type,
         resModel: res_model,
         resId: res_id,
-        arch: params?.arch || archs[viewId || res_model + `,false,` + type] || undefined,
+        arch:
+            params?.arch || archs[viewId || res_model + `,false,` + type] || undefined,
         viewId: params?.arch || viewId,
         ...params,
     });
-    await getService("action").doAction(action, { props: options });
+    await getService("action").doAction(action, {props: options});
 }
 
 let tabs = [];
@@ -341,7 +344,9 @@ export async function start(options) {
         if (pyEnv.cookie.get("dgid")) {
             // already authenticated as guest
         } else {
-            const adminUser = pyEnv["res.users"].search_read([["id", "=", serverState.userId]])[0];
+            const adminUser = pyEnv["res.users"].search_read([
+                ["id", "=", serverState.userId],
+            ])[0];
             authenticate(adminUser.login, adminUser.password);
         }
     }
@@ -366,22 +371,22 @@ export async function start(options) {
         rootTarget.appendChild(target);
         addSwitchTabDropdownItem(rootTarget, target);
         const selector = `.o-mail-Discuss-asTabContainer[data-as-tab-id="${target.dataset.asTabId}"]`;
-        env = await makeMockEnv({ discussAsTabId, selector }, { makeNew: true });
+        env = await makeMockEnv({discussAsTabId, selector}, {makeNew: true});
     } else {
         env = getMockEnv() || (await makeMockEnv({}));
     }
     env.testEnv = true;
-    await mountWithCleanup(WebClient, { env, target });
+    await mountWithCleanup(WebClient, {env, target});
     await loadEmoji();
-    return Object.assign(env, { ...options?.env, target });
+    return Object.assign(env, {...options?.env, target});
 }
 
 export async function startServer() {
-    const { env: pyEnv } = await makeMockServer();
+    const {env: pyEnv} = await makeMockServer();
     pyEnv["res.users"].write([serverState.userId], {
         group_ids: pyEnv["res.groups"]
             .search_read([["id", "=", serverState.groupId]])
-            .map(({ id }) => id),
+            .map(({id}) => id),
     });
     return pyEnv;
 }
@@ -396,7 +401,7 @@ export async function startServer() {
  * @returns {number} The width corresponding to the given size.
  */
 function getWidthFromSize(size) {
-    const { minWidth, maxWidth } = MEDIAS_BREAKPOINTS[size];
+    const {minWidth, maxWidth} = MEDIAS_BREAKPOINTS[size];
     return minWidth ? minWidth : maxWidth;
 }
 
@@ -407,7 +412,7 @@ function getWidthFromSize(size) {
  * @returns {number} The size corresponding to the given width.
  */
 function getSizeFromWidth(width) {
-    return MEDIAS_BREAKPOINTS.findIndex(({ minWidth, maxWidth }) => {
+    return MEDIAS_BREAKPOINTS.findIndex(({minWidth, maxWidth}) => {
         if (!maxWidth) {
             return width >= minWidth;
         }
@@ -429,9 +434,11 @@ function getSizeFromWidth(width) {
  * @param {number|undefined} [params.width]
  * @param {number|undefined} [params.height]
  */
-export async function patchUiSize({ height, size, width }) {
+export async function patchUiSize({height, size, width}) {
     if ((!size && !width) || (size && width)) {
-        throw new Error("Either size or width must be given to the patchUiSize function");
+        throw new Error(
+            "Either size or width must be given to the patchUiSize function"
+        );
     }
     size = size === undefined ? getSizeFromWidth(width) : size;
     width = width || getWidthFromSize(size);
@@ -442,7 +449,7 @@ export async function patchUiSize({ height, size, width }) {
         },
     });
 
-    await resize({ width, height });
+    await resize({width, height});
 }
 
 function createAudioStream() {
@@ -527,12 +534,12 @@ export function mockGetMedia() {
  * @param {number} param0.channelId
  * @returns {Promise<MockNetwork>}
  */
-export async function makeMockRtcNetwork({ env, channelId }) {
+export async function makeMockRtcNetwork({env, channelId}) {
     const mockNetwork = new EventTarget();
     const pyEnv = MockServer.current.env;
     const rtc = env.services["discuss.rtc"];
     const dispatchUpdate = (payload) => {
-        mockNetwork.dispatchEvent(new CustomEvent("update", { detail: payload }));
+        mockNetwork.dispatchEvent(new CustomEvent("update", {detail: payload}));
     };
     const rtcServiceIsListening = new Deferred();
     patchWithCleanup(Network.prototype, {
@@ -569,7 +576,7 @@ export async function makeMockRtcNetwork({ env, channelId }) {
                     await rtcServiceIsListening;
                     dispatchUpdate({
                         name: UPDATE_EVENT.INFO_CHANGE,
-                        payload: { [sessionId]: info },
+                        payload: {[sessionId]: info},
                     });
                 },
                 async updateUpload(type, track) {
@@ -597,13 +604,16 @@ export async function makeMockRtcNetwork({ env, channelId }) {
  * @param {"default" | "denied" | "granted"} permission
  * @param {"default" | "denied" | "granted"} requestPermissionResult
  */
-export function patchBrowserNotification(permission = "default", requestPermissionResult) {
+export function patchBrowserNotification(
+    permission = "default",
+    requestPermissionResult
+) {
     if (!browser.Notification || !browser.navigator.permissions) {
         return;
     }
     const notificationQueries = [];
     patchWithCleanup(browser.navigator.permissions, {
-        async query({ name }) {
+        async query({name}) {
             const result = await super.query(...arguments);
             if (name === "notifications") {
                 Object.defineProperty(result, "state", {
@@ -632,14 +642,14 @@ export function patchBrowserNotification(permission = "default", requestPermissi
 }
 
 function cloneRegistryWithCleanup(registry) {
-    prepareRegistry(registry, { keepContent: true });
+    prepareRegistry(registry, {keepContent: true});
 }
 
-function prepareRegistry(registry, { keepContent = false } = {}) {
+function prepareRegistry(registry, {keepContent = false} = {}) {
     const _addEventListener = registry.addEventListener.bind(registry);
     const _removeEventListener = registry.removeEventListener.bind(registry);
     const patch = {
-        content: keepContent ? { ...registry.content } : {},
+        content: keepContent ? {...registry.content} : {},
         elements: null,
         entries: null,
         subRegistries: {},
@@ -725,8 +735,8 @@ export async function isInViewportOf(childSelector, parentSelector) {
     await contains(parentSelector);
     await contains(childSelector);
     const inViewportDeferred = new Deferred();
-    const failTimeout = setTimeout(() => check({ crashOnFail: true }), 3000);
-    const check = ({ crashOnFail = false } = {}) => {
+    const failTimeout = setTimeout(() => check({crashOnFail: true}), 3000);
+    const check = ({crashOnFail = false} = {}) => {
         const parent = queryFirst(parentSelector);
         const child = queryFirst(childSelector);
         let alreadyInViewport = false;
@@ -746,10 +756,10 @@ export async function isInViewportOf(childSelector, parentSelector) {
             inViewportDeferred.resolve();
         } else if (crashOnFail) {
             const failMsg = `Element ${childSelector} not found in viewport of ${parentSelector}`;
-            expect(false).toBe(true, { message: failMsg });
+            expect(false).toBe(true, {message: failMsg});
             inViewportDeferred.reject(new Error(failMsg));
         } else {
-            parent.addEventListener("scrollend", check, { once: true });
+            parent.addEventListener("scrollend", check, {once: true});
         }
     };
     check();
@@ -769,15 +779,17 @@ function toChatHubData(opened, folded) {
 }
 
 function convertChatHubParam(param) {
-    return typeof param === "number" ? { id: param, model: "discuss.channel" } : param;
+    return typeof param === "number" ? {id: param, model: "discuss.channel"} : param;
 }
 
-export function setupChatHub({ opened = [], folded = [] } = {}) {
+export function setupChatHub({opened = [], folded = []} = {}) {
     browser.localStorage.setItem(CHAT_HUB_KEY, toChatHubData(opened, folded));
 }
 
-export function assertChatHub({ opened = [], folded = [] }) {
-    expect(browser.localStorage.getItem(CHAT_HUB_KEY)).toEqual(toChatHubData(opened, folded));
+export function assertChatHub({opened = [], folded = []}) {
+    expect(browser.localStorage.getItem(CHAT_HUB_KEY)).toEqual(
+        toChatHubData(opened, folded)
+    );
 }
 
 export const STORE_FETCH_ROUTES = ["/mail/action", "/mail/data"];
@@ -794,7 +806,10 @@ export const STORE_FETCH_ROUTES = ["/mail/action", "/mail/data"];
  * @param {string[]} [options.logParams=[]] names of the store fetch params for which both the name
  *  and the specific params should be logged in asyncStep. By default only the name is logged.
  */
-export function listenStoreFetch(nameOrNames = [], { logParams = [], onRpc: onRpcOverride } = {}) {
+export function listenStoreFetch(
+    nameOrNames = [],
+    {logParams = [], onRpc: onRpcOverride} = {}
+) {
     async function registerStep(request, name, params) {
         const res = await onRpcOverride?.(request);
         if (logParams.includes(name)) {
@@ -805,13 +820,16 @@ export function listenStoreFetch(nameOrNames = [], { logParams = [], onRpc: onRp
         return res;
     }
     async function registerSteps(request, fetchParams) {
-        const namesToRegister = typeof nameOrNames === "string" ? [nameOrNames] : nameOrNames;
+        const namesToRegister =
+            typeof nameOrNames === "string" ? [nameOrNames] : nameOrNames;
         let res;
         for (const fetchParam of fetchParams) {
             const name = typeof fetchParam === "string" ? fetchParam : fetchParam[0];
             const params = typeof fetchParam === "string" ? undefined : fetchParam[1];
             if (namesToRegister.length > 0) {
-                if (namesToRegister.some((namesToRegister) => namesToRegister === name)) {
+                if (
+                    namesToRegister.some((namesToRegister) => namesToRegister === name)
+                ) {
                     res = await registerStep(request, name, params);
                 }
             } else {
@@ -825,11 +843,11 @@ export function listenStoreFetch(nameOrNames = [], { logParams = [], onRpc: onRp
      * Most tests don't care about which route is used, so we just listen to all of them.
      */
     onRpc("/mail/action", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         return registerSteps(request, params.fetch_params);
     });
     onRpc("/mail/data", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         return registerSteps(request, params.fetch_params);
     });
 }
@@ -849,7 +867,7 @@ export function listenStoreFetch(nameOrNames = [], { logParams = [], onRpc: onRp
  */
 export async function waitStoreFetch(
     nameOrNames = [],
-    { ignoreOrder = false, stepsAfter = [], stepsBefore = [] } = {}
+    {ignoreOrder = false, stepsAfter = [], stepsBefore = []} = {}
 ) {
     await waitForSteps(
         [
@@ -866,7 +884,7 @@ export async function waitStoreFetch(
             ),
             ...stepsAfter,
         ],
-        { ignoreOrder }
+        {ignoreOrder}
     );
     /**
      * Extra tick necessary to ensure the RPC is fully processed before resolving.
@@ -878,7 +896,7 @@ export async function waitStoreFetch(
 }
 
 export function userContext() {
-    return { lang: "en", tz: "taht", uid: serverState.userId, allowed_company_ids: [1] };
+    return {lang: "en", tz: "taht", uid: serverState.userId, allowed_company_ids: [1]};
 }
 
 /**
@@ -888,7 +906,7 @@ export function userContext() {
 
 /** @returns {VoiceMessagePatchResources} */
 export function patchVoiceMessageAudio() {
-    const res = { audioProcessor: undefined };
+    const res = {audioProcessor: undefined};
     const {
         AnalyserNode,
         AudioBufferSourceNode,
@@ -949,7 +967,7 @@ export function patchVoiceMessageAudio() {
                 this.port = {
                     onmessage(e) {},
                     postMessage(data) {
-                        this.onmessage({ data, timeStamp: new Date().getTime() });
+                        this.onmessage({data, timeStamp: new Date().getTime()});
                     },
                 };
                 res.audioProcessor = this;
@@ -1013,7 +1031,9 @@ export function mockPermissionsPrompt() {
  */
 export async function assertChatBubbleAndWindowImStatus(conversationName, count) {
     await contains(`.o-mail-ChatBubble[name=${conversationName}]`);
-    expect(`.o-mail-ChatBubble[name=${conversationName}] .o-mail-ImStatus`).toHaveCount(count);
+    expect(`.o-mail-ChatBubble[name=${conversationName}] .o-mail-ImStatus`).toHaveCount(
+        count
+    );
     await click(`.o-mail-ChatBubble[name=${conversationName}]`);
     await contains(`.o-mail-ChatWindow-header:has(:text(${conversationName}))`);
     expect(

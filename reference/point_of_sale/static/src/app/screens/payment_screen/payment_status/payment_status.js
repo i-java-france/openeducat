@@ -1,13 +1,13 @@
-import { Component } from "@odoo/owl";
-import { PriceFormatter } from "@point_of_sale/app/components/price_formatter/price_formatter";
-import { _t } from "@web/core/l10n/translation";
+import {Component} from "@odoo/owl";
+import {PriceFormatter} from "@point_of_sale/app/components/price_formatter/price_formatter";
+import {_t} from "@web/core/l10n/translation";
 
 export class PaymentScreenStatus extends Component {
     static template = "point_of_sale.PaymentScreenStatus";
     static props = {
         order: Object,
     };
-    static components = { PriceFormatter };
+    static components = {PriceFormatter};
 
     get isComplete() {
         return this.isRemaining && this.order.orderHasZeroRemaining;

@@ -7,13 +7,13 @@ import {
     start,
     startServer,
 } from "@mail/../tests/mail_test_helpers";
-import { Thread } from "@mail/core/common/thread";
-import { describe, test } from "@odoo/hoot";
-import { advanceTime, Deferred, tick, waitFor } from "@odoo/hoot-dom";
-import { disableAnimations } from "@odoo/hoot-mock";
-import { router, routerBus } from "@web/core/browser/router";
-import { range } from "@web/core/utils/numbers";
-import { mountWebClient, patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {Thread} from "@mail/core/common/thread";
+import {describe, test} from "@odoo/hoot";
+import {Deferred, advanceTime, tick, waitFor} from "@odoo/hoot-dom";
+import {disableAnimations} from "@odoo/hoot-mock";
+import {router, routerBus} from "@web/core/browser/router";
+import {range} from "@web/core/utils/numbers";
+import {mountWebClient, patchWithCleanup} from "@web/../tests/web_test_helpers";
 
 defineMailModels();
 describe.current.tags("desktop");
@@ -21,7 +21,7 @@ describe.current.tags("desktop");
 test("can highlight messages that are not yet loaded", async () => {
     disableAnimations();
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "general" });
+    const channelId = pyEnv["discuss.channel"].create({name: "general"});
     let middleMessageId;
     for (let i = 0; i < 200; i++) {
         const messageId = pyEnv["mail.message"].create({
@@ -45,7 +45,7 @@ test("can highlight messages that are not yet loaded", async () => {
 test("can highlight message (slow ref registration)", async () => {
     disableAnimations();
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "general" });
+    const channelId = pyEnv["discuss.channel"].create({name: "general"});
     let middleMessageId;
     for (let i = 0; i < 200; i++) {
         const messageId = pyEnv["mail.message"].create({
@@ -80,7 +80,7 @@ test("can highlight message (slow ref registration)", async () => {
 test("highlight scrolls to beginning of long message", async () => {
     disableAnimations();
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "general" });
+    const channelId = pyEnv["discuss.channel"].create({name: "general"});
     const [messageId1] = pyEnv["mail.message"].create([
         {
             body: `long message `.repeat(500),
@@ -102,14 +102,14 @@ test("highlight scrolls to beginning of long message", async () => {
     await advanceTime(1000);
     await isInViewportOf(".o-mail-Message:contains('long message')", ".o-mail-Thread");
     await isInViewportOf(
-        ".o-mail-Message:contains('long message') .o-mail-Message-avatar", // avatar is at beginning of message
+        ".o-mail-Message:contains('long message') .o-mail-Message-avatar", // Avatar is at beginning of message
         ".o-mail-Thread"
     );
 });
 
 test("Chatter jumps when navigating to a specific message link", async () => {
     const pyEnv = await startServer();
-    const partnerId = pyEnv["res.partner"].create({ name: "John Doe" });
+    const partnerId = pyEnv["res.partner"].create({name: "John Doe"});
     const messageIds = range(0, 31).map((i) =>
         pyEnv["mail.message"].create({
             body: `message ${i}`,
@@ -124,8 +124,10 @@ test("Chatter jumps when navigating to a specific message link", async () => {
                 `${window.location.origin}/odoo/res.partner/${partnerId}?highlight_message_id=${messageIds[0]}`
             )
         ),
-        { sync: true }
+        {sync: true}
     );
     routerBus.trigger("ROUTE_CHANGE");
-    await contains(".o-mail-Message.o-highlighted .o-mail-Message-content", { text: "message 0" });
+    await contains(".o-mail-Message.o-highlighted .o-mail-Message-content", {
+        text: "message 0",
+    });
 });

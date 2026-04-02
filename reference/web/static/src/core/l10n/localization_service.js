@@ -1,20 +1,20 @@
-import { session } from "@web/session";
-import { jsToPyLocale } from "@web/core/l10n/utils";
-import { user } from "@web/core/user";
-import { browser } from "../browser/browser";
-import { registry } from "../registry";
-import { strftimeToLuxonFormat } from "./dates";
-import { localization } from "./localization";
+import {session} from "@web/session";
+import {jsToPyLocale} from "@web/core/l10n/utils";
+import {user} from "@web/core/user";
+import {browser} from "../browser/browser";
+import {registry} from "../registry";
+import {strftimeToLuxonFormat} from "./dates";
+import {localization} from "./localization";
 import {
     translatedTerms,
     translatedTermsGlobal,
     translationLoaded,
     translationIsReady,
 } from "./translation";
-import { objectToUrlEncodedString } from "../utils/urls";
-import { IndexedDB } from "../utils/indexed_db";
+import {objectToUrlEncodedString} from "../utils/urls";
+import {IndexedDB} from "../utils/indexed_db";
 
-const { Settings } = luxon;
+const {Settings} = luxon;
 
 /** @type {[RegExp, string][]} */
 const NUMBERING_SYSTEMS = [
@@ -33,10 +33,12 @@ export const localizationService = {
     start: async () => {
         const localizationDB = new IndexedDB("localization", session.registry_hash);
         const translationURL = session.translationURL || "/web/webclient/translations";
-        const lang = jsToPyLocale(user.lang || document.documentElement.getAttribute("lang"));
+        const lang = jsToPyLocale(
+            user.lang || document.documentElement.getAttribute("lang")
+        );
 
         const fetchTranslations = async (hash) => {
-            let queryString = objectToUrlEncodedString({ hash, lang });
+            let queryString = objectToUrlEncodedString({hash, lang});
             queryString = queryString.length > 0 ? `?${queryString}` : queryString;
             const response = await browser.fetch(`${translationURL}${queryString}`, {
                 cache: "no-store",
@@ -46,7 +48,7 @@ export const localizationService = {
             }
             const result = await response.json();
             if (result.hash !== hash) {
-                localizationDB.write(translationURL, JSON.stringify({ lang }), result);
+                localizationDB.write(translationURL, JSON.stringify({lang}), result);
                 updateTranslations(result);
             }
         };
@@ -82,7 +84,7 @@ export const localizationService = {
 
         const storedTranslations = await localizationDB.read(
             translationURL,
-            JSON.stringify({ lang })
+            JSON.stringify({lang})
         );
 
         const translationProm = fetchTranslations(storedTranslations?.hash);

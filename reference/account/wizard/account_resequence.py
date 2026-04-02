@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
-from odoo import api, fields, models, _
+import json
+from collections import defaultdict
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.date_utils import get_fiscal_year
 from odoo.tools.misc import format_date
-
-from collections import defaultdict
-import json
 
 
 class AccountResequenceWizard(models.TransientModel):
@@ -144,10 +143,10 @@ class AccountResequenceWizard(models.TransientModel):
                 }) for i in range(len(period_recs))]
 
                 # For all the moves of this period, assign the name by increasing initial name
-                for move, new_name in zip(period_recs.sorted(lambda m: (m.sequence_prefix, m.sequence_number)), new_name_list):
+                for move, new_name in zip(period_recs.sorted(lambda m: (m.sequence_prefix, m.sequence_number)), new_name_list, strict=False):
                     new_values[move.id]['new_by_name'] = new_name
                 # For all the moves of this period, assign the name by increasing date
-                for move, new_name in zip(period_recs.sorted(lambda m: (m.date, m.name or "", m.id)), new_name_list):
+                for move, new_name in zip(period_recs.sorted(lambda m: (m.date, m.name or "", m.id)), new_name_list, strict=False):
                     new_values[move.id]['new_by_date'] = new_name
 
             record.new_values = json.dumps(new_values)

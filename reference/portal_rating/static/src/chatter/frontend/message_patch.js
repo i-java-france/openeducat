@@ -1,11 +1,11 @@
-import { Message } from "@mail/core/common/message";
-import { convertBrToLineBreak } from "@mail/utils/common/format";
+import {Message} from "@mail/core/common/message";
+import {convertBrToLineBreak} from "@mail/utils/common/format";
 
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { rpc } from "@web/core/network/rpc";
-import { patch } from "@web/core/utils/patch";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {rpc} from "@web/core/network/rpc";
+import {patch} from "@web/core/utils/patch";
 
-Message.components = { ...Message.components, DropdownItem };
+Message.components = {...Message.components, DropdownItem};
 
 patch(Message.prototype, {
     setup() {

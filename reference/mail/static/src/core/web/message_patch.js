@@ -1,5 +1,5 @@
-import { Message } from "@mail/core/common/message";
-import { markEventHandled } from "@web/core/utils/misc";
+import {Message} from "@mail/core/common/message";
+import {markEventHandled} from "@web/core/utils/misc";
 
 import {
     deserializeDate,
@@ -7,7 +7,7 @@ import {
     formatDate,
     formatDateTime,
 } from "@web/core/l10n/dates";
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 import {
     formatChar,
     formatFloat,
@@ -15,11 +15,11 @@ import {
     formatMonetary,
     formatText,
 } from "@web/views/fields/formatters";
-import { useService } from "@web/core/utils/hooks";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { patch } from "@web/core/utils/patch";
-import { AvatarCardPopover } from "@mail/discuss/web/avatar_card/avatar_card_popover";
-import { messageActionOpenFullComposer } from "@mail/core/web/message_actions_patch";
+import {useService} from "@web/core/utils/hooks";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {patch} from "@web/core/utils/patch";
+import {AvatarCardPopover} from "@mail/discuss/web/avatar_card/avatar_card_popover";
+import {messageActionOpenFullComposer} from "@mail/core/web/message_actions_patch";
 
 patch(Message.prototype, {
     setup() {
@@ -70,7 +70,9 @@ patch(Message.prototype, {
 
     /** @deprecated */
     async onClickMessageReplyAll() {
-        await this.messageActions.actions.find((a) => a.name === "reply-all")?.onClick();
+        await this.messageActions.actions
+            .find((a) => a.name === "reply-all")
+            ?.onClick();
     },
 
     /** @deprecated */
@@ -79,7 +81,7 @@ patch(Message.prototype, {
     },
 
     openRecord() {
-        this.message.thread.open({ focus: true });
+        this.message.thread.open({focus: true});
         this.message.thread.highlightMessage = this.message;
     },
 
@@ -102,15 +104,21 @@ patch(Message.prototype, {
             case "selection":
                 return formatChar(trackingValue);
             case "date": {
-                const value = trackingValue ? deserializeDate(trackingValue) : trackingValue;
+                const value = trackingValue
+                    ? deserializeDate(trackingValue)
+                    : trackingValue;
                 return formatDate(value);
             }
             case "datetime": {
-                const value = trackingValue ? deserializeDateTime(trackingValue) : trackingValue;
+                const value = trackingValue
+                    ? deserializeDateTime(trackingValue)
+                    : trackingValue;
                 return formatDateTime(value);
             }
             case "float":
-                return formatFloat(trackingValue, { digits: trackingFieldInfo.floatPrecision });
+                return formatFloat(trackingValue, {
+                    digits: trackingFieldInfo.floatPrecision,
+                });
             case "integer":
                 return formatInteger(trackingValue);
             case "text":
@@ -130,7 +138,7 @@ patch(Message.prototype, {
     formatTrackingOrNone(trackingFieldInfo, trackingValue) {
         const formattedValue = this.formatTracking(trackingFieldInfo, trackingValue);
         return formattedValue
-            ? this.props.messageSearch?.highlight(formattedValue) ?? formattedValue
+            ? (this.props.messageSearch?.highlight(formattedValue) ?? formattedValue)
             : _t("None");
     },
 });

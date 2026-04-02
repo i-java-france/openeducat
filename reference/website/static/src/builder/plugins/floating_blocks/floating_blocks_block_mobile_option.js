@@ -1,4 +1,4 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
 
 export class FloatingBlocksBlockMobileOption extends BaseOptionComponent {
     static template = "website.FloatingBlocksBlockMobileOption";

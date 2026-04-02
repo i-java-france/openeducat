@@ -1,8 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, timedelta
-from lxml import etree
 from urllib.parse import urlparse
+
+from lxml import etree
 
 from odoo.fields import Command
 from odoo.tests import HttpCase, tagged

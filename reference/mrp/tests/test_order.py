@@ -1,14 +1,14 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, timedelta
+
 from freezegun import freeze_time
 
 from odoo import Command, fields
 from odoo.exceptions import UserError
 from odoo.tests import Form, users
-from odoo.tools.misc import format_date
 from odoo.tests.common import HttpCase, tagged
+from odoo.tools.misc import format_date
 
 from odoo.addons.mrp.tests.common import TestMrpCommon
 
@@ -1667,7 +1667,7 @@ class TestMrpOrder(TestMrpCommon):
                 'product_qty': qty,
                 'bom_id': bom.id,
                 'operation_id': operation.id,
-            } for (comp, qty, operation) in zip([comp1, comp2, comp3], [1.0, 2.0, 3.0], bom.operation_ids)
+            } for (comp, qty, operation) in zip([comp1, comp2, comp3], [1.0, 2.0, 3.0], bom.operation_ids, strict=False)
         ])
         self.env['mrp.bom.byproduct'].create([
             {
@@ -1675,7 +1675,7 @@ class TestMrpOrder(TestMrpCommon):
                 'product_qty': qty,
                 'bom_id': bom.id,
                 'operation_id': operation.id,
-            } for (bprod, qty, operation) in zip([bprod1, bprod2, bprod3], [1.0, 2.0, 3.0], bom.operation_ids)
+            } for (bprod, qty, operation) in zip([bprod1, bprod2, bprod3], [1.0, 2.0, 3.0], bom.operation_ids, strict=False)
         ])
 
         def _change_qty_producing_and_finish_wo(mo, new_qty, wo_index):

@@ -1,6 +1,6 @@
-import { useDomState, BaseOptionComponent } from "@html_builder/core/utils";
-import { onWillStart, useRef, useState } from "@odoo/owl";
-import { useSortable } from "@web/core/utils/sortable_owl";
+import {useDomState, BaseOptionComponent} from "@html_builder/core/utils";
+import {onWillStart, useRef, useState} from "@odoo/owl";
+import {useSortable} from "@web/core/utils/sortable_owl";
 
 export class SocialMediaLinks extends BaseOptionComponent {
     static template = "website.SocialMediaLinks";
@@ -10,7 +10,7 @@ export class SocialMediaLinks extends BaseOptionComponent {
     setup() {
         super.setup();
 
-        const { getRecordedSocialMediaNames, reorderSocialMediaLink } =
+        const {getRecordedSocialMediaNames, reorderSocialMediaLink} =
             this.dependencies.socialMediaOptionPlugin;
 
         onWillStart(async () => {
@@ -34,7 +34,7 @@ export class SocialMediaLinks extends BaseOptionComponent {
         this.mediaIdsMap = new Map();
 
         // hack to trigger the rebuild
-        this.reorderTriggered = useState({ trigger: 0 });
+        this.reorderTriggered = useState({trigger: 0});
 
         useSortable({
             ref: this.rootRef,
@@ -43,7 +43,7 @@ export class SocialMediaLinks extends BaseOptionComponent {
             cursor: "grabbing",
             placeholderClasses: ["d-table-row"],
 
-            onDrop: ({ next, element }) => {
+            onDrop: ({next, element}) => {
                 const elId = parseInt(element.dataset.id);
                 const nextId = next?.dataset.id;
 
@@ -95,23 +95,25 @@ export class SocialMediaLinks extends BaseOptionComponent {
         const missingRecordedSocialMediaNames = new Set(this.recordedSocialMediaNames);
         const idsLookUp = new Map(this.ids.map((id, i) => [id, i]));
         const idsInDom = new Set();
-        const itemsFromDom = this.domState.presentLinks.map(({ element, media }, domPosition) => {
-            let id = this.elIdsMap.get(element);
-            if (!id) {
-                const idBasedOnMedia = this.mediaIdsMap.get(media);
-                if (!idsInDom.has(idBasedOnMedia)) {
-                    id = idBasedOnMedia;
+        const itemsFromDom = this.domState.presentLinks.map(
+            ({element, media}, domPosition) => {
+                let id = this.elIdsMap.get(element);
+                if (!id) {
+                    const idBasedOnMedia = this.mediaIdsMap.get(media);
+                    if (!idsInDom.has(idBasedOnMedia)) {
+                        id = idBasedOnMedia;
+                    }
                 }
+                if (!id) {
+                    id = this.nextId++;
+                }
+                idsInDom.add(id);
+                if (media) {
+                    missingRecordedSocialMediaNames.delete(media);
+                }
+                return {element, media, id, domPosition: domPosition + 1};
             }
-            if (!id) {
-                id = this.nextId++;
-            }
-            idsInDom.add(id);
-            if (media) {
-                missingRecordedSocialMediaNames.delete(media);
-            }
-            return { element, media, id, domPosition: domPosition + 1 };
-        });
+        );
         const items = [];
         const addRecordedSocialMediaAtStartOfSlice = (slice) => {
             for (const id of slice) {
@@ -120,7 +122,7 @@ export class SocialMediaLinks extends BaseOptionComponent {
                 }
                 const media = this.idsMediaMap.get(id);
                 if (media) {
-                    items.push({ id, media });
+                    items.push({id, media});
                     missingRecordedSocialMediaNames.delete(media);
                 }
             }
@@ -134,7 +136,7 @@ export class SocialMediaLinks extends BaseOptionComponent {
             }
         }
         for (const media of missingRecordedSocialMediaNames) {
-            items.push({ id: this.nextId++, media });
+            items.push({id: this.nextId++, media});
         }
 
         this.ids = [];

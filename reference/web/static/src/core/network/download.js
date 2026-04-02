@@ -1,6 +1,6 @@
-import { _t } from "@web/core/l10n/translation";
-import { makeErrorFromResponse, ConnectionLostError } from "@web/core/network/rpc";
-import { browser } from "@web/core/browser/browser";
+import {_t} from "@web/core/l10n/translation";
+import {makeErrorFromResponse, ConnectionLostError} from "@web/core/network/rpc";
+import {browser} from "@web/core/browser/browser";
 
 /* eslint-disable */
 /**
@@ -83,7 +83,8 @@ const QESC_REGEXP = /\\([\u0000-\u007f])/g;
  * OCTET         = <any 8-bit sequence of data>
  * @private
  */
-const PARAM_REGEXP = /;[\x09\x20]*([!#$%&'*+.0-9A-Z^_`a-z|~-]+)[\x09\x20]*=[\x09\x20]*("(?:[\x20!\x23-\x5b\x5d-\x7e\x80-\xff]|\\[\x20-\x7e])*"|[!#$%&'*+.0-9A-Z^_`a-z|~-]+)[\x09\x20]*/g;
+const PARAM_REGEXP =
+    /;[\x09\x20]*([!#$%&'*+.0-9A-Z^_`a-z|~-]+)[\x09\x20]*=[\x09\x20]*("(?:[\x20!\x23-\x5b\x5d-\x7e\x80-\xff]|\\[\x20-\x7e])*"|[!#$%&'*+.0-9A-Z^_`a-z|~-]+)[\x09\x20]*/g;
 
 /**
  * RegExp for various RFC 5987 grammar
@@ -106,7 +107,8 @@ const PARAM_REGEXP = /;[\x09\x20]*([!#$%&'*+.0-9A-Z^_`a-z|~-]+)[\x09\x20]*=[\x09
  *               / "^" / "_" / "`" / "|" / "~"
  * @private
  */
-const EXT_VALUE_REGEXP = /^([A-Za-z0-9!#$%&+\-^_`{}~]+)'(?:[A-Za-z]{2,3}(?:-[A-Za-z]{3}){0,3}|[A-Za-z]{4,8}|)'((?:%[0-9A-Fa-f]{2}|[A-Za-z0-9!#$&+.^_`|~-])+)$/;
+const EXT_VALUE_REGEXP =
+    /^([A-Za-z0-9!#$%&+\-^_`{}~]+)'(?:[A-Za-z]{2,3}(?:-[A-Za-z]{3}){0,3}|[A-Za-z]{4,8}|)'((?:%[0-9A-Fa-f]{2}|[A-Za-z0-9!#$&+.^_`|~-])+)$/;
 
 /**
  * RegExp for various RFC 6266 grammar
@@ -326,7 +328,7 @@ function _download(data, filename, mimetype) {
                 configureBlobDownloadXHR(xhr, {
                     onSuccess: resolve,
                     onFailure: reject,
-                    url
+                    url,
                 });
                 xhr.send();
             });
@@ -345,7 +347,8 @@ function _download(data, filename, mimetype) {
         }
     }
 
-    blob = payload instanceof myBlob ? payload : new myBlob([payload], { type: mimeType });
+    blob =
+        payload instanceof myBlob ? payload : new myBlob([payload], {type: mimeType});
 
     function dataUrlToBlob(strUrl) {
         let parts = strUrl.split(/[:;,]/),
@@ -360,7 +363,7 @@ function _download(data, filename, mimetype) {
             uiArr[i] = binData.charCodeAt(i);
         }
 
-        return new myBlob([uiArr], { type });
+        return new myBlob([uiArr], {type});
     }
 
     function saver(url, winMode) {
@@ -521,12 +524,15 @@ download._download = (options) => {
  */
 export function configureBlobDownloadXHR(
     xhr,
-    { onSuccess = () => {}, onFailure = () => {}, url } = {}
+    {onSuccess = () => {}, onFailure = () => {}, url} = {}
 ) {
     xhr.responseType = "blob";
     xhr.onload = () => {
         const mimetype = xhr.response.type;
-        const header = (xhr.getResponseHeader("Content-Disposition") || "").replace(/;$/, "");
+        const header = (xhr.getResponseHeader("Content-Disposition") || "").replace(
+            /;$/,
+            ""
+        );
         // replace because apparently we send some C-D headers with a trailing ";"
         const filename = header ? parse(header).parameters.filename : null;
         // In Odoo, the default mimetype, including for JSON errors is text/html (ref: http.py:Root.get_response )

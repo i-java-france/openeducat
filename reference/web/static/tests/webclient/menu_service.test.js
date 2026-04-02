@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { redirect } from "@web/core/utils/urls";
+import {expect, test} from "@odoo/hoot";
+import {redirect} from "@web/core/utils/urls";
 import {
     defineActions,
     defineMenus,
@@ -10,9 +10,9 @@ import {
     onRpc,
     webModels,
 } from "@web/../tests/web_test_helpers";
-import { browser } from "@web/core/browser/browser";
-import { Deferred } from "@odoo/hoot-mock";
-import { animationFrame } from "@odoo/hoot-dom";
+import {browser} from "@web/core/browser/browser";
+import {Deferred} from "@odoo/hoot-mock";
+import {animationFrame} from "@odoo/hoot-dom";
 
 defineActions([
     {
@@ -29,11 +29,11 @@ class Partner extends models.Model {
     foo = fields.Char();
 
     _records = [
-        { id: 1, name: "First record", foo: "yop" },
-        { id: 2, name: "Second record", foo: "blip" },
-        { id: 3, name: "Third record", foo: "gnap" },
-        { id: 4, name: "Fourth record", foo: "plop" },
-        { id: 5, name: "Fifth record", foo: "zoup" },
+        {id: 1, name: "First record", foo: "yop"},
+        {id: 2, name: "Second record", foo: "blip"},
+        {id: 3, name: "Third record", foo: "gnap"},
+        {id: 4, name: "Fourth record", foo: "plop"},
+        {id: 5, name: "Fifth record", foo: "zoup"},
     ];
     _views = {
         kanban: `
@@ -57,14 +57,14 @@ class Partner extends models.Model {
         search: `<search><field name="foo" string="Foo"/></search>`,
     };
 }
-const { ResCompany, ResPartner, ResUsers } = webModels;
+const {ResCompany, ResPartner, ResUsers} = webModels;
 defineModels([Partner, ResCompany, ResPartner, ResUsers]);
 defineMenus([
     {
         id: 1,
         children: [
-            { id: 2, name: "Test1", appID: 1, actionID: 666 },
-            { id: 3, name: "Test2", appID: 1, actionID: 666 },
+            {id: 2, name: "Test1", appID: 1, actionID: 666},
+            {id: 3, name: "Test2", appID: 1, actionID: 666},
         ],
         name: "App1",
         appID: 1,
@@ -82,14 +82,16 @@ test(`use stored menus, and don't update on load_menus return (if identical)`, a
     browser.localStorage.webclient_menus_version =
         "05500d71e084497829aa807e3caa2e7e9782ff702c15b2f57f87f2d64d049bd0";
     browser.localStorage.webclient_menus = JSON.stringify({
-        1: { appID: 1, children: [2, 3], name: "App1", id: 1, actionID: 666 },
-        2: { appID: 1, children: [], name: "Test1", id: 2, actionID: 666 },
-        3: { appID: 1, children: [], name: "Test2", id: 3, actionID: 666 },
-        root: { id: "root", name: "root", appID: "root", children: [1] },
+        1: {appID: 1, children: [2, 3], name: "App1", id: 1, actionID: 666},
+        2: {appID: 1, children: [], name: "Test1", id: 2, actionID: 666},
+        3: {appID: 1, children: [], name: "Test2", id: 3, actionID: 666},
+        root: {id: "root", name: "root", appID: "root", children: [1]},
     });
 
     const webClient = await mountWebClient();
-    webClient.env.bus.addEventListener("MENUS:APP-CHANGED", () => expect.step("Don't Update"));
+    webClient.env.bus.addEventListener("MENUS:APP-CHANGED", () =>
+        expect.step("Don't Update")
+    );
     expect(`.o_menu_brand`).toHaveText("App1");
     expect(browser.sessionStorage.getItem("menu_id")).toBe("1");
     expect(".o_menu_sections").toHaveText("Test1\nTest2");
@@ -110,13 +112,15 @@ test(`use stored menus, and update on load_menus return`, async () => {
     browser.localStorage.webclient_menus_version =
         "05500d71e084497829aa807e3caa2e7e9782ff702c15b2f57f87f2d64d049bd0";
     browser.localStorage.webclient_menus = JSON.stringify({
-        1: { id: 1, children: [2], name: "App1", appID: 1, actionID: 666 },
-        2: { id: 2, children: [], name: "Test1", appID: 1, actionID: 666 },
-        root: { id: "root", children: [1], name: "root", appID: "root" },
+        1: {id: 1, children: [2], name: "App1", appID: 1, actionID: 666},
+        2: {id: 2, children: [], name: "Test1", appID: 1, actionID: 666},
+        root: {id: "root", children: [1], name: "root", appID: "root"},
     });
 
     const webClient = await mountWebClient();
-    webClient.env.bus.addEventListener("MENUS:APP-CHANGED", () => expect.step("Update Menus"));
+    webClient.env.bus.addEventListener("MENUS:APP-CHANGED", () =>
+        expect.step("Update Menus")
+    );
     expect(`.o_menu_brand`).toHaveText("App1");
     expect(browser.sessionStorage.getItem("menu_id")).toBe("1");
     expect(".o_menu_sections").toHaveText("Test1");

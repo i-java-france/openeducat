@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
-from odoo.addons.l10n_ar.tests.common import TestArCommon
-from odoo.tests import tagged
-from odoo import Command
 from datetime import datetime
+
+from odoo import Command
+from odoo.tests import tagged
+
+from odoo.addons.l10n_ar.tests.common import TestArCommon
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')

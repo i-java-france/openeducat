@@ -1,7 +1,7 @@
-import { DiscussCommandPalette } from "@mail/discuss/core/public_web/discuss_command_palette";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { patch } from "@web/core/utils/patch";
+import {DiscussCommandPalette} from "@mail/discuss/core/public_web/discuss_command_palette";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {patch} from "@web/core/utils/patch";
 
 const commandCategoryRegistry = registry.category("command_categories");
 
@@ -9,8 +9,8 @@ const DISCUSS_MENTIONED = "DISCUSS_MENTIONED";
 const DISCUSS_RECENT = "DISCUSS_RECENT";
 
 commandCategoryRegistry
-    .add(DISCUSS_MENTIONED, { namespace: "@", name: _t("Mentions") }, { sequence: 10 })
-    .add(DISCUSS_RECENT, { namespace: "@", name: _t("Recent") }, { sequence: 20 });
+    .add(DISCUSS_MENTIONED, {namespace: "@", name: _t("Mentions")}, {sequence: 10})
+    .add(DISCUSS_RECENT, {namespace: "@", name: _t("Recent")}, {sequence: 20});
 
 patch(DiscussCommandPalette.prototype, {
     buildResults() {

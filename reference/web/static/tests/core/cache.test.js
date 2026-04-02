@@ -1,7 +1,7 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { Deferred } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {Deferred} from "@odoo/hoot-mock";
 
-import { Cache } from "@web/core/utils/cache";
+import {Cache} from "@web/core/utils/cache";
 
 describe.current.tags("headless");
 

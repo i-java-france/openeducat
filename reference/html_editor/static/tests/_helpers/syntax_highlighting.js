@@ -1,11 +1,11 @@
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { unformat } from "./format";
-import { EmbeddedSyntaxHighlightingComponent } from "@html_editor/others/embedded_components/backend/syntax_highlighting/syntax_highlighting";
-import { LANGUAGES } from "@html_editor/others/embedded_components/backend/syntax_highlighting/code_toolbar";
-import { expect } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-dom";
-import { toExplicitString } from "@web/../lib/hoot/hoot_utils";
-import { DEFAULT_LANGUAGE_ID } from "@html_editor/others/embedded_components/core/syntax_highlighting/syntax_highlighting_utils";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {unformat} from "./format";
+import {EmbeddedSyntaxHighlightingComponent} from "@html_editor/others/embedded_components/backend/syntax_highlighting/syntax_highlighting";
+import {LANGUAGES} from "@html_editor/others/embedded_components/backend/syntax_highlighting/code_toolbar";
+import {expect} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-dom";
+import {toExplicitString} from "@web/../lib/hoot/hoot_utils";
+import {DEFAULT_LANGUAGE_ID} from "@html_editor/others/embedded_components/core/syntax_highlighting/syntax_highlighting_utils";
 
 /** @typedef {import("@html_editor/plugin").Editor} Editor */
 /**
@@ -70,11 +70,12 @@ export const patchPrism = () => {
  * @param {FocusedTextarea} focusedTextarea
  * @param {string} [message]
  */
-export const testTextareaRange = (editor, { el, value, range }, message) => {
+export const testTextareaRange = (editor, {el, value, range}, message) => {
     range = Array.isArray(range) ? range : [range];
     const start = range[0];
     const end = range.length > 1 ? range[1] : start;
-    const { anchorNode, anchorOffset, focusNode, focusOffset } = editor.document.getSelection();
+    const {anchorNode, anchorOffset, focusNode, focusOffset} =
+        editor.document.getSelection();
     expect({
         activeElement: editor.document.activeElement,
         anchorTarget: anchorNode.childNodes[anchorOffset],
@@ -89,7 +90,9 @@ export const testTextareaRange = (editor, { el, value, range }, message) => {
             textareaValue: value,
             textareaRange: [start, end],
         },
-        { message: `Selection should be correct in the textarea${message ? ":\n" + message : ""}` }
+        {
+            message: `Selection should be correct in the textarea${message ? ":\n" + message : ""}`,
+        }
     );
 };
 
@@ -152,7 +155,10 @@ export const compareHighlightedContent = async (content, expected, phase, editor
                         ""
                     );
                 } else {
-                    currentSection = currentSection.replaceAll("data-embedded-props", "data-saved");
+                    currentSection = currentSection.replaceAll(
+                        "data-embedded-props",
+                        "data-saved"
+                    );
                 }
             }
             return currentSection;
@@ -170,13 +176,17 @@ export const compareHighlightedContent = async (content, expected, phase, editor
     const textareaIndex = strings.findIndex((str) => str.startsWith("~~~"));
     if (textareaIndex !== -1) {
         const el = editor.editable.querySelectorAll("textarea")[textareaIndex];
-        const [range, value] = strings[textareaIndex].match(/~~~([^~]+)~~~/)[1].split("°°°");
-        const parsedRange = range.split(",").map((v) => +v.replace(/[[\]]/g, "").trim());
-        testTextareaRange(editor, { el, range: parsedRange, value }, message);
+        const [range, value] = strings[textareaIndex]
+            .match(/~~~([^~]+)~~~/)[1]
+            .split("°°°");
+        const parsedRange = range
+            .split(",")
+            .map((v) => +v.replace(/[[\]]/g, "").trim());
+        testTextareaRange(editor, {el, range: parsedRange, value}, message);
         expected = expected.replace(/<textarea~~~[^~]+~~~/g, "<textarea");
     }
     // Now test the content.
-    expect(cleanedContent).toBe(expected, { message });
+    expect(cleanedContent).toBe(expected, {message});
 };
 
 export const highlightedPre = ({

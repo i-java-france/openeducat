@@ -1,7 +1,7 @@
-import { redo, undo } from "@html_editor/../tests/_helpers/user_actions";
-import { expect, test } from "@odoo/hoot";
-import { queryOne, waitFor } from "@odoo/hoot-dom";
-import { contains } from "@web/../tests/web_test_helpers";
+import {redo, undo} from "@html_editor/../tests/_helpers/user_actions";
+import {expect, test} from "@odoo/hoot";
+import {queryOne, waitFor} from "@odoo/hoot-dom";
+import {contains} from "@web/../tests/web_test_helpers";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
@@ -22,7 +22,9 @@ test("TopMenuVisibility option should appear without overTheContent", async () =
     await waitFor("[data-label='Header Position']");
     expect("[data-label='Header Position']").toBeVisible();
     await contains("[data-label='Header Position'] .dropdown").click();
-    expect(".o-overlay-container [data-action-value='overTheContent']").not.toHaveCount();
+    expect(
+        ".o-overlay-container [data-action-value='overTheContent']"
+    ).not.toHaveCount();
 });
 
 test("TopMenuVisibility option should appear with overTheContent", async () => {
@@ -56,7 +58,7 @@ test("page is not customisable, TopMenuVisibility option should not appear", asy
 });
 
 test("undo overTheContent visibility", async () => {
-    const { getEditor } = await setupWebsiteBuilder("", {
+    const {getEditor} = await setupWebsiteBuilder("", {
         openEditor: true,
         beforeWrapwrapContent: `
             <input type="hidden" class="o_page_option_data" autocomplete="off" name="header_visible">
@@ -79,7 +81,7 @@ test("undo overTheContent visibility", async () => {
 });
 
 test("undo and comeback to a custom overTheContent color", async () => {
-    const { getEditor } = await setupWebsiteBuilder("", {
+    const {getEditor} = await setupWebsiteBuilder("", {
         openEditor: true,
         beforeWrapwrapContent: `
             <input type="hidden" class="o_page_option_data" autocomplete="off" name="header_visible">
@@ -94,7 +96,9 @@ test("undo and comeback to a custom overTheContent color", async () => {
     await contains(":iframe #wrapwrap > header").click();
     await contains("[data-label='Header Position'] .dropdown").click();
     await contains(".o-overlay-container [data-action-value='overTheContent']").click();
-    await contains("[data-label='Background'].hb-row-sublevel-1 .o_we_color_preview").click();
+    await contains(
+        "[data-label='Background'].hb-row-sublevel-1 .o_we_color_preview"
+    ).click();
     await contains("[data-color='600']").click();
     const precedentWrapwrap = queryOne(":iframe #wrapwrap").outerHTML;
     await contains("[data-label='Header Position'] .dropdown").click();
@@ -107,7 +111,7 @@ test("undo and comeback to a custom overTheContent color", async () => {
 });
 
 test("undo hidden and come back to regular", async () => {
-    const { getEditor } = await setupWebsiteBuilder("", {
+    const {getEditor} = await setupWebsiteBuilder("", {
         openEditor: true,
         beforeWrapwrapContent: `
             <input type="hidden" class="o_page_option_data" autocomplete="off" name="header_visible">`,

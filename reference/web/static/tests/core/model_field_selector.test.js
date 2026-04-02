@@ -1,7 +1,7 @@
-import { expect, getFixture, test } from "@odoo/hoot";
-import { queryAllTexts } from "@odoo/hoot-dom";
-import { animationFrame, runAllTimers } from "@odoo/hoot-mock";
-import { Component, useState, xml } from "@odoo/owl";
+import {expect, getFixture, test} from "@odoo/hoot";
+import {queryAllTexts} from "@odoo/hoot-dom";
+import {animationFrame, runAllTimers} from "@odoo/hoot-mock";
+import {Component, useState, xml} from "@odoo/owl";
 import {
     clickPrev,
     followRelation,
@@ -20,27 +20,27 @@ import {
     onRpc,
 } from "@web/../tests/web_test_helpers";
 
-import { ModelFieldSelector } from "@web/core/model_field_selector/model_field_selector";
+import {ModelFieldSelector} from "@web/core/model_field_selector/model_field_selector";
 
 class Partner extends models.Model {
     foo = fields.Char();
     bar = fields.Boolean();
-    product_id = fields.Many2one({ relation: "product" });
+    product_id = fields.Many2one({relation: "product"});
     json_field = fields.Json();
 
     _records = [
-        { id: 1, foo: "yop", bar: true, product_id: 37 },
-        { id: 2, foo: "blip", bar: true, product_id: false },
-        { id: 4, foo: "abc", bar: false, product_id: 41 },
+        {id: 1, foo: "yop", bar: true, product_id: 37},
+        {id: 2, foo: "blip", bar: true, product_id: false},
+        {id: 4, foo: "abc", bar: false, product_id: 41},
     ];
 }
 
 class Product extends models.Model {
-    name = fields.Char({ string: "Product Name" });
+    name = fields.Char({string: "Product Name"});
 
     _records = [
-        { id: 37, name: "xphone" },
-        { id: 41, name: "xpad" },
+        {id: 37, name: "xphone"},
+        {id: 41, name: "xpad"},
     ];
 }
 
@@ -56,18 +56,20 @@ function addProperties() {
         string: "Definitions",
     });
     Product._records[0].definitions = [
-        { name: "xphone_prop_1", string: "P1", type: "boolean" },
-        { name: "xphone_prop_2", string: "P2", type: "char" },
+        {name: "xphone_prop_1", string: "P1", type: "boolean"},
+        {name: "xphone_prop_2", string: "P2", type: "char"},
     ];
-    Product._records[1].definitions = [{ name: "xpad_prop_1", string: "P1", type: "date" }];
+    Product._records[1].definitions = [
+        {name: "xpad_prop_1", string: "P1", type: "date"},
+    ];
 }
 
 test("creating a field chain from scratch", async () => {
     const getValueFromDOM = (root) =>
-        queryAllTexts(".o_model_field_selector_chain_part", { root }).join(" -> ");
+        queryAllTexts(".o_model_field_selector_chain_part", {root}).join(" -> ");
 
     class Parent extends Component {
-        static components = { ModelFieldSelector };
+        static components = {ModelFieldSelector};
         static template = xml`
             <ModelFieldSelector
                 readonly="false"
@@ -112,15 +114,20 @@ test("creating a field chain from scratch", async () => {
     // fields. "Product" should be among them.
     expect(
         ".o_model_field_selector_popover .o_model_field_selector_popover_relation_icon"
-    ).toHaveCount(1, { message: "field selector popover should contain the 'Product' field" });
+    ).toHaveCount(1, {
+        message: "field selector popover should contain the 'Product' field",
+    });
 
     // Clicking on the "Product" field should update the popover to show
     // the product fields (so only "Product Name" and the default fields should be there)
     await followRelation();
     expect(".o_model_field_selector_popover_item_name").toHaveCount(5);
-    expect(queryAllTexts(".o_model_field_selector_popover_item_name").at(-1)).toBe("Product Name", {
-        message: "the name of the last suggestion should be 'Product Name'",
-    });
+    expect(queryAllTexts(".o_model_field_selector_popover_item_name").at(-1)).toBe(
+        "Product Name",
+        {
+            message: "the name of the last suggestion should be 'Product Name'",
+        }
+    );
     await contains(".o_model_field_selector_popover_item_name:last").click();
     expect(".o_model_field_selector_popover").toHaveCount(0);
     expect(getValueFromDOM()).toBe("Product -> Product Name");
@@ -220,7 +227,9 @@ test("default `showSearchInput` option", async () => {
         },
     });
     await openModelFieldSelectorPopover();
-    expect(".o_model_field_selector_popover .o_model_field_selector_popover_search").toHaveCount(1);
+    expect(
+        ".o_model_field_selector_popover .o_model_field_selector_popover_search"
+    ).toHaveCount(1);
     expect(getDisplayedFieldNames()).toEqual([
         "Bar",
         "Created on",
@@ -231,17 +240,17 @@ test("default `showSearchInput` option", async () => {
         "Product",
     ]);
 
-    // search 'xx'
+    // Search 'xx'
     await contains(
         ".o_model_field_selector_popover .o_model_field_selector_popover_search input"
-    ).edit("xx", { confirm: false });
+    ).edit("xx", {confirm: false});
     await runAllTimers();
     expect(getDisplayedFieldNames()).toBeEmpty();
 
-    // search 'Pro'
+    // Search 'Pro'
     await contains(
         ".o_model_field_selector_popover .o_model_field_selector_popover_search input"
-    ).edit("Pro", { confirm: false });
+    ).edit("Pro", {confirm: false});
     await runAllTimers();
     expect(getDisplayedFieldNames()).toEqual(["Product"]);
 });
@@ -256,7 +265,9 @@ test("false `showSearchInput` option", async () => {
         },
     });
     await openModelFieldSelectorPopover();
-    expect(".o_model_field_selector_popover .o_model_field_selector_popover_search").toHaveCount(0);
+    expect(
+        ".o_model_field_selector_popover .o_model_field_selector_popover_search"
+    ).toHaveCount(0);
 });
 
 test("create a field chain with value 1 i.e. TRUE_LEAF", async () => {
@@ -291,7 +302,7 @@ test("cache fields_get", async () => {
         relation: "partner",
     });
 
-    onRpc("fields_get", ({ method }) => expect.step(method));
+    onRpc("fields_get", ({method}) => expect.step(method));
 
     await mountWithCleanup(ModelFieldSelector, {
         props: {
@@ -310,7 +321,7 @@ test("Using back button in popover", async () => {
     });
 
     class Parent extends Component {
-        static components = { ModelFieldSelector };
+        static components = {ModelFieldSelector};
         static template = xml`
             <ModelFieldSelector
                 readonly="false"
@@ -400,7 +411,7 @@ test("can follow relations", async () => {
             readonly: false,
             path: "",
             resModel: "partner",
-            followRelations: true, // default
+            followRelations: true, // Default
             update(path) {
                 expect(path).toBe("product_id");
             },
@@ -464,7 +475,7 @@ test("Edit path in popover debug input", async () => {
     });
 
     class Parent extends Component {
-        static components = { ModelFieldSelector };
+        static components = {ModelFieldSelector};
         static template = xml`
             <ModelFieldSelector
                 readonly="false"
@@ -488,9 +499,9 @@ test("Edit path in popover debug input", async () => {
     expect(getModelFieldSelectorValues()).toEqual(["Foo"]);
 
     await openModelFieldSelectorPopover();
-    await contains(".o_model_field_selector_popover .o_model_field_selector_debug").edit(
-        "partner_id.bar"
-    );
+    await contains(
+        ".o_model_field_selector_popover .o_model_field_selector_debug"
+    ).edit("partner_id.bar");
     expect(getModelFieldSelectorValues()).toEqual(["Partner", "Bar"]);
 });
 
@@ -545,32 +556,32 @@ test("start on complex path and click prev", async () => {
     });
 
     await openModelFieldSelectorPopover();
-    // viewing third page
+    // Viewing third page
     // mother is selected on that page
     expect(getTitle()).toBe("... > Father");
     expect(getFocusedFieldName()).toBe("Mother");
     expect(getModelFieldSelectorValues()).toEqual(["Mother", "Father", "Mother"]);
 
-    // select Father on third page and go to next page
+    // Select Father on third page and go to next page
     // no selection on fourth page --> first item is focused
     await followRelation();
     expect(getTitle()).toBe("... > Father");
     expect(getFocusedFieldName()).toBe("Created on");
     expect(getModelFieldSelectorValues()).toEqual(["Mother", "Father", "Father"]);
 
-    // go back to third page. Nothing has changed
+    // Go back to third page. Nothing has changed
     await clickPrev();
     expect(getTitle()).toBe("... > Father");
     expect(getFocusedFieldName()).toBe("Father");
     expect(getModelFieldSelectorValues()).toEqual(["Mother", "Father", "Father"]);
 
-    // go back to second page. Nothing has changed.
+    // Go back to second page. Nothing has changed.
     await clickPrev();
     expect(getTitle()).toBe("Mother");
     expect(getFocusedFieldName()).toBe("Father");
     expect(getModelFieldSelectorValues()).toEqual(["Mother", "Father"]);
 
-    // go back to first page. Nothing has changed.
+    // Go back to first page. Nothing has changed.
     await clickPrev();
     expect(getTitle()).toBe("Select a field");
     expect(getFocusedFieldName()).toBe("Mother");
@@ -580,11 +591,11 @@ test("start on complex path and click prev", async () => {
 
 test("support of invalid paths (allowEmpty=false)", async () => {
     class Parent extends Component {
-        static components = { ModelFieldSelector };
+        static components = {ModelFieldSelector};
         static template = xml`<ModelFieldSelector resModel="'partner'" readonly="false" path="state.path" />`;
         static props = ["*"];
         setup() {
-            this.state = useState({ path: `` });
+            this.state = useState({path: ``});
         }
     }
 
@@ -625,11 +636,11 @@ test("support of invalid paths (allowEmpty=false)", async () => {
 
 test("support of invalid paths (allowEmpty=true)", async () => {
     class Parent extends Component {
-        static components = { ModelFieldSelector };
+        static components = {ModelFieldSelector};
         static template = xml`<ModelFieldSelector resModel="'partner'" readonly="false" path="state.path" allowEmpty="true" />`;
         static props = ["*"];
         setup() {
-            this.state = useState({ path: `` });
+            this.state = useState({path: ``});
         }
     }
 
@@ -672,11 +683,11 @@ test("debug input", async () => {
     expect.assertions(10);
     let num = 1;
     class Parent extends Component {
-        static components = { ModelFieldSelector };
+        static components = {ModelFieldSelector};
         static template = xml`<ModelFieldSelector resModel="'partner'" readonly="false" isDebugMode="true" path="state.path" update.bind="update"/>`;
         static props = ["*"];
         setup() {
-            this.state = useState({ path: `` });
+            this.state = useState({path: ``});
         }
         update(path, fieldInfo) {
             if (num === 1) {
@@ -711,7 +722,7 @@ test("debug input", async () => {
     expect(".o_model_field_selector_warning").toHaveCount(1);
 
     await openModelFieldSelectorPopover();
-    await contains(".o_model_field_selector_debug").edit("a", { confirm: false });
+    await contains(".o_model_field_selector_debug").edit("a", {confirm: false});
     await contains(".o_model_field_selector_popover_search").click();
     expect(getModelFieldSelectorValues()).toEqual(["a"]);
     expect(".o_model_field_selector_warning").toHaveCount(1);
@@ -728,11 +739,11 @@ test("debug input", async () => {
 
 test("focus on search input", async () => {
     class Parent extends Component {
-        static components = { ModelFieldSelector };
+        static components = {ModelFieldSelector};
         static template = xml`<ModelFieldSelector resModel="'partner'" readonly="false" path="state.path" update.bind="update"/>`;
         static props = ["*"];
         setup() {
-            this.state = useState({ path: `foo` });
+            this.state = useState({path: `foo`});
         }
         update() {}
     }
@@ -749,7 +760,7 @@ test("support properties", async () => {
     addProperties();
 
     class Parent extends Component {
-        static components = { ModelFieldSelector };
+        static components = {ModelFieldSelector};
         static template = xml`
             <ModelFieldSelector
                 readonly="false"
@@ -773,7 +784,9 @@ test("support properties", async () => {
     await mountWithCleanup(Parent);
     await openModelFieldSelectorPopover();
     expect(getTitle()).toBe("Select a field");
-    expect('.o_model_field_selector_popover_item[data-name="properties"]').toHaveCount(1);
+    expect('.o_model_field_selector_popover_item[data-name="properties"]').toHaveCount(
+        1
+    );
     expect(
         '.o_model_field_selector_popover_item[data-name="properties"] .o_model_field_selector_popover_relation_icon'
     ).toHaveCount(1);
@@ -795,9 +808,15 @@ test("support properties", async () => {
     expect(getTitle()).toBe("Properties");
     expect(".o_model_field_selector_value").toHaveText("Properties");
     expect(".o_model_field_selector_popover_item").toHaveCount(3);
-    expect('.o_model_field_selector_popover_item[data-name="xphone_prop_1"]').toHaveCount(1);
-    expect('.o_model_field_selector_popover_item[data-name="xphone_prop_2"]').toHaveCount(1);
-    expect('.o_model_field_selector_popover_item[data-name="xpad_prop_1"]').toHaveCount(1);
+    expect(
+        '.o_model_field_selector_popover_item[data-name="xphone_prop_1"]'
+    ).toHaveCount(1);
+    expect(
+        '.o_model_field_selector_popover_item[data-name="xphone_prop_2"]'
+    ).toHaveCount(1);
+    expect('.o_model_field_selector_popover_item[data-name="xpad_prop_1"]').toHaveCount(
+        1
+    );
     expect(getDisplayedFieldNames()).toEqual([
         "P1 (xphone)\nxphone_prop_1 (boolean)",
         "P1 (xpad)\nxpad_prop_1 (date)",
@@ -818,7 +837,7 @@ test("search on field string and name in debug mode", async () => {
         string: "Some string",
     });
     class Parent extends Component {
-        static components = { ModelFieldSelector };
+        static components = {ModelFieldSelector};
         static template = xml`
             <ModelFieldSelector
                 readonly="false"
@@ -833,7 +852,7 @@ test("search on field string and name in debug mode", async () => {
     await openModelFieldSelectorPopover();
     await contains(
         ".o_model_field_selector_popover .o_model_field_selector_popover_search input"
-    ).edit("uct", { confirm: false });
+    ).edit("uct", {confirm: false});
     await runAllTimers();
     expect(getDisplayedFieldNames()).toEqual([
         "Product\nproduct_id (many2one)",
@@ -843,7 +862,7 @@ test("search on field string and name in debug mode", async () => {
 
 test("clear button (allowEmpty=true)", async () => {
     class Parent extends Component {
-        static components = { ModelFieldSelector };
+        static components = {ModelFieldSelector};
         static template = xml`
             <ModelFieldSelector
                 readonly="false"
@@ -871,7 +890,7 @@ test("clear button (allowEmpty=true)", async () => {
     expect(".o_model_field_selector_warning").toHaveCount(1);
     expect(".o_model_field_selector .fa.fa-times").toHaveCount(1);
 
-    // clear when popover is not open
+    // Clear when popover is not open
     await contains(".o_model_field_selector .fa.fa-times").click();
     expect(getModelFieldSelectorValues()).toEqual([]);
     expect(".o_model_field_selector_warning").toHaveCount(0);
@@ -885,7 +904,7 @@ test("clear button (allowEmpty=true)", async () => {
     expect(".o_model_field_selector .fa.fa-times").toHaveCount(1);
     expect.verifySteps([`path is "bar"`]);
 
-    // clear when popover is open
+    // Clear when popover is open
     await openModelFieldSelectorPopover();
     await contains(".o_model_field_selector .fa.fa-times").click();
     expect(getModelFieldSelectorValues()).toEqual([]);
@@ -896,7 +915,7 @@ test("clear button (allowEmpty=true)", async () => {
 
 test("Modify path in popover debug input and click away", async () => {
     class Parent extends Component {
-        static components = { ModelFieldSelector };
+        static components = {ModelFieldSelector};
         static template = xml`
             <ModelFieldSelector
                 readonly="false"
@@ -921,10 +940,9 @@ test("Modify path in popover debug input and click away", async () => {
     expect(getModelFieldSelectorValues()).toEqual(["Foo"]);
 
     await openModelFieldSelectorPopover();
-    await contains(".o_model_field_selector_popover .o_model_field_selector_debug").edit(
-        "foooooo",
-        { confirm: false }
-    );
+    await contains(
+        ".o_model_field_selector_popover .o_model_field_selector_debug"
+    ).edit("foooooo", {confirm: false});
     expect(getModelFieldSelectorValues()).toEqual(["Foo"]);
 
     await contains(getFixture()).click();

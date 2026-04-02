@@ -1,8 +1,8 @@
-import { formatFloat, formatMonetary } from "@web/views/fields/formatters";
-import { useService } from "@web/core/utils/hooks";
-import { BomOverviewLine } from "../bom_overview_line/mrp_bom_overview_line";
-import { BomOverviewComponentsBlock } from "../bom_overview_components_block/mrp_bom_overview_components_block";
-import { Component } from "@odoo/owl";
+import {formatFloat, formatMonetary} from "@web/views/fields/formatters";
+import {useService} from "@web/core/utils/hooks";
+import {BomOverviewLine} from "../bom_overview_line/mrp_bom_overview_line";
+import {BomOverviewComponentsBlock} from "../bom_overview_components_block/mrp_bom_overview_components_block";
+import {Component} from "@odoo/owl";
 
 export class BomOverviewTable extends Component {
     static template = "mrp.BomOverviewTable";
@@ -19,8 +19,8 @@ export class BomOverviewTable extends Component {
                 attachments: Boolean,
             },
         },
-        uomName: { type: String, optional: true },
-        currentWarehouseId: { type: Number, optional: true },
+        uomName: {type: String, optional: true},
+        currentWarehouseId: {type: Number, optional: true},
         data: Object,
         precision: Number,
         bomQuantity: Number,
@@ -30,7 +30,8 @@ export class BomOverviewTable extends Component {
     setup() {
         this.actionService = useService("action");
         this.formatFloat = formatFloat;
-        this.formatMonetary = (val) => formatMonetary(val, { currencyId: this.data.currency_id });
+        this.formatMonetary = (val) =>
+            formatMonetary(val, {currencyId: this.data.currency_id});
     }
 
     //---- Handlers ----

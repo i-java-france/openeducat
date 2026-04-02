@@ -1,9 +1,11 @@
 import logging
 
-from odoo import api, fields, models, modules, tools, _
+from odoo import _, api, fields, models, modules, tools
 from odoo.exceptions import UserError, ValidationError
 
-from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import AccountEdiProxyError
+from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import (
+    AccountEdiProxyError,
+)
 from odoo.addons.l10n_dk_nemhandel.tools.demo_utils import handle_demo
 
 _logger = logging.getLogger(__name__)

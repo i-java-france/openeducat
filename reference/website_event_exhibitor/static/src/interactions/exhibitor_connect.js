@@ -1,8 +1,8 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { redirect } from "@web/core/utils/urls";
-import { ExhibitorConnectClosedDialog } from "../components/exhibitor_connect_closed_dialog/exhibitor_connect_closed_dialog";
+import {redirect} from "@web/core/utils/urls";
+import {ExhibitorConnectClosedDialog} from "../components/exhibitor_connect_closed_dialog/exhibitor_connect_closed_dialog";
 
 export class ExhibitorConnect extends Interaction {
     static selector = ".o_wesponsor_connect_button";
@@ -16,7 +16,8 @@ export class ExhibitorConnect extends Interaction {
         const eventIsOngoing = this.el.dataset.eventIsOngoing || false;
         const sponsorIsOngoing = this.el.dataset.sponsorIsOngoing || false;
         const userEventManager = this.el.dataset.userEventManager || false;
-        this.shouldOpenDialog = !userEventManager && !(eventIsOngoing && sponsorIsOngoing);
+        this.shouldOpenDialog =
+            !userEventManager && !(eventIsOngoing && sponsorIsOngoing);
     }
 
     onClick() {
@@ -29,7 +30,7 @@ export class ExhibitorConnect extends Interaction {
 
     openClosedDialog() {
         const sponsorId = parseInt(this.el.dataset.sponsorId);
-        this.services.dialog.add(ExhibitorConnectClosedDialog, { sponsorId });
+        this.services.dialog.add(ExhibitorConnectClosedDialog, {sponsorId});
     }
 }
 

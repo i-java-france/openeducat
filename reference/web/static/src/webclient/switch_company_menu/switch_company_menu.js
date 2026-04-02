@@ -1,18 +1,18 @@
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownGroup } from "@web/core/dropdown/dropdown_group";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { registry } from "@web/core/registry";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownGroup} from "@web/core/dropdown/dropdown_group";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {registry} from "@web/core/registry";
 
-import { Component, useChildSubEnv, useRef, useState } from "@odoo/owl";
-import { useCommand } from "@web/core/commands/command_hook";
-import { _t } from "@web/core/l10n/translation";
-import { symmetricalDifference } from "@web/core/utils/arrays";
-import { useBus, useChildRef, useService } from "@web/core/utils/hooks";
-import { SwitchCompanyItem } from "@web/webclient/switch_company_menu/switch_company_item";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { user, userBus } from "@web/core/user";
-import { router } from "@web/core/browser/router";
+import {Component, useChildSubEnv, useRef, useState} from "@odoo/owl";
+import {useCommand} from "@web/core/commands/command_hook";
+import {_t} from "@web/core/l10n/translation";
+import {symmetricalDifference} from "@web/core/utils/arrays";
+import {useBus, useChildRef, useService} from "@web/core/utils/hooks";
+import {SwitchCompanyItem} from "@web/webclient/switch_company_menu/switch_company_item";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {user, userBus} from "@web/core/user";
+import {router} from "@web/core/browser/router";
 
 function getCompany(cid) {
     return user.allowedCompaniesWithAncestors.find((c) => c.id === cid);
@@ -64,7 +64,7 @@ export class CompanySelector {
 
         const controller = this.actionService.currentController;
         const state = {};
-        const options = { reload: true };
+        const options = {reload: true};
         if (controller?.props.resId && controller?.props.resModel) {
             const hasReadRights = await user.checkAccessRight(
                 controller.props.resModel,
@@ -115,26 +115,35 @@ export class CompanySelector {
                     this.selectedCompaniesIds.push(companyId);
                 }
             } else if (unshift) {
-                const index = this.selectedCompaniesIds.findIndex((c) => c === companyId);
+                const index = this.selectedCompaniesIds.findIndex(
+                    (c) => c === companyId
+                );
                 this.selectedCompaniesIds.splice(index, 1);
                 this.selectedCompaniesIds.unshift(companyId);
             }
         }
 
-        this._getBranches(companyId).forEach((companyId) => this._selectCompany(companyId));
+        this._getBranches(companyId).forEach((companyId) =>
+            this._selectCompany(companyId)
+        );
     }
 
     _deselectCompany(companyId) {
         if (this.selectedCompaniesIds.includes(companyId)) {
-            this.selectedCompaniesIds.splice(this.selectedCompaniesIds.indexOf(companyId), 1);
+            this.selectedCompaniesIds.splice(
+                this.selectedCompaniesIds.indexOf(companyId),
+                1
+            );
         }
-        this._getBranches(companyId).forEach((companyId) => this._deselectCompany(companyId));
+        this._getBranches(companyId).forEach((companyId) =>
+            this._deselectCompany(companyId)
+        );
     }
 
     _getBranches(companyId) {
         return getCompany(companyId).child_ids || [];
     }
-    
+
     _isCompanyAllowed(companyId) {
         return user.allowedCompanies.some((c) => c.id == companyId);
     }
@@ -185,7 +194,7 @@ export class CompanySelector {
 
 export class SwitchCompanyMenu extends Component {
     static template = "web.SwitchCompanyMenu";
-    static components = { Dropdown, DropdownItem, DropdownGroup, SwitchCompanyItem };
+    static components = {Dropdown, DropdownItem, DropdownGroup, SwitchCompanyItem};
     static props = {};
     static CompanySelector = CompanySelector;
 
@@ -197,7 +206,7 @@ export class SwitchCompanyMenu extends Component {
         this.companySelector = useState(
             new this.constructor.CompanySelector(actionService, this.dropdown)
         );
-        useChildSubEnv({ companySelector: this.companySelector });
+        useChildSubEnv({companySelector: this.companySelector});
 
         this.searchInputRef = useRef("inputRef");
         this.state = useState({});
@@ -208,7 +217,9 @@ export class SwitchCompanyMenu extends Component {
             isAvailable: () => this.companySelector.hasSelectionChanged,
         });
 
-        useCommand(_t("Switch Company"), () => this.dropdown.open(), { hotkey: "alt+shift+u" });
+        useCommand(_t("Switch Company"), () => this.dropdown.open(), {
+            hotkey: "alt+shift+u",
+        });
         useBus(userBus, "ACTIVE_COMPANIES_CHANGED", () => {
             this.companySelector.reset();
         });
@@ -259,7 +270,9 @@ export class SwitchCompanyMenu extends Component {
 
     get selectAllClass() {
         if (
-            this.visibleCompanies.every((c) => this.companySelector.isCompanySelected(c.company.id))
+            this.visibleCompanies.every((c) =>
+                this.companySelector.isCompanySelected(c.company.id)
+            )
         ) {
             return "btn-link text-primary";
         } else {
@@ -269,11 +282,15 @@ export class SwitchCompanyMenu extends Component {
 
     get selectAllIcon() {
         if (
-            this.visibleCompanies.every((c) => this.companySelector.isCompanySelected(c.company.id))
+            this.visibleCompanies.every((c) =>
+                this.companySelector.isCompanySelected(c.company.id)
+            )
         ) {
             return "fa-check-square text-primary";
         } else if (
-            this.visibleCompanies.some((c) => this.companySelector.isCompanySelected(c.company.id))
+            this.visibleCompanies.some((c) =>
+                this.companySelector.isCompanySelected(c.company.id)
+            )
         ) {
             return "fa-minus-square-o";
         } else {
@@ -286,7 +303,7 @@ export class SwitchCompanyMenu extends Component {
 
         const addCompany = (company, level = 0) => {
             if (this.matchSearch(company.name)) {
-                companies.push({ company, level });
+                companies.push({company, level});
             }
 
             if (company.child_ids) {
@@ -361,4 +378,4 @@ export const systrayItem = {
     Component: SwitchCompanyMenu,
 };
 
-registry.category("systray").add("SwitchCompanyMenu", systrayItem, { sequence: 1 });
+registry.category("systray").add("SwitchCompanyMenu", systrayItem, {sequence: 1});

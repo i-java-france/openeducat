@@ -1,19 +1,19 @@
-import { registry } from "@web/core/registry";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { after } from "@html_builder/utils/option_sequence";
-import { WEBSITE_BACKGROUND_OPTIONS } from "@website/builder/option_sequence";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {registry} from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {after} from "@html_builder/utils/option_sequence";
+import {WEBSITE_BACKGROUND_OPTIONS} from "@website/builder/option_sequence";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 class SetItemTextAction extends BuilderAction {
     static id = "setItemTextAction";
     static dependencies = ["edit_interaction"];
 
-    getValue({ editingElement, params }) {
+    getValue({editingElement, params}) {
         return editingElement.textContent;
     }
-    apply({ editingElement, value, params }) {
+    apply({editingElement, value, params}) {
         editingElement.textContent = value;
     }
 }

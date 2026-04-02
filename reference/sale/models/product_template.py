@@ -4,7 +4,6 @@ from collections import defaultdict
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-from odoo.tools import float_round
 
 
 class ProductTemplate(models.Model):
@@ -168,7 +167,7 @@ class ProductTemplate(models.Model):
 
     @api.model
     def get_import_templates(self):
-        res = super(ProductTemplate, self).get_import_templates()
+        res = super().get_import_templates()
         if self.env.context.get('sale_multi_pricelist_product_template'):
             if self.env.user.has_group('product.group_product_pricelist'):
                 return [{

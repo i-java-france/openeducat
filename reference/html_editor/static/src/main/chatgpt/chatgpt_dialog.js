@@ -1,8 +1,8 @@
-import { _t } from "@web/core/l10n/translation";
-import { Dialog } from "@web/core/dialog/dialog";
-import { rpc } from "@web/core/network/rpc";
-import { useService } from "@web/core/utils/hooks";
-import { Component, useState, onWillDestroy, status, markup } from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {Dialog} from "@web/core/dialog/dialog";
+import {rpc} from "@web/core/network/rpc";
+import {useService} from "@web/core/utils/hooks";
+import {Component, useState, onWillDestroy, status, markup} from "@odoo/owl";
 
 const POSTPROCESS_GENERATED_CONTENT = (content, baseContainer) => {
     let lines = content.split("\n");
@@ -23,7 +23,9 @@ const POSTPROCESS_GENERATED_CONTENT = (content, baseContainer) => {
             parentUl.appendChild(li);
         } else if (
             (parentOl && line.startsWith(`${parentOl.children.length + 1}. `)) ||
-            (!parentOl && line.startsWith("1. ") && lines[lineIndex + 1]?.startsWith("2. "))
+            (!parentOl &&
+                line.startsWith("1. ") &&
+                lines[lineIndex + 1]?.startsWith("2. "))
         ) {
             // Create or continue an ordered list (only if the line starts
             // with the next number in the current ordered list (or 1 if no
@@ -41,7 +43,9 @@ const POSTPROCESS_GENERATED_CONTENT = (content, baseContainer) => {
             // line.
             [parentUl, parentOl].forEach((list) => list && fragment.appendChild(list));
             parentUl = parentOl = undefined;
-            const block = document.createElement(line.startsWith("Title: ") ? "h2" : baseContainer);
+            const block = document.createElement(
+                line.startsWith("Title: ") ? "h2" : baseContainer
+            );
             block.innerText = line;
             fragment.appendChild(block);
         }
@@ -53,12 +57,12 @@ const POSTPROCESS_GENERATED_CONTENT = (content, baseContainer) => {
 
 export class ChatGPTDialog extends Component {
     static template = "";
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
-        insert: { type: Function },
-        close: { type: Function },
-        sanitize: { type: Function },
-        baseContainer: { type: String, optional: true },
+        insert: {type: Function},
+        close: {type: Function},
+        sanitize: {type: Function},
+        baseContainer: {type: String, optional: true},
     };
     static defaultProps = {
         baseContainer: "DIV",
@@ -66,12 +70,13 @@ export class ChatGPTDialog extends Component {
 
     setup() {
         this.notificationService = useService("notification");
-        this.state = useState({ selectedMessageId: null });
+        this.state = useState({selectedMessageId: null});
         onWillDestroy(() => this.pendingRpcPromise?.abort());
     }
 
     selectMessage(ev) {
-        this.state.selectedMessageId = +ev.currentTarget.getAttribute("data-message-id");
+        this.state.selectedMessageId =
+            +ev.currentTarget.getAttribute("data-message-id");
     }
 
     insertMessage(ev) {
@@ -80,10 +85,13 @@ export class ChatGPTDialog extends Component {
     }
 
     formatContent(content) {
-        const fragment = POSTPROCESS_GENERATED_CONTENT(content, this.props.baseContainer);
+        const fragment = POSTPROCESS_GENERATED_CONTENT(
+            content,
+            this.props.baseContainer
+        );
         let result = "";
         for (const child of fragment.children) {
-            this.props.sanitize(child, { IN_PLACE: true });
+            this.props.sanitize(child, {IN_PLACE: true});
             result += child.outerHTML;
         }
         return markup(result);
@@ -102,11 +110,13 @@ export class ChatGPTDialog extends Component {
                 prompt,
                 conversation_history: this.state.conversationHistory,
             },
-            { silent: true }
+            {silent: true}
         );
         return this.pendingRpcPromise
             .then((content) => protectedCallback(content))
-            .catch((error) => protectedCallback(_t(error.data?.message || error.message), true));
+            .catch((error) =>
+                protectedCallback(_t(error.data?.message || error.message), true)
+            );
     }
 
     _cancel() {
@@ -119,12 +129,18 @@ export class ChatGPTDialog extends Component {
             const text = this.state.messages.find(
                 (message) => message.id === this.state.selectedMessageId
             )?.text;
-            this.notificationService.add(_t("Your content was successfully generated."), {
-                title: _t("Content generated"),
-                type: "success",
-            });
-            const fragment = POSTPROCESS_GENERATED_CONTENT(text || "", this.props.baseContainer);
-            this.props.sanitize(fragment, { IN_PLACE: true });
+            this.notificationService.add(
+                _t("Your content was successfully generated."),
+                {
+                    title: _t("Content generated"),
+                    type: "success",
+                }
+            );
+            const fragment = POSTPROCESS_GENERATED_CONTENT(
+                text || "",
+                this.props.baseContainer
+            );
+            this.props.sanitize(fragment, {IN_PLACE: true});
             this.props.insert(fragment);
         } catch (e) {
             this.props.close();

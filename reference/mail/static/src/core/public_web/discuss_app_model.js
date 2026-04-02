@@ -1,5 +1,5 @@
-import { fields, Record } from "@mail/core/common/record";
-import { browser } from "@web/core/browser/browser";
+import {fields, Record} from "@mail/core/common/record";
+import {browser} from "@web/core/browser/browser";
 
 export const NO_MEMBERS_DEFAULT_OPEN_LS = "mail.user_setting.no_members_default_open";
 export const DISCUSS_SIDEBAR_COMPACT_LS = "mail.user_setting.discuss_sidebar_compact";
@@ -34,7 +34,10 @@ export class DiscussApp extends Record {
         /** @this {import("models").DiscussApp} */
         onUpdate() {
             if (this.lastActiveId) {
-                browser.localStorage.setItem(LAST_DISCUSS_ACTIVE_ID_LS, this.lastActiveId);
+                browser.localStorage.setItem(
+                    LAST_DISCUSS_ACTIVE_ID_LS,
+                    this.lastActiveId
+                );
             } else {
                 browser.localStorage.removeItem(LAST_DISCUSS_ACTIVE_ID_LS);
             }

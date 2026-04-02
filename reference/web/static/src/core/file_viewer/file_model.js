@@ -1,4 +1,4 @@
-import { url } from "@web/core/utils/urls";
+import {url} from "@web/core/utils/urls";
 
 export const FileModelMixin = (T) =>
     class extends T {
@@ -48,7 +48,7 @@ export const FileModelMixin = (T) =>
         }
 
         get downloadUrl() {
-            return url(this.urlRoute, { ...this.urlQueryParams, download: true });
+            return url(this.urlRoute, {...this.urlQueryParams, download: true});
         }
 
         get isImage() {
@@ -89,13 +89,22 @@ export const FileModelMixin = (T) =>
         }
 
         get isVideo() {
-            const videoMimeTypes = ["audio/mpeg", "video/x-matroska", "video/mp4", "video/webm"];
+            const videoMimeTypes = [
+                "audio/mpeg",
+                "video/x-matroska",
+                "video/mp4",
+                "video/webm",
+            ];
             return videoMimeTypes.includes(this.mimetype);
         }
 
         get isViewable() {
             return (
-                (this.isText || this.isImage || this.isVideo || this.isPdf || this.isUrlYoutube) &&
+                (this.isText ||
+                    this.isImage ||
+                    this.isVideo ||
+                    this.isPdf ||
+                    this.isUrlYoutube) &&
                 !this.uploading
             );
         }

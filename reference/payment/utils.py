@@ -9,7 +9,6 @@ from odoo.tools.misc import hmac as hmac_tool
 
 from odoo.addons.payment.const import CURRENCY_MINOR_UNITS
 
-
 # Access token management
 
 def generate_access_token(*values, env=None):

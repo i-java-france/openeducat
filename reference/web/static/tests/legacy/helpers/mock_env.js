@@ -1,20 +1,20 @@
 /** @odoo-module alias=@web/../tests/helpers/mock_env default=false */
 
-import { SERVICES_METADATA } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
-import { makeEnv, startServices } from "@web/env";
-import { registerCleanup } from "./cleanup";
-import { makeMockServer } from "./mock_server";
-import { mocks } from "./mock_services";
-import { patchWithCleanup } from "./utils";
-import { Component } from "@odoo/owl";
-import { startRouter } from "@web/core/browser/router";
+import {SERVICES_METADATA} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {makeEnv, startServices} from "@web/env";
+import {registerCleanup} from "./cleanup";
+import {makeMockServer} from "./mock_server";
+import {mocks} from "./mock_services";
+import {patchWithCleanup} from "./utils";
+import {Component} from "@odoo/owl";
+import {startRouter} from "@web/core/browser/router";
 
 function prepareRegistry(registry, keepContent = false) {
     const _addEventListener = registry.addEventListener.bind(registry);
     const _removeEventListener = registry.removeEventListener.bind(registry);
     const patch = {
-        content: keepContent ? { ...registry.content } : {},
+        content: keepContent ? {...registry.content} : {},
         elements: null,
         entries: null,
         subRegistries: {},
@@ -128,7 +128,7 @@ export async function makeTestEnv(config = {}) {
     await startServices(env);
     Component.env = env;
     if ("config" in config) {
-        env = Object.assign(Object.create(env), { config: config.config });
+        env = Object.assign(Object.create(env), {config: config.config});
     }
     return env;
 }

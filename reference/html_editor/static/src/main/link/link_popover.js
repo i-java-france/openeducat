@@ -1,11 +1,11 @@
-import { session } from "@web/session";
-import { _t } from "@web/core/l10n/translation";
-import { Component, useState, useRef, useEffect, useExternalListener } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
-import { browser } from "@web/core/browser/browser";
-import { cleanZWChars, deduceURLfromText } from "./utils";
-import { useColorPicker } from "@web/core/color_picker/color_picker";
-import { CheckBox } from "@web/core/checkbox/checkbox";
+import {session} from "@web/session";
+import {_t} from "@web/core/l10n/translation";
+import {Component, useState, useRef, useEffect, useExternalListener} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {browser} from "@web/core/browser/browser";
+import {cleanZWChars, deduceURLfromText} from "./utils";
+import {useColorPicker} from "@web/core/color_picker/color_picker";
+import {CheckBox} from "@web/core/checkbox/checkbox";
 
 const DEFAULT_CUSTOM_TEXT_COLOR = "#714B67";
 const DEFAULT_CUSTOM_FILL_COLOR = "#ffffff";
@@ -24,8 +24,8 @@ const formatColor = (color) => {
 export class LinkPopover extends Component {
     static template = "html_editor.linkPopover";
     static props = {
-        document: { validate: (p) => p.nodeType === Node.DOCUMENT_NODE },
-        linkElement: { validate: (el) => el.nodeType === Node.ELEMENT_NODE },
+        document: {validate: (p) => p.nodeType === Node.DOCUMENT_NODE},
+        linkElement: {validate: (el) => el.nodeType === Node.ELEMENT_NODE},
         onApply: Function,
         onChange: Function,
         onDiscard: Function,
@@ -40,50 +40,50 @@ export class LinkPopover extends Component {
         type: String,
         LinkPopoverState: Object,
         recordInfo: Object,
-        canEdit: { type: Boolean, optional: true },
-        canRemove: { type: Boolean, optional: true },
-        canUpload: { type: Boolean, optional: true },
-        onUpload: { type: Function, optional: true },
-        allowCustomStyle: { type: Boolean, optional: true },
-        allowTargetBlank: { type: Boolean, optional: true },
-        allowStripDomain: { type: Boolean, optional: true },
-        formatColor: { type: Function, optional: true },
+        canEdit: {type: Boolean, optional: true},
+        canRemove: {type: Boolean, optional: true},
+        canUpload: {type: Boolean, optional: true},
+        onUpload: {type: Function, optional: true},
+        allowCustomStyle: {type: Boolean, optional: true},
+        allowTargetBlank: {type: Boolean, optional: true},
+        allowStripDomain: {type: Boolean, optional: true},
+        formatColor: {type: Function, optional: true},
     };
     static defaultProps = {
         canEdit: true,
         canRemove: true,
         formatColor: formatColor,
     };
-    static components = { CheckBox };
+    static components = {CheckBox};
     colorsData = [
-        { type: "", label: _t("Link"), btnPreview: "link" },
-        { type: "primary", label: _t("Button Primary"), btnPreview: "primary" },
-        { type: "secondary", label: _t("Button Secondary"), btnPreview: "secondary" },
-        { type: "custom", label: _t("Custom"), btnPreview: "custom" },
+        {type: "", label: _t("Link"), btnPreview: "link"},
+        {type: "primary", label: _t("Button Primary"), btnPreview: "primary"},
+        {type: "secondary", label: _t("Button Secondary"), btnPreview: "secondary"},
+        {type: "custom", label: _t("Custom"), btnPreview: "custom"},
         // Note: by compatibility the dialog should be able to remove old
         // colors that were suggested like the BS status colors or the
         // alpha -> epsilon classes. This is currently done by removing
         // all btn-* classes anyway.
     ];
     buttonSizesData = [
-        { size: "sm", label: _t("Small") },
-        { size: "", label: _t("Medium") },
-        { size: "lg", label: _t("Large") },
+        {size: "sm", label: _t("Small")},
+        {size: "", label: _t("Medium")},
+        {size: "lg", label: _t("Large")},
     ];
     borderData = [
-        { style: "solid", label: "━━━" },
-        { style: "dashed", label: "╌╌╌" },
-        { style: "dotted", label: "┄┄┄" },
-        { style: "double", label: "═══" },
+        {style: "solid", label: "━━━"},
+        {style: "dashed", label: "╌╌╌"},
+        {style: "dotted", label: "┄┄┄"},
+        {style: "double", label: "═══"},
     ];
     buttonShapeData = [
-        { shape: "", label: "Default" },
-        { shape: "rounded-circle", label: "Default + Rounded" },
-        { shape: "outline", label: "Outline" },
-        { shape: "outline rounded-circle", label: "Outline + Rounded" },
-        { shape: "fill", label: "Fill" },
-        { shape: "fill rounded-circle", label: "Fill + Rounded" },
-        { shape: "flat", label: "Flat" },
+        {shape: "", label: "Default"},
+        {shape: "rounded-circle", label: "Default + Rounded"},
+        {shape: "outline", label: "Outline"},
+        {shape: "outline rounded-circle", label: "Outline + Rounded"},
+        {shape: "fill", label: "Fill"},
+        {shape: "fill rounded-circle", label: "Fill + Rounded"},
+        {shape: "flat", label: "Flat"},
     ];
     setup() {
         this.ui = useService("ui");
@@ -96,7 +96,8 @@ export class LinkPopover extends Component {
             textContent === linkElement.getAttribute("href") ||
             textContent + "/" === linkElement.getAttribute("href");
 
-        const computedStyle = this.props.document.defaultView.getComputedStyle(linkElement);
+        const computedStyle =
+            this.props.document.defaultView.getComputedStyle(linkElement);
         const currentRelValues = linkElement.rel.split(" ");
         this.state = useState({
             editing: this.props.LinkPopoverState.editing,
@@ -114,7 +115,9 @@ export class LinkPopover extends Component {
             imgSrc: "",
             type:
                 this.props.type ||
-                linkElement.className.match(/btn(-[a-z0-9_-]*)(primary|secondary|custom)/)?.pop() ||
+                linkElement.className
+                    .match(/btn(-[a-z0-9_-]*)(primary|secondary|custom)/)
+                    ?.pop() ||
                 "",
             linkTarget: linkElement.target === "_blank" ? "_blank" : "",
             directDownload: true,
@@ -136,7 +139,9 @@ export class LinkPopover extends Component {
                 },
                 noreferrer: {
                     label: "noreferrer",
-                    description: _t("Removes referrer information sent to the target site"),
+                    description: _t(
+                        "Removes referrer information sent to the target site"
+                    ),
                     isChecked: currentRelValues.includes("noreferrer"),
                 },
                 sponsored: {
@@ -235,7 +240,9 @@ export class LinkPopover extends Component {
         this.updateDocumentState();
         this.editingWrapper = useRef("editing-wrapper");
         this.inputRef = useRef(
-            this.state.isImage || (this.state.label && !this.state.url) ? "url" : "label"
+            this.state.isImage || (this.state.label && !this.state.url)
+                ? "url"
+                : "label"
         );
         useEffect(
             (el) => {
@@ -253,7 +260,10 @@ export class LinkPopover extends Component {
                 return;
             }
             this.state.url ||= "#";
-            if (this.editingWrapper?.el && !this.editingWrapper.el.contains(ev.target)) {
+            if (
+                this.editingWrapper?.el &&
+                !this.editingWrapper.el.contains(ev.target)
+            ) {
                 this.onClickApply();
             }
         };
@@ -349,7 +359,9 @@ export class LinkPopover extends Component {
     }
 
     onKeydownEnter(ev) {
-        const isAutoCompleteDropdownOpen = document.querySelector(".o-autocomplete--dropdown-menu");
+        const isAutoCompleteDropdownOpen = document.querySelector(
+            ".o-autocomplete--dropdown-menu"
+        );
         if (ev.key === "Enter" && !isAutoCompleteDropdownOpen && this.state.url) {
             ev.preventDefault();
             this.onClickApply();
@@ -364,7 +376,9 @@ export class LinkPopover extends Component {
         } else if (ev.key == "Tab") {
             ev.preventDefault();
             const focusableElements = [
-                ...this.editingWrapper.el.querySelectorAll("input, select, button:not([disabled])"),
+                ...this.editingWrapper.el.querySelectorAll(
+                    "input, select, button:not([disabled])"
+                ),
             ];
             const currentIndex = focusableElements.indexOf(document.activeElement);
             const nextIndex =
@@ -415,7 +429,7 @@ export class LinkPopover extends Component {
                     urlObject.pathname.startsWith("/web/content") &&
                     urlObject.host === document.location.host))
         ) {
-            const { type } = await this.props.getAttachmentMetadata(url);
+            const {type} = await this.props.getAttachmentMetadata(url);
             this.state.isDocument = type !== "url";
             this.state.directDownload = url.includes("&download=true");
         } else {
@@ -458,16 +472,16 @@ export class LinkPopover extends Component {
                 }
                 return `(?=.*\\b${cls}\\b)`;
             });
-            return { regex: new RegExp(regexParts.join("")), nbParts: parts.length };
+            return {regex: new RegExp(regexParts.join("")), nbParts: parts.length};
         };
         // If multiple shapes match, prefer the one with more specificity.
         let shapeMatched = "";
         let matchScore = 0;
-        for (const { shape } of this.buttonShapeData) {
+        for (const {shape} of this.buttonShapeData) {
             if (!shape) {
                 continue;
             }
-            const { regex, nbParts } = shapeToRegex(shape);
+            const {regex, nbParts} = shapeToRegex(shape);
             if (regex.test(this.props.linkElement.className)) {
                 if (matchScore < nbParts) {
                     matchScore = nbParts;
@@ -481,7 +495,7 @@ export class LinkPopover extends Component {
      * link preview in the popover
      */
     resetPreview() {
-        this.state.previewIcon = { type: "fa", value: "fa-globe" };
+        this.state.previewIcon = {type: "fa", value: "fa-globe"};
         this.state.urlTitle = this.state.url || _t("No URL specified");
         this.state.urlDescription = "";
         this.state.linkPreviewName = "";
@@ -501,10 +515,12 @@ export class LinkPopover extends Component {
             return;
         }
         if (this.isAttachmentUrl()) {
-            const { name, mimetype } = await this.props.getAttachmentMetadata(this.state.url);
+            const {name, mimetype} = await this.props.getAttachmentMetadata(
+                this.state.url
+            );
             this.resetPreview();
             this.state.urlTitle = name;
-            this.state.previewIcon = { type: "mimetype", value: mimetype };
+            this.state.previewIcon = {type: "mimetype", value: mimetype};
             return;
         }
         try {
@@ -512,15 +528,18 @@ export class LinkPopover extends Component {
         } catch {
             // Invalid URL, might happen with editor unsuported protocol. eg type
             // `geo:37.786971,-122.399677`, become `http://geo:37.786971,-122.399677`
-            this.notificationService.add(_t("This URL is invalid. Preview couldn't be updated."), {
-                type: "danger",
-            });
+            this.notificationService.add(
+                _t("This URL is invalid. Preview couldn't be updated."),
+                {
+                    type: "danger",
+                }
+            );
             return;
         }
         this.resetPreview();
         const protocol = url.protocol;
         if (!protocol.startsWith("http")) {
-            const faMap = { "mailto:": "fa-envelope-o", "tel:": "fa-phone" };
+            const faMap = {"mailto:": "fa-envelope-o", "tel:": "fa-phone"};
             const icon = faMap[protocol];
             if (icon) {
                 this.state.previewIcon.value = icon;
@@ -541,7 +560,10 @@ export class LinkPopover extends Component {
             const externalMetadata = await this.props
                 .getExternalMetaData(this.state.url)
                 .catch((error) => {
-                    console.warn(`Error fetching external metadata for ${url.href}:`, error);
+                    console.warn(
+                        `Error fetching external metadata for ${url.href}:`,
+                        error
+                    );
                     return {};
                 });
 
@@ -562,7 +584,10 @@ export class LinkPopover extends Component {
             const internalMetadata = await this.props
                 .getInternalMetaData(url.href)
                 .catch((error) => {
-                    console.warn(`Error fetching internal metadata for ${url.href}:`, error);
+                    console.warn(
+                        `Error fetching internal metadata for ${url.href}:`,
+                        error
+                    );
                     return {};
                 });
             if (internalMetadata.favicon) {
@@ -604,7 +629,10 @@ export class LinkPopover extends Component {
 
     get classes() {
         const classes = [...this.props.linkElement.classList].filter(
-            (value) => !value.match(/^(btn.*|rounded-circle|flat|(text|bg)-(o-color-\d$|\d{3}$))$/)
+            (value) =>
+                !value.match(
+                    /^(btn.*|rounded-circle|flat|(text|bg)-(o-color-\d$|\d{3}$))$/
+                )
         );
 
         let stylePrefix = "";
@@ -666,15 +694,19 @@ export class LinkPopover extends Component {
     }
 
     async uploadFile() {
-        const { upload, getURL } = this.uploadService;
-        const { resModel, resId } = this.props.recordInfo;
-        const [attachment] = await upload({ resModel, resId, accessToken: true });
+        const {upload, getURL} = this.uploadService;
+        const {resModel, resId} = this.props.recordInfo;
+        const [attachment] = await upload({resModel, resId, accessToken: true});
         if (!attachment) {
             // No file selected or upload failed
             return;
         }
         this.props.onUpload?.(attachment);
-        this.state.url = getURL(attachment, { download: true, unique: true, accessToken: true });
+        this.state.url = getURL(attachment, {
+            download: true,
+            unique: true,
+            accessToken: true,
+        });
         this.state.label ||= attachment.name;
         this.state.attachmentId = attachment.id;
         this.onChange();
@@ -716,7 +748,9 @@ export class LinkPopover extends Component {
         // one, is always a bad practice anyway.
         return (
             urlObj.origin === window.location.origin ||
-            new RegExp(`^https?://${session.db}\\.odoo\\.com(/.*)?$`).test(urlObj.origin)
+            new RegExp(`^https?://${session.db}\\.odoo\\.com(/.*)?$`).test(
+                urlObj.origin
+            )
         );
     }
 }

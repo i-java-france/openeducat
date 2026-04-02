@@ -13,14 +13,14 @@ from odoo import fields
 from odoo.exceptions import ValidationError
 from odoo.fields import Command, Domain
 from odoo.http import request, route
-from odoo.tools import SQL, clean_context, float_round, groupby, lazy, str2bool
+from odoo.tools import SQL, clean_context, float_round, lazy, str2bool
 from odoo.tools.json import scriptsafe as json_scriptsafe
 from odoo.tools.translate import LazyTranslate, _
 
+from odoo.addons.html_editor.tools import get_video_thumbnail
 from odoo.addons.payment import utils as payment_utils
 from odoo.addons.payment.controllers import portal as payment_portal
 from odoo.addons.sale.controllers import portal as sale_portal
-from odoo.addons.html_editor.tools import get_video_thumbnail
 from odoo.addons.website.controllers.main import QueryURL
 from odoo.addons.website.models.ir_http import sitemap_qs2dom
 from odoo.addons.website_sale.const import SHOP_PATH
@@ -456,7 +456,7 @@ class WebsiteSale(payment_portal.PaymentPortal):
         # map each product to its variant, and prefetch the variants
         variants = request.env['product.product'].sudo().browse(product._get_first_possible_variant_id() for product in products)
         variants.fetch()
-        product_variants = dict(zip(products, variants))
+        product_variants = dict(zip(products, variants, strict=False))
 
         ProductAttribute = request.env['product.attribute']
         if products:

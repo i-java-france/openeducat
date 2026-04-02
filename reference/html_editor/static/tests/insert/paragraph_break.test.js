@@ -1,18 +1,18 @@
-import { beforeEach, describe, test } from "@odoo/hoot";
-import { animationFrame, waitFor } from "@odoo/hoot-dom";
-import { tick } from "@odoo/hoot-mock";
-import { testEditor } from "../_helpers/editor";
-import { insertText, splitBlock } from "../_helpers/user_actions";
-import { unformat } from "../_helpers/format";
-import { EMBEDDED_COMPONENT_PLUGINS, MAIN_PLUGINS } from "@html_editor/plugin_sets";
-import { QWebPlugin } from "@html_editor/others/qweb_plugin";
-import { findInSelection } from "@html_editor/utils/selection";
+import {beforeEach, describe, test} from "@odoo/hoot";
+import {animationFrame, waitFor} from "@odoo/hoot-dom";
+import {tick} from "@odoo/hoot-mock";
+import {testEditor} from "../_helpers/editor";
+import {insertText, splitBlock} from "../_helpers/user_actions";
+import {unformat} from "../_helpers/format";
+import {EMBEDDED_COMPONENT_PLUGINS, MAIN_PLUGINS} from "@html_editor/plugin_sets";
+import {QWebPlugin} from "@html_editor/others/qweb_plugin";
+import {findInSelection} from "@html_editor/utils/selection";
 import {
     compareHighlightedContent,
     highlightedPre,
     patchPrism,
 } from "../_helpers/syntax_highlighting";
-import { MAIN_EMBEDDINGS } from "@html_editor/others/embedded_components/embedding_sets";
+import {MAIN_EMBEDDINGS} from "@html_editor/others/embedded_components/embedding_sets";
 
 describe("Selection collapsed", () => {
     describe("Basic", () => {
@@ -130,7 +130,7 @@ describe("Selection collapsed", () => {
                         []<t t-out="World"></t>
                     </h1>
                 `),
-                config: { Plugins: [...MAIN_PLUGINS, QWebPlugin] },
+                config: {Plugins: [...MAIN_PLUGINS, QWebPlugin]},
             });
         });
     });
@@ -139,7 +139,7 @@ describe("Selection collapsed", () => {
         describe("with syntax highlighting", () => {
             const configWithEmbeddings = {
                 Plugins: [...MAIN_PLUGINS, ...EMBEDDED_COMPONENT_PLUGINS],
-                resources: { embedded_components: MAIN_EMBEDDINGS },
+                resources: {embedded_components: MAIN_EMBEDDINGS},
             };
             const testEnterInCodeBlock = (selectionStart) => async (editor) => {
                 // Set the given selection in the textarea.
@@ -161,7 +161,7 @@ describe("Selection collapsed", () => {
                     contentBefore: "<pre>abcd</pre>",
                     contentBeforeEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "abcd" }) +
+                        highlightedPre({value: "abcd"}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     stepFunction: testEnterInCodeBlock(2), // "ab[]cd"
                     contentAfterEdit:
@@ -181,7 +181,7 @@ describe("Selection collapsed", () => {
                     contentBefore: "<pre>abc</pre>",
                     contentBeforeEdit:
                         '<p data-selection-placeholder=""><br></p>' +
-                        highlightedPre({ value: "abc" }) +
+                        highlightedPre({value: "abc"}) +
                         '<p data-selection-placeholder="" style="margin: -9px 0px 8px;"><br></p>',
                     stepFunction: testEnterInCodeBlock(3), // "abc[]"
                     contentAfterEdit:
@@ -238,7 +238,8 @@ describe("Selection collapsed", () => {
                 await testEditor({
                     contentBefore: "<pre><em>ab<strong>c[]</strong></em></pre>",
                     stepFunction: splitBlock,
-                    contentAfter: "<pre><em>ab<strong>c</strong></em></pre><p>[]<br></p>",
+                    contentAfter:
+                        "<pre><em>ab<strong>c</strong></em></pre><p>[]<br></p>",
                 });
             });
 
@@ -529,7 +530,7 @@ describe("Selection collapsed", () => {
             });
 
             async function splitBlockA(editor) {
-                // splitBlock in an <a> tag will open the linkPopover which will take the focus.
+                // SplitBlock in an <a> tag will open the linkPopover which will take the focus.
                 // So we need to wait for it to open and put the selection back into the editor.
                 splitBlock(editor);
                 const editableSelection =
@@ -591,7 +592,8 @@ describe("Selection collapsed", () => {
                     stepFunction: splitBlockA,
                     contentAfterEdit:
                         '<p><br></p><p>\ufeff<a href="http://test.test/" class="o_link_in_selection">\ufeff[]ab\ufeff</a>\ufeff</p>',
-                    contentAfter: '<p><br></p><p><a href="http://test.test/">[]ab</a></p>',
+                    contentAfter:
+                        '<p><br></p><p><a href="http://test.test/">[]ab</a></p>',
                 });
             });
             test("should insert a paragraph break outside the starting edge of an anchor after some text", async () => {
@@ -600,15 +602,18 @@ describe("Selection collapsed", () => {
                     stepFunction: splitBlockA,
                     contentAfterEdit:
                         '<p>ab</p><p>\ufeff<a href="http://test.test/" class="o_link_in_selection">\ufeff[]cd\ufeff</a>\ufeff</p>',
-                    contentAfter: '<p>ab</p><p><a href="http://test.test/">[]cd</a></p>',
+                    contentAfter:
+                        '<p>ab</p><p><a href="http://test.test/">[]cd</a></p>',
                 });
             });
             test("should insert a paragraph break in the middle of an inline node", async () => {
                 await testEditor({
                     contentBefore: "<p><strong>a[]b</strong></p>",
                     stepFunction: splitBlockA,
-                    contentAfterEdit: "<p><strong>a</strong></p><p><strong>[]b</strong></p>",
-                    contentAfter: "<p><strong>a</strong></p><p><strong>[]b</strong></p>",
+                    contentAfterEdit:
+                        "<p><strong>a</strong></p><p><strong>[]b</strong></p>",
+                    contentAfter:
+                        "<p><strong>a</strong></p><p><strong>[]b</strong></p>",
                 });
             });
             test("should insert a <br> in the middle of an unsplittable anchor", async () => {
@@ -634,7 +639,8 @@ describe("Selection collapsed", () => {
                     stepFunction: splitBlockA,
                     contentAfterEdit:
                         '<p>\ufeff<a href="http://test.test/">\ufeffab\ufeff</a>\ufeff</p><p>[]cd</p>',
-                    contentAfter: '<p><a href="http://test.test/">ab</a></p><p>[]cd</p>',
+                    contentAfter:
+                        '<p><a href="http://test.test/">ab</a></p><p>[]cd</p>',
                 });
             });
         });
@@ -663,7 +669,8 @@ describe("Selection collapsed", () => {
                 await testEditor({
                     contentBefore: '<p class="a">a[]</p><p class="a"><br></p>',
                     stepFunction: splitBlock,
-                    contentAfter: '<p class="a">a</p><p class="a">[]<br></p><p class="a"><br></p>',
+                    contentAfter:
+                        '<p class="a">a</p><p class="a">[]<br></p><p class="a"><br></p>',
                 });
             });
         });
@@ -717,7 +724,8 @@ describe("Selection collapsed", () => {
 
             test("should split a paragraph at the end of style node (2)", async () => {
                 await testEditor({
-                    contentBefore: '<p><font style="background-color: red;">abc[]</font></p>',
+                    contentBefore:
+                        '<p><font style="background-color: red;">abc[]</font></p>',
                     stepFunction: splitBlock,
                     contentAfterEdit: `<p><font style="background-color: red;">abc</font></p><p o-we-hint-text='Type "/" for commands' class="o-we-hint"><font style="background-color: red;" data-oe-zws-empty-inline="">[]\u200b</font></p>`,
                     contentAfter: `<p><font style="background-color: red;">abc</font></p><p>[]<br></p>`,

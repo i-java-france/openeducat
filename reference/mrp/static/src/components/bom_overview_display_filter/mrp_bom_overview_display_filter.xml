@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
     <t t-name="mrp.BomOverviewDisplayFilter">
         <div class="btn-group flex-grow-1 flex-md-grow-0'">
-            <Dropdown  items="displayableOptions">
+            <Dropdown items="displayableOptions">
                 <button class="btn btn-secondary o-dropdown-caret">
-                    <span class="fa fa-filter"/>
+                    <span class="fa fa-filter" />
                     Display
                 </button>
             </Dropdown>

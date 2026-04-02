@@ -1,16 +1,17 @@
-# -*- coding: utf-8 -*-
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.exceptions import ValidationError
-from odoo.tests import Form, tagged, TransactionCase
-from odoo import fields, api, SUPERUSER_ID, Command
-from odoo.tools import mute_logger
+import json
+from functools import reduce
+from unittest.mock import Mock, patch
 
+import psycopg2
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
-from functools import reduce
-import json
-import psycopg2
-from unittest.mock import patch, Mock
+
+from odoo import SUPERUSER_ID, Command, api, fields
+from odoo.exceptions import ValidationError
+from odoo.tests import Form, TransactionCase, tagged
+from odoo.tools import mute_logger
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
 class TestSequenceMixinCommon(AccountTestInvoicingCommon):

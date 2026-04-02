@@ -2,11 +2,11 @@
 import base64
 import hashlib
 
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
-from odoo import _, fields, models, api
-from odoo.exceptions import UserError, AccessDenied
+from odoo import _, api, fields, models
+from odoo.exceptions import AccessDenied, UserError
 
 
 class PosPaymentMethod(models.Model):

@@ -2,7 +2,6 @@
 
 import itertools
 import logging
-
 from collections import defaultdict
 
 from odoo import _, api, fields, models, tools
@@ -507,12 +506,12 @@ class ProductTemplate(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         ''' Store the initial standard price in order to be able to retrieve the cost of a product template for a given date'''
-        templates = super(ProductTemplate, self).create(vals_list)
+        templates = super().create(vals_list)
         if self.env.context.get("create_product_product", True):
             templates._create_variant_ids()
 
         # This is needed to set given values to first variant after creation
-        for template, vals in zip(templates, vals_list):
+        for template, vals in zip(templates, vals_list, strict=False):
             related_vals = {}
             for field_name in self._get_related_fields_variant_template():
                 if vals.get(field_name) and not template[field_name]:
@@ -526,7 +525,7 @@ class ProductTemplate(models.Model):
         if 'uom_id' in vals:
             products = self.filtered(lambda template: template.uom_id.id != vals['uom_id']).product_variant_ids
             products.with_context(skip_uom_conversion=True)._update_uom(vals['uom_id'])
-        res = super(ProductTemplate, self).write(vals)
+        res = super().write(vals)
         if self.env.context.get("create_product_product", True) and 'attribute_line_ids' in vals or (vals.get('active') and len(self.product_variant_ids) == 0):
             self._create_variant_ids()
         if 'active' in vals and not vals.get('active'):
@@ -549,15 +548,15 @@ class ProductTemplate(models.Model):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
         if 'name' not in default:
-            for template, vals in zip(self, vals_list):
+            for template, vals in zip(self, vals_list, strict=False):
                 vals['name'] = _("%s (copy)", template.name)
         return vals_list
 
     def copy(self, default=None):
         res = super().copy(default=default)
         # Since we don't copy the product template attribute values, we need to match the extra prices.
-        for ptal, copied_ptal in zip(self.attribute_line_ids, res.attribute_line_ids):
-            for ptav, copied_ptav in zip(ptal.product_template_value_ids, copied_ptal.product_template_value_ids):
+        for ptal, copied_ptal in zip(self.attribute_line_ids, res.attribute_line_ids, strict=False):
+            for ptav, copied_ptav in zip(ptal.product_template_value_ids, copied_ptal.product_template_value_ids, strict=False):
                 if not ptav.price_extra:
                     continue
                 # security check
@@ -1440,7 +1439,7 @@ class ProductTemplate(models.Model):
         self = self.with_context(
             empty_list_help_document_name=_("product"),
         )
-        return super(ProductTemplate, self).get_empty_list_help(help_message)
+        return super().get_empty_list_help(help_message)
 
     @api.model
     def get_import_templates(self):

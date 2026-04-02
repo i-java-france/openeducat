@@ -1,8 +1,8 @@
-import { expirableStorage } from "@im_livechat/core/common/expirable_storage";
+import {expirableStorage} from "@im_livechat/core/common/expirable_storage";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { mockDate } from "@odoo/hoot-mock";
-import { asyncStep, waitForSteps } from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {mockDate} from "@odoo/hoot-mock";
+import {asyncStep, waitForSteps} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 

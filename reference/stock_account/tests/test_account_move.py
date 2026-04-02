@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from freezegun import freeze_time
 
-from odoo.addons.stock_account.tests.common import TestStockValuationCommon
+from odoo import Command, fields
 from odoo.exceptions import UserError
 from odoo.tests import Form, tagged
-from odoo import fields, Command
+
+from odoo.addons.stock_account.tests.common import TestStockValuationCommon
 
 
 @tagged("post_install", "-at_install")

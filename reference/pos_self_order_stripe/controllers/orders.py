@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
-from odoo import http, fields
-from odoo.http import request
-from odoo.tools import float_is_zero
-from odoo.addons.pos_self_order.controllers.orders import PosSelfOrderController
 from werkzeug.exceptions import Unauthorized
+
+from odoo import fields, http
+from odoo.tools import float_is_zero
+
+from odoo.addons.pos_self_order.controllers.orders import PosSelfOrderController
+
 
 class PosSelfOrderControllerStripe(PosSelfOrderController):
     @http.route("/pos-self-order/stripe-connection-token/", auth="public", type="jsonrpc", website=True)

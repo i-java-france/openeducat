@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import re
 import logging
+import re
 
 from odoo import api, models
 from odoo.fields import Command, Domain
@@ -97,7 +97,7 @@ class CalendarRecurrence(models.Model):
         emails = [a.get('email') for a in google_attendees]
         partners = self._get_sync_partner(emails)
         existing_attendees = self.calendar_event_ids.attendee_ids
-        for attendee in zip(emails, partners, google_attendees):
+        for attendee in zip(emails, partners, google_attendees, strict=False):
             email = attendee[0]
             if email in existing_attendees.mapped('email'):
                 # Update existing attendees
@@ -165,7 +165,7 @@ class CalendarRecurrence(models.Model):
 
     def _create_from_google(self, gevents, vals_list):
         attendee_values = {}
-        for gevent, vals in zip(gevents, vals_list):
+        for gevent, vals in zip(gevents, vals_list, strict=False):
             base_values = dict(
                 self.env['calendar.event']._odoo_values(gevent),  # FIXME default reminders
                 need_sync=False,

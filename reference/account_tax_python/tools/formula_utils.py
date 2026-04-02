@@ -1,9 +1,7 @@
 import ast
-
 from collections import defaultdict
 
 from odoo.exceptions import ValidationError
-
 
 _ALLOWED_FUNCS = ('min', 'max')
 _ALLOWED_NAMES = ('price_unit', 'quantity', 'base', 'product', 'uom')

@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 registry.category("web_tour.tours").add("invited_on_payment_course_logged", {
     steps: () => [
@@ -29,7 +29,9 @@ registry.category("web_tour.tours").add("invited_on_payment_course_logged", {
             content: "Check that non-preview slides are not accessible",
             run: function () {
                 if (this.anchor.querySelector(".o_wslides_js_slides_list_slide_link")) {
-                    console.error("Invited attendee should not access non-preview slides");
+                    console.error(
+                        "Invited attendee should not access non-preview slides"
+                    );
                 }
             },
         },

@@ -1,11 +1,20 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { queryAll, queryAllProperties, queryAllTexts, queryFirst } from "@odoo/hoot-dom";
-import { mockDate } from "@odoo/hoot-mock";
-import { toggleFilter } from "@web/../tests/views/calendar/calendar_test_helpers";
-import { contains, defineModels, fields, mockService, models, mountView, onRpc, serverState } from "@web/../tests/web_test_helpers";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {queryAll, queryAllProperties, queryAllTexts, queryFirst} from "@odoo/hoot-dom";
+import {mockDate} from "@odoo/hoot-mock";
+import {toggleFilter} from "@web/../tests/views/calendar/calendar_test_helpers";
+import {
+    contains,
+    defineModels,
+    fields,
+    mockService,
+    models,
+    mountView,
+    onRpc,
+    serverState,
+} from "@web/../tests/web_test_helpers";
 
-const { DateTime, Interval } = luxon;
+const {DateTime, Interval} = luxon;
 
 describe.current.tags("desktop");
 
@@ -19,7 +28,11 @@ class CalendarEvent extends models.Model {
             start: "2016-12-11 00:00:00",
             stop: "2016-12-11 01:00:00",
             allday: false,
-            partner_ids: [models.Command.link(serverState.partnerId), models.Command.link(2), models.Command.link(3)],
+            partner_ids: [
+                models.Command.link(serverState.partnerId),
+                models.Command.link(2),
+                models.Command.link(3),
+            ],
         },
         {
             id: 2,
@@ -29,57 +42,69 @@ class CalendarEvent extends models.Model {
             start: "2016-12-12 10:55:05",
             stop: "2016-12-12 14:55:05",
             allday: false,
-            partner_ids: [models.Command.link(serverState.partnerId), models.Command.link(2)],
+            partner_ids: [
+                models.Command.link(serverState.partnerId),
+                models.Command.link(2),
+            ],
         },
     ];
 
-    user_id = fields.Many2one({ relation: "users" });
-    partner_id = fields.Many2one({ relation: "partner" });
+    user_id = fields.Many2one({relation: "users"});
+    partner_id = fields.Many2one({relation: "partner"});
     name = fields.Char();
     start = fields.Datetime();
     stop = fields.Datetime();
     allday = fields.Boolean();
-    partner_ids = fields.One2many({ relation: "partner" });
+    partner_ids = fields.One2many({relation: "partner"});
 }
 
 class CalendarFilter extends models.Model {
     _records = [
-        { id: 1, user_id: serverState.userId, partner_id: serverState.partnerId, partner_checked: true },
-        { id: 2, user_id: 2, partner_id: 2, partner_checked: true },
+        {
+            id: 1,
+            user_id: serverState.userId,
+            partner_id: serverState.partnerId,
+            partner_checked: true,
+        },
+        {id: 2, user_id: 2, partner_id: 2, partner_checked: true},
     ];
 
-    user_id = fields.Many2one({ relation: "users" });
-    partner_id = fields.Many2one({ relation: "partner" });
+    user_id = fields.Many2one({relation: "users"});
+    partner_id = fields.Many2one({relation: "partner"});
     partner_checked = fields.Boolean();
 }
 
 class HrEmployee extends models.Model {
     _records = [
-        { id: 1, name: "Aaron", partner_id: serverState.partnerId },
-        { id: 2, name: "Brian", partner_id: 2 },
+        {id: 1, name: "Aaron", partner_id: serverState.partnerId},
+        {id: 2, name: "Brian", partner_id: 2},
     ];
 
     name = fields.Char();
-    partner_id = fields.Many2one({ relation: "partner" });
+    partner_id = fields.Many2one({relation: "partner"});
 }
 
 class HrWorkLocation extends models.Model {
     _records = [
-        { id: 1, name: "Office", location_type: "office" },
-        { id: 2, name: "Home", location_type: "home" },
+        {id: 1, name: "Office", location_type: "office"},
+        {id: 2, name: "Home", location_type: "home"},
     ];
 
     name = fields.Char();
     location_type = fields.Selection({
-        selection: [['home', "Home"], ['office', "Office"], ["other", "Other"]],
+        selection: [
+            ["home", "Home"],
+            ["office", "Office"],
+            ["other", "Other"],
+        ],
     });
 }
 
 class Partner extends models.Model {
     _records = [
-        { id: serverState.partnerId, name: "Partner 1", image: "AAA" },
-        { id: 2, name: "Partner 2", image: "BBB" },
-        { id: 3, name: "Partner 3", image: "CCC" },
+        {id: serverState.partnerId, name: "Partner 1", image: "AAA"},
+        {id: 2, name: "Partner 2", image: "BBB"},
+        {id: 3, name: "Partner 3", image: "CCC"},
     ];
 
     name = fields.Char();
@@ -88,12 +113,12 @@ class Partner extends models.Model {
 
 class Users extends models.Model {
     _records = [
-        { id: serverState.userId, name: "User 1", partner_id: serverState.partnerId },
-        { id: 2, name: "User 2", partner_id: 2 },
+        {id: serverState.userId, name: "User 1", partner_id: serverState.partnerId},
+        {id: 2, name: "User 2", partner_id: 2},
     ];
 
     name = fields.Char();
-    partner_id = fields.Many2one({ relation: "partner" });
+    partner_id = fields.Many2one({relation: "partner"});
 }
 
 defineModels([
@@ -116,7 +141,7 @@ onRpc("get_state_selections", () => [
     ["tentative", "Maybe"],
     ["needsAction", "Needs Action"],
 ]);
-onRpc("res.users", "read", () => [{ user: serverState.userId }]);
+onRpc("res.users", "read", () => [{user: serverState.userId}]);
 
 beforeEach(() => {
     mockDate("2020-12-10 15:00:00");
@@ -141,7 +166,7 @@ const WORK_LOCATION_OFFICE = {
 };
 
 const EMPLOYEE_WORK_LOCATIONS = {
-    [1]: {
+    1: {
         user_id: serverState.userId,
         employee_id: 1,
         partner_id: serverState.partnerId,
@@ -192,27 +217,45 @@ test(`basic rendering`, async () => {
             expect.step([action, options?.additionalContext?.default_date]);
         },
     });
-    onRpc("get_worklocation", () => ({ 1: EMPLOYEE_WORK_LOCATIONS[1] }));
+    onRpc("get_worklocation", () => ({1: EMPLOYEE_WORK_LOCATIONS[1]}));
 
     await mountHomeWorkingView();
     await toggleFilter("partner_ids", "2");
 
     const sundayDate = DateTime.fromISO("2020-12-06");
     const saturdayDate = DateTime.fromISO("2020-12-12");
-    const intervals = Interval.fromDateTimes(sundayDate.startOf("day"), saturdayDate.endOf("day")).splitBy({ day: 1 });
-    const workLocations = intervals.map(({ start }) => {
-        return queryFirst(`.fc-col-header-cell[data-date="${start.toISODate()}"] .o_worklocation_btn`);
+    const intervals = Interval.fromDateTimes(
+        sundayDate.startOf("day"),
+        saturdayDate.endOf("day")
+    ).splitBy({day: 1});
+    const workLocations = intervals.map(({start}) => {
+        return queryFirst(
+            `.fc-col-header-cell[data-date="${start.toISODate()}"] .o_worklocation_btn`
+        );
     });
-    expect(queryAllTexts(workLocations)).toEqual(["Office", "", "", "Home", "Set Location", "Set Location", "Office"]);
+    expect(queryAllTexts(workLocations)).toEqual([
+        "Office",
+        "",
+        "",
+        "Home",
+        "Set Location",
+        "Set Location",
+        "Office",
+    ]);
 
-    await contains(`.o_worklocation_text`, { root: workLocations[0] }).click();
+    await contains(`.o_worklocation_text`, {root: workLocations[0]}).click();
     expect(`.o_cw_popover div[name="employee_name"]`).toHaveText("Aaron");
     expect(`.o_cw_popover .o_cw_popover_edit`).toHaveCount(1);
     expect(`.o_cw_popover .o_cw_popover_delete`).toHaveCount(1);
 
     await contains(`.o_cw_popover_close`).click();
-    await contains(`.o_worklocation_line`, { root: workLocations.at(-2), visible: false }).click();
-    expect.verifySteps([["hr_homeworking_calendar.set_location_wizard_action", "2020-12-11"]]);
+    await contains(`.o_worklocation_line`, {
+        root: workLocations.at(-2),
+        visible: false,
+    }).click();
+    expect.verifySteps([
+        ["hr_homeworking_calendar.set_location_wizard_action", "2020-12-11"],
+    ]);
 });
 
 test(`multicalendar`, async () => {
@@ -221,28 +264,50 @@ test(`multicalendar`, async () => {
 
     const sundayDate = DateTime.fromISO("2020-12-06");
     const saturdayDate = DateTime.fromISO("2020-12-12");
-    const intervals = Interval.fromDateTimes(sundayDate.startOf("day"), saturdayDate.endOf("day")).splitBy({ day: 1 });
+    const intervals = Interval.fromDateTimes(
+        sundayDate.startOf("day"),
+        saturdayDate.endOf("day")
+    ).splitBy({day: 1});
 
-    const dataSetsByDates = intervals.map(({ start }) => queryAllProperties(`.fc-col-header-cell[data-date="${start.toISODate()}"] .o_worklocation_btn .o_homeworking_content`, "dataset"));
-    const locations = dataSetsByDates.flatMap((dataSets) => dataSets.length ? dataSets.map((ds) => ds.location) : [false]);
+    const dataSetsByDates = intervals.map(({start}) =>
+        queryAllProperties(
+            `.fc-col-header-cell[data-date="${start.toISODate()}"] .o_worklocation_btn .o_homeworking_content`,
+            "dataset"
+        )
+    );
+    const locations = dataSetsByDates.flatMap((dataSets) =>
+        dataSets.length ? dataSets.map((ds) => ds.location) : [false]
+    );
     expect(locations).toEqual([
-        "office", // sunday
-        "home",   // sunday
-        "office", // monday
-        "home",   // monday
-        "office", // tuesday
-        "office", // tuesday
-        "home",   // wednesday
-        "home",   // wednesday
-        "home",   // thursday
-        false,    // friday
-        "office", // saturday
-        "office", // saturday
+        "office", // Sunday
+        "home", // Sunday
+        "office", // Monday
+        "home", // Monday
+        "office", // Tuesday
+        "office", // Tuesday
+        "home", // Wednesday
+        "home", // Wednesday
+        "home", // Thursday
+        false, // Friday
+        "office", // Saturday
+        "office", // Saturday
     ]);
-    expect(queryAll(`.fc-col-header-cell[data-date="2020-12-10"] .o_worklocation_text i.add_wl`, { visible: false })).toHaveCount(1);
-    expect(queryAll(`.fc-col-header-cell[data-date="2020-12-12"] .o_worklocation_text i.add_wl`, { visible: false })).toHaveCount(0);
+    expect(
+        queryAll(
+            `.fc-col-header-cell[data-date="2020-12-10"] .o_worklocation_text i.add_wl`,
+            {visible: false}
+        )
+    ).toHaveCount(1);
+    expect(
+        queryAll(
+            `.fc-col-header-cell[data-date="2020-12-12"] .o_worklocation_text i.add_wl`,
+            {visible: false}
+        )
+    ).toHaveCount(0);
 
-    await contains(`.fc-col-header-cell[data-date="2020-12-10"] .o_homework_content`).click();
+    await contains(
+        `.fc-col-header-cell[data-date="2020-12-10"] .o_homework_content`
+    ).click();
     expect(`.o_cw_popover div[name="employee_name"]`).toHaveText("Brian");
     expect(`.o_cw_popover .o_cw_popover_edit`).toHaveCount(0);
     expect(`.o_cw_popover .o_cw_popover_delete`).toHaveCount(0);
@@ -268,10 +333,16 @@ test(`test exceptions are correctly rendered`, async () => {
     }));
 
     await mountHomeWorkingView();
-    expect(`.fc-col-header-cell[data-date="2020-12-11"] .o_worklocation_btn`).toHaveText("Home");
+    expect(
+        `.fc-col-header-cell[data-date="2020-12-11"] .o_worklocation_btn`
+    ).toHaveText("Home");
 
-    await contains(`.fc-col-header-cell[data-date="2020-12-10"] .o_worklocation_text`, { visible: false }).click();
-    expect.verifySteps([["hr_homeworking_calendar.set_location_wizard_action", "2020-12-10"]]);
+    await contains(`.fc-col-header-cell[data-date="2020-12-10"] .o_worklocation_text`, {
+        visible: false,
+    }).click();
+    expect.verifySteps([
+        ["hr_homeworking_calendar.set_location_wizard_action", "2020-12-10"],
+    ]);
 });
 
 test(`test exceptions are correctly rendered in multicalendar`, async () => {
@@ -302,12 +373,28 @@ test(`test exceptions are correctly rendered in multicalendar`, async () => {
     }));
 
     await mountHomeWorkingView();
-    expect(`.fc-col-header-cell[data-date="2020-12-11"] .o_homework_content`).toHaveCount(1);
-    expect(`.fc-col-header-cell[data-date="2020-12-11"] .o_worklocation_btn`).toHaveText("Office");
-    expect(`.fc-col-header-cell[data-date="2020-12-10"] .o_homework_content`).toHaveCount(2);
-    expect(`.fc-col-header-cell[data-date="2020-12-10"] .o_worklocation_btn`).toHaveText("Home");
-    expect(queryAll(`.fc-col-header-cell[data-date="2020-12-11"] .add_wl`, { visible: false })).toHaveCount(1);
+    expect(
+        `.fc-col-header-cell[data-date="2020-12-11"] .o_homework_content`
+    ).toHaveCount(1);
+    expect(
+        `.fc-col-header-cell[data-date="2020-12-11"] .o_worklocation_btn`
+    ).toHaveText("Office");
+    expect(
+        `.fc-col-header-cell[data-date="2020-12-10"] .o_homework_content`
+    ).toHaveCount(2);
+    expect(
+        `.fc-col-header-cell[data-date="2020-12-10"] .o_worklocation_btn`
+    ).toHaveText("Home");
+    expect(
+        queryAll(`.fc-col-header-cell[data-date="2020-12-11"] .add_wl`, {
+            visible: false,
+        })
+    ).toHaveCount(1);
 
-    await contains(`.fc-col-header-cell[data-date="2020-12-11"] .add_wl`, { visible: false }).click();
-    expect.verifySteps([["hr_homeworking_calendar.set_location_wizard_action", "2020-12-11"]]);
+    await contains(`.fc-col-header-cell[data-date="2020-12-11"] .add_wl`, {
+        visible: false,
+    }).click();
+    expect.verifySteps([
+        ["hr_homeworking_calendar.set_location_wizard_action", "2020-12-11"],
+    ]);
 });

@@ -1,25 +1,25 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
-
 from datetime import datetime, timedelta
-from freezegun import freeze_time
 from itertools import product
-from markupsafe import escape, Markup
 from unittest.mock import patch
 
+from freezegun import freeze_time
+from markupsafe import Markup, escape
+
 from odoo import tools
+from odoo.exceptions import AccessError
+from odoo.service.model import call_kw
+from odoo.tests import tagged
+from odoo.tests.common import users
+from odoo.tools import formataddr, mute_logger
+
 from odoo.addons.base.tests.test_ir_cron import CronMixinCase
-from odoo.addons.mail.tests.common import mail_new_test_user, MailCommon
+from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
 from odoo.addons.test_mail.data.test_mail_data import MAIL_TEMPLATE_PLAINTEXT
 from odoo.addons.test_mail.models.test_mail_models import MailTestSimple
 from odoo.addons.test_mail.tests.common import TestRecipients
-from odoo.service.model import call_kw
-from odoo.exceptions import AccessError
-from odoo.tests import tagged
-from odoo.tools import mute_logger, formataddr
-from odoo.tests.common import users
 
 
 class TestMessagePostCommon(MailCommon, TestRecipients):
@@ -683,7 +683,7 @@ class TestMessageLog(TestMessagePostCommon):
                     for test_record in test_records
                 },
             )
-        for test_record, new_note in zip(test_records, new_notes):
+        for test_record, new_note in zip(test_records, new_notes, strict=False):
             self.assertMailNotifications(
                 new_note,
                 [{
@@ -720,7 +720,7 @@ class TestMessageLog(TestMessagePostCommon):
                 },
                 partner_ids=self.test_partners[:5].ids,
             )
-        for test_record, new_note in zip(test_records, new_notes):
+        for test_record, new_note in zip(test_records, new_notes, strict=False):
             self.assertMailNotifications(
                 new_note,
                 [{
@@ -752,7 +752,7 @@ class TestMessageLog(TestMessagePostCommon):
                 'test_mail.mail_template_simple_test',
                 render_values={'partner': self.user_employee.partner_id}
             )
-        for test_record, new_note in zip(test_records, new_notes):
+        for test_record, new_note in zip(test_records, new_notes, strict=False):
             self.assertMailNotifications(
                 new_note,
                 [{
@@ -1066,7 +1066,7 @@ class TestMessagePost(TestMessagePostCommon, CronMixinCase):
         expected_companies = [self.company_2, self.company_admin, self.company_2]
         expected_alias_domains = [self.mail_alias_domain_c2, self.mail_alias_domain, self.mail_alias_domain_c2]
         for record, expected_company, expected_alias_domain in zip(
-            records, expected_companies, expected_alias_domains
+            records, expected_companies, expected_alias_domains, strict=False
         ):
             with self.subTest(record=record):
                 with self.assertSinglePostNotifications(
@@ -1128,7 +1128,7 @@ class TestMessagePost(TestMessagePostCommon, CronMixinCase):
             [f'"{self.partner_1.name}" <@ >',],
         ]
 
-        for partner_email, expected_to in zip(partner_emails, expected_tos):
+        for partner_email, expected_to in zip(partner_emails, expected_tos, strict=False):
             with self.subTest(partner_email=partner_email, expected_to=expected_to):
                 self.partner_1.write({'email': partner_email})
                 with self.mock_mail_gateway():
@@ -1244,7 +1244,7 @@ class TestMessagePost(TestMessagePostCommon, CronMixinCase):
         self.assertFalse(schedules.exists(), msg='Should have sent the messages')
 
         # check notifications have been sent
-        for msg, test_record, test_record_name in zip(messages, test_records, test_record_names):
+        for msg, test_record, test_record_name in zip(messages, test_records, test_record_names, strict=False):
             with self.subTest(test_record_name=test_record_name):
                 if test_record != deleted_record:
                     # unlinked record -> skip notification
@@ -2227,7 +2227,7 @@ class TestMessagePostLang(MailCommon, TestRecipients):
         record0_customer = self.env['res.partner'].search([('email_normalized', '=', 'test.record.1@test.customer.com')], limit=1)
         self.assertTrue(record0_customer, 'Template usage should have created a contact based on record email')
 
-        for record, customer in zip(test_records, record0_customer + self.partner_2):
+        for record, customer in zip(test_records, record0_customer + self.partner_2, strict=False):
             customer_email = self._find_sent_email_wemail(customer.email_formatted)
             self.assertTrue(customer_email)
             body = customer_email['body']
@@ -2293,7 +2293,7 @@ class TestMessagePostLang(MailCommon, TestRecipients):
         for record, customer, exp_notif_lang in zip(
             test_records,
             record0_customer + self.partner_2,
-            ('en_US', 'es_ES')  # new customer is en_US, partner_2 is es_ES
+            ('en_US', 'es_ES'), strict=False  # new customer is en_US, partner_2 is es_ES
         ):
             customer_email = self._find_sent_email_wemail(customer.email_formatted)
             self.assertTrue(customer_email)
@@ -2432,7 +2432,7 @@ class TestMessagePostLang(MailCommon, TestRecipients):
                         # to ease translations checks.
                         for partner, exp_lang in zip(
                             self.partner_1 + self.partner_2,
-                            ('en_US', 'es_ES')
+                            ('en_US', 'es_ES'), strict=False
                         ):
                             email = self._find_sent_email(
                                 self.partner_employee.email_formatted,

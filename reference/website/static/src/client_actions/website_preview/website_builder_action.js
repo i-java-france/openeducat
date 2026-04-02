@@ -1,4 +1,4 @@
-import { LocalOverlayContainer } from "@html_editor/local_overlay_container";
+import {LocalOverlayContainer} from "@html_editor/local_overlay_container";
 import {
     Component,
     onMounted,
@@ -12,28 +12,31 @@ import {
     useState,
     useSubEnv,
 } from "@odoo/owl";
-import { LazyComponent, loadBundle } from "@web/core/assets";
-import { browser } from "@web/core/browser/browser";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { ResizablePanel } from "@web/core/resizable_panel/resizable_panel";
-import { RPCError } from "@web/core/network/rpc";
-import { Deferred } from "@web/core/utils/concurrency";
-import { uniqueId } from "@web/core/utils/functions";
-import { useChildRef, useService, useBus } from "@web/core/utils/hooks";
-import { effect } from "@web/core/utils/reactive";
-import { redirect } from "@web/core/utils/urls";
-import { standardActionServiceProps } from "@web/webclient/actions/action_service";
-import { AddPageDialog } from "@website/components/dialog/add_page_dialog";
-import { ResourceEditor } from "@website/components/resource_editor/resource_editor";
-import { isHTTPSorNakedDomainRedirection } from "./utils";
-import { WebsiteSystrayItem } from "./website_systray_item";
-import { renderToElement } from "@web/core/utils/render";
-import { isBrowserChrome, isBrowserMicrosoftEdge } from "@web/core/browser/feature_detection";
-import { router } from "@web/core/browser/router";
-import { getScrollingElement } from "@web/core/utils/scrolling";
-import { CreatePageMessage } from "./create_page_message";
+import {LazyComponent, loadBundle} from "@web/core/assets";
+import {browser} from "@web/core/browser/browser";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {ResizablePanel} from "@web/core/resizable_panel/resizable_panel";
+import {RPCError} from "@web/core/network/rpc";
+import {Deferred} from "@web/core/utils/concurrency";
+import {uniqueId} from "@web/core/utils/functions";
+import {useChildRef, useService, useBus} from "@web/core/utils/hooks";
+import {effect} from "@web/core/utils/reactive";
+import {redirect} from "@web/core/utils/urls";
+import {standardActionServiceProps} from "@web/webclient/actions/action_service";
+import {AddPageDialog} from "@website/components/dialog/add_page_dialog";
+import {ResourceEditor} from "@website/components/resource_editor/resource_editor";
+import {isHTTPSorNakedDomainRedirection} from "./utils";
+import {WebsiteSystrayItem} from "./website_systray_item";
+import {renderToElement} from "@web/core/utils/render";
+import {
+    isBrowserChrome,
+    isBrowserMicrosoftEdge,
+} from "@web/core/browser/feature_detection";
+import {router} from "@web/core/browser/router";
+import {getScrollingElement} from "@web/core/utils/scrolling";
+import {CreatePageMessage} from "./create_page_message";
 
 const websiteSystrayRegistry = registry.category("website_systray");
 
@@ -48,10 +51,10 @@ export class WebsiteBuilderClientAction extends Component {
     };
     static props = {
         ...standardActionServiceProps,
-        editTranslations: { type: Boolean, optional: true },
-        enableEditor: { type: Boolean, optional: true },
-        path: { type: String, optional: true },
-        websiteId: { type: [Number, { value: false }], optional: true },
+        editTranslations: {type: Boolean, optional: true},
+        enableEditor: {type: Boolean, optional: true},
+        path: {type: String, optional: true},
+        websiteId: {type: [Number, {value: false}], optional: true},
     };
 
     static extractProps(action) {
@@ -86,7 +89,12 @@ export class WebsiteBuilderClientAction extends Component {
         useSubEnv({
             builderRef: useRef("container"),
         });
-        this.state = useState({ isEditing: false, showSidebar: true, key: 1, is404: false });
+        this.state = useState({
+            isEditing: false,
+            showSidebar: true,
+            key: 1,
+            is404: false,
+        });
         this.websiteContext = useState(this.websiteService.context);
         this.component = useComponent();
 
@@ -152,7 +160,8 @@ export class WebsiteBuilderClientAction extends Component {
                     this.env.services["html_builder.snippets"]
                         .getSnippetModel(this.snippetsTemplate)
                         .reload({
-                            lang: this.websiteService.currentWebsite?.default_lang_id.code,
+                            lang: this.websiteService.currentWebsite?.default_lang_id
+                                .code,
                             website_id: this.websiteService.currentWebsite?.id,
                         });
                 });
@@ -183,7 +192,9 @@ export class WebsiteBuilderClientAction extends Component {
         );
         useEffect(
             (isEditing) => {
-                document.querySelector("body").classList.toggle("o_builder_open", isEditing);
+                document
+                    .querySelector("body")
+                    .classList.toggle("o_builder_open", isEditing);
                 if (isEditing) {
                     // When entering edit mode, the navbar animates upwards.
                     // To avoid an abrupt disappearance, we delay adding the
@@ -196,7 +207,9 @@ export class WebsiteBuilderClientAction extends Component {
                             .classList.add("d-none");
                     }, 200);
                 } else {
-                    document.querySelector(".o_main_navbar")?.classList.remove("d-none");
+                    document
+                        .querySelector(".o_main_navbar")
+                        ?.classList.remove("d-none");
                 }
                 return () => clearTimeout(this.navBarTimeout);
             },
@@ -224,7 +237,8 @@ export class WebsiteBuilderClientAction extends Component {
             isMobile: this.websiteContext.isMobile,
             config: {
                 initialTarget: this.target,
-                initialTab: this.initialTab || this.translation ? "customize" : "blocks",
+                initialTab:
+                    this.initialTab || this.translation ? "customize" : "blocks",
                 builderSidebar: {
                     withHiddenSidebar: async (cb) => {
                         try {
@@ -242,7 +256,7 @@ export class WebsiteBuilderClientAction extends Component {
                 isTranslationMode: this.translation,
             },
         };
-        return { translation: this.translation, builderProps };
+        return {translation: this.translation, builderProps};
     }
 
     get systrayProps() {
@@ -262,7 +276,7 @@ export class WebsiteBuilderClientAction extends Component {
                     props: this.systrayProps,
                     isDisplayed: () => true,
                 },
-                { sequence: -100 }
+                {sequence: -100}
             );
             websiteSystrayRegistry.trigger("EDIT-WEBSITE");
         }
@@ -352,9 +366,14 @@ export class WebsiteBuilderClientAction extends Component {
             return;
         }
         const currentTitle = iframe.contentDocument.title;
-        history.replaceState(history.state, currentTitle, iframe.contentDocument.location.href);
-        this.title.setParts({ action: currentTitle });
-        const frontendIconEl = iframe.contentDocument.querySelector("link[rel~='icon']");
+        history.replaceState(
+            history.state,
+            currentTitle,
+            iframe.contentDocument.location.href
+        );
+        this.title.setParts({action: currentTitle});
+        const frontendIconEl =
+            iframe.contentDocument.querySelector("link[rel~='icon']");
         if (frontendIconEl) {
             document.querySelector("link[rel~='icon']").href = frontendIconEl.href;
         }
@@ -387,9 +406,15 @@ export class WebsiteBuilderClientAction extends Component {
                     // Note that iframe's `src` is the URL used to start the
                     // website preview, it's not sync'd with iframe navigation.
                     const srcUrl = new URL(iframe.src);
-                    const pathUrl = new URL(srcUrl.searchParams.get("path"), srcUrl.origin);
+                    const pathUrl = new URL(
+                        srcUrl.searchParams.get("path"),
+                        srcUrl.origin
+                    );
                     pathUrl.searchParams.set("iframe_reload", "1");
-                    srcUrl.searchParams.set("path", `${pathUrl.pathname}${pathUrl.search}`);
+                    srcUrl.searchParams.set(
+                        "path",
+                        `${pathUrl.pathname}${pathUrl.search}`
+                    );
                     // We could inject `pathUrl` directly but keep the same
                     // expected URL format `/website/force/1?path=..`
                     iframe.src = srcUrl.toString();
@@ -406,7 +431,11 @@ export class WebsiteBuilderClientAction extends Component {
         this.websiteService.pageDocument = this.websiteContent.el.contentDocument;
         const url = new URL(this.websiteService.contentWindow.location.href);
         if (url.searchParams.has("edit_translations")) {
-            deleteQueryParam("edit_translations", this.websiteService.contentWindow, true);
+            deleteQueryParam(
+                "edit_translations",
+                this.websiteService.contentWindow,
+                true
+            );
         }
 
         this.toggleIsMobile(this.websiteContext.isMobile);
@@ -451,7 +480,7 @@ export class WebsiteBuilderClientAction extends Component {
                 return;
             }
 
-            const { href, target } = linkEl;
+            const {href, target} = linkEl;
             if (href && target !== "_blank" && !this.state.isEditing) {
                 if (isTopWindowURL(linkEl)) {
                     ev.preventDefault();
@@ -523,7 +552,10 @@ export class WebsiteBuilderClientAction extends Component {
                         resolve();
                     }
                 });
-                observer.observe(doc.body, { attributes: true, attributeFilter: ["is-ready"] });
+                observer.observe(doc.body, {
+                    attributes: true,
+                    attributeFilter: ["is-ready"],
+                });
             }
         });
     }
@@ -586,7 +618,10 @@ export class WebsiteBuilderClientAction extends Component {
             this.reloadWebClient();
         } catch (e) {
             if (e instanceof RPCError) {
-                const message = _t("Could not install module %s", snippet.moduleDisplayName);
+                const message = _t(
+                    "Could not install module %s",
+                    snippet.moduleDisplayName
+                );
                 this.notification.add(message, {
                     type: "danger",
                     sticky: true,
@@ -608,7 +643,7 @@ export class WebsiteBuilderClientAction extends Component {
                 this.websiteService.websiteRootInstance = event.detail.rootInstance;
                 deferred.resolve();
             },
-            { once: true }
+            {once: true}
         );
     }
 
@@ -618,7 +653,9 @@ export class WebsiteBuilderClientAction extends Component {
                 "#wrapwrap.homepage #wrap"
             );
             if (wrapEl && !wrapEl.innerHTML.trim()) {
-                this.welcomeMessageEl = renderToElement("website.homepage_editor_welcome_message");
+                this.welcomeMessageEl = renderToElement(
+                    "website.homepage_editor_welcome_message"
+                );
                 wrapEl.replaceChildren(this.welcomeMessageEl);
             }
         }
@@ -646,7 +683,9 @@ export class WebsiteBuilderClientAction extends Component {
         const websiteDoc = this.websiteContent.el?.contentDocument;
         const fallBackDoc = this.iframefallback.el?.contentDocument;
         if (!this.state.isEditing && websiteDoc && fallBackDoc) {
-            fallBackDoc.documentElement.replaceWith(websiteDoc.documentElement.cloneNode(true));
+            fallBackDoc.documentElement.replaceWith(
+                websiteDoc.documentElement.cloneNode(true)
+            );
             const currentScrollEl = getScrollingElement(websiteDoc);
             const scrollElement = getScrollingElement(fallBackDoc);
             scrollElement.scrollTop = currentScrollEl.scrollTop;
@@ -754,9 +793,9 @@ function deleteQueryParam(param, target = window, adaptBrowserUrl = false) {
  * @param host {string} host of the route.
  * @param pathname {string} path of the route.
  */
-function isTopWindowURL({ host, pathname }) {
+function isTopWindowURL({host, pathname}) {
     for (const fn of registry.category("isTopWindowURL").getAll()) {
-        if (fn({ host, pathname })) {
+        if (fn({host, pathname})) {
             return true;
         }
     }
@@ -765,7 +804,7 @@ function isTopWindowURL({ host, pathname }) {
 
 registry
     .category("isTopWindowURL")
-    .add("html_builder.website_builder_action", ({ host, pathname }) => {
+    .add("html_builder.website_builder_action", ({host, pathname}) => {
         const backendRoutes = ["/web", "/web/session/logout", "/odoo"];
         return (
             host !== window.location.host ||

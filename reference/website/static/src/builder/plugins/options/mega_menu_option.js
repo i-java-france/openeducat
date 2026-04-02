@@ -1,5 +1,5 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { getCSSVariableValue, getHtmlStyle } from "@html_editor/utils/formatting";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {getCSSVariableValue, getHtmlStyle} from "@html_editor/utils/formatting";
 
 export class MegaMenuOption extends BaseOptionComponent {
     static template = "website.MegaMenuOption";
@@ -8,7 +8,7 @@ export class MegaMenuOption extends BaseOptionComponent {
 
     setup() {
         super.setup();
-        const { getTemplatePrefix } = this.dependencies.megaMenuOptionPlugin;
+        const {getTemplatePrefix} = this.dependencies.megaMenuOptionPlugin;
         this.state = useDomState((el) => ({
             templatePrefix: getTemplatePrefix(el),
         }));

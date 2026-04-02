@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-dom";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-dom";
 import {
     defineModels,
     getService,
@@ -8,14 +8,14 @@ import {
     onRpc,
 } from "@web/../tests/web_test_helpers";
 
-import { currencies } from "@web/core/currency";
-import { rpcBus } from "@web/core/network/rpc";
+import {currencies} from "@web/core/currency";
+import {rpcBus} from "@web/core/network/rpc";
 
 class Currency extends models.Model {
     _name = "res.currency";
     get_all_currencies() {
         return {
-            1: { symbol: "$", position: "before", digits: 2 },
+            1: {symbol: "$", position: "before", digits: 2},
         };
     }
 }
@@ -24,7 +24,7 @@ class Notcurrency extends models.Model {}
 defineModels([Currency, Notcurrency]);
 
 test("reload currencies when updating a res.currency", async () => {
-    onRpc(({ model, method }) => {
+    onRpc(({model, method}) => {
         expect.step([model, method]);
     });
     await makeMockEnv();
@@ -42,20 +42,20 @@ test("reload currencies when updating a res.currency", async () => {
 });
 
 test("do not reload webclient when updating a res.currency, but there is an error", async () => {
-    onRpc("get_all_currencies", ({ method }) => {
+    onRpc("get_all_currencies", ({method}) => {
         expect.step(method);
     });
     await makeMockEnv();
     expect.verifySteps([]);
     rpcBus.trigger("RPC:RESPONSE", {
-        data: { params: { model: "res.currency", method: "write" } },
+        data: {params: {model: "res.currency", method: "write"}},
         settings: {},
         result: {},
     });
     await animationFrame();
     expect.verifySteps(["get_all_currencies"]);
     rpcBus.trigger("RPC:RESPONSE", {
-        data: { params: { model: "res.currency", method: "write" } },
+        data: {params: {model: "res.currency", method: "write"}},
         settings: {},
         error: {},
     });

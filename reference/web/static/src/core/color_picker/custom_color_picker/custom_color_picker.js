@@ -1,5 +1,5 @@
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { _t } from "@web/core/l10n/translation";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {_t} from "@web/core/l10n/translation";
 import {
     convertCSSColorToRgba,
     convertHslToRgb,
@@ -7,11 +7,17 @@ import {
     convertRgbToHsl,
     normalizeCSSColor,
 } from "@web/core/utils/colors";
-import { uniqueId } from "@web/core/utils/functions";
-import { clamp } from "@web/core/utils/numbers";
-import { debounce, useThrottleForAnimation } from "@web/core/utils/timing";
+import {uniqueId} from "@web/core/utils/functions";
+import {clamp} from "@web/core/utils/numbers";
+import {debounce, useThrottleForAnimation} from "@web/core/utils/timing";
 
-import { Component, onMounted, onWillUpdateProps, useExternalListener, useRef } from "@odoo/owl";
+import {
+    Component,
+    onMounted,
+    onWillUpdateProps,
+    useExternalListener,
+    useRef,
+} from "@odoo/owl";
 
 const ARROW_KEYS = ["arrowup", "arrowdown", "arrowleft", "arrowright"];
 const SLIDER_KEYS = [...ARROW_KEYS, "pageup", "pagedown", "home", "end"];
@@ -21,17 +27,17 @@ const DEFAULT_COLOR = "#FF0000";
 export class CustomColorPicker extends Component {
     static template = "web.CustomColorPicker";
     static props = {
-        document: { type: true, optional: true },
-        defaultColor: { type: String, optional: true },
-        selectedColor: { type: String, optional: true },
-        noTransparency: { type: Boolean, optional: true },
-        stopClickPropagation: { type: Boolean, optional: true },
-        onColorSelect: { type: Function, optional: true },
-        onColorPreview: { type: Function, optional: true },
-        onInputEnter: { type: Function, optional: true },
-        defaultOpacity: { type: Number, optional: true },
-        setOnCloseCallback: { type: Function, optional: true },
-        setOperationCallbacks: { type: Function, optional: true },
+        document: {type: true, optional: true},
+        defaultColor: {type: String, optional: true},
+        selectedColor: {type: String, optional: true},
+        noTransparency: {type: Boolean, optional: true},
+        stopClickPropagation: {type: Boolean, optional: true},
+        onColorSelect: {type: Function, optional: true},
+        onColorPreview: {type: Function, optional: true},
+        onInputEnter: {type: Function, optional: true},
+        defaultOpacity: {type: Number, optional: true},
+        setOnCloseCallback: {type: Function, optional: true},
+        setOperationCallbacks: {type: Function, optional: true},
     };
     static defaultProps = {
         document: window.document,
@@ -65,7 +71,11 @@ export class CustomColorPicker extends Component {
         if (!this.props.selectedColor) {
             this.props.selectedColor = this.props.defaultColor;
         }
-        this.debouncedOnChangeInputs = debounce(this.onChangeInputs.bind(this), 10, true);
+        this.debouncedOnChangeInputs = debounce(
+            this.onChangeInputs.bind(this),
+            10,
+            true
+        );
 
         this.elRef = useRef("el");
         this.colorPickerAreaRef = useRef("colorPickerArea");
@@ -99,7 +109,9 @@ export class CustomColorPicker extends Component {
         for (const doc of documents) {
             useExternalListener(doc, "pointermove", this.throttleOnPointerMove);
             useExternalListener(doc, "pointerup", this.onPointerUp.bind(this));
-            useExternalListener(doc, "keydown", this.onEscapeKeydown.bind(this), { capture: true });
+            useExternalListener(doc, "keydown", this.onEscapeKeydown.bind(this), {
+                capture: true,
+            });
         }
         // Apply the previewed custom color when the popover is closed.
         this.props.setOnCloseCallback?.(() => {
@@ -193,7 +205,7 @@ export class CustomColorPicker extends Component {
     handleRangeKeydownValue(
         hotkey,
         value,
-        { min = 0, max = 100, defaultStep = 10, modifierStep = 1, leap = 20 } = {}
+        {min = 0, max = 100, defaultStep = 10, modifierStep = 1, leap = 20} = {}
     ) {
         let step = defaultStep;
         if (hotkey.startsWith("control+")) {
@@ -249,8 +261,11 @@ export class CustomColorPicker extends Component {
         // Update picker area and picker pointer position
         const colorPickerArea = this.colorPickerAreaRef.el;
         colorPickerArea.style.backgroundColor = `hsl(${this.colorComponents.hue}, 100%, 50%)`;
-        const top = ((100 - this.colorComponents.lightness) * colorPickerArea.clientHeight) / 100;
-        const left = (this.colorComponents.saturation * colorPickerArea.clientWidth) / 100;
+        const top =
+            ((100 - this.colorComponents.lightness) * colorPickerArea.clientHeight) /
+            100;
+        const left =
+            (this.colorComponents.saturation * colorPickerArea.clientWidth) / 100;
 
         const colorpickerPointer = this.colorPickerPointerRef.el;
         colorpickerPointer.style.top = top - 5 + "px";
@@ -302,7 +317,7 @@ export class CustomColorPicker extends Component {
         }
         Object.assign(
             this.colorComponents,
-            { hex: hex },
+            {hex: hex},
             rgb,
             convertRgbToHsl(rgb.red, rgb.green, rgb.blue)
         );
@@ -330,9 +345,9 @@ export class CustomColorPicker extends Component {
         }
         Object.assign(
             this.colorComponents,
-            { red: r, green: g, blue: b },
-            a === undefined ? {} : { opacity: a },
-            { hex: hex },
+            {red: r, green: g, blue: b},
+            a === undefined ? {} : {opacity: a},
+            {hex: hex},
             convertRgbToHsl(r, g, b)
         );
         this._updateCssColor();
@@ -369,10 +384,10 @@ export class CustomColorPicker extends Component {
         const hex = convertRgbaToCSSColor(rgb.red, rgb.green, rgb.blue, a);
         Object.assign(
             this.colorComponents,
-            { hue: h, saturation: s, lightness: l },
+            {hue: h, saturation: s, lightness: l},
             rgb,
-            { hex: hex },
-            { opacity: a }
+            {hex: hex},
+            {opacity: a}
         );
         this._updateCssColor();
     }
@@ -386,11 +401,11 @@ export class CustomColorPicker extends Component {
         if (a < 0 || a > 100) {
             return;
         }
-        Object.assign(this.colorComponents, { opacity: a });
+        Object.assign(this.colorComponents, {opacity: a});
         const r = this.colorComponents.red;
         const g = this.colorComponents.green;
         const b = this.colorComponents.blue;
-        Object.assign(this.colorComponents, { hex: convertRgbaToCSSColor(r, g, b, a) });
+        Object.assign(this.colorComponents, {hex: convertRgbaToCSSColor(r, g, b, a)});
         this._updateCssColor();
     }
     /**
@@ -411,7 +426,9 @@ export class CustomColorPicker extends Component {
         const g = this.colorComponents.green;
         const b = this.colorComponents.blue;
         const a = this.colorComponents.opacity;
-        Object.assign(this.colorComponents, { cssColor: convertRgbaToCSSColor(r, g, b, a) });
+        Object.assign(this.colorComponents, {
+            cssColor: convertRgbaToCSSColor(r, g, b, a),
+        });
         if (this.previewActive) {
             this.props.onColorPreview(this.colorComponents);
         }
@@ -578,7 +595,11 @@ export class CustomColorPicker extends Component {
         let hue = Math.round((360 * y) / colorSlider.clientHeight);
         hue = clamp(hue, 0, 360);
 
-        this._updateHsl(hue, this.colorComponents.saturation, this.colorComponents.lightness);
+        this._updateHsl(
+            hue,
+            this.colorComponents.saturation,
+            this.colorComponents.lightness
+        );
         this._updateUI();
     }
     /**
@@ -597,7 +618,11 @@ export class CustomColorPicker extends Component {
             max: 360,
             leap: 30,
         });
-        this._updateHsl(hue, this.colorComponents.saturation, this.colorComponents.lightness);
+        this._updateHsl(
+            hue,
+            this.colorComponents.saturation,
+            this.colorComponents.lightness
+        );
         this._updateUI();
         this.shouldSetSelectedColor = true;
     }
@@ -643,7 +668,10 @@ export class CustomColorPicker extends Component {
         if (!this.getAllowedHotkeys(SLIDER_KEYS).includes(hotkey)) {
             return;
         }
-        const opacity = this.handleRangeKeydownValue(hotkey, this.colorComponents.opacity);
+        const opacity = this.handleRangeKeydownValue(
+            hotkey,
+            this.colorComponents.opacity
+        );
 
         this._updateOpacity(opacity);
         this._updateUI();

@@ -1,9 +1,9 @@
-import { fields, models } from "@web/../tests/web_test_helpers";
+import {fields, models} from "@web/../tests/web_test_helpers";
 
 export class MailMessageSubtype extends models.ServerModel {
     _name = "mail.message.subtype";
 
-    default = fields.Generic({ default: true });
+    default = fields.Generic({default: true});
     subtype_xmlid = fields.Char();
 
     _records = [

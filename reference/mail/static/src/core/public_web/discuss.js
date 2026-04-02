@@ -1,12 +1,12 @@
-import { DiscussSidebar } from "@mail/core/public_web/discuss_sidebar";
-import { useMessageScrolling } from "@mail/utils/common/hooks";
+import {DiscussSidebar} from "@mail/core/public_web/discuss_sidebar";
+import {useMessageScrolling} from "@mail/utils/common/hooks";
 
-import { Component, useRef, useExternalListener, useEffect, useSubEnv } from "@odoo/owl";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
+import {Component, useRef, useExternalListener, useEffect, useSubEnv} from "@odoo/owl";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
 
-import { useService } from "@web/core/utils/hooks";
-import { DiscussContent } from "@mail/core/public_web/discuss_content";
-import { MessagingMenu } from "@mail/core/public_web/messaging_menu";
+import {useService} from "@web/core/utils/hooks";
+import {DiscussContent} from "@mail/core/public_web/discuss_content";
+import {MessagingMenu} from "@mail/core/public_web/messaging_menu";
 
 export class Discuss extends Component {
     static components = {
@@ -15,10 +15,10 @@ export class Discuss extends Component {
         MessagingMenu,
     };
     static props = {
-        hasSidebar: { type: Boolean, optional: true },
-        thread: { optional: true },
+        hasSidebar: {type: Boolean, optional: true},
+        thread: {optional: true},
     };
-    static defaultProps = { hasSidebar: true };
+    static defaultProps = {hasSidebar: true};
     static template = "mail.Discuss";
 
     setup() {
@@ -37,18 +37,21 @@ export class Discuss extends Component {
             window,
             "keydown",
             (ev) => {
-                if (getActiveHotkey(ev) === "escape" && !this.thread?.composer?.isFocused) {
+                if (
+                    getActiveHotkey(ev) === "escape" &&
+                    !this.thread?.composer?.isFocused
+                ) {
                     if (this.thread?.composer) {
                         this.thread.composer.autofocus++;
                     }
                 }
                 if (getActiveHotkey(ev) === "control+k") {
-                    this.store.env.services.command.openMainPalette({ searchValue: "@" });
+                    this.store.env.services.command.openMainPalette({searchValue: "@"});
                     ev.preventDefault();
                     ev.stopPropagation();
                 }
             },
-            { capture: true }
+            {capture: true}
         );
         if (this.store.inPublicPage) {
             useEffect(
@@ -58,7 +61,7 @@ export class Discuss extends Component {
                     }
                     if (isSmall) {
                         this.thread
-                            .openChatWindow({ focus: true })
+                            .openChatWindow({focus: true})
                             .then((chatWindow) => (this.chatWindow = chatWindow));
                     } else {
                         this.chatWindow?.close();

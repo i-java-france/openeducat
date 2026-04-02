@@ -1,13 +1,13 @@
 import datetime
-from freezegun import freeze_time
 from datetime import date
+
 from dateutil.relativedelta import relativedelta
+from freezegun import freeze_time
 from psycopg2 import IntegrityError
 
 from odoo import Command
-from odoo.exceptions import UserError
-from odoo.tests import tagged, Form
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tests import Form, tagged
 from odoo.tools import mute_logger
 
 from odoo.addons.hr_holidays.tests.common import TestHrHolidaysCommon
@@ -17,7 +17,7 @@ from odoo.addons.hr_holidays.tests.common import TestHrHolidaysCommon
 class TestAccrualAllocations(TestHrHolidaysCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestAccrualAllocations, cls).setUpClass()
+        super().setUpClass()
         cls.leave_type = cls.env['hr.leave.type'].create({
             'name': 'Paid Time Off',
             'time_type': 'leave',

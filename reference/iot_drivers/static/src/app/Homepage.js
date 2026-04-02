@@ -1,17 +1,17 @@
 /* global owl */
 
-import { SingleData } from "./components/SingleData.js";
-import { FooterButtons } from "./components/FooterButtons.js";
-import { ServerDialog } from "./components/dialog/ServerDialog.js";
-import { WifiDialog } from "./components/dialog/WifiDialog.js";
+import {SingleData} from "./components/SingleData.js";
+import {FooterButtons} from "./components/FooterButtons.js";
+import {ServerDialog} from "./components/dialog/ServerDialog.js";
+import {WifiDialog} from "./components/dialog/WifiDialog.js";
 import useStore from "./hooks/useStore.js";
-import { UpdateDialog } from "./components/dialog/UpdateDialog.js";
-import { DeviceDialog } from "./components/dialog/DeviceDialog.js";
-import { SixDialog } from "./components/dialog/SixDialog.js";
-import { LoadingFullScreen } from "./components/LoadingFullScreen.js";
-import { IconButton } from "./components/IconButton.js";
+import {UpdateDialog} from "./components/dialog/UpdateDialog.js";
+import {DeviceDialog} from "./components/dialog/DeviceDialog.js";
+import {SixDialog} from "./components/dialog/SixDialog.js";
+import {LoadingFullScreen} from "./components/LoadingFullScreen.js";
+import {IconButton} from "./components/IconButton.js";
 
-const { Component, xml, useState, onWillStart } = owl;
+const {Component, xml, useState, onWillStart} = owl;
 
 export class Homepage extends Component {
     static props = {};
@@ -29,7 +29,7 @@ export class Homepage extends Component {
 
     setup() {
         this.store = useStore();
-        this.state = useState({ data: {}, loading: true, waitRestart: false });
+        this.state = useState({data: {}, loading: true, waitRestart: false});
         this.store.advanced = localStorage.getItem("showAdvanced") === "true";
         this.store.dev = new URLSearchParams(window.location.search).has("debug");
         this.loadDataDelay = 10000;
@@ -48,7 +48,9 @@ export class Homepage extends Component {
     get networkStatus() {
         if (
             !this.store.isLinux ||
-            this.state.data.network_interfaces.some((netInterface) => !netInterface.is_wifi)
+            this.state.data.network_interfaces.some(
+                (netInterface) => !netInterface.is_wifi
+            )
         ) {
             return "Ethernet";
         }
@@ -81,9 +83,12 @@ export class Homepage extends Component {
             console.warn("Error while fetching data");
         }
         this.loadDataDelay *= 1.25;
-        setTimeout(async () => {
-            await this.loadInitialData();
-        }, Math.min(this.loadDataDelay, 30 * 60 * 1000));
+        setTimeout(
+            async () => {
+                await this.loadInitialData();
+            },
+            Math.min(this.loadDataDelay, 30 * 60 * 1000)
+        );
     }
 
     async restartOdooService() {
@@ -125,7 +130,7 @@ export class Homepage extends Component {
                         This IoT Box doesn't have a valid certificate.
                     </p>
                     <small>
-                        The IoT Box should get a certificate automatically when paired with a database. If it doesn't, 
+                        The IoT Box should get a certificate automatically when paired with a database. If it doesn't,
                         try to restart it.
                     </small>
                 </div>

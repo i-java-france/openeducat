@@ -1,14 +1,14 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime, timedelta, time
+from datetime import datetime, time, timedelta
 
 from odoo import Command
+
 from odoo.addons.base.tests.common import HttpCaseWithUserDemo, HttpCaseWithUserPortal
 from odoo.addons.base.tests.test_ir_cron import CronMixinCase
 from odoo.addons.event.tests.common import EventCase
 from odoo.addons.event_crm.tests.common import EventCrmCase
-from odoo.addons.mail.tests.common import mail_new_test_user, MailCase
+from odoo.addons.mail.tests.common import MailCase, mail_new_test_user
 from odoo.addons.sales_team.tests.common import TestSalesCommon
 from odoo.addons.sms.tests.common import SMSCase
 from odoo.addons.website.tests.test_website_visitor import MockVisitor
@@ -18,7 +18,7 @@ class TestEventFullCommon(EventCrmCase, TestSalesCommon, MockVisitor):
 
     @classmethod
     def setUpClass(cls):
-        super(TestEventFullCommon, cls).setUpClass()
+        super().setUpClass()
 
         # Context data: dates
         # ------------------------------------------------------------
@@ -285,7 +285,7 @@ class TestEventFullCommon(EventCrmCase, TestSalesCommon, MockVisitor):
         ])
 
     def assertLeadConvertion(self, rule, registrations, partner=None, **expected):
-        super(TestEventFullCommon, self).assertLeadConvertion(rule, registrations, partner=partner, **expected)
+        super().assertLeadConvertion(rule, registrations, partner=partner, **expected)
         lead = self.env['crm.lead'].sudo().search([
             ('registration_ids', 'in', registrations.ids),
             ('event_lead_rule_id', '=', rule.id)
@@ -397,7 +397,7 @@ class TestEventMailCommon(EventCase, SMSCase, MailCase, CronMixinCase):
 class TestWEventCommon(HttpCaseWithUserDemo, HttpCaseWithUserPortal, MockVisitor):
 
     def setUp(self):
-        super(TestWEventCommon, self).setUp()
+        super().setUp()
 
         # Context data: dates
         # ------------------------------------------------------------

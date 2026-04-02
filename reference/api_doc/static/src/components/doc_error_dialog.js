@@ -1,5 +1,5 @@
-import { Component, useState, xml } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
+import {Component, useState, xml} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
 
 export class DocErrorDialog extends Component {
     static template = xml`
@@ -35,7 +35,7 @@ export class DocErrorDialog extends Component {
 
     setup() {
         this.state = useState({
-            showTraceback: false
+            showTraceback: false,
         });
     }
 

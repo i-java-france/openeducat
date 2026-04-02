@@ -1,28 +1,27 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import date, datetime, timedelta
-from dateutil.relativedelta import relativedelta
-from psycopg2 import IntegrityError
-from unittest.mock import patch
-from unittest.mock import DEFAULT
+from unittest.mock import DEFAULT, patch
 
 import pytz
+from dateutil.relativedelta import relativedelta
+from psycopg2 import IntegrityError
 
-from odoo import fields, exceptions, tests
-from odoo.addons.mail.tests.common import mail_new_test_user
-from odoo.addons.mail.tests.common_activity import ActivityScheduleCase
-from odoo.addons.test_mail.models.test_mail_models import MailTestActivity
+from odoo import exceptions, fields, tests
 from odoo.tests import Form, HttpCase, users
 from odoo.tests.common import freeze_time
 from odoo.tools import mute_logger
+
+from odoo.addons.mail.tests.common import mail_new_test_user
+from odoo.addons.mail.tests.common_activity import ActivityScheduleCase
+from odoo.addons.test_mail.models.test_mail_models import MailTestActivity
 
 
 class TestActivityCommon(ActivityScheduleCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestActivityCommon, cls).setUpClass()
+        super().setUpClass()
         cls.test_record, cls.test_record_2 = cls.env['mail.test.activity'].create([
             {'name': 'Test'},
             {'name': 'Test_2'},
@@ -654,7 +653,7 @@ class TestActivitySystrayBusNotify(TestActivityCommon):
             } | extra
             for dt, extra in zip(
                 (datetime(2023, 12, 31, 15, 0, 0), datetime(2023, 12, 31, 15, 0, 0), datetime(2024, 1, 1, 15, 0, 0), datetime(2024, 1, 2, 15, 0, 0)),
-                ({'active': False}, {}, {}, {}),
+                ({'active': False}, {}, {}, {}), strict=False,
             )
         ]
 
@@ -687,7 +686,7 @@ class TestActivitySystrayBusNotify(TestActivityCommon):
             user,
             (expected_create_notif_channels, expected_create_notif_message_items),
             (expected_unlink_notif_channels, expected_unlink_notif_message_items),
-        ) in zip(users, expected_create_notifs, expected_unlink_notifs):
+        ) in zip(users, expected_create_notifs, expected_unlink_notifs, strict=False):
             user_activity_vals = [vals | {'user_id': user.id} for vals in self.activity_vals]
             with self.assertBus(expected_create_notif_channels, expected_create_notif_message_items):
                 activities = self.env['mail.activity'].create(user_activity_vals)
@@ -719,7 +718,7 @@ class TestActivitySystrayBusNotify(TestActivityCommon):
                     } | ({"activity_created": True} if count_diff > 0 else {"activity_deleted": True}),
                 }])
                 for user, count_diff
-                in zip(self.user_employee + self.user_employee_2, [-2, 2])
+                in zip(self.user_employee + self.user_employee_2, [-2, 2], strict=False)
             ],
             # transfer 4 activities to the second employee, 2 todos are taken and 4 are given
             [
@@ -730,7 +729,7 @@ class TestActivitySystrayBusNotify(TestActivityCommon):
                     } | ({"activity_created": True} if count_diff > 0 else {"activity_deleted": True}),
                 }])
                 for user, count_diff
-                in zip(self.user_employee + self.user_employee_2, [-2, 4])
+                in zip(self.user_employee + self.user_employee_2, [-2, 4], strict=False)
             ],
         ] + [[
                 ([(self.env.cr.dbname, self.user_employee.partner_id._name, self.user_employee.partner_id.id)], [{
@@ -744,12 +743,12 @@ class TestActivitySystrayBusNotify(TestActivityCommon):
             [([], [])],  # no change -> no notif
             [([], [])],  # no change in "todo" count -> no notif
         ]
-        for write_vals, expected_notif_vals in zip(write_vals_all, expected_notifs):
+        for write_vals, expected_notif_vals in zip(write_vals_all, expected_notifs, strict=False):
             with self.subTest(vals=write_vals):
                 _past_archived, _past_active, _today, _tomorrow = activities = self.env['mail.activity'].create(self.activity_vals)
                 self._reset_bus()
                 if isinstance(write_vals, list):
-                    for activity, vals in zip(activities, write_vals):
+                    for activity, vals in zip(activities, write_vals, strict=False):
                         activity.write(vals)
                 else:
                     activities.write(write_vals)

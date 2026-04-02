@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <template id="address_form_fields" inherit_id="portal.address_form_fields">
         <div id="div_vat" position="before">
             <div t-if="is_used_as_billing and is_latam_country" class="col-xl-6 mb-3">
@@ -39,5 +38,4 @@
             </div>
         </div>
     </template>
-
 </odoo>

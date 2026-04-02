@@ -1,6 +1,6 @@
-import { Activity } from "@mail/core/web/activity";
-import { useService } from "@web/core/utils/hooks";
-import { patch } from "@web/core/utils/patch";
+import {Activity} from "@mail/core/web/activity";
+import {useService} from "@web/core/utils/hooks";
+import {patch} from "@web/core/utils/patch";
 
 patch(Activity.prototype, {
     setup() {
@@ -17,7 +17,9 @@ patch(Activity.prototype, {
         if (this.props.activity.calendar_event_id) {
             const thread = this.thread;
             this.props.activity.remove();
-            await this.orm.call("mail.activity", "unlink_w_meeting", [[this.props.activity.id]]);
+            await this.orm.call("mail.activity", "unlink_w_meeting", [
+                [this.props.activity.id],
+            ]);
             this.props.onActivityChanged(thread);
         } else {
             super.unlink();

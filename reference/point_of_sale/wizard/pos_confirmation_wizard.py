@@ -1,4 +1,5 @@
-from odoo import models, fields, api, _
+from odoo import _, fields, models
+
 
 class PosConfirmationWizard(models.TransientModel):
     _name = 'pos.confirmation.wizard'
@@ -28,4 +29,3 @@ class PosConfirmationWizard(models.TransientModel):
             'type': 'ir.actions.act_window',
             'context': {'active_ids': selected_orders.ids},
         }
-

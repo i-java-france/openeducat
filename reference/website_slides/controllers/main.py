@@ -1,24 +1,25 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from ast import literal_eval
-from dateutil.relativedelta import relativedelta
-
 import base64
 import json
 import logging
 import math
-import werkzeug
+from ast import literal_eval
 
-from odoo import fields, http, tools, _
+import werkzeug
+from dateutil.relativedelta import relativedelta
+
+from odoo import _, fields, http, tools
+from odoo.exceptions import AccessError, MissingError, UserError, ValidationError
+from odoo.fields import Domain
+from odoo.http import Response, request
+from odoo.tools import consteq, email_normalize_all
+from odoo.tools.translate import LazyTranslate
+
 from odoo.addons.base.models.ir_qweb import keep_query
 from odoo.addons.website.controllers.main import QueryURL
 from odoo.addons.website.models.ir_http import sitemap_qs2dom
 from odoo.addons.website_profile.controllers.main import WebsiteProfile
-from odoo.exceptions import AccessError, ValidationError, UserError, MissingError
-from odoo.fields import Domain
-from odoo.http import request, Response
-from odoo.tools import consteq, email_normalize_all
-from odoo.tools.translate import LazyTranslate
 
 _lt = LazyTranslate(__name__)
 _logger = logging.getLogger(__name__)
@@ -1558,7 +1559,7 @@ class WebsiteSlides(WebsiteProfile):
     # --------------------------------------------------
 
     def _prepare_user_values(self, **kwargs):
-        values = super(WebsiteSlides, self)._prepare_user_values(**kwargs)
+        values = super()._prepare_user_values(**kwargs)
         invite_error_msg = self._get_invite_error_msg(kwargs.get('invite_error'))
         if invite_error_msg:
             values['invite_error_msg'] = invite_error_msg
@@ -1605,7 +1606,7 @@ class WebsiteSlides(WebsiteProfile):
         return values
 
     def _prepare_user_profile_values(self, user, **post):
-        values = super(WebsiteSlides, self)._prepare_user_profile_values(user, **post)
+        values = super()._prepare_user_profile_values(user, **post)
         channels = self._get_channels(**post)
         if not channels:
             channels = request.env['slide.channel'].search([])

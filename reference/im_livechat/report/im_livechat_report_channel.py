@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
-from odoo.tools import get_lang, Query, SQL
+from odoo.tools import SQL, Query, get_lang
 
 
 class Im_LivechatReportChannel(models.Model):

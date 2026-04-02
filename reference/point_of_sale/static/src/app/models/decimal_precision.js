@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import * as numbers from "@point_of_sale/app/utils/numbers";
 
 export class DecimalPrecision extends numbers.AbstractNumbers {
@@ -8,4 +8,6 @@ export class DecimalPrecision extends numbers.AbstractNumbers {
     }
 }
 
-registry.category("pos_available_models").add(DecimalPrecision.pythonModel, DecimalPrecision);
+registry
+    .category("pos_available_models")
+    .add(DecimalPrecision.pythonModel, DecimalPrecision);

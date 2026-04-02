@@ -1,7 +1,7 @@
-import { isArtificialVoidElement } from "@html_editor/core/selection_plugin";
-import { Plugin } from "@html_editor/plugin";
-import { selectElements } from "@html_editor/utils/dom_traversal";
-import { withSequence } from "@html_editor/utils/resource";
+import {isArtificialVoidElement} from "@html_editor/core/selection_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {selectElements} from "@html_editor/utils/dom_traversal";
+import {withSequence} from "@html_editor/utils/resource";
 
 /** @typedef {import("@html_editor/editor").EditorContext} EditorContext */
 /** @typedef {import("plugins").CSSSelector} CSSSelector */
@@ -43,8 +43,11 @@ export class ContentEditablePlugin extends Plugin {
         for (const fn of this.getResource("content_editable_providers")) {
             contentEditableEls.push(...fn(root));
         }
-        const filteredContentEditableEls = contentEditableEls.filter((contentEditableEl) =>
-            this.getResource("valid_contenteditable_predicates").every((p) => p(contentEditableEl))
+        const filteredContentEditableEls = contentEditableEls.filter(
+            (contentEditableEl) =>
+                this.getResource("valid_contenteditable_predicates").every((p) =>
+                    p(contentEditableEl)
+                )
         );
         for (const contentEditableEl of filteredContentEditableEls) {
             if (!contentEditableEl.isContentEditable) {
@@ -62,8 +65,10 @@ export class ContentEditablePlugin extends Plugin {
         }
     }
 
-    cleanForSave({ root }) {
-        const toRemoveSelector = this.getResource("contenteditable_to_remove_selector").join(",");
+    cleanForSave({root}) {
+        const toRemoveSelector = this.getResource(
+            "contenteditable_to_remove_selector"
+        ).join(",");
         const contenteditableEls = toRemoveSelector
             ? [...selectElements(root, toRemoveSelector)]
             : [];

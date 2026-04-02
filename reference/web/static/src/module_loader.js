@@ -1,8 +1,8 @@
 // @odoo-module ignore
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Odoo Web Boostrap Code
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 (function (odoo) {
     "use strict";
@@ -54,7 +54,9 @@
                 );
             }
             if (typeof factory !== "function") {
-                throw new Error(`Module factory should be a function, got: ${String(factory)}`);
+                throw new Error(
+                    `Module factory should be a function, got: ${String(factory)}`
+                );
             }
             if (this.factories.has(name)) {
                 return; // Ignore duplicate modules
@@ -89,7 +91,10 @@
                             .map((j) => `"${j}"`)
                             .join(" => ");
                     }
-                    const cycle = findCycle(dependencyGraph[name], new Set(visited).add(name));
+                    const cycle = findCycle(
+                        dependencyGraph[name],
+                        new Set(visited).add(name)
+                    );
                     if (cycle) {
                         return cycle;
                     }
@@ -107,7 +112,7 @@
             const unloaded = new Set();
 
             for (const moduleName of moduleNames) {
-                const { deps, ignoreMissingDeps } = this.factories.get(moduleName);
+                const {deps, ignoreMissingDeps} = this.factories.get(moduleName);
 
                 dependencyGraph[moduleName] = deps;
 
@@ -143,7 +148,9 @@
         /** @type {OdooModuleLoader["findJob"]} */
         findJob() {
             for (const job of this.jobs) {
-                if (this.factories.get(job).deps.every((dep) => this.modules.has(dep))) {
+                if (
+                    this.factories.get(job).deps.every((dep) => this.modules.has(dep))
+                ) {
                     return job;
                 }
             }
@@ -157,9 +164,10 @@
             }
 
             if (errors.failed) {
-                console.error("The following modules failed to load because of an error:", [
-                    ...errors.failed,
-                ]);
+                console.error(
+                    "The following modules failed to load because of an error:",
+                    [...errors.failed]
+                );
             }
             if (errors.missing) {
                 console.error(
@@ -231,7 +239,7 @@
             this.modules.set(name, module);
             this.bus.dispatchEvent(
                 new CustomEvent("module-started", {
-                    detail: { moduleName: name, module },
+                    detail: {moduleName: name, module},
                 })
             );
             return module;
@@ -243,7 +251,7 @@
     odoo.loader = loader;
 
     if (odoo.debug && !loader.debug) {
-        // remove debug mode if not explicitely set in url
+        // Remove debug mode if not explicitely set in url
         odoo.debug = "";
     }
 })((globalThis.odoo ||= {}));

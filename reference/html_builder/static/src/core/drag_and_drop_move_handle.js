@@ -1,10 +1,10 @@
-import { Component, onMounted } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
+import {Component, onMounted} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
 
 export class DragAndDropMoveHandle extends Component {
     static template = "html_builder.DragAndDropMoveHandle";
     static props = {
-        onRenderedCallback: { type: Function },
+        onRenderedCallback: {type: Function},
     };
 
     setup() {

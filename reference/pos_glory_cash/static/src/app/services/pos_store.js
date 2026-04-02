@@ -1,6 +1,6 @@
-import { patch } from "@web/core/utils/patch";
-import { PosStore } from "@point_of_sale/app/services/pos_store";
-import { PaymentGlory } from "@pos_glory_cash/app/payment_glory";
+import {patch} from "@web/core/utils/patch";
+import {PosStore} from "@point_of_sale/app/services/pos_store";
+import {PaymentGlory} from "@pos_glory_cash/app/payment_glory";
 
 patch(PosStore.prototype, {
     async processServerData() {

@@ -1,6 +1,6 @@
-import { makeContext } from "@web/core/context";
-import { ListRenderer } from "@web/views/list/list_renderer";
-import { useEffect } from "@odoo/owl";
+import {makeContext} from "@web/core/context";
+import {ListRenderer} from "@web/views/list/list_renderer";
+import {useEffect} from "@odoo/owl";
 
 export class SlideCategoryListRenderer extends ListRenderer {
     setup() {
@@ -27,7 +27,7 @@ export class SlideCategoryListRenderer extends ListRenderer {
                 editable = this.props.editable;
             }
         }
-        super.add({ ...params, editable });
+        super.add({...params, editable});
     }
 
     getColumns(record) {
@@ -52,7 +52,7 @@ export class SlideCategoryListRenderer extends ListRenderer {
         const titleCol = columns.find(
             (col) => col.type === "field" && col.name === this.titleField
         );
-        sectionColumns.push({ ...titleCol, colspan });
+        sectionColumns.push({...titleCol, colspan});
         return sectionColumns;
     }
 

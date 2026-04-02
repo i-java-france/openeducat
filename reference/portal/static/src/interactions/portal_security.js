@@ -1,10 +1,10 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { renderToMarkup } from "@web/core/utils/render";
-import { InputConfirmationDialog } from "@portal/js/components/input_confirmation_dialog/input_confirmation_dialog";
-import { _t } from "@web/core/l10n/translation";
-import { user } from "@web/core/user";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {renderToMarkup} from "@web/core/utils/render";
+import {InputConfirmationDialog} from "@portal/js/components/input_confirmation_dialog/input_confirmation_dialog";
+import {_t} from "@web/core/l10n/translation";
+import {user} from "@web/core/user";
 
 export class PortalSecurity extends Interaction {
     static selector = ".o_portal_security_body";
@@ -23,7 +23,9 @@ export class PortalSecurity extends Interaction {
             "t-on-hide.bs.modal.withTarget": (event, currentTargetEl) => {
                 // Remove the error messages when we close the modal,
                 // so when we re-open it again we get a fresh new form
-                for (const el of currentTargetEl.querySelectorAll(".alert, .invalid-feedback")) {
+                for (const el of currentTargetEl.querySelectorAll(
+                    ".alert, .invalid-feedback"
+                )) {
                     el.remove();
                 }
                 for (const el of currentTargetEl.querySelectorAll(".is-invalid")) {
@@ -40,7 +42,9 @@ export class PortalSecurity extends Interaction {
 
     setup() {
         // Show the "deactivate your account" modal if needed
-        const modalEl = document.querySelector(".modal.show#portal_deactivate_account_modal");
+        const modalEl = document.querySelector(
+            ".modal.show#portal_deactivate_account_modal"
+        );
         if (modalEl) {
             modalEl.classList.remove("d-block");
             window.Modal.getOrCreateInstance(modalEl).show();
@@ -55,35 +59,51 @@ export class PortalSecurity extends Interaction {
         // in order to use `handleCheckIdentity`.
         await this.waitFor(
             handleCheckIdentity(
-                this.waitFor(this.services.orm.call("res.users", "api_key_wizard", [user.userId])),
+                this.waitFor(
+                    this.services.orm.call("res.users", "api_key_wizard", [user.userId])
+                ),
                 this.services.orm,
                 this.services.dialog
             )
         );
 
-        const { duration } = await this.services.field.loadFields("res.users.apikeys.description", {
-            fieldNames: ["duration"],
-        });
+        const {duration} = await this.services.field.loadFields(
+            "res.users.apikeys.description",
+            {
+                fieldNames: ["duration"],
+            }
+        );
 
         this.services.dialog.add(InputConfirmationDialog, {
             title: _t("New API Key"),
             body: renderToMarkup("portal.keydescription", {
                 // Remove `'Custom Date'` selection for portal user
-                duration_selection: duration.selection.filter((option) => option[0] !== "-1"),
+                duration_selection: duration.selection.filter(
+                    (option) => option[0] !== "-1"
+                ),
             }),
             confirmLabel: _t("Confirm"),
-            confirm: async ({ inputEl }) => {
-                const formData = Object.fromEntries(new FormData(inputEl.closest("form")));
-                const wizardId = await this.services.orm.create("res.users.apikeys.description", [{
-                    name: formData['description'],
-                    duration: formData['duration']
-                }]);
+            confirm: async ({inputEl}) => {
+                const formData = Object.fromEntries(
+                    new FormData(inputEl.closest("form"))
+                );
+                const wizardId = await this.services.orm.create(
+                    "res.users.apikeys.description",
+                    [
+                        {
+                            name: formData["description"],
+                            duration: formData["duration"],
+                        },
+                    ]
+                );
                 const res = await this.waitFor(
                     handleCheckIdentity(
                         this.waitFor(
-                            this.services.orm.call("res.users.apikeys.description", "make_key", [
-                                wizardId,
-                            ])
+                            this.services.orm.call(
+                                "res.users.apikeys.description",
+                                "make_key",
+                                [wizardId]
+                            )
                         ),
                         this.services.orm,
                         this.services.dialog
@@ -94,7 +114,9 @@ export class PortalSecurity extends Interaction {
                     ConfirmationDialog,
                     {
                         title: _t("API Key Ready"),
-                        body: renderToMarkup("portal.keyshow", { key: res.context.default_key }),
+                        body: renderToMarkup("portal.keyshow", {
+                            key: res.context.default_key,
+                        }),
                         confirmLabel: _t("Close"),
                     },
                     {
@@ -110,7 +132,9 @@ export class PortalSecurity extends Interaction {
         await this.waitFor(
             await handleCheckIdentity(
                 this.waitFor(
-                    this.services.orm.call("res.users.apikeys", "remove", [parseInt(ev.target.id)])
+                    this.services.orm.call("res.users.apikeys", "remove", [
+                        parseInt(ev.target.id),
+                    ])
                 ),
                 this.services.orm,
                 this.services.dialog
@@ -122,7 +146,9 @@ export class PortalSecurity extends Interaction {
         await this.waitFor(
             handleCheckIdentity(
                 this.waitFor(
-                    this.services.orm.call("res.users", "action_revoke_all_devices", [user.userId])
+                    this.services.orm.call("res.users", "action_revoke_all_devices", [
+                        user.userId,
+                    ])
                 ),
                 this.services.orm,
                 this.services.dialog
@@ -163,21 +189,25 @@ export async function handleCheckIdentity(wrapped, ormService, dialogService) {
         }
         const checkId = r.res_id;
         return new Promise((resolve) => {
-            ormService.write("res.users.identitycheck", [checkId], {auth_method: 'password'});
+            ormService.write("res.users.identitycheck", [checkId], {
+                auth_method: "password",
+            });
             dialogService.add(InputConfirmationDialog, {
                 title: _t("Security Control"),
                 body: renderToMarkup("portal.identitycheck"),
                 confirmLabel: _t("Confirm Password"),
-                confirm: async ({ inputEl }) => {
+                confirm: async ({inputEl}) => {
                     if (!inputEl.reportValidity()) {
                         inputEl.classList.add("is-invalid");
                         return false;
                     }
                     let result;
                     try {
-                        result = await ormService.call("res.users.identitycheck", "run_check",
-                            [ checkId ],
-                            { 'context': {'password': inputEl.value} },
+                        result = await ormService.call(
+                            "res.users.identitycheck",
+                            "run_check",
+                            [checkId],
+                            {context: {password: inputEl.value}}
                         );
                     } catch {
                         inputEl.classList.add("is-invalid");
@@ -189,7 +219,7 @@ export async function handleCheckIdentity(wrapped, ormService, dialogService) {
                     return true;
                 },
                 cancel: () => {},
-                onInput: ({ inputEl }) => {
+                onInput: ({inputEl}) => {
                     inputEl.classList.remove("is-invalid");
                     inputEl.setCustomValidity("");
                 },

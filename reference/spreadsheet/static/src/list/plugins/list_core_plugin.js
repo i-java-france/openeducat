@@ -1,10 +1,10 @@
-import { CommandResult } from "../../o_spreadsheet/cancelled_reason";
-import { helpers } from "@odoo/o-spreadsheet";
-import { Domain } from "@web/core/domain";
-import { deepCopy } from "@web/core/utils/objects";
-import { OdooCorePlugin } from "@spreadsheet/plugins";
+import {CommandResult} from "../../o_spreadsheet/cancelled_reason";
+import {helpers} from "@odoo/o-spreadsheet";
+import {Domain} from "@web/core/domain";
+import {deepCopy} from "@web/core/utils/objects";
+import {OdooCorePlugin} from "@spreadsheet/plugins";
 
-const { getMaxObjectId } = helpers;
+const {getMaxObjectId} = helpers;
 
 /**
  * @typedef {Object} ListDefinition
@@ -85,7 +85,7 @@ export class ListCorePlugin extends OdooCorePlugin {
     handle(cmd) {
         switch (cmd.type) {
             case "INSERT_ODOO_LIST": {
-                const { sheetId, col, row, id, definition, linesNumber, columns } = cmd;
+                const {sheetId, col, row, id, definition, linesNumber, columns} = cmd;
                 const anchor = [col, row];
                 this._addList(id, definition);
                 this._insertList(sheetId, anchor, id, linesNumber, columns);
@@ -93,25 +93,32 @@ export class ListCorePlugin extends OdooCorePlugin {
                 break;
             }
             case "DUPLICATE_ODOO_LIST": {
-                const { listId, newListId, duplicatedListName } = cmd;
+                const {listId, newListId, duplicatedListName} = cmd;
                 const duplicatedList = deepCopy(this.lists[listId].definition);
-                duplicatedList.name = duplicatedListName ?? duplicatedList.name + " (copy)";
+                duplicatedList.name =
+                    duplicatedListName ?? duplicatedList.name + " (copy)";
                 this._addList(newListId, duplicatedList);
                 this.history.update("nextId", parseInt(newListId, 10) + 1);
                 break;
             }
             case "RE_INSERT_ODOO_LIST": {
-                const { sheetId, col, row, id, linesNumber, columns } = cmd;
+                const {sheetId, col, row, id, linesNumber, columns} = cmd;
                 const anchor = [col, row];
                 this._insertList(sheetId, anchor, id, linesNumber, columns);
                 break;
             }
             case "RENAME_ODOO_LIST": {
-                this.history.update("lists", cmd.listId, "definition", "name", cmd.name);
+                this.history.update(
+                    "lists",
+                    cmd.listId,
+                    "definition",
+                    "name",
+                    cmd.name
+                );
                 break;
             }
             case "REMOVE_ODOO_LIST": {
-                const lists = { ...this.lists };
+                const lists = {...this.lists};
                 delete lists[cmd.listId];
                 this.history.update("lists", lists);
                 break;
@@ -182,7 +189,7 @@ export class ListCorePlugin extends OdooCorePlugin {
             columns: [...def.metaData.columns],
             domain: def.searchParams.domain,
             model: def.metaData.resModel,
-            context: { ...def.searchParams.context },
+            context: {...def.searchParams.context},
             orderBy: [...def.searchParams.orderBy],
             id,
             name: def.name,
@@ -210,7 +217,7 @@ export class ListCorePlugin extends OdooCorePlugin {
     // ---------------------------------------------------------------------
 
     _addList(id, definition) {
-        const lists = { ...this.lists };
+        const lists = {...this.lists};
         lists[id] = {
             id,
             definition,

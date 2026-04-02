@@ -1,7 +1,7 @@
-import { onRpc } from "@web/../tests/web_test_helpers";
-import { deserializeDateTime } from "@web/core/l10n/dates";
+import {onRpc} from "@web/../tests/web_test_helpers";
+import {deserializeDateTime} from "@web/core/l10n/dates";
 
-onRpc("get_rainbowman_message", function getRainbowmanMessage({ args, model }) {
+onRpc("get_rainbowman_message", function getRainbowmanMessage({args, model}) {
     let message = false;
     if (model !== "crm.lead") {
         return message;
@@ -26,33 +26,45 @@ onRpc("get_rainbowman_message", function getRainbowmanMessage({ args, model }) {
             (r) =>
                 r.stage_id === won_stage.id &&
                 r.team_id === record.team_id &&
-                (!r.date_closed || now.diff(deserializeDateTime(r.date_closed)).as("days") <= 30)
+                (!r.date_closed ||
+                    now.diff(deserializeDateTime(r.date_closed)).as("days") <= 30)
         );
-        query_result["max_team_30"] = Math.max(...recordsTeam30.map((r) => r.planned_revenue));
+        query_result["max_team_30"] = Math.max(
+            ...recordsTeam30.map((r) => r.planned_revenue)
+        );
         // Max team 7 days
         const recordsTeam7 = records.filter(
             (r) =>
                 r.stage_id === won_stage.id &&
                 r.team_id === record.team_id &&
-                (!r.date_closed || now.diff(deserializeDateTime(r.date_closed)).as("days") <= 7)
+                (!r.date_closed ||
+                    now.diff(deserializeDateTime(r.date_closed)).as("days") <= 7)
         );
-        query_result["max_team_7"] = Math.max(...recordsTeam7.map((r) => r.planned_revenue));
+        query_result["max_team_7"] = Math.max(
+            ...recordsTeam7.map((r) => r.planned_revenue)
+        );
         // Max User 30 days
         const recordsUser30 = records.filter(
             (r) =>
                 r.stage_id === won_stage.id &&
                 r.user_id === record.user_id &&
-                (!r.date_closed || now.diff(deserializeDateTime(r.date_closed)).as("days") <= 30)
+                (!r.date_closed ||
+                    now.diff(deserializeDateTime(r.date_closed)).as("days") <= 30)
         );
-        query_result["max_user_30"] = Math.max(...recordsUser30.map((r) => r.planned_revenue));
+        query_result["max_user_30"] = Math.max(
+            ...recordsUser30.map((r) => r.planned_revenue)
+        );
         // Max User 7 days
         const recordsUser7 = records.filter(
             (r) =>
                 r.stage_id === won_stage.id &&
                 r.user_id === record.user_id &&
-                (!r.date_closed || now.diff(deserializeDateTime(r.date_closed)).as("days") <= 7)
+                (!r.date_closed ||
+                    now.diff(deserializeDateTime(r.date_closed)).as("days") <= 7)
         );
-        query_result["max_user_7"] = Math.max(...recordsUser7.map((r) => r.planned_revenue));
+        query_result["max_user_7"] = Math.max(
+            ...recordsUser7.map((r) => r.planned_revenue)
+        );
 
         if (query_result.total_won === 1) {
             message = "Go, go, go! Congrats for your first deal.";

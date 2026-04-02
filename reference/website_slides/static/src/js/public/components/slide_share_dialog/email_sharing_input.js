@@ -1,17 +1,17 @@
-import { rpc } from "@web/core/network/rpc";
-import { session } from "@web/session";
-import { useService } from "@web/core/utils/hooks";
-import { _t } from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {session} from "@web/session";
+import {useService} from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
 
-import { Component, useRef, useState } from "@odoo/owl";
+import {Component, useRef, useState} from "@odoo/owl";
 
 export class EmailSharingInput extends Component {
     static template = "website_slides.EmailSharingInput";
     static props = {
-        id: { type: Number },
-        isChannel: { type: Boolean, optional: true },
-        isFullscreen: { type: Boolean, optional: true },
-        category: { type: String, optional: true },
+        id: {type: Number},
+        isChannel: {type: Boolean, optional: true},
+        isFullscreen: {type: Boolean, optional: true},
+        category: {type: String, optional: true},
     };
 
     setup() {
@@ -50,7 +50,7 @@ export class EmailSharingInput extends Component {
 
     setInvalid() {
         this.state.isInvalid = true;
-        this.notification.add(_t("Please enter valid email(s)"), { type: "danger" });
+        this.notification.add(_t("Please enter valid email(s)"), {type: "danger"});
         this.input.el.focus();
     }
 }

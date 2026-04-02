@@ -1,18 +1,18 @@
-import { registry } from "@web/core/registry";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { useService } from "@web/core/utils/hooks";
-import { Component, onWillDestroy, useState } from "@odoo/owl";
-import { Orderline } from "@point_of_sale/app/components/orderline/orderline";
-import { OrderDisplay } from "@point_of_sale/app/components/order_display/order_display";
-import { useRouterParamsChecker } from "@point_of_sale/app/hooks/pos_router_hook";
-import { PriceFormatter } from "@point_of_sale/app/components/price_formatter/price_formatter";
+import {registry} from "@web/core/registry";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {useService} from "@web/core/utils/hooks";
+import {Component, onWillDestroy, useState} from "@odoo/owl";
+import {Orderline} from "@point_of_sale/app/components/orderline/orderline";
+import {OrderDisplay} from "@point_of_sale/app/components/order_display/order_display";
+import {useRouterParamsChecker} from "@point_of_sale/app/hooks/pos_router_hook";
+import {PriceFormatter} from "@point_of_sale/app/components/price_formatter/price_formatter";
 
 export class SplitBillScreen extends Component {
     static template = "pos_restaurant.SplitBillScreen";
-    static components = { Orderline, OrderDisplay, PriceFormatter };
+    static components = {Orderline, OrderDisplay, PriceFormatter};
     static props = {
-        disallow: { type: Boolean, optional: true },
-        orderUuid: { type: String },
+        disallow: {type: Boolean, optional: true},
+        orderUuid: {type: String},
     };
 
     setup() {
@@ -101,7 +101,7 @@ export class SplitBillScreen extends Component {
         if (selectedQty > 0 && selectedQty < totalQty) {
             const originalOrder = this.currentOrder;
             await this.createSplittedOrder();
-            originalOrder.setScreenData({ name: "SplitBillScreen" });
+            originalOrder.setScreenData({name: "SplitBillScreen"});
         }
         this.pos.pay();
     }
@@ -125,7 +125,9 @@ export class SplitBillScreen extends Component {
     }
     async createSplittedOrder() {
         const curOrderUuid = this.currentOrder.uuid;
-        const originalOrder = this.pos.models["pos.order"].find((o) => o.uuid === curOrderUuid);
+        const originalOrder = this.pos.models["pos.order"].find(
+            (o) => o.uuid === curOrderUuid
+        );
         const originalOrderName = this._getOrderName(originalOrder);
         const newOrderName = this._getSplitOrderName(originalOrderName);
 
@@ -143,7 +145,7 @@ export class SplitBillScreen extends Component {
                 let newCourse;
                 if (line.course_id) {
                     // Create courses in the new order
-                    const { course_id: oldCourse } = line;
+                    const {course_id: oldCourse} = line;
                     const courseIndex = oldCourse.index;
                     newCourse = newCourses.get(courseIndex);
                     if (!newCourse) {
@@ -154,7 +156,7 @@ export class SplitBillScreen extends Component {
                         newCourses.set(courseIndex, newCourse);
                     }
                 }
-                const data = { ...line.raw };
+                const data = {...line.raw};
 
                 // Combo lines will be relinked by the children
                 delete data.combo_line_ids;
@@ -187,7 +189,7 @@ export class SplitBillScreen extends Component {
                     lineToDel.push(line);
                 } else {
                     const newQty = line.getQuantity() - this.qtyTracker[line.uuid];
-                    line.update({ qty: newQty });
+                    line.update({qty: newQty});
                 }
 
                 this.pos.handlePreparationHistory(
@@ -204,9 +206,9 @@ export class SplitBillScreen extends Component {
             line.delete();
         }
         await this.handleDiscountLines(originalOrder, newOrder);
-        await this.pos.syncAllOrders({ orders: [originalOrder, newOrder] });
+        await this.pos.syncAllOrders({orders: [originalOrder, newOrder]});
         originalOrder.customer_count -= 1;
-        originalOrder.setScreenData({ name: "ProductScreen" });
+        originalOrder.setScreenData({name: "ProductScreen"});
         this.pos.selectedOrderUuid = null;
         this.pos.setOrder(newOrder);
         this.back();

@@ -1,26 +1,31 @@
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 import {
-    manuallyDispatchProgrammaticEvent,
     click,
+    manuallyDispatchProgrammaticEvent,
     press,
     queryOne,
     waitFor,
     waitForNone,
 } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { contains, makeMockEnv, onRpc, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { CaptionPlugin } from "@html_editor/others/embedded_components/plugins/caption_plugin/caption_plugin";
-import { MAIN_PLUGINS, EMBEDDED_COMPONENT_PLUGINS } from "@html_editor/plugin_sets";
-import { MAIN_EMBEDDINGS } from "@html_editor/others/embedded_components/embedding_sets";
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { setupEditor, testEditor } from "./_helpers/editor";
-import { unformat } from "./_helpers/format";
-import { deleteBackward, deleteForward, insertText } from "./_helpers/user_actions";
-import { cleanHints } from "./_helpers/dispatch";
-import { getContent, setSelection } from "./_helpers/selection";
-import { expectElementCount } from "./_helpers/ui_expectations";
-import { childNodeIndex, nodeSize } from "@html_editor/utils/position";
-import { parseHTML } from "@html_editor/utils/html";
+import {animationFrame} from "@odoo/hoot-mock";
+import {
+    contains,
+    makeMockEnv,
+    onRpc,
+    patchWithCleanup,
+} from "@web/../tests/web_test_helpers";
+import {CaptionPlugin} from "@html_editor/others/embedded_components/plugins/caption_plugin/caption_plugin";
+import {EMBEDDED_COMPONENT_PLUGINS, MAIN_PLUGINS} from "@html_editor/plugin_sets";
+import {MAIN_EMBEDDINGS} from "@html_editor/others/embedded_components/embedding_sets";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {setupEditor, testEditor} from "./_helpers/editor";
+import {unformat} from "./_helpers/format";
+import {deleteBackward, deleteForward, insertText} from "./_helpers/user_actions";
+import {cleanHints} from "./_helpers/dispatch";
+import {getContent, setSelection} from "./_helpers/selection";
+import {expectElementCount} from "./_helpers/ui_expectations";
+import {childNodeIndex, nodeSize} from "@html_editor/utils/position";
+import {parseHTML} from "@html_editor/utils/html";
 
 class CaptionPluginWithPredictableId extends CaptionPlugin {
     getCaptionId() {
@@ -43,7 +48,7 @@ const configWithEmbeddedCaption = {
     },
 };
 const setupEditorWithEmbeddedCaption = async (content) =>
-    await setupEditor(content, { config: configWithEmbeddedCaption });
+    await setupEditor(content, {config: configWithEmbeddedCaption});
 const toggleCaption = async (captionText) => {
     await click("img");
     await waitFor(".o-we-toolbar button[name='image_caption']");
@@ -68,9 +73,9 @@ const addLinkToImage = async (url) => {
     await click("button[name='link']");
     if (url) {
         await waitFor(".o-we-linkpopover");
-        await contains(".o-we-linkpopover input.o_we_href_input_link", { timeout: 1500 }).edit(
-            "odoo.com"
-        );
+        await contains(".o-we-linkpopover input.o_we_href_input_link", {
+            timeout: 1500,
+        }).edit("odoo.com");
     }
 };
 const removeLinkFromImage = async () => {
@@ -115,7 +120,9 @@ test("add a caption to an image and focus it", async () => {
             const input = queryOne("figure > figcaption > input");
             expect(input.value).toBe("");
             expect(editor.document.activeElement).toBe(input);
-            expect(editor.document.getSelection().anchorNode.nodeName).toBe("FIGCAPTION");
+            expect(editor.document.getSelection().anchorNode.nodeName).toBe(
+                "FIGCAPTION"
+            );
             // Remove the editor selection for the test because it's irrelevant
             // since the focus is not in it.
             const selection = editor.document.getSelection();
@@ -211,7 +218,7 @@ test("saving an image with a caption replaces the input with plain text", async 
 
 test.tags("focus required");
 test("loading an image with a caption embeds it", async () => {
-    const { editor } = await setupEditorWithEmbeddedCaption(`
+    const {editor} = await setupEditorWithEmbeddedCaption(`
         <figure>
             <img class="img-fluid test-image" src="${base64Img}">
             <figcaption>Hello</figcaption>
@@ -384,10 +391,14 @@ test("undo in a caption undoes the last caption action then returns to regular e
             // We simulate undo with Ctrl+Z because we want to see how it
             // interacts with native browser behavior.
             const ctrlZ = async (target, shouldApplyNativeUndo) => {
-                const keydown = await manuallyDispatchProgrammaticEvent(target, "keydown", {
-                    key: "z",
-                    ctrlKey: true,
-                });
+                const keydown = await manuallyDispatchProgrammaticEvent(
+                    target,
+                    "keydown",
+                    {
+                        key: "z",
+                        ctrlKey: true,
+                    }
+                );
                 if (keydown.defaultPrevented) {
                     return;
                 }
@@ -421,9 +432,13 @@ test("undo in a caption undoes the last caption action then returns to regular e
                     if (beforeInput.defaultPrevented) {
                         return;
                     }
-                    const inputEvent = await manuallyDispatchProgrammaticEvent(target, "input", {
-                        inputType: "historyUndo",
-                    });
+                    const inputEvent = await manuallyDispatchProgrammaticEvent(
+                        target,
+                        "input",
+                        {
+                            inputType: "historyUndo",
+                        }
+                    );
                     if (inputEvent.defaultPrevented) {
                         return;
                     }
@@ -527,7 +542,8 @@ const getDeleteImageTestData = () => {
 
 test.tags("focus required");
 test("remove an image with a caption, using the delete key", async () => {
-    const { config, contentBefore, prepareImage, contentAfter } = getDeleteImageTestData();
+    const {config, contentBefore, prepareImage, contentAfter} =
+        getDeleteImageTestData();
     await testEditor({
         config,
         contentBefore,
@@ -541,7 +557,8 @@ test("remove an image with a caption, using the delete key", async () => {
 
 test.tags("focus required");
 test("remove an image with a caption, using the backspace key", async () => {
-    const { config, contentBefore, prepareImage, contentAfter } = getDeleteImageTestData();
+    const {config, contentBefore, prepareImage, contentAfter} =
+        getDeleteImageTestData();
     await testEditor({
         config,
         contentBefore,
@@ -791,7 +808,9 @@ test("add a link then a caption to an image surrounded by text", async () => {
             // Blur the input to commit the caption.
             await click("p"); // Blur the input.
             await animationFrame(); // Wait for the focus event to trigger a step.
-            editor.shared.selection.setCursorStart(editor.document.querySelectorAll("p")[1]);
+            editor.shared.selection.setCursorStart(
+                editor.document.querySelectorAll("p")[1]
+            );
         },
         contentAfter: unformat(
             `<p>ab</p>
@@ -901,7 +920,9 @@ test("remove a caption from an image with a link", async () => {
 });
 
 test("previewing an image with a caption shows the caption as title", async () => {
-    await setupEditorWithEmbeddedCaption(`<img class="img-fluid test-image" src="${base64Img}">`);
+    await setupEditorWithEmbeddedCaption(
+        `<img class="img-fluid test-image" src="${base64Img}">`
+    );
 
     // Preview without a caption shows the file name.
     await click("img");
@@ -927,7 +948,9 @@ test("previewing an image with a caption shows the caption as title", async () =
 });
 
 test("previewing an image without caption doesn't show the caption as title (even if data-caption exists)", async () => {
-    await setupEditorWithEmbeddedCaption(`<img class="img-fluid test-image" src="${base64Img}">`);
+    await setupEditorWithEmbeddedCaption(
+        `<img class="img-fluid test-image" src="${base64Img}">`
+    );
 
     // Preview without a caption shows the file name.
     await click("img");
@@ -961,7 +984,7 @@ test("previewing an image without caption doesn't show the caption as title (eve
 test("should drag and drop image with its caption(1)", async () => {
     const captionId = 1;
     const caption = "Hello";
-    const { el } = await setupEditorWithEmbeddedCaption(
+    const {el} = await setupEditorWithEmbeddedCaption(
         unformat(`
             <p>a</p>
             <figure contenteditable="false">
@@ -989,7 +1012,9 @@ test("should drag and drop image with its caption(1)", async () => {
     });
 
     const dragdata = new DataTransfer();
-    await manuallyDispatchProgrammaticEvent(imgElement, "dragstart", { dataTransfer: dragdata });
+    await manuallyDispatchProgrammaticEvent(imgElement, "dragstart", {
+        dataTransfer: dragdata,
+    });
     await animationFrame();
     const imageHTML = dragdata.getData("application/vnd.odoo.odoo-editor");
     const dropData = new DataTransfer();
@@ -999,7 +1024,9 @@ test("should drag and drop image with its caption(1)", async () => {
     );
     // Simulate the application/vnd.odoo.odoo-editor data that the browser would do.
     dropData.setData("application/vnd.odoo.odoo-editor", imageHTML);
-    await manuallyDispatchProgrammaticEvent(targetNodeForDrop, "drop", { dataTransfer: dropData });
+    await manuallyDispatchProgrammaticEvent(targetNodeForDrop, "drop", {
+        dataTransfer: dropData,
+    });
     await animationFrame();
 
     expect(getContent(el)).toBe(
@@ -1020,7 +1047,7 @@ test("should drag and drop image with its caption(1)", async () => {
 test("should drag and drop image with its caption(2)", async () => {
     const captionId = 1;
     const caption = "Hello";
-    const { el } = await setupEditorWithEmbeddedCaption(
+    const {el} = await setupEditorWithEmbeddedCaption(
         unformat(`
             <p>a</p>
             <figure contenteditable="false">
@@ -1041,7 +1068,9 @@ test("should drag and drop image with its caption(2)", async () => {
 
     await manuallyDispatchProgrammaticEvent(imgElement, "pointerdown");
     const dragdata = new DataTransfer();
-    await manuallyDispatchProgrammaticEvent(imgElement, "dragstart", { dataTransfer: dragdata });
+    await manuallyDispatchProgrammaticEvent(imgElement, "dragstart", {
+        dataTransfer: dragdata,
+    });
     await animationFrame();
     const imageHTML = dragdata.getData("application/vnd.odoo.odoo-editor");
     const dropData = new DataTransfer();
@@ -1051,7 +1080,9 @@ test("should drag and drop image with its caption(2)", async () => {
     );
     // Simulate the application/vnd.odoo.odoo-editor data that the browser would do.
     dropData.setData("application/vnd.odoo.odoo-editor", imageHTML);
-    await manuallyDispatchProgrammaticEvent(targetNodeForDrop, "drop", { dataTransfer: dropData });
+    await manuallyDispatchProgrammaticEvent(targetNodeForDrop, "drop", {
+        dataTransfer: dropData,
+    });
     await manuallyDispatchProgrammaticEvent(imgElement, "dragend");
     await animationFrame();
 
@@ -1073,7 +1104,7 @@ test("should drag and drop image with its caption(2)", async () => {
 test("should drag and drop image with caption along with selected text", async () => {
     const captionId = 1;
     const caption = "Hello";
-    const { el } = await setupEditorWithEmbeddedCaption(
+    const {el} = await setupEditorWithEmbeddedCaption(
         unformat(`
             <p>[a</p>
             <figure contenteditable="false">
@@ -1094,7 +1125,9 @@ test("should drag and drop image with caption along with selected text", async (
     });
 
     const dragdata = new DataTransfer();
-    await manuallyDispatchProgrammaticEvent(imgElement, "dragstart", { dataTransfer: dragdata });
+    await manuallyDispatchProgrammaticEvent(imgElement, "dragstart", {
+        dataTransfer: dragdata,
+    });
     await animationFrame();
     const odooEditorData = dragdata.getData("application/vnd.odoo.odoo-editor");
     const textHtml = dragdata.getData("text/html");
@@ -1102,7 +1135,9 @@ test("should drag and drop image with caption along with selected text", async (
     dropData.setData("text/html", textHtml);
     // Simulate the application/vnd.odoo.odoo-editor data that the browser would do.
     dropData.setData("application/vnd.odoo.odoo-editor", odooEditorData);
-    await manuallyDispatchProgrammaticEvent(targetNodeForDrop, "drop", { dataTransfer: dropData });
+    await manuallyDispatchProgrammaticEvent(targetNodeForDrop, "drop", {
+        dataTransfer: dropData,
+    });
     await animationFrame();
 
     expect(getContent(el)).toBe(
@@ -1124,7 +1159,7 @@ test("should cut an image and its caption as a single embedded figure", async ()
     const captionId = 1;
     const captionText = "Hello";
 
-    const { el: editorRoot, editor } = await setupEditorWithEmbeddedCaption(
+    const {el: editorRoot, editor} = await setupEditorWithEmbeddedCaption(
         unformat(`
             <p>a</p>
             <p>b</p>
@@ -1149,7 +1184,7 @@ test("should cut an image and its caption as a single embedded figure", async ()
     });
 
     const clipboard = new DataTransfer();
-    const cutEvent = new ClipboardEvent("cut", { clipboardData: clipboard });
+    const cutEvent = new ClipboardEvent("cut", {clipboardData: clipboard});
     editor.editable.dispatchEvent(cutEvent);
     await animationFrame();
 
@@ -1181,7 +1216,7 @@ test("should cut an image and its caption as a single embedded figure", async ()
 test("should copy an image along with its caption", async () => {
     const captionId = 1;
     const caption = "Hello";
-    const { el, editor } = await setupEditorWithEmbeddedCaption(
+    const {el, editor} = await setupEditorWithEmbeddedCaption(
         unformat(`
             <p>a</p>
             <figure contenteditable="false">
@@ -1202,7 +1237,7 @@ test("should copy an image along with its caption", async () => {
     });
 
     const clipboardData = new DataTransfer();
-    await press(["ctrl", "c"], { dataTransfer: clipboardData });
+    await press(["ctrl", "c"], {dataTransfer: clipboardData});
     const copiedContent = clipboardData.getData("application/vnd.odoo.odoo-editor");
     const fragment = parseHTML(editor.document, copiedContent);
     expect(getContent(fragment)).toBe(

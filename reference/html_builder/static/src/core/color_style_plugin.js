@@ -1,7 +1,7 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { applyNeededCss } from "@html_builder/utils/utils_css";
-import { withSequence } from "@html_editor/utils/resource";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {applyNeededCss} from "@html_builder/utils/utils_css";
+import {withSequence} from "@html_editor/utils/resource";
 
 class ColorStylePlugin extends Plugin {
     static id = "colorStyle";
@@ -14,13 +14,17 @@ class ColorStylePlugin extends Plugin {
         }),
         apply_custom_css_style: withSequence(20, this.applyColorStyle.bind(this)),
     };
-    applyColorStyle({ editingElement, params: { mainParam: styleName = "" }, value }) {
+    applyColorStyle({editingElement, params: {mainParam: styleName = ""}, value}) {
         if (styleName === "background-color") {
             const match = value.match(/var\(--([a-zA-Z0-9-_]+)\)/);
             if (match) {
                 value = `bg-${match[1]}`;
             }
-            this.dependencies.color.colorElement(editingElement, value, "backgroundColor");
+            this.dependencies.color.colorElement(
+                editingElement,
+                value,
+                "backgroundColor"
+            );
             return true;
         } else if (styleName === "color") {
             const match = value.match(/var\(--([a-zA-Z0-9-_]+)\)/);

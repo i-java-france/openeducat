@@ -3,15 +3,20 @@
 from collections import defaultdict
 from contextlib import contextmanager
 from datetime import datetime
-from freezegun import freeze_time
 from unittest.mock import patch
 
-from odoo.addons.google_calendar.utils.google_calendar import GoogleCalendarService
-from odoo.addons.google_account.models.google_service import GoogleService
-from odoo.addons.google_calendar.models.res_users import ResUsers
-from odoo.addons.google_calendar.models.google_sync import google_calendar_token, GoogleCalendarSync
-from odoo.addons.mail.tests.common import mail_new_test_user
+from freezegun import freeze_time
+
 from odoo.tests.common import HttpCase
+
+from odoo.addons.google_account.models.google_service import GoogleService
+from odoo.addons.google_calendar.models.google_sync import (
+    GoogleCalendarSync,
+    google_calendar_token,
+)
+from odoo.addons.google_calendar.models.res_users import ResUsers
+from odoo.addons.google_calendar.utils.google_calendar import GoogleCalendarService
+from odoo.addons.mail.tests.common import mail_new_test_user
 
 
 def patch_api(func):

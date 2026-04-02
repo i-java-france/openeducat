@@ -1,10 +1,10 @@
-import { ViewButton } from "./view_button";
+import {ViewButton} from "./view_button";
 
 export class MultiRecordViewButton extends ViewButton {
     static props = [...ViewButton.props, "list", "domain"];
 
     async onClick(ev, newWindow) {
-        const { clickParams, list } = this.props;
+        const {clickParams, list} = this.props;
         const resIds = await list.getResIds(true);
         clickParams.buttonContext = {
             active_domain: this.props.domain,

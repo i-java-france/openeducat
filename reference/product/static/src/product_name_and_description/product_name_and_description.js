@@ -1,12 +1,20 @@
 /** @odoo-module */
 
-import { _t } from "@web/core/l10n/translation";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { Component, onMounted, onPatched, onWillUnmount, useEffect, useRef, useState } from "@odoo/owl";
-import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
-import { useProductAndLabelAutoresize } from "./product_and_label_autoresize";
-import { computeM2OProps, Many2One } from "@web/views/fields/many2one/many2one";
-import { useInputField } from "@web/views/fields/input_field_hook";
+import {_t} from "@web/core/l10n/translation";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {
+    Component,
+    onMounted,
+    onPatched,
+    onWillUnmount,
+    useEffect,
+    useRef,
+    useState,
+} from "@odoo/owl";
+import {Many2OneField} from "@web/views/fields/many2one/many2one_field";
+import {useProductAndLabelAutoresize} from "./product_and_label_autoresize";
+import {computeM2OProps, Many2One} from "@web/views/fields/many2one/many2one";
+import {useInputField} from "@web/views/fields/input_field_hook";
 
 export const ProductNameAndDescriptionListRendererMixin = {
     getCellTitle(column, record) {
@@ -19,41 +27,57 @@ export const ProductNameAndDescriptionListRendererMixin = {
 
     getActiveColumns() {
         let activeColumns = super.getActiveColumns();
-        const productCol = activeColumns.find((col) => this.productColumns.includes(col.name));
-        const labelCol = activeColumns.find((col) => col.name === this.descriptionColumn);
+        const productCol = activeColumns.find((col) =>
+            this.productColumns.includes(col.name)
+        );
+        const labelCol = activeColumns.find(
+            (col) => col.name === this.descriptionColumn
+        );
 
         if (productCol) {
             if (labelCol) {
-                this.props.list.records.forEach((record) => (record.columnIsProductAndLabel = true));
+                this.props.list.records.forEach(
+                    (record) => (record.columnIsProductAndLabel = true)
+                );
             } else {
-                this.props.list.records.forEach((record) => (record.columnIsProductAndLabel = false));
+                this.props.list.records.forEach(
+                    (record) => (record.columnIsProductAndLabel = false)
+                );
             }
-            activeColumns = activeColumns.filter((col) => col.name !== this.descriptionColumn);
+            activeColumns = activeColumns.filter(
+                (col) => col.name !== this.descriptionColumn
+            );
             this.titleField = productCol.name;
         } else {
             this.titleField = "name";
         }
 
         return activeColumns;
-    }
+    },
 };
 
 export class ProductNameAndDescriptionField extends Component {
-    static components = { Many2One };
-    static props = { ...Many2OneField.props };
+    static components = {Many2One};
+    static props = {...Many2OneField.props};
     static template = Many2One.template;
 
     static descriptionColumn = "";
 
     setup() {
-        this.isPrintMode = useState({ value: false });
-        this.labelVisibility = useState({ value: false });
+        this.isPrintMode = useState({value: false});
+        this.labelVisibility = useState({value: false});
         this.switchToLabel = false;
-        this.columnIsProductAndLabel = useState({ value: this.props.record.columnIsProductAndLabel });
+        this.columnIsProductAndLabel = useState({
+            value: this.props.record.columnIsProductAndLabel,
+        });
         this.labelNode = useRef("labelNodeRef");
-        useProductAndLabelAutoresize(this.labelNode, { targetParentName: this.props.name });
+        useProductAndLabelAutoresize(this.labelNode, {
+            targetParentName: this.props.name,
+        });
         this.productNode = useRef("productNodeRef");
-        useProductAndLabelAutoresize(this.productNode, { targetParentName: this.props.name });
+        useProductAndLabelAutoresize(this.productNode, {
+            targetParentName: this.props.name,
+        });
 
         this.descriptionColumn = this.constructor.descriptionColumn;
         useInputField({
@@ -65,7 +89,8 @@ export class ProductNameAndDescriptionField extends Component {
 
         useEffect(
             () => {
-                this.columnIsProductAndLabel.value = this.props.record.columnIsProductAndLabel;
+                this.columnIsProductAndLabel.value =
+                    this.props.record.columnIsProductAndLabel;
             },
             () => [this.props.record.columnIsProductAndLabel]
         );
@@ -114,9 +139,9 @@ export class ProductNameAndDescriptionField extends Component {
 
     get m2oProps() {
         const p = computeM2OProps(this.props);
-        let value = p.value && { ...p.value };
+        let value = p.value && {...p.value};
         if (this.props.readonly && this.productName) {
-            value = { ...value, display_name: this.productName };
+            value = {...value, display_name: this.productName};
         }
         return {
             ...p,
@@ -132,7 +157,9 @@ export class ProductNameAndDescriptionField extends Component {
     }
 
     get showLabelVisibilityToggler() {
-        return !this.props.readonly && this.columnIsProductAndLabel.value && !this.label;
+        return (
+            !this.props.readonly && this.columnIsProductAndLabel.value && !this.label
+        );
     }
 
     switchLabelVisibility() {

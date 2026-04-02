@@ -1,9 +1,9 @@
-import { Component, useExternalListener, useState } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { useAutofocus } from "@web/core/utils/hooks";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { _t } from "@web/core/l10n/translation";
+import {Component, useExternalListener, useState} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {useAutofocus} from "@web/core/utils/hooks";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {_t} from "@web/core/l10n/translation";
 
 /**
  * @typedef {Object} SearchFilter
@@ -22,11 +22,11 @@ import { _t } from "@web/core/l10n/translation";
 export class SearchMessageInput extends Component {
     static template = "mail.SearchMessageInput";
     static props = ["closeSearch?", "messageSearch", "thread"];
-    static components = { Dropdown, DropdownItem };
+    static components = {Dropdown, DropdownItem};
 
     setup() {
         super.setup();
-        this.state = useState({ searchTerm: "", searchedTerm: "" });
+        this.state = useState({searchTerm: "", searchedTerm: ""});
         useAutofocus();
         useExternalListener(
             browser,
@@ -36,7 +36,7 @@ export class SearchMessageInput extends Component {
                     this.props.closeSearch?.();
                 }
             },
-            { capture: true }
+            {capture: true}
         );
     }
 

@@ -1,5 +1,5 @@
-import { patch } from "@web/core/utils/patch";
-import { actionService } from "@web/webclient/actions/action_service";
+import {patch} from "@web/core/utils/patch";
+import {actionService} from "@web/webclient/actions/action_service";
 
 patch(actionService, {
     start(env) {

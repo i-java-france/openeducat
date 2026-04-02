@@ -4,14 +4,15 @@ import logging
 import re
 import urllib.parse
 
-from odoo import api, fields, models, _
-from odoo.fields import Domain
-from odoo.addons.website.tools import text_from_html
-from odoo.http import request
+from odoo import _, api, fields, models
 from odoo.exceptions import AccessError
+from odoo.fields import Domain
+from odoo.http import request
 from odoo.tools import escape_psql
-from odoo.tools.urls import urljoin as url_join
 from odoo.tools.json import scriptsafe as json_safe
+from odoo.tools.urls import urljoin as url_join
+
+from odoo.addons.website.tools import text_from_html
 
 logger = logging.getLogger(__name__)
 

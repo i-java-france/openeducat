@@ -1,10 +1,10 @@
 /* global posmodel */
 
-import { _t } from "@web/core/l10n/translation";
-import { renderToElement } from "@web/core/utils/render";
+import {_t} from "@web/core/l10n/translation";
+import {renderToElement} from "@web/core/utils/render";
 
 export async function generateReceiptsToPrint(order, orderChange) {
-    const { orderData, changes } = posmodel.generateOrderChange(
+    const {orderData, changes} = posmodel.generateOrderChange(
         order,
         orderChange,
         Array.from(posmodel.config.printerCategories),
@@ -26,7 +26,11 @@ export async function generateReceiptsToPrint(order, orderChange) {
 // Return rendered order change receipts that will be printed when clicking "Order" button
 export async function generatePreparationReceipts() {
     const order = posmodel.getOrder();
-    const orderChange = posmodel.changesToOrder(order, posmodel.config.printerCategories, false);
+    const orderChange = posmodel.changesToOrder(
+        order,
+        posmodel.config.printerCategories,
+        false
+    );
     return await generateReceiptsToPrint(order, orderChange);
 }
 
@@ -37,7 +41,7 @@ export async function generateFireCourseReceipts() {
     const orderChange = {
         new: [],
         cancelled: [],
-        noteUpdate: course.lines.map((line) => ({ product_id: line.getProduct().id })),
+        noteUpdate: course.lines.map((line) => ({product_id: line.getProduct().id})),
         noteUpdateTitle: _t("Course %s fired", "" + course.index),
         printNoteUpdateData: false,
     };

@@ -1,15 +1,15 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.website_slides.tests import common
 from odoo.tests import HttpCase
+
+from odoo.addons.website_slides.tests import common
 
 
 class TestEmbedDetection(HttpCase, common.SlidesCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestEmbedDetection, cls).setUpClass()
+        super().setUpClass()
 
         cls.website = cls.env['website'].create({
             'name': 'Test Website',

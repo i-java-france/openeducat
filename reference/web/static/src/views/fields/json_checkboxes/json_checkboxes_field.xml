@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <template>
-
     <t t-name="account.JsonCheckboxes">
         <div aria-atomic="true">
             <t t-foreach="checkboxes" t-as="checkbox" t-key="checkbox">
@@ -13,14 +12,15 @@
                     >
                         <t t-esc="checkbox_value.label" />
                     </CheckBox>
-                    <i t-if="checkbox_value.question_circle"
-                       class="fa fa-question-circle"
-                       role="img"
-                       aria-label="Warning"
-                       t-att-title="checkbox_value.question_circle"/>
+                    <i
+                        t-if="checkbox_value.question_circle"
+                        class="fa fa-question-circle"
+                        role="img"
+                        aria-label="Warning"
+                        t-att-title="checkbox_value.question_circle"
+                    />
                 </div>
             </t>
         </div>
     </t>
-
 </template>

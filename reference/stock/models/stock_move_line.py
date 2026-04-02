@@ -1,15 +1,15 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from collections import Counter, defaultdict
 from ast import literal_eval
+from collections import Counter, defaultdict
 
 from odoo import _, api, fields, models
-from odoo.addons.web.controllers.utils import clean_action
 from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Command, Domain
 from odoo.tools import OrderedSet, groupby
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
+
+from odoo.addons.web.controllers.utils import clean_action
 
 
 class StockMoveLine(models.Model):
@@ -521,7 +521,7 @@ class StockMoveLine(models.Model):
                         updated_ml_ids.add(ml.id)
             self.env['stock.move.line'].browse(updated_ml_ids).date = fields.Datetime.now()
 
-        res = super(StockMoveLine, self).write(vals)
+        res = super().write(vals)
 
         for ml in mls:
             available_qty, dummy = ml._synchronize_quant(-ml.quantity_product_uom, ml.location_id)

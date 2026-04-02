@@ -1,15 +1,15 @@
-import { CheckBox } from "@web/core/checkbox/checkbox";
-import { _t } from "@web/core/l10n/translation";
-import { useService, useAutofocus } from "@web/core/utils/hooks";
-import { sprintf } from "@web/core/utils/strings";
-import { WebsiteDialog } from "./dialog";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
-import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
-import { formView } from "@web/views/form/form_view";
-import { renderToFragment } from "@web/core/utils/render";
-import { Component, onWillDestroy, useEffect, useRef, useState, xml } from "@odoo/owl";
-import { FormController } from "@web/views/form/form_controller";
-import { registry } from "@web/core/registry";
+import {CheckBox} from "@web/core/checkbox/checkbox";
+import {_t} from "@web/core/l10n/translation";
+import {useService, useAutofocus} from "@web/core/utils/hooks";
+import {sprintf} from "@web/core/utils/strings";
+import {WebsiteDialog} from "./dialog";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
+import {FormViewDialog} from "@web/views/view_dialogs/form_view_dialog";
+import {formView} from "@web/views/form/form_view";
+import {renderToFragment} from "@web/core/utils/render";
+import {Component, onWillDestroy, useEffect, useRef, useState, xml} from "@odoo/owl";
+import {FormController} from "@web/views/form/form_controller";
+import {registry} from "@web/core/registry";
 
 export class PageDependencies extends Component {
     static template = "website.PageDependencies";
@@ -53,10 +53,11 @@ export class PageDependencies extends Component {
     }
 
     async fetchDependencies() {
-        this.state.dependencies = await this.orm.call("website", "search_url_dependencies", [
-            this.props.resModel,
-            await this.getResIds(),
-        ]);
+        this.state.dependencies = await this.orm.call(
+            "website",
+            "search_url_dependencies",
+            [this.props.resModel, await this.getResIds()]
+        );
     }
 
     showDependencies() {
@@ -97,7 +98,7 @@ export class FormPageDependencies extends PageDependencies {
     static props = {
         ...standardFieldProps,
         ...PageDependencies.props,
-        resIds: { type: Array, optional: true },
+        resIds: {type: Array, optional: true},
     };
 
     async getResIds() {
@@ -112,8 +113,8 @@ export class FormPageDependencies extends PageDependencies {
 
 export const formPageDependenciesWidget = {
     component: FormPageDependencies,
-    extractProps: ({ attrs }) => {
-        const { mode, name, resModel, resIds } = attrs;
+    extractProps: ({attrs}) => {
+        const {mode, name, resModel, resIds} = attrs;
         return {
             mode,
             name: name || "",
@@ -122,7 +123,9 @@ export const formPageDependenciesWidget = {
         };
     },
 };
-registry.category("view_widgets").add("form_page_dependencies", formPageDependenciesWidget);
+registry
+    .category("view_widgets")
+    .add("form_page_dependencies", formPageDependenciesWidget);
 
 export class DeletePageDialog extends Component {
     static template = "website.DeletePageDialog";
@@ -134,9 +137,9 @@ export class DeletePageDialog extends Component {
     static props = {
         resIds: Array,
         resModel: String,
-        onDelete: { type: Function, optional: true },
+        onDelete: {type: Function, optional: true},
         close: Function,
-        hasNewPageTemplate: { type: Boolean, optional: true },
+        hasNewPageTemplate: {type: Boolean, optional: true},
     };
 
     setup() {
@@ -158,12 +161,12 @@ export class DeletePageDialog extends Component {
 }
 
 export class DuplicatePageDialog extends Component {
-    static components = { WebsiteDialog };
+    static components = {WebsiteDialog};
     static template = "website.DuplicatePageDialog";
     static props = {
         onDuplicate: Function,
         close: Function,
-        pageIds: { type: Array, element: Number },
+        pageIds: {type: Array, element: Number},
     };
 
     setup() {
@@ -196,8 +199,8 @@ export class DuplicatePageDialog extends Component {
 export class PagePropertiesFormController extends FormController {
     static props = {
         ...FormController.props,
-        clonePage: { type: Function, optional: true },
-        deletePage: { type: Function, optional: true },
+        clonePage: {type: Function, optional: true},
+        deletePage: {type: Function, optional: true},
     };
 }
 
@@ -209,8 +212,8 @@ registry.category("views").add("page_properties_dialog_form", {
 export class PagePropertiesDialog extends FormViewDialog {
     static props = {
         ...FormViewDialog.props,
-        onClose: { type: Function, optional: true },
-        resModel: { type: String, optional: true },
+        onClose: {type: Function, optional: true},
+        resModel: {type: String, optional: true},
     };
 
     static defaultProps = {
@@ -277,7 +280,7 @@ export class PagePropertiesDialog extends FormViewDialog {
             onDuplicate: (duplicates) => {
                 this.props.close();
                 this.props.onClose();
-                this.website.goToWebsite({ path: duplicates[0], edition: true });
+                this.website.goToWebsite({path: duplicates[0], edition: true});
             },
         });
     }
@@ -292,7 +295,7 @@ export class PagePropertiesDialog extends FormViewDialog {
             resModel: "website.page",
             onDelete: async () => {
                 await this.orm.unlink("website.page", pageIds);
-                this.website.goToWebsite({ path: "/" });
+                this.website.goToWebsite({path: "/"});
                 this.props.close();
                 this.props.onClose();
             },

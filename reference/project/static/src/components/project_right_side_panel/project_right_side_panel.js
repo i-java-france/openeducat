@@ -1,14 +1,14 @@
-import { _t } from "@web/core/l10n/translation";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { formatFloat } from "@web/views/fields/formatters";
-import { ViewButton } from '@web/views/view_button/view_button';
+import {_t} from "@web/core/l10n/translation";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {formatFloat} from "@web/views/fields/formatters";
+import {ViewButton} from "@web/views/view_button/view_button";
 
-import { ProjectRightSidePanelSection } from './components/project_right_side_panel_section';
-import { ProjectMilestone } from './components/project_milestone';
-import { ProjectProfitability } from './components/project_profitability';
-import { getCurrency } from '@web/core/currency';
-import { Component, onWillStart, useState } from "@odoo/owl";
-import { SIZES } from "@web/core/ui/ui_service";
+import {ProjectRightSidePanelSection} from "./components/project_right_side_panel_section";
+import {ProjectMilestone} from "./components/project_milestone";
+import {ProjectProfitability} from "./components/project_profitability";
+import {getCurrency} from "@web/core/currency";
+import {Component, onWillStart, useState} from "@odoo/owl";
+import {SIZES} from "@web/core/ui/ui_service";
 
 export class ProjectRightSidePanel extends Component {
     static components = {
@@ -24,19 +24,19 @@ export class ProjectRightSidePanel extends Component {
     };
 
     setup() {
-        this.orm = useService('orm');
-        this.actionService = useService('action');
-        this.dialog = useService('dialog');
+        this.orm = useService("orm");
+        this.actionService = useService("action");
+        this.dialog = useService("dialog");
         this.uiService = useService("ui");
-        useBus(this.uiService.bus, "resize", this.updateGridTemplateColumns)
+        useBus(this.uiService.bus, "resize", this.updateGridTemplateColumns);
         this.state = useState({
             data: {
                 milestones: {
                     data: [],
                 },
                 profitability_items: {
-                    costs: { data: [], total: { billed: 0.0, to_bill: 0.0 } },
-                    revenues: { data: [], total: { invoiced: 0.0, to_invoice: 0.0 } },
+                    costs: {data: [], total: {billed: 0.0, to_bill: 0.0}},
+                    revenues: {data: [], total: {invoiced: 0.0, to_invoice: 0.0}},
                 },
                 user: {},
                 currency_id: false,
@@ -65,7 +65,10 @@ export class ProjectRightSidePanel extends Component {
     }
 
     get panelVisible() {
-        return this.state.data.show_milestones || this.state.data.show_project_profitability_helper;
+        return (
+            this.state.data.show_milestones ||
+            this.state.data.show_project_profitability_helper
+        );
     }
 
     get context() {
@@ -86,25 +89,25 @@ export class ProjectRightSidePanel extends Component {
 
     get sectionNames() {
         return {
-            'milestones': _t('Milestones'),
-            'profitability': _t('Profitability'),
+            milestones: _t("Milestones"),
+            profitability: _t("Profitability"),
         };
     }
 
     get showProjectProfitability() {
-        const { costs, revenues } = this.state.data.profitability_items;
+        const {costs, revenues} = this.state.data.profitability_items;
         return costs.data.length || revenues.data.length;
     }
 
     formatFloat(value) {
-        return formatFloat(value, { digits: [false, 1] });
+        return formatFloat(value, {digits: [false, 1]});
     }
 
     formatMonetary(value, options = {}) {
         const valueFormatted = formatFloat(value, {
             ...options,
-            'digits': [false, 0],
-            'noSymbol': true,
+            digits: [false, 0],
+            noSymbol: true,
         });
         const currency = getCurrency(this.currencyId);
         if (!currency) {
@@ -118,14 +121,15 @@ export class ProjectRightSidePanel extends Component {
     }
 
     async loadData() {
-        if (!this.projectId) { // If this is called from notif, multiples updates but no specific project
+        if (!this.projectId) {
+            // If this is called from notif, multiples updates but no specific project
             return {};
         }
         const data = await this.orm.call(
-            'project.project',
-            'get_panel_data',
+            "project.project",
+            "get_panel_data",
             [[this.projectId]],
-            { context: this.context },
+            {context: this.context}
         );
         this.state.data = data;
         return data;
@@ -151,10 +155,10 @@ export class ProjectRightSidePanel extends Component {
 
     async onProjectActionClick(params) {
         this.actionService.doActionButton({
-            type: 'action',
+            type: "action",
             resId: this.projectId,
             context: this.context,
-            resModel: 'project.project',
+            resModel: "project.project",
             ...params,
         });
     }
@@ -163,7 +167,7 @@ export class ProjectRightSidePanel extends Component {
         return {
             type: statButton.action_type,
             name: statButton.action,
-            context: statButton.additional_context || '{}',
+            context: statButton.additional_context || "{}",
         };
     }
 
@@ -171,7 +175,7 @@ export class ProjectRightSidePanel extends Component {
         return {
             resId: this.projectId,
             context: this.context,
-            resModel: 'project.project',
+            resModel: "project.project",
         };
     }
 }

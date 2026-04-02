@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from collections import deque
 from datetime import datetime
 
-from odoo import api, Command, fields, models, _
+from odoo import Command, api, fields, models
 from odoo.fields import Date
-from odoo.tools.float_utils import float_round, float_is_zero, float_compare
-from odoo.exceptions import UserError
 
 
 class StockMove(models.Model):
@@ -21,7 +18,7 @@ class StockMove(models.Model):
 
     @api.model
     def _prepare_merge_moves_distinct_fields(self):
-        distinct_fields = super(StockMove, self)._prepare_merge_moves_distinct_fields()
+        distinct_fields = super()._prepare_merge_moves_distinct_fields()
         distinct_fields += ['purchase_line_id', 'created_purchase_line_ids']
         return distinct_fields
 
@@ -99,7 +96,7 @@ class StockMove(models.Model):
         return vals
 
     def _prepare_move_split_vals(self, uom_qty):
-        vals = super(StockMove, self)._prepare_move_split_vals(uom_qty)
+        vals = super()._prepare_move_split_vals(uom_qty)
         # when backordering an mto move link the bakcorder to the purchase order
         if self.procure_method == 'make_to_order' and self.created_purchase_line_ids:
             vals['created_purchase_line_ids'] = [Command.set(self.created_purchase_line_ids.ids)]
@@ -107,7 +104,7 @@ class StockMove(models.Model):
         return vals
 
     def _clean_merged(self):
-        super(StockMove, self)._clean_merged()
+        super()._clean_merged()
         self.write({'created_purchase_line_ids': [Command.clear()]})
 
     def _get_upstream_documents_and_responsibles(self, visited):
@@ -117,7 +114,7 @@ class StockMove(models.Model):
         elif self.purchase_line_id and self.purchase_line_id.state != 'cancel':
             return[(self.purchase_line_id.order_id, self.purchase_line_id.order_id.user_id, visited)]
         else:
-            return super(StockMove, self)._get_upstream_documents_and_responsibles(visited)
+            return super()._get_upstream_documents_and_responsibles(visited)
 
     def _get_source_document(self):
         res = super()._get_source_document()

@@ -1,6 +1,6 @@
-import { Plugin } from "@html_editor/plugin";
-import { wrapInlinesInBlocks } from "@html_editor/utils/dom";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {wrapInlinesInBlocks} from "@html_editor/utils/dom";
+import {registry} from "@web/core/registry";
 
 export class MassMailingIconSnippetOptionPlugin extends Plugin {
     static id = "mass_mailing.iconSnippetOption";
@@ -9,7 +9,7 @@ export class MassMailingIconSnippetOptionPlugin extends Plugin {
         on_snippet_dropped_handlers: this.onSnippetDropped.bind(this),
     };
 
-    async onSnippetDropped({ snippetEl }) {
+    async onSnippetDropped({snippetEl}) {
         if (!snippetEl.matches("p:has(> .s_icon)")) {
             return;
         }

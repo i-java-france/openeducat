@@ -1,11 +1,19 @@
-import { rpc } from "@web/core/network/rpc";
-import { pick } from "@web/core/utils/objects";
-import { loadBundle } from "@web/core/assets";
-import { getImageSrc } from "./image";
+import {rpc} from "@web/core/network/rpc";
+import {pick} from "@web/core/utils/objects";
+import {loadBundle} from "@web/core/assets";
+import {getImageSrc} from "./image";
 
 // Fields returned by cropperjs 'getData' method, also need to be passed when
 // initializing the cropper to reuse the previous crop.
-export const cropperDataFields = ["x", "y", "width", "height", "rotate", "scaleX", "scaleY"];
+export const cropperDataFields = [
+    "x",
+    "y",
+    "width",
+    "height",
+    "rotate",
+    "scaleX",
+    "scaleY",
+];
 export const cropperDataFieldsWithAspectRatio = [...cropperDataFields, "aspectRatio"];
 export const isGif = (mimetype) => mimetype === "image/gif";
 
@@ -75,8 +83,8 @@ function _getValidSrc(src) {
 export async function loadImage(src, img = new Image()) {
     const source = await _getValidSrc(src);
     return new Promise((resolve, reject) => {
-        img.addEventListener("load", () => resolve(img), { once: true });
-        img.addEventListener("error", reject, { once: true });
+        img.addEventListener("load", () => resolve(img), {once: true});
+        img.addEventListener("error", reject, {once: true});
         img.src = source;
     });
 }
@@ -123,7 +131,10 @@ async function _updateImageData(src, key = "objectURL") {
     } else {
         value = URL.createObjectURL(blob);
     }
-    imageCache.set(src, Object.assign(currentImageData || {}, { [key]: value, size: blob.size }));
+    imageCache.set(
+        src,
+        Object.assign(currentImageData || {}, {[key]: value, size: blob.size})
+    );
     return value;
 }
 
@@ -209,7 +220,9 @@ export async function loadImageInfo(el, attachmentSrc = "") {
     const srcUrl = new URL(src, docHref);
     let relativeSrc = decodeURI(srcUrl.pathname);
 
-    let match = relativeSrc.match(/\/(?:web_editor|html_editor)\/image_shape\/(\w+\.\w+)/);
+    let match = relativeSrc.match(
+        /\/(?:web_editor|html_editor)\/image_shape\/(\w+\.\w+)/
+    );
     if (el.dataset.shape && match) {
         match = match[1];
         if (match.endsWith("_perspective")) {
@@ -222,10 +235,10 @@ export async function loadImageInfo(el, attachmentSrc = "") {
         relativeSrc = `/web/image/${encodeURIComponent(match)}`;
     }
 
-    const { original } = await rpc(
+    const {original} = await rpc(
         "/html_editor/get_image_info",
-        { src: relativeSrc },
-        { cache: true }
+        {src: relativeSrc},
+        {cache: true}
     );
     // If src was an absolute "external" URL, we consider unlikely that its
     // relative part matches something from the DB and even if it does, nothing

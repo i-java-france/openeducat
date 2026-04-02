@@ -1,7 +1,7 @@
-import { registry } from "../registry";
-import { NotificationContainer } from "./notification_container";
+import {registry} from "../registry";
+import {NotificationContainer} from "./notification_container";
 
-import { reactive } from "@odoo/owl";
+import {reactive} from "@odoo/owl";
 
 /**
  * @typedef {Object} NotificationButton
@@ -31,9 +31,9 @@ export const notificationService = {
             this.notificationContainer.name,
             {
                 Component: this.notificationContainer,
-                props: { notifications },
+                props: {notifications},
             },
-            { sequence: 100 }
+            {sequence: 100}
         );
 
         /**
@@ -43,7 +43,7 @@ export const notificationService = {
         function add(message, options = {}) {
             const id = ++notifId;
             const closeFn = () => close(id);
-            const props = Object.assign({}, options, { message, close: closeFn });
+            const props = Object.assign({}, options, {message, close: closeFn});
             delete props.onClose;
             const notification = {
                 id,
@@ -64,7 +64,7 @@ export const notificationService = {
             }
         }
 
-        return { add };
+        return {add};
     },
 };
 

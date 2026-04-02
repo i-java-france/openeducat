@@ -5,9 +5,14 @@ import {
     startServer,
     triggerEvents,
 } from "@mail/../tests/mail_test_helpers";
-import { describe, expect, test } from "@odoo/hoot";
-import { defineSMSModels } from "@sms/../tests/sms_test_helpers";
-import { asyncStep, mockService, serverState, waitForSteps } from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {defineSMSModels} from "@sms/../tests/sms_test_helpers";
+import {
+    asyncStep,
+    mockService,
+    serverState,
+    waitForSteps,
+} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 defineSMSModels();
@@ -27,13 +32,13 @@ test("mark as read", async () => {
     await start();
     await click(".o_menu_systray i[aria-label='Messages']");
     await contains(".o-mail-NotificationItem");
-    await triggerEvents(".o-mail-NotificationItem", ["mouseenter"], { text: "" });
+    await triggerEvents(".o-mail-NotificationItem", ["mouseenter"], {text: ""});
     await contains(".o-mail-NotificationItem [title='Mark As Read']");
     await contains(".o-mail-NotificationItem-text", {
         text: "An error occurred when sending an SMS on “Mitchell Admin”",
     });
     await click(".o-mail-NotificationItem [title='Mark As Read']");
-    await contains(".o-mail-NotificationItem", { count: 0 });
+    await contains(".o-mail-NotificationItem", {count: 0});
 });
 
 test("notifications grouped by notification_type", async () => {
@@ -75,19 +80,25 @@ test("notifications grouped by notification_type", async () => {
     ]);
     await start();
     await click(".o_menu_systray i[aria-label='Messages']");
-    await contains(".o-mail-NotificationItem", { count: 2 });
+    await contains(".o-mail-NotificationItem", {count: 2});
     await contains(":nth-child(1 of .o-mail-NotificationItem)", {
         contains: [
-            [".o-mail-NotificationItem-name", { text: "Email Failure: Contact" }],
-            [".o-mail-NotificationItem-counter", { text: "2" }],
-            [".o-mail-NotificationItem-text", { text: "An error occurred when sending an email" }],
+            [".o-mail-NotificationItem-name", {text: "Email Failure: Contact"}],
+            [".o-mail-NotificationItem-counter", {text: "2"}],
+            [
+                ".o-mail-NotificationItem-text",
+                {text: "An error occurred when sending an email"},
+            ],
         ],
     });
     await contains(":nth-child(2 of .o-mail-NotificationItem)", {
         contains: [
-            [".o-mail-NotificationItem-name", { text: "SMS Failure: Contact" }],
-            [".o-mail-NotificationItem-counter", { text: "2" }],
-            [".o-mail-NotificationItem-text", { text: "An error occurred when sending an SMS" }],
+            [".o-mail-NotificationItem-name", {text: "SMS Failure: Contact"}],
+            [".o-mail-NotificationItem-counter", {text: "2"}],
+            [
+                ".o-mail-NotificationItem-text",
+                {text: "An error occurred when sending an SMS"},
+            ],
         ],
     });
 });
@@ -139,7 +150,7 @@ test("grouped notifications by document model", async () => {
     await click(".o_menu_systray i[aria-label='Messages']");
     await click(".o-mail-NotificationItem", {
         text: "SMS Failure: Contact",
-        contains: [".badge", { text: "2" }],
+        contains: [".badge", {text: "2"}],
     });
     await waitForSteps(["do_action"]);
 });

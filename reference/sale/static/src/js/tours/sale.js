@@ -1,7 +1,7 @@
-import { markup } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { stepUtils } from "@web_tour/tour_utils";
+import {markup} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {stepUtils} from "@web_tour/tour_utils";
 
 registry.category("web_tour.tours").add("sale_tour", {
     url: "/odoo",
@@ -46,7 +46,9 @@ registry.category("web_tour.tours").add("sale_tour", {
         },
         {
             trigger: ".o_field_x2many_list_row_add > a",
-            content: _t("Click here to add some products or services to your quotation."),
+            content: _t(
+                "Click here to add some products or services to your quotation."
+            ),
             tooltipPosition: "bottom",
             run: "click",
         },
@@ -87,7 +89,11 @@ registry.category("web_tour.tours").add("sale_tour", {
         },
         ...stepUtils.statusbarButtonsSteps(
             "Send",
-            markup(_t("<b>Send the quote</b> to yourself and check what the customer will receive.")),
+            markup(
+                _t(
+                    "<b>Send the quote</b> to yourself and check what the customer will receive."
+                )
+            )
         ),
         {
             isActive: ["body:not(:has(.modal-footer button.o_mail_send))"],

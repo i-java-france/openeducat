@@ -1,14 +1,14 @@
-import { reactive } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
+import {reactive} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
 import {
     isDisplayStandalone,
     isIOS,
     isMacOS,
     isBrowserSafari,
 } from "@web/core/browser/feature_detection";
-import { get } from "@web/core/network/http_service";
-import { registry } from "@web/core/registry";
-import { InstallPrompt } from "./install_prompt";
+import {get} from "@web/core/network/http_service";
+import {registry} from "@web/core/registry";
+import {InstallPrompt} from "./install_prompt";
 
 const serviceRegistry = registry.category("services");
 
@@ -35,7 +35,7 @@ browser.addEventListener("beforeinstallprompt", (ev) => {
 
 const pwaService = {
     dependencies: ["dialog"],
-    start(env, { dialog }) {
+    start(env, {dialog}) {
         let _manifest;
         let nativePrompt;
 
@@ -52,7 +52,9 @@ const pwaService = {
         });
 
         function _getInstallationState(scope = state.startUrl) {
-            const installationState = browser.localStorage.getItem("pwaService.installationState");
+            const installationState = browser.localStorage.getItem(
+                "pwaService.installationState"
+            );
             return installationState ? JSON.parse(installationState)[scope] : "";
         }
 
@@ -61,19 +63,28 @@ const pwaService = {
                 browser.localStorage.getItem("pwaService.installationState") || "{}"
             );
             ls[state.startUrl] = value;
-            browser.localStorage.setItem("pwaService.installationState", JSON.stringify(ls));
+            browser.localStorage.setItem(
+                "pwaService.installationState",
+                JSON.stringify(ls)
+            );
         }
 
         function _removeInstallationState() {
-            const ls = JSON.parse(browser.localStorage.getItem("pwaService.installationState"));
+            const ls = JSON.parse(
+                browser.localStorage.getItem("pwaService.installationState")
+            );
             delete ls[state.startUrl];
-            browser.localStorage.setItem("pwaService.installationState", JSON.stringify(ls));
+            browser.localStorage.setItem(
+                "pwaService.installationState",
+                JSON.stringify(ls)
+            );
         }
 
         if (state.isScopedApp) {
             if (browser.location.pathname === "/scoped_app") {
                 // Installation page, use the path parameter in the URL
-                state.startUrl = "/" + new URL(browser.location.href).searchParams.get("path");
+                state.startUrl =
+                    "/" + new URL(browser.location.href).searchParams.get("path");
             } else {
                 state.startUrl = browser.location.pathname;
             }
@@ -88,13 +99,17 @@ const pwaService = {
             (isBrowserSafari() &&
                 !isDisplayStandalone() &&
                 (isIOS() ||
-                    (isMacOS() && browser.navigator.userAgent.match(/Version\/(\d+)/)[1] >= 17)));
+                    (isMacOS() &&
+                        browser.navigator.userAgent.match(/Version\/(\d+)/)[1] >= 17)));
 
         const installationState = _getInstallationState();
 
         if (state.isSupportedOnBrowser) {
             if (BEFOREINSTALLPROMPT_EVENT) {
-                _handleBeforeInstallPrompt(BEFOREINSTALLPROMPT_EVENT, installationState);
+                _handleBeforeInstallPrompt(
+                    BEFOREINSTALLPROMPT_EVENT,
+                    installationState
+                );
                 BEFOREINSTALLPROMPT_EVENT = null; // clear this variable as it is no longer useful
             }
             // If a user declines the prompt, the browser would triggered it once again. We must be able to catch it
@@ -141,7 +156,7 @@ const pwaService = {
             return _getInstallationState(scope) === "accepted";
         }
 
-        async function show({ onDone } = {}) {
+        async function show({onDone} = {}) {
             if (!state.isAvailable) {
                 return;
             }

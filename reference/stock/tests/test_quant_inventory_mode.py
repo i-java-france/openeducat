@@ -1,15 +1,15 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.mail.tests.common import mail_new_test_user
-from odoo.tests import Form, TransactionCase
 from odoo.exceptions import AccessError, UserError
+from odoo.tests import Form, TransactionCase
+
+from odoo.addons.mail.tests.common import mail_new_test_user
 
 
 class TestEditableQuant(TransactionCase):
     @classmethod
     def setUpClass(cls):
-        super(TestEditableQuant, cls).setUpClass()
+        super().setUpClass()
 
         # Shortcut to call `stock.quant` with `inventory mode` set in the context
         cls.Quant = cls.env['stock.quant'].with_context(inventory_mode=True)

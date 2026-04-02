@@ -1,20 +1,20 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from contextlib import contextmanager
 from unittest.mock import patch
 
 from odoo import exceptions
-from odoo.addons.iap.tools import iap_tools
-from odoo.addons.iap.models.iap_enrich_api import IapEnrichApi
 from odoo.tests import common
+
+from odoo.addons.iap.models.iap_enrich_api import IapEnrichApi
+from odoo.addons.iap.tools import iap_tools
 
 
 class MockIAPEnrich(common.TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(MockIAPEnrich, cls).setUpClass()
+        super().setUpClass()
         cls._init_iap_mock()
 
     @contextmanager

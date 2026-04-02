@@ -1,16 +1,16 @@
-import { expect, test } from "@odoo/hoot";
-import { press, waitFor } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { contains, onRpc } from "@web/../tests/web_test_helpers";
-import { loadLanguages } from "@web/core/l10n/translation";
-import { user } from "@web/core/user";
-import { setupEditor } from "./_helpers/editor";
-import { getContent } from "./_helpers/selection";
+import {expect, test} from "@odoo/hoot";
+import {press, waitFor} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {contains, onRpc} from "@web/../tests/web_test_helpers";
+import {loadLanguages} from "@web/core/l10n/translation";
+import {user} from "@web/core/user";
+import {setupEditor} from "./_helpers/editor";
+import {getContent} from "./_helpers/selection";
 
-import { ChatGPTTranslatePlugin } from "@html_editor/main/chatgpt/chatgpt_translate_plugin";
-import { MAIN_PLUGINS } from "@html_editor/plugin_sets";
-import { expandToolbar } from "./_helpers/toolbar";
-import { execCommand } from "./_helpers/userCommands";
+import {ChatGPTTranslatePlugin} from "@html_editor/main/chatgpt/chatgpt_translate_plugin";
+import {MAIN_PLUGINS} from "@html_editor/plugin_sets";
+import {expandToolbar} from "./_helpers/toolbar";
+import {execCommand} from "./_helpers/userCommands";
 
 const TRANSLATE_DIALOG_TITLE = "Translate with AI";
 
@@ -23,7 +23,7 @@ const translateDropdownFromToolbar = async () => {
 
 test("ChatGPT dialog opens in translate mode when clicked on translate button in toolbar", async () => {
     await setupEditor("<p>te[s]t</p>", {
-        config: { Plugins: [...MAIN_PLUGINS, ChatGPTTranslatePlugin] },
+        config: {Plugins: [...MAIN_PLUGINS, ChatGPTTranslatePlugin]},
     });
 
     await expandToolbar();
@@ -48,7 +48,7 @@ test("ChatGPT dialog opens in translate mode when clicked on translate dropdown 
         ["fr_BE", "French (BE) / Français (BE)"],
     ]);
     await setupEditor("<p>te[s]t</p>", {
-        config: { Plugins: [...MAIN_PLUGINS, ChatGPTTranslatePlugin] },
+        config: {Plugins: [...MAIN_PLUGINS, ChatGPTTranslatePlugin]},
     });
 
     // Expect the toolbar to have translate dropdown.
@@ -77,11 +77,14 @@ test("Translate should be disabled if selection spans across non editable conten
     expect(".o-we-toolbar [name='translate']").not.toHaveAttribute("disabled");
 });
 
-test.todo("should not open toolbar when selection contains contenteditable false", async () => {
-    await setupEditor('<div contenteditable="false">a[b</div><div>c]d</div>');
-    await animationFrame();
-    expect(".o-we-toolbar").toHaveCount(0);
-});
+test.todo(
+    "should not open toolbar when selection contains contenteditable false",
+    async () => {
+        await setupEditor('<div contenteditable="false">a[b</div><div>c]d</div>');
+        await animationFrame();
+        expect(".o-we-toolbar").toHaveCount(0);
+    }
+);
 
 test("Translate should be disabled if selection spans across non editable content or unsplittable (4)", async () => {
     await setupEditor('<div class="oe_unbreakable">a[b</div><div>c]d</div>');
@@ -90,13 +93,17 @@ test("Translate should be disabled if selection spans across non editable conten
 });
 
 test("Translate should be disabled if selection spans across non editable content or unsplittable (5)", async () => {
-    await setupEditor('<div>a[b</div><div>c]d</div><div class="oe_unbreakable">e</div>');
+    await setupEditor(
+        '<div>a[b</div><div>c]d</div><div class="oe_unbreakable">e</div>'
+    );
     await expandToolbar();
     expect(".o-we-toolbar [name='translate']").not.toHaveAttribute("disabled");
 });
 
 test("Translate should be disabled if selection spans across non editable content or unsplittable (6)", async () => {
-    await setupEditor('<div>a[b</div><div>cd</div><div class="oe_unbreakable">e]</div>');
+    await setupEditor(
+        '<div>a[b</div><div>cd</div><div class="oe_unbreakable">e]</div>'
+    );
     await expandToolbar();
     expect(".o-we-toolbar [name='translate']").toHaveAttribute("disabled");
 });
@@ -107,8 +114,8 @@ test("insert the response from ChatGPT translate dialog", async () => {
         ["en_US", "English (US)"],
         ["fr_BE", "French (BE) / Français (BE)"],
     ]);
-    const { editor, el } = await setupEditor("<p>[Hello]</p>", {
-        config: { Plugins: [...MAIN_PLUGINS, ChatGPTTranslatePlugin] },
+    const {editor, el} = await setupEditor("<p>[Hello]</p>", {
+        config: {Plugins: [...MAIN_PLUGINS, ChatGPTTranslatePlugin]},
     });
     onRpc("/html_editor/generate_text", () => `Bonjour`);
 
@@ -147,7 +154,7 @@ test("Translate dropdown should have the default language at top", async () => {
 
     onRpc("res.lang", "get_installed", () => languages);
     await setupEditor("<p>[test]</p>", {
-        config: { Plugins: [...MAIN_PLUGINS, ChatGPTTranslatePlugin] },
+        config: {Plugins: [...MAIN_PLUGINS, ChatGPTTranslatePlugin]},
     });
     await expandToolbar();
 
@@ -164,7 +171,7 @@ test("Translate dropdown should have the default language at top", async () => {
 
 test("press escape to close translate dialog", async () => {
     await setupEditor("<p>[test]</p>", {
-        config: { Plugins: [...MAIN_PLUGINS, ChatGPTTranslatePlugin] },
+        config: {Plugins: [...MAIN_PLUGINS, ChatGPTTranslatePlugin]},
     });
 
     await expandToolbar();

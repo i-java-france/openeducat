@@ -1,5 +1,6 @@
 from odoo import Command
 from odoo.tests import tagged
+
 from odoo.addons.l10n_jo_edi.tests.jo_edi_common import JoEdiCommon
 
 
@@ -300,7 +301,7 @@ class TestJoEdiTypes(JoEdiCommon):
         refund = self._l10n_jo_create_refund(invoice_vals, 'change price', refund_vals)
         xml_string = self.env['account.edi.xml.ubl_21.jo']._export_invoice(refund)[0]
         xml_tree = self.get_xml_tree_from_string(xml_string)
-        for xml_line, expected_line_id in zip(xml_tree.findall('./{*}InvoiceLine'), [4, 1, 2]):
+        for xml_line, expected_line_id in zip(xml_tree.findall('./{*}InvoiceLine'), [4, 1, 2], strict=False):
             self.assertEqual(int(xml_line.findtext('{*}ID')), expected_line_id)
 
         self.assertGreater(int(xml_tree.findall('./{*}InvoiceLine')[-1].findtext('{*}ID')), 4)

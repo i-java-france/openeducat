@@ -1,4 +1,4 @@
-import { mailDataHelpers } from "@mail/../tests/mock_server/mail_mock_server";
+import {mailDataHelpers} from "@mail/../tests/mock_server/mail_mock_server";
 
 import {
     Command,
@@ -8,19 +8,19 @@ import {
     models,
     serverState,
 } from "@web/../tests/web_test_helpers";
-import { Domain } from "@web/core/domain";
+import {Domain} from "@web/core/domain";
 
 /** @typedef {import("@web/core/domain").DomainListRepr} DomainListRepr */
 
 export class MailMessage extends models.ServerModel {
     _name = "mail.message";
 
-    author_id = fields.Generic({ default: () => serverState.partnerId });
-    pinned_at = fields.Generic({ default: false });
+    author_id = fields.Generic({default: () => serverState.partnerId});
+    pinned_at = fields.Generic({default: false});
 
     /** @param {DomainListRepr} [domain] */
     mark_all_as_read(domain) {
-        ({ domain } = getKwArgs(arguments, "domain"));
+        ({domain} = getKwArgs(arguments, "domain"));
 
         /** @type {import("mock_models").BusBus} */
         const BusBus = this.env["bus.bus"];
@@ -42,7 +42,7 @@ export class MailMessage extends models.ServerModel {
         const notifications = MailNotification._filter(notifDomain);
         MailNotification.write(
             notifications.map((notification) => notification.id),
-            { is_read: true }
+            {is_read: true}
         );
         const messageIds = [];
         for (const notification of notifications) {
@@ -60,14 +60,22 @@ export class MailMessage extends models.ServerModel {
         const [partner] = ResPartner.read(this.env.user.partner_id);
         BusBus._sendone(partner, "mail.message/mark_as_read", {
             message_ids: messageIds,
-            needaction_inbox_counter: ResPartner._get_needaction_count(this.env.user.partner_id),
+            needaction_inbox_counter: ResPartner._get_needaction_count(
+                this.env.user.partner_id
+            ),
         });
         return messageIds;
     }
 
     /** @param {number[]} ids */
     _to_store(store, fields, for_current_user, add_followers) {
-        const kwargs = getKwArgs(arguments, "store", "fields", "for_current_user", "add_followers");
+        const kwargs = getKwArgs(
+            arguments,
+            "store",
+            "fields",
+            "for_current_user",
+            "add_followers"
+        );
         store = kwargs.store;
         fields = kwargs.fields;
         for_current_user = kwargs.for_current_user ?? false;
@@ -87,16 +95,20 @@ export class MailMessage extends models.ServerModel {
         const ResFake = this.env["res.fake"];
 
         const notifications = MailNotification._filtered_for_web_client(
-            MailNotification._filter([["mail_message_id", "in", this.map((m) => m.id)]]).map(
-                (n) => n.id
-            )
+            MailNotification._filter([
+                ["mail_message_id", "in", this.map((m) => m.id)],
+            ]).map((n) => n.id)
         );
         store._add_record_fields(
             this,
-            fields.filter((field) => !["notification_ids", "mail_link_preview_ids"].includes(field))
+            fields.filter(
+                (field) =>
+                    !["notification_ids", "mail_link_preview_ids"].includes(field)
+            )
         );
         for (const message of this) {
-            const thread = message.model && this.env[message.model].browse(message.res_id)[0];
+            const thread =
+                message.model && this.env[message.model].browse(message.res_id)[0];
             if (thread) {
                 const thread_data = {
                     display_name: thread.name ?? thread.display_name,
@@ -112,14 +124,17 @@ export class MailMessage extends models.ServerModel {
                             ])
                         ),
                         makeKwArgs({
-                            fields: ["is_active", mailDataHelpers.Store.one("partner_id", [])],
+                            fields: [
+                                "is_active",
+                                mailDataHelpers.Store.one("partner_id", []),
+                            ],
                         })
                     );
                 }
                 store._add_record_fields(
                     this.env[message.model].browse(message.res_id),
                     thread_data,
-                    makeKwArgs({ as_thread: true })
+                    makeKwArgs({as_thread: true})
                 );
             }
             const data = {
@@ -134,14 +149,14 @@ export class MailMessage extends models.ServerModel {
                 scheduledDatetime: false,
                 thread: mailDataHelpers.Store.one(
                     message.model && this.env[message.model].browse(message.res_id),
-                    makeKwArgs({ as_thread: true, only_id: true })
+                    makeKwArgs({as_thread: true, only_id: true})
                 ),
             };
             if (fields.includes("message_link_preview_ids")) {
                 data.message_link_preview_ids = mailDataHelpers.Store.many(
-                    MailMessageLinkPreview.browse(message.message_link_preview_ids).filter(
-                        (lpm) => !lpm.is_hidden
-                    )
+                    MailMessageLinkPreview.browse(
+                        message.message_link_preview_ids
+                    ).filter((lpm) => !lpm.is_hidden)
                 );
             }
             if (fields.includes("notification_ids")) {
@@ -160,8 +175,12 @@ export class MailMessage extends models.ServerModel {
                             ["res_partner_id", "=", this.env.user.partner_id],
                         ]).length
                 );
-                data["starred"] = message.starred_partner_ids?.includes(this.env.user?.partner_id);
-                const trackingValues = MailTrackingValue.browse(message.tracking_value_ids);
+                data["starred"] = message.starred_partner_ids?.includes(
+                    this.env.user?.partner_id
+                );
+                const trackingValues = MailTrackingValue.browse(
+                    message.tracking_value_ids
+                );
                 const formattedTrackingValues =
                     MailTrackingValue._tracking_value_format(trackingValues);
                 data["trackingValues"] = formattedTrackingValues;
@@ -187,11 +206,13 @@ export class MailMessage extends models.ServerModel {
             "model",
             "message_link_preview_ids",
             "notification_ids",
-            mailDataHelpers.Store.one("parent_id", makeKwArgs({ format_reply: false })),
-            mailDataHelpers.Store.many("partner_ids", makeKwArgs({ fields: ["name"] })),
+            mailDataHelpers.Store.one("parent_id", makeKwArgs({format_reply: false})),
+            mailDataHelpers.Store.many("partner_ids", makeKwArgs({fields: ["name"]})),
             "pinned_at",
             mailDataHelpers.Store.attr("reactions", (m) =>
-                mailDataHelpers.Store.many(this.env["mail.message.reaction"].browse(m.reaction_ids))
+                mailDataHelpers.Store.many(
+                    this.env["mail.message.reaction"].browse(m.reaction_ids)
+                )
             ),
             "res_id",
             "subject",
@@ -223,12 +244,12 @@ export class MailMessage extends models.ServerModel {
             if (message.author_guest_id) {
                 data.author_guest_id = mailDataHelpers.Store.one(
                     MailGuest.browse(message.author_guest_id),
-                    makeKwArgs({ fields: ["avatar_128", "name"] })
+                    makeKwArgs({fields: ["avatar_128", "name"]})
                 );
             } else if (message.author_id) {
                 data.author_id = mailDataHelpers.Store.one(
                     ResPartner.browse(message.author_id),
-                    makeKwArgs({ fields: ["avatar_128", "is_company", "name", "user"] })
+                    makeKwArgs({fields: ["avatar_128", "is_company", "name", "user"]})
                 );
             }
             store._add_record_fields(MailMessage.browse(message.id), data);
@@ -265,7 +286,7 @@ export class MailMessage extends models.ServerModel {
         }
         MailNotification.write(
             notifications.map((notification) => notification.id),
-            { is_read: true }
+            {is_read: true}
         );
         // simulate compute that should be done based on notifications
         for (const message of messages) {
@@ -292,7 +313,7 @@ export class MailMessage extends models.ServerModel {
             if (
                 this.env["mail.notification"]
                     .browse(message.notification_ids)
-                    .some(({ failure_type }) => Boolean(failure_type))
+                    .some(({failure_type}) => Boolean(failure_type))
             ) {
                 messageByPartnerId[message.author_id] ??= [];
                 messageByPartnerId[message.author_id].push(message);
@@ -301,7 +322,7 @@ export class MailMessage extends models.ServerModel {
         for (const [partnerId, messages] of Object.entries(messageByPartnerId)) {
             const [partner] = this.env["res.partner"].browse(parseInt(partnerId));
             this.env["bus.bus"]._sendone(partner, "mail.message/delete", {
-                message_ids: messages.map(({ id }) => id),
+                message_ids: messages.map(({id}) => id),
             });
         }
         return super.unlink(...arguments);
@@ -317,7 +338,9 @@ export class MailMessage extends models.ServerModel {
         const messages = this.browse(ids);
         const store = new mailDataHelpers.Store();
         for (const message of messages) {
-            const wasStarred = message.starred_partner_ids.includes(this.env.user.partner_id);
+            const wasStarred = message.starred_partner_ids.includes(
+                this.env.user.partner_id
+            );
             this.write([message.id], {
                 starred_partner_ids: [
                     wasStarred
@@ -330,7 +353,7 @@ export class MailMessage extends models.ServerModel {
                 message_ids: [message.id],
                 starred: !wasStarred,
             });
-            store.add(this.browse(message.id), { starred: !wasStarred });
+            store.add(this.browse(message.id), {starred: !wasStarred});
         }
         return store.get_result();
     }
@@ -341,10 +364,12 @@ export class MailMessage extends models.ServerModel {
         /** @type {import("mock_models").ResPartner} */
         const ResPartner = this.env["res.partner"];
 
-        const messages = this._filter([["starred_partner_ids", "in", this.env.user.partner_id]]);
+        const messages = this._filter([
+            ["starred_partner_ids", "in", this.env.user.partner_id],
+        ]);
         this.write(
             messages.map((message) => message.id),
-            { starred_partner_ids: [Command.unlink(this.env.user.partner_id)] }
+            {starred_partner_ids: [Command.unlink(this.env.user.partner_id)]}
         );
         const [partner] = ResPartner.read(this.env.user.partner_id);
         BusBus._sendone(partner, "mail.message/toggle_star", {
@@ -383,7 +408,7 @@ export class MailMessage extends models.ServerModel {
      * @param {import("@mail/../tests/mock_server/mail_mock_server").mailDataHelpers.Store} store
      */
     _message_reaction(id, content, partner_id, guest_id, action, store) {
-        ({ id, content, partner_id, guest_id, action, store } = getKwArgs(
+        ({id, content, partner_id, guest_id, action, store} = getKwArgs(
             arguments,
             "id",
             "content",
@@ -439,12 +464,12 @@ export class MailMessage extends models.ServerModel {
         ]);
         let reaction_group = mailDataHelpers.Store.many(
             MailMessageReaction.browse(reactions),
-            makeKwArgs({ mode: "ADD" })
+            makeKwArgs({mode: "ADD"})
         );
         if (reactions.length === 0) {
-            reaction_group = [["DELETE", { message: this.browse(id), content: content }]];
+            reaction_group = [["DELETE", {message: this.browse(id), content: content}]];
         }
-        store.add(this.browse(id), { reactions: reaction_group });
+        store.add(this.browse(id), {reactions: reaction_group});
     }
 
     /**
@@ -454,7 +479,16 @@ export class MailMessage extends models.ServerModel {
      * @param {number} [limit=30]
      * @returns {Object[]}
      */
-    _message_fetch(domain, thread, search_term, is_notification, before, after, around, limit) {
+    _message_fetch(
+        domain,
+        thread,
+        search_term,
+        is_notification,
+        before,
+        after,
+        around,
+        limit
+    ) {
         /** @type {import("mock_models").IrAttachment} */
         const IrAttachment = this.env["ir.attachment"];
         /** @type {import("mock_models").MailMessageSubtype} */
@@ -497,8 +531,12 @@ export class MailMessage extends models.ServerModel {
         if (search_term) {
             domain = new Domain(domain || []);
             search_term = search_term.replace(" ", "%");
-            const subtypeIds = MailMessageSubtype.search([["description", "ilike", search_term]]);
-            const irAttachmentIds = IrAttachment.search([["name", "ilike", search_term]]);
+            const subtypeIds = MailMessageSubtype.search([
+                ["description", "ilike", search_term],
+            ]);
+            const irAttachmentIds = IrAttachment.search([
+                ["name", "ilike", search_term],
+            ]);
             let message_domain = Domain.or([
                 [["body", "ilike", search_term]],
                 [["attachment_ids", "in", irAttachmentIds]],
@@ -527,18 +565,18 @@ export class MailMessage extends models.ServerModel {
             res.count = this.search_count(domain);
         }
         if (around !== undefined) {
-            const messagesBefore = this._filter(domain.concat([["id", "<=", around]])).sort(
-                (m1, m2) => m2.id - m1.id
-            );
+            const messagesBefore = this._filter(
+                domain.concat([["id", "<=", around]])
+            ).sort((m1, m2) => m2.id - m1.id);
             messagesBefore.length = Math.min(messagesBefore.length, limit / 2);
-            const messagesAfter = this._filter(domain.concat([["id", ">", around]])).sort(
-                (m1, m2) => m1.id - m2.id
-            );
+            const messagesAfter = this._filter(
+                domain.concat([["id", ">", around]])
+            ).sort((m1, m2) => m1.id - m2.id);
             messagesAfter.length = Math.min(messagesAfter.length, limit / 2);
             const messages = messagesAfter
                 .concat(messagesBefore.reverse())
                 .sort((m1, m2) => m2.id - m1.id);
-            return { ...res, messages };
+            return {...res, messages};
         }
         if (before) {
             domain.push(["id", "<", before]);
@@ -566,7 +604,9 @@ export class MailMessage extends models.ServerModel {
             "new_value_datetime",
         ];
         let domain = Domain.or(
-            field_names.map((field_name) => new Domain([[field_name, "ilike", search_term]]))
+            field_names.map(
+                (field_name) => new Domain([[field_name, "ilike", search_term]])
+            )
         );
         if (numeric_term) {
             const float_domain = Domain.or(
@@ -611,7 +651,9 @@ export class MailMessage extends models.ServerModel {
         }
         for (const message of this.env["mail.message"]._filter([["id", "in", mids]])) {
             if (message.model && message.res_id) {
-                const record = this.env[message.model]._filter([["id", "=", message.res_id]]);
+                const record = this.env[message.model]._filter([
+                    ["id", "=", message.res_id],
+                ]);
                 store.add(
                     this.env["mail.message"].browse(message.id),
                     makeKwArgs({
@@ -622,7 +664,7 @@ export class MailMessage extends models.ServerModel {
                                 "thread",
                                 mailDataHelpers.Store.one(
                                     this.env[message.model].browse(record.id),
-                                    makeKwArgs({ fields: ["display_name"] })
+                                    makeKwArgs({fields: ["display_name"]})
                                 )
                             ),
                         ],
@@ -644,7 +686,7 @@ export class MailMessage extends models.ServerModel {
             store.add(this.browse(message.id), {
                 author_id: mailDataHelpers.Store.one(
                     this.env["res.partner"].browse(message.author_id),
-                    makeKwArgs({ only_id: true })
+                    makeKwArgs({only_id: true})
                 ),
                 body: message.body,
                 date: message.date,
@@ -655,8 +697,10 @@ export class MailMessage extends models.ServerModel {
                     )
                 ),
                 thread: mailDataHelpers.Store.one(
-                    message.model ? this.env[message.model].browse(message.res_id) : false,
-                    makeKwArgs({ as_thread: true, fields: ["modelName", "display_name"] })
+                    message.model
+                        ? this.env[message.model].browse(message.res_id)
+                        : false,
+                    makeKwArgs({as_thread: true, fields: ["modelName", "display_name"]})
                 ),
             });
         }

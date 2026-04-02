@@ -1,10 +1,13 @@
-import { livechatModels } from "@im_livechat/../tests/livechat_test_helpers";
-import { mailDataHelpers } from "@mail/../tests/mock_server/mail_mock_server";
+import {livechatModels} from "@im_livechat/../tests/livechat_test_helpers";
+import {mailDataHelpers} from "@mail/../tests/mock_server/mail_mock_server";
 
-import { fields } from "@web/../tests/web_test_helpers";
+import {fields} from "@web/../tests/web_test_helpers";
 
 export class DiscussChannel extends livechatModels.DiscussChannel {
-    livechat_visitor_id = fields.Many2one({ relation: "website.visitor", string: "Visitor" }); // FIXME: somehow not fetched properly
+    livechat_visitor_id = fields.Many2one({
+        relation: "website.visitor",
+        string: "Visitor",
+    }); // FIXME: somehow not fetched properly
 
     /**
      * @override

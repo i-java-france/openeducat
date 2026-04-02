@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo import api, fields, models
 from odoo.tools import float_is_zero
 
 
@@ -18,7 +16,7 @@ class ChangeProductionQty(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        res = super(ChangeProductionQty, self).default_get(fields)
+        res = super().default_get(fields)
         if 'mo_id' in fields and not res.get('mo_id') and self.env.context.get('active_model') == 'mrp.production' and self.env.context.get('active_id'):
             res['mo_id'] = self.env.context['active_id']
         if 'product_qty' in fields and not res.get('product_qty') and res.get('mo_id'):

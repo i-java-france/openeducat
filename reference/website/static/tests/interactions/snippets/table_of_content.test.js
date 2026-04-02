@@ -1,13 +1,13 @@
 import {
     isElementVerticallyInViewportOf,
-    startInteractions,
     setupInteractionWhiteList,
+    startInteractions,
 } from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame, click, queryAll, queryOne, scroll } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {animationFrame, click, queryAll, queryOne, scroll} from "@odoo/hoot-dom";
 
-import { setupTest, simpleScroll, doubleScroll } from "./helpers";
+import {doubleScroll, setupTest, simpleScroll} from "./helpers";
 
 setupInteractionWhiteList([
     "website.header_standard",
@@ -116,7 +116,7 @@ const checkVisibility = function (aEls, h2Els, wrapEl) {
 
 test.tags("desktop");
 test("table_of_content is correctly started (desktop)", async () => {
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <div id="wrapwrap" style="overflow: scroll; max-height: 300px;">
             ${tableTemplate}
         </div>
@@ -132,7 +132,7 @@ test("table_of_content is correctly started (desktop)", async () => {
 
 test.tags("mobile");
 test("table_of_content is correctly started (mobile)", async () => {
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <div id="wrapwrap" style="overflow: scroll; max-height: 300px;">
             ${tableTemplate}
         </div>
@@ -188,7 +188,7 @@ test("table_of_content highlights reached header (desktop)", async () => {
     const wrapEl = queryOne("#wrapwrap");
     const aEls = queryAll("a[href]");
     const h2Els = queryAll("h2[id]");
-    await scroll(wrapEl, { top: h2Els[1].getBoundingClientRect().top });
+    await scroll(wrapEl, {top: h2Els[1].getBoundingClientRect().top});
     await animationFrame();
     expect(aEls[0]).not.toHaveClass("active");
     expect(aEls[1]).toHaveClass("active");
@@ -205,7 +205,7 @@ test("table_of_content highlights reached header (mobile)", async () => {
     const wrapEl = queryOne("#wrapwrap");
     const aEls = queryAll("a[href]");
     const h2Els = queryAll("h2[id]");
-    await scroll(wrapEl, { top: h2Els[1].getBoundingClientRect().top });
+    await scroll(wrapEl, {top: h2Els[1].getBoundingClientRect().top});
     await animationFrame();
     // We do not check the active class in mobile
     expect(checkVisibility(aEls, h2Els, wrapEl)).toEqual([true, true, false, true]);
@@ -213,7 +213,7 @@ test("table_of_content highlights reached header (mobile)", async () => {
 
 test.tags("desktop");
 test("table_of_content updates titles position with a o_header_standard", async () => {
-    const { core } = await startInteractions(getTemplate("o_header_standard"));
+    const {core} = await startInteractions(getTemplate("o_header_standard"));
     expect(core.interactions).toHaveLength(2);
     const wrapwrap = queryOne("#wrapwrap");
     const title = queryOne(".s_table_of_content_navbar");
@@ -224,13 +224,15 @@ test("table_of_content updates titles position with a o_header_standard", async 
         const isHeaderVisible = target < HEADER_SIZE || target > 300;
         // We compensate the scroll since the header does not move in Hoot.
         const correctedTop = isHeaderVisible ? calculatedTop + target : calculatedTop;
-        expect(correctedTop).toBe(isHeaderVisible ? HEADER_SIZE + DEFAULT_OFFSET : DEFAULT_OFFSET);
+        expect(correctedTop).toBe(
+            isHeaderVisible ? HEADER_SIZE + DEFAULT_OFFSET : DEFAULT_OFFSET
+        );
     }
 });
 
 test.tags("desktop");
 test("table_of_content updates titles position with a o_header_fixed", async () => {
-    const { core } = await startInteractions(getTemplate("o_header_fixed"));
+    const {core} = await startInteractions(getTemplate("o_header_fixed"));
     expect(core.interactions).toHaveLength(2);
     // We force the header to never be consider "atTop", so that its
     // position is properly computed.
@@ -241,13 +243,15 @@ test("table_of_content updates titles position with a o_header_fixed", async () 
     for (const target of SCROLLS_SPECIAL) {
         await simpleScroll(wrapwrap, target);
         // There is no need to compensate the scroll here
-        expect(Math.round(parseFloat(title.style.top))).toBe(HEADER_SIZE + DEFAULT_OFFSET);
+        expect(Math.round(parseFloat(title.style.top))).toBe(
+            HEADER_SIZE + DEFAULT_OFFSET
+        );
     }
 });
 
 test.tags("desktop");
 test("table_of_content updates titles position with a o_header_disappears", async () => {
-    const { core } = await startInteractions(getTemplate("o_header_disappears"));
+    const {core} = await startInteractions(getTemplate("o_header_disappears"));
     expect(core.interactions).toHaveLength(2);
     const wrapwrap = queryOne("#wrapwrap");
     const title = queryOne(".s_table_of_content_navbar");
@@ -260,13 +264,15 @@ test("table_of_content updates titles position with a o_header_disappears", asyn
         const isHeaderVisible = target < 300;
         // We compensate the scroll since the header does not move in Hoot.
         const correctedTop = isHeaderVisible ? calculatedTop + target : calculatedTop;
-        expect(correctedTop).toBe(isHeaderVisible ? HEADER_SIZE + DEFAULT_OFFSET : DEFAULT_OFFSET);
+        expect(correctedTop).toBe(
+            isHeaderVisible ? HEADER_SIZE + DEFAULT_OFFSET : DEFAULT_OFFSET
+        );
     }
 });
 
 test.tags("desktop");
 test("table_of_content updates titles position with a o_header_fade_out", async () => {
-    const { core } = await startInteractions(getTemplate("o_header_fade_out"));
+    const {core} = await startInteractions(getTemplate("o_header_fade_out"));
     expect(core.interactions).toHaveLength(2);
     const wrapwrap = queryOne("#wrapwrap");
     const title = queryOne(".s_table_of_content_navbar");
@@ -279,6 +285,8 @@ test("table_of_content updates titles position with a o_header_fade_out", async 
         const isHeaderVisible = target < 300;
         // We compensate the scroll since the header does not move in Hoot.
         const correctedTop = isHeaderVisible ? calculatedTop + target : calculatedTop;
-        expect(correctedTop).toBe(isHeaderVisible ? HEADER_SIZE + DEFAULT_OFFSET : DEFAULT_OFFSET);
+        expect(correctedTop).toBe(
+            isHeaderVisible ? HEADER_SIZE + DEFAULT_OFFSET : DEFAULT_OFFSET
+        );
     }
 });

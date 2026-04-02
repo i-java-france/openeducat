@@ -1,15 +1,15 @@
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { ICON_SELECTOR } from "@html_editor/utils/dom_info";
-import { fonts } from "@html_editor/utils/fonts";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { renderToFragment } from "@web/core/utils/render";
-import { SocialMediaLinks } from "./social_media_links";
-import { selectElements } from "@html_editor/utils/dom_traversal";
-import { SNIPPET_SPECIFIC, TITLE_LAYOUT_SIZE } from "@html_builder/utils/option_sequence";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {ICON_SELECTOR} from "@html_editor/utils/dom_info";
+import {fonts} from "@html_editor/utils/fonts";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {renderToFragment} from "@web/core/utils/render";
+import {SocialMediaLinks} from "./social_media_links";
+import {selectElements} from "@html_editor/utils/dom_traversal";
+import {SNIPPET_SPECIFIC, TITLE_LAYOUT_SIZE} from "@html_builder/utils/option_sequence";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 /**
  * @typedef { Object } SocialMediaOptionShared
@@ -207,7 +207,7 @@ class SocialMediaOptionPlugin extends Plugin {
                 this.recordedSocialMedia.set(name, res[0][key] || "");
             }
         }
-        this.config.onChange({ isPreviewing: false });
+        this.config.onChange({isPreviewing: false});
     }
 
     async saveRecordedSocialMedia() {
@@ -218,7 +218,9 @@ class SocialMediaOptionPlugin extends Plugin {
             "website",
             [this.services.website.currentWebsite.id],
             Object.fromEntries(
-                this.recordedSocialMedia.entries().map(([name, value]) => [`social_${name}`, value])
+                this.recordedSocialMedia
+                    .entries()
+                    .map(([name, value]) => [`social_${name}`, value])
             )
         );
 
@@ -266,7 +268,7 @@ class SocialMediaOptionPlugin extends Plugin {
      * @param { HTMLElement } element The element that is moved (a child of `editingElement`)
      * @param { HTMLElement } [elementAfter] The element that should be after the moved element (not present if moved to the end)
      */
-    reorderSocialMediaLink({ editingElement, element, elementAfter }) {
+    reorderSocialMediaLink({editingElement, element, elementAfter}) {
         element.remove();
         if (elementAfter) {
             elementAfter.before(element);
@@ -348,7 +350,7 @@ class SocialMediaOptionPlugin extends Plugin {
             const hostname = url.hostname;
             for (const [name, media] of socialMediaInfo.entries()) {
                 if (media.extraHostnameRegex?.test(hostname)) {
-                    return { name, media };
+                    return {name, media};
                 }
             }
             // Retrieve the domain of the given url.
@@ -356,7 +358,7 @@ class SocialMediaOptionPlugin extends Plugin {
                 .replace(/\.co\.uk$/, ".co")
                 .split(".")
                 .slice(-2)[0];
-            return { name, media: socialMediaInfo.get(name) };
+            return {name, media: socialMediaInfo.get(name)};
         } catch {
             return {};
         }
@@ -379,17 +381,17 @@ class SocialMediaOptionPlugin extends Plugin {
 
 export class DeleteSocialMediaLinkAction extends BuilderAction {
     static id = "deleteSocialMediaLink";
-    apply({ editingElement }) {
+    apply({editingElement}) {
         editingElement.remove();
     }
 }
 export class ToggleRecordedSocialMediaLinkAction extends BuilderAction {
     static id = "toggleRecordedSocialMediaLink";
     static dependencies = ["socialMediaOptionPlugin"];
-    isApplied({ editingElement, params: { domPosition } }) {
+    isApplied({editingElement, params: {domPosition}}) {
         return !!domPosition;
     }
-    apply({ editingElement, params: { media, elementAfter } }) {
+    apply({editingElement, params: {media, elementAfter}}) {
         const el = this.dependencies.socialMediaOptionPlugin.newLinkElement(
             editingElement.querySelector(":scope > a"),
             media
@@ -400,23 +402,28 @@ export class ToggleRecordedSocialMediaLinkAction extends BuilderAction {
             editingElement.append(el);
         }
     }
-    clean({ editingElement, params: { domPosition } }) {
+    clean({editingElement, params: {domPosition}}) {
         editingElement.querySelector(`a:nth-of-type(${domPosition})`).remove();
     }
 }
 export class EditRecordedSocialMediaLinkAction extends BuilderAction {
     static id = "editRecordedSocialMediaLink";
     static dependencies = ["socialMediaOptionPlugin", "history"];
-    getValue({ params: { mainParam } }) {
-        return this.dependencies.socialMediaOptionPlugin.getRecordedSocialMedia(mainParam);
+    getValue({params: {mainParam}}) {
+        return this.dependencies.socialMediaOptionPlugin.getRecordedSocialMedia(
+            mainParam
+        );
     }
-    apply({ params: { mainParam }, value }) {
+    apply({params: {mainParam}, value}) {
         this.dependencies.socialMediaOptionPlugin.setRecordedSocialMediaAreEdited(true);
         const oldValue =
             this.dependencies.socialMediaOptionPlugin.getRecordedSocialMedia(mainParam);
         this.dependencies.history.applyCustomMutation({
             apply: () =>
-                this.dependencies.socialMediaOptionPlugin.setRecordedSocialMedia(mainParam, value),
+                this.dependencies.socialMediaOptionPlugin.setRecordedSocialMedia(
+                    mainParam,
+                    value
+                ),
             revert: () =>
                 this.dependencies.socialMediaOptionPlugin.setRecordedSocialMedia(
                     mainParam,
@@ -428,15 +435,18 @@ export class EditRecordedSocialMediaLinkAction extends BuilderAction {
 export class EditSocialMediaLinkAction extends BuilderAction {
     static id = "editSocialMediaLink";
     static dependencies = ["socialMediaOptionPlugin"];
-    apply({ editingElement, params: { mainParam }, value }) {
+    apply({editingElement, params: {mainParam}, value}) {
         if (!value) {
             editingElement.remove();
         }
-        const info = this.dependencies.socialMediaOptionPlugin.getAssociatedSocialMedia(value);
+        const info =
+            this.dependencies.socialMediaOptionPlugin.getAssociatedSocialMedia(value);
         const ariaLabel = info.media?.label || info.name || defaultAriaLabel;
         editingElement.setAttribute("aria-label", ariaLabel);
 
-        this.dependencies.socialMediaOptionPlugin.removeSocialMediaClasses(editingElement);
+        this.dependencies.socialMediaOptionPlugin.removeSocialMediaClasses(
+            editingElement
+        );
         let iconClass;
         if (info.media) {
             editingElement.classList.add(`s_social_media_${info.name}`);
@@ -457,7 +467,7 @@ export class EditSocialMediaLinkAction extends BuilderAction {
 export class AddSocialMediaLinkAction extends BuilderAction {
     static id = "addSocialMediaLink";
     static dependencies = ["socialMediaOptionPlugin"];
-    apply({ editingElement }) {
+    apply({editingElement}) {
         editingElement.append(
             this.dependencies.socialMediaOptionPlugin.newLinkElement(
                 editingElement.querySelector(":scope > a")
@@ -466,4 +476,6 @@ export class AddSocialMediaLinkAction extends BuilderAction {
     }
 }
 
-registry.category("website-plugins").add(SocialMediaOptionPlugin.id, SocialMediaOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(SocialMediaOptionPlugin.id, SocialMediaOptionPlugin);

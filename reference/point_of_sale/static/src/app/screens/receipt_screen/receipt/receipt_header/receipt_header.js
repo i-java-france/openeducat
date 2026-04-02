@@ -1,4 +1,4 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class ReceiptHeader extends Component {
     static template = "point_of_sale.ReceiptHeader";

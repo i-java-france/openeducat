@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="sale.ComboConfiguratorDialog">
         <Dialog
@@ -17,7 +17,7 @@
                         t-key="combo.id"
                         class="row mb-3"
                     >
-                        <t t-set="product" t-value="combo.combo_items[0].product"/>
+                        <t t-set="product" t-value="combo.combo_items[0].product" />
                         <div class="col-2 p-0">
                             <img
                                 t-attf-src="/web/image/product.product/{{product.id}}/image_256"
@@ -51,7 +51,11 @@
                     t-out="combo.name"
                 />
                 <div class="row row-cols-1 row-cols-md-3 g-3">
-                    <t t-foreach="combo.combo_items" t-as="comboItem" t-key="comboItem.id">
+                    <t
+                        t-foreach="combo.combo_items"
+                        t-as="comboItem"
+                        t-key="comboItem.id"
+                    >
                         <ProductCard
                             product="getSelectedOrProvidedComboItem(combo.id, comboItem).product"
                             extraPrice="comboItem.extra_price"
@@ -82,7 +86,10 @@
                         </button>
                     </div>
                     <div class="d-flex gap-3 align-items-center">
-                        <div t-if="props.options?.showQuantity ?? true" class="combo_configurator_quantity ps-lg-3">
+                        <div
+                            t-if="props.options?.showQuantity ?? true"
+                            class="combo_configurator_quantity ps-lg-3"
+                        >
                             <QuantityButtons
                                 quantity="state.quantity"
                                 setQuantity="quantity => this.setQuantity(quantity)"
@@ -90,7 +97,10 @@
                                 btnClasses="'d-inline-block w-auto'"
                             />
                         </div>
-                        <div t-if="props.options?.showPrice ?? true" class="w-100 w-md-auto">
+                        <div
+                            t-if="props.options?.showPrice ?? true"
+                            class="w-100 w-md-auto"
+                        >
                             <span
                                 name="sale_combo_configurator_total"
                                 class="h6 mb-0"

@@ -1,7 +1,7 @@
-import { expect, getFixture, test } from "@odoo/hoot";
-import { queryOne, scroll, waitFor } from "@odoo/hoot-dom";
-import { animationFrame, Deferred } from "@odoo/hoot-mock";
-import { Component, onWillStart, xml } from "@odoo/owl";
+import {expect, getFixture, test} from "@odoo/hoot";
+import {queryOne, scroll, waitFor} from "@odoo/hoot-dom";
+import {Deferred, animationFrame} from "@odoo/hoot-mock";
+import {Component, onWillStart, xml} from "@odoo/owl";
 import {
     contains,
     defineActions,
@@ -21,31 +21,31 @@ import {
     webModels,
 } from "@web/../tests/web_test_helpers";
 
-import { browser } from "@web/core/browser/browser";
-import { registry } from "@web/core/registry";
-import { router } from "@web/core/browser/router";
-import { listView } from "@web/views/list/list_view";
-import { PivotModel } from "@web/views/pivot/pivot_model";
-import { WebClient } from "@web/webclient/webclient";
-import { redirect } from "@web/core/utils/urls";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
+import {router} from "@web/core/browser/router";
+import {listView} from "@web/views/list/list_view";
+import {PivotModel} from "@web/views/pivot/pivot_model";
+import {WebClient} from "@web/webclient/webclient";
+import {redirect} from "@web/core/utils/urls";
 
-const { ResCompany, ResPartner, ResUsers } = webModels;
+const {ResCompany, ResPartner, ResUsers} = webModels;
 
 class Partner extends models.Model {
     _rec_name = "display_name";
 
-    o2m = fields.One2many({ relation: "partner", relation_field: "bar" });
+    o2m = fields.One2many({relation: "partner", relation_field: "bar"});
 
     _records = [
-        { id: 1, display_name: "First record", o2m: [2, 3] },
+        {id: 1, display_name: "First record", o2m: [2, 3]},
         {
             id: 2,
             display_name: "Second record",
             o2m: [1, 4, 5],
         },
-        { id: 3, display_name: "Third record", o2m: [] },
-        { id: 4, display_name: "Fourth record", o2m: [] },
-        { id: 5, display_name: "Fifth record", o2m: [] },
+        {id: 3, display_name: "Third record", o2m: []},
+        {id: 4, display_name: "Fourth record", o2m: []},
+        {id: 5, display_name: "Fifth record", o2m: []},
     ];
     _views = {
         form: `
@@ -75,9 +75,9 @@ class Pony extends models.Model {
     name = fields.Char();
 
     _records = [
-        { id: 4, name: "Twilight Sparkle" },
-        { id: 6, name: "Applejack" },
-        { id: 9, name: "Fluttershy" },
+        {id: 4, name: "Twilight Sparkle"},
+        {id: 6, name: "Applejack"},
+        {id: 9, name: "Fluttershy"},
     ];
     _views = {
         list: '<list><field name="name"/></list>',
@@ -277,7 +277,7 @@ test("getCurrentAction (virtual controller)", async () => {
 
 test("action in handler registry", async () => {
     await makeMockEnv();
-    actionHandlersRegistry.add("ir.action_in_handler_registry", ({ action }) =>
+    actionHandlersRegistry.add("ir.action_in_handler_registry", ({action}) =>
         expect.step(action.type)
     );
     await getService("action").doAction({
@@ -305,7 +305,9 @@ test("properly handle case when action path does not exist", async () => {
     await animationFrame();
     expect.verifyErrors(["RPC_ERROR"]);
     expect(`.modal .o_error_dialog`).toHaveCount(1);
-    expect(".o_error_dialog .modal-body").toHaveText('The action "plop" does not exist');
+    expect(".o_error_dialog .modal-body").toHaveText(
+        'The action "plop" does not exist'
+    );
 });
 
 test("properly handle case when action xmlId does not exist", async () => {
@@ -322,7 +324,7 @@ test("properly handle case when action xmlId does not exist", async () => {
 
 test("actions can be cached", async () => {
     onRpc("/web/action/load", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect.step(params.context);
     });
 
@@ -333,31 +335,31 @@ test("actions can be cached", async () => {
     await getService("action").loadAction(3);
 
     // With specific context
-    await getService("action").loadAction(3, { configuratorMode: "add" });
-    await getService("action").loadAction(3, { configuratorMode: "edit" });
+    await getService("action").loadAction(3, {configuratorMode: "add"});
+    await getService("action").loadAction(3, {configuratorMode: "edit"});
 
     // With same active_id
-    await getService("action").loadAction(3, { active_id: 1 });
-    await getService("action").loadAction(3, { active_id: 1 });
+    await getService("action").loadAction(3, {active_id: 1});
+    await getService("action").loadAction(3, {active_id: 1});
 
     // With active_id change
-    await getService("action").loadAction(3, { active_id: 2 });
+    await getService("action").loadAction(3, {active_id: 2});
 
     // With same active_ids
-    await getService("action").loadAction(3, { active_ids: [1, 2] });
-    await getService("action").loadAction(3, { active_ids: [1, 2] });
+    await getService("action").loadAction(3, {active_ids: [1, 2]});
+    await getService("action").loadAction(3, {active_ids: [1, 2]});
 
     // With active_ids change
-    await getService("action").loadAction(3, { active_ids: [1, 2, 3] });
+    await getService("action").loadAction(3, {active_ids: [1, 2, 3]});
 
     // With same active_model
-    await getService("action").loadAction(3, { active_model: "a" });
-    await getService("action").loadAction(3, { active_model: "a" });
+    await getService("action").loadAction(3, {active_model: "a"});
+    await getService("action").loadAction(3, {active_model: "a"});
 
     // With active_model change
-    await getService("action").loadAction(3, { active_model: "b" });
+    await getService("action").loadAction(3, {active_model: "b"});
 
-    // should load from server once per active_id/active_ids/active_model change, nothing else
+    // Should load from server once per active_id/active_ids/active_model change, nothing else
     const baseCtx = {
         lang: "en",
         tz: "taht",
@@ -365,15 +367,15 @@ test("actions can be cached", async () => {
         allowed_company_ids: [1],
     };
     expect.verifySteps([
-        { ...baseCtx },
-        { ...baseCtx, configuratorMode: "add" },
-        { ...baseCtx, configuratorMode: "edit" },
-        { ...baseCtx, active_id: 1 },
-        { ...baseCtx, active_id: 2 },
-        { ...baseCtx, active_ids: [1, 2] },
-        { ...baseCtx, active_ids: [1, 2, 3] },
-        { ...baseCtx, active_model: "a" },
-        { ...baseCtx, active_model: "b" },
+        {...baseCtx},
+        {...baseCtx, configuratorMode: "add"},
+        {...baseCtx, configuratorMode: "edit"},
+        {...baseCtx, active_id: 1},
+        {...baseCtx, active_id: 2},
+        {...baseCtx, active_ids: [1, 2]},
+        {...baseCtx, active_ids: [1, 2, 3]},
+        {...baseCtx, active_model: "a"},
+        {...baseCtx, active_model: "b"},
     ]);
 });
 
@@ -385,7 +387,7 @@ test("action cache: additionalContext is used on the key", async () => {
     await makeMockEnv();
     const actionParams = {
         additionalContext: {
-            some: { deep: { nested: "Robert" } },
+            some: {deep: {nested: "Robert"}},
         },
     };
 
@@ -414,13 +416,13 @@ test('action with "no_breadcrumbs" set to true', async () => {
                 [1, "kanban"],
                 [false, "list"],
             ],
-            context: { no_breadcrumbs: true },
+            context: {no_breadcrumbs: true},
         },
     ]);
     await mountWithCleanup(WebClient);
     await getService("action").doAction(3);
     expect(".o_breadcrumb").toHaveCount(1);
-    // push another action flagged with 'no_breadcrumbs=true'
+    // Push another action flagged with 'no_breadcrumbs=true'
     await getService("action").doAction(42);
     await waitFor(".o_kanban_view");
     expect(".o_breadcrumb").toHaveCount(0);
@@ -438,7 +440,7 @@ test("document's title is updated when an action is executed", async () => {
     await getService("action").doAction(4);
     await animationFrame();
     currentTitle = getService("title").getParts();
-    expect(currentTitle).toEqual({ action: "Partners Action 4" });
+    expect(currentTitle).toEqual({action: "Partners Action 4"});
     currentState = router.current;
     expect(currentState).toEqual({
         action: 4,
@@ -454,7 +456,7 @@ test("document's title is updated when an action is executed", async () => {
     await getService("action").doAction(8);
     await animationFrame();
     currentTitle = getService("title").getParts();
-    expect(currentTitle).toEqual({ action: "Favorite Ponies" });
+    expect(currentTitle).toEqual({action: "Favorite Ponies"});
     currentState = router.current;
     expect(currentState).toEqual({
         action: 8,
@@ -475,7 +477,7 @@ test("document's title is updated when an action is executed", async () => {
     await contains(".o_data_row .o_data_cell").click();
     await animationFrame();
     currentTitle = getService("title").getParts();
-    expect(currentTitle).toEqual({ action: "Twilight Sparkle" });
+    expect(currentTitle).toEqual({action: "Twilight Sparkle"});
     currentState = router.current;
     expect(currentState).toEqual({
         action: 8,
@@ -534,22 +536,22 @@ test("stores and restores scroll position (in kanban)", async () => {
         },
     ]);
     for (let i = 0; i < 60; i++) {
-        Partner._records.push({ id: 100 + i, display_name: `Record ${i}` });
+        Partner._records.push({id: 100 + i, display_name: `Record ${i}`});
     }
     const container = document.createElement("div");
     container.classList.add("o_web_client");
     container.style.height = "250px";
     getFixture().appendChild(container);
-    await mountWithCleanup(WebClient, { target: container });
-    // execute a first action
+    await mountWithCleanup(WebClient, {target: container});
+    // Execute a first action
     await getService("action").doAction(10);
     expect(".o_content").toHaveProperty("scrollTop", 0);
-    // simulate a scroll
-    await scroll(".o_content", { top: 100 });
-    // execute a second action (in which we don't scroll)
+    // Simulate a scroll
+    await scroll(".o_content", {top: 100});
+    // Execute a second action (in which we don't scroll)
     await getService("action").doAction(4);
     expect(".o_content").toHaveProperty("scrollTop", 0);
-    // go back using the breadcrumbs
+    // Go back using the breadcrumbs
     await contains(".o_control_panel .breadcrumb a").click();
     expect(".o_content").toHaveProperty("scrollTop", 100);
 });
@@ -557,23 +559,23 @@ test("stores and restores scroll position (in kanban)", async () => {
 test.tags("desktop");
 test("stores and restores scroll position (in list)", async () => {
     for (let i = 0; i < 60; i++) {
-        Partner._records.push({ id: 100 + i, display_name: `Record ${i}` });
+        Partner._records.push({id: 100 + i, display_name: `Record ${i}`});
     }
     const container = document.createElement("div");
     container.classList.add("o_web_client");
     container.style.height = "250px";
     getFixture().appendChild(container);
-    await mountWithCleanup(WebClient, { target: container });
-    // execute a first action
+    await mountWithCleanup(WebClient, {target: container});
+    // Execute a first action
     await getService("action").doAction(3);
     expect(".o_content").toHaveProperty("scrollTop", 0);
     expect(queryOne(".o_list_renderer").scrollTop).toBe(0);
-    // simulate a scroll
+    // Simulate a scroll
     queryOne(".o_list_renderer").scrollTop = 100;
-    // execute a second action (in which we don't scroll)
+    // Execute a second action (in which we don't scroll)
     await getService("action").doAction(4);
     expect(".o_content").toHaveProperty("scrollTop", 0);
-    // go back using the breadcrumbs
+    // Go back using the breadcrumbs
     await contains(".o_control_panel .breadcrumb a").click();
     expect(".o_content").toHaveProperty("scrollTop", 0);
     expect(queryOne(".o_list_renderer").scrollTop).toBe(100);
@@ -581,7 +583,7 @@ test("stores and restores scroll position (in list)", async () => {
 
 test.tags("desktop");
 test('executing an action with target != "new" closes all dialogs', async () => {
-    Partner._views["form"] = `
+    Partner._views.form = `
         <form>
             <field name="o2m">
                 <list><field name="display_name"/></list>
@@ -595,14 +597,14 @@ test('executing an action with target != "new" closes all dialogs', async () => 
     expect(".o_form_view").toHaveCount(1);
     await contains(".o_form_view .o_data_row .o_data_cell").click();
     expect(".modal .o_form_view").toHaveCount(1);
-    await getService("action").doAction(1); // target != 'new'
-    await animationFrame(); // wait for the dialog to be closed
+    await getService("action").doAction(1); // Target != 'new'
+    await animationFrame(); // Wait for the dialog to be closed
     expect(".modal").toHaveCount(0);
 });
 
 test.tags("desktop");
 test('executing an action with target "new" does not close dialogs', async () => {
-    Partner._views["form"] = `
+    Partner._views.form = `
         <form>
             <field name="o2m">
                 <list><field name="display_name"/></list>
@@ -616,7 +618,7 @@ test('executing an action with target "new" does not close dialogs', async () =>
     expect(".o_form_view").toHaveCount(1);
     await contains(".o_form_view .o_data_row .o_data_cell").click();
     expect(".modal .o_form_view").toHaveCount(1);
-    await getService("action").doAction(5); // target 'new'
+    await getService("action").doAction(5); // Target 'new'
     expect(".modal .o_form_view").toHaveCount(2);
 });
 
@@ -649,16 +651,16 @@ test("search defaults are removed from context when switching view", async () =>
         ],
         context,
     });
-    // list view is loaded, switch to pivot view
+    // List view is loaded, switch to pivot view
     await switchView("pivot");
 });
 
 test("retrieving a stored action should remove 'allowed_company_ids' from its context (model)", async () => {
     // Prepare a multi company scenario
     serverState.companies = [
-        { id: 3, name: "Hermit", sequence: 1 },
-        { id: 2, name: "Herman's", sequence: 2 },
-        { id: 1, name: "Heroes TM", sequence: 3 },
+        {id: 3, name: "Hermit", sequence: 1},
+        {id: 2, name: "Herman's", sequence: 2},
+        {id: 1, name: "Heroes TM", sequence: 3},
     ];
 
     // Prepare a stored action
@@ -681,29 +683,29 @@ test("retrieving a stored action should remove 'allowed_company_ids' from its co
     );
 
     // Prepare the URL hash to make sure the stored action will get executed.
-    Object.assign(browser.location, { search: "?model=partner&view_type=kanban" });
+    Object.assign(browser.location, {search: "?model=partner&view_type=kanban"});
 
     // Create the web client. It should execute the stored action.
     await mountWithCleanup(WebClient);
-    await animationFrame(); // blank action
+    await animationFrame(); // Blank action
 
     // Check the current action context
     expect(getService("action").currentController.action.context).toEqual({
-        // action context
+        // Action context
         someKey: 44,
         lang: "not_en",
         tz: "not_taht",
         uid: 42,
-        // note there is no 'allowed_company_ids' in the action context
+        // Note there is no 'allowed_company_ids' in the action context
     });
 });
 
 test("retrieving a stored action should remove 'allowed_company_ids' from its context (action)", async () => {
     // Prepare a multi company scenario
     serverState.companies = [
-        { id: 3, name: "Hermit", sequence: 1 },
-        { id: 2, name: "Herman's", sequence: 2 },
-        { id: 1, name: "Heroes TM", sequence: 3 },
+        {id: 3, name: "Hermit", sequence: 1},
+        {id: 2, name: "Herman's", sequence: 2},
+        {id: 1, name: "Heroes TM", sequence: 3},
     ];
 
     // Prepare a stored action
@@ -731,16 +733,16 @@ test("retrieving a stored action should remove 'allowed_company_ids' from its co
 
     // Create the web client. It should execute the stored action.
     await mountWithCleanup(WebClient);
-    await animationFrame(); // blank action
+    await animationFrame(); // Blank action
 
     // Check the current action context
     expect(getService("action").currentController.action.context).toEqual({
-        // action context
+        // Action context
         someKey: 44,
         lang: "not_en",
         tz: "not_taht",
         uid: 42,
-        // note there is no 'allowed_company_ids' in the action context
+        // Note there is no 'allowed_company_ids' in the action context
     });
 });
 test.tags("desktop");
@@ -761,7 +763,7 @@ test("action is removed while waiting for another action with selectMenu", async
             tag: "slow_client_action",
             target: "main",
             type: "ir.actions.client",
-            params: { description: "Id 1" },
+            params: {description: "Id 1"},
         },
     ]);
     defineMenus([
@@ -774,20 +776,20 @@ test("action is removed while waiting for another action with selectMenu", async
     ]);
 
     await mountWithCleanup(WebClient);
-    // starting point: a kanban view
+    // Starting point: a kanban view
     await getService("action").doAction(4);
     expect(".o_kanban_view").toHaveCount(1);
 
-    // select app in navbar menu
+    // Select app in navbar menu
     def = new Deferred();
     await contains(".o_navbar_apps_menu .dropdown-toggle").click();
     const appsMenu = getDropdownMenu(".o_navbar_apps_menu");
-    await contains(".o_app:contains(App1)", { root: appsMenu }).click();
+    await contains(".o_app:contains(App1)", {root: appsMenu}).click();
 
-    // check that the action manager is empty, even though client action is loading
+    // Check that the action manager is empty, even though client action is loading
     expect(".o_action_manager").toHaveText("");
 
-    // resolve onwillstart so client action is ready
+    // Resolve onwillstart so client action is ready
     def.resolve();
     await animationFrame();
     expect(".o_action_manager").toHaveText("My client action");

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-
     <t t-name="account.ProductLabelSectionAndNoteField">
         <div class="o_field_product_label_section_and_note_cell">
             <t t-if="isNote()">
@@ -29,7 +28,11 @@
             </t>
             <t t-else="">
                 <div class="d-flex align-items-center gap-1">
-                    <Many2One t-props="this.m2oProps" cssClass="'w-100'" t-on-keydown="onM2oInputKeydown"/>
+                    <Many2One
+                        t-props="this.m2oProps"
+                        cssClass="'w-100'"
+                        t-on-keydown="onM2oInputKeydown"
+                    />
                     <t t-if="showLabelVisibilityToggler">
                         <button
                             class="btn fa fa-bars text-start o_external_button px-1"
@@ -58,9 +61,8 @@
                 />
             </t>
             <t t-if="isPrintMode.value">
-                <div class="d-none d-print-block text-wrap" t-out="label"/>
+                <div class="d-none d-print-block text-wrap" t-out="label" />
             </t>
         </div>
     </t>
-
 </templates>

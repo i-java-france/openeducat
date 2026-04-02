@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, tools, Command, _
+from odoo import Command, _, fields, models, tools
 from odoo.tools.misc import clean_context
 
 

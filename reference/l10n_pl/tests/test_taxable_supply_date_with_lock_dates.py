@@ -1,5 +1,6 @@
 from odoo import fields
 from odoo.tests import Form, freeze_time, tagged
+
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 

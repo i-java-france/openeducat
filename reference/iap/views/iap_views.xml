@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <!-- iap Client Account Views -->
     <record id="iap_account_view_form" model="ir.ui.view">
         <field name="name">iap.account.form</field>
@@ -11,27 +10,39 @@
                     <group name="account" string="Account Information">
                         <group>
                             <field name="name" />
-                            <field name="service_id" readonly="service_locked" options="{'no_open': True, 'no_create': True}"/>
+                            <field
+                                name="service_id"
+                                readonly="service_locked"
+                                options="{'no_open': True, 'no_create': True}"
+                            />
                             <field name="description" />
-                            <field name="company_ids" widget="many2many_tags"
-                                domain="[('id', 'in', allowed_company_ids)]" />
-                            <field name="account_token" groups="base.group_no_one"/>
+                            <field
+                                name="company_ids"
+                                widget="many2many_tags"
+                                domain="[('id', 'in', allowed_company_ids)]"
+                            />
+                            <field name="account_token" groups="base.group_no_one" />
                         </group>
                         <group name="external">
-                            <label for="balance" class="oe_inline"/>
+                            <label for="balance" class="oe_inline" />
                             <div>
-                                <field name="balance" class="oe_inline"/>
-                                <button type="object"
-                                    name="action_buy_credits" class="btn-link py-0">
-                                    <i class="oi oi-arrow-right"/>
+                                <field name="balance" class="oe_inline" />
+                                <button
+                                    type="object"
+                                    name="action_buy_credits"
+                                    class="btn-link py-0"
+                                >
+                                    <i class="oi oi-arrow-right" />
                                     Buy Credit
                                 </button>
                             </div>
-                            <field name="warning_threshold"/>
-                            <field name="warning_user_ids"
-                                   invisible="warning_threshold == 0"
-                                   required="warning_threshold > 0"
-                                   widget="many2many_tags" />
+                            <field name="warning_threshold" />
+                            <field
+                                name="warning_user_ids"
+                                invisible="warning_threshold == 0"
+                                required="warning_threshold > 0"
+                                widget="many2many_tags"
+                            />
                         </group>
                     </group>
                 </sheet>
@@ -46,7 +57,7 @@
                 <field name="name" />
                 <field name="service_id" />
                 <field name="company_ids" widget="many2many_tags" />
-                <field name="account_token" groups="base.group_no_one"/>
+                <field name="account_token" groups="base.group_no_one" />
                 <field name="balance" />
                 <field name="warning_threshold" optional="hidden" />
                 <field name="description" optional="hidden" />
@@ -62,17 +73,13 @@
     </record>
 
     <!-- Menus -->
-    <menuitem
-        id="iap_root_menu"
-        name="IAP"
-        parent="base.menu_custom"
-        sequence="5"/>
+    <menuitem id="iap_root_menu" name="IAP" parent="base.menu_custom" sequence="5" />
 
     <menuitem
         id="iap_account_menu"
         name="IAP Accounts"
         parent="iap_root_menu"
         action="iap_account_action"
-        sequence="10"/>
-
+        sequence="10"
+    />
 </odoo>

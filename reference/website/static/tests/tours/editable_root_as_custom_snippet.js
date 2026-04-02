@@ -40,7 +40,11 @@ registerWebsitePreviewTour(
             trigger: ':iframe a[href="/"].nav-link.active',
         },
         ...clickOnEditAndWaitEditMode(),
-        ...insertSnippet({ customID: "s_title", name: "Custom Title", groupName: "Custom" }),
+        ...insertSnippet({
+            customID: "s_title",
+            name: "Custom Title",
+            groupName: "Custom",
+        }),
         {
             content: "Check that the custom snippet does not have branding",
             trigger:

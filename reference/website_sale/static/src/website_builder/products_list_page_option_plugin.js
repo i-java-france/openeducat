@@ -1,9 +1,9 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { PreviewableWebsiteConfigAction } from "@website/builder/plugins/customize_website_plugin";
-import { Plugin } from "@html_editor/plugin";
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { ProductsListPageOption } from "@website_sale/website_builder/products_list_page_option";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {PreviewableWebsiteConfigAction} from "@website/builder/plugins/customize_website_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {ProductsListPageOption} from "@website_sale/website_builder/products_list_page_option";
 
 class ProductsListPageOptionPlugin extends Plugin {
     static id = "productsListPageOptionPlugin";
@@ -21,11 +21,16 @@ class ProductsListPageOptionPlugin extends Plugin {
 export class SetShopContainerAction extends PreviewableWebsiteConfigAction {
     static id = "setShopContainer";
 
-    async apply({ editingElement: productDetailMainEl, isPreviewing, params, value }) {
-        await super.apply({ editingElement: productDetailMainEl, isPreviewing, params, value });
+    async apply({editingElement: productDetailMainEl, isPreviewing, params, value}) {
+        await super.apply({
+            editingElement: productDetailMainEl,
+            isPreviewing,
+            params,
+            value,
+        });
 
         if (!isPreviewing) {
-            await rpc("/shop/config/website", { 'shop_page_container': value });
+            await rpc("/shop/config/website", {shop_page_container: value});
         }
     }
 }
@@ -34,17 +39,17 @@ export class SetPpgAction extends BuilderAction {
     setup() {
         this.reload = {};
     }
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         return parseInt(editingElement.dataset.ppg);
     }
-    apply({ value }) {
+    apply({value}) {
         const PPG_LIMIT = 10000;
         let ppg = parseInt(value);
         if (!ppg || ppg < 1) {
             return false;
         }
         ppg = Math.min(ppg, PPG_LIMIT);
-        return rpc("/shop/config/website", { shop_ppg: ppg });
+        return rpc("/shop/config/website", {shop_ppg: ppg});
     }
 }
 export class SetPprAction extends BuilderAction {
@@ -52,12 +57,12 @@ export class SetPprAction extends BuilderAction {
     setup() {
         this.reload = {};
     }
-    isApplied({ editingElement, value }) {
+    isApplied({editingElement, value}) {
         return parseInt(editingElement.dataset.ppr) === value;
     }
-    apply({ value }) {
+    apply({value}) {
         const ppr = parseInt(value);
-        return rpc("/shop/config/website", { shop_ppr: ppr });
+        return rpc("/shop/config/website", {shop_ppr: ppr});
     }
 }
 export class SetDefaultSortAction extends BuilderAction {
@@ -65,11 +70,11 @@ export class SetDefaultSortAction extends BuilderAction {
     setup() {
         this.reload = {};
     }
-    isApplied({ editingElement, value }) {
+    isApplied({editingElement, value}) {
         return editingElement.dataset.defaultSort === value;
     }
-    apply({ value }) {
-        return rpc("/shop/config/website", { shop_default_sort: value });
+    apply({value}) {
+        return rpc("/shop/config/website", {shop_default_sort: value});
     }
 }
 

@@ -1,9 +1,9 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { Plugin } from "@html_editor/plugin";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { generateGMapLink } from "@website/js/utils";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {Plugin} from "@html_editor/plugin";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {generateGMapLink} from "@website/js/utils";
 
 export class MapOption extends BaseOptionComponent {
     static template = "website.mapOption";
@@ -27,7 +27,7 @@ class MapOptionPlugin extends Plugin {
 
 export class MapUpdateSrcAction extends BuilderAction {
     static id = "mapUpdateSrc";
-    apply({ editingElement }) {
+    apply({editingElement}) {
         const embedded = editingElement.querySelector(".s_map_embedded");
 
         if (editingElement.dataset.mapAddress) {
@@ -46,10 +46,10 @@ export class MapUpdateSrcAction extends BuilderAction {
 }
 export class MapDescriptionAction extends BuilderAction {
     static id = "mapDescription";
-    isApplied({ editingElement }) {
+    isApplied({editingElement}) {
         return editingElement.querySelector(".description") !== null;
     }
-    apply({ editingElement }) {
+    apply({editingElement}) {
         editingElement.appendChild(
             document.createRange().createContextualFragment(
                 `<div class="description">
@@ -59,7 +59,7 @@ export class MapDescriptionAction extends BuilderAction {
             )
         );
     }
-    clean({ editingElement }) {
+    clean({editingElement}) {
         editingElement.querySelector(".description").remove();
     }
 }

@@ -1,29 +1,34 @@
-import { Store as BaseStore, fields, makeStore, storeInsertFns } from "@mail/core/common/record";
-import { threadCompareRegistry } from "@mail/core/common/thread_compare";
+import {
+    Store as BaseStore,
+    fields,
+    makeStore,
+    storeInsertFns,
+} from "@mail/core/common/record";
+import {threadCompareRegistry} from "@mail/core/common/thread_compare";
 import {
     attClassObjectToString,
     cleanTerm,
     generateEmojisOnHtml,
     prettifyMessageText,
 } from "@mail/utils/common/format";
-import { compareDatetime } from "@mail/utils/common/misc";
+import {compareDatetime} from "@mail/utils/common/misc";
 
-import { reactive } from "@odoo/owl";
+import {reactive} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { user } from "@web/core/user";
-import { Deferred, Mutex } from "@web/core/utils/concurrency";
-import { renderToElement } from "@web/core/utils/render";
-import { debounce } from "@web/core/utils/timing";
-import { session } from "@web/session";
-import { browser } from "@web/core/browser/browser";
-import { loader } from "@web/core/emoji_picker/emoji_picker";
-import { patch } from "@web/core/utils/patch";
-import { isMobileOS } from "@web/core/browser/feature_detection";
-import { getOrigin } from "@web/core/utils/urls";
-import { cookie } from "@web/core/browser/cookie";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {user} from "@web/core/user";
+import {Deferred, Mutex} from "@web/core/utils/concurrency";
+import {renderToElement} from "@web/core/utils/render";
+import {debounce} from "@web/core/utils/timing";
+import {session} from "@web/session";
+import {browser} from "@web/core/browser/browser";
+import {loader} from "@web/core/emoji_picker/emoji_picker";
+import {patch} from "@web/core/utils/patch";
+import {isMobileOS} from "@web/core/browser/feature_detection";
+import {getOrigin} from "@web/core/utils/urls";
+import {cookie} from "@web/core/browser/cookie";
 
 /**
  * @typedef {{isSpecial: boolean, channel_types: string[], label: string, displayName: string, description: string}} SpecialMention
@@ -38,7 +43,7 @@ export const pyToJsModels = {
 };
 
 export const addFieldsByPyModel = {
-    "discuss.channel": { model: "discuss.channel" },
+    "discuss.channel": {model: "discuss.channel"},
 };
 
 patch(storeInsertFns, {
@@ -46,7 +51,7 @@ patch(storeInsertFns, {
         if (!(store instanceof Store)) {
             return super.makeContext(...arguments);
         }
-        return { pyModels: Object.values(pyToJsModels) };
+        return {pyModels: Object.values(pyToJsModels)};
     },
     getActualModelName(store, ctx, pyOrJsModelName) {
         if (!(store instanceof Store)) {
@@ -110,8 +115,8 @@ export class Store extends BaseStore {
     hasMessageTranslationFeature;
     hasLinkPreviewFeature = true;
     // messaging menu
-    menu = { counter: 0 };
-    chatHub = fields.One("ChatHub", { compute: () => ({}) });
+    menu = {counter: 0};
+    chatHub = fields.One("ChatHub", {compute: () => ({})});
     failures = fields.Many("Failure", {
         /**
          * @param {import("models").Failure} f1
@@ -142,8 +147,9 @@ export class Store extends BaseStore {
     isNotificationPermissionDismissed = fields.Attr(false, {
         compute() {
             return (
-                browser.localStorage.getItem("mail.user_setting.push_notification_dismissed") ===
-                "true"
+                browser.localStorage.getItem(
+                    "mail.user_setting.push_notification_dismissed"
+                ) === "true"
             );
         },
         /** @this {import("models").DiscussApp} */
@@ -154,7 +160,9 @@ export class Store extends BaseStore {
                     "true"
                 );
             } else {
-                browser.localStorage.removeItem("mail.user_setting.push_notification_dismissed");
+                browser.localStorage.removeItem(
+                    "mail.user_setting.push_notification_dismissed"
+                );
             }
         },
     });
@@ -169,18 +177,19 @@ export class Store extends BaseStore {
             let threads = Object.values(this.Thread.records).filter(
                 (thread) =>
                     (thread.displayToSelf ||
-                        (thread.needactionMessages.length > 0 && thread.model !== "mail.box")) &&
+                        (thread.needactionMessages.length > 0 &&
+                            thread.model !== "mail.box")) &&
                     cleanTerm(thread.displayName).includes(searchTerm)
             );
             const tab = this.discuss.activeTab;
             if (tab === "inbox") {
-                threads = threads.filter(({ channel_type }) =>
+                threads = threads.filter(({channel_type}) =>
                     this.tabToThreadType("mailbox").includes(channel_type)
                 );
             } else if (tab === "starred") {
                 threads = [this.starred];
             } else if (tab !== "notification") {
-                threads = threads.filter(({ channel_type }) =>
+                threads = threads.filter(({channel_type}) =>
                     this.tabToThreadType(tab).includes(channel_type)
                 );
             }
@@ -226,7 +235,9 @@ export class Store extends BaseStore {
 
     standaloneInboxMessages = fields.Many("mail.message", {
         compute() {
-            const messages = (this.store.inbox?.messages ?? []).filter((m) => !m.thread);
+            const messages = (this.store.inbox?.messages ?? []).filter(
+                (m) => !m.thread
+            );
             return messages.sort(
                 (m1, m2) => compareDatetime(m2.datetime, m1.datetime) || m2.id - m1.id
             );
@@ -241,7 +252,7 @@ export class Store extends BaseStore {
         return this.messagePostMutex.exec(async () => {
             let res;
             try {
-                res = await rpc("/mail/message/post", params, { silent: true });
+                res = await rpc("/mail/message/post", params, {silent: true});
             } catch (err) {
                 if (!tmpMessage) {
                     throw err;
@@ -274,7 +285,7 @@ export class Store extends BaseStore {
     async fetchStoreData(
         name,
         params,
-        { requestData = false, readonly = true, silent = true } = {}
+        {requestData = false, readonly = true, silent = true} = {}
     ) {
         const dataRequest = this.DataResponse.createRequest();
         dataRequest._autoResolve = !requestData;
@@ -373,8 +384,8 @@ export class Store extends BaseStore {
     _fetchStoreDataRpc(fetchParams) {
         return rpc(
             this.fetchReadonly ? "/mail/data" : "/mail/action",
-            { fetch_params: fetchParams, context: user.context },
-            { silent: this.fetchSilent }
+            {fetch_params: fetchParams, context: user.context},
+            {silent: this.fetchSilent}
         );
     }
 
@@ -384,10 +395,10 @@ export class Store extends BaseStore {
             partners_to: [this.self.id],
         });
         await this.store.chatHub.initPromise;
-        this.ChatWindow.get(thread)?.update({ autofocus: 0 });
-        await this.env.services["discuss.rtc"].toggleCall(thread, { camera: true });
+        this.ChatWindow.get(thread)?.update({autofocus: 0});
+        await this.env.services["discuss.rtc"].toggleCall(thread, {camera: true});
         if (this.rtc.selfSession) {
-            this.rtc.enterFullscreen({ autoOpenAction: "invite-people" });
+            this.rtc.enterFullscreen({autoOpenAction: "invite-people"});
         }
     }
 
@@ -408,13 +419,16 @@ export class Store extends BaseStore {
         const id = Number(link.dataset.oeId);
         if (link.classList.contains("o_channel_redirect") && model && id) {
             ev.preventDefault();
-            this.Thread.getOrFetch({ model, id }).then((thread) => {
+            this.Thread.getOrFetch({model, id}).then((thread) => {
                 if (thread) {
-                    thread.open({ focus: true });
+                    thread.open({focus: true});
                 } else {
-                    this.env.services.notification.add(_t("This thread is no longer available."), {
-                        type: "danger",
-                    });
+                    this.env.services.notification.add(
+                        _t("This thread is no longer available."),
+                        {
+                            type: "danger",
+                        }
+                    );
                 }
             });
             return true;
@@ -426,16 +440,22 @@ export class Store extends BaseStore {
             const message = this["mail.message"].get(id);
             const targetThread = message?.thread;
             const showAccessError = () =>
-                this.env.services.notification.add(_t("This conversation isn’t available."), {
-                    type: "danger",
-                });
+                this.env.services.notification.add(
+                    _t("This conversation isn’t available."),
+                    {
+                        type: "danger",
+                    }
+                );
             if (targetThread) {
                 targetThread.checkReadAccess().then((hasAccess) => {
                     if (hasAccess) {
                         targetThread.highlightMessage = message;
                         let isOpen = targetThread.eq(thread);
                         if (!isOpen) {
-                            isOpen = targetThread.open({ focus: true, swapOpened: false });
+                            isOpen = targetThread.open({
+                                focus: true,
+                                swapOpened: false,
+                            });
                         }
                         if (!isOpen) {
                             window.open(link.href);
@@ -472,7 +492,7 @@ export class Store extends BaseStore {
                 browser.location.host === url.host &&
                 browser.location.pathname.startsWith("/odoo")
             ) {
-                this.ChatWindow.get({ thread })?.fold();
+                this.ChatWindow.get({thread})?.fold();
             }
         }
         return false;
@@ -488,12 +508,13 @@ export class Store extends BaseStore {
 
     /** Provides an override point for when the store service has started. */
     onStarted() {
-        this.isOdooWhiteTheme = cookie.get("color_scheme") !== "dark" || this.inPublicPage;
-        navigator.serviceWorker?.addEventListener("message", ({ data = {} }) => {
-            const { type, payload } = data;
+        this.isOdooWhiteTheme =
+            cookie.get("color_scheme") !== "dark" || this.inPublicPage;
+        navigator.serviceWorker?.addEventListener("message", ({data = {}}) => {
+            const {type, payload} = data;
             if (type === "notification-display-request") {
-                const { correlationId, model, res_id } = payload;
-                const thread = this.Thread.get({ model, id: res_id });
+                const {correlationId, model, res_id} = payload;
+                const thread = this.Thread.get({model, id: res_id});
                 let isTabFocused;
                 try {
                     isTabFocused = parent.document.hasFocus();
@@ -509,7 +530,7 @@ export class Store extends BaseStore {
                 if ((isTabFocused && thread?.isDisplayed) || isInbox) {
                     navigator.serviceWorker.controller?.postMessage({
                         type: "notification-display-response",
-                        payload: { correlationId },
+                        payload: {correlationId},
                     });
                 }
             }
@@ -532,8 +553,8 @@ export class Store extends BaseStore {
      * @param {number} param0.partnerId
      * @returns {Promise<import("models").Thread | undefined>}
      */
-    async getChat({ userId, partnerId }) {
-        const partner = await this.getPartner({ userId, partnerId });
+    async getChat({userId, partnerId}) {
+        const partner = await this.getPartner({userId, partnerId});
         if (!partner) {
             return;
         }
@@ -544,7 +565,7 @@ export class Store extends BaseStore {
         if (!chat) {
             this.env.services.notification.add(
                 _t("An unexpected error occurred during the creation of the chat."),
-                { type: "warning" }
+                {type: "warning"}
             );
             return;
         }
@@ -577,7 +598,7 @@ export class Store extends BaseStore {
             const icon = linkEl.classList.contains("o_channel_redirect_asThread")
                 ? "fa fa-comments-o"
                 : "fa fa-hashtag";
-            const iconEl = renderToElement("mail.Message.mentionedChannelIcon", { icon });
+            const iconEl = renderToElement("mail.Message.mentionedChannelIcon", {icon});
             linkEl.replaceChildren(iconEl);
             linkEl.insertAdjacentText("beforeend", ` ${text}`);
         }
@@ -585,7 +606,12 @@ export class Store extends BaseStore {
 
     getMentionsFromText(
         body,
-        { mentionedChannels = [], mentionedPartners = [], mentionedRoles = [], thread } = {}
+        {
+            mentionedChannels = [],
+            mentionedPartners = [],
+            mentionedRoles = [],
+            thread,
+        } = {}
     ) {
         const validMentions = {};
         validMentions.threads = mentionedChannels.filter((thread) => {
@@ -599,7 +625,9 @@ export class Store extends BaseStore {
         validMentions.partners = mentionedPartners.filter((partner) =>
             body.includes(`@${thread?.getPersonaName(partner) ?? partner.name}`)
         );
-        validMentions.roles = mentionedRoles.filter((role) => body.includes(`@${role.name}`));
+        validMentions.roles = mentionedRoles.filter((role) =>
+            body.includes(`@${role.name}`)
+        );
         validMentions.specialMentions = this.specialMentions
             .filter((special) => body.includes(`@${special.label}`))
             .map((special) => special.label);
@@ -609,7 +637,7 @@ export class Store extends BaseStore {
     /**
      * Get the parameters to pass to the message post route.
      */
-    async getMessagePostParams({ body, postData, thread }) {
+    async getMessagePostParams({body, postData, thread}) {
         const {
             attachments,
             cannedResponseIds,
@@ -630,7 +658,10 @@ export class Store extends BaseStore {
         const role_ids = validMentions?.roles.map((role) => role.id) ?? [];
         const recipientEmails = [];
         if (!isNote) {
-            const allRecipients = [...thread.suggestedRecipients, ...thread.additionalRecipients];
+            const allRecipients = [
+                ...thread.suggestedRecipients,
+                ...thread.additionalRecipients,
+            ];
             const recipientIds = allRecipients
                 .filter((recipient) => recipient.persona)
                 .map((recipient) => recipient.persona.id);
@@ -648,16 +679,19 @@ export class Store extends BaseStore {
             subtype_xmlid: subtype,
         };
         if (attachments.length) {
-            postData.attachment_ids = attachments.map(({ id }) => id);
+            postData.attachment_ids = attachments.map(({id}) => id);
         }
         if (partner_ids.length) {
-            Object.assign(postData, { partner_ids });
+            Object.assign(postData, {partner_ids});
             this.fillPartnersMentionToken(postData);
         }
         if (role_ids.length) {
-            Object.assign(postData, { role_ids });
+            Object.assign(postData, {role_ids});
         }
-        if (thread.model === "discuss.channel" && validMentions?.specialMentions.length) {
+        if (
+            thread.model === "discuss.channel" &&
+            validMentions?.specialMentions.length
+        ) {
             postData.special_mentions = validMentions.specialMentions;
         }
         if (attachments.length) {
@@ -698,11 +732,11 @@ export class Store extends BaseStore {
      * @param {number} param0.partnerId
      * @returns {Promise<import("models").Persona> | undefined}
      */
-    async getPartner({ userId, partnerId }) {
+    async getPartner({userId, partnerId}) {
         if (userId) {
             let user = this.users[userId];
             if (!user) {
-                this.users[userId] = { id: userId };
+                this.users[userId] = {id: userId};
                 user = this.users[userId];
             }
             if (!user.partner_id) {
@@ -710,32 +744,37 @@ export class Store extends BaseStore {
                     "res.users",
                     [user.id],
                     ["partner_id"],
-                    { context: { active_test: false } }
+                    {context: {active_test: false}}
                 );
                 if (userData) {
                     user.partner_id = userData.partner_id[0];
                 }
             }
             if (!user.partner_id) {
-                this.env.services.notification.add(_t("You can only chat with existing users."), {
-                    type: "warning",
-                });
+                this.env.services.notification.add(
+                    _t("You can only chat with existing users."),
+                    {
+                        type: "warning",
+                    }
+                );
                 return;
             }
             partnerId = user.partner_id;
         }
         if (partnerId) {
-            const partner = this["res.partner"].insert({ id: partnerId });
+            const partner = this["res.partner"].insert({id: partnerId});
             if (!partner.main_user_id) {
                 const [userId] = await this.env.services.orm.silent.search(
                     "res.users",
                     [["partner_id", "=", partnerId]],
-                    { context: { active_test: false } }
+                    {context: {active_test: false}}
                 );
                 if (!userId) {
                     this.env.services.notification.add(
-                        _t("You can only chat with partners that have a dedicated user."),
-                        { type: "info" }
+                        _t(
+                            "You can only chat with partners that have a dedicated user."
+                        ),
+                        {type: "info"}
                     );
                     return;
                 }
@@ -748,23 +787,23 @@ export class Store extends BaseStore {
     }
 
     async joinChat(id, forceOpen = false) {
-        const { channel } = await this.fetchStoreData(
+        const {channel} = await this.fetchStoreData(
             "/discuss/get_or_create_chat",
-            { partners_to: [id] },
-            { readonly: false, requestData: true }
+            {partners_to: [id]},
+            {readonly: false, requestData: true}
         );
         if (forceOpen) {
-            await channel.open({ focus: true });
+            await channel.open({focus: true});
         }
         return channel;
     }
 
     async openChat(person) {
         const chat = await this.getChat(person);
-        chat?.open({ focus: true });
+        chat?.open({focus: true});
     }
 
-    openDocument({ id, model }) {
+    openDocument({id, model}) {
         this.env.services.action.doAction({
             type: "ir.actions.act_window",
             res_model: model,
@@ -778,7 +817,7 @@ export class Store extends BaseStore {
      * @param {number} id - Partner Id of mentioned partner.
      */
     onClickPartnerMention(ev, id) {
-        this.openChat({ partnerId: id });
+        this.openChat({partnerId: id});
     }
 
     /**
@@ -788,7 +827,7 @@ export class Store extends BaseStore {
      * @param {true|false|undefined} is_notification
      */
     async searchMessagesInThread(searchTerm, thread, before, is_notification) {
-        const { count, data, messages } = await rpc(thread.getFetchRoute(), {
+        const {count, data, messages} = await rpc(thread.getFetchRoute(), {
             ...thread.getFetchParams(),
             fetch_params: {
                 is_notification,
@@ -822,7 +861,7 @@ export const storeService = {
          * these values will still be executed immediately. Providing a dummy default is enough to
          * avoid crashes, the actual values being filled at livechat init when they are necessary.
          */
-        store.self_guest ??= { id: -1 };
+        store.self_guest ??= {id: -1};
         store.settings ??= {};
         store.initialize();
         store.onStarted();

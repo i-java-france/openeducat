@@ -5,16 +5,17 @@ import json
 import os
 from collections import defaultdict
 from datetime import timedelta
-from freezegun import freeze_time
 from threading import Event
 from unittest.mock import patch
 from weakref import WeakSet
+
+from freezegun import freeze_time
 
 from odoo import http
 from odoo.api import Environment
 from odoo.tests import common, new_test_user
 from odoo.tools import mute_logger
-from .common import WebsocketCase
+
 from .. import websocket as websocket_module
 from ..models.bus import dispatch
 from ..models.ir_websocket import IrWebsocket
@@ -26,6 +27,8 @@ from ..websocket import (
     Websocket,
     WebsocketConnectionHandler,
 )
+from .common import WebsocketCase
+
 
 @common.tagged('post_install', '-at_install')
 class TestWebsocketCaryall(WebsocketCase):

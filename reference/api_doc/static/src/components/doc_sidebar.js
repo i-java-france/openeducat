@@ -1,5 +1,5 @@
-import { Component, useEffect, useRef, useState } from "@odoo/owl";
-import { simplifyString } from "@api_doc/utils/doc_model_search";
+import {Component, useEffect, useRef, useState} from "@odoo/owl";
+import {simplifyString} from "@api_doc/utils/doc_model_search";
 
 export class DocSidebar extends Component {
     static template = "web.DocSidebar";
@@ -17,7 +17,9 @@ export class DocSidebar extends Component {
 
         useEffect(
             () => {
-                this.containerRef.el?.querySelector(":scope .o_active")?.scrollIntoView();
+                this.containerRef.el
+                    ?.querySelector(":scope .o_active")
+                    ?.scrollIntoView();
             },
             () => [this.containerRef.el]
         );
@@ -36,7 +38,7 @@ export class DocSidebar extends Component {
 
     _toggleAllAddons(isCollapsed) {
         const allAddons = this.filteredAddons;
-        allAddons.forEach((a) => this.state.collapseAddons[a.name] = !isCollapsed);
+        allAddons.forEach((a) => (this.state.collapseAddons[a.name] = !isCollapsed));
     }
 
     toggleAddon(event, addonName) {

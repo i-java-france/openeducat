@@ -1,12 +1,12 @@
-import { Dialog } from "@web/core/dialog/dialog";
-import { formatDate } from "@web/core/l10n/dates";
-import { getColor } from "../utils";
-import { getFormattedDateSpan } from "@web/views/calendar/utils";
+import {Dialog} from "@web/core/dialog/dialog";
+import {formatDate} from "@web/core/l10n/dates";
+import {getColor} from "../utils";
+import {getFormattedDateSpan} from "@web/views/calendar/utils";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class CalendarYearPopover extends Component {
-    static components = { Dialog };
+    static components = {Dialog};
     static template = "web.CalendarYearPopover";
     static subTemplates = {
         popover: "web.CalendarYearPopover.popover",
@@ -29,7 +29,7 @@ export class CalendarYearPopover extends Component {
     }
 
     get dialogTitle() {
-        return formatDate(this.props.date, { format: "DDD" });
+        return formatDate(this.props.date, {format: "DDD"});
     }
 
     computeRecordGroups() {
@@ -61,7 +61,7 @@ export class CalendarYearPopover extends Component {
         return Object.values(recordGroups);
     }
     getRecordClass(record) {
-        const { colorIndex } = record;
+        const {colorIndex} = record;
         const color = getColor(colorIndex);
         if (color && typeof color === "number") {
             return `o_calendar_color_${color}`;
@@ -69,7 +69,7 @@ export class CalendarYearPopover extends Component {
         return "";
     }
     getRecordStyle(record) {
-        const { colorIndex } = record;
+        const {colorIndex} = record;
         const color = getColor(colorIndex);
         if (color && typeof color === "string") {
             return `background-color: ${color};`;

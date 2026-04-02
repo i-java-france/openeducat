@@ -1,16 +1,16 @@
-import { ImStatus } from "@mail/core/common/im_status";
-import { ActionPanel } from "@mail/discuss/core/common/action_panel";
+import {ImStatus} from "@mail/core/common/im_status";
+import {ActionPanel} from "@mail/discuss/core/common/action_panel";
 
-import { Component, onWillStart, useState } from "@odoo/owl";
+import {Component, onWillStart, useState} from "@odoo/owl";
 
-import { useSequential } from "@mail/utils/common/hooks";
-import { _t } from "@web/core/l10n/translation";
-import { useAutofocus, useService } from "@web/core/utils/hooks";
-import { useDebounced } from "@web/core/utils/timing";
+import {useSequential} from "@mail/utils/common/hooks";
+import {_t} from "@web/core/l10n/translation";
+import {useAutofocus, useService} from "@web/core/utils/hooks";
+import {useDebounced} from "@web/core/utils/timing";
 
 export class ChannelInvitation extends Component {
-    static components = { ImStatus, ActionPanel };
-    static defaultProps = { hasSizeConstraints: false };
+    static components = {ImStatus, ActionPanel};
+    static defaultProps = {hasSizeConstraints: false};
     static props = [
         "autofocus?",
         "hasSizeConstraints?",
@@ -42,7 +42,7 @@ export class ChannelInvitation extends Component {
             this.fetchPartnersToInvite.bind(this),
             250
         );
-        this.inputRef = useAutofocus({ refName: "input" });
+        this.inputRef = useAutofocus({refName: "input"});
         onWillStart(() => {
             if (this.store.self_partner) {
                 this.fetchPartnersToInvite();
@@ -186,7 +186,7 @@ export class ChannelInvitation extends Component {
             notification = _t("Invitation link copy failed (Permission denied?)!");
             type = "danger";
         }
-        this.notification.add(notification, { type });
+        this.notification.add(notification, {type});
     }
 
     async onClickInvite() {
@@ -202,17 +202,29 @@ export class ChannelInvitation extends Component {
         const invitePromises = [];
         if (this.selectedPartners.length) {
             invitePromises.push(
-                this.orm.call("discuss.channel", "add_members", [[this.props.thread.id]], {
-                    partner_ids: this.selectedPartners.map((partner) => partner.id),
-                    invite_to_rtc_call: this.rtc.state.channel?.eq(this.props.thread),
-                })
+                this.orm.call(
+                    "discuss.channel",
+                    "add_members",
+                    [[this.props.thread.id]],
+                    {
+                        partner_ids: this.selectedPartners.map((partner) => partner.id),
+                        invite_to_rtc_call: this.rtc.state.channel?.eq(
+                            this.props.thread
+                        ),
+                    }
+                )
             );
         }
         if (this.state.selectedEmails.length) {
             invitePromises.push(
-                this.orm.call("discuss.channel", "invite_by_email", [this.props.thread.id], {
-                    emails: this.state.selectedEmails,
-                })
+                this.orm.call(
+                    "discuss.channel",
+                    "invite_by_email",
+                    [this.props.thread.id],
+                    {
+                        emails: this.state.selectedEmails,
+                    }
+                )
             );
         }
         await Promise.all(invitePromises);
@@ -238,7 +250,9 @@ export class ChannelInvitation extends Component {
                     const alreadyChat = Object.values(this.store.Thread.records).some(
                         (thread) =>
                             thread.channel_type === "chat" &&
-                            thread.correspondent?.partner_id?.eq(this.selectedPartners[0])
+                            thread.correspondent?.partner_id?.eq(
+                                this.selectedPartners[0]
+                            )
                     );
                     if (alreadyChat) {
                         return _t("Go to conversation");

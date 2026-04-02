@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import * as Utils from "@pos_self_order/../tests/tours/utils/common";
 import * as CartPage from "@pos_self_order/../tests/tours/utils/cart_page_util";
 import * as ProductPage from "@pos_self_order/../tests/tours/utils/product_page_util";
@@ -13,8 +13,8 @@ registry.category("web_tour.tours").add("self_combo_selector", {
             {
                 product: "Desk Organizer",
                 attributes: [
-                    { name: "Size", value: "M" },
-                    { name: "Fabric", value: "Leather" },
+                    {name: "Size", value: "M"},
+                    {name: "Fabric", value: "Leather"},
                 ],
             },
             {
@@ -35,8 +35,8 @@ registry.category("web_tour.tours").add("self_combo_selector", {
             {
                 product: "Desk Organizer",
                 attributes: [
-                    { name: "Size", value: "M" },
-                    { name: "Fabric", value: "Leather" },
+                    {name: "Size", value: "M"},
+                    {name: "Fabric", value: "Leather"},
                 ],
             },
             {

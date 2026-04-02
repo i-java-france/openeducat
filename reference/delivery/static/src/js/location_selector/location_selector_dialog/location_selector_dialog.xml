@@ -9,7 +9,7 @@
             <!-- Mobile view -->
             <t t-if="this.state.isSmall">
                 <!-- Search bar -->
-                <t t-call="delivery.locationSelector.searchbar"/>
+                <t t-call="delivery.locationSelector.searchbar" />
 
                 <!-- "List view / Map view" navigation -->
                 <div class="nav nav-tabs">
@@ -38,10 +38,17 @@
                         validateSelection.bind="validateSelection"
                     />
                     <t t-else="">
-                        <p t-if="this.state.error" class="p-3 fw-bold" t-out="errorMessage"/>
-                        <div t-else="" class="position-absolute start-50 top-50 translate-middle">
+                        <p
+                            t-if="this.state.error"
+                            class="p-3 fw-bold"
+                            t-out="errorMessage"
+                        />
+                        <div
+                            t-else=""
+                            class="position-absolute start-50 top-50 translate-middle"
+                        >
                             <div class="spinner-border" role="status">
-                                <span class="visually-hidden" t-out="loadingMessage"/>
+                                <span class="visually-hidden" t-out="loadingMessage" />
                             </div>
                         </div>
                     </t>
@@ -50,16 +57,14 @@
 
             <!-- Desktop view -->
             <div t-else="" class="d-flex h-100 mx-0 mx-md-n3 overflow-hidden">
-
                 <!-- List view -->
                 <section
                     t-if="showListView"
                     class="o_location_selector_view col-md-4 d-flex flex-grow-1 flex-column"
                 >
-
                     <!-- Search bar -->
                     <t t-call="delivery.locationSelector.searchbar">
-                        <t t-set="wrapClass" t-value="'d-flex'"/>
+                        <t t-set="wrapClass" t-value="'d-flex'" />
                     </t>
 
                     <!-- List group -->
@@ -71,17 +76,26 @@
                         validateSelection.bind="validateSelection"
                     />
                     <t t-else="">
-                        <p t-if="this.state.error" class="p-3 fw-bold" t-out="errorMessage"/>
-                        <div t-else="" class="position-absolute start-50 top-50 translate-middle">
+                        <p
+                            t-if="this.state.error"
+                            class="p-3 fw-bold"
+                            t-out="errorMessage"
+                        />
+                        <div
+                            t-else=""
+                            class="position-absolute start-50 top-50 translate-middle"
+                        >
                             <div class="spinner-border" role="status">
-                                <span class="visually-hidden" t-out="loadingMessage"/>
+                                <span class="visually-hidden" t-out="loadingMessage" />
                             </div>
                         </div>
                     </t>
                 </section>
 
                 <!-- Map view -->
-                <section class="o_location_selector_view col-md-8 d-flex flex-grow-1 border-start">
+                <section
+                    class="o_location_selector_view col-md-8 d-flex flex-grow-1 border-start"
+                >
                     <MapContainer
                         locations="this.state.locations"
                         selectedLocationId="this.state.selectedLocationId.toString()"
@@ -108,7 +122,11 @@
     </t>
 
     <t t-name="delivery.locationSelector.searchbar">
-        <div role="search" class="input-group p-3 border-bottom" t-att-class="wrapClass">
+        <div
+            role="search"
+            class="input-group p-3 border-bottom"
+            t-att-class="wrapClass"
+        >
             <input
                 class="search-query form-control oe_search_box border-0 text-bg-light"
                 t-model.lazy="this.state.zipCode"
@@ -120,7 +138,7 @@
                 title="Search"
                 class="btn btn-light"
             >
-                <i class="oi oi-search"/>
+                <i class="oi oi-search" />
             </button>
         </div>
     </t>

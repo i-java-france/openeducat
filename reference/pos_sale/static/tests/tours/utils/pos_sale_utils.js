@@ -30,7 +30,7 @@ export function settleSaleOrderByPrice(price) {
 }
 
 export function settleNthOrder(n, options = {}) {
-    const { loadSN } = options;
+    const {loadSN} = options;
     const step = [
         ...selectNthOrder(n),
         {
@@ -82,7 +82,10 @@ export function selectedOrderLinesHasLots(productName, lots) {
         content: `check lot${index} is linked`,
         trigger: `.info-list li:contains(${serialNumber})`,
     });
-    const lotSteps = lots.reduce((acc, serial, i) => acc.concat(getSerialStep(i, serial)), []);
+    const lotSteps = lots.reduce(
+        (acc, serial, i) => acc.concat(getSerialStep(i, serial)),
+        []
+    );
     return [...ProductScreen.selectedOrderlineHas(productName), ...lotSteps];
 }
 

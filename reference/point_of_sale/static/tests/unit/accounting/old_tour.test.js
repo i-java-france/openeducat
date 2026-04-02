@@ -4,10 +4,10 @@
  * converted to Hoot tests without any additional checks.
  */
 
-import { test, expect } from "@odoo/hoot";
-import { setupPosEnv } from "../utils";
-import { definePosModels } from "../data/generate_model_definitions";
-import { prepareRoundingVals } from "./utils";
+import {expect, test} from "@odoo/hoot";
+import {setupPosEnv} from "../utils";
+import {definePosModels} from "../data/generate_model_definitions";
+import {prepareRoundingVals} from "./utils";
 
 definePosModels();
 
@@ -24,7 +24,7 @@ test("[Old Tour] pos_basic_order_01_multi_payment_and_change", async () => {
     order.pricelist_id = false;
 
     // Add products
-    await store.addLineToOrder({ product_tmpl_id: product1, qty: 2 }, order);
+    await store.addLineToOrder({product_tmpl_id: product1, qty: 2}, order);
     order.addPaymentline(cashPm);
     order.payment_ids[0].setAmount(5);
     expect(order.remainingDue).toBe(5.2);
@@ -39,7 +39,7 @@ test("[Old Tour] PaymentScreenRoundingHalfUp", async () => {
     const product1_2 = store.models["product.template"].get(12);
     const product1_25 = store.models["product.template"].get(13);
     const product1_40 = store.models["product.template"].get(14);
-    const { cashPm } = prepareRoundingVals(store, 0.5, "HALF-UP", true);
+    const {cashPm} = prepareRoundingVals(store, 0.5, "HALF-UP", true);
 
     product1_2.list_price = 1.2;
     product1_2.product_variant_ids[0].lst_price = 1.2;
@@ -53,7 +53,7 @@ test("[Old Tour] PaymentScreenRoundingHalfUp", async () => {
 
     const order = store.addNewOrder();
     order.pricelist_id = false;
-    await store.addLineToOrder({ product_tmpl_id: product1_2, qty: 1 }, order);
+    await store.addLineToOrder({product_tmpl_id: product1_2, qty: 1}, order);
     expect(order.totalDue).toBe(1.2);
     order.addPaymentline(cashPm);
     expect(order.amountPaid).toBe(1.0);
@@ -62,7 +62,7 @@ test("[Old Tour] PaymentScreenRoundingHalfUp", async () => {
 
     const order2 = store.addNewOrder();
     order2.pricelist_id = false;
-    await store.addLineToOrder({ product_tmpl_id: product1_25, qty: 1 }, order2);
+    await store.addLineToOrder({product_tmpl_id: product1_25, qty: 1}, order2);
     expect(order2.totalDue).toBe(1.25);
     order2.addPaymentline(cashPm);
     expect(order2.amountPaid).toBe(1.5);
@@ -71,7 +71,7 @@ test("[Old Tour] PaymentScreenRoundingHalfUp", async () => {
 
     const order3 = store.addNewOrder();
     order3.pricelist_id = false;
-    await store.addLineToOrder({ product_tmpl_id: product1_40, qty: 1 }, order3);
+    await store.addLineToOrder({product_tmpl_id: product1_40, qty: 1}, order3);
     expect(order3.totalDue).toBe(1.4);
     order3.addPaymentline(cashPm);
     expect(order3.amountPaid).toBe(1.5);
@@ -80,7 +80,7 @@ test("[Old Tour] PaymentScreenRoundingHalfUp", async () => {
 
     const order4 = store.addNewOrder();
     order4.pricelist_id = false;
-    await store.addLineToOrder({ product_tmpl_id: product1_2, qty: 1 }, order4);
+    await store.addLineToOrder({product_tmpl_id: product1_2, qty: 1}, order4);
     expect(order4.totalDue).toBe(1.2);
     order4.addPaymentline(cashPm);
     order4.payment_ids[0].setAmount(2);
@@ -99,12 +99,12 @@ const prepareProduct = (store) => {
 
 test("[Old Tour] test_cash_rounding_halfup_add_invoice_line_not_only_round_cash_method", async () => {
     const store = await setupPosEnv();
-    const { cardPm } = prepareRoundingVals(store, 0.05, "HALF-UP", false);
+    const {cardPm} = prepareRoundingVals(store, 0.05, "HALF-UP", false);
     const product = prepareProduct(store);
     const order = store.addNewOrder();
     order.pricelist_id = false;
 
-    await store.addLineToOrder({ product_tmpl_id: product, qty: 1 }, order);
+    await store.addLineToOrder({product_tmpl_id: product, qty: 1}, order);
     expect(order.displayPrice).toBe(15.72);
     expect(order.priceExcl).toBe(13.67);
     expect(order.totalDue).toBe(15.7);
@@ -116,7 +116,7 @@ test("[Old Tour] test_cash_rounding_halfup_add_invoice_line_not_only_round_cash_
     const order2 = store.addNewOrder();
     order2.pricelist_id = false;
     order.is_refund = true;
-    await store.addLineToOrder({ product_tmpl_id: product, qty: -1 }, order2);
+    await store.addLineToOrder({product_tmpl_id: product, qty: -1}, order2);
     expect(order2.displayPrice).toBe(-15.72);
     expect(order2.priceExcl).toBe(-13.67);
     expect(order2.totalDue).toBe(-15.7);
@@ -128,12 +128,12 @@ test("[Old Tour] test_cash_rounding_halfup_add_invoice_line_not_only_round_cash_
 
 test("[Old Tour] test_cash_rounding_halfup_add_invoice_line_not_only_round_cash_method_pay_by_bank_and_cash", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 0.05, "HALF-UP", false);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 0.05, "HALF-UP", false);
     const product = prepareProduct(store);
     const order = store.addNewOrder();
     order.pricelist_id = false;
 
-    await store.addLineToOrder({ product_tmpl_id: product, qty: 1 }, order);
+    await store.addLineToOrder({product_tmpl_id: product, qty: 1}, order);
     expect(order.displayPrice).toBe(15.72);
     expect(order.priceExcl).toBe(13.67);
     expect(order.totalDue).toBe(15.7);
@@ -150,7 +150,7 @@ test("[Old Tour] test_cash_rounding_halfup_add_invoice_line_not_only_round_cash_
     const order2 = store.addNewOrder();
     order2.pricelist_id = false;
     order2.is_refund = true;
-    await store.addLineToOrder({ product_tmpl_id: product, qty: -1 }, order2);
+    await store.addLineToOrder({product_tmpl_id: product, qty: -1}, order2);
     expect(order2.displayPrice).toBe(-15.72);
     expect(order2.priceExcl).toBe(-13.67);
     expect(order2.totalDue).toBe(-15.7);
@@ -167,12 +167,12 @@ test("[Old Tour] test_cash_rounding_halfup_add_invoice_line_not_only_round_cash_
 
 test("[Old Tour] test_cash_rounding_down_add_invoice_line_not_only_round_cash_method_no_rounding_left", async () => {
     const store = await setupPosEnv();
-    const { cardPm } = prepareRoundingVals(store, 0.05, "HALF-UP", false);
+    const {cardPm} = prepareRoundingVals(store, 0.05, "HALF-UP", false);
     const product = prepareProduct(store);
     const order = store.addNewOrder();
     order.pricelist_id = false;
 
-    await store.addLineToOrder({ product_tmpl_id: product, qty: 1 }, order);
+    await store.addLineToOrder({product_tmpl_id: product, qty: 1}, order);
     expect(order.displayPrice).toBe(15.72);
     expect(order.priceExcl).toBe(13.67);
     expect(order.totalDue).toBe(15.7);
@@ -189,7 +189,7 @@ test("[Old Tour] test_cash_rounding_down_add_invoice_line_not_only_round_cash_me
     const order2 = store.addNewOrder();
     order2.pricelist_id = false;
     order2.is_refund = true;
-    await store.addLineToOrder({ product_tmpl_id: product, qty: -1 }, order2);
+    await store.addLineToOrder({product_tmpl_id: product, qty: -1}, order2);
     expect(order2.displayPrice).toBe(-15.72);
     expect(order2.priceExcl).toBe(-13.67);
     expect(order2.totalDue).toBe(-15.7);
@@ -206,12 +206,12 @@ test("[Old Tour] test_cash_rounding_down_add_invoice_line_not_only_round_cash_me
 
 test("[Old Tour] test_cash_rounding_halfup_add_invoice_line_only_round_cash_method", async () => {
     const store = await setupPosEnv();
-    const { cashPm } = prepareRoundingVals(store, 0.05, "HALF-UP", true);
+    const {cashPm} = prepareRoundingVals(store, 0.05, "HALF-UP", true);
     const product = prepareProduct(store);
     const order = store.addNewOrder();
     order.pricelist_id = false;
 
-    await store.addLineToOrder({ product_tmpl_id: product, qty: 1 }, order);
+    await store.addLineToOrder({product_tmpl_id: product, qty: 1}, order);
     expect(order.displayPrice).toBe(15.72);
     expect(order.priceExcl).toBe(13.67);
     expect(order.totalDue).toBe(15.72);
@@ -223,7 +223,7 @@ test("[Old Tour] test_cash_rounding_halfup_add_invoice_line_only_round_cash_meth
     const order2 = store.addNewOrder();
     order2.pricelist_id = false;
     order2.is_refund = true;
-    await store.addLineToOrder({ product_tmpl_id: product, qty: -1 }, order2);
+    await store.addLineToOrder({product_tmpl_id: product, qty: -1}, order2);
     expect(order2.displayPrice).toBe(-15.72);
     expect(order2.priceExcl).toBe(-13.67);
     expect(order2.totalDue).toBe(-15.72);
@@ -235,12 +235,12 @@ test("[Old Tour] test_cash_rounding_halfup_add_invoice_line_only_round_cash_meth
 
 test("[Old Tour] test_cash_rounding_halfup_add_invoice_line_only_round_cash_method_pay_by_bank_and_cash", async () => {
     const store = await setupPosEnv();
-    const { cashPm, cardPm } = prepareRoundingVals(store, 0.05, "HALF-UP", true);
+    const {cashPm, cardPm} = prepareRoundingVals(store, 0.05, "HALF-UP", true);
     const product = prepareProduct(store);
     const order = store.addNewOrder();
     order.pricelist_id = false;
 
-    await store.addLineToOrder({ product_tmpl_id: product, qty: 1 }, order);
+    await store.addLineToOrder({product_tmpl_id: product, qty: 1}, order);
     expect(order.displayPrice).toBe(15.72);
     expect(order.priceExcl).toBe(13.67);
     expect(order.totalDue).toBe(15.72);
@@ -257,7 +257,7 @@ test("[Old Tour] test_cash_rounding_halfup_add_invoice_line_only_round_cash_meth
     const order2 = store.addNewOrder();
     order2.pricelist_id = false;
     order2.is_refund = true;
-    await store.addLineToOrder({ product_tmpl_id: product, qty: -1 }, order2);
+    await store.addLineToOrder({product_tmpl_id: product, qty: -1}, order2);
     expect(order2.displayPrice).toBe(-15.72);
     expect(order2.priceExcl).toBe(-13.67);
     expect(order2.totalDue).toBe(-15.72);
@@ -274,12 +274,12 @@ test("[Old Tour] test_cash_rounding_halfup_add_invoice_line_only_round_cash_meth
 
 test("[Old Tour] test_cash_rounding_with_change", async () => {
     const store = await setupPosEnv();
-    const { cardPm } = prepareRoundingVals(store, 0.05, "HALF-UP", false);
+    const {cardPm} = prepareRoundingVals(store, 0.05, "HALF-UP", false);
     const product = prepareProduct(store);
     const order = store.addNewOrder();
     order.pricelist_id = false;
 
-    await store.addLineToOrder({ product_tmpl_id: product, qty: 1 }, order);
+    await store.addLineToOrder({product_tmpl_id: product, qty: 1}, order);
     expect(order.displayPrice).toBe(15.72);
     expect(order.priceExcl).toBe(13.67);
     expect(order.totalDue).toBe(15.7);
@@ -292,7 +292,7 @@ test("[Old Tour] test_cash_rounding_with_change", async () => {
     const order2 = store.addNewOrder();
     order2.pricelist_id = false;
     order2.is_refund = true;
-    await store.addLineToOrder({ product_tmpl_id: product, qty: -1 }, order2);
+    await store.addLineToOrder({product_tmpl_id: product, qty: -1}, order2);
     expect(order2.displayPrice).toBe(-15.72);
     expect(order2.priceExcl).toBe(-13.67);
     expect(order2.totalDue).toBe(-15.7);
@@ -305,12 +305,12 @@ test("[Old Tour] test_cash_rounding_with_change", async () => {
 
 test("[Old Tour] test_cash_rounding_only_cash_method_with_change", async () => {
     const store = await setupPosEnv();
-    const { cashPm } = prepareRoundingVals(store, 0.05, "HALF-UP", true);
+    const {cashPm} = prepareRoundingVals(store, 0.05, "HALF-UP", true);
     const product = prepareProduct(store);
     const order = store.addNewOrder();
     order.pricelist_id = false;
 
-    await store.addLineToOrder({ product_tmpl_id: product, qty: 1 }, order);
+    await store.addLineToOrder({product_tmpl_id: product, qty: 1}, order);
     expect(order.displayPrice).toBe(15.72);
     expect(order.priceExcl).toBe(13.67);
     expect(order.totalDue).toBe(15.72);
@@ -323,7 +323,7 @@ test("[Old Tour] test_cash_rounding_only_cash_method_with_change", async () => {
     const order2 = store.addNewOrder();
     order2.pricelist_id = false;
     order2.is_refund = true;
-    await store.addLineToOrder({ product_tmpl_id: product, qty: -1 }, order2);
+    await store.addLineToOrder({product_tmpl_id: product, qty: -1}, order2);
     expect(order2.displayPrice).toBe(-15.72);
     expect(order2.priceExcl).toBe(-13.67);
     expect(order2.totalDue).toBe(-15.72);
@@ -336,7 +336,7 @@ test("[Old Tour] test_cash_rounding_only_cash_method_with_change", async () => {
 
 test(["[Old Tour] test_cash_rounding_up_with_change"], async () => {
     const store = await setupPosEnv();
-    const { cashPm } = prepareRoundingVals(store, 1, "UP", true);
+    const {cashPm} = prepareRoundingVals(store, 1, "UP", true);
     const order = store.addNewOrder();
     order.pricelist_id = false;
 
@@ -350,8 +350,8 @@ test(["[Old Tour] test_cash_rounding_up_with_change"], async () => {
     productB.product_variant_ids[0].lst_price = 42;
     productB.taxes_id = [tax];
 
-    await store.addLineToOrder({ product_tmpl_id: productA, qty: 1 }, order);
-    await store.addLineToOrder({ product_tmpl_id: productB, qty: 2 }, order);
+    await store.addLineToOrder({product_tmpl_id: productA, qty: 1}, order);
+    await store.addLineToOrder({product_tmpl_id: productB, qty: 2}, order);
 
     expect(order.displayPrice).toBe(179);
     expect(order.totalDue).toBe(179);

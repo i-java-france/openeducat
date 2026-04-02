@@ -1,9 +1,9 @@
-import { fields } from "@mail/core/common/record";
-import { Store } from "@mail/core/common/store_service";
-import { browser } from "@web/core/browser/browser";
-import { _t } from "@web/core/l10n/translation";
+import {fields} from "@mail/core/common/record";
+import {Store} from "@mail/core/common/store_service";
+import {browser} from "@web/core/browser/browser";
+import {_t} from "@web/core/l10n/translation";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 const unread_store = (() => {
     if (!window.idbKeyval) {
@@ -29,7 +29,9 @@ const StorePatch = {
                  * the end (other activities).
                  */
                 const getSortId = (activityGroup) =>
-                    activityGroup.model === "mail.activity" ? Number.MAX_VALUE : activityGroup.id;
+                    activityGroup.model === "mail.activity"
+                        ? Number.MAX_VALUE
+                        : activityGroup.id;
                 return getSortId(g1) - getSortId(g2);
             },
         });
@@ -79,7 +81,9 @@ const StorePatch = {
         };
         try {
             // useful for synchronizing activity data between multiple tabs
-            this.activityBroadcastChannel = new browser.BroadcastChannel("mail.activity.channel");
+            this.activityBroadcastChannel = new browser.BroadcastChannel(
+                "mail.activity.channel"
+            );
             this.activityBroadcastChannel.onmessage =
                 this._onActivityBroadcastChannelMessage.bind(this);
         } catch {
@@ -99,7 +103,7 @@ const StorePatch = {
             active_ids: resIds,
             active_id: resIds[0],
             ...(defaultActivityTypeId !== undefined
-                ? { default_activity_type_id: defaultActivityTypeId }
+                ? {default_activity_type_id: defaultActivityTypeId}
                 : {}),
         };
         await new Promise((resolve) =>
@@ -128,21 +132,25 @@ const StorePatch = {
     updateAppBadge() {
         if (unread_store) {
             window.idbKeyval.set("unread", this.globalCounter, unread_store);
-            Promise.resolve(navigator.setAppBadge?.(this.globalCounter)).catch(() => {}); // FIXME: Illegal invocation error in HOOT
+            Promise.resolve(navigator.setAppBadge?.(this.globalCounter)).catch(
+                () => {}
+            ); // FIXME: Illegal invocation error in HOOT
         }
     },
     /**
      * @param {object} param0
      * @param {{ type: "INSERT"|"DELETE"|"RELOAD_CHATTER", payload: Partial<import("models").Activity> }} param0.data
      */
-    _onActivityBroadcastChannelMessage({ data }) {
+    _onActivityBroadcastChannelMessage({data}) {
         switch (data.type) {
             case "INSERT":
-                this.insert(data.payload, { broadcast: false });
+                this.insert(data.payload, {broadcast: false});
                 break;
             case "DELETE": {
-                const activity = this["mail.activity"].insert(data.payload, { broadcast: false });
-                activity.remove({ broadcast: false });
+                const activity = this["mail.activity"].insert(data.payload, {
+                    broadcast: false,
+                });
+                activity.remove({broadcast: false});
                 break;
             }
             case "RELOAD_CHATTER": {

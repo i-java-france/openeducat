@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="forum_post_action_channel" model="ir.actions.act_window">
         <field name="name">Forum Posts</field>
         <field name="res_model">forum.post</field>
@@ -11,7 +10,8 @@
             <p class="o_view_nocontent_smiling_face">
                 No Forum Post yet!
             </p>
-            <p>Come back later to monitor and moderate what is posted on your Forums.</p>
+            <p
+            >Come back later to monitor and moderate what is posted on your Forums.</p>
         </field>
     </record>
 
@@ -20,10 +20,9 @@
         <field name="model">forum.post</field>
         <field name="arch" type="xml">
             <graph string="eLearning Forum Posts" sample="1">
-                <field name="create_date" interval="month"/>
-                <field name="forum_id"/>
+                <field name="create_date" interval="month" />
+                <field name="forum_id" />
             </graph>
         </field>
     </record>
-
 </odoo>

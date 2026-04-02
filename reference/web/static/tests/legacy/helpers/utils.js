@@ -1,16 +1,16 @@
 /** @odoo-module alias=@web/../tests/helpers/utils default=false */
 
-import { getTemplate } from "@web/core/templates";
-import { browser } from "@web/core/browser/browser";
-import { isMacOS } from "@web/core/browser/feature_detection";
-import { download } from "@web/core/network/download";
-import { getPopoverForTarget } from "@web/core/popover/popover";
-import { Deferred } from "@web/core/utils/concurrency";
-import { patch } from "@web/core/utils/patch";
-import { isVisible } from "@web/core/utils/ui";
-import { _t } from "@web/core/l10n/translation";
-import { registerCleanup } from "./cleanup";
-import { customDirectives, globalValues } from "@web/env";
+import {getTemplate} from "@web/core/templates";
+import {browser} from "@web/core/browser/browser";
+import {isMacOS} from "@web/core/browser/feature_detection";
+import {download} from "@web/core/network/download";
+import {getPopoverForTarget} from "@web/core/popover/popover";
+import {Deferred} from "@web/core/utils/concurrency";
+import {patch} from "@web/core/utils/patch";
+import {isVisible} from "@web/core/utils/ui";
+import {_t} from "@web/core/l10n/translation";
+import {registerCleanup} from "./cleanup";
+import {customDirectives, globalValues} from "@web/env";
 
 import {
     App,
@@ -80,22 +80,22 @@ export function patchDate(year, month, day, hours, minutes, seconds, ms = 0) {
                         ? // We explicitly pass it through parse:
                           new NativeDate(Date.parse(Y))
                         : // We have to manually make calls depending on argument
-                        // length here
-                        length >= 7
-                        ? new NativeDate(Y, M, D, h, m, s, ms)
-                        : length >= 6
-                        ? new NativeDate(Y, M, D, h, m, s)
-                        : length >= 5
-                        ? new NativeDate(Y, M, D, h, m)
-                        : length >= 4
-                        ? new NativeDate(Y, M, D, h)
-                        : length >= 3
-                        ? new NativeDate(Y, M, D)
-                        : length >= 2
-                        ? new NativeDate(Y, M)
-                        : length >= 1
-                        ? new NativeDate(Y)
-                        : new NativeDate();
+                          // length here
+                          length >= 7
+                          ? new NativeDate(Y, M, D, h, m, s, ms)
+                          : length >= 6
+                            ? new NativeDate(Y, M, D, h, m, s)
+                            : length >= 5
+                              ? new NativeDate(Y, M, D, h, m)
+                              : length >= 4
+                                ? new NativeDate(Y, M, D, h)
+                                : length >= 3
+                                  ? new NativeDate(Y, M, D)
+                                  : length >= 2
+                                    ? new NativeDate(Y, M)
+                                    : length >= 1
+                                      ? new NativeDate(Y)
+                                      : new NativeDate();
                 // Prevent mixups with unfixed Date object
                 date.constructor = Date;
                 return date;
@@ -143,7 +143,9 @@ export function patchDate(year, month, day, hours, minutes, seconds, ms = 0) {
  *                          -120 => UTC-2
  */
 export function patchTimeZone(offset) {
-    patchWithCleanup(luxon.Settings, { defaultZone: luxon.FixedOffsetZone.instance(offset) });
+    patchWithCleanup(luxon.Settings, {
+        defaultZone: luxon.FixedOffsetZone.instance(offset),
+    });
 }
 
 /**
@@ -189,7 +191,9 @@ export function findElement(el, selector) {
             throw new Error(`No element found (selector: ${selector})`);
         }
         if (els.length > 1) {
-            throw new Error(`Found ${els.length} elements, instead of 1 (selector: ${selector})`);
+            throw new Error(
+                `Found ${els.length} elements, instead of 1 (selector: ${selector})`
+            );
         }
         target = els[0];
     }
@@ -201,10 +205,10 @@ export function findElement(el, selector) {
 //-----------------------------------------------------------------------------
 
 /** @param {EventInit} [args] */
-const mapBubblingEvent = (args) => ({ ...args, bubbles: true });
+const mapBubblingEvent = (args) => ({...args, bubbles: true});
 
 /** @param {EventInit} [args] */
-const mapNonBubblingEvent = (args) => ({ ...args, bubbles: false });
+const mapNonBubblingEvent = (args) => ({...args, bubbles: false});
 
 /** @param {EventInit} [args={}] */
 const mapBubblingPointerEvent = (args = {}) => ({
@@ -399,7 +403,9 @@ export function triggerEvent(el, selector, eventType, eventInit, options = {}) {
  */
 export function triggerEvents(el, selector, eventDefs, options = {}) {
     const events = [...eventDefs].map((eventDef) => {
-        const [eventType, eventInit] = Array.isArray(eventDef) ? eventDef : [eventDef, {}];
+        const [eventType, eventInit] = Array.isArray(eventDef)
+            ? eventDef
+            : [eventDef, {}];
         return triggerEvent(el, selector, eventType, eventInit, options);
     });
     if (options.sync) {
@@ -424,7 +430,7 @@ export function triggerEvents(el, selector, eventDefs, options = {}) {
  */
 export async function triggerScroll(
     target,
-    coordinates = { left: null, top: null },
+    coordinates = {left: null, top: null},
     canPropagate = true
 ) {
     const isScrollable =
@@ -466,7 +472,7 @@ export async function triggerScroll(
 export function click(
     el,
     selector,
-    { mouseEventInit = {}, skipDisabledCheck = false, skipVisibilityCheck = false } = {}
+    {mouseEventInit = {}, skipDisabledCheck = false, skipVisibilityCheck = false} = {}
 ) {
     if (!skipDisabledCheck && el.disabled) {
         throw new Error("Can't click on a disabled button");
@@ -483,7 +489,7 @@ export function click(
             "mouseup",
             ["click", mouseEventInit],
         ],
-        { skipVisibilityCheck }
+        {skipVisibilityCheck}
     );
 }
 
@@ -528,7 +534,9 @@ export async function clickSave(htmlElement) {
     }
     const listSaveButtons = htmlElement.querySelectorAll(".o_list_button_save");
     if (listSaveButtons.length) {
-        return listSaveButtons.length >= 2 ? click(listSaveButtons[1]) : click(listSaveButtons[0]);
+        return listSaveButtons.length >= 2
+            ? click(listSaveButtons[1])
+            : click(listSaveButtons[0]);
     } else {
         throw new Error("No save button found to be clicked.");
     }
@@ -559,8 +567,12 @@ export async function clickDiscard(htmlElement) {
 export async function mouseEnter(el, selector, coordinates) {
     const target = el.querySelector(selector) || el;
     const atPos = coordinates || {
-        clientX: target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2,
-        clientY: target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2,
+        clientX:
+            target.getBoundingClientRect().left +
+            target.getBoundingClientRect().width / 2,
+        clientY:
+            target.getBoundingClientRect().top +
+            target.getBoundingClientRect().height / 2,
     };
     return triggerEvents(target, null, ["pointerenter", "mouseenter"], atPos);
 }
@@ -579,12 +591,21 @@ export async function mouseLeave(el, selector) {
 export async function editInput(el, selector, value) {
     const input = findElement(el, selector);
     if (!(input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement)) {
-        throw new Error("Only 'input' and 'textarea' elements can be edited with 'editInput'.");
+        throw new Error(
+            "Only 'input' and 'textarea' elements can be edited with 'editInput'."
+        );
     }
     if (
-        !["text", "textarea", "email", "search", "color", "number", "file", "tel"].includes(
-            input.type
-        )
+        ![
+            "text",
+            "textarea",
+            "email",
+            "search",
+            "color",
+            "number",
+            "file",
+            "tel",
+        ].includes(input.type)
     ) {
         throw new Error(`Type "${input.type}" not supported by 'editInput'.`);
     }
@@ -595,7 +616,9 @@ export async function editInput(el, selector, value) {
         const dataTransfer = new DataTransfer();
         for (const file of files) {
             if (!(file instanceof File)) {
-                throw new Error(`File input value should be one or several File objects.`);
+                throw new Error(
+                    `File input value should be one or several File objects.`
+                );
             }
             dataTransfer.items.add(file);
         }
@@ -626,7 +649,9 @@ export function editSelect(el, selector, value) {
 export async function editSelectMenu(el, selector, value) {
     const dropdown = el.querySelector(selector);
     await click(dropdown.querySelector(".dropdown-toggle"));
-    for (const item of Array.from(el.querySelectorAll(".o_select_menu_menu .dropdown-item"))) {
+    for (const item of Array.from(
+        el.querySelectorAll(".o_select_menu_menu .dropdown-item")
+    )) {
         if (item.textContent === value) {
             return click(item);
         }
@@ -640,7 +665,11 @@ export async function editSelectMenu(el, selector, value) {
  * @param {boolean} addOverlayModParts
  * @param {KeyboardEventInit} eventAttrs
  */
-export async function triggerHotkey(hotkey, addOverlayModParts = false, eventAttrs = {}) {
+export async function triggerHotkey(
+    hotkey,
+    addOverlayModParts = false,
+    eventAttrs = {}
+) {
     eventAttrs.key = hotkey.split("+").pop();
 
     if (/shift/i.test(hotkey)) {
@@ -674,14 +703,14 @@ export async function triggerHotkey(hotkey, addOverlayModParts = false, eventAtt
             ["keydown", eventAttrs],
             ["keyup", eventAttrs],
         ],
-        { skipVisibilityCheck: true }
+        {skipVisibilityCheck: true}
     );
 
-    return { keydownEvent, keyupEvent };
+    return {keydownEvent, keyupEvent};
 }
 
 export function mockDownload(cb) {
-    patchWithCleanup(download, { _download: cb });
+    patchWithCleanup(download, {_download: cb});
 }
 
 export const hushConsole = Object.create(null);
@@ -703,7 +732,7 @@ export function mockTimeout() {
     let id = 1;
     patchWithCleanup(browser, {
         setTimeout(fn, delay = 0) {
-            timeouts.set(id, { fn, scheduledFor: delay + currentTime, id });
+            timeouts.set(id, {fn, scheduledFor: delay + currentTime, id});
             return id++;
         },
         clearTimeout(id) {
@@ -712,7 +741,7 @@ export function mockTimeout() {
     });
     return {
         execRegisteredTimeouts() {
-            for (const { fn } of timeouts.values()) {
+            for (const {fn} of timeouts.values()) {
                 fn();
             }
             timeouts.clear();
@@ -722,7 +751,7 @@ export function mockTimeout() {
             // executed and possibly register their own timeout
             await nextTick();
             currentTime += duration;
-            for (const { fn, scheduledFor, id } of timeouts.values()) {
+            for (const {fn, scheduledFor, id} of timeouts.values()) {
                 if (scheduledFor <= currentTime) {
                     fn();
                     timeouts.delete(id);
@@ -740,17 +769,17 @@ export function mockAnimationFrame() {
     let id = 1;
     patchWithCleanup(browser, {
         requestAnimationFrame(fn) {
-            callbacks.set(id, { fn, scheduledFor: 16 + currentTime, id });
+            callbacks.set(id, {fn, scheduledFor: 16 + currentTime, id});
             return id++;
         },
         cancelAnimationFrame(id) {
             callbacks.delete(id);
         },
-        performance: { now: () => currentTime },
+        performance: {now: () => currentTime},
     });
     return {
         execRegisteredAnimationFrames() {
-            for (const { fn } of callbacks.values()) {
+            for (const {fn} of callbacks.values()) {
                 fn(currentTime);
             }
             callbacks.clear();
@@ -760,7 +789,7 @@ export function mockAnimationFrame() {
             // executed and possibly register their own timeout
             await nextTick();
             currentTime += 16 * count;
-            for (const { fn, scheduledFor, id } of callbacks.values()) {
+            for (const {fn, scheduledFor, id} of callbacks.values()) {
                 if (scheduledFor <= currentTime) {
                     fn(currentTime);
                     callbacks.delete(id);
@@ -773,7 +802,7 @@ export function mockAnimationFrame() {
 }
 
 export async function mount(Comp, target, config = {}) {
-    let { props, env } = config;
+    let {props, env} = config;
     env = env || {};
     const configuration = {
         env,
@@ -899,7 +928,7 @@ function getDifferentParents(n1, n2) {
  * @param {Position} [position]
  */
 export async function dragAndDrop(from, to, position) {
-    const { drop } = await drag(from);
+    const {drop} = await drag(from);
     await drop(to, position);
 }
 
@@ -933,7 +962,7 @@ export async function drag(from, pointerType = "mouse") {
     };
 
     const cancel = assertIsDragging(async function cancel() {
-        await triggerEvent(window, null, "keydown", { key: "Escape" });
+        await triggerEvent(window, null, "keydown", {key: "Escape"});
     }, true);
 
     /**
@@ -1004,7 +1033,10 @@ export async function drag(from, pointerType = "mouse") {
         targetPosition = getTargetPosition(position);
 
         // Move, enter and drop the element on the target
-        await triggerEvent(source, null, "pointermove", { ...targetPosition, button: -1 });
+        await triggerEvent(source, null, "pointermove", {
+            ...targetPosition,
+            button: -1,
+        });
 
         // "pointerenter" is fired on every parent of `target` that do not contain
         // `from` (typically: different parent lists).
@@ -1016,7 +1048,7 @@ export async function drag(from, pointerType = "mouse") {
         return dragHelpers;
     }, false);
 
-    const dragHelpers = { cancel, drop, moveTo };
+    const dragHelpers = {cancel, drop, moveTo};
     const fixture = getFixture();
 
     const source = getEl(from instanceof Element ? from : fixture.querySelector(from));
@@ -1056,7 +1088,9 @@ export function getDropdownMenu(target, togglerSelector) {
         el = el.querySelector(".o-dropdown");
     }
     if (!el) {
-        throw new Error(`getDropdownMenu: Could not find element "${togglerSelector}".`);
+        throw new Error(
+            `getDropdownMenu: Could not find element "${togglerSelector}".`
+        );
     }
     return getPopoverForTarget(el);
 }
@@ -1069,7 +1103,9 @@ export async function clickDropdown(target, fieldName) {
 }
 
 export async function clickOpenedDropdownItem(target, fieldName, itemContent) {
-    const dropdowns = target.querySelectorAll(`[name='${fieldName}'] .dropdown .dropdown-menu`);
+    const dropdowns = target.querySelectorAll(
+        `[name='${fieldName}'] .dropdown .dropdown-menu`
+    );
     if (dropdowns.length === 0) {
         throw new Error(`No dropdown found for field ${fieldName}`);
     } else if (dropdowns.length > 1) {
@@ -1129,7 +1165,11 @@ export async function clickM2OHighlightedItem(el, fieldName, selector) {
 
 // X2Many
 export async function addRow(target, selector) {
-    await click(target.querySelector(`${selector ? selector : ""} .o_field_x2many_list_row_add a`));
+    await click(
+        target.querySelector(
+            `${selector ? selector : ""} .o_field_x2many_list_row_add a`
+        )
+    );
 }
 
 export async function removeRow(target, index) {

@@ -1,6 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, time
+
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
@@ -16,7 +17,7 @@ class HrLeave(models.Model):
     _inherit = 'hr.leave'
 
     def _prepare_resource_leave_vals(self):
-        vals = super(HrLeave, self)._prepare_resource_leave_vals()
+        vals = super()._prepare_resource_leave_vals()
         vals['work_entry_type_id'] = self.holiday_status_id.work_entry_type_id.id
         return vals
 

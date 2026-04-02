@@ -1,7 +1,7 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 export class BlogPostPageOption extends BaseOptionComponent {
     static template = "website_blog.blogPostPageOption";
@@ -19,4 +19,6 @@ export class BlogPostPageOptionPlugin extends Plugin {
     };
 }
 
-registry.category("website-plugins").add(BlogPostPageOptionPlugin.id, BlogPostPageOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(BlogPostPageOptionPlugin.id, BlogPostPageOptionPlugin);

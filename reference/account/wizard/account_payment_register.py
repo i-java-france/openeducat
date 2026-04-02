@@ -3,9 +3,9 @@ from datetime import date
 
 import markupsafe
 
-from odoo import Command, models, fields, api, _
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools import frozendict, OrderedSet
+from odoo.tools import OrderedSet, frozendict
 from odoo.tools.misc import clean_context
 
 
@@ -1115,7 +1115,7 @@ class AccountPaymentRegister(models.TransientModel):
             .with_context(skip_invoice_sync=True)\
             .create([x['create_vals'] for x in to_process])
 
-        for payment, vals in zip(payments, to_process):
+        for payment, vals in zip(payments, to_process, strict=False):
             vals['payment'] = payment
 
             # If payments are made using a currency different than the source one, ensure the balance match exactly in

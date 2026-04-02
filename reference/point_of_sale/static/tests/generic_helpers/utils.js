@@ -1,12 +1,12 @@
 /* global posmodel */
 
-import { simulateBarCode } from "@barcodes/../tests/legacy/helpers";
+import {simulateBarCode} from "@barcodes/../tests/legacy/helpers";
 
 export function negate(selector, parent = "body") {
     return `${parent}:not(:has(${selector}))`;
 }
 export function run(run, content = "run function", expectUnloadPage = false) {
-    return { content, trigger: "body", run, expectUnloadPage };
+    return {content, trigger: "body", run, expectUnloadPage};
 }
 export function scan_barcode(barcode) {
     return [
@@ -31,7 +31,8 @@ export function refresh() {
         async () => {
             await new Promise((resolve) => {
                 const checkTransaction = () => {
-                    const activeTransactions = posmodel.data.indexedDB.activeTransactions;
+                    const activeTransactions =
+                        posmodel.data.indexedDB.activeTransactions;
                     if (activeTransactions.size === 0) {
                         window.location.reload();
                         resolve();

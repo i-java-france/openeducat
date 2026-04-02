@@ -1,23 +1,23 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { fuzzyLookup } from "@web/core/utils/search";
-import { computeAppsAndMenuItems } from "@web/webclient/menus/menu_helpers";
-import { DefaultCommandItem } from "@web/core/commands/command_palette";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {fuzzyLookup} from "@web/core/utils/search";
+import {computeAppsAndMenuItems} from "@web/webclient/menus/menu_helpers";
+import {DefaultCommandItem} from "@web/core/commands/command_palette";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 class AppIconCommand extends Component {
     static template = "web.AppIconCommand";
     static props = {
-        webIconData: { type: String, optional: true },
-        webIcon: { type: Object, optional: true },
+        webIconData: {type: String, optional: true},
+        webIcon: {type: Object, optional: true},
         ...DefaultCommandItem.props,
     };
 }
 
 const commandCategoryRegistry = registry.category("command_categories");
-commandCategoryRegistry.add("apps", { namespace: "/" }, { sequence: 10 });
-commandCategoryRegistry.add("menu_items", { namespace: "/" }, { sequence: 20 });
+commandCategoryRegistry.add("apps", {namespace: "/"}, {sequence: 10});
+commandCategoryRegistry.add("menu_items", {namespace: "/"}, {sequence: 20});
 
 const commandSetupRegistry = registry.category("command_setup");
 commandSetupRegistry.add("/", {
@@ -32,7 +32,9 @@ commandProviderRegistry.add("menu", {
     async provide(env, options) {
         const result = [];
         const menuService = env.services.menu;
-        let { apps, menuItems } = computeAppsAndMenuItems(menuService.getMenuAsTree("root"));
+        let {apps, menuItems} = computeAppsAndMenuItems(
+            menuService.getMenuAsTree("root")
+        );
         if (options.searchValue !== "") {
             apps = fuzzyLookup(options.searchValue, apps, (menu) => menu.label);
 
@@ -45,7 +47,9 @@ commandProviderRegistry.add("menu", {
                     },
                     category: "menu_items",
                     name: menu.parents + " / " + menu.label,
-                    href: menu.href || `#menu_id=${menu.id}&amp;action_id=${menu.actionID}`,
+                    href:
+                        menu.href ||
+                        `#menu_id=${menu.id}&amp;action_id=${menu.actionID}`,
                 });
             });
         }

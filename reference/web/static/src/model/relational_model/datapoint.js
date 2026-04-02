@@ -1,6 +1,6 @@
-import { markRaw } from "@odoo/owl";
-import { Reactive } from "@web/core/utils/reactive";
-import { getId } from "./utils";
+import {markRaw} from "@odoo/owl";
+import {Reactive} from "@web/core/utils/reactive";
+import {getId} from "./utils";
 
 /**
  * @typedef {import("@web/search/search_model").Field} Field

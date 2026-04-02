@@ -1,11 +1,11 @@
-import { RadioField, radioField } from "@web/views/fields/radio/radio_field";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
+import {RadioField, radioField} from "@web/views/fields/radio/radio_field";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
 
 export class RadioSelectionFieldWithFilter extends RadioField {
     static props = {
         ...RadioField.props,
-        allowedSelectionField: { type: String },
+        allowedSelectionField: {type: String},
     };
 
     get items() {
@@ -19,7 +19,7 @@ export const radioSelectionFieldWithFilter = {
     component: RadioSelectionFieldWithFilter,
     displayName: _t("Radio for Selection With Filter"),
     supportedTypes: ["selection"],
-    extractProps({ options }) {
+    extractProps({options}) {
         return {
             ...radioField.extractProps(...arguments),
             allowedSelectionField: options.allowed_selection_field,
@@ -27,4 +27,6 @@ export const radioSelectionFieldWithFilter = {
     },
 };
 
-registry.category("fields").add("radio_selection_with_filter", radioSelectionFieldWithFilter);
+registry
+    .category("fields")
+    .add("radio_selection_with_filter", radioSelectionFieldWithFilter);

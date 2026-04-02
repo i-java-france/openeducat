@@ -1,20 +1,21 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from markupsafe import Markup
 from unittest.mock import patch
 
+from markupsafe import Markup
+
 from odoo import Command
-from odoo.addons.mail.tests import common
 from odoo.exceptions import AccessError
 from odoo.tests import Form, tagged, users
+
+from odoo.addons.mail.tests import common
 
 
 class TestMailRenderCommon(common.MailCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMailRenderCommon, cls).setUpClass()
+        super().setUpClass()
 
         # activate multi language support
         cls.env['res.lang']._activate_lang('fr_FR')
@@ -178,7 +179,7 @@ class TestMailRender(TestMailRenderCommon):
             '<span>Datetime is 06 - 1 - 2021</span>',
             '<span>Context Custom Context Value, value Custom Render Value</span>'
         ]
-        for src, expected in zip(srces, results):
+        for src, expected in zip(srces, results, strict=False):
             for engine in ['inline_template']:
                 result = MailRenderMixin.with_context(**custom_ctx)._render_template(
                     src, partner._name, partner.ids,
@@ -199,7 +200,7 @@ class TestMailRender(TestMailRenderCommon):
     def test_render_field(self):
         template = self.env['mail.template'].browse(self.test_template.ids)
         partner = self.env['res.partner'].browse(self.render_object.ids)
-        for fname, expected in zip(['subject', 'body_html'], self.base_rendered):
+        for fname, expected in zip(['subject', 'body_html'], self.base_rendered, strict=False):
             rendered = template._render_field(
                 fname,
                 partner.ids,
@@ -212,7 +213,7 @@ class TestMailRender(TestMailRenderCommon):
         """ Test translation in french """
         template = self.env['mail.template'].browse(self.test_template.ids)
         partner = self.env['res.partner'].browse(self.render_object_fr.ids)
-        for fname, expected in zip(['subject', 'body_html'], self.base_rendered_fr):
+        for fname, expected in zip(['subject', 'body_html'], self.base_rendered_fr, strict=False):
             rendered = template._render_field(
                 fname,
                 partner.ids,
@@ -226,7 +227,7 @@ class TestMailRender(TestMailRenderCommon):
         template = self.test_template.with_env(self.env)
         partner = self.render_object.with_env(self.env)
         for res_ids in ([], (), [False], [''], [None], [False, partner.id]):  # various corner cases
-            for fname, expected_obj, expected_void in zip(['subject', 'body_html'], self.base_rendered, self.base_rendered_void):
+            for fname, expected_obj, expected_void in zip(['subject', 'body_html'], self.base_rendered, self.base_rendered_void, strict=False):
                 with self.subTest():
                     rendered_all = template._render_field(
                         fname,
@@ -260,7 +261,7 @@ class TestMailRender(TestMailRenderCommon):
     @users('employee')
     def test_render_template_inline_template(self):
         partner = self.env['res.partner'].browse(self.render_object.ids)
-        for source, expected in zip(self.base_inline_template_bits, self.base_rendered):
+        for source, expected in zip(self.base_inline_template_bits, self.base_rendered, strict=False):
             rendered = self.env['mail.render.mixin']._render_template(
                 source,
                 partner._name,
@@ -295,7 +296,7 @@ class TestMailRender(TestMailRenderCommon):
     @users('employee')
     def test_render_template_qweb(self):
         partner = self.env['res.partner'].browse(self.render_object.ids)
-        for source, expected in zip(self.base_qweb_bits, self.base_rendered):
+        for source, expected in zip(self.base_qweb_bits, self.base_rendered, strict=False):
             rendered = self.env['mail.render.mixin']._render_template(
                 source,
                 partner._name,
@@ -307,7 +308,7 @@ class TestMailRender(TestMailRenderCommon):
     @users('employee')
     def test_render_template_qweb_view(self):
         partner = self.env['res.partner'].browse(self.render_object.ids)
-        for source, expected in zip(self.base_qweb_templates_xmlids, self.base_rendered):
+        for source, expected in zip(self.base_qweb_templates_xmlids, self.base_rendered, strict=False):
             rendered = self.env['mail.render.mixin']._render_template(
                 source,
                 partner._name,
@@ -364,7 +365,7 @@ class TestMailRender(TestMailRenderCommon):
             '<p class="text-muted"><span>This is a string with a number <t t-out="13+13"/></span></p>',
         ]
         expected = '<p class="text-muted"><span>This is a string with a number 26</span></p>'
-        for engine, src in zip(['inline_template', 'qweb'], srces):
+        for engine, src in zip(['inline_template', 'qweb'], srces, strict=False):
             result = MailRenderMixin._render_template(
                 src, partner._name, partner.ids, engine=engine,
             )[partner.id]
@@ -407,7 +408,7 @@ class TestMailRender(TestMailRenderCommon):
             '<div style="background-image:url(&#34;%s/web/path?a=a&b=b&#34;);"/>' % base_url,
             '<div background="%s/web/path?a=a&b=b"/>' % base_url,
         ]
-        for source, expected in zip(local_links_template_bits, rendered_local_links):
+        for source, expected in zip(local_links_template_bits, rendered_local_links, strict=False):
             rendered = self.env['mail.render.mixin']._replace_local_links(source)
             self.assertEqual(rendered, expected)
 

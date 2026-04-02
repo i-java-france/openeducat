@@ -1,7 +1,7 @@
 export default class DeviceIdentifierSequence {
     static uniqueDeviceIdentifierKey = `${odoo.access_token}-unique_device_identifier`;
 
-    constructor({ orm }) {
+    constructor({orm}) {
         this.orm = orm;
         this.device_identifier = "";
     }
@@ -33,9 +33,11 @@ export default class DeviceIdentifierSequence {
         const deviceIdentifier = localStorage.getItem(localStorageKey);
 
         if (!deviceIdentifier) {
-            const data = await this.orm.call("pos.config", "register_new_device_identifier", [
-                odoo.pos_config_id,
-            ]);
+            const data = await this.orm.call(
+                "pos.config",
+                "register_new_device_identifier",
+                [odoo.pos_config_id]
+            );
 
             this.device_identifier = data.device_identifier;
             this.save({
@@ -80,14 +82,16 @@ export default class DeviceIdentifierSequence {
         return number;
     }
 
-    save({ next_number, device_identifier, unsynced_number_stack }) {
+    save({next_number, device_identifier, unsynced_number_stack}) {
         const localStorageKey = DeviceIdentifierSequence.uniqueDeviceIdentifierKey;
         const current = this.data;
         const data = {
             device_identifier: device_identifier || current.device_identifier,
             next_number: next_number || current.next_number,
             unsynced_number_stack: [
-                ...new Set(unsynced_number_stack || current.unsynced_number_stack || []),
+                ...new Set(
+                    unsynced_number_stack || current.unsynced_number_stack || []
+                ),
             ],
         };
         localStorage.setItem(localStorageKey, JSON.stringify(data));
@@ -101,7 +105,10 @@ export default class DeviceIdentifierSequence {
         const numbers = orders
             .filter((o) => !o.isSynced)
             .map((o) => this.extractNumberFromReference(o.pos_reference));
-        const unsyncedNumberStack = new Set([...data.unsynced_number_stack, ...numbers]);
+        const unsyncedNumberStack = new Set([
+            ...data.unsynced_number_stack,
+            ...numbers,
+        ]);
 
         this.save({
             device_identifier: data.device_identifier,

@@ -1,11 +1,11 @@
-import { expect, test, describe } from "@odoo/hoot";
-import { queryAll } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryAll} from "@odoo/hoot-dom";
 
-import { mountWithCleanup, onRpc } from "@web/../tests/web_test_helpers";
+import {mountWithCleanup, onRpc} from "@web/../tests/web_test_helpers";
 
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
 
-import { ProjectRightSidePanel } from "@project/components/project_right_side_panel/project_right_side_panel";
+import {ProjectRightSidePanel} from "@project/components/project_right_side_panel/project_right_side_panel";
 
 defineMailModels();
 describe.current.tags("desktop");
@@ -51,13 +51,13 @@ test("Right side panel will not be rendered without data and settings set false"
         deepCopy.buttons.pop();
         deepCopy.milestones.data.pop();
         deepCopy.show_milestones = false;
-        return { ...deepCopy };
+        return {...deepCopy};
     });
 
     await mountWithCleanup(ProjectRightSidePanel, {
         props: {
-            context: { active_id: 1 },
-            domain: new Array(),
+            context: {active_id: 1},
+            domain: [],
         },
     });
 
@@ -72,13 +72,13 @@ test("Right side panel will be rendered if settings are turned on but doesnt hav
         deepCopy.buttons.pop();
         deepCopy.milestones.data.pop();
         deepCopy.show_milestones = true;
-        return { ...deepCopy };
+        return {...deepCopy};
     });
 
     await mountWithCleanup(ProjectRightSidePanel, {
         props: {
-            context: { active_id: 1 },
-            domain: new Array(),
+            context: {active_id: 1},
+            domain: [],
         },
     });
 
@@ -91,13 +91,13 @@ test("Right side panel will be not rendered if settings are turned off but does 
     onRpc(() => {
         const deepCopy = JSON.parse(JSON.stringify(FAKE_DATA));
         deepCopy.show_milestones = false;
-        return { ...deepCopy };
+        return {...deepCopy};
     });
 
     await mountWithCleanup(ProjectRightSidePanel, {
         props: {
-            context: { active_id: 1 },
-            domain: new Array(),
+            context: {active_id: 1},
+            domain: [],
         },
     });
 
@@ -108,13 +108,13 @@ test("Right side panel will be not rendered if settings are turned off but does 
 
 test("Right side panel will be rendered if both setting is turned on and does have data", async () => {
     onRpc(() => {
-        return { ...FAKE_DATA };
+        return {...FAKE_DATA};
     });
 
     await mountWithCleanup(ProjectRightSidePanel, {
         props: {
-            context: { active_id: 1 },
-            domain: new Array(),
+            context: {active_id: 1},
+            domain: [],
         },
     });
 

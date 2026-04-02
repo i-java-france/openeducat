@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.crm.tests import common as crm_common
 from odoo.tests.common import tagged, users
+
+from odoo.addons.crm.tests import common as crm_common
 
 
 @tagged('lead_manage', 'crm_performance', 'post_install', '-at_install')
@@ -10,7 +10,7 @@ class TestLeadConvertMass(crm_common.TestLeadConvertMassCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestLeadConvertMass, cls).setUpClass()
+        super().setUpClass()
 
         cls.leads = cls.lead_1 + cls.lead_w_partner + cls.lead_w_email_lost
         cls.assign_users = cls.user_sales_manager + cls.user_sales_leads_convert + cls.user_sales_salesman

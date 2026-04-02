@@ -1,12 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError
 from collections import defaultdict
-from odoo.tools import SQL, is_html_empty
+from datetime import date
 from itertools import groupby
 from operator import itemgetter
-from datetime import date
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 from odoo.fields import Domain
+from odoo.tools import SQL, is_html_empty
 
 
 class ProductTemplate(models.Model):

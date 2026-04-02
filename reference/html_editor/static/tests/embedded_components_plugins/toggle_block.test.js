@@ -1,7 +1,7 @@
-import { test, describe, beforeEach, expect } from "@odoo/hoot";
-import { setupEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
-import { getContent, setContent } from "../_helpers/selection";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {setupEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
+import {getContent, setContent} from "../_helpers/selection";
 import {
     addStep,
     deleteBackward,
@@ -11,19 +11,19 @@ import {
     splitBlock,
     switchDirection,
 } from "../_helpers/user_actions";
-import { contains, patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {contains, patchWithCleanup} from "@web/../tests/web_test_helpers";
 import {
     EmbeddedToggleBlockComponent,
     toggleBlockEmbedding,
 } from "@html_editor/others/embedded_components/core/toggle_block/toggle_block";
-import { onMounted } from "@odoo/owl";
-import { animationFrame, queryOne, tick } from "@odoo/hoot-dom";
-import { Deferred } from "@odoo/hoot-mock";
-import { browser } from "@web/core/browser/browser";
-import { MAIN_PLUGINS } from "@html_editor/plugin_sets";
-import { EmbeddedComponentPlugin } from "@html_editor/others/embedded_component_plugin";
-import { ToggleBlockPlugin } from "@html_editor/others/embedded_components/plugins/toggle_block_plugin/toggle_block_plugin";
-import { parseHTML } from "@html_editor/utils/html";
+import {onMounted} from "@odoo/owl";
+import {animationFrame, queryOne, tick} from "@odoo/hoot-dom";
+import {Deferred} from "@odoo/hoot-mock";
+import {browser} from "@web/core/browser/browser";
+import {MAIN_PLUGINS} from "@html_editor/plugin_sets";
+import {EmbeddedComponentPlugin} from "@html_editor/others/embedded_component_plugin";
+import {ToggleBlockPlugin} from "@html_editor/others/embedded_components/plugins/toggle_block_plugin/toggle_block_plugin";
+import {parseHTML} from "@html_editor/utils/html";
 
 let embeddedToggleMountedPromise;
 
@@ -51,7 +51,7 @@ beforeEach(() => {
 describe("deleteBackward applied to toggle", () => {
     test("toggle open, after toggle: should append to content", async () => {
         browser.sessionStorage.setItem(`html_editor.ToggleBlock1.showContent`, "true");
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(
                 `<p><br></p>
                 <div data-embedded="toggleBlock" data-oe-protected="true" data-embedded-props='{ "toggleBlockId": "1" }' contenteditable="false">
@@ -94,7 +94,7 @@ describe("deleteBackward applied to toggle", () => {
         );
     });
     test("toggle closed, after toggle: should append to title", async () => {
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(
                 `<p><br></p>
                 <div data-embedded="toggleBlock" data-oe-protected="true" data-embedded-props='{ "toggleBlockId": "1" }' contenteditable="false">
@@ -137,7 +137,7 @@ describe("deleteBackward applied to toggle", () => {
         );
     });
     test("start of title: should explode toggle", async () => {
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(
                 `<p><br></p>
                 <div data-embedded="toggleBlock" data-oe-protected="true" data-embedded-props='{ "toggleBlockId": "1" }' contenteditable="false">
@@ -167,7 +167,7 @@ describe("deleteBackward applied to toggle", () => {
         );
     });
     test("start of content: should append to title", async () => {
-        const { editor } = await setupEditor(
+        const {editor} = await setupEditor(
             unformat(`
                 <div data-embedded="toggleBlock" data-oe-protected="true" data-embedded-props='{ "toggleBlockId": "1" }' contenteditable="false">
                     <div data-embedded-editable="title">
@@ -179,7 +179,7 @@ describe("deleteBackward applied to toggle", () => {
                     </div>
                 </div>
             `),
-            { config: getConfig([toggleBlockEmbedding]) }
+            {config: getConfig([toggleBlockEmbedding])}
         );
         await embeddedToggleMountedPromise;
         deleteBackward(editor);
@@ -188,7 +188,7 @@ describe("deleteBackward applied to toggle", () => {
         `);
     });
     test("end of content: should unwrap from content", async () => {
-        const { editor } = await setupEditor(
+        const {editor} = await setupEditor(
             unformat(`
                 <div data-embedded="toggleBlock" data-oe-protected="true" data-embedded-props='{ "toggleBlockId": "1" }' contenteditable="false">
                     <div data-embedded-editable="title">
@@ -200,21 +200,22 @@ describe("deleteBackward applied to toggle", () => {
                     </div>
                 </div>
             `),
-            { config: getConfig([toggleBlockEmbedding]) }
+            {config: getConfig([toggleBlockEmbedding])}
         );
         await embeddedToggleMountedPromise;
         deleteBackward(editor);
         expect("[data-embedded-editable='content'").toHaveInnerHTML(`
             <p>Good</p>
         `);
-        expect(queryOne("[data-embedded='toggleBlock']").nextElementSibling).toHaveOuterHTML(`
+        expect(queryOne("[data-embedded='toggleBlock']").nextElementSibling)
+            .toHaveOuterHTML(`
             <p>Riddance</p>
         `);
     });
 });
 describe("deleteForward applied to toggle", () => {
     test("empty paragraph, before toggle: should remove empty paragraph", async () => {
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(
                 `<p>[]<br></p>
                 <div data-embedded="toggleBlock" data-oe-protected="true" data-embedded-props='{ "toggleBlockId": "1" }' contenteditable="false">
@@ -255,7 +256,7 @@ describe("deleteForward applied to toggle", () => {
         );
     });
     test("end of paragraph, before toggle: should explode sibling toggle", async () => {
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(
                 `<p>before[]</p>
                 <div data-embedded="toggleBlock" data-oe-protected="true" data-embedded-props='{ "toggleBlockId": "1" }' contenteditable="false">
@@ -283,7 +284,7 @@ describe("deleteForward applied to toggle", () => {
     });
     test("toggle open, end of title: should explode first toggle and append to title", async () => {
         browser.sessionStorage.setItem(`html_editor.ToggleBlock1.showContent`, "true");
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(`
                 <div data-embedded="toggleBlock" data-oe-protected="true" data-embedded-props='{ "toggleBlockId": "1" }' contenteditable="false">
                     <div data-embedded-editable="title">
@@ -329,7 +330,7 @@ describe("deleteForward applied to toggle", () => {
         );
     });
     test("toggle closed, end of title: should explode sibling toggle and append to title", async () => {
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(`
                 <div data-embedded="toggleBlock" data-oe-protected="true" data-embedded-props='{ "toggleBlockId": "1" }' contenteditable="false">
                     <div data-embedded-editable="title">
@@ -379,7 +380,7 @@ describe("deleteForward applied to toggle", () => {
     });
     test("end of content: should explode sibling toggle and append to content", async () => {
         browser.sessionStorage.setItem(`html_editor.ToggleBlock1.showContent`, "true");
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(`
                 <div data-embedded="toggleBlock" data-oe-protected="true" data-embedded-props='{ "toggleBlockId": "1" }' contenteditable="false">
                     <div data-embedded-editable="title">
@@ -431,7 +432,7 @@ describe("deleteForward applied to toggle", () => {
 describe("Enter applied to toggle title", () => {
     test("start of title: should create new toggle before", async () => {
         browser.sessionStorage.setItem(`html_editor.ToggleBlock1.showContent`, "true");
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(
                 `<div data-embedded="toggleBlock" data-oe-protected="true" contenteditable="false" data-embedded-props='{ "toggleBlockId": "1" }'>
                     <div data-embedded-editable="title">
@@ -496,7 +497,7 @@ describe("Enter applied to toggle title", () => {
         );
     });
     test("toggle closed, non-empty title: should create new sibling toggle with split title", async () => {
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(
                 `<div data-embedded="toggleBlock" data-oe-protected="true" data-embedded-props='{ "toggleBlockId": "1" }' contenteditable="false">
                     <div data-embedded-editable="title">
@@ -562,7 +563,7 @@ describe("Enter applied to toggle title", () => {
     });
     test("toggle open, non-empty title: should prepend content with split title", async () => {
         browser.sessionStorage.setItem(`html_editor.ToggleBlock1.showContent`, "true");
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(
                 `<div data-embedded="toggleBlock" data-oe-protected="true" contenteditable="false" data-embedded-props='{ "toggleBlockId": "1" }'>
                     <div data-embedded-editable="title">
@@ -604,7 +605,7 @@ describe("Enter applied to toggle title", () => {
     });
     test("empty title: should explode toggle", async () => {
         browser.sessionStorage.setItem(`html_editor.ToggleBlock1.showContent`, "true");
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(
                 `<div data-embedded="toggleBlock" data-oe-protected="true" contenteditable="false" data-embedded-props='{ "toggleBlockId": "1" }'>
                     <div data-embedded-editable="title">
@@ -633,7 +634,7 @@ describe("Enter applied to toggle title", () => {
 describe("Tab applied to toggle title", () => {
     test("toggle closed, should move inside previous toggle", async () => {
         browser.sessionStorage.setItem(`html_editor.ToggleBlock1.showContent`, "true");
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(
                 `<div data-embedded="toggleBlock" data-oe-protected="true" contenteditable="false" data-embedded-props='{ "toggleBlockId": "1" }'>
                     <div data-embedded-editable="title">
@@ -700,7 +701,7 @@ describe("Tab applied to toggle title", () => {
     test("toggle open, should move inside previous toggle and unwrap content", async () => {
         browser.sessionStorage.setItem(`html_editor.ToggleBlock1.showContent`, "true");
         browser.sessionStorage.setItem(`html_editor.ToggleBlock2.showContent`, "true");
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(
                 `<div data-embedded="toggleBlock" data-oe-protected="true" contenteditable="false" data-embedded-props='{ "toggleBlockId": "1" }'>
                     <div data-embedded-editable="title">
@@ -769,7 +770,7 @@ describe("Tab applied to toggle title", () => {
 describe("Shift+Tab applied to toggle title", () => {
     test("should become a sibling of parent toggle and append next siblings into own content", async () => {
         browser.sessionStorage.setItem(`html_editor.ToggleBlock1.showContent`, "true");
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(
                 `<div data-embedded="toggleBlock" data-oe-protected="true" contenteditable="false" data-embedded-props='{ "toggleBlockId": "1" }'>
                     <div data-embedded-editable="title">
@@ -856,17 +857,21 @@ describe("Hide and show toggle content", () => {
         );
         await embeddedToggleMountedPromise;
         expect(
-            queryOne("[data-embedded-editable='content']").parentElement.matches(".d-none")
+            queryOne("[data-embedded-editable='content']").parentElement.matches(
+                ".d-none"
+            )
         ).toBe(true);
         await contains("[data-embedded='toggleBlock'] button").click();
         await animationFrame();
         expect(
-            queryOne("[data-embedded-editable='content']").parentElement.matches(".d-none")
+            queryOne("[data-embedded-editable='content']").parentElement.matches(
+                ".d-none"
+            )
         ).toBe(false);
     });
     test.tags("desktop");
     test("Changing toggle state should update power buttons position", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             unformat(
                 `<div data-embedded="toggleBlock" data-oe-protected="true" contenteditable="false" data-embedded-props='{ "toggleBlockId": "1" }'>
                     <div data-embedded-editable="title">
@@ -888,12 +893,16 @@ describe("Hide and show toggle content", () => {
         const p = el.lastChild;
         await embeddedToggleMountedPromise;
         expect(
-            queryOne("[data-embedded-editable='content']").parentElement.matches(".d-none")
+            queryOne("[data-embedded-editable='content']").parentElement.matches(
+                ".d-none"
+            )
         ).toBe(true);
         await contains("[data-embedded='toggleBlock'] button").click();
         await animationFrame();
         expect(
-            queryOne("[data-embedded-editable='content']").parentElement.matches(".d-none")
+            queryOne("[data-embedded-editable='content']").parentElement.matches(
+                ".d-none"
+            )
         ).toBe(false);
         let pRect = p.getBoundingClientRect();
         let powerButtonsRect = powerButtons.getBoundingClientRect();
@@ -901,7 +910,9 @@ describe("Hide and show toggle content", () => {
         await contains("[data-embedded='toggleBlock'] button").click();
         await animationFrame();
         expect(
-            queryOne("[data-embedded-editable='content']").parentElement.matches(".d-none")
+            queryOne("[data-embedded-editable='content']").parentElement.matches(
+                ".d-none"
+            )
         ).toBe(true);
         pRect = p.getBoundingClientRect();
         powerButtonsRect = powerButtons.getBoundingClientRect();
@@ -910,7 +921,7 @@ describe("Hide and show toggle content", () => {
 });
 describe("Insert (paste, drop) inside toggle title", () => {
     test("Only allow one paragraph related element inside title", async () => {
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(
                 `<div data-embedded="toggleBlock" data-oe-protected="true" contenteditable="false" data-embedded-props='{ "toggleBlockId": "1" }'>
                     <div data-embedded-editable="title">
@@ -965,7 +976,7 @@ describe("Insert (paste, drop) inside toggle title", () => {
 
 describe("hint", () => {
     test("should show normal hint when focusing embedded content element", async () => {
-        const { el } = await setupEditor(
+        const {el} = await setupEditor(
             unformat(`<div data-embedded="toggleBlock" data-oe-protected="true" data-embedded-props='{ "toggleBlockId": "1" }' contenteditable="false">
                     <div data-embedded-editable="title">
                         <p>[]<br></p>
@@ -989,7 +1000,7 @@ describe("hint", () => {
             '<p o-we-hint-text="Add something inside this toggle" class="o-we-hint"><br></p>'
         );
         setContent(content, "<p>[]<br></p>");
-        await tick(); // selectionChange
+        await tick(); // SelectionChange
         expect(content).toHaveInnerHTML(
             `<p o-we-hint-text='Type "/" for commands' class="o-we-hint"><br></p>`
         );
@@ -998,7 +1009,7 @@ describe("hint", () => {
 
 describe("Toggle block: Switch Direction", () => {
     test("should properly switch the direction of the toggle block (rtl)", async () => {
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(
                 `
                 <div data-embedded="toggleBlock" data-oe-protected="true" data-embedded-props='{ "toggleBlockId": "1" }' contenteditable="false">
@@ -1042,7 +1053,7 @@ describe("Toggle block: Switch Direction", () => {
         );
     });
     test("should insert a new sibling toggle block with RTL direction on Enter", async () => {
-        const { editor, el } = await setupEditor(
+        const {editor, el} = await setupEditor(
             unformat(
                 `<div data-embedded="toggleBlock" data-oe-protected="true" data-embedded-props='{ "toggleBlockId": "1" }' contenteditable="false" dir="rtl">
                     <div data-embedded-editable="title">

@@ -1,4 +1,4 @@
-import { onMounted, useComponent, useEffect, useExternalListener } from "@odoo/owl";
+import {onMounted, useComponent, useEffect, useExternalListener} from "@odoo/owl";
 
 export const scrollSymbol = Symbol("scroll");
 
@@ -13,7 +13,7 @@ export class CallbackRecorder {
      * @returns {Function[]}
      */
     get callbacks() {
-        return this._callbacks.map(({ callback }) => callback);
+        return this._callbacks.map(({callback}) => callback);
     }
     /**
      * @param {any} owner
@@ -23,7 +23,7 @@ export class CallbackRecorder {
         if (!callback) {
             throw new Error("Missing callback");
         }
-        this._callbacks.push({ owner, callback });
+        this._callbacks.push({owner, callback});
     }
     /**
      * @param {any} owner
@@ -90,7 +90,7 @@ export function useSetupAction(params = {}) {
     }
 
     function setScrollFromState() {
-        const { state } = component.props;
+        const {state} = component.props;
         const scrolling = state && state[scrollSymbol];
         if (scrolling) {
             if (component.env.isSmall) {
@@ -118,7 +118,7 @@ export function useSetupAction(params = {}) {
             if (rootRef) {
                 if (component.env.isSmall) {
                     state[scrollSymbol] = {
-                        root: { left: rootRef.el.scrollLeft, top: rootRef.el.scrollTop },
+                        root: {left: rootRef.el.scrollLeft, top: rootRef.el.scrollTop},
                     };
                 } else {
                     const contentEl =
@@ -128,7 +128,10 @@ export function useSetupAction(params = {}) {
                         ) || rootRef.el.querySelector(".o_content");
                     if (contentEl) {
                         state[scrollSymbol] = {
-                            content: { left: contentEl.scrollLeft, top: contentEl.scrollTop },
+                            content: {
+                                left: contentEl.scrollLeft,
+                                top: contentEl.scrollTop,
+                            },
                         };
                     }
                 }

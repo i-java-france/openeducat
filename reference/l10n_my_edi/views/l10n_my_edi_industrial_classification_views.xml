@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
         <!-- Just there for the search more -->
@@ -7,8 +7,8 @@
             <field name="model">l10n_my_edi.industry_classification</field>
             <field name="arch" type="xml">
                 <list>
-                    <field name="code"/>
-                    <field name="name"/>
+                    <field name="code" />
+                    <field name="name" />
                 </list>
             </field>
         </record>

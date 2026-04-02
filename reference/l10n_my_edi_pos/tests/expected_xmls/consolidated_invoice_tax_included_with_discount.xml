@@ -1,5 +1,10 @@
 <?xml version="1.0" ?>
-<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
+<Invoice
+    xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+    xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+    xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+    xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
+>
     <cbc:ID>/</cbc:ID>
     <cbc:IssueDate>2025-01-01</cbc:IssueDate>
     <cbc:IssueTime>00:00:00Z</cbc:IssueTime>
@@ -7,7 +12,9 @@
     <cbc:DocumentCurrencyCode>MYR</cbc:DocumentCurrencyCode>
     <cac:AccountingSupplierParty>
         <cac:Party>
-            <cbc:IndustryClassificationCode name="Growing of maize">01111</cbc:IndustryClassificationCode>
+            <cbc:IndustryClassificationCode
+                name="Growing of maize"
+            >01111</cbc:IndustryClassificationCode>
             <cac:PartyIdentification>
                 <cbc:ID schemeID="TIN">C2584563200</cbc:ID>
             </cac:PartyIdentification>
@@ -29,7 +36,10 @@
                     <cbc:Line>Jln Raja Alang Kampung Bahru Mala</cbc:Line>
                 </cac:AddressLine>
                 <cac:Country>
-                    <cbc:IdentificationCode listAgencyID="6" listID="ISO3166-1">MYS</cbc:IdentificationCode>
+                    <cbc:IdentificationCode
+                        listAgencyID="6"
+                        listID="ISO3166-1"
+                    >MYS</cbc:IdentificationCode>
                     <cbc:Name>Malaysia</cbc:Name>
                 </cac:Country>
             </cac:PostalAddress>
@@ -63,7 +73,10 @@
                     <cbc:Line>NA</cbc:Line>
                 </cac:AddressLine>
                 <cac:Country>
-                    <cbc:IdentificationCode listAgencyID="6" listID="ISO3166-1">MYS</cbc:IdentificationCode>
+                    <cbc:IdentificationCode
+                        listAgencyID="6"
+                        listID="ISO3166-1"
+                    >MYS</cbc:IdentificationCode>
                     <cbc:Name>Malaysia</cbc:Name>
                 </cac:Country>
             </cac:PostalAddress>
@@ -130,7 +143,9 @@
             <cbc:Description>___ignore___</cbc:Description>
             <cbc:Name>___ignore___</cbc:Name>
             <cac:CommodityClassification>
-                <cbc:ItemClassificationCode listID="CLASS">004</cbc:ItemClassificationCode>
+                <cbc:ItemClassificationCode
+                    listID="CLASS"
+                >004</cbc:ItemClassificationCode>
             </cac:CommodityClassification>
             <cac:ClassifiedTaxCategory>
                 <cbc:ID>01</cbc:ID>

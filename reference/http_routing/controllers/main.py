@@ -2,6 +2,7 @@
 
 from odoo import http
 from odoo.http import request
+
 from odoo.addons.web.controllers.home import Home
 from odoo.addons.web.controllers.session import Session
 from odoo.addons.web.controllers.webclient import WebClient

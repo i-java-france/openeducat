@@ -1,12 +1,12 @@
 /** @odoo-module **/
-import { useEffect, onMounted } from "@odoo/owl";
-import { CodeEditor } from "@web/core/code_editor/code_editor";
-import { escapeRegExp } from "@web/core/utils/strings";
+import {useEffect, onMounted} from "@odoo/owl";
+import {CodeEditor} from "@web/core/code_editor/code_editor";
+import {escapeRegExp} from "@web/core/utils/strings";
 
 export class IrUiViewCodeEditor extends CodeEditor {
     static props = {
         ...this.props,
-        record: { type: Object },
+        record: {type: Object},
     };
 
     setup() {
@@ -35,22 +35,28 @@ export class IrUiViewCodeEditor extends CodeEditor {
         const resModel = this.env.model?.config.resModel;
         const resId = this.env.model?.config.resId;
         if (resModel === "ir.ui.view" && resId) {
-            const { doc } = this.aceEditor.session;
+            const {doc} = this.aceEditor.session;
             for (const spec of invalid_locators) {
                 if (spec.broken_hierarchy) {
-                    continue
+                    continue;
                 }
-                const { tag, attrib, sourceline } = spec;
+                const {tag, attrib, sourceline} = spec;
                 const attribRegex = Object.entries(attrib)
                     .map(([key, value]) => {
-                        const escapedValue = escapeRegExp(value).replace(/"/g, '("|&quot;)');
+                        const escapedValue = escapeRegExp(value).replace(
+                            /"/g,
+                            '("|&quot;)'
+                        );
                         return (
                             `(?=[^>]*?\\b${escapeRegExp(key)}\\s*=\\s*` +
                             `(?:"[^"]*${escapedValue}[^"]*"|'[^']*${escapedValue}[^']*'))`
                         );
                     })
                     .join("");
-                const nodeRegex = new RegExp(`<${escapeRegExp(tag)}\\s+${attribRegex}[^>]*>`, "g");
+                const nodeRegex = new RegExp(
+                    `<${escapeRegExp(tag)}\\s+${attribRegex}[^>]*>`,
+                    "g"
+                );
                 for (const match of arch.matchAll(nodeRegex)) {
                     const startIndex = match.index;
                     const endIndex = startIndex + match[0].length;
@@ -64,7 +70,11 @@ export class IrUiViewCodeEditor extends CodeEditor {
                             endPos.column
                         );
                         this.markers.push(
-                            this.aceEditor.session.addMarker(range, "invalid_locator", "text")
+                            this.aceEditor.session.addMarker(
+                                range,
+                                "invalid_locator",
+                                "text"
+                            )
                         );
                     }
                 }

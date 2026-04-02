@@ -1,14 +1,14 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from unittest.mock import patch
 
 from odoo import fields
+from odoo.tests import Form, tagged, users
+from odoo.tools import mute_logger
+
 from odoo.addons.mail.tests.common import MailCommon
 from odoo.addons.mail.tools.discuss import Store
 from odoo.addons.test_mail.data.test_mail_data import MAIL_TEMPLATE
-from odoo.tests import Form, tagged, users
-from odoo.tools import mute_logger
 
 
 @tagged('mail_track')
@@ -576,7 +576,7 @@ class TestTrackingInternals(MailCommon):
         self.assertTracking(new_message, tracking_value_list, strict=True)
         # check formatting for all field types
         formatted_values_all = new_message.sudo().tracking_value_ids._tracking_value_format()
-        for (field_name, field_type, _, _), formatted_vals in zip(tracking_value_list, formatted_values_all):
+        for (field_name, field_type, _, _), formatted_vals in zip(tracking_value_list, formatted_values_all, strict=False):
             currency = self.env.ref('base.USD').id if field_type == 'monetary' else False
             precision = None if field_name != 'float_field_with_digits' else (10, 8)
             with self.subTest(field_name=field_name):
@@ -893,7 +893,7 @@ class TestTrackingInternals(MailCommon):
         self.assertEqual(len(trackings), 3)
 
         # check groups, as it depends on model
-        for tracking, exp_groups in zip(trackings, ['base.group_user', 'base.group_system', 'base.group_system']):
+        for tracking, exp_groups in zip(trackings, ['base.group_user', 'base.group_system', 'base.group_system'], strict=False):
             groups = 'base.group_system'
             if tracking.field_id:
                 field = self.env[tracking.field_id.model]._fields[tracking.field_id.name]
@@ -1106,7 +1106,7 @@ class TestTrackingInternals(MailCommon):
                     'newValue': values[1],
                     'oldValue': values[0],
                 }
-                for tracking, field_info, values in zip(trackings_all_sorted, fields_info, values_info)
+                for tracking, field_info, values in zip(trackings_all_sorted, fields_info, values_info, strict=False)
             ]
         )
 
@@ -1135,6 +1135,6 @@ class TestTrackingInternals(MailCommon):
                     'newValue': values[1],
                     'oldValue': values[0],
                 }
-                for tracking, field_info, values in zip(trackings_all_sorted, fields_info, values_info)
+                for tracking, field_info, values in zip(trackings_all_sorted, fields_info, values_info, strict=False)
             ]
         )

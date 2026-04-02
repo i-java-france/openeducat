@@ -1,4 +1,4 @@
-import { renderToElement } from "@web/core/utils/render";
+import {renderToElement} from "@web/core/utils/render";
 import {
     addBackgroundGrid,
     getGridProperties,
@@ -95,16 +95,24 @@ export class BuilderOverlay {
         const targetRect = overlayTarget.getBoundingClientRect();
         const isMobile = this.isMobileView(overlayTarget);
         const iframeScaleX = isMobile ? iframeRect.width / this.iframe.offsetWidth : 1;
-        const iframeScaleY = isMobile ? iframeRect.height / this.iframe.offsetHeight : 1;
+        const iframeScaleY = isMobile
+            ? iframeRect.height / this.iframe.offsetHeight
+            : 1;
 
         Object.assign(this.overlayElement.style, {
             width: `${targetRect.width * iframeScaleX}px`,
             height: `${targetRect.height * iframeScaleY}px`,
             top: `${
-                iframeRect.y - overlayContainerRect.y + window.scrollY + targetRect.y * iframeScaleY
+                iframeRect.y -
+                overlayContainerRect.y +
+                window.scrollY +
+                targetRect.y * iframeScaleY
             }px`,
             left: `${
-                iframeRect.x - overlayContainerRect.x + window.scrollX + targetRect.x * iframeScaleX
+                iframeRect.x -
+                overlayContainerRect.x +
+                window.scrollX +
+                targetRect.x * iframeScaleX
             }px`,
         });
         this.handlesWrapperEl.style.height = `${targetRect.height * iframeScaleY}px`;
@@ -126,7 +134,10 @@ export class BuilderOverlay {
                 handleEl.classList.toggle("d-none", isGrid ^ isGridHandle);
                 // Disabling the vertical resize if we are in mobile view.
                 const isVerticalSizing = handleEl.matches(".n, .s");
-                handleEl.classList.toggle("readonly", isMobile && isVerticalSizing && isGridOn);
+                handleEl.classList.toggle(
+                    "readonly",
+                    isMobile && isVerticalSizing && isGridOn
+                );
             });
         }
 
@@ -198,7 +209,9 @@ export class BuilderOverlay {
             this.xHandles.forEach((handleEl) => handleEl.classList.remove("readonly"));
         }
         if (this.isResizableGrid()) {
-            this.gridHandles.forEach((handleEl) => handleEl.classList.remove("readonly"));
+            this.gridHandles.forEach((handleEl) =>
+                handleEl.classList.remove("readonly")
+            );
         }
     }
 
@@ -214,7 +227,10 @@ export class BuilderOverlay {
     }
 
     replaceSizingClass(classRegex, newClass) {
-        const newClassName = (this.overlayTarget.className || "").replace(classRegex, "");
+        const newClassName = (this.overlayTarget.className || "").replace(
+            classRegex,
+            ""
+        );
         this.overlayTarget.className = newClassName;
         this.overlayTarget.classList.add(newClass);
     }
@@ -232,8 +248,16 @@ export class BuilderOverlay {
         }
 
         return {
-            n: { classes: values.map((v) => nClass + v), values: values, cssProperty: nProperty },
-            s: { classes: values.map((v) => sClass + v), values: values, cssProperty: sProperty },
+            n: {
+                classes: values.map((v) => nClass + v),
+                values: values,
+                cssProperty: nProperty,
+            },
+            s: {
+                classes: values.map((v) => sClass + v),
+                values: values,
+                cssProperty: sProperty,
+            },
         };
     }
 
@@ -244,14 +268,18 @@ export class BuilderOverlay {
     updateHandleY() {
         this.yHandles.forEach((handleEl) => {
             const topOrBottom = handleEl.matches(".n") ? "top" : "bottom";
-            const padding = window.getComputedStyle(this.overlayTarget)[`padding-${topOrBottom}`];
+            const padding = window.getComputedStyle(this.overlayTarget)[
+                `padding-${topOrBottom}`
+            ];
             handleEl.style.height = padding; // TODO outerHeight (deduce borders ?)
         });
     }
 
     getSizingXConfig() {
         const resolutionModifier = this.isMobile ? "" : `${this.mobileBreakpoint}-`;
-        const rowWidth = this.overlayTarget.closest(".row").getBoundingClientRect().width;
+        const rowWidth = this.overlayTarget
+            .closest(".row")
+            .getBoundingClientRect().width;
         const valuesE = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         const valuesW = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
         return {
@@ -271,8 +299,12 @@ export class BuilderOverlay {
     onResizeX(compass, initialClasses, currentIndex) {
         const resolutionModifier = this.isMobile ? "" : `${this.mobileBreakpoint}-`;
         // (?!\S): following char cannot be a non-space character
-        const offsetRegex = new RegExp(`(?:^|\\s+)offset-${resolutionModifier}(\\d{1,2})(?!\\S)`);
-        const colRegex = new RegExp(`(?:^|\\s+)col-${resolutionModifier}(\\d{1,2})(?!\\S)`);
+        const offsetRegex = new RegExp(
+            `(?:^|\\s+)offset-${resolutionModifier}(\\d{1,2})(?!\\S)`
+        );
+        const colRegex = new RegExp(
+            `(?:^|\\s+)col-${resolutionModifier}(\\d{1,2})(?!\\S)`
+        );
 
         const initialOffset = Number(initialClasses.match(offsetRegex)?.[1] || 0);
 
@@ -280,7 +312,9 @@ export class BuilderOverlay {
             // Replacing the col class so the right border does not move when we
             // change the offset.
             const initialCol = Number(initialClasses.match(colRegex)?.[1] || 12);
-            let offset = Number(this.overlayTarget.className.match(offsetRegex)?.[1] || 0);
+            let offset = Number(
+                this.overlayTarget.className.match(offsetRegex)?.[1] || 0
+            );
             const offsetClass = `offset-${resolutionModifier}${offset}`;
 
             let colSize = initialCol - (offset - initialOffset);
@@ -291,23 +325,31 @@ export class BuilderOverlay {
             this.overlayTarget.classList.remove(offsetClass);
             this.replaceSizingClass(colRegex, `col-${resolutionModifier}${colSize}`);
             if (offset > 0) {
-                this.overlayTarget.classList.add(`offset-${resolutionModifier}${offset}`);
+                this.overlayTarget.classList.add(
+                    `offset-${resolutionModifier}${offset}`
+                );
             }
 
             // Add/remove the `offset-lg-0` class when needed.
             if (this.isMobile && offset === 0) {
-                this.overlayTarget.classList.remove(`offset-${this.mobileBreakpoint}-0`);
+                this.overlayTarget.classList.remove(
+                    `offset-${this.mobileBreakpoint}-0`
+                );
             } else {
                 const className = this.overlayTarget.className;
                 const hasDesktopClass = !!className.match(
-                    new RegExp(`(^|\\s+)offset-${this.mobileBreakpoint}-\\d{1,2}(?!\\S)`)
+                    new RegExp(
+                        `(^|\\s+)offset-${this.mobileBreakpoint}-\\d{1,2}(?!\\S)`
+                    )
                 );
                 const hasMobileClass = !!className.match(/(^|\s+)offset-\d{1,2}(?!\S)/);
                 if (
                     (this.isMobile && offset > 0 && !hasDesktopClass) ||
                     (!this.isMobile && offset === 0 && hasMobileClass)
                 ) {
-                    this.overlayTarget.classList.add(`offset-${this.mobileBreakpoint}-0`);
+                    this.overlayTarget.classList.add(
+                        `offset-${this.mobileBreakpoint}-0`
+                    );
                 }
             }
         } else if (initialOffset > 0) {
@@ -315,7 +357,10 @@ export class BuilderOverlay {
             // Avoid overflowing to the right if the column size + the offset
             // exceeds 12.
             if (col + initialOffset > 12) {
-                this.replaceSizingClass(colRegex, `col-${resolutionModifier}${12 - initialOffset}`);
+                this.replaceSizingClass(
+                    colRegex,
+                    `col-${resolutionModifier}${12 - initialOffset}`
+                );
             }
         }
     }
@@ -323,7 +368,7 @@ export class BuilderOverlay {
     getSizingGridConfig() {
         const rowEl = this.overlayTarget.closest(".row");
         const gridProp = getGridProperties(rowEl);
-        const { rowStart, rowEnd, columnStart, columnEnd } = getGridItemProperties(
+        const {rowStart, rowEnd, columnStart, columnEnd} = getGridItemProperties(
             this.overlayTarget
         );
 
@@ -339,22 +384,34 @@ export class BuilderOverlay {
         return {
             n: {
                 classes: valuesN.map((v) => "g-height-" + (rowEnd - v)),
-                values: valuesN.map((v) => (gridProp.rowSize + gridProp.rowGap) * (v - 1)),
+                values: valuesN.map(
+                    (v) => (gridProp.rowSize + gridProp.rowGap) * (v - 1)
+                ),
                 cssProperty: "grid-row-start",
             },
             s: {
                 classes: valuesS.map((v) => "g-height-" + (v - rowStart)),
-                values: valuesS.map((v) => (gridProp.rowSize + gridProp.rowGap) * (v - 1)),
+                values: valuesS.map(
+                    (v) => (gridProp.rowSize + gridProp.rowGap) * (v - 1)
+                ),
                 cssProperty: "grid-row-end",
             },
             w: {
-                classes: valuesW.map((v) => `g-col-${this.mobileBreakpoint}-` + (columnEnd - v)),
-                values: valuesW.map((v) => (gridProp.columnSize + gridProp.columnGap) * (v - 1)),
+                classes: valuesW.map(
+                    (v) => `g-col-${this.mobileBreakpoint}-` + (columnEnd - v)
+                ),
+                values: valuesW.map(
+                    (v) => (gridProp.columnSize + gridProp.columnGap) * (v - 1)
+                ),
                 cssProperty: "grid-column-start",
             },
             e: {
-                classes: valuesE.map((v) => `g-col-${this.mobileBreakpoint}-` + (v - columnStart)),
-                values: valuesE.map((v) => (gridProp.columnSize + gridProp.columnGap) * (v - 1)),
+                classes: valuesE.map(
+                    (v) => `g-col-${this.mobileBreakpoint}-` + (v - columnStart)
+                ),
+                values: valuesE.map(
+                    (v) => (gridProp.columnSize + gridProp.columnGap) * (v - 1)
+                ),
                 cssProperty: "grid-column-end",
             },
         };
@@ -414,7 +471,10 @@ export class BuilderOverlay {
 
         if (compass === "n" || compass === "s") {
             const numberRows = style.gridRowEnd - style.gridRowStart;
-            this.replaceSizingClass(/\s*(g-height-)([0-9-]+)/g, `g-height-${numberRows}`);
+            this.replaceSizingClass(
+                /\s*(g-height-)([0-9-]+)/g,
+                `g-height-${numberRows}`
+            );
         }
 
         if (compass === "w" || compass === "e") {
@@ -490,7 +550,11 @@ export class BuilderOverlay {
                 initialIndex: currentIndex,
                 initialClasses: this.overlayTarget.className,
                 classRegex: new RegExp(
-                    "\\s*" + config.classes[currentIndex].replace(/[-]*[0-9]+/, "[-]*[0-9]+"),
+                    "\\s*" +
+                        config.classes[currentIndex].replace(
+                            /[-]*[0-9]+/,
+                            "[-]*[0-9]+"
+                        ),
                     "g"
                 ),
                 initialPageXY: ev["page" + XY[i]],
@@ -509,7 +573,10 @@ export class BuilderOverlay {
         // Lock the mutex.
         let sizingResolve;
         const sizingProm = new Promise((resolve) => (sizingResolve = () => resolve()));
-        this.next(async () => await sizingProm, { withLoadingEffect: false, canTimeout: false });
+        this.next(async () => await sizingProm, {
+            withLoadingEffect: false,
+            canTimeout: false,
+        });
         const cancelSizing = this.history.makeSavePoint();
 
         const handleEl = ev.currentTarget;
@@ -576,7 +643,9 @@ export class BuilderOverlay {
                     const nextValue = configValues.findLast((v) => v < delta);
                     nextIndex = nextValue ? configValues.indexOf(nextValue) : 0;
                     beforeIndex =
-                        nextIndex < configValues.length - 1 ? nextIndex + 1 : currentIndex;
+                        nextIndex < configValues.length - 1
+                            ? nextIndex + 1
+                            : currentIndex;
                 }
 
                 let change = false;
@@ -584,7 +653,10 @@ export class BuilderOverlay {
                     // First, catch up with the pointer (in the case we moved
                     // really fast).
                     if (beforeIndex !== currentIndex) {
-                        this.replaceSizingClass(dir.classRegex, dir.config.classes[beforeIndex]);
+                        this.replaceSizingClass(
+                            dir.classRegex,
+                            dir.config.classes[beforeIndex]
+                        );
                         dir.currentIndex = beforeIndex;
                         change = true;
                     }
@@ -593,12 +665,16 @@ export class BuilderOverlay {
                     // the next step and the class is replaced by the one
                     // matching this step.
                     const threshold =
-                        (2 * configValues[nextIndex] + configValues[dir.currentIndex]) / 3;
+                        (2 * configValues[nextIndex] + configValues[dir.currentIndex]) /
+                        3;
                     if (
                         (delta > currentValue && delta > threshold) ||
                         (delta < currentValue && delta < threshold)
                     ) {
-                        this.replaceSizingClass(dir.classRegex, dir.config.classes[nextIndex]);
+                        this.replaceSizingClass(
+                            dir.classRegex,
+                            dir.config.classes[nextIndex]
+                        );
                         dir.currentIndex = nextIndex;
                         change = true;
                     }
@@ -626,15 +702,21 @@ export class BuilderOverlay {
                 backgroundGridEl.remove();
                 resizeGrid(rowEl);
 
-                const colClass = [...this.overlayTarget.classList].find((c) => /^col-/.test(c));
-                const gColClass = [...this.overlayTarget.classList].find((c) => /^g-col-/.test(c));
+                const colClass = [...this.overlayTarget.classList].find((c) =>
+                    /^col-/.test(c)
+                );
+                const gColClass = [...this.overlayTarget.classList].find((c) =>
+                    /^g-col-/.test(c)
+                );
                 this.overlayTarget.classList.remove(colClass);
                 this.overlayTarget.classList.add(gColClass.substring(2));
             }
 
             // Cancel the sizing if the element was not resized (to not have
             // mutations).
-            const wasResized = !directions.every((dir) => dir.initialIndex === dir.currentIndex);
+            const wasResized = !directions.every(
+                (dir) => dir.initialIndex === dir.currentIndex
+            );
             if (wasResized) {
                 this.history.addStep();
             } else {
@@ -652,10 +734,11 @@ export class BuilderOverlay {
                 const pointerDownDuration = pointerUpTime - pointerDownTime;
                 if (pointerDownDuration < 500) {
                     // Find the first element behind the overlay.
-                    const sameCoordinatesEls = this.overlayTarget.ownerDocument.elementsFromPoint(
-                        ev.pageX,
-                        ev.pageY
-                    );
+                    const sameCoordinatesEls =
+                        this.overlayTarget.ownerDocument.elementsFromPoint(
+                            ev.pageX,
+                            ev.pageY
+                        );
                     // Check if it has native JS `click` function
                     const toBeClickedEl = sameCoordinatesEls.find(
                         (el) =>

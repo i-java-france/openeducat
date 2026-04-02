@@ -1,6 +1,6 @@
-import { Component } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
+import {Component} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
 
 /**
  * @typedef {Object} Props
@@ -21,7 +21,7 @@ export const connectionAlertService = {
     start() {
         registry
             .category("main_components")
-            .add("bus.ConnectionAlert", { Component: BusConnectionAlert });
+            .add("bus.ConnectionAlert", {Component: BusConnectionAlert});
     },
 };
 registry.category("services").add("bus.connection_alert", connectionAlertService);

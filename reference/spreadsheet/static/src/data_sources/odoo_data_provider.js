@@ -1,5 +1,5 @@
-import { EventBus } from "@odoo/owl";
-import { ServerData } from "./server_data";
+import {EventBus} from "@odoo/owl";
+import {ServerData} from "./server_data";
 
 export class OdooDataProvider extends EventBus {
     constructor(env) {

@@ -1,8 +1,8 @@
 import json
-
 from contextlib import contextmanager
-from lxml import etree
 from unittest.mock import patch
+
+from lxml import etree
 
 from odoo.http import request
 from odoo.tests import tagged

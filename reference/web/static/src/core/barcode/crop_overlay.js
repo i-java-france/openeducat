@@ -1,7 +1,7 @@
-import { Component, useRef, onPatched } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
-import { isIOS } from "@web/core/browser/feature_detection";
-import { clamp } from "@web/core/utils/numbers";
+import {Component, useRef, onPatched} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
+import {isIOS} from "@web/core/browser/feature_detection";
+import {clamp} from "@web/core/utils/numbers";
 
 export class CropOverlay extends Component {
     static template = "web.CropOverlay";
@@ -43,8 +43,16 @@ export class CropOverlay extends Component {
 
     boundPoint(pointValue, boundaryRect) {
         return {
-            x: clamp(pointValue.x, boundaryRect.left, boundaryRect.left + boundaryRect.width),
-            y: clamp(pointValue.y, boundaryRect.top, boundaryRect.top + boundaryRect.height),
+            x: clamp(
+                pointValue.x,
+                boundaryRect.left,
+                boundaryRect.left + boundaryRect.width
+            ),
+            y: clamp(
+                pointValue.y,
+                boundaryRect.top,
+                boundaryRect.top + boundaryRect.height
+            ),
         };
     }
 
@@ -57,13 +65,20 @@ export class CropOverlay extends Component {
     }
 
     computeOverlayPosition() {
-        const cropOverlayElement = this.cropContainerRef.el.querySelector(".o_crop_overlay");
+        const cropOverlayElement =
+            this.cropContainerRef.el.querySelector(".o_crop_overlay");
         this.boundaryOverlay = cropOverlayElement.getBoundingClientRect();
     }
 
     executeOnResizeCallback() {
-        const transparentRec = this.getTransparentRec(this.relativePosition, this.boundaryOverlay);
-        browser.localStorage.setItem(this.localStorageKey, JSON.stringify(transparentRec));
+        const transparentRec = this.getTransparentRec(
+            this.relativePosition,
+            this.boundaryOverlay
+        );
+        browser.localStorage.setItem(
+            this.localStorageKey,
+            JSON.stringify(transparentRec)
+        );
         this.props.onResize({
             ...transparentRec,
             width: this.boundaryOverlay.width - 2 * transparentRec.x,
@@ -72,7 +87,9 @@ export class CropOverlay extends Component {
     }
 
     computeDefaultPoint() {
-        const firstChildComputedStyle = getComputedStyle(this.cropContainerRef.el.firstChild);
+        const firstChildComputedStyle = getComputedStyle(
+            this.cropContainerRef.el.firstChild
+        );
         const elementWidth = firstChildComputedStyle.width.slice(0, -2);
         const elementHeight = firstChildComputedStyle.height.slice(0, -2);
 
@@ -111,8 +128,14 @@ export class CropOverlay extends Component {
         }
         this.cropContainerRef.el.style.setProperty("--o-crop-x", `${point.x}px`);
         this.cropContainerRef.el.style.setProperty("--o-crop-y", `${point.y}px`);
-        this.cropContainerRef.el.style.setProperty("--o-crop-icon-x", `${iconPoint.x}px`);
-        this.cropContainerRef.el.style.setProperty("--o-crop-icon-y", `${iconPoint.y}px`);
+        this.cropContainerRef.el.style.setProperty(
+            "--o-crop-icon-x",
+            `${iconPoint.x}px`
+        );
+        this.cropContainerRef.el.style.setProperty(
+            "--o-crop-icon-y",
+            `${iconPoint.y}px`
+        );
     }
 
     pointerDown(event) {
@@ -136,7 +159,7 @@ export class CropOverlay extends Component {
         } else {
             eventPosition = event;
         }
-        const { clientX, clientY } = eventPosition;
+        const {clientX, clientY} = eventPosition;
         const restrictedPosition = this.boundPoint(
             {
                 x: clientX,

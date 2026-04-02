@@ -2,12 +2,12 @@ import {
     BUTTON_HANDLER_SELECTOR,
     makeAsyncHandler,
     makeButtonHandler,
-} from '@web/legacy/js/public/minimal_dom';
+} from "@web/legacy/js/public/minimal_dom";
 
 // Track when all JS files have been lazy loaded. Will allow to unblock the
 // related DOM sections when the whole JS have been loaded and executed.
 let allScriptsLoadedResolve = null;
-const _allScriptsLoaded = new Promise(resolve => {
+const _allScriptsLoaded = new Promise((resolve) => {
     allScriptsLoadedResolve = resolve;
 }).then(stopWaitingLazy);
 
@@ -73,14 +73,14 @@ function waitLazy() {
     }
     waitingLazy = true;
 
-    document.body.classList.add('o_lazy_js_waiting');
+    document.body.classList.add("o_lazy_js_waiting");
 
     // TODO should probably find the wrapwrap another way but in future versions
     // the element will be gone anyway.
-    const mainEl = document.getElementById('wrapwrap') || document.body;
+    const mainEl = document.getElementById("wrapwrap") || document.body;
     const loadingEffectButtonEls = [...mainEl.querySelectorAll(BUTTON_HANDLER_SELECTOR)]
         // We target all buttons but...
-        .filter(el => {
+        .filter((el) => {
             // ... we allow to disable the effect by adding a specific class if
             // needed. Note that if some non-lazy loaded code is adding an event
             // handler on some buttons, it means that if they do not have that
@@ -89,27 +89,38 @@ function waitLazy() {
             // this was added as a stable fix/imp, but this is a compromise: on
             // next page visits, the cache should limit to effect of the lazy
             // loading anyway.
-            return !el.classList.contains('o_no_wait_lazy_js')
+            return (
+                !el.classList.contains("o_no_wait_lazy_js") &&
                 // ... we also allow do not consider links with a href which is
                 // not "#". They could be linked to handlers that prevent their
                 // default behavior but we consider that following the link
                 // should still be relevant in that case.
-                && !(el.nodeName === 'A' && el.href && el.getAttribute('href') !== '#');
+                !(el.nodeName === "A" && el.href && el.getAttribute("href") !== "#")
+            );
         });
     // Note: this is a limitation/a "risk" to only block and retrigger those
     // specific event types.
-    const loadingEffectEventTypes = ['mouseover', 'mouseenter', 'mousedown', 'mouseup', 'click', 'mouseout', 'mouseleave'];
+    const loadingEffectEventTypes = [
+        "mouseover",
+        "mouseenter",
+        "mousedown",
+        "mouseup",
+        "click",
+        "mouseout",
+        "mouseleave",
+    ];
     for (const buttonEl of loadingEffectButtonEls) {
         for (const eventType of loadingEffectEventTypes) {
-            const loadingEffectHandler = eventType === 'click'
-                ? makeButtonHandler(waitForLazyAndRetrigger, true, true, true)
-                : makeAsyncHandler(waitForLazyAndRetrigger, true, true, true);
+            const loadingEffectHandler =
+                eventType === "click"
+                    ? makeButtonHandler(waitForLazyAndRetrigger, true, true, true)
+                    : makeAsyncHandler(waitForLazyAndRetrigger, true, true, true);
             registerLoadingEffectHandler(buttonEl, eventType, loadingEffectHandler);
         }
     }
 
-    for (const formEl of document.querySelectorAll('form:not(.o_no_wait_lazy_js)')) {
-        registerLoadingEffectHandler(formEl, 'submit', ev => {
+    for (const formEl of document.querySelectorAll("form:not(.o_no_wait_lazy_js)")) {
+        registerLoadingEffectHandler(formEl, "submit", (ev) => {
             ev.preventDefault();
             ev.stopImmediatePropagation();
         });
@@ -124,27 +135,27 @@ function stopWaitingLazy() {
     }
     waitingLazy = false;
 
-    document.body.classList.remove('o_lazy_js_waiting');
+    document.body.classList.remove("o_lazy_js_waiting");
 
-    for (const { el, type, handler } of loadingEffectHandlers) {
+    for (const {el, type, handler} of loadingEffectHandlers) {
         el.removeEventListener(type, handler, {capture: true});
     }
 }
 
 // Start waiting for lazy loading as soon as the DOM is available
-if (document.readyState !== 'loading') {
+if (document.readyState !== "loading") {
     waitLazy();
 } else {
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener("DOMContentLoaded", function () {
         waitLazy();
     });
 }
 
 // As soon as the document is fully loaded, start loading the whole remaining JS
-if (document.readyState === 'complete') {
+if (document.readyState === "complete") {
     setTimeout(_loadScripts, 0);
 } else {
-    window.addEventListener('load', function () {
+    window.addEventListener("load", function () {
         setTimeout(_loadScripts, 0);
     });
 }
@@ -155,7 +166,7 @@ if (document.readyState === 'complete') {
  */
 function _loadScripts(scripts, index) {
     if (scripts === undefined) {
-        scripts = document.querySelectorAll('script[data-src]');
+        scripts = document.querySelectorAll("script[data-src]");
     }
     if (index === undefined) {
         index = 0;
@@ -165,14 +176,16 @@ function _loadScripts(scripts, index) {
         return;
     }
     const script = scripts[index];
-    script.addEventListener('load', _loadScripts.bind(this, scripts, index + 1));
-    script.setAttribute('defer', 'defer'); // See LAZY_LOAD_DEFER
+    script.addEventListener("load", _loadScripts.bind(this, scripts, index + 1));
+    script.setAttribute("defer", "defer"); // See LAZY_LOAD_DEFER
     script.src = script.dataset.src;
-    script.removeAttribute('data-src');
+    script.removeAttribute("data-src");
 }
 
 export default {
     loadScripts: _loadScripts,
     allScriptsLoaded: _allScriptsLoaded,
-    registerPageReadinessDelay: retriggeringWaitingProms.push.bind(retriggeringWaitingProms),
+    registerPageReadinessDelay: retriggeringWaitingProms.push.bind(
+        retriggeringWaitingProms
+    ),
 };

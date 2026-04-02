@@ -1,9 +1,9 @@
-# coding: utf-8
 import json
 from base64 import b64decode
 
 from odoo import Command
 from odoo.tests import tagged
+
 from odoo.addons.account_edi.tests.common import AccountEdiTestCommon
 
 

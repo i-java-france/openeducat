@@ -1,15 +1,15 @@
-import { Component, onWillStart, useState } from "@odoo/owl";
-import { KeepLast } from "@web/core/utils/concurrency";
-import { SelectMenu } from "@web/core/select_menu/select_menu";
-import { useService } from "@web/core/utils/hooks";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+import {Component, onWillStart, useState} from "@odoo/owl";
+import {KeepLast} from "@web/core/utils/concurrency";
+import {SelectMenu} from "@web/core/select_menu/select_menu";
+import {useService} from "@web/core/utils/hooks";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 
 export class WebsiteLinksTagsWrapper extends Component {
     static template = "website_links.WebsiteLinksTagsWrapper";
-    static components = { SelectMenu, DropdownItem };
+    static components = {SelectMenu, DropdownItem};
     static props = {
-        placeholder: { optional: true, type: String },
-        model: { optional: true, type: String },
+        placeholder: {optional: true, type: String},
+        model: {optional: true, type: String},
     };
 
     setup() {
@@ -21,10 +21,11 @@ export class WebsiteLinksTagsWrapper extends Component {
             value: undefined,
         });
         onWillStart(async () => {
-            this.canCreateLinkTracker = await this.orm.call(this.props.model, "has_access", [
-                [],
-                "create",
-            ]);
+            this.canCreateLinkTracker = await this.orm.call(
+                this.props.model,
+                "has_access",
+                [[], "create"]
+            );
             await this.loadChoice();
         });
     }
@@ -107,7 +108,9 @@ export class WebsiteLinksTagsWrapper extends Component {
                     // ensure that we do not display "ending matches" if
                     // we may not have loaded all "starting matches".
                     if (startingMatches.length < limit) {
-                        const startingMatchesId = startingMatches.map((value) => value.id);
+                        const startingMatchesId = startingMatches.map(
+                            (value) => value.id
+                        );
                         const extraEndingMatches = endingMatches.filter(
                             (value) => !startingMatchesId.includes(value.id)
                         );

@@ -1,9 +1,9 @@
-import { CopyButton } from "@web/core/copy_button/copy_button";
-import { browser } from "@web/core/browser/browser";
-import { mountWithCleanup, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { click } from "@odoo/hoot-dom";
-import { Component, xml } from "@odoo/owl";
+import {CopyButton} from "@web/core/copy_button/copy_button";
+import {browser} from "@web/core/browser/browser";
+import {mountWithCleanup, patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {click} from "@odoo/hoot-dom";
+import {Component, xml} from "@odoo/owl";
 
 beforeEach(() => {
     patchWithCleanup(browser.navigator.clipboard, {
@@ -21,13 +21,13 @@ beforeEach(() => {
 });
 
 test("copies a string to the clipboard", async () => {
-    await mountWithCleanup(CopyButton, { props: { content: "content to copy" } });
+    await mountWithCleanup(CopyButton, {props: {content: "content to copy"}});
     await click(".o_clipboard_button");
     expect.verifySteps(["writeText: content to copy"]);
 });
 
 test("copies an object to the clipboard", async () => {
-    await mountWithCleanup(CopyButton, { props: { content: { oneKey: "oneValue" } } });
+    await mountWithCleanup(CopyButton, {props: {content: {oneKey: "oneValue"}}});
     await click(".o_clipboard_button");
     expect.verifySteps(["write: {oneKey: oneValue}"]);
 });
@@ -35,7 +35,7 @@ test("copies an object to the clipboard", async () => {
 test("does not submit forms", async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { CopyButton };
+        static components = {CopyButton};
         static template = xml`
                 <form t-on-submit="this.onSubmit">
                     <CopyButton content="'some text'"/>

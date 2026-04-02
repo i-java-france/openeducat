@@ -1,5 +1,5 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { expect, test } from "@odoo/hoot";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {expect, test} from "@odoo/hoot";
 import {
     contains,
     defineModels,
@@ -17,7 +17,7 @@ class CRMTeam extends models.Model {
     invoiced = fields.Integer();
     invoiced_target = fields.Integer();
 
-    _records = [{ id: 1, foo: "yop", invoiced: 0, invoiced_target: 0 }];
+    _records = [{id: 1, foo: "yop", invoiced: 0, invoiced_target: 0}];
 }
 
 defineModels([CRMTeam]);
@@ -33,14 +33,14 @@ test("edit progressbar target", async () => {
                     type: "ir.actions.act_window",
                     method: "get_formview_action",
                 },
-                { message: "should trigger do_action with the correct args" }
+                {message: "should trigger do_action with the correct args"}
             );
             expect.step("doAction");
             return true;
         },
     });
 
-    onRpc("crm.team", "get_formview_action", ({ method, model }) => ({
+    onRpc("crm.team", "get_formview_action", ({method, model}) => ({
         method,
         res_model: model,
         target: "current",
@@ -67,6 +67,6 @@ test("edit progressbar target", async () => {
     ).toHaveCount(1);
     expect(".o_progressbar input").toHaveCount(0);
 
-    await contains(".sale_progressbar_form_link").click(); // should trigger a do_action
+    await contains(".sale_progressbar_form_link").click(); // Should trigger a do_action
     expect.verifySteps(["doAction"]);
 });

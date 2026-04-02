@@ -1,14 +1,14 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from unittest.mock import patch
 
 from odoo import Command
+from odoo.tests import tagged
+from odoo.tests.common import HttpCase
+
 from odoo.addons.base.models.ir_mail_server import IrMail_Server
 from odoo.addons.mail.tests.common import MockEmail
 from odoo.addons.survey.tests import common
-from odoo.tests import tagged
-from odoo.tests.common import HttpCase
 
 
 @tagged('-at_install', 'post_install', 'functional', 'is_query_count')

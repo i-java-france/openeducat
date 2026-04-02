@@ -1,6 +1,6 @@
-import { describe, test } from "@odoo/hoot";
-import { testEditor } from "../_helpers/editor";
-import { insertLineBreak } from "../_helpers/user_actions";
+import {describe, test} from "@odoo/hoot";
+import {testEditor} from "../_helpers/editor";
+import {insertLineBreak} from "../_helpers/user_actions";
 
 describe("Selection collapsed", () => {
     describe("Basic", () => {
@@ -145,7 +145,7 @@ describe("Selection collapsed", () => {
                     await insertLineBreak(editor);
                     await insertLineBreak(editor);
                 },
-                // the last <br> is needed to make the first one
+                // The last <br> is needed to make the first one
                 // visible.
                 contentAfter: "<p>abc<br><br>[]<br></p>",
             });
@@ -403,7 +403,7 @@ describe("Selection not collapsed", () => {
         await testEditor({
             contentBefore: "<p>ab[cd]</p>",
             stepFunction: insertLineBreak,
-            // the second <br> is needed to make the first one
+            // The second <br> is needed to make the first one
             // visible.
             contentAfter: "<p>ab<br>[]<br></p>",
         });
@@ -414,7 +414,7 @@ describe("Selection not collapsed", () => {
         await testEditor({
             contentBefore: "<p>ab]cd[</p>",
             stepFunction: insertLineBreak,
-            // the second <br> is needed to make the first one
+            // The second <br> is needed to make the first one
             // visible.
             contentAfter: "<p>ab<br>[]<br></p>",
         });

@@ -1,7 +1,7 @@
-import { patch } from "@web/core/utils/patch";
-import { PosStore } from "@point_of_sale/app/services/pos_store";
-import { logPosMessage } from "@point_of_sale/app/utils/pretty_console_log";
-import { IminPrinterAdapter } from "@pos_imin/app/utils/imin_printer";
+import {patch} from "@web/core/utils/patch";
+import {PosStore} from "@point_of_sale/app/services/pos_store";
+import {logPosMessage} from "@point_of_sale/app/utils/pretty_console_log";
+import {IminPrinterAdapter} from "@pos_imin/app/utils/imin_printer";
 
 const CONSOLE_COLOR = "#28ffeb";
 

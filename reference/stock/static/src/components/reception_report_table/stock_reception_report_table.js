@@ -1,6 +1,6 @@
-import { useService } from "@web/core/utils/hooks";
-import { ReceptionReportLine } from "../reception_report_line/stock_reception_report_line";
-import { Component } from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {ReceptionReportLine} from "../reception_report_line/stock_reception_report_line";
+import {Component} from "@odoo/owl";
 
 export class ReceptionReportTable extends Component {
     static template = "stock.ReceptionReportTable";
@@ -9,7 +9,7 @@ export class ReceptionReportTable extends Component {
     };
     static props = {
         index: String,
-        scheduledDate: { type: String, optional: true },
+        scheduledDate: {type: String, optional: true},
         lines: Array,
         source: Array,
         labelReport: Object,
@@ -35,12 +35,16 @@ export class ReceptionReportTable extends Component {
             inIds.push(line.move_ins);
         }
 
-        await this.ormService.call(
-            "report.stock.report_reception",
-            "action_assign",
-            [false, moveIds, quantities, inIds],
-        );
-        this.env.bus.trigger("update-assign-state", { isAssigned: true, tableIndex: this.props.index });
+        await this.ormService.call("report.stock.report_reception", "action_assign", [
+            false,
+            moveIds,
+            quantities,
+            inIds,
+        ]);
+        this.env.bus.trigger("update-assign-state", {
+            isAssigned: true,
+            tableIndex: this.props.index,
+        });
     }
 
     async onClickLink(resModel, resId, viewType) {
@@ -67,26 +71,28 @@ export class ReceptionReportTable extends Component {
 
         return this.actionService.doAction({
             ...this.props.labelReport,
-            context: { active_ids: modelIds },
-            data: { docids: modelIds, quantity: quantities.join(",") },
+            context: {active_ids: modelIds},
+            data: {docids: modelIds, quantity: quantities.join(",")},
         });
     }
 
     //---- Getters ----
 
     get hasMovesIn() {
-        return this.props.lines.some(line => line.move_ins && line.move_ins.length > 0);
+        return this.props.lines.some(
+            (line) => line.move_ins && line.move_ins.length > 0
+        );
     }
 
     get hasAssignAllButton() {
-        return this.props.lines.some(line => line.is_qty_assignable);
+        return this.props.lines.some((line) => line.is_qty_assignable);
     }
 
     get isAssignAllDisabled() {
-        return this.props.lines.every(line => line.is_assigned);
+        return this.props.lines.every((line) => line.is_assigned);
     }
 
     get isPrintLabelDisabled() {
-        return this.props.lines.every(line => !line.is_assigned);
+        return this.props.lines.every((line) => !line.is_assigned);
     }
 }

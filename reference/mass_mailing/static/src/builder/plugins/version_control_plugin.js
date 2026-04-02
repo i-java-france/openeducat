@@ -1,11 +1,15 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 export class VersionControlPlugin extends Plugin {
     static id = "versionControl";
     static dependencies = ["builderOptions"];
     accessPerOutdatedEl = new WeakMap();
-    static shared = ["hasAccessToOutdatedEl", "giveAccessToOutdatedEl", "replaceWithNewVersion"];
+    static shared = [
+        "hasAccessToOutdatedEl",
+        "giveAccessToOutdatedEl",
+        "replaceWithNewVersion",
+    ];
 
     hasAccessToOutdatedEl(el) {
         if (!el.dataset.snippet) {
@@ -18,8 +22,8 @@ export class VersionControlPlugin extends Plugin {
         const snippet = this.config.snippetModel.getOriginalSnippet(snippetKey);
         let isUpToDate = true;
         if (snippet) {
-            const { vxml: originalVxml } = snippet.content.dataset;
-            const { vxml: elVxml } = el.dataset;
+            const {vxml: originalVxml} = snippet.content.dataset;
+            const {vxml: elVxml} = el.dataset;
             isUpToDate = originalVxml === elVxml;
         }
         this.accessPerOutdatedEl.set(el, isUpToDate);
@@ -38,4 +42,6 @@ export class VersionControlPlugin extends Plugin {
     }
 }
 
-registry.category("mass_mailing-plugins").add(VersionControlPlugin.id, VersionControlPlugin);
+registry
+    .category("mass_mailing-plugins")
+    .add(VersionControlPlugin.id, VersionControlPlugin);

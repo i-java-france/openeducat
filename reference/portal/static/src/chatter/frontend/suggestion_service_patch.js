@@ -1,6 +1,6 @@
-import { SuggestionService } from "@mail/core/common/suggestion_service";
+import {SuggestionService} from "@mail/core/common/suggestion_service";
 
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {SuggestionService} */
 const suggestionServicePatch = {

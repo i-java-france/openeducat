@@ -1,5 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from datetime import date, datetime, timedelta
+
 from dateutil.relativedelta import relativedelta
 
 from odoo import Command
@@ -10,7 +11,7 @@ from odoo.tests import Form, TransactionCase
 class TestInventory(TransactionCase):
     @classmethod
     def setUpClass(cls):
-        super(TestInventory, cls).setUpClass()
+        super().setUpClass()
         cls.stock_location = cls.env.ref('stock.stock_location_stock')
         cls.pack_location = cls.env.ref('stock.location_pack_zone')
         cls.pack_location.active = True

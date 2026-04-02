@@ -1,8 +1,9 @@
-from odoo.addons.sms_twilio.tests.common import MockSmsTwilio
-from odoo.addons.sms_twilio.tools import sms_twilio as twilio_tools
-from odoo.tools import mute_logger
 from odoo.tests import tagged, users
 from odoo.tests.common import HttpCase
+from odoo.tools import mute_logger
+
+from odoo.addons.sms_twilio.tests.common import MockSmsTwilio
+from odoo.addons.sms_twilio.tools import sms_twilio as twilio_tools
 
 
 @tagged('post_install', '-at_install', 'twilio', 'twilio_controller')

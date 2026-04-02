@@ -1,13 +1,13 @@
-import { Component, xml } from "@odoo/owl";
-import { Dialog } from "@web/core/dialog/dialog";
-import { generateQRCodeDataUrl } from "@point_of_sale/utils";
-import { CopyButton } from "@web/core/copy_button/copy_button";
-import { useService } from "@web/core/utils/hooks";
-import { _t } from "@web/core/l10n/translation";
+import {Component, xml} from "@odoo/owl";
+import {Dialog} from "@web/core/dialog/dialog";
+import {generateQRCodeDataUrl} from "@point_of_sale/utils";
+import {CopyButton} from "@web/core/copy_button/copy_button";
+import {useService} from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
 
 export class QrCodeCustomerDisplay extends Component {
     static template = "point_of_sale.QrCodeCustomerDisplay";
-    static components = { Dialog, CopyButton };
+    static components = {Dialog, CopyButton};
     static props = ["close", "customerDisplayURL"];
 
     setup() {
@@ -40,7 +40,7 @@ export class QrCodeCustomerDisplay extends Component {
 
 class QrDialog extends Component {
     static props = ["close", "qrData", "parentClose"];
-    static components = { Dialog };
+    static components = {Dialog};
     static template = xml`
         <Dialog header="false" footer="false" size="'sm'">
             <div class="d-flex flex-column align-items-center">

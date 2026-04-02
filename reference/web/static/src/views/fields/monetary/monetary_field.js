@@ -1,24 +1,24 @@
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { formatMonetary } from "../formatters";
-import { parseMonetary } from "../parsers";
-import { useInputField } from "../input_field_hook";
-import { useNumpadDecimal } from "../numpad_decimal_hook";
-import { standardFieldProps } from "../standard_field_props";
-import { nbsp } from "@web/core/utils/strings";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {formatMonetary} from "../formatters";
+import {parseMonetary} from "../parsers";
+import {useInputField} from "../input_field_hook";
+import {useNumpadDecimal} from "../numpad_decimal_hook";
+import {standardFieldProps} from "../standard_field_props";
+import {nbsp} from "@web/core/utils/strings";
 
-import { Component, useState, useEffect } from "@odoo/owl";
-import { getCurrency } from "@web/core/currency";
+import {Component, useState, useEffect} from "@odoo/owl";
+import {getCurrency} from "@web/core/currency";
 
 export class MonetaryField extends Component {
     static template = "web.MonetaryField";
     static props = {
         ...standardFieldProps,
-        currencyField: { type: String, optional: true },
-        inputType: { type: String, optional: true },
-        useFieldDigits: { type: Boolean, optional: true },
-        hideSymbol: { type: Boolean, optional: true },
-        trailingZeros: { type: Boolean, optional: true },
+        currencyField: {type: String, optional: true},
+        inputType: {type: String, optional: true},
+        useFieldDigits: {type: Boolean, optional: true},
+        hideSymbol: {type: Boolean, optional: true},
+        trailingZeros: {type: Boolean, optional: true},
     };
     static defaultProps = {
         hideSymbol: false,
@@ -28,7 +28,7 @@ export class MonetaryField extends Component {
 
     setup() {
         this.inputRef = useInputField(this.inputOptions);
-        this.state = useState({ value: undefined });
+        this.state = useState({value: undefined});
         this.nbsp = nbsp;
         useNumpadDecimal();
         useEffect(() => {
@@ -42,7 +42,7 @@ export class MonetaryField extends Component {
         return {
             getValue: () => this.formattedValue,
             refName: "numpadDecimal",
-            parse: (v) => parseMonetary(v, { allowOperation: true }),
+            parse: (v) => parseMonetary(v, {allowOperation: true}),
         };
     }
 
@@ -85,7 +85,9 @@ export class MonetaryField extends Component {
         }
         return formatMonetary(this.value, {
             digits: this.currencyDigits,
-            minDigits: this.props.useFieldDigits && this.props.record.fields[this.props.name].min_display_digits,
+            minDigits:
+                this.props.useFieldDigits &&
+                this.props.record.fields[this.props.name].min_display_digits,
             currencyId: this.currencyId,
             noSymbol: !this.props.readonly || this.props.hideSymbol,
             trailingZeros: this.props.trailingZeros,
@@ -115,13 +117,15 @@ export const monetaryField = {
             label: _t("Hide trailing zeros"),
             name: "hide_trailing_zeros",
             type: "boolean",
-            help: _t("Hide zeros to the right of the last non-zero digit, e.g. 1.20 becomes 1.2"),
+            help: _t(
+                "Hide zeros to the right of the last non-zero digit, e.g. 1.20 becomes 1.2"
+            ),
         },
     ],
     supportedTypes: ["monetary", "float", "integer"],
     displayName: _t("Monetary"),
     isEmpty: (record, fieldName) => record.data[fieldName] === false,
-    extractProps: ({ attrs, options }) => ({
+    extractProps: ({attrs, options}) => ({
         currencyField: options.currency_field,
         inputType: attrs.type,
         useFieldDigits: options.field_digits,

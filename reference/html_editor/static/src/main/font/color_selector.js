@@ -1,31 +1,31 @@
-import { isColorGradient } from "@web/core/utils/colors";
-import { Component, useState } from "@odoo/owl";
+import {isColorGradient} from "@web/core/utils/colors";
+import {Component, useState} from "@odoo/owl";
 import {
     useColorPicker,
     DEFAULT_COLORS,
     DEFAULT_THEME_COLOR_VARS,
 } from "@web/core/color_picker/color_picker";
-import { effect } from "@web/core/utils/reactive";
-import { toolbarButtonProps } from "../toolbar/toolbar";
-import { getCSSVariableValue, getHtmlStyle } from "@html_editor/utils/formatting";
-import { useChildRef } from "@web/core/utils/hooks";
-import { useDropdownAutoVisibility } from "@html_editor/dropdown_autovisibility_hook";
+import {effect} from "@web/core/utils/reactive";
+import {toolbarButtonProps} from "../toolbar/toolbar";
+import {getCSSVariableValue, getHtmlStyle} from "@html_editor/utils/formatting";
+import {useChildRef} from "@web/core/utils/hooks";
+import {useDropdownAutoVisibility} from "@html_editor/dropdown_autovisibility_hook";
 
 export class ColorSelector extends Component {
     static template = "html_editor.ColorSelector";
     static props = {
         ...toolbarButtonProps,
-        mode: { type: String },
-        type: { type: String },
+        mode: {type: String},
+        type: {type: String},
         getSelectedColors: Function,
         applyColor: Function,
         applyColorPreview: Function,
         applyColorResetPreview: Function,
         getUsedCustomColors: Function,
         getTargetedElements: Function,
-        colorPrefix: { type: String },
-        enabledTabs: { type: Array, optional: true },
-        cssVarColorPrefix: { type: String, optional: true },
+        colorPrefix: {type: String},
+        enabledTabs: {type: Array, optional: true},
+        cssVarColorPrefix: {type: String, optional: true},
         onClose: Function,
     };
     static defaultProps = {

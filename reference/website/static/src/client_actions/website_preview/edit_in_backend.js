@@ -1,6 +1,6 @@
-import { registry } from "@web/core/registry";
-import { useService, useBus } from "@web/core/utils/hooks";
-import { Component, onWillStart, useState } from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {useService, useBus} from "@web/core/utils/hooks";
+import {Component, onWillStart, useState} from "@odoo/owl";
 
 const websiteSystrayRegistry = registry.category("website_systray");
 
@@ -10,7 +10,7 @@ export class EditInBackendSystrayItem extends Component {
     setup() {
         this.websiteService = useService("website");
         this.actionService = useService("action");
-        this.state = useState({ mainObjectName: "" });
+        this.state = useState({mainObjectName: ""});
 
         onWillStart(this._updateMainObjectName);
         useBus(websiteSystrayRegistry, "CONTENT-UPDATED", this._updateMainObjectName);
@@ -18,7 +18,7 @@ export class EditInBackendSystrayItem extends Component {
 
     editInBackend() {
         const {
-            metadata: { mainObject },
+            metadata: {mainObject},
         } = this.websiteService.currentWebsite;
         this.actionService.doAction({
             res_model: mainObject.model,

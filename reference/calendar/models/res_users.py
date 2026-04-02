@@ -2,10 +2,10 @@
 
 import datetime
 
-from odoo import api, fields, models, modules, _
-from odoo.exceptions import AccessError
+from pytz import UTC, timezone
 
-from pytz import timezone, UTC
+from odoo import _, api, fields, models, modules
+from odoo.exceptions import AccessError
 
 
 class ResUsers(models.Model):

@@ -1,17 +1,17 @@
-import { Plugin } from "@html_editor/plugin";
-import { closestBlock } from "@html_editor/utils/blocks";
-import { isVisibleTextNode } from "@html_editor/utils/dom_info";
-import { _t } from "@web/core/l10n/translation";
-import { AlignSelector } from "./align_selector";
-import { reactive } from "@odoo/owl";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
-import { weakMemoize } from "@html_editor/utils/functions";
+import {Plugin} from "@html_editor/plugin";
+import {closestBlock} from "@html_editor/utils/blocks";
+import {isVisibleTextNode} from "@html_editor/utils/dom_info";
+import {_t} from "@web/core/l10n/translation";
+import {AlignSelector} from "./align_selector";
+import {reactive} from "@odoo/owl";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
+import {weakMemoize} from "@html_editor/utils/functions";
 
 const alignmentItems = [
-    { mode: "left" },
-    { mode: "center" },
-    { mode: "right" },
-    { mode: "justify" },
+    {mode: "left"},
+    {mode: "center"},
+    {mode: "right"},
+    {mode: "justify"},
 ];
 
 export class AlignPlugin extends Plugin {
@@ -69,21 +69,23 @@ export class AlignPlugin extends Plugin {
     };
 
     setup() {
-        this.alignment = reactive({ displayName: "" });
+        this.alignment = reactive({displayName: ""});
         this.canSetAlignmentMemoized = weakMemoize(
-            (selection) => isHtmlContentSupported(selection) && this.getBlocksToAlign().length > 0
+            (selection) =>
+                isHtmlContentSupported(selection) && this.getBlocksToAlign().length > 0
         );
     }
 
     get alignmentMode() {
-        const sel = this.dependencies.selection.getSelectionData().deepEditableSelection;
+        const sel =
+            this.dependencies.selection.getSelectionData().deepEditableSelection;
         const block = closestBlock(sel?.anchorNode);
         const textAlign = this.getTextAlignment(block);
         return ["center", "right", "justify"].includes(textAlign) ? textAlign : "left";
     }
 
     getTextAlignment(block) {
-        const { direction, textAlign } = getComputedStyle(block);
+        const {direction, textAlign} = getComputedStyle(block);
         if (textAlign === "start") {
             return direction === "rtl" ? "right" : "left";
         } else if (textAlign === "end") {

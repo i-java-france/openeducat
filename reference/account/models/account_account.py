@@ -1,15 +1,14 @@
-from bisect import bisect_left
-from collections import defaultdict
 import contextlib
 import itertools
-import re
 import json
+import re
+from bisect import bisect_left
+from collections import defaultdict
 
-from odoo import api, fields, models, _, Command
+from odoo import Command, _, api, fields, models
+from odoo.exceptions import RedirectWarning, UserError, ValidationError
 from odoo.fields import Domain
-from odoo.exceptions import UserError, ValidationError, RedirectWarning
 from odoo.tools import SQL, Query
-
 
 ACCOUNT_REGEX = re.compile(r'(?:(\S*\d+\S*))?(.*)')
 ACCOUNT_CODE_REGEX = re.compile(r'^[A-Za-z0-9.]+$')
@@ -334,7 +333,7 @@ class AccountAccount(models.Model):
     @api.depends_context('company')
     @api.depends('code_store')
     def _compute_code(self):
-        for record, record_root in zip(self, self.with_company(self.env.company.root_id).sudo()):
+        for record, record_root in zip(self, self.with_company(self.env.company.root_id).sudo(), strict=False):
             # Need to set record.code with `company = self.env.company`, not `self.env.company.root_id`
             record.code = record_root.code_store
 
@@ -342,7 +341,7 @@ class AccountAccount(models.Model):
         return [('id', 'in', self.with_company(self.env.company.root_id).sudo()._search([('code_store', operator, value)]))]
 
     def _inverse_code(self):
-        for record, record_root in zip(self, self.with_company(self.env.company.root_id).sudo()):
+        for record, record_root in zip(self, self.with_company(self.env.company.root_id).sudo(), strict=False):
             # Need to set record.code with `company = self.env.company`, not `self.env.company.root_id`
             record_root.code_store = record.code
 
@@ -892,7 +891,7 @@ class AccountAccount(models.Model):
         default = default or {}
         cache = defaultdict(set)
 
-        for account, vals in zip(self, vals_list):
+        for account, vals in zip(self, vals_list, strict=False):
             company_ids = self._fields['company_ids'].convert_to_cache(vals['company_ids'], self.browse())
             companies = self.env['res.company'].browse(company_ids)
 
@@ -1573,7 +1572,7 @@ class AccountGroup(models.Model):
         return groups
 
     def write(self, vals):
-        res = super(AccountGroup, self).write(self._sanitize_vals(vals))
+        res = super().write(self._sanitize_vals(vals))
         if 'code_prefix_start' in vals or 'code_prefix_end' in vals:
             self._adapt_parent_account_group()
         return res

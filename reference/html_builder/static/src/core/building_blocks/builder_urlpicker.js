@@ -1,4 +1,4 @@
-import { BuilderComponent } from "@html_builder/core/building_blocks/builder_component";
+import {BuilderComponent} from "@html_builder/core/building_blocks/builder_component";
 import {
     BuilderTextInputBase,
     textInputBasePassthroughProps,
@@ -8,16 +8,16 @@ import {
     useBuilderComponent,
     useInputBuilderComponent,
 } from "@html_builder/core/utils";
-import { Component } from "@odoo/owl";
-import { useChildRef } from "@web/core/utils/hooks";
-import { pick } from "@web/core/utils/objects";
+import {Component} from "@odoo/owl";
+import {useChildRef} from "@web/core/utils/hooks";
+import {pick} from "@web/core/utils/objects";
 
 export class BuilderUrlPicker extends Component {
     static template = "html_builder.BuilderUrlPicker";
     static props = {
         ...basicContainerBuilderComponentProps,
         ...textInputBasePassthroughProps,
-        default: { type: String, optional: true },
+        default: {type: String, optional: true},
     };
     static components = {
         BuilderComponent,
@@ -27,7 +27,7 @@ export class BuilderUrlPicker extends Component {
     setup() {
         this.inputRef = useChildRef();
         useBuilderComponent();
-        const { state, commit, preview } = useInputBuilderComponent({
+        const {state, commit, preview} = useInputBuilderComponent({
             id: this.props.id,
             defaultValue: this.props.default,
         });

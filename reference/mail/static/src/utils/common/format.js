@@ -1,8 +1,8 @@
-import { htmlEscape, markup } from "@odoo/owl";
+import {htmlEscape, markup} from "@odoo/owl";
 
-import { router } from "@web/core/browser/router";
-import { loadEmoji, loader } from "@web/core/emoji_picker/emoji_picker";
-import { normalize } from "@web/core/l10n/utils";
+import {router} from "@web/core/browser/router";
+import {loadEmoji, loader} from "@web/core/emoji_picker/emoji_picker";
+import {normalize} from "@web/core/l10n/utils";
 import {
     createDocumentFragmentFromContent,
     createElementWithContent,
@@ -13,13 +13,15 @@ import {
     htmlTrim,
     setElementContent,
 } from "@web/core/utils/html";
-import { escapeRegExp } from "@web/core/utils/strings";
-import { getOrigin } from "@web/core/utils/urls";
-import { setAttributes } from "@web/core/utils/xml";
+import {escapeRegExp} from "@web/core/utils/strings";
+import {getOrigin} from "@web/core/utils/urls";
+import {setAttributes} from "@web/core/utils/xml";
 
 const urlRegexp =
     /\b(?:https?:\/\/\d{1,3}(?:\.\d{1,3}){3}|(?:https?:\/\/|(?:www\.))[-a-z0-9@:%._+~#=\u00C0-\u024F\u1E00-\u1EFF]{1,256}\.[a-z]{2,13})\b(?:[-a-z0-9@:%_+~#?&[\]^|{}`\\'$//=\u00C0-\u024F\u1E00-\u1EFF]|[.]*[-a-z0-9@:%_+~#?&[\]^|{}`\\'$//=\u00C0-\u024F\u1E00-\u1EFF]|,(?!$| )|\.(?!$| |\.)|;(?!$| ))*/gi;
-const messageUrlRegExp = new RegExp(`^${escapeRegExp(getOrigin())}/mail/message/(\\d+)$`);
+const messageUrlRegExp = new RegExp(
+    `^${escapeRegExp(getOrigin())}/mail/message/(\\d+)$`
+);
 
 /**
  * @param {string|ReturnType<markup>} rawBody
@@ -27,7 +29,7 @@ const messageUrlRegExp = new RegExp(`^${escapeRegExp(getOrigin())}/mail/message/
  * @param {import("models").Persona[]} validMentions.partners
  * @returns {Promise<string|ReturnType<markup>>}
  */
-export function prettifyMessageText(rawBody, { validMentions = {}, thread } = {}) {
+export function prettifyMessageText(rawBody, {validMentions = {}, thread} = {}) {
     if (rawBody instanceof markup().constructor) {
         // markup is already "pretty"
         return rawBody;
@@ -43,7 +45,7 @@ export function prettifyMessageText(rawBody, { validMentions = {}, thread } = {}
     // linkification a bit everywhere. Ideally we want to keep the content
     // as text internally and only make html enrichment at display time but
     // the current design makes this quite hard to do.
-    body = generateMentionsLinks(body, { ...validMentions, thread });
+    body = generateMentionsLinks(body, {...validMentions, thread});
     body = parseAndTransform(body, addLink);
     return body;
 }
@@ -51,9 +53,12 @@ export function prettifyMessageText(rawBody, { validMentions = {}, thread } = {}
 /**
  * @param {string|ReturnType<markup>} htmlBody
  */
-export async function generateEmojisOnHtml(htmlBody, { allowEmojiLoading = true } = {}) {
+export async function generateEmojisOnHtml(htmlBody, {allowEmojiLoading = true} = {}) {
     let body = htmlBody;
-    if (allowEmojiLoading || odoo.loader.modules.get("@web/core/emoji_picker/emoji_data")) {
+    if (
+        allowEmojiLoading ||
+        odoo.loader.modules.get("@web/core/emoji_picker/emoji_data")
+    ) {
         body = await _generateEmojisOnHtml(body);
     }
     return body;
@@ -66,10 +71,10 @@ export async function generateEmojisOnHtml(htmlBody, { allowEmojiLoading = true 
  */
 export async function prettifyMessageContent(
     rawBody,
-    { validMentions = [], allowEmojiLoading = true } = {}
+    {validMentions = [], allowEmojiLoading = true} = {}
 ) {
-    let body = prettifyMessageText(rawBody, { validMentions });
-    body = await generateEmojisOnHtml(body, { allowEmojiLoading });
+    let body = prettifyMessageText(rawBody, {validMentions});
+    body = await generateEmojisOnHtml(body, {allowEmojiLoading});
     return body;
 }
 
@@ -174,10 +179,10 @@ export function addLink(node, transformChildren) {
     return markup(node.outerHTML);
 }
 
-function generateMentionElement({ className, id, model, text }) {
+function generateMentionElement({className, id, model, text}) {
     const link = document.createElement("a");
     setAttributes(link, {
-        href: router.stateToUrl({ model: model, resId: id }),
+        href: router.stateToUrl({model: model, resId: id}),
         class: className,
         "data-oe-id": id,
         "data-oe-model": model,
@@ -246,7 +251,7 @@ export function generateThreadMentionElement(thread) {
  */
 function generateMentionsLinks(
     body,
-    { partners = [], roles = [], threads = [], specialMentions = [], thread }
+    {partners = [], roles = [], threads = [], specialMentions = [], thread}
 ) {
     const mentions = [];
     for (const partner of partners) {
@@ -299,7 +304,7 @@ function generateMentionsLinks(
  * @returns {Promise<ReturnType<markup>>}
  */
 async function _generateEmojisOnHtml(htmlString) {
-    const { emojis } = await loadEmoji();
+    const {emojis} = await loadEmoji();
     for (const emoji of emojis) {
         for (const source of [...emoji.shortcodes, ...emoji.emoticons]) {
             const escapedSource = htmlEscape(String(source));
@@ -307,7 +312,11 @@ async function _generateEmojisOnHtml(htmlString) {
                 "(\\s|^)(" + escapeRegExp(escapedSource) + ")(?=\\s|$|<)",
                 "g"
             );
-            htmlString = htmlReplace(htmlString, regexp, (_, group1) => group1 + emoji.codepoints);
+            htmlString = htmlReplace(
+                htmlString,
+                regexp,
+                (_, group1) => group1 + emoji.codepoints
+            );
         }
     }
     return htmlEscape(htmlString);
@@ -416,7 +425,7 @@ export function decorateEmojis(content) {
                 markup(
                     `<span class="o-mail-emoji" title="${htmlFormatList(
                         loader.loaded.emojiValueToShortcodes[codepoints],
-                        { style: "unit-narrow" }
+                        {style: "unit-narrow"}
                     )}">${htmlEscape(codepoints)}</span>`
                 )
             )

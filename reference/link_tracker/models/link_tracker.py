@@ -6,11 +6,12 @@ import string
 
 from werkzeug import urls
 
-from odoo import tools, models, fields, api, _
-from odoo.addons.mail.tools import link_preview
+from odoo import _, api, fields, models, tools
 from odoo.exceptions import UserError
 from odoo.fields import Domain
 from odoo.tools.mail import validate_url
+
+from odoo.addons.mail.tools import link_preview
 
 LINK_TRACKER_UNIQUE_FIELDS = ('url', 'campaign_id', 'medium_id', 'source_id', 'label')
 
@@ -192,7 +193,7 @@ class LinkTracker(models.Model):
                 if fname not in vals:
                     vals[fname] = False
 
-        links = super(LinkTracker, self).create(vals_list)
+        links = super().create(vals_list)
 
         link_tracker_codes = self.env['link.tracker.code']._get_random_code_strings(len(vals_list))
 
@@ -200,7 +201,7 @@ class LinkTracker(models.Model):
             {
                 'code': code,
                 'link_id': link.id,
-            } for link, code in zip(links, link_tracker_codes)
+            } for link, code in zip(links, link_tracker_codes, strict=False)
         ])
 
         return links

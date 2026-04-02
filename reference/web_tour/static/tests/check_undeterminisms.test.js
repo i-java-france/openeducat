@@ -1,12 +1,12 @@
 /** @odoo-module **/
 
-import { afterEach, beforeEach, describe, expect, test } from "@odoo/hoot";
-import { advanceTime, animationFrame, queryFirst } from "@odoo/hoot-dom";
-import { Component, xml } from "@odoo/owl";
-import { mountWithCleanup, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { browser } from "@web/core/browser/browser";
-import { Macro } from "@web/core/macro";
-import { registry } from "@web/core/registry";
+import {afterEach, beforeEach, describe, expect, test} from "@odoo/hoot";
+import {advanceTime, animationFrame, queryFirst} from "@odoo/hoot-dom";
+import {Component, xml} from "@odoo/owl";
+import {mountWithCleanup, patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {browser} from "@web/core/browser/browser";
+import {Macro} from "@web/core/macro";
+import {registry} from "@web/core/registry";
 
 describe.current.tags("desktop");
 
@@ -28,7 +28,7 @@ async function waitForMacro() {
 }
 class Root extends Component {
     static components = {};
-    static template = xml/*html*/ `
+    static template = xml /* html*/ `
         <t>
             <div class="container">
                 <button class="button0">Button 0</button>
@@ -70,7 +70,7 @@ beforeEach(async () => {
     patchWithCleanup(browser.console, {
         log: (s) => expect.step(`log: ${s}`),
         error: (s) => {
-            s = s.replace(/\n +at.*/g, ""); // strip stack trace
+            s = s.replace(/\n +at.*/g, ""); // Strip stack trace
             expect.step(`error: ${s}`);
         },
         warn: () => {},
@@ -88,7 +88,7 @@ afterEach(() => {
 });
 
 test("element is no longer visible", async () => {
-    macro.onStep = ({ index }) => {
+    macro.onStep = ({index}) => {
         if (index == 2) {
             setTimeout(() => {
                 queryFirst(".container").classList.add("d-none");
@@ -107,7 +107,7 @@ ${expectedError}`,
 });
 
 test("change text", async () => {
-    macro.onStep = ({ index }) => {
+    macro.onStep = ({index}) => {
         if (index == 2) {
             setTimeout(() => {
                 queryFirst(".button1").textContent = "Text has changed :)";
@@ -134,7 +134,7 @@ Initial element has changed:
 });
 
 test("change attributes", async () => {
-    macro.onStep = ({ index }) => {
+    macro.onStep = ({index}) => {
         if (index == 2) {
             setTimeout(() => {
                 const button1 = queryFirst(".button1");
@@ -171,7 +171,7 @@ ${expectedError}`,
 });
 
 test("add child node", async () => {
-    macro.onStep = ({ index }) => {
+    macro.onStep = ({index}) => {
         if (index == 4) {
             setTimeout(() => {
                 const addElement = document.createElement("div");
@@ -208,7 +208,7 @@ ${expectedError}`,
 });
 
 test.skip("snapshot is the same but has mutated", async () => {
-    macro.onStep = async ({ index }) => {
+    macro.onStep = async ({index}) => {
         if (index === 2) {
             setTimeout(() => {
                 const button1 = queryFirst(".button1");

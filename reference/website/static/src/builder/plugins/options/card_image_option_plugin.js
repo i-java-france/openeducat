@@ -1,8 +1,8 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { ClassAction } from "@html_builder/core/core_builder_action_plugin";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { renderToElement } from "@web/core/utils/render";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {ClassAction} from "@html_builder/core/core_builder_action_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {renderToElement} from "@web/core/utils/render";
 
 /**
  * @typedef { Object } CardImageOptionShared
@@ -59,7 +59,7 @@ class CardImageOptionPlugin extends Plugin {
         const imageWrapper = editingElement.querySelector(".o_card_img_wrapper");
         const asMainParam = (mainParam) => ({
             editingElement: imageWrapper,
-            params: { mainParam },
+            params: {mainParam},
         });
         for (const ratioClasses of ratiosOnlySupportedForTopBottomImage) {
             if (this.classAction.isApplied(asMainParam(ratioClasses))) {
@@ -75,12 +75,12 @@ class CardImageOptionPlugin extends Plugin {
 export class SetCoverImagePositionAction extends BuilderAction {
     static id = "setCoverImagePosition";
     static dependencies = ["cardImageOption"];
-    apply({ editingElement, params: { mainParam: className } }) {
+    apply({editingElement, params: {mainParam: className}}) {
         const imageEl = editingElement.querySelector(".o_card_img");
         imageEl.classList.add(className);
         this.dependencies.cardImageOption.adaptRatio(editingElement, className);
     }
-    clean({ editingElement, params: { mainParam: className } }) {
+    clean({editingElement, params: {mainParam: className}}) {
         const imageEl = editingElement.querySelector(".o_card_img");
         imageEl.classList.remove(className);
     }
@@ -88,7 +88,7 @@ export class SetCoverImagePositionAction extends BuilderAction {
 export class RemoveCoverImageAction extends BuilderAction {
     static id = "removeCoverImage";
     static dependencies = ["history", "builderOptions", "remove"];
-    apply({ editingElement }) {
+    apply({editingElement}) {
         const imageWrapperEl = editingElement.querySelector(".o_card_img_wrapper");
         imageWrapperEl.remove();
         // Remove the classes and styles linked to the wrapper.
@@ -98,7 +98,7 @@ export class RemoveCoverImageAction extends BuilderAction {
 }
 export class AddCoverImageAction extends BuilderAction {
     static id = "addCoverImage";
-    apply({ editingElement }) {
+    apply({editingElement}) {
         const imageWrapper = renderToElement("website.s_card.imageWrapper");
         editingElement.prepend(imageWrapper);
         editingElement.classList.add("o_card_img_top");
@@ -106,11 +106,13 @@ export class AddCoverImageAction extends BuilderAction {
 }
 export class AlignCoverImageAction extends BuilderAction {
     static id = "alignCoverImage";
-    apply({ editingElement, params: { mainParam: direction } }) {
+    apply({editingElement, params: {mainParam: direction}}) {
         const imgWrapper = editingElement.querySelector(".o_card_img_wrapper");
         imgWrapper.classList.toggle("o_card_img_adjust_v", direction === "vertical");
         imgWrapper.classList.toggle("o_card_img_adjust_h", direction === "horizontal");
     }
 }
 
-registry.category("website-plugins").add(CardImageOptionPlugin.id, CardImageOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(CardImageOptionPlugin.id, CardImageOptionPlugin);

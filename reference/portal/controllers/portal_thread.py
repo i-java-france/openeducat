@@ -3,6 +3,7 @@ from werkzeug.exceptions import NotFound
 from odoo import http
 from odoo.fields import Domain
 from odoo.http import request
+
 from odoo.addons.mail.controllers.thread import ThreadController
 from odoo.addons.mail.tools.discuss import Store
 from odoo.addons.portal.utils import get_portal_partner

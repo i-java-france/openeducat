@@ -1,11 +1,16 @@
-import { x2ManyCommands } from "@web/core/orm_service";
-import { intersection } from "@web/core/utils/arrays";
-import { omit, pick } from "@web/core/utils/objects";
-import { completeActiveFields } from "@web/model/relational_model/utils";
-import { DataPoint } from "./datapoint";
-import { fromUnityToServerValues, getBasicEvalContext, getId, patchActiveFields } from "./utils";
+import {x2ManyCommands} from "@web/core/orm_service";
+import {intersection} from "@web/core/utils/arrays";
+import {omit, pick} from "@web/core/utils/objects";
+import {completeActiveFields} from "@web/model/relational_model/utils";
+import {DataPoint} from "./datapoint";
+import {
+    fromUnityToServerValues,
+    getBasicEvalContext,
+    getId,
+    patchActiveFields,
+} from "./utils";
 
-import { markRaw } from "@odoo/owl";
+import {markRaw} from "@odoo/owl";
 
 /**
  * @typedef {import("./record").Record} RelationalRecord
@@ -20,7 +25,7 @@ function compareFieldValues(v1, v2, fieldType) {
 }
 
 function compareRecords(r1, r2, orderBy, fields) {
-    const { name, asc } = orderBy[0];
+    const {name, asc} = orderBy[0];
     function getValue(record, fieldName) {
         return fieldName === "id" ? record.resId : record.data[fieldName];
     }
@@ -169,7 +174,7 @@ export class StaticList extends DataPoint {
      */
     addNewRecord(params) {
         return this.model.mutex.exec(async () => {
-            const { activeFields, context, mode, position, withoutParent } = params;
+            const {activeFields, context, mode, position, withoutParent} = params;
             const record = await this._createNewRecordDatapoint({
                 activeFields,
                 context,
@@ -178,8 +183,10 @@ export class StaticList extends DataPoint {
                 manuallyAdded: true,
                 mode,
             });
-            await this._addRecord(record, { position });
-            await this._onUpdate({ withoutOnchange: !record._checkValidity({ silent: true }) });
+            await this._addRecord(record, {position});
+            await this._onUpdate({
+                withoutOnchange: !record._checkValidity({silent: true}),
+            });
             return record;
         });
     }
@@ -216,15 +223,21 @@ export class StaticList extends DataPoint {
     }
 
     canResequence() {
-        return this.handleField && this.orderBy.length && this.orderBy[0].name === this.handleField;
+        return (
+            this.handleField &&
+            this.orderBy.length &&
+            this.orderBy[0].name === this.handleField
+        );
     }
 
     delete(record) {
         return this.model.mutex.exec(async () => {
-            await this._applyCommands([[x2ManyCommands.DELETE, record.resId || record._virtualId]]);
+            await this._applyCommands([
+                [x2ManyCommands.DELETE, record.resId || record._virtualId],
+            ]);
             // All records of last page are deleted => reload the new last page
             if (this.count === this.offset) {
-                await this._load({ offset: Math.max(this.offset - this.limit, 0) });
+                await this._load({offset: Math.max(this.offset - this.limit, 0)});
             }
             await this._onUpdate();
         });
@@ -273,10 +286,13 @@ export class StaticList extends DataPoint {
             // extend fields and activeFields of the list with those given in params
             completeActiveFields(this.config.activeFields, params.activeFields);
             Object.assign(this.fields, params.fields);
-            const activeFields = { ...params.activeFields };
+            const activeFields = {...params.activeFields};
             for (const fieldName in this.activeFields) {
                 if (fieldName in activeFields) {
-                    patchActiveFields(activeFields[fieldName], this.activeFields[fieldName]);
+                    patchActiveFields(
+                        activeFields[fieldName],
+                        this.activeFields[fieldName]
+                    );
                 } else {
                     activeFields[fieldName] = this.activeFields[fieldName];
                 }
@@ -284,7 +300,7 @@ export class StaticList extends DataPoint {
 
             if (record) {
                 record._noUpdateParent = true;
-                record._activeFieldsToRestore = { ...this.config.activeFields };
+                record._activeFieldsToRestore = {...this.config.activeFields};
                 const config = {
                     ...record.config,
                     ...params,
@@ -295,7 +311,7 @@ export class StaticList extends DataPoint {
                 if (this._extendedRecords.has(record.id)) {
                     // case 1.1: the record has already been extended
                     // -> simply store a savepoint
-                    this.model._updateConfig(record.config, config, { reload: false });
+                    this.model._updateConfig(record.config, config, {reload: false});
                     record._addSavePoint();
                     return record;
                 }
@@ -311,14 +327,25 @@ export class StaticList extends DataPoint {
                 // handle field values they receive.
                 let data = {};
                 if (!record.isNew) {
-                    const evalContext = Object.assign({}, record.evalContext, config.context);
+                    const evalContext = Object.assign(
+                        {},
+                        record.evalContext,
+                        config.context
+                    );
                     const resIds = [record.resId];
-                    [data] = await this.model._loadRecords({ ...config, resIds }, evalContext);
+                    [data] = await this.model._loadRecords(
+                        {...config, resIds},
+                        evalContext
+                    );
                 }
-                this.model._updateConfig(record.config, config, { reload: false });
+                this.model._updateConfig(record.config, config, {reload: false});
                 record._applyDefaultValues();
                 for (const fieldName in record.activeFields) {
-                    if (["one2many", "many2many"].includes(record.fields[fieldName].type)) {
+                    if (
+                        ["one2many", "many2many"].includes(
+                            record.fields[fieldName].type
+                        )
+                    ) {
                         const list = record.data[fieldName];
                         const patch = {
                             activeFields: activeFields[fieldName].related.activeFields,
@@ -329,7 +356,7 @@ export class StaticList extends DataPoint {
                                 reload: false,
                             });
                         }
-                        this.model._updateConfig(list.config, patch, { reload: false });
+                        this.model._updateConfig(list.config, patch, {reload: false});
                     }
                 }
                 record._applyValues(data);
@@ -348,7 +375,7 @@ export class StaticList extends DataPoint {
                     withoutParent: params.withoutParent,
                     manuallyAdded: true,
                 });
-                record._activeFieldsToRestore = { ...this.config.activeFields };
+                record._activeFieldsToRestore = {...this.config.activeFields};
                 record._noUpdateParent = true;
             }
             // mark the record as being extended, to go through case 1.1 next time
@@ -365,7 +392,7 @@ export class StaticList extends DataPoint {
         });
     }
 
-    async leaveEditMode({ discard, canAbandon, validate } = {}) {
+    async leaveEditMode({discard, canAbandon, validate} = {}) {
         if (this.editedRecord) {
             await this.model._askChanges(false);
         }
@@ -377,7 +404,7 @@ export class StaticList extends DataPoint {
                     return false;
                 }
                 if (canAbandon !== false && !validate) {
-                    this._abandonRecords([editedRecord], { force: true });
+                    this._abandonRecords([editedRecord], {force: true});
                 }
                 // if we still have an editedRecord, it means it hasn't been abandonned
                 editedRecord = this.editedRecord;
@@ -385,7 +412,10 @@ export class StaticList extends DataPoint {
                     if (isValid && !editedRecord.dirty && discard) {
                         return false;
                     }
-                    if (isValid || (!editedRecord.dirty && !editedRecord._manuallyAdded)) {
+                    if (
+                        isValid ||
+                        (!editedRecord.dirty && !editedRecord._manuallyAdded)
+                    ) {
                         editedRecord._switchMode("readonly");
                     }
                 }
@@ -408,7 +438,7 @@ export class StaticList extends DataPoint {
         });
     }
 
-    load({ limit, offset, orderBy } = {}) {
+    load({limit, offset, orderBy} = {}) {
         return this.model.mutex.exec(async () => {
             const editedRecord = this.editedRecord;
             if (editedRecord && !(await editedRecord.checkValidity())) {
@@ -417,7 +447,7 @@ export class StaticList extends DataPoint {
             limit = limit !== undefined ? limit : this.limit;
             offset = offset !== undefined ? offset : this.offset;
             orderBy = orderBy !== undefined ? orderBy : this.orderBy;
-            return this._load({ limit, offset, orderBy });
+            return this._load({limit, offset, orderBy});
         });
     }
 
@@ -429,13 +459,13 @@ export class StaticList extends DataPoint {
         return this.model.mutex.exec(() => this._sortBy(fieldName));
     }
 
-    async addAndRemove({ add, remove } = {}) {
+    async addAndRemove({add, remove} = {}) {
         return this.model.mutex.exec(async () => {
             const commands = [
                 ...(add || []).map((id) => [x2ManyCommands.LINK, id]),
                 ...(remove || []).map((id) => [x2ManyCommands.UNLINK, id]),
             ];
-            await this._applyCommands(commands, { canAddOverLimit: true });
+            await this._applyCommands(commands, {canAddOverLimit: true});
             await this._onUpdate();
         });
     }
@@ -454,7 +484,11 @@ export class StaticList extends DataPoint {
      */
     validateExtendedRecord(record) {
         return this.model.mutex.exec(async () => {
-            if (!this._currentIds.includes(record.isNew ? record._virtualId : record.resId)) {
+            if (
+                !this._currentIds.includes(
+                    record.isNew ? record._virtualId : record.resId
+                )
+            ) {
                 // new record created, not yet in the list
                 await this._addRecord(record);
             } else if (!record.dirty) {
@@ -470,7 +504,7 @@ export class StaticList extends DataPoint {
     // Protected
     // -------------------------------------------------------------------------
 
-    _abandonRecords(records = this.records, { force } = {}) {
+    _abandonRecords(records = this.records, {force} = {}) {
         for (const record of records) {
             if (record.canBeAbandoned && (force || !record._checkValidity())) {
                 const virtualId = record._virtualId;
@@ -485,8 +519,8 @@ export class StaticList extends DataPoint {
                 if (this._tmpIncreaseLimit > 0) {
                     this.model._updateConfig(
                         this.config,
-                        { limit: this.limit - 1 },
-                        { reload: false }
+                        {limit: this.limit - 1},
+                        {reload: false}
                     );
                     this._tmpIncreaseLimit--;
                 }
@@ -494,7 +528,7 @@ export class StaticList extends DataPoint {
         }
     }
 
-    async _addRecord(record, { position, sort = true } = {}) {
+    async _addRecord(record, {position, sort = true} = {}) {
         const command = [x2ManyCommands.CREATE, record._virtualId];
         if (position === "top") {
             this.records.unshift(record);
@@ -509,7 +543,11 @@ export class StaticList extends DataPoint {
             if (this.records.length > this.limit) {
                 this._tmpIncreaseLimit++;
                 const nextLimit = this.limit + 1;
-                this.model._updateConfig(this.config, { limit: nextLimit }, { reload: false });
+                this.model._updateConfig(
+                    this.config,
+                    {limit: nextLimit},
+                    {reload: false}
+                );
             }
             this._commands.push(command);
         } else {
@@ -537,7 +575,7 @@ export class StaticList extends DataPoint {
         if (this.records.length === this.limit) {
             this._tmpIncreaseLimit++;
             const nextLimit = this.limit + 1;
-            this.model._updateConfig(this.config, { limit: nextLimit }, { reload: false });
+            this.model._updateConfig(this.config, {limit: nextLimit}, {reload: false});
         }
         await this._addRecord(newRecord);
         await this._resequence(newRecord.id, this.records[index].id);
@@ -556,8 +594,8 @@ export class StaticList extends DataPoint {
         });
     }
 
-    _applyCommands(commands, { canAddOverLimit } = {}) {
-        const { CREATE, UPDATE, DELETE, UNLINK, LINK, SET } = x2ManyCommands;
+    _applyCommands(commands, {canAddOverLimit} = {}) {
+        const {CREATE, UPDATE, DELETE, UNLINK, LINK, SET} = x2ManyCommands;
 
         // For performance reasons, we split commands by record ids, such that we have quick access
         // to all commands concerning a given record. At the end, we re-build the list of commands
@@ -566,7 +604,7 @@ export class StaticList extends DataPoint {
         const commandsByIds = {};
         function addOwnCommand(command) {
             commandsByIds[command[1]] = commandsByIds[command[1]] || [];
-            commandsByIds[command[1]].push({ command, index: ++lastCommandIndex });
+            commandsByIds[command[1]].push({command, index: ++lastCommandIndex});
         }
         function getOwnCommands(id) {
             commandsByIds[id] = commandsByIds[id] || [];
@@ -584,14 +622,21 @@ export class StaticList extends DataPoint {
             switch (command[0]) {
                 case CREATE: {
                     const virtualId = getId("virtual");
-                    const record = this._createRecordDatapoint(command[2], { virtualId });
+                    const record = this._createRecordDatapoint(command[2], {virtualId});
                     this.records.push(record);
                     addOwnCommand([CREATE, virtualId]);
                     const index = this.offset + this.limit;
                     this._currentIds.splice(index, 0, virtualId);
-                    this._tmpIncreaseLimit = Math.max(this.records.length - this.limit, 0);
+                    this._tmpIncreaseLimit = Math.max(
+                        this.records.length - this.limit,
+                        0
+                    );
                     const nextLimit = this.limit + this._tmpIncreaseLimit;
-                    this.model._updateConfig(this.config, { limit: nextLimit }, { reload: false });
+                    this.model._updateConfig(
+                        this.config,
+                        {limit: nextLimit},
+                        {reload: false}
+                    );
                     this.count++;
                     break;
                 }
@@ -620,8 +665,13 @@ export class StaticList extends DataPoint {
                     } else {
                         const changes = {};
                         for (const fieldName in command[2]) {
-                            if (["one2many", "many2many"].includes(this.fields[fieldName].type)) {
-                                const invisible = record.activeFields[fieldName]?.invisible;
+                            if (
+                                ["one2many", "many2many"].includes(
+                                    this.fields[fieldName].type
+                                )
+                            ) {
+                                const invisible =
+                                    record.activeFields[fieldName]?.invisible;
                                 if (
                                     invisible === "True" ||
                                     invisible === "1" ||
@@ -630,14 +680,18 @@ export class StaticList extends DataPoint {
                                     if (!(command[1] in this._unknownRecordCommands)) {
                                         this._unknownRecordCommands[command[1]] = [];
                                     }
-                                    this._unknownRecordCommands[command[1]].push(command);
+                                    this._unknownRecordCommands[command[1]].push(
+                                        command
+                                    );
                                     continue;
                                 }
                             }
                             changes[fieldName] = command[2][fieldName];
                         }
                         record._applyChanges(
-                            record._parseServerValues(changes, { currentValues: record.data })
+                            record._parseServerValues(changes, {
+                                currentValues: record.data,
+                            })
                         );
                     }
                     break;
@@ -649,21 +703,31 @@ export class StaticList extends DataPoint {
                     // If there's a SET command, we know it's the first one (see @_replaceWith).
                     if (command[0] === UNLINK) {
                         const firstCommand = this._commands[0];
-                        const hasReplaceWithCommand = firstCommand && firstCommand[0] === SET;
-                        if (hasReplaceWithCommand && firstCommand[2].includes(command[1])) {
-                            firstCommand[2] = firstCommand[2].filter((id) => id !== command[1]);
+                        const hasReplaceWithCommand =
+                            firstCommand && firstCommand[0] === SET;
+                        if (
+                            hasReplaceWithCommand &&
+                            firstCommand[2].includes(command[1])
+                        ) {
+                            firstCommand[2] = firstCommand[2].filter(
+                                (id) => id !== command[1]
+                            );
                             break;
                         }
                     }
                     const ownCommands = getOwnCommands(command[1]);
                     if (command[0] === DELETE) {
-                        const hasCreateCommand = ownCommands.some((x) => x.command[0] === CREATE);
+                        const hasCreateCommand = ownCommands.some(
+                            (x) => x.command[0] === CREATE
+                        );
                         ownCommands.splice(0); // reset to the empty list
                         if (!hasCreateCommand) {
                             addOwnCommand([DELETE, command[1]]);
                         }
                     } else {
-                        const linkToIndex = ownCommands.findIndex((x) => x.command[0] === LINK);
+                        const linkToIndex = ownCommands.findIndex(
+                            (x) => x.command[0] === LINK
+                        );
                         if (linkToIndex >= 0) {
                             ownCommands.splice(linkToIndex, 1);
                         } else {
@@ -678,12 +742,22 @@ export class StaticList extends DataPoint {
                     if (command[1] in this._cache) {
                         record = this._cache[command[1]];
                     } else {
-                        record = this._createRecordDatapoint({ ...command[2], id: command[1] });
+                        record = this._createRecordDatapoint({
+                            ...command[2],
+                            id: command[1],
+                        });
                     }
-                    if (this._currentIds.includes(record.resId) && !removedIds[record.resId]) {
+                    if (
+                        this._currentIds.includes(record.resId) &&
+                        !removedIds[record.resId]
+                    ) {
                         break;
                     }
-                    if (!this.limit || this.records.length < this.limit || canAddOverLimit) {
+                    if (
+                        !this.limit ||
+                        this.records.length < this.limit ||
+                        canAddOverLimit
+                    ) {
                         if (!command[2]) {
                             recordsToLoad.push(record);
                         }
@@ -693,8 +767,8 @@ export class StaticList extends DataPoint {
                             const nextLimit = this.limit + this._tmpIncreaseLimit;
                             this.model._updateConfig(
                                 this.config,
-                                { limit: nextLimit },
-                                { reload: false }
+                                {limit: nextLimit},
+                                {reload: false}
                             );
                         }
                     }
@@ -743,9 +817,15 @@ export class StaticList extends DataPoint {
         if (nbMissingRecords > 0) {
             const lastRecordIndex = this.limit + this.offset;
             const firstRecordIndex = lastRecordIndex - nbMissingRecords;
-            const nextRecordIds = this._currentIds.slice(firstRecordIndex, lastRecordIndex);
+            const nextRecordIds = this._currentIds.slice(
+                firstRecordIndex,
+                lastRecordIndex
+            );
             for (const id of this._getResIdsToLoad(nextRecordIds)) {
-                const record = this._createRecordDatapoint({ id }, { dontApplyCommands: true });
+                const record = this._createRecordDatapoint(
+                    {id},
+                    {dontApplyCommands: true}
+                );
                 recordsToLoad.push(record);
             }
             for (const id of nextRecordIds) {
@@ -754,17 +834,19 @@ export class StaticList extends DataPoint {
         }
         if (recordsToLoad.length) {
             const resIds = recordsToLoad.map((r) => r.resId);
-            return this.model._loadRecords({ ...this.config, resIds }).then((recordValues) => {
-                for (let i = 0; i < recordsToLoad.length; i++) {
-                    const record = recordsToLoad[i];
-                    record._applyValues(recordValues[i]);
-                    const commands = this._unknownRecordCommands[record.resId];
-                    if (commands) {
-                        delete this._unknownRecordCommands[record.resId];
-                        this._applyCommands(commands);
+            return this.model
+                ._loadRecords({...this.config, resIds})
+                .then((recordValues) => {
+                    for (let i = 0; i < recordsToLoad.length; i++) {
+                        const record = recordsToLoad[i];
+                        record._applyValues(recordValues[i]);
+                        const commands = this._unknownRecordCommands[record.resId];
+                        if (commands) {
+                            delete this._unknownRecordCommands[record.resId];
+                            this._applyCommands(commands);
+                        }
                     }
-                }
-            });
+                });
         }
     }
 
@@ -789,7 +871,7 @@ export class StaticList extends DataPoint {
                 fields: this.fields,
                 context: Object.assign({}, this.context, params.context),
             },
-            { changes, evalContext: this.evalContext }
+            {changes, evalContext: this.evalContext}
         );
 
         if (this.canResequence() && this.records.length) {
@@ -845,10 +927,10 @@ export class StaticList extends DataPoint {
             mode: params.mode || "readonly",
             isMonoRecord: true,
         };
-        const { CREATE, UPDATE } = x2ManyCommands;
+        const {CREATE, UPDATE} = x2ManyCommands;
         const options = {
             parentRecord: this._parent,
-            onUpdate: async ({ withoutParentUpdate }) => {
+            onUpdate: async ({withoutParentUpdate}) => {
                 const id = record.isNew ? record._virtualId : record.resId;
                 if (!this.currentIds.includes(id)) {
                     // the record hasn't been added to the list yet (we're currently creating it
@@ -869,14 +951,19 @@ export class StaticList extends DataPoint {
                 }
                 if (!withoutParentUpdate) {
                     await this._onUpdate({
-                        withoutOnchange: !record._checkValidity({ silent: true }),
+                        withoutOnchange: !record._checkValidity({silent: true}),
                     });
                 }
             },
             virtualId: params.virtualId,
             manuallyAdded: params.manuallyAdded,
         };
-        const record = new this.model.constructor.Record(this.model, config, data, options);
+        const record = new this.model.constructor.Record(
+            this.model,
+            config,
+            data,
+            options
+        );
         this._cache[id] = record;
         if (!params.dontApplyCommands) {
             const commands = this._unknownRecordCommands[id];
@@ -909,7 +996,7 @@ export class StaticList extends DataPoint {
         this._unknownRecordCommands = {};
         const limit = this.limit - this._tmpIncreaseLimit;
         this._tmpIncreaseLimit = 0;
-        this.model._updateConfig(this.config, { limit }, { reload: false });
+        this.model._updateConfig(this.config, {limit}, {reload: false});
         this.records = this._currentIds
             .slice(this.offset, this.limit)
             .map((resId) => this._cache[resId]);
@@ -923,7 +1010,8 @@ export class StaticList extends DataPoint {
      * @fixme: this method is naive and ineffective (it triggers a lot of onchange rpcs)
      */
     async _duplicateRecords(records, options) {
-        const targetIndex = options.targetIndex ?? this.records.indexOf(records.at(-1)) + 1;
+        const targetIndex =
+            options.targetIndex ?? this.records.indexOf(records.at(-1)) + 1;
         const copyFields = options.copyFields || [];
         let sequence = this.records[targetIndex - 1].data[this.handleField] + 1;
         const newRecords = await Promise.all(
@@ -946,7 +1034,7 @@ export class StaticList extends DataPoint {
         if (localIncreaseLimit > 0) {
             this._tmpIncreaseLimit += localIncreaseLimit;
             const nextLimit = this.limit + localIncreaseLimit;
-            this.model._updateConfig(this.config, { limit: nextLimit }, { reload: false });
+            this.model._updateConfig(this.config, {limit: nextLimit}, {reload: false});
         }
 
         const commands = [];
@@ -961,13 +1049,15 @@ export class StaticList extends DataPoint {
         }
         await this._applyCommands(commands);
 
-        await Promise.all(newRecords.map((record) => this._addRecord(record, { sort: false })));
+        await Promise.all(
+            newRecords.map((record) => this._addRecord(record, {sort: false}))
+        );
 
         await this._sort();
     }
 
-    _getCommands({ withReadonly } = {}) {
-        const { CREATE, UPDATE, LINK } = x2ManyCommands;
+    _getCommands({withReadonly} = {}) {
+        const {CREATE, UPDATE, LINK} = x2ManyCommands;
         const commands = [];
         for (const command of this._commands) {
             if (command[0] === UPDATE && command[1] in this._unknownRecordCommands) {
@@ -979,7 +1069,7 @@ export class StaticList extends DataPoint {
                         uCommand[2],
                         this.fields,
                         this.activeFields,
-                        { withReadonly, context: this.context }
+                        {withReadonly, context: this.context}
                     );
                     commands.push([uCommand[0], uCommand[1], values]);
                 }
@@ -991,7 +1081,7 @@ export class StaticList extends DataPoint {
                     // LINK
                     commands.push([LINK, record.resId]);
                 } else {
-                    const values = record._getChanges(record._changes, { withReadonly });
+                    const values = record._getChanges(record._changes, {withReadonly});
                     if (command[0] === CREATE || Object.keys(values).length) {
                         commands.push([command[0], command[1], values]);
                     }
@@ -1016,7 +1106,9 @@ export class StaticList extends DataPoint {
             }
             // record has already been loaded -> check if we already read all orderBy fields
             fieldNames = fieldNames.filter((fieldName) => fieldName !== "id");
-            return intersection(fieldNames, record.fieldNames).length !== fieldNames.length;
+            return (
+                intersection(fieldNames, record.fieldNames).length !== fieldNames.length
+            );
         });
     }
 
@@ -1030,7 +1122,7 @@ export class StaticList extends DataPoint {
         const resIds = this._getResIdsToLoad(currentIds);
         if (resIds.length) {
             const records = await this.model._loadRecords(
-                { ...this.config, resIds },
+                {...this.config, resIds},
                 this.evalContext
             );
             for (const record of records) {
@@ -1039,10 +1131,14 @@ export class StaticList extends DataPoint {
         }
         this.records = currentIds.map((id) => this._cache[id]);
         this._currentIds = nextCurrentIds;
-        await this.model._updateConfig(this.config, { limit, offset, orderBy }, { reload: false });
+        await this.model._updateConfig(
+            this.config,
+            {limit, offset, orderBy},
+            {reload: false}
+        );
     }
 
-    async _replaceWith(ids, { reload = false } = {}) {
+    async _replaceWith(ids, {reload = false} = {}) {
         const resIds = reload ? ids : ids.filter((id) => !this._cache[id]);
         if (resIds.length) {
             const records = await this.model._loadRecords({
@@ -1064,7 +1160,7 @@ export class StaticList extends DataPoint {
         if (this._currentIds.length > this.limit) {
             this._tmpIncreaseLimit = this._currentIds.length - this.limit;
             const nextLimit = this.limit + this._tmpIncreaseLimit;
-            this.model._updateConfig(this.config, { limit: nextLimit }, { reload: false });
+            this.model._updateConfig(this.config, {limit: nextLimit}, {reload: false});
         }
     }
 
@@ -1090,7 +1186,10 @@ export class StaticList extends DataPoint {
         let lastSequence = (asc ? -1 : 1) * Infinity;
         for (let index = 0; index < records.length; index++) {
             const sequence = getSequence(records[index]);
-            if ((asc && lastSequence >= sequence) || (!asc && lastSequence <= sequence)) {
+            if (
+                (asc && lastSequence >= sequence) ||
+                (!asc && lastSequence <= sequence)
+            ) {
                 reorderAll = true;
                 break;
             }
@@ -1104,7 +1203,9 @@ export class StaticList extends DataPoint {
         // Creates the list of to modify
         let toReorder = records;
         if (!reorderAll) {
-            toReorder = toReorder.slice(firstIndex, lastIndex).filter((r) => r.id !== movedId);
+            toReorder = toReorder
+                .slice(firstIndex, lastIndex)
+                .filter((r) => r.id !== movedId);
             if (fromIndex < toIndex) {
                 toReorder.push(record);
             } else {
@@ -1122,8 +1223,8 @@ export class StaticList extends DataPoint {
         for (const [i, record] of Object.entries(toReorder)) {
             proms.push(
                 record._update(
-                    { [this.handleField]: offset + Number(i) },
-                    { withoutParentUpdate: true }
+                    {[this.handleField]: offset + Number(i)},
+                    {withoutParentUpdate: true}
                 )
             );
         }
@@ -1138,10 +1239,10 @@ export class StaticList extends DataPoint {
         const resIds = this._getResIdsToLoad(currentIds, fieldNames);
         if (resIds.length) {
             const activeFields = pick(this.activeFields, ...fieldNames);
-            const config = { ...this.config, resIds, activeFields };
+            const config = {...this.config, resIds, activeFields};
             const records = await this.model._loadRecords(config);
             for (const record of records) {
-                this._createRecordDatapoint(record, { activeFields });
+                this._createRecordDatapoint(record, {activeFields});
             }
         }
         const allRecords = currentIds.map((id) => this._cache[id]);
@@ -1161,9 +1262,9 @@ export class StaticList extends DataPoint {
             if (orderBy.length && orderBy[0].name === fieldName) {
                 if (!this._needsReordering) {
                     if (orderBy[0].asc) {
-                        orderBy[0] = { name: orderBy[0].name, asc: false };
+                        orderBy[0] = {name: orderBy[0].name, asc: false};
                     } else {
-                        orderBy = [{ name: "id", asc: true }];
+                        orderBy = [{name: "id", asc: true}];
                     }
                 }
             } else {

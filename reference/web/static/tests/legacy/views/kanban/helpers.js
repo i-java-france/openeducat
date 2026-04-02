@@ -1,12 +1,14 @@
 /** @odoo-module alias=@web/../tests/views/kanban/helpers default=false */
 
-import { makeFakeDialogService } from "@web/../tests/helpers/mock_services";
-import { click, editInput, getDropdownMenu, nextTick } from "@web/../tests/helpers/utils";
+import {makeFakeDialogService} from "@web/../tests/helpers/mock_services";
+import {click, editInput, getDropdownMenu, nextTick} from "@web/../tests/helpers/utils";
 
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 export function patchDialog(addDialog) {
-    registry.category("services").add("dialog", makeFakeDialogService(addDialog), { force: true });
+    registry
+        .category("services")
+        .add("dialog", makeFakeDialogService(addDialog), {force: true});
 }
 
 // Kanban
@@ -46,7 +48,9 @@ export function getCardTexts(target, groupIndex) {
 }
 
 export function getCounters(target) {
-    return [...target.querySelectorAll(".o_animated_number")].map((counter) => counter.innerText);
+    return [...target.querySelectorAll(".o_animated_number")].map(
+        (counter) => counter.innerText
+    );
 }
 
 export function getProgressBars(target, columnIndex) {
@@ -73,7 +77,11 @@ export async function quickCreateRecord(target, groupIndex) {
 }
 
 export async function editQuickCreateInput(target, field, value) {
-    await editInput(target, `.o_kanban_quick_create .o_field_widget[name=${field}] input`, value);
+    await editInput(
+        target,
+        `.o_kanban_quick_create .o_field_widget[name=${field}] input`,
+        value
+    );
 }
 
 export async function validateRecord(target) {

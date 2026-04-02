@@ -1,10 +1,10 @@
-import { Component, useRef } from "@odoo/owl";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
+import {Component, useRef} from "@odoo/owl";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
 
 export class BusLogsMenuItem extends Component {
-    static components = { DropdownItem };
+    static components = {DropdownItem};
     static template = "bus.BusLogsMenuItem";
     static props = {};
 

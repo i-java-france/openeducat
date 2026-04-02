@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import time
 
-from odoo.tests.common import TransactionCase
 from odoo.exceptions import AccessError
+from odoo.tests.common import TransactionCase
 
 
 class TestEquipmentMulticompany(TransactionCase):
@@ -37,7 +36,7 @@ class TestEquipmentMulticompany(TransactionCase):
         })
 
         # Create equipment manager.
-        cids = [company_a.id, company_b.id] 
+        cids = [company_a.id, company_b.id]
         equipment_manager = ResUsers.create({
             'name': 'Equipment Manager',
             'company_id': company_a.id,

@@ -1,9 +1,15 @@
-import { redo, undo } from "@html_editor/../tests/_helpers/user_actions";
-import { expect, test } from "@odoo/hoot";
-import { animationFrame, edit, press } from "@odoo/hoot-dom";
-import { contains, defineModels, models, onRpc, webModels } from "@web/../tests/web_test_helpers";
-import { registry } from "@web/core/registry";
-import { patch } from "@web/core/utils/patch";
+import {redo, undo} from "@html_editor/../tests/_helpers/user_actions";
+import {expect, test} from "@odoo/hoot";
+import {animationFrame, edit, press} from "@odoo/hoot-dom";
+import {
+    contains,
+    defineModels,
+    models,
+    onRpc,
+    webModels,
+} from "@web/../tests/web_test_helpers";
+import {registry} from "@web/core/registry";
+import {patch} from "@web/core/utils/patch";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
@@ -46,20 +52,32 @@ patch(webModels.IrModel.prototype, {
 defineWebsiteModels();
 
 test("change action of form changes available options", async () => {
-    // reduced version of form_editor_actions
+    // Reduced version of form_editor_actions
     registry
         .category("website.form_editor_actions")
         .add("apply_job", {
             formFields: [
-                { type: "char", name: "partner_name", fillWith: "name", string: "Your Name" },
+                {
+                    type: "char",
+                    name: "partner_name",
+                    fillWith: "name",
+                    string: "Your Name",
+                },
             ],
             fields: [
-                { name: "job_id", type: "many2one", relation: "hr.job", string: "Applied Job" },
+                {
+                    name: "job_id",
+                    type: "many2one",
+                    relation: "hr.job",
+                    string: "Applied Job",
+                },
             ],
             successPage: "/job-thank-you",
         })
         .add("create_customer", {
-            formFields: [{ type: "char", name: "name", fillWith: "name", string: "Your Name" }],
+            formFields: [
+                {type: "char", name: "name", fillWith: "name", string: "Your Name"},
+            ],
         });
 
     await setupWebsiteBuilderWithSnippet("s_website_form");
@@ -76,7 +94,9 @@ test("change action of form changes available options", async () => {
     await contains("div.o-dropdown-item:contains('Create a Customer')").click();
 
     expect("span:contains('Applied Job')").toHaveCount(0);
-    expect("div:has(>span:contains('URL')) + div input").toHaveValue("/contactus-thank-you");
+    expect("div:has(>span:contains('URL')) + div input").toHaveValue(
+        "/contactus-thank-you"
+    );
 });
 
 test("'Author' field's type stays selected when you modify the option list", async () => {
@@ -108,18 +128,22 @@ test("'Author' field's type stays selected when you modify the option list", asy
     );
 
     await contains(":iframe section span:contains(Author)").click();
-    await contains(".hb-row[data-label='Type'] button.o-dropdown-caret:contains('Author')").click();
+    await contains(
+        ".hb-row[data-label='Type'] button.o-dropdown-caret:contains('Author')"
+    ).click();
     expect(".o_popover [data-action-value='author_id']").toHaveClass("active");
     await contains(".hb-row button.o-dropdown-caret:contains('Add')").click();
     await contains(".o_popover .o-hb-select-dropdown-item").click();
-    // check that the author is still marked as selected
-    await contains(".hb-row[data-label='Type'] button.o-dropdown-caret:contains('Author')").click();
+    // Check that the author is still marked as selected
+    await contains(
+        ".hb-row[data-label='Type'] button.o-dropdown-caret:contains('Author')"
+    ).click();
     expect(".o_popover [data-action-value='author_id']").toHaveClass("active");
 });
 
 test("undo redo add form field", async () => {
     onRpc("get_authorized_fields", () => ({}));
-    const { getEditor } = await setupWebsiteBuilder(
+    const {getEditor} = await setupWebsiteBuilder(
         `<section class="s_website_form"><form data-model_name="mail.mail">
             <div class="s_website_form_field"><label class="s_website_form_label" for="contact1">Name</label><input id="contact1" class="s_website_form_input"/></div>
             <div class="s_website_form_submit">
@@ -149,7 +173,7 @@ test("undo redo add form field", async () => {
 
 test("empty placeholder selection input for selection field", async () => {
     onRpc("get_authorized_fields", () => ({}));
-    const { getEditor } = await setupWebsiteBuilder(
+    const {getEditor} = await setupWebsiteBuilder(
         `<section class="s_website_form"><form data-model_name="mail.mail">
             <div data-name="Field" class="s_website_form_field mb-3 col-12 s_website_form_custom" data-type="many2one">
                 <div class="row s_col_no_resize s_col_no_bgcolor">
@@ -185,7 +209,9 @@ test("Set 'Message' as form success action and show/hide the message preview", a
     expect(".options-container[data-container-title='Form']").toHaveCount(1);
 
     await contains(".options-container [data-label='On Success'] button").click();
-    await contains("div[data-action-id='onSuccess'][data-action-value='message']").click();
+    await contains(
+        "div[data-action-id='onSuccess'][data-action-value='message']"
+    ).click();
     expect(":iframe .s_website_form_end_message.d-none").toHaveCount(1);
 
     await contains(".options-container [data-action-id='toggleEndMessage']").click();
@@ -225,22 +251,26 @@ const formWithCondition = `
 
 test("Remove visibility dependency on field unavailable (change first)", async () => {
     onRpc("get_authorized_fields", () => ({}));
-    const { getEditor } = await setupWebsiteBuilder(formWithCondition);
+    const {getEditor} = await setupWebsiteBuilder(formWithCondition);
     getEditor();
     await contains(":iframe input[name=a]").click();
     await contains("[data-label=Label] input").click();
     await contains("[data-label=Label] input").edit("b");
-    expect(":iframe .s_website_form_field:not([data-visibility-dependency])").toHaveCount(2);
+    expect(
+        ":iframe .s_website_form_field:not([data-visibility-dependency])"
+    ).toHaveCount(2);
 });
 
 test("Remove visibility dependency on field unavailable (change second)", async () => {
     onRpc("get_authorized_fields", () => ({}));
-    const { getEditor } = await setupWebsiteBuilder(formWithCondition);
+    const {getEditor} = await setupWebsiteBuilder(formWithCondition);
     getEditor();
     await contains(":iframe input[name=b]").click();
     await contains("[data-label=Label] input").click();
     await contains("[data-label=Label] input").edit("a");
-    expect(":iframe .s_website_form_field:not([data-visibility-dependency])").toHaveCount(2);
+    expect(
+        ":iframe .s_website_form_field:not([data-visibility-dependency])"
+    ).toHaveCount(2);
 });
 
 const formWithConditionOnChexbox = `
@@ -300,24 +330,36 @@ const changeFieldAndCheckDependency = async (
     await contains(":iframe input[value='Option 2']").click();
     await changeFieldAction();
     await contains(":iframe input[name='b']").click();
-    await contains(`#hidden_condition_no_text_opt:contains(${fieldDependencyName})`).click();
+    await contains(
+        `#hidden_condition_no_text_opt:contains(${fieldDependencyName})`
+    ).click();
 };
 
 test("Correctly set field dependency name at field rename", async () => {
     await changeFieldAndCheckDependency(
         async () => await contains("input[data-id='1']").edit("newName")
     );
-    expect(".o-main-components-container  .o-dropdown-item:contains('Option 3')").toHaveCount(1);
-    expect(".o-main-components-container  .o-dropdown-item:contains('newName')").toHaveCount(1);
+    expect(
+        ".o-main-components-container  .o-dropdown-item:contains('Option 3')"
+    ).toHaveCount(1);
+    expect(
+        ".o-main-components-container  .o-dropdown-item:contains('newName')"
+    ).toHaveCount(1);
 });
 
 test("Correctly set field dependency name at field addition", async () => {
     await changeFieldAndCheckDependency(
         async () => await contains("button.builder_list_add_item").click()
     );
-    expect(".o-main-components-container  .o-dropdown-item:contains('Option 2')").toHaveCount(1);
-    expect(".o-main-components-container  .o-dropdown-item:contains('Option 3')").toHaveCount(1);
-    expect(".o-main-components-container  .o-dropdown-item:contains('Item')").toHaveCount(1);
+    expect(
+        ".o-main-components-container  .o-dropdown-item:contains('Option 2')"
+    ).toHaveCount(1);
+    expect(
+        ".o-main-components-container  .o-dropdown-item:contains('Option 3')"
+    ).toHaveCount(1);
+    expect(
+        ".o-main-components-container  .o-dropdown-item:contains('Item')"
+    ).toHaveCount(1);
 });
 
 test("Correctly set field dependency name at selected field rename", async () => {
@@ -326,9 +368,15 @@ test("Correctly set field dependency name at selected field rename", async () =>
         async () => await contains("input[data-id='0']").edit(newName),
         newName
     );
-    expect(".o-main-components-container  .o-dropdown-item:contains('Option 3')").toHaveCount(1);
-    expect(".o-main-components-container  .o-dropdown-item:contains('Option 2')").toHaveCount(1);
-    expect(`.o-main-components-container  .o-dropdown-item:contains('${newName}')`).toHaveCount(1);
+    expect(
+        ".o-main-components-container  .o-dropdown-item:contains('Option 3')"
+    ).toHaveCount(1);
+    expect(
+        ".o-main-components-container  .o-dropdown-item:contains('Option 2')"
+    ).toHaveCount(1);
+    expect(
+        `.o-main-components-container  .o-dropdown-item:contains('${newName}')`
+    ).toHaveCount(1);
 });
 
 test("Changing max files number option updates file input 'multiple' attribute", async () => {
@@ -352,11 +400,15 @@ test("Changing max files number option updates file input 'multiple' attribute",
     expect(":iframe input[type=file]").toHaveAttribute("data-max-files-number", "1");
     expect(":iframe input[type=file]").not.toHaveAttribute("multiple");
     await contains(":iframe .s_website_form_input").click();
-    await contains(".options-container div[data-action-id='setMultipleFiles'] input").edit("2");
+    await contains(
+        ".options-container div[data-action-id='setMultipleFiles'] input"
+    ).edit("2");
     expect(":iframe input[type=file]").toHaveAttribute("data-max-files-number", "2");
     expect(":iframe input[type=file]").toHaveAttribute("multiple");
     await contains(":iframe .s_website_form_input").click();
-    await contains(".options-container div[data-action-id='setMultipleFiles'] input").edit("1");
+    await contains(
+        ".options-container div[data-action-id='setMultipleFiles'] input"
+    ).edit("1");
     expect(":iframe input[type=file]").toHaveAttribute("data-max-files-number", "1");
     expect(":iframe input[type=file]").not.toHaveAttribute("multiple");
 });
@@ -431,7 +483,9 @@ test("Form using the Outgoing Mails model includes hidden email_to field", async
     await contains("div.o-dropdown-item:contains('Send an E-mail')").click();
 
     expect(":iframe input[type='hidden'][name='email_to']").toHaveCount(1);
-    expect(":iframe input[type='hidden'][name='email_to']").toHaveValue("info@yourcompany.example.com");
+    expect(":iframe input[type='hidden'][name='email_to']").toHaveValue(
+        "info@yourcompany.example.com"
+    );
 });
 
 test("Label falls back to default value (data-translated-name) when removed", async () => {
@@ -468,7 +522,7 @@ test("Label falls back to default value (data-translated-name) when removed", as
 
 test("Option list input editing is disabled for non-custom forms", async () => {
     onRpc("get_authorized_fields", () => ({}));
-    const { getEditor } = await setupWebsiteBuilder(
+    const {getEditor} = await setupWebsiteBuilder(
         `<section class="s_website_form"><form data-model_name="mail.mail">
             <div data-name="Field" class="s_website_form_field mb-3 col-12" data-type="many2one">
                 <div class="row s_col_no_resize s_col_no_bgcolor">
@@ -492,17 +546,19 @@ test("Option list input editing is disabled for non-custom forms", async () => {
     );
     getEditor();
     await contains(":iframe .s_website_form_field").click();
-    expect(".options-container[data-container-title='Field'] .we-bg-options-container").toHaveCount(1);
+    expect(
+        ".options-container[data-container-title='Field'] .we-bg-options-container"
+    ).toHaveCount(1);
 
-    const inputs = [...document.querySelectorAll('.hb-row')]
-        .find(el => el.textContent.includes('Option List'))
-        .querySelectorAll('.o-hb-input-base');
-    expect([...inputs].every(input => input.disabled)).toBe(true);
+    const inputs = [...document.querySelectorAll(".hb-row")]
+        .find((el) => el.textContent.includes("Option List"))
+        .querySelectorAll(".o-hb-input-base");
+    expect([...inputs].every((input) => input.disabled)).toBe(true);
 });
 
 test("Option list input editing is enabled for custom forms", async () => {
     onRpc("get_authorized_fields", () => ({}));
-    const { getEditor } = await setupWebsiteBuilder(
+    const {getEditor} = await setupWebsiteBuilder(
         `<section class="s_website_form"><form data-model_name="mail.mail">
             <div data-name="Field" class="s_website_form_field mb-3 col-12 s_website_form_custom" data-type="many2one">
                 <div class="row s_col_no_resize s_col_no_bgcolor">
@@ -526,10 +582,12 @@ test("Option list input editing is enabled for custom forms", async () => {
     );
     getEditor();
     await contains(":iframe .s_website_form_field").click();
-    expect(".options-container[data-container-title='Field'] .we-bg-options-container").toHaveCount(1);
+    expect(
+        ".options-container[data-container-title='Field'] .we-bg-options-container"
+    ).toHaveCount(1);
 
-    const inputs = [...document.querySelectorAll('.hb-row')]
-        .find(el => el.textContent.includes('Option List'))
-        .querySelectorAll('.o-hb-input-base');
-    expect([...inputs].every(input => input.disabled)).toBe(false);
+    const inputs = [...document.querySelectorAll(".hb-row")]
+        .find((el) => el.textContent.includes("Option List"))
+        .querySelectorAll(".o-hb-input-base");
+    expect([...inputs].every((input) => input.disabled)).toBe(false);
 });

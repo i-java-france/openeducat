@@ -1,6 +1,6 @@
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { cookie } from "@web/core/browser/cookie";
-import { redirect } from "@web/core/utils/urls";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {cookie} from "@web/core/browser/cookie";
+import {redirect} from "@web/core/utils/urls";
 import {
     contains,
     defineModels,
@@ -13,16 +13,16 @@ import {
     patchWithCleanup,
     serverState,
 } from "@web/../tests/web_test_helpers";
-import { animationFrame } from "@odoo/hoot-dom";
-import { browser } from "@web/core/browser/browser";
-import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
+import {animationFrame} from "@odoo/hoot-dom";
+import {browser} from "@web/core/browser/browser";
+import {FormViewDialog} from "@web/views/view_dialogs/form_view_dialog";
 
 class Partner extends models.Model {
     _name = "res.partner";
 
     name = fields.Char();
 
-    _records = [{ id: 1, name: "First record" }];
+    _records = [{id: 1, name: "First record"}];
     _views = {
         form: `
             <form>
@@ -38,9 +38,9 @@ defineModels([Partner]);
 
 beforeEach(() => {
     serverState.companies = [
-        { id: 1, name: "Company 1", sequence: 1, parent_id: false, child_ids: [] },
-        { id: 2, name: "Company 2", sequence: 2, parent_id: false, child_ids: [] },
-        { id: 3, name: "Company 3", sequence: 3, parent_id: false, child_ids: [] },
+        {id: 1, name: "Company 1", sequence: 1, parent_id: false, child_ids: []},
+        {id: 2, name: "Company 2", sequence: 2, parent_id: false, child_ids: []},
+        {id: 3, name: "Company 3", sequence: 3, parent_id: false, child_ids: []},
     ];
     patchWithCleanup(browser.location, {
         reload() {
@@ -58,7 +58,7 @@ test("open record withtout the correct company (load state)", async () => {
         throw makeServerError({
             type: "AccessError",
             message: "Wrong Company",
-            context: { suggested_company: { id: 2, display_name: "Company 2" } },
+            context: {suggested_company: {id: 2, display_name: "Company 2"}},
         });
     });
 
@@ -77,7 +77,7 @@ test("open record withtout the correct company (doAction)", async () => {
         throw makeServerError({
             type: "AccessError",
             message: "Wrong Company",
-            context: { suggested_company: { id: 2, display_name: "Company 2" } },
+            context: {suggested_company: {id: 2, display_name: "Company 2"}},
         });
     });
 
@@ -98,7 +98,7 @@ test("open record withtout the correct company (doAction)", async () => {
 
 test("create/modify a record with a non-connected company", async () => {
     cookie.set("cids", "1");
-    onRpc("web_save", ({ kwargs }) => {
+    onRpc("web_save", ({kwargs}) => {
         expect.step(kwargs.context.allowed_company_ids);
         if (
             kwargs.context.allowed_company_ids.length === 1 &&
@@ -107,7 +107,7 @@ test("create/modify a record with a non-connected company", async () => {
             throw makeServerError({
                 type: "AccessError",
                 message: "Wrong Company",
-                context: { suggested_company: { id: 2, display_name: "Company 2" } },
+                context: {suggested_company: {id: 2, display_name: "Company 2"}},
             });
         }
     });
@@ -135,7 +135,7 @@ test("form view in dialog shows wrong company error", async () => {
         throw makeServerError({
             type: "AccessError",
             message: "Wrong Company",
-            context: { suggested_company: { id: 2, display_name: "Company 2" } },
+            context: {suggested_company: {id: 2, display_name: "Company 2"}},
         });
     });
     onRpc("has_group", () => true);
@@ -152,7 +152,9 @@ test("form view in dialog shows wrong company error", async () => {
         resId: 1,
     });
     await animationFrame();
-    expect.verifyErrors(['Error: The following error occurred in onWillStart: "Wrong Company"']);
-    expect(cookie.get("cids")).toBe("1"); // cookies were not modified
-    expect.verifySteps([]); // don't reload
+    expect.verifyErrors([
+        'Error: The following error occurred in onWillStart: "Wrong Company"',
+    ]);
+    expect(cookie.get("cids")).toBe("1"); // Cookies were not modified
+    expect.verifySteps([]); // Don't reload
 });

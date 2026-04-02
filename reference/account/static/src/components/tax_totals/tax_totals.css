@@ -1,11 +1,13 @@
-.o_tax_group { width: 0% }
+.o_tax_group {
+    width: 0%;
+}
 
 .o_tax_group_edit {
     white-space: nowrap;
 }
 
 .o_tax_group_edit:hover {
-    color: #00A09D;
+    color: #00a09d;
     cursor: pointer;
 }
 
@@ -16,9 +18,9 @@
 }
 
 .o_tax_group_editable .o_tax_group_amount_value::before {
-    content: ' ';
+    content: " ";
 }
 
-.o_tax_total_label{
+.o_tax_total_label {
     margin-bottom: 0 !important;
 }

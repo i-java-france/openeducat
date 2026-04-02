@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { queryAllTexts } from "@odoo/hoot-dom";
+import {expect, test} from "@odoo/hoot";
+import {queryAllTexts} from "@odoo/hoot-dom";
 import {
     contains,
     defineModels,
@@ -23,8 +23,8 @@ class Program extends models.Model {
     });
 
     _records = [
-        { id: 1, type: "coupon", available_types: "['coupon', 'promotion']" },
-        { id: 2, type: "gift_card", available_types: "['gift_card', 'promotion']" },
+        {id: 1, type: "coupon", available_types: "['coupon', 'promotion']"},
+        {id: 2, type: "gift_card", available_types: "['gift_card', 'promotion']"},
     ];
 }
 defineModels([Program]);
@@ -75,8 +75,12 @@ test(`FilterableSelectionField test with invalid value`, async () => {
     });
     await contains(".o_field_widget[name='type'] input").click();
     expect(`.o_select_menu_item`).toHaveCount(3);
-    expect(queryAllTexts(".o_select_menu_item")).toEqual(["Coupons", "Promotion", "Gift card"]);
-    await editSelectMenu(".o_field_widget[name='type'] input", { value: "Coupons" });
+    expect(queryAllTexts(".o_select_menu_item")).toEqual([
+        "Coupons",
+        "Promotion",
+        "Gift card",
+    ]);
+    await editSelectMenu(".o_field_widget[name='type'] input", {value: "Coupons"});
     await contains(".o_field_widget[name='type'] input").click();
     expect(`.o_select_menu_item`).toHaveCount(2);
     expect(queryAllTexts(".o_select_menu_item")).toEqual(["Coupons", "Promotion"]);

@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
-import requests
 import uuid
 
-from odoo import exceptions, modules, _
+import requests
+
+from odoo import _, exceptions, modules
 from odoo.tools import email_normalize, exception_to_unicode
 
 _logger = logging.getLogger(__name__)

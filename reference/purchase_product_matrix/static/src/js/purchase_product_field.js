@@ -1,11 +1,11 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from '@web/core/registry';
-import { useMatrixConfigurator } from "@product_matrix/js/matrix_configurator_hook";
-import { useService } from "@web/core/utils/hooks";
-import { useRecordObserver } from "@web/model/relational_model/utils";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useMatrixConfigurator} from "@product_matrix/js/matrix_configurator_hook";
+import {useService} from "@web/core/utils/hooks";
+import {useRecordObserver} from "@web/model/relational_model/utils";
 import {
     productLabelSectionAndNoteField,
-    ProductLabelSectionAndNoteField
+    ProductLabelSectionAndNoteField,
 } from "@account/components/product_label_section_and_note_field/product_label_section_and_note_field";
 
 export class PurchaseOrderLineProductField extends ProductLabelSectionAndNoteField {
@@ -17,7 +17,10 @@ export class PurchaseOrderLineProductField extends ProductLabelSectionAndNoteFie
 
         useRecordObserver((record) => {
             if (record.isInEdition && this.props.record.data[this.props.name]) {
-                if (!this.currentValue || this.currentValue.id != record.data[this.props.name].id) {
+                if (
+                    !this.currentValue ||
+                    this.currentValue.id != record.data[this.props.name].id
+                ) {
                     // Field was updated if line was open in edit mode,
                     //      field is not emptied,
                     //      new value is different than existing value.
@@ -39,15 +42,18 @@ export class PurchaseOrderLineProductField extends ProductLabelSectionAndNoteFie
 
     async _onProductTemplateUpdate() {
         const result = await this.orm.call(
-            'product.template',
-            'get_single_product_variant',
-            [this.props.record.data.product_template_id.id],
+            "product.template",
+            "get_single_product_variant",
+            [this.props.record.data.product_template_id.id]
         );
-        if(result && result.product_id) {
+        if (result && result.product_id) {
             if (this.props.record.data.product_id != result.product_id.id) {
                 this.props.record.update({
                     // TODO right name get (same problem as configurator)
-                    product_id: { id: result.product_id, display_name: result.product_name },
+                    product_id: {
+                        id: result.product_id,
+                        display_name: result.product_name,
+                    },
                 });
             }
         } else {

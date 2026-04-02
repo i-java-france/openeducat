@@ -1,10 +1,10 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
 
 export class CardImageAlignmentOption extends BaseOptionComponent {
     static template = "website.CardImageAlignmentOption";
     static props = {
-        label: { type: String },
-        level: { type: Number, optional: true },
+        label: {type: String},
+        level: {type: Number, optional: true},
     };
     static defaultProps = {
         level: 0,

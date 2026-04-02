@@ -1,11 +1,11 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { SNIPPET_SPECIFIC } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { renderToElement, renderToFragment } from "@web/core/utils/render";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {SNIPPET_SPECIFIC} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {renderToElement, renderToFragment} from "@web/core/utils/render";
 
 export class DonationOption extends BaseOptionComponent {
     static template = "website_payment.DonationOption";
@@ -20,9 +20,7 @@ export class DonationOptionPlugin extends Plugin {
     static id = "donationOption";
 
     resources = {
-        builder_options: [
-            withSequence(SNIPPET_SPECIFIC, DonationOption),
-        ],
+        builder_options: [withSequence(SNIPPET_SPECIFIC, DonationOption)],
         builder_actions: {
             ToggleDisplayOptionsAction,
             TogglePrefilledOptionsAction,
@@ -37,7 +35,7 @@ export class DonationOptionPlugin extends Plugin {
 }
 
 export class BaseDonationAction extends BuilderAction {
-    getPrefilledOptionsList({ editingElement }) {
+    getPrefilledOptionsList({editingElement}) {
         const savedOptions = editingElement.dataset.prefilledOptionsList;
 
         // TODO AGAU: remove when merging https://github.com/odoo-dev/odoo/pull/4240
@@ -46,7 +44,9 @@ export class BaseDonationAction extends BuilderAction {
                 return savedOptions;
             } else {
                 const options = [];
-                const amounts = JSON.parse(editingElement.dataset.donationAmounts || "[]");
+                const amounts = JSON.parse(
+                    editingElement.dataset.donationAmounts || "[]"
+                );
                 const descriptionEls = editingElement.querySelectorAll(
                     "#s_donation_description_inputs input"
                 );
@@ -72,7 +72,7 @@ export class BaseDonationAction extends BuilderAction {
 
     rebuildPrefilledOptions(editingElement, options) {
         if (!options) {
-            options = this.getPrefilledOptionsList({ editingElement });
+            options = this.getPrefilledOptionsList({editingElement});
         }
 
         // TODO AGAU: remove when merging https://github.com/odoo-dev/odoo/pull/4240
@@ -84,7 +84,8 @@ export class BaseDonationAction extends BuilderAction {
         const formEl = editingElement.querySelector(".s_donation_form");
         const donateButtonEl = editingElement.querySelector(".s_donation_donate_btn");
         const prefilledOptions = editingElement.dataset.prefilledOptions;
-        const showDescriptions = prefilledOptions && editingElement.dataset.descriptions;
+        const showDescriptions =
+            prefilledOptions && editingElement.dataset.descriptions;
 
         // Slider
         const layout = editingElement.dataset.customAmount;
@@ -107,9 +108,12 @@ export class BaseDonationAction extends BuilderAction {
         descriptionInputContainerEl.textContent = "";
         if (showDescriptions) {
             descriptionInputContainerEl.insertBefore(
-                renderToFragment("website_payment.donation.descriptionTranslationInputs", {
-                    descriptions: options.map((option) => option.description),
-                }),
+                renderToFragment(
+                    "website_payment.donation.descriptionTranslationInputs",
+                    {
+                        descriptions: options.map((option) => option.description),
+                    }
+                ),
                 null
             );
         }
@@ -134,7 +138,10 @@ export class BaseDonationAction extends BuilderAction {
                     minimum_amount: editingElement.dataset.minimumAmount,
                 }
             );
-            formEl.insertBefore(prefilledButtonsEl, descriptionInputContainerEl.nextSibling);
+            formEl.insertBefore(
+                prefilledButtonsEl,
+                descriptionInputContainerEl.nextSibling
+            );
         }
     }
 }
@@ -156,7 +163,7 @@ export class ToggleDataAttributeAction extends BaseDonationAction {
      * @param {HTMLElement} context.editingElement
      * @returns {boolean}
      */
-    isApplied({ editingElement }) {
+    isApplied({editingElement}) {
         return !!editingElement.dataset[this.dataAttributeName];
     }
 
@@ -168,9 +175,9 @@ export class ToggleDataAttributeAction extends BaseDonationAction {
      * @param {...*} restArgs - Extra args for toggleFunction
      */
     apply(context, ...restArgs) {
-        const { editingElement } = context;
+        const {editingElement} = context;
         editingElement.dataset[this.dataAttributeName] = "true";
-        this.toggleFunction({ ...context, value: true }, ...restArgs);
+        this.toggleFunction({...context, value: true}, ...restArgs);
     }
 
     /**
@@ -181,9 +188,9 @@ export class ToggleDataAttributeAction extends BaseDonationAction {
      * @param {...*} restArgs - Extra args for toggleFunction
      */
     clean(context, ...restArgs) {
-        const { editingElement } = context;
+        const {editingElement} = context;
         delete editingElement.dataset[this.dataAttributeName];
-        this.toggleFunction({ ...context, value: false }, ...restArgs);
+        this.toggleFunction({...context, value: false}, ...restArgs);
     }
 }
 
@@ -194,7 +201,7 @@ export class ToggleDisplayOptionsAction extends ToggleDataAttributeAction {
         super.setup("displayOptions", this.toggleDisplayOptions);
     }
 
-    toggleDisplayOptions({ editingElement, value }) {
+    toggleDisplayOptions({editingElement, value}) {
         if (!value && editingElement.dataset.customAmount === "slider") {
             editingElement.dataset.customAmount = "freeAmount";
         } else if (value && !editingElement.dataset.prefilledOptions) {
@@ -211,7 +218,7 @@ export class TogglePrefilledOptionsAction extends ToggleDataAttributeAction {
         super.setup("prefilledOptions", this.togglePrefilledOptions);
     }
 
-    togglePrefilledOptions({ editingElement, value }) {
+    togglePrefilledOptions({editingElement, value}) {
         if (!value && editingElement.dataset.displayOptions) {
             editingElement.dataset.customAmount = "slider";
         }
@@ -223,7 +230,7 @@ export class ToggleDescriptionsAction extends ToggleDataAttributeAction {
     static id = "toggleDescriptions";
 
     setup() {
-        super.setup("descriptions", ({ editingElement }) => {
+        super.setup("descriptions", ({editingElement}) => {
             this.rebuildPrefilledOptions(editingElement);
         });
     }
@@ -236,7 +243,7 @@ export class SetPrefilledOptionsAction extends BaseDonationAction {
         return this.getPrefilledOptionsList(context);
     }
 
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         // TODO AGAU: remove when merging https://github.com/odoo-dev/odoo/pull/4240
         {
             const options = JSON.parse(value);
@@ -252,11 +259,11 @@ export class SetPrefilledOptionsAction extends BaseDonationAction {
 export class SelectAmountInputAction extends BaseDonationAction {
     static id = "selectAmountInput";
 
-    isApplied({ editingElement, params }) {
+    isApplied({editingElement, params}) {
         return editingElement.dataset.customAmount === params.mainParam;
     }
 
-    apply({ editingElement, params }) {
+    apply({editingElement, params}) {
         editingElement.dataset.customAmount = params.mainParam;
         this.rebuildPrefilledOptions(editingElement);
     }
@@ -265,11 +272,11 @@ export class SelectAmountInputAction extends BaseDonationAction {
 export class SetMinimumAmountAction extends BuilderAction {
     static id = "setMinimumAmount";
 
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         return editingElement.dataset.minimumAmount;
     }
 
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         editingElement.dataset.minimumAmount = value;
         const rangeSliderEl = editingElement.querySelector("#s_donation_range_slider");
         const amountInputEl = editingElement.querySelector("#s_donation_amount_input");
@@ -284,11 +291,11 @@ export class SetMinimumAmountAction extends BuilderAction {
 export class SetMaximumAmountAction extends BuilderAction {
     static id = "setMaximumAmount";
 
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         return editingElement.dataset.maximumAmount;
     }
 
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         editingElement.dataset.maximumAmount = value;
         const rangeSliderEl = editingElement.querySelector("#s_donation_range_slider");
         const amountInputEl = editingElement.querySelector("#s_donation_amount_input");
@@ -303,11 +310,11 @@ export class SetMaximumAmountAction extends BuilderAction {
 export class SetSliderStepAction extends BuilderAction {
     static id = "setSliderStep";
 
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         return editingElement.dataset.sliderStep;
     }
 
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         editingElement.dataset.sliderStep = value;
         const rangeSliderEl = editingElement.querySelector("#s_donation_range_slider");
         if (rangeSliderEl) {

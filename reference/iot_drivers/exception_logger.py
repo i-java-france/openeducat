@@ -1,8 +1,7 @@
 
-from io import StringIO
-
 import logging
 import sys
+from io import StringIO
 
 from odoo.addons.iot_drivers.tools.system import IS_TEST
 

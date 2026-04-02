@@ -1,7 +1,7 @@
-import { getFixture } from "@odoo/hoot";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Spreadsheet } from "@odoo/o-spreadsheet";
-import { makeSpreadsheetMockEnv } from "@spreadsheet/../tests/helpers/model";
+import {getFixture} from "@odoo/hoot";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Spreadsheet} from "@odoo/o-spreadsheet";
+import {makeSpreadsheetMockEnv} from "@spreadsheet/../tests/helpers/model";
 import {
     getService,
     makeMockServer,
@@ -9,8 +9,8 @@ import {
     mountWithCleanup,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { loadBundle } from "@web/core/assets";
-import { WebClient } from "@web/webclient/webclient";
+import {loadBundle} from "@web/core/assets";
+import {WebClient} from "@web/webclient/webclient";
 /**
  * @param {object} params
  * @param {object} [params.serverData]
@@ -38,7 +38,7 @@ export async function createSpreadsheetDashboard(params = {}) {
         },
     });
 
-    return { model, fixture: getFixture() };
+    return {model, fixture: getFixture()};
 }
 
 export async function createDashboardActionWithData(data) {
@@ -49,7 +49,9 @@ export async function createDashboardActionWithData(data) {
     const [dashboard] = MockServer.env["spreadsheet.dashboard"];
     dashboard.spreadsheet_data = json;
     dashboard.json_data = json;
-    const { fixture, model } = await createSpreadsheetDashboard({ spreadsheetId: dashboard.id });
+    const {fixture, model} = await createSpreadsheetDashboard({
+        spreadsheetId: dashboard.id,
+    });
     await animationFrame();
-    return { fixture, model };
+    return {fixture, model};
 }

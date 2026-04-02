@@ -1,6 +1,13 @@
-import { Component, onWillDestroy, useChildSubEnv, useEffect, useRef, useState } from "@odoo/owl";
-import { sortBy } from "@web/core/utils/arrays";
-import { ErrorHandler } from "@web/core/utils/components";
+import {
+    Component,
+    onWillDestroy,
+    useChildSubEnv,
+    useEffect,
+    useRef,
+    useState,
+} from "@odoo/owl";
+import {sortBy} from "@web/core/utils/arrays";
+import {ErrorHandler} from "@web/core/utils/components";
 
 const OVERLAY_ITEMS = [];
 export const OVERLAY_SYMBOL = Symbol("Overlay");
@@ -9,9 +16,9 @@ class OverlayItem extends Component {
     static template = "web.OverlayContainer.Item";
     static components = {};
     static props = {
-        component: { type: Function },
-        props: { type: Object },
-        env: { type: Object, optional: true },
+        component: {type: Function},
+        props: {type: Object},
+        env: {type: Object, optional: true},
     };
 
     setup() {
@@ -48,12 +55,12 @@ class OverlayItem extends Component {
 
 export class OverlayContainer extends Component {
     static template = "web.OverlayContainer";
-    static components = { ErrorHandler, OverlayItem };
-    static props = { overlays: Object };
+    static components = {ErrorHandler, OverlayItem};
+    static props = {overlays: Object};
 
     setup() {
         this.root = useRef("root");
-        this.state = useState({ rootEl: null });
+        this.state = useState({rootEl: null});
         useEffect(
             () => {
                 this.state.rootEl = this.root.el;
@@ -63,7 +70,10 @@ export class OverlayContainer extends Component {
     }
 
     get sortedOverlays() {
-        return sortBy(Object.values(this.props.overlays), (overlay) => overlay.sequence);
+        return sortBy(
+            Object.values(this.props.overlays),
+            (overlay) => overlay.sequence
+        );
     }
 
     isVisible(overlay) {

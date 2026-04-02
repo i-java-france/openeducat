@@ -1,9 +1,9 @@
-import { _t } from "@web/core/l10n/translation";
-import { PaymentInterface } from "@point_of_sale/app/utils/payment/payment_interface";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { register_payment_method } from "@point_of_sale/app/services/pos_store";
-import { logPosMessage } from "@point_of_sale/app/utils/pretty_console_log";
-const { DateTime } = luxon;
+import {_t} from "@web/core/l10n/translation";
+import {PaymentInterface} from "@point_of_sale/app/utils/payment/payment_interface";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {register_payment_method} from "@point_of_sale/app/services/pos_store";
+import {logPosMessage} from "@point_of_sale/app/utils/pretty_console_log";
+const {DateTime} = luxon;
 
 export class PaymentAdyen extends PaymentInterface {
     setup() {
@@ -60,7 +60,9 @@ export class PaymentAdyen extends PaymentInterface {
 
     _adyenCommonMessageHeader() {
         var config = this.pos.config;
-        this.most_recent_service_id = Math.floor(Math.random() * Math.pow(2, 64)).toString(); // random ID to identify request/response pairs
+        this.most_recent_service_id = Math.floor(
+            Math.random() * Math.pow(2, 64)
+        ).toString(); // random ID to identify request/response pairs
         this.most_recent_service_id = this.most_recent_service_id.substring(0, 10); // max length is 10
 
         return {
@@ -86,7 +88,9 @@ export class PaymentAdyen extends PaymentInterface {
                     SaleData: {
                         SaleTransactionID: {
                             TransactionID: `${order.uuid}--${order.session_id.id}`,
-                            TimeStamp: DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ssZZ"), // iso format: '2018-01-10T11:30:15+00:00'
+                            TimeStamp: DateTime.now().toFormat(
+                                "yyyy-MM-dd'T'HH:mm:ssZZ"
+                            ), // iso format: '2018-01-10T11:30:15+00:00'
                         },
                     },
                     PaymentTransaction: {
@@ -177,24 +181,34 @@ export class PaymentAdyen extends PaymentInterface {
         var line = this.pendingAdyenline();
 
         if (!response || (response.error && response.error.status_code == 401)) {
-            this._show_error(_t("Authentication failed. Please check your Adyen credentials."));
+            this._show_error(
+                _t("Authentication failed. Please check your Adyen credentials.")
+            );
             line.setPaymentStatus("force_done");
             return false;
         }
 
         response = response.SaleToPOIRequest;
         if (response?.EventNotification?.EventToNotify === "Reject") {
-            logPosMessage("PaymentAdyen", "_adyenHandleResponse", `Error from Adyen`, false, [
-                response,
-            ]);
+            logPosMessage(
+                "PaymentAdyen",
+                "_adyenHandleResponse",
+                `Error from Adyen`,
+                false,
+                [response]
+            );
 
             var msg = "";
             if (response.EventNotification) {
-                var params = new URLSearchParams(response.EventNotification.EventDetails);
+                var params = new URLSearchParams(
+                    response.EventNotification.EventDetails
+                );
                 msg = params.get("message");
             }
 
-            this._show_error(_t("An unexpected error occurred. Message from Adyen: %s", msg));
+            this._show_error(
+                _t("An unexpected error occurred. Message from Adyen: %s", msg)
+            );
             if (line) {
                 line.setPaymentStatus("force_done");
             }
@@ -233,7 +247,9 @@ export class PaymentAdyen extends PaymentInterface {
         if (isPaymentSuccessful) {
             this.handleSuccessResponse(line, notification, additional_response);
         } else {
-            this._show_error(_t("Message from Adyen: %s", additional_response.get("message")));
+            this._show_error(
+                _t("Message from Adyen: %s", additional_response.get("message"))
+            );
         }
         // when starting to wait for the payment response we create a promise
         // that will be resolved when the payment response is received.

@@ -2,10 +2,15 @@ import {
     defineLivechatModels,
     loadDefaultEmbedConfig,
 } from "@im_livechat/../tests/livechat_test_helpers";
-import { contains, setupChatHub, start, startServer } from "@mail/../tests/mail_test_helpers";
-import { describe, test } from "@odoo/hoot";
-import { Command, patchWithCleanup, serverState } from "@web/../tests/web_test_helpers";
-import { mailDataHelpers } from "@mail/../tests/mock_server/mail_mock_server";
+import {
+    contains,
+    setupChatHub,
+    start,
+    startServer,
+} from "@mail/../tests/mail_test_helpers";
+import {describe, test} from "@odoo/hoot";
+import {Command, patchWithCleanup, serverState} from "@web/../tests/web_test_helpers";
+import {mailDataHelpers} from "@mail/../tests/mock_server/mail_mock_server";
 
 describe.current.tags("desktop");
 defineLivechatModels();
@@ -13,19 +18,19 @@ defineLivechatModels();
 test("persisted session", async () => {
     const pyEnv = await startServer();
     const livechatChannelId = await loadDefaultEmbedConfig();
-    const guestId = pyEnv["mail.guest"].create({ name: "Visitor 11" });
+    const guestId = pyEnv["mail.guest"].create({name: "Visitor 11"});
     const channelId = pyEnv["discuss.channel"].create({
         channel_member_ids: [
-            Command.create({ partner_id: serverState.partnerId }),
-            Command.create({ guest_id: guestId }),
+            Command.create({partner_id: serverState.partnerId}),
+            Command.create({guest_id: guestId}),
         ],
         channel_type: "livechat",
         livechat_channel_id: livechatChannelId,
         livechat_operator_id: serverState.partnerId,
     });
-    setupChatHub({ opened: [channelId] });
+    setupChatHub({opened: [channelId]});
     await start({
-        authenticateAs: { ...pyEnv["mail.guest"].read(guestId)[0], _name: "mail.guest" },
+        authenticateAs: {...pyEnv["mail.guest"].read(guestId)[0], _name: "mail.guest"},
     });
     await contains(".o-mail-ChatWindow");
 });
@@ -44,9 +49,9 @@ test("rule received in init", async () => {
                 action: "auto_popup",
                 auto_popup_timer: 0,
             });
-            store.add({ livechat_rule: autopopupRuleId });
+            store.add({livechat_rule: autopopupRuleId});
         },
     });
-    await start({ authenticateAs: false });
+    await start({authenticateAs: false});
     await contains(".o-mail-ChatWindow");
 });

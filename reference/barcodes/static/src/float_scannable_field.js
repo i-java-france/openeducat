@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { FloatField, floatField } from "@web/views/fields/float/float_field";
+import {registry} from "@web/core/registry";
+import {FloatField, floatField} from "@web/views/fields/float/float_field";
 
 export class FloatScannableField extends FloatField {
     static template = "barcodes.FloatScannableField";

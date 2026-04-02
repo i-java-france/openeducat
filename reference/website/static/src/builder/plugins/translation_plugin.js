@@ -1,9 +1,9 @@
-import { Plugin } from "@html_editor/plugin";
-import { _t } from "@web/core/l10n/translation";
-import { AttributeTranslateDialog } from "../translation_components/attributeTranslateDialog";
-import { SelectTranslateDialog } from "../translation_components/selectTranslateDialog";
-import { withSequence } from "@html_editor/utils/resource";
-import { makeContentsInline, unwrapContents } from "@html_editor/utils/dom";
+import {Plugin} from "@html_editor/plugin";
+import {_t} from "@web/core/l10n/translation";
+import {AttributeTranslateDialog} from "../translation_components/attributeTranslateDialog";
+import {SelectTranslateDialog} from "../translation_components/selectTranslateDialog";
+import {withSequence} from "@html_editor/utils/resource";
+import {makeContentsInline, unwrapContents} from "@html_editor/utils/dom";
 
 /**
  * @typedef {((editableEls: HTMLElement[]) => void)[]} mark_translatable_nodes
@@ -36,7 +36,8 @@ function findOEditable(containerEl) {
         if (
             node.isContentEditable ||
             (node.classList.contains("o_editable_attribute") &&
-                (!node.closest(".o_not_editable") || node.classList.contains("o_editable_media")))
+                (!node.closest(".o_not_editable") ||
+                    node.classList.contains("o_editable_media")))
         ) {
             return true;
         }
@@ -93,7 +94,8 @@ export class TranslationPlugin extends Plugin {
         this.notificationService = this.services.notification;
         this.dialogService = this.services.dialog;
         this.nonTranslatedSelector =
-            `:not(${this.config.translatedElements.join(", ")})` + `:not(.o_translate_inline)`;
+            `:not(${this.config.translatedElements.join(", ")})` +
+            `:not(.o_translate_inline)`;
     }
 
     prepareTranslation() {
@@ -102,14 +104,17 @@ export class TranslationPlugin extends Plugin {
         this.handleSelectTranslation(this.editableEls);
         this.markTranslatableNodes();
         for (const [translatedEl] of this.elToTranslationInfoMap) {
-            if (translatedEl.matches("input[type=hidden].o_translatable_input_hidden")) {
+            if (
+                translatedEl.matches("input[type=hidden].o_translatable_input_hidden")
+            ) {
                 translatedEl.setAttribute("type", "text");
             }
         }
 
         // We don't want the BS dropdown to close when clicking in a element to
         // translate.
-        const menuEls = this.websiteService.pageDocument.querySelectorAll(".dropdown-menu");
+        const menuEls =
+            this.websiteService.pageDocument.querySelectorAll(".dropdown-menu");
         for (const menuEl of menuEls) {
             this.addDomListener(menuEl, "click", (ev) => {
                 const editableEl = ev.target.closest(".o_editable");
@@ -129,7 +134,9 @@ export class TranslationPlugin extends Plugin {
             ev.__shownNotification = true;
             let message = _t("This translation is not editable.");
             if (ev.target.closest(".s_table_of_content_navbar_wrap")) {
-                message = _t("Translate header in the text. Menu is generated automatically.");
+                message = _t(
+                    "Translate header in the text. Menu is generated automatically."
+                );
             }
             this.notificationService.add(message, {
                 type: "info",
@@ -190,7 +197,11 @@ export class TranslationPlugin extends Plugin {
             );
             for (const filteredEditableEl of filteredEditableEls) {
                 const translation = filteredEditableEl.getAttribute(translatedAttr);
-                this.updateTranslationMap(filteredEditableEl, translation, translatedAttr);
+                this.updateTranslationMap(
+                    filteredEditableEl,
+                    translation,
+                    translatedAttr
+                );
                 const match = translation.match(translationRegex);
                 filteredEditableEl.setAttribute(translatedAttr, match[2]);
                 if (translatedAttr === "value") {
@@ -309,7 +320,9 @@ export class TranslationPlugin extends Plugin {
     updateTranslationMap(translateEl, translation, attrName) {
         const parser = new DOMParser();
         const dummyDoc = parser.parseFromString(translation, "text/html");
-        const translationEl = dummyDoc.querySelector("[data-oe-translation-source-sha]");
+        const translationEl = dummyDoc.querySelector(
+            "[data-oe-translation-source-sha]"
+        );
         if (!this.elToTranslationInfoMap.get(translateEl)) {
             this.elToTranslationInfoMap.set(translateEl, {});
         }
@@ -327,8 +340,8 @@ export class TranslationPlugin extends Plugin {
         for (const [translateEl, translationInfo] of this.elToTranslationInfoMap) {
             for (const [attr, data] of Object.entries(translationInfo)) {
                 if (
-                    this.originalElToTranslationInfoMap.get(translateEl)[attr].translation !==
-                    data.translation
+                    this.originalElToTranslationInfoMap.get(translateEl)[attr]
+                        .translation !== data.translation
                 ) {
                     const spanEl = document.createElement("span");
                     for (const [name, value] of Object.entries(data)) {
@@ -344,7 +357,7 @@ export class TranslationPlugin extends Plugin {
         return dirtyEls;
     }
 
-    cleanForSave({ root }) {
+    cleanForSave({root}) {
         root.querySelectorAll(".o_editable_attribute").forEach((el) => {
             el.classList.remove("o_editable_attribute");
         });
@@ -353,7 +366,8 @@ export class TranslationPlugin extends Plugin {
         if (optionsEl) {
             const selectEl = optionsEl.nextElementSibling;
             const translatedOptions = optionsEl.children;
-            const selectOptions = selectEl.tagName === "SELECT" ? [...selectEl.options] : [];
+            const selectOptions =
+                selectEl.tagName === "SELECT" ? [...selectEl.options] : [];
             if (selectOptions.length === translatedOptions.length) {
                 selectOptions.map((option, i) => {
                     option.text = translatedOptions[i].textContent;

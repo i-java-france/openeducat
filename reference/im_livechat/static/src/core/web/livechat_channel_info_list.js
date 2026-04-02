@@ -1,21 +1,26 @@
-import { TranscriptSender } from "@im_livechat/core/common/transcript_sender";
-import { ExpertiseTagsAutocomplete } from "@im_livechat/core/web/expertise_tags_autocomplete";
-import { ConversationTagEdit } from "@im_livechat/core/web/livechat_conversation_tag_edit";
+import {TranscriptSender} from "@im_livechat/core/common/transcript_sender";
+import {ExpertiseTagsAutocomplete} from "@im_livechat/core/web/expertise_tags_autocomplete";
+import {ConversationTagEdit} from "@im_livechat/core/web/livechat_conversation_tag_edit";
 
-import { ActionPanel } from "@mail/discuss/core/common/action_panel";
-import { prettifyMessageContent } from "@mail/utils/common/format";
+import {ActionPanel} from "@mail/discuss/core/common/action_panel";
+import {prettifyMessageContent} from "@mail/utils/common/format";
 
-import { Component, useEffect, useRef, useSubEnv } from "@odoo/owl";
+import {Component, useEffect, useRef, useSubEnv} from "@odoo/owl";
 
-import { startUrl } from "@web/core/browser/router";
-import { rpc } from "@web/core/network/rpc";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { useService } from "@web/core/utils/hooks";
-import { url } from "@web/core/utils/urls";
-import { TagsList } from "@web/core/tags_list/tags_list";
+import {startUrl} from "@web/core/browser/router";
+import {rpc} from "@web/core/network/rpc";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {useService} from "@web/core/utils/hooks";
+import {url} from "@web/core/utils/urls";
+import {TagsList} from "@web/core/tags_list/tags_list";
 
 export class LivechatChannelInfoList extends Component {
-    static components = { ActionPanel, TagsList, ExpertiseTagsAutocomplete, TranscriptSender };
+    static components = {
+        ActionPanel,
+        TagsList,
+        ExpertiseTagsAutocomplete,
+        TranscriptSender,
+    };
     static template = "im_livechat.LivechatChannelInfoList";
     static props = ["thread"];
 
@@ -30,7 +35,7 @@ export class LivechatChannelInfoList extends Component {
             useBottomSheet: this.ui.isSmall,
         });
         this.tagsContainer = useRef("tagsContainer");
-        useSubEnv({ inLivechatInfoPanel: true });
+        useSubEnv({inLivechatInfoPanel: true});
         useEffect(
             () => {
                 if (this.props.thread.hasFetchedLivechatSessionData) {
@@ -41,7 +46,10 @@ export class LivechatChannelInfoList extends Component {
                 });
                 this.props.thread.hasFetchedLivechatSessionData = true;
             },
-            () => [this.props.thread.id, this.props.thread.hasFetchedLivechatSessionData]
+            () => [
+                this.props.thread.id,
+                this.props.thread.hasFetchedLivechatSessionData,
+            ]
         );
     }
 
@@ -72,7 +80,10 @@ export class LivechatChannelInfoList extends Component {
 
     onBlurNote() {
         prettifyMessageContent(this.props.thread.livechatNoteText).then((note) => {
-            rpc("/im_livechat/session/update_note", { channel_id: this.props.thread.id, note });
+            rpc("/im_livechat/session/update_note", {
+                channel_id: this.props.thread.id,
+                note,
+            });
         });
     }
 
@@ -84,9 +95,9 @@ export class LivechatChannelInfoList extends Component {
 
     openVisitorProfile() {
         if (this.ui.isSmall) {
-            this.store.ChatWindow.get({ thread: this.props.thread })?.fold();
+            this.store.ChatWindow.get({thread: this.props.thread})?.fold();
         } else {
-            this.props.thread.openChatWindow({ focus: true });
+            this.props.thread.openChatWindow({focus: true});
         }
         this.actionService.doAction({
             type: "ir.actions.act_window",

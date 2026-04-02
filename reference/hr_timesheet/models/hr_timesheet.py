@@ -1,14 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import re
 from collections import defaultdict
 from datetime import datetime, time
 from statistics import mode
-import re
-
-import pytz
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError, AccessError, ValidationError
+from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.fields import Domain
 from odoo.tools.translate import _
 
@@ -166,7 +164,7 @@ class AccountAnalyticLine(models.Model):
 
     def _compute_calendar_display_name(self):
         companies = self.company_id
-        encoding_in_days_per_company = dict(zip(companies, [company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_day') for company in companies]))
+        encoding_in_days_per_company = dict(zip(companies, [company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_day') for company in companies], strict=False))
         for line in self:
             if not line.project_id:
                 line.calendar_display_name = ""
@@ -224,7 +222,7 @@ class AccountAnalyticLine(models.Model):
         valid_vals = 0
         for vals in vals_list[:]:
             if self.env.context.get('timesheet_calendar'):
-                if not 'employee_id' in vals:
+                if 'employee_id' not in vals:
                     vals['employee_id'] = self.env.user.employee_id.id
                 employee = self.env['hr.employee'].browse(vals['employee_id'])
                 date = fields.Date.from_string(vals.get('date', fields.Date.to_string(fields.Date.context_today(self))))
@@ -332,7 +330,7 @@ class AccountAnalyticLine(models.Model):
         # 5/ Finally, create the timesheets
         lines = super().create(vals_list)
         lines._check_can_create()
-        for line, values in zip(lines, vals_list):
+        for line, values in zip(lines, vals_list, strict=False):
             if line.project_id:  # applied only for timesheet
                 line._timesheet_postprocess(values)
 

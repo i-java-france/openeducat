@@ -1,11 +1,11 @@
-import { nextLeaf } from "@html_editor/utils/dom_info";
-import { isBlock } from "@html_editor/utils/blocks";
+import {nextLeaf} from "@html_editor/utils/dom_info";
+import {isBlock} from "@html_editor/utils/blocks";
 import {
     EmbeddedFileDocumentsSelector,
     renderEmbeddedFileBox,
 } from "./embedded_file_documents_selector";
-import { FilePlugin } from "@html_editor/main/media/file_plugin";
-import { closestElement } from "@html_editor/utils/dom_traversal";
+import {FilePlugin} from "@html_editor/main/media/file_plugin";
+import {closestElement} from "@html_editor/utils/dom_traversal";
 
 /**
  * This plugin is meant to replace the File plugin.
@@ -27,7 +27,7 @@ export class EmbeddedFilePlugin extends FilePlugin {
     }
 
     /** @override */
-    isUploadCommandAvailable({ anchorNode }) {
+    isUploadCommandAvailable({anchorNode}) {
         return (
             super.isUploadCommandAvailable() &&
             !closestElement(anchorNode, "[data-embedded='clipboard']")
@@ -39,7 +39,7 @@ export class EmbeddedFilePlugin extends FilePlugin {
         return EmbeddedFileDocumentsSelector;
     }
 
-    setupNewFile({ name, env }) {
+    setupNewFile({name, env}) {
         if (name === "file") {
             Object.assign(env.editorShared, {
                 setSelectionAfter: (host) => {

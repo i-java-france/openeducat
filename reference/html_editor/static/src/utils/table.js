@@ -1,4 +1,4 @@
-import { closestElement } from "./dom_traversal";
+import {closestElement} from "./dom_traversal";
 
 /**
  * Get the index of the given table row/cell.

@@ -1,12 +1,13 @@
 import logging
-
 from base64 import b64encode
 from datetime import timedelta
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 
 from odoo.addons.account.models.company import PEPPOL_LIST
-from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import AccountEdiProxyError
+from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import (
+    AccountEdiProxyError,
+)
 from odoo.addons.account_peppol.exceptions import get_peppol_error_message
 
 _logger = logging.getLogger(__name__)
@@ -42,7 +43,7 @@ class AccountMoveSend(models.AbstractModel):
         # Check for invalid peppol partners.
         peppol_moves = moves.filtered(lambda m: 'peppol' in moves_data[m]['sending_methods'])
         invalid_partners = filter_peppol_state(peppol_moves, ['not_valid_format'])
-        if invalid_partners and not 'account_edi_ubl_cii_configure_partner' in alerts:
+        if invalid_partners and 'account_edi_ubl_cii_configure_partner' not in alerts:
             alerts['account_peppol_warning_partner'] = {
                 'message': _("Customer is on Peppol but did not enable receiving documents."),
                 'action_text': _("View Partner(s)"),
@@ -230,7 +231,7 @@ class AccountMoveSend(models.AbstractModel):
                 # so we have to rely on the order to connect peppol messages to account.move
                 attachments_linked_message = _("The invoice has been sent to the Peppol Access Point. The following attachments were sent with the XML:")
                 attachments_not_linked_message = _("Some attachments could not be sent with the XML:")
-                for message, (invoice, invoice_data) in zip(response['messages'], invoices_data_peppol.items()):
+                for message, (invoice, invoice_data) in zip(response['messages'], invoices_data_peppol.items(), strict=False):
                     invoice.peppol_message_uuid = message['message_uuid']
                     invoice.peppol_move_state = 'processing'
                     attachments_linked, attachments_not_linked = self._get_ubl_available_attachments(

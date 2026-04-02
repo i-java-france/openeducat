@@ -1,12 +1,12 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { shouldPreventGifTransformation } from "@html_editor/main/media/image_post_process_plugin";
-import { loadImageInfo, isWebGLEnabled } from "@html_editor/utils/image_processing";
-import { _t } from "@web/core/l10n/translation";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {shouldPreventGifTransformation} from "@html_editor/main/media/image_post_process_plugin";
+import {loadImageInfo, isWebGLEnabled} from "@html_editor/utils/image_processing";
+import {_t} from "@web/core/l10n/translation";
 
 export class ImageFilterOption extends BaseOptionComponent {
     static template = "html_builder.ImageFilterOption";
     static props = {
-        level: { type: Number, optional: true },
+        level: {type: Number, optional: true},
     };
     static defaultProps = {
         level: 0,
@@ -21,9 +21,13 @@ export class ImageFilterOption extends BaseOptionComponent {
             const canUseGlFilter = isWebGLEnabled();
             return {
                 isCustomFilter: editingElement.dataset.glFilter === "custom",
-                showFilter: data.mimetypeBeforeConversion && !shouldPreventGifTransformation(data),
+                showFilter:
+                    data.mimetypeBeforeConversion &&
+                    !shouldPreventGifTransformation(data),
                 disableFilter: !canUseGlFilter,
-                tooltip: !canUseGlFilter ? _t("WebGL is not enabled on your browser.") : undefined,
+                tooltip: !canUseGlFilter
+                    ? _t("WebGL is not enabled on your browser.")
+                    : undefined,
             };
         });
     }

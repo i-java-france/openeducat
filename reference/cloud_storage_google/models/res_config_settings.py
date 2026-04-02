@@ -2,13 +2,13 @@
 
 import base64
 import json
-import requests
 from datetime import datetime, timezone
 
+import requests
 from google.auth.transport.requests import Request
 
-from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError, UserError
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 from .ir_attachment import get_cloud_storage_google_credential
 

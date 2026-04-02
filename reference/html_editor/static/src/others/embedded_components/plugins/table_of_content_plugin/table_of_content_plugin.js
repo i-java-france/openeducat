@@ -1,11 +1,11 @@
-import { Plugin } from "@html_editor/plugin";
-import { _t } from "@web/core/l10n/translation";
-import { renderToElement } from "@web/core/utils/render";
+import {Plugin} from "@html_editor/plugin";
+import {_t} from "@web/core/l10n/translation";
+import {renderToElement} from "@web/core/utils/render";
 import {
     HEADINGS,
     TableOfContentManager,
 } from "@html_editor/others/embedded_components/core/table_of_content/table_of_content_manager";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
 
 export class TableOfContentPlugin extends Plugin {
     static id = "tableOfContent";
@@ -30,12 +30,17 @@ export class TableOfContentPlugin extends Plugin {
         ],
 
         /** Handlers */
-        restore_savepoint_handlers: () => this.delayedUpdateTableOfContents(this.editable),
+        restore_savepoint_handlers: () =>
+            this.delayedUpdateTableOfContents(this.editable),
         history_reset_handlers: () => this.delayedUpdateTableOfContents(this.editable),
-        history_reset_from_steps_handlers: () => this.delayedUpdateTableOfContents(this.editable),
-        step_added_handlers: ({ stepCommonAncestor }) =>
+        history_reset_from_steps_handlers: () =>
+            this.delayedUpdateTableOfContents(this.editable),
+        step_added_handlers: ({stepCommonAncestor}) =>
             this.delayedUpdateTableOfContents(stepCommonAncestor),
-        external_step_added_handlers: this.delayedUpdateTableOfContents.bind(this, this.editable),
+        external_step_added_handlers: this.delayedUpdateTableOfContents.bind(
+            this,
+            this.editable
+        ),
         clean_for_save_handlers: this.cleanForSave.bind(this),
         mount_component_handlers: this.setupNewToc.bind(this),
 
@@ -50,7 +55,9 @@ export class TableOfContentPlugin extends Plugin {
     }
 
     insertTableOfContent() {
-        const tableOfContentBlueprint = renderToElement("html_editor.TableOfContentBlueprint");
+        const tableOfContentBlueprint = renderToElement(
+            "html_editor.TableOfContentBlueprint"
+        );
         this.dependencies.dom.insert(tableOfContentBlueprint);
         this.dependencies.history.addStep();
     }
@@ -58,7 +65,7 @@ export class TableOfContentPlugin extends Plugin {
     /**
      * @param {HTMLElement} root
      */
-    cleanForSave({ root }) {
+    cleanForSave({root}) {
         for (const el of root.querySelectorAll(".o_embedded_toc_header_highlight")) {
             el.classList.remove("o_embedded_toc_header_highlight");
         }
@@ -71,7 +78,9 @@ export class TableOfContentPlugin extends Plugin {
 
     delayedUpdateTableOfContents(element) {
         const selector = HEADINGS.join(",");
-        if (!(!element || element.querySelector(selector) || element.closest(selector))) {
+        if (
+            !(!element || element.querySelector(selector) || element.closest(selector))
+        ) {
             return;
         }
         if (this.updateTimeout) {
@@ -85,7 +94,7 @@ export class TableOfContentPlugin extends Plugin {
         }, 500);
     }
 
-    setupNewToc({ name, props }) {
+    setupNewToc({name, props}) {
         if (name === "tableOfContent") {
             Object.assign(props, {
                 manager: this.manager,

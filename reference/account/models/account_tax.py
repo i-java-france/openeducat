@@ -1,19 +1,25 @@
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
-from odoo.fields import Command, Domain
-from odoo.tools import frozendict, groupby, html2plaintext, is_html_empty, split_every, SQL
-from odoo.tools.float_utils import float_is_zero, float_repr, float_round, float_compare
-from odoo.tools.misc import clean_context, formatLang
-from odoo.tools.translate import html_translate
-
-from collections import defaultdict
-from collections.abc import Iterable
-from markupsafe import Markup
-
 import ast
 import copy
 import math
 import re
+from collections import defaultdict
+
+from markupsafe import Markup
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.fields import Command, Domain
+from odoo.tools import (
+    SQL,
+    frozendict,
+    groupby,
+    html2plaintext,
+    is_html_empty,
+    split_every,
+)
+from odoo.tools.float_utils import float_compare, float_is_zero, float_repr, float_round
+from odoo.tools.misc import clean_context
+from odoo.tools.translate import html_translate
 
 TYPE_TAX_USE = [
     ('sale', 'Sales'),
@@ -662,7 +668,7 @@ class AccountTax(models.Model):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
         if 'name' not in default:
-            for tax, vals in zip(self, vals_list):
+            for tax, vals in zip(self, vals_list, strict=False):
                 vals['name'] = _("%s (copy)", tax.name)
         return vals_list
 
@@ -697,7 +703,7 @@ class AccountTax(models.Model):
     @api.onchange('amount')
     def onchange_amount(self):
         if self.amount_type in ('percent', 'division') and self.amount != 0.0 and not self.invoice_label:
-            self.invoice_label = "{0:.4g}%".format(self.amount)
+            self.invoice_label = f"{self.amount:.4g}%"
 
     @api.onchange('amount_type')
     def onchange_amount_type(self):
@@ -1941,7 +1947,7 @@ class AccountTax(models.Model):
                         delta_amount=delta_total_tax_amount,
                         target_factors=target_factors,
                     )
-                    for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+                    for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
                         tax_data = target_factor['tax_data']
                         tax_data[f'tax_amount{delta_currency_indicator}'] += amount_to_distribute
 
@@ -1971,7 +1977,7 @@ class AccountTax(models.Model):
                         delta_amount=delta_total_base_amount,
                         target_factors=target_factors,
                     )
-                    for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+                    for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
                         tax_data = target_factor['tax_data']
                         tax_data[f'base_amount{delta_currency_indicator}'] += amount_to_distribute
 
@@ -2075,7 +2081,7 @@ class AccountTax(models.Model):
                     delta_amount=delta_total_excluded,
                     target_factors=target_factors,
                 )
-                for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+                for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
                     base_line = target_factor['base_line']
                     base_line['tax_details'][f'delta_total_excluded{delta_currency_indicator}'] += amount_to_distribute
 
@@ -2154,7 +2160,7 @@ class AccountTax(models.Model):
                     delta_amount=delta_total_tax_amount,
                     target_factors=target_factors,
                 )
-                for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+                for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
                     tax_data = target_factor['tax_data']
                     tax_data[f'tax_amount{delta_currency_indicator}'] += amount_to_distribute
 
@@ -2445,7 +2451,7 @@ class AccountTax(models.Model):
                     delta_amount=delta_amount,
                     target_factors=target_factors,
                 )
-                for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+                for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
                     target_factor['tax_rep_data'][field] += amount_to_distribute
 
         subsequent_tags_per_tax = defaultdict(lambda: self.env['account.account.tag'])
@@ -3257,7 +3263,7 @@ class AccountTax(models.Model):
                 'factor': target_factor['factor'],
                 'tax_data': new_tax_data,
             }
-            for new_tax_data, target_factor in zip(new_taxes_data, target_factors)
+            for new_tax_data, target_factor in zip(new_taxes_data, target_factors, strict=False)
         ]
 
         for delta_currency_indicator, delta_currency in (
@@ -3271,7 +3277,7 @@ class AccountTax(models.Model):
                     delta_amount=tax_data[field],
                     target_factors=new_target_factors,
                 )
-                for target_factor, amount_to_distribute in zip(new_target_factors, amounts_to_distribute):
+                for target_factor, amount_to_distribute in zip(new_target_factors, amounts_to_distribute, strict=False):
                     new_tax_data = target_factor['tax_data']
                     new_tax_data[field] = amount_to_distribute
         return new_taxes_data
@@ -3312,7 +3318,7 @@ class AccountTax(models.Model):
         # Manage 'taxes_data'.
         for tax_data in tax_details['taxes_data']:
             new_taxes_data = self._split_tax_data(base_line, tax_data, company, target_factors)
-            for new_tax_details, new_tax_data in zip(new_tax_details_list, new_taxes_data):
+            for new_tax_details, new_tax_data in zip(new_tax_details_list, new_taxes_data, strict=False):
                 new_tax_details['taxes_data'].append(new_tax_data)
 
         # Distribution of rounded amounts.
@@ -3334,7 +3340,7 @@ class AccountTax(models.Model):
                 delta_amount=delta_amount,
                 target_factors=new_target_factors,
             )
-            for target_factor, amount_to_distribute in zip(new_target_factors, amounts_to_distribute):
+            for target_factor, amount_to_distribute in zip(new_target_factors, amounts_to_distribute, strict=False):
                 new_tax_details = target_factor['tax_details']
                 new_tax_details[field] = amount_to_distribute
 
@@ -3374,7 +3380,7 @@ class AccountTax(models.Model):
 
         # Split 'base_line'.
         new_base_lines = [None] * len(factors)
-        for (index, factor), new_tax_details, target_factor in zip(factors, new_tax_details_list, target_factors):
+        for (index, factor), new_tax_details, target_factor in zip(factors, new_tax_details_list, target_factors, strict=False):
             kwargs = {
                 'price_unit': factor * base_line['price_unit'],
                 'tax_details': new_tax_details,
@@ -3581,7 +3587,7 @@ class AccountTax(models.Model):
                 delta_amount=delta_target_base_amount - base_lines_totals[f'base_amount{delta_suffix}'],
                 target_factors=target_factors,
             )
-            for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+            for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
                 base_line = target_factor['base_line']
                 tax_details = base_line['tax_details']
                 taxes_data = tax_details['taxes_data']
@@ -3621,7 +3627,7 @@ class AccountTax(models.Model):
                     delta_amount=delta_target_tax_amount - current_tax_amounts[f'tax_amount{delta_suffix}'],
                     target_factors=target_factors,
                 )
-                for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+                for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
                     tax_data = target_factor['tax_data']
                     tax_data[f'tax_amount{delta_suffix}'] += amount_to_distribute
 
@@ -3795,7 +3801,7 @@ class AccountTax(models.Model):
                         delta_amount=delta_tax_amount,
                         target_factors=target_factors,
                     )
-                    for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+                    for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
                         tax_data = target_factor['tax_data']
                         tax_data[f'tax_amount{delta_suffix}'] += amount_to_distribute
 
@@ -3817,7 +3823,7 @@ class AccountTax(models.Model):
                         delta_amount=delta_base_amount,
                         target_factors=target_factors,
                     )
-                    for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+                    for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
                         tax_data = target_factor['tax_data']
                         tax_data[f'base_amount{delta_suffix}'] += amount_to_distribute
 
@@ -3850,7 +3856,7 @@ class AccountTax(models.Model):
                 delta_amount=delta_base_amount,
                 target_factors=target_factors,
             )
-            for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+            for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
                 base_line = target_factor['base_line']
                 tax_details = base_line['tax_details']
                 tax_details[f'delta_total_excluded{delta_suffix}'] += amount_to_distribute
@@ -4268,7 +4274,7 @@ class AccountTax(models.Model):
                     company=company,
                     target_factors=discount_data['target_factors'],
                 )
-                for base_line, new_base_line in zip(discount_data['base_lines'], splitted_base_lines):
+                for base_line, new_base_line in zip(discount_data['base_lines'], splitted_base_lines, strict=False):
                     base_line['discount_base_lines'].append(new_base_line)
         return [x for x in new_base_lines if x not in dispatched_neg_base_lines]
 
@@ -4377,7 +4383,7 @@ class AccountTax(models.Model):
                 kwargs['price_unit'] = base_line['price_unit']
                 kwargs['quantity'] = -target_factor['quantity_to_dispatch']
 
-            for target_factors, neg_base_line in zip(target_factors_per_neg_base_line, neg_base_lines):
+            for target_factors, neg_base_line in zip(target_factors_per_neg_base_line, neg_base_lines, strict=False):
                 if not target_factors:
                     continue
 
@@ -4388,7 +4394,7 @@ class AccountTax(models.Model):
                     target_factors=target_factors,
                     populate_function=populate_function,
                 )
-                for target_factor, new_base_line in zip(target_factors, splitted_base_lines):
+                for target_factor, new_base_line in zip(target_factors, splitted_base_lines, strict=False):
                     target_factor['plus_base_line']['return_of_merchandise_base_lines'].append(new_base_line)
 
         return [x for x in new_base_lines if x not in dispatched_neg_base_lines]
@@ -4531,7 +4537,7 @@ class AccountTax(models.Model):
             delta_amount=delta_raw_amount,
             target_factors=target_factors,
         )
-        for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+        for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
             base_line = target_factor['base_line']
             base_line['tax_details'][raw_field] += amount_to_distribute
 
@@ -4651,7 +4657,7 @@ class AccountTax(models.Model):
             delta_amount=delta_raw_amount,
             target_factors=target_factors,
         )
-        for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+        for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
             base_line = target_factor['base_line']
             base_line['tax_details'][f'raw_gross_total_excluded{suffix}'] += amount_to_distribute
 
@@ -4719,7 +4725,7 @@ class AccountTax(models.Model):
             delta_amount=expected_gross_total_excluded - current_gross_total_excluded,
             target_factors=target_factors,
         )
-        for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+        for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
             base_line = target_factor['base_line']
             base_line['tax_details'][f'gross_total_excluded{suffix}'] += amount_to_distribute
 
@@ -4730,7 +4736,7 @@ class AccountTax(models.Model):
             delta_amount=expected_discount_amount - current_discount_amount,
             target_factors=target_factors,
         )
-        for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+        for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
             base_line = target_factor['base_line']
             base_line['tax_details'][f'discount_amount{suffix}'] += amount_to_distribute
 
@@ -4803,7 +4809,7 @@ class AccountTax(models.Model):
                 delta_amount=delta_raw_amount,
                 target_factors=target_factors,
             )
-            for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+            for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
                 aggregated_values = target_factor['aggregated_values']
                 aggregated_values[raw_tax_field] += amount_to_distribute
                 values[raw_tax_field] += amount_to_distribute
@@ -4827,7 +4833,7 @@ class AccountTax(models.Model):
                     delta_amount=delta_raw_amount,
                     target_factors=target_factors,
                 )
-                for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute):
+                for target_factor, amount_to_distribute in zip(target_factors, amounts_to_distribute, strict=False):
                     aggregated_values = target_factor['aggregated_values']
                     aggregated_values[raw_base_field] += amount_to_distribute
                     values[raw_base_field] += amount_to_distribute

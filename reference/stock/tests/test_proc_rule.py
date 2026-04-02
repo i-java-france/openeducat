@@ -1,14 +1,14 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import date, datetime, timedelta
-from freezegun import freeze_time
 from json import loads
 
+from freezegun import freeze_time
+
+from odoo.exceptions import UserError
 from odoo.fields import Command
 from odoo.tests import Form, TransactionCase
 from odoo.tools import mute_logger
-from odoo.exceptions import UserError
 
 
 class TestProcRule(TransactionCase):
@@ -901,7 +901,7 @@ class TestProcRule(TransactionCase):
 
 class TestProcRuleLoad(TransactionCase):
     def setUp(cls):
-        super(TestProcRuleLoad, cls).setUp()
+        super().setUp()
         cls.skipTest("Performance test, too heavy to run.")
 
     def test_orderpoint_1(self):

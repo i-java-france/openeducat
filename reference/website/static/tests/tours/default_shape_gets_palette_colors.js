@@ -23,9 +23,10 @@ registerWebsitePreviewTour(
         }),
         changeOption("Text - Image", "toggleBgShape"),
         {
-            content: "Check that shape does not have a background-image in its inline style",
+            content:
+                "Check that shape does not have a background-image in its inline style",
             trigger: ":iframe #wrap .s_text_image .o_we_shape",
-            run({ queryFirst }) {
+            run({queryFirst}) {
                 const shape = queryFirst(
                     ":iframe :not(.o_ignore_in_tour) #wrap .s_text_image .o_we_shape"
                 );

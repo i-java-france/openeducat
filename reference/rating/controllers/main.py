@@ -1,13 +1,14 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
+
 import werkzeug
 
 from odoo import http
 from odoo.http import request
-from odoo.tools.translate import _
 from odoo.tools.misc import get_lang
+from odoo.tools.translate import _
+
 from odoo.addons.rating.models.rating_data import (
     RATING_HAPPY_VALUE,
     RATING_NEUTRAL_VALUE,

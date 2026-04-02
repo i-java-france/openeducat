@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { browser } from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
+import {browser} from "@web/core/browser/browser";
 
 /**
  * @return {Promise<{
@@ -14,7 +14,10 @@ const getShareTargetDataFromServiceWorker = () => {
         const onmessage = (event) => {
             if (event.data.action === "odoo_share_target_ack") {
                 resolve(event.data.shared_files);
-                browser.navigator.serviceWorker.removeEventListener("message", onmessage);
+                browser.navigator.serviceWorker.removeEventListener(
+                    "message",
+                    onmessage
+                );
             }
         };
         browser.navigator.serviceWorker.addEventListener("message", onmessage);
@@ -24,7 +27,7 @@ const getShareTargetDataFromServiceWorker = () => {
 
 export const shareTargetService = {
     dependencies: ["menu"],
-    start(env, { menu }) {
+    start(env, {menu}) {
         let sharedFiles = null;
         if (
             browser.navigator.serviceWorker &&
@@ -37,7 +40,10 @@ export const shareTargetService = {
                     if (sharedFiles?.length) {
                         await menu.selectMenu(app);
                     }
-                    env.bus.removeEventListener("WEB_CLIENT_READY", clientReadyListener);
+                    env.bus.removeEventListener(
+                        "WEB_CLIENT_READY",
+                        clientReadyListener
+                    );
                 };
                 env.bus.addEventListener("WEB_CLIENT_READY", clientReadyListener);
             }

@@ -1,5 +1,7 @@
-<?xml version='1.0' encoding='ISO-8859-7' standalone='yes'?>
-<ecls:ExpensesClassificationsDoc xmlns:ecls="https://www.aade.gr/myDATA/expensesClassificaton/v1.0">
+<?xml version='1.0' encoding='ISO-8859-7' standalone='yes' ?>
+<ecls:ExpensesClassificationsDoc
+    xmlns:ecls="https://www.aade.gr/myDATA/expensesClassificaton/v1.0"
+>
     <ecls:expensesInvoiceClassification>
         <ecls:invoiceMark>400001924190891</ecls:invoiceMark>
         <ecls:invoicesExpensesClassificationDetails>

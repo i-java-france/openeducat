@@ -1,7 +1,7 @@
-import { whenReady } from "@odoo/owl";
+import {whenReady} from "@odoo/owl";
 
-import { registry } from "@web/core/registry";
-import { patchWithCleanup } from "@web/../tests/helpers/utils";
+import {registry} from "@web/core/registry";
+import {patchWithCleanup} from "@web/../tests/helpers/utils";
 
 let firstChannelId;
 registry.category("web_tour.tours").add("im_livechat_session_history_open", {
@@ -33,12 +33,16 @@ registry.category("web_tour.tours").add("im_livechat_session_history_open", {
         },
         {
             trigger: ".o-mail-Message-content:contains('Test Channel 2 Msg')",
-            async run({ waitFor }) {
+            async run({waitFor}) {
                 firstChannelId =
-                    odoo.__WOWL_DEBUG__.root.env.services.action.currentController.state.resId;
-                await waitFor(`body.o-bus-channel-discuss\\.channel_${firstChannelId}`, {
-                    timeout: 3000,
-                });
+                    odoo.__WOWL_DEBUG__.root.env.services.action.currentController.state
+                        .resId;
+                await waitFor(
+                    `body.o-bus-channel-discuss\\.channel_${firstChannelId}`,
+                    {
+                        timeout: 3000,
+                    }
+                );
             },
         },
         {
@@ -47,12 +51,16 @@ registry.category("web_tour.tours").add("im_livechat_session_history_open", {
         },
         {
             trigger: ".o-mail-Message-content:contains('Test Channel 1 Msg')",
-            async run({ waitFor }) {
-                await waitFor(`body:not(.o-bus-channel-discuss\\.channel_${firstChannelId})`, {
-                    timeout: 3000,
-                });
+            async run({waitFor}) {
+                await waitFor(
+                    `body:not(.o-bus-channel-discuss\\.channel_${firstChannelId})`,
+                    {
+                        timeout: 3000,
+                    }
+                );
                 const channelId =
-                    odoo.__WOWL_DEBUG__.root.env.services.action.currentController.state.resId;
+                    odoo.__WOWL_DEBUG__.root.env.services.action.currentController.state
+                        .resId;
                 await waitFor(`body.o-bus-channel-discuss\\.channel_${channelId}`, {
                     trimeout: 3000,
                 });

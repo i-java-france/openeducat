@@ -1,22 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-
         <record id="view_account_group_form" model="ir.ui.view">
             <field name="name">account.group.form</field>
             <field name="model">account.group</field>
             <field name="arch" type="xml">
                 <form string="Account Group">
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                        <label for="code_prefix_start" string="Code Prefix"/>
-                        <div>
-                            From <field name="code_prefix_start" class="oe_inline"/> to <field name="code_prefix_end" class="oe_inline"/>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <label for="code_prefix_start" string="Code Prefix" />
+                            <div>
+                            From <field
+                                name="code_prefix_start"
+                                class="oe_inline"
+                            /> to <field name="code_prefix_end" class="oe_inline" />
                         </div>
-                        <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
-                    </group>
-                </sheet>
+                            <field
+                                name="company_id"
+                                options="{'no_create': True}"
+                                groups="base.group_multi_company"
+                            />
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -26,9 +32,11 @@
             <field name="model">account.group</field>
             <field name="arch" type="xml">
                 <search string="Account groups">
-                    <field name="name"
-                           filter_domain="['|', ('code_prefix_start', '=like', self + '%'), ('name', 'ilike', self)]"
-                           string="Account group"/>
+                    <field
+                        name="name"
+                        filter_domain="['|', ('code_prefix_start', '=like', self + '%'), ('name', 'ilike', self)]"
+                        string="Account group"
+                    />
                 </search>
             </field>
         </record>
@@ -38,13 +46,12 @@
             <field name="model">account.group</field>
             <field name="arch" type="xml">
                 <list string="Account Group">
-                    <field name="code_prefix_start"/>
-                    <field name="code_prefix_end"/>
-                    <field name="name"/>
-                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="code_prefix_start" />
+                    <field name="code_prefix_end" />
+                    <field name="name" />
+                    <field name="company_id" groups="base.group_multi_company" />
                 </list>
             </field>
         </record>
-
     </data>
 </odoo>

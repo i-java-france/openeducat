@@ -1,20 +1,20 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { omit } from "@web/core/utils/objects";
-import { computeM2OProps, Many2One } from "@web/views/fields/many2one/many2one";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {omit} from "@web/core/utils/objects";
+import {computeM2OProps, Many2One} from "@web/views/fields/many2one/many2one";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
 
-import { ProjectTaskStateSelection } from "../project_task_state_selection";
+import {ProjectTaskStateSelection} from "../project_task_state_selection";
 
 export class TaskStageWithStateSelection extends Component {
     static template = "project.TaskStageWithStateSelection";
 
     static props = {
         ...standardFieldProps,
-        stateReadonly: { type: Boolean, optional: true },
-        viewType: { type: String },
+        stateReadonly: {type: Boolean, optional: true},
+        viewType: {type: String},
     };
 
     static components = {
@@ -47,9 +47,9 @@ export const taskStageWithStateSelection = {
             default: true,
         },
     ],
-    fieldDependencies: [{ name: "state", type: "selection" }],
+    fieldDependencies: [{name: "state", type: "selection"}],
     supportedTypes: ["many2one"],
-    extractProps({ options, viewType }) {
+    extractProps({options, viewType}) {
         return {
             stateReadonly: "state_readonly" in options ? options.state_readonly : true,
             viewType: viewType,
@@ -57,4 +57,6 @@ export const taskStageWithStateSelection = {
     },
 };
 
-registry.category("fields").add("task_stage_with_state_selection", taskStageWithStateSelection);
+registry
+    .category("fields")
+    .add("task_stage_with_state_selection", taskStageWithStateSelection);

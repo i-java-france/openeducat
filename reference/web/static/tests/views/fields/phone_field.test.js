@@ -7,16 +7,16 @@ import {
     mountView,
     onRpc,
 } from "@web/../tests/web_test_helpers";
-import { expect, test } from "@odoo/hoot";
-import { click, edit, pointerDown, queryFirst, queryOne } from "@odoo/hoot-dom";
-import { getNextTabableElement } from "@web/core/utils/ui";
-import { animationFrame } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {click, edit, pointerDown, queryFirst, queryOne} from "@odoo/hoot-dom";
+import {getNextTabableElement} from "@web/core/utils/ui";
+import {animationFrame} from "@odoo/hoot-mock";
 
 class Partner extends models.Model {
-    foo = fields.Char({ default: "My little Foo Value", trim: true });
+    foo = fields.Char({default: "My little Foo Value", trim: true});
     name = fields.Char();
 
-    _records = [{ foo: "yop" }, { foo: "blip" }];
+    _records = [{foo: "yop"}, {foo: "blip"}];
 }
 
 defineModels([Partner]);
@@ -61,11 +61,11 @@ test("PhoneField in form view on normal screens (edit)", async () => {
     expect(".o_field_phone a").toHaveText("Call");
     expect(".o_field_phone a").toHaveAttribute("href", "tel:yop");
 
-    // change value in edit mode
+    // Change value in edit mode
     await click(`input[type="tel"]`);
     await edit("new");
     await animationFrame();
-    // save
+    // Save
     await clickSave();
     expect(`input[type="tel"]`).toHaveValue("new");
 });
@@ -134,7 +134,10 @@ test("phone field with placeholder", async () => {
                 </sheet>
             </form>`,
     });
-    expect(".o_field_widget[name='foo'] input").toHaveProperty("placeholder", "Placeholder");
+    expect(".o_field_widget[name='foo'] input").toHaveProperty(
+        "placeholder",
+        "Placeholder"
+    );
 });
 
 test("placeholder_field shows as placeholder", async () => {

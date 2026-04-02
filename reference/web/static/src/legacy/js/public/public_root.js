@@ -1,28 +1,27 @@
-import { cookie } from "@web/core/browser/cookie";
-import publicWidget from '@web/legacy/js/public/public_widget';
+import {cookie} from "@web/core/browser/cookie";
+import publicWidget from "@web/legacy/js/public/public_widget";
 
 import lazyloader from "@web/legacy/js/public/lazyloader";
 
-import { makeEnv, startServices } from "@web/env";
-import { getTemplate } from '@web/core/templates';
-import { MainComponentsContainer } from "@web/core/main_components_container";
-import { browser } from '@web/core/browser/browser';
-import { appTranslateFn } from "@web/core/l10n/translation";
-import { jsToPyLocale, pyToJsLocale } from "@web/core/l10n/utils";
-import { App, Component, whenReady } from "@odoo/owl";
-import { RPCError } from '@web/core/network/rpc';
-import { patch } from "@web/core/utils/patch";
+import {makeEnv, startServices} from "@web/env";
+import {getTemplate} from "@web/core/templates";
+import {MainComponentsContainer} from "@web/core/main_components_container";
+import {browser} from "@web/core/browser/browser";
+import {appTranslateFn} from "@web/core/l10n/translation";
+import {jsToPyLocale, pyToJsLocale} from "@web/core/l10n/utils";
+import {App, Component, whenReady} from "@odoo/owl";
+import {RPCError} from "@web/core/network/rpc";
+import {patch} from "@web/core/utils/patch";
 
-const { Settings } = luxon;
+const {Settings} = luxon;
 
 // Load localizations outside the PublicRoot to not wait for DOM ready (but
 // wait for them in PublicRoot)
 function getLang() {
     var html = document.documentElement;
-    return jsToPyLocale(html.getAttribute('lang')) || 'en_US';
+    return jsToPyLocale(html.getAttribute("lang")) || "en_US";
 }
-const lang = cookie.get('frontend_lang') || getLang(); // FIXME the cookie value should maybe be in the ctx?
-
+const lang = cookie.get("frontend_lang") || getLang(); // FIXME the cookie value should maybe be in the ctx?
 
 /**
  * Element which is designed to be unique and that will be the top-most element
@@ -32,15 +31,15 @@ const lang = cookie.get('frontend_lang') || getLang(); // FIXME the cookie value
  */
 export const PublicRoot = publicWidget.Widget.extend({
     events: {
-        'submit .js_website_submit_form': '_onWebsiteFormSubmit',
-        'click .js_disable_on_click': '_onDisableOnClick',
+        "submit .js_website_submit_form": "_onWebsiteFormSubmit",
+        "click .js_disable_on_click": "_onDisableOnClick",
     },
     custom_events: {
-        call_service: '_onCallService',
-        context_get: '_onContextGet',
-        main_object_request: '_onMainObjectRequest',
-        widgets_start_request: '_onWidgetsStartRequest',
-        widgets_stop_request: '_onWidgetsStopRequest',
+        call_service: "_onCallService",
+        context_get: "_onContextGet",
+        main_object_request: "_onMainObjectRequest",
+        widgets_start_request: "_onWidgetsStartRequest",
+        widgets_stop_request: "_onWidgetsStopRequest",
     },
 
     /**
@@ -60,7 +59,10 @@ export const PublicRoot = publicWidget.Widget.extend({
                     super.startInteractions(el);
                     if (!publicRoot.startFromEventHandler) {
                         // this.editMode is assigned by website_edit_service
-                        publicRoot._startWidgets($(el || this.el), { fromInteractionPatch: true, editableMode: this.editMode })
+                        publicRoot._startWidgets($(el || this.el), {
+                            fromInteractionPatch: true,
+                            editableMode: this.editMode,
+                        });
                     }
                 },
                 stopInteractions(el) {
@@ -79,14 +81,17 @@ export const PublicRoot = publicWidget.Widget.extend({
     start: function () {
         var defs = [
             this._super.apply(this, arguments),
-            this._startWidgets(undefined, { starting: true })
+            this._startWidgets(undefined, {starting: true}),
         ];
 
         // Display image thumbnail
         this.$(".o_image[data-mimetype^='image']").each(function () {
             var $img = $(this);
-            if (/gif|jpe|jpg|png|webp/.test($img.data('mimetype')) && $img.data('src')) {
-                $img.css('background-image', "url('" + $img.data('src') + "')");
+            if (
+                /gif|jpe|jpg|png|webp/.test($img.data("mimetype")) &&
+                $img.data("src")
+            ) {
+                $img.css("background-image", "url('" + $img.data("src") + "')");
             }
         });
 
@@ -111,9 +116,12 @@ export const PublicRoot = publicWidget.Widget.extend({
      * @returns {Object}
      */
     _getContext: function (context) {
-        return Object.assign({
-            'lang': getLang(),
-        }, context || {});
+        return Object.assign(
+            {
+                lang: getLang(),
+            },
+            context || {}
+        );
     },
     /**
      * Retrieves the global context of the public environment (as
@@ -163,7 +171,7 @@ export const PublicRoot = publicWidget.Widget.extend({
         var self = this;
 
         if ($from === undefined) {
-            $from = this.$('#wrapwrap');
+            $from = this.$("#wrapwrap");
             if (!$from.length) {
                 // TODO Remove this once all frontend layouts possess a
                 // #wrapwrap element (which is necessary for those pages to be
@@ -172,7 +180,7 @@ export const PublicRoot = publicWidget.Widget.extend({
             }
         }
         options = Object.assign({}, options, {
-            wysiwyg: $('#wrapwrap').data('wysiwyg'),
+            wysiwyg: $("#wrapwrap").data("wysiwyg"),
         });
 
         this._stopWidgets($from);
@@ -186,37 +194,42 @@ export const PublicRoot = publicWidget.Widget.extend({
             }
         }
 
-        var defs = Object.values(this._getPublicWidgetsRegistry(options)).map((PublicWidget) => {
-            const selector = PublicWidget.prototype.selector;
-            if (!selector) {
-                return;
-            }
-            const selectorHas = PublicWidget.prototype.selectorHas;
-            const selectorFunc = typeof selector === 'function'
-                ? selector
-                : fromEl => {
-                    const els = [...fromEl.querySelectorAll(selector)];
-                    if (fromEl.matches(selector)) {
-                        els.push(fromEl);
-                    }
-                    return els;
-                };
+        var defs = Object.values(this._getPublicWidgetsRegistry(options)).map(
+            (PublicWidget) => {
+                const selector = PublicWidget.prototype.selector;
+                if (!selector) {
+                    return;
+                }
+                const selectorHas = PublicWidget.prototype.selectorHas;
+                const selectorFunc =
+                    typeof selector === "function"
+                        ? selector
+                        : (fromEl) => {
+                              const els = [...fromEl.querySelectorAll(selector)];
+                              if (fromEl.matches(selector)) {
+                                  els.push(fromEl);
+                              }
+                              return els;
+                          };
 
-            let targetEls = [];
-            for (const fromEl of $from) {
-                targetEls.push(...selectorFunc(fromEl));
-            }
-            if (selectorHas) {
-                targetEls = targetEls.filter(el => !!el.querySelector(selectorHas));
-            }
+                let targetEls = [];
+                for (const fromEl of $from) {
+                    targetEls.push(...selectorFunc(fromEl));
+                }
+                if (selectorHas) {
+                    targetEls = targetEls.filter(
+                        (el) => !!el.querySelector(selectorHas)
+                    );
+                }
 
-            const proms = targetEls.map(el => {
-                var widget = new PublicWidget(self, options);
-                self.publicWidgets.push(widget);
-                return widget.attachTo(el);
-            });
-            return Promise.all(proms);
-        });
+                const proms = targetEls.map((el) => {
+                    var widget = new PublicWidget(self, options);
+                    self.publicWidgets.push(widget);
+                    return widget.attachTo(el);
+                });
+                return Promise.all(proms);
+            }
+        );
         return Promise.all(defs);
     },
     /**
@@ -230,15 +243,19 @@ export const PublicRoot = publicWidget.Widget.extend({
      */
     _stopWidgets: function ($from) {
         var removedWidgets = this.publicWidgets.map((widget) => {
-            if (!$from
-                || $from.filter(widget.el).length
-                || $from.find(widget.el).length) {
+            if (
+                !$from ||
+                $from.filter(widget.el).length ||
+                $from.find(widget.el).length
+            ) {
                 widget.destroy();
                 return widget;
             }
             return null;
         });
-        this.publicWidgets = this.publicWidgets.filter((x) => removedWidgets.indexOf(x) < 0);
+        this.publicWidgets = this.publicWidgets.filter(
+            (x) => removedWidgets.indexOf(x) < 0
+        );
     },
 
     //--------------------------------------------------------------------------
@@ -279,7 +296,7 @@ export const PublicRoot = publicWidget.Widget.extend({
      * @param {OdooEvent} ev
      */
     _onMainObjectRequest: function (ev) {
-        var repr = $('html').data('main-object');
+        var repr = $("html").data("main-object");
         var m = repr.match(/(.+)\((-?\d+),(.*)\)/);
         ev.data.callback({
             model: m[1],
@@ -331,11 +348,13 @@ export const PublicRoot = publicWidget.Widget.extend({
      * @private
      */
     _onWebsiteFormSubmit: function (ev) {
-        var $buttons = $(ev.currentTarget).find('button[type="submit"], a.a-submit').toArray();
+        var $buttons = $(ev.currentTarget)
+            .find('button[type="submit"], a.a-submit')
+            .toArray();
         $buttons.forEach((btn) => {
             var $btn = $(btn);
             $btn.prepend('<i class="fa fa-circle-o-notch fa-spin"></i> ');
-            $btn.prop('disabled', true);
+            $btn.prop("disabled", true);
         });
     },
     /**
@@ -346,7 +365,7 @@ export const PublicRoot = publicWidget.Widget.extend({
      * @param {Event} ev
      */
     _onDisableOnClick: function (ev) {
-        $(ev.currentTarget).addClass('disabled');
+        $(ev.currentTarget).addClass("disabled");
     },
     /**
      * Library clears the wrong date format so just ignore error
@@ -390,8 +409,8 @@ export async function createPublicRoot(RootWidget) {
         app.mount(document.body),
         publicRoot.attachTo(document.body),
     ]);
-    odoo.__WOWL_DEBUG__ = { root };
+    odoo.__WOWL_DEBUG__ = {root};
     return publicRoot;
 }
 
-export default { PublicRoot, createPublicRoot };
+export default {PublicRoot, createPublicRoot};

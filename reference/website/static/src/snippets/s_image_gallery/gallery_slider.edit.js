@@ -1,5 +1,5 @@
-import { GallerySlider } from "./gallery_slider";
-import { registry } from "@web/core/registry";
+import {GallerySlider} from "./gallery_slider";
+import {registry} from "@web/core/registry";
 
 const GallerySliderEdit = (I) =>
     class extends I {

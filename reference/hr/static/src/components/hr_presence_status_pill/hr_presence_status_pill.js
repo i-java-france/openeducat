@@ -1,12 +1,21 @@
-import { registry } from "@web/core/registry";
-import { HrPresenceStatus, hrPresenceStatus } from "../hr_presence_status/hr_presence_status";
+import {registry} from "@web/core/registry";
+import {
+    HrPresenceStatus,
+    hrPresenceStatus,
+} from "../hr_presence_status/hr_presence_status";
 
 export class HrPresenceStatusPill extends HrPresenceStatus {
     static template = "hr.HrPresenceStatusPill";
 
     /** @override */
     get classNames() {
-        const classNames = ["fw-bold", "text-center", "btn", "rounded-pill", "cursor-default"];
+        const classNames = [
+            "fw-bold",
+            "text-center",
+            "btn",
+            "rounded-pill",
+            "cursor-default",
+        ];
         classNames.push(this.color);
         return classNames.join(" ");
     }

@@ -1,27 +1,27 @@
-import { HtmlField } from "@html_editor/fields/html_field";
-import { MediaDialog } from "@html_editor/main/media/media_dialog/media_dialog";
-import { stripHistoryIds } from "@html_editor/others/collaboration/collaboration_odoo_plugin";
+import {HtmlField} from "@html_editor/fields/html_field";
+import {MediaDialog} from "@html_editor/main/media/media_dialog/media_dialog";
+import {stripHistoryIds} from "@html_editor/others/collaboration/collaboration_odoo_plugin";
 import {
     getEditableDescendants,
     getEmbeddedProps,
 } from "@html_editor/others/embedded_component_utils";
-import { READONLY_MAIN_EMBEDDINGS } from "@html_editor/others/embedded_components/embedding_sets";
-import { normalizeHTML, parseHTML } from "@html_editor/utils/html";
-import { Wysiwyg } from "@html_editor/wysiwyg";
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
+import {READONLY_MAIN_EMBEDDINGS} from "@html_editor/others/embedded_components/embedding_sets";
+import {normalizeHTML, parseHTML} from "@html_editor/utils/html";
+import {Wysiwyg} from "@html_editor/wysiwyg";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
 import {
     click,
+    hover,
+    manuallyDispatchProgrammaticEvent,
     press,
     queryAll,
     queryAllTexts,
     queryFirst,
     queryOne,
     waitFor,
-    hover,
-    manuallyDispatchProgrammaticEvent,
 } from "@odoo/hoot-dom";
-import { Deferred, animationFrame, mockSendBeacon, tick } from "@odoo/hoot-mock";
-import { onWillDestroy, xml } from "@odoo/owl";
+import {Deferred, animationFrame, mockSendBeacon, tick} from "@odoo/hoot-mock";
+import {onWillDestroy, xml} from "@odoo/owl";
 import {
     clickSave,
     contains,
@@ -35,25 +35,30 @@ import {
     patchWithCleanup,
     serverState,
 } from "@web/../tests/web_test_helpers";
-import { assets } from "@web/core/assets";
-import { browser } from "@web/core/browser/browser";
-import { patch } from "@web/core/utils/patch";
-import { delay } from "@web/core/utils/concurrency";
-import { FormController } from "@web/views/form/form_controller";
-import { Counter, EmbeddedWrapperMixin } from "./_helpers/embedded_component";
-import { moveSelectionOutsideEditor, setSelection } from "./_helpers/selection";
-import { insertText, pasteOdooEditorHtml, pasteText, undo } from "./_helpers/user_actions";
-import { unformat } from "./_helpers/format";
-import { expandToolbar } from "./_helpers/toolbar";
-import { expectElementCount } from "./_helpers/ui_expectations";
+import {assets} from "@web/core/assets";
+import {browser} from "@web/core/browser/browser";
+import {patch} from "@web/core/utils/patch";
+import {delay} from "@web/core/utils/concurrency";
+import {FormController} from "@web/views/form/form_controller";
+import {Counter, EmbeddedWrapperMixin} from "./_helpers/embedded_component";
+import {moveSelectionOutsideEditor, setSelection} from "./_helpers/selection";
+import {
+    insertText,
+    pasteOdooEditorHtml,
+    pasteText,
+    undo,
+} from "./_helpers/user_actions";
+import {unformat} from "./_helpers/format";
+import {expandToolbar} from "./_helpers/toolbar";
+import {expectElementCount} from "./_helpers/ui_expectations";
 
 class Partner extends models.Model {
-    txt = fields.Html({ trim: true });
+    txt = fields.Html({trim: true});
     name = fields.Char();
 
     _records = [
-        { id: 1, name: "first", txt: "<p>first</p>" },
-        { id: 2, name: "second", txt: "<p>second</p>" },
+        {id: 1, name: "first", txt: "<p>first</p>"},
+        {id: 2, name: "second", txt: "<p>second</p>"},
     ];
 
     _onChanges = {
@@ -80,7 +85,7 @@ class IrAttachment extends models.Model {
     image_src = fields.Char();
     image_width = fields.Integer();
     image_height = fields.Integer();
-    original_id = fields.Many2one({ relation: "ir.attachment" });
+    original_id = fields.Many2one({relation: "ir.attachment"});
 
     _records = [
         {
@@ -136,15 +141,19 @@ beforeEach(() => {
         },
         getConfig() {
             const config = super.getConfig();
-            config.Plugins = config.Plugins.filter((Plugin) => Plugin.id !== "editorVersion");
+            config.Plugins = config.Plugins.filter(
+                (Plugin) => Plugin.id !== "editorVersion"
+            );
             return config;
         },
     });
 });
 
 function setSelectionInHtmlField(selector = "p", fieldName = "txt") {
-    const anchorNode = queryOne(`[name='${fieldName}'] .odoo-editor-editable ${selector}`);
-    setSelection({ anchorNode, anchorOffset: 0 });
+    const anchorNode = queryOne(
+        `[name='${fieldName}'] .odoo-editor-editable ${selector}`
+    );
+    setSelection({anchorNode, anchorOffset: 0});
     return anchorNode;
 }
 
@@ -212,7 +221,7 @@ test("html field in readonly with embedded components", async () => {
             expect.step("destroyed");
         },
     });
-    // patchWithCleanup Array => cleanup keeps the last array entry set to undefined,
+    // PatchWithCleanup Array => cleanup keeps the last array entry set to undefined,
     // so it can not be used
     READONLY_MAIN_EMBEDDINGS.push({
         name: "counter",
@@ -253,7 +262,7 @@ test("html field in readonly with embedded components", async () => {
     expect(`[name="txt"] .o_readonly`).toHaveInnerHTML(
         `<div><span data-embedded="counter" data-embedded-props='{"name":"name"}'><span class="counter">name:1</span></div>`
     );
-    // trigger the onchange method for name, which will replace the txt value.
+    // Trigger the onchange method for name, which will replace the txt value.
     await contains(`.o_field_widget[name=name] input`).edit("hello");
     await animationFrame();
     expect.verifySteps(["destroyed"]);
@@ -266,13 +275,13 @@ test("html field in readonly with embedded components", async () => {
 
 test("html field in readonly with embedded components and editable descendants", async () => {
     const Wrapper = EmbeddedWrapperMixin("editable");
-    // patchWithCleanup Array => cleanup keeps the last array entry set to undefined,
+    // PatchWithCleanup Array => cleanup keeps the last array entry set to undefined,
     // so it can not be used
     READONLY_MAIN_EMBEDDINGS.push(
         {
             name: "wrapper",
             Component: Wrapper,
-            getProps: (host) => ({ host }),
+            getProps: (host) => ({host}),
             getEditableDescendants,
         },
         {
@@ -408,7 +417,7 @@ test("XML-like self-closing elements are fixed in editable mode", async () => {
 });
 
 test("edit and save a html field", async () => {
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1]).toEqual({
             txt: "<p>testfirst</p>",
         });
@@ -447,9 +456,9 @@ test("edit and save a html field containing JSON as some attribute values should
             expect.step("Setup Wysiwyg");
         },
     });
-    onRpc("partner", "web_save", ({ args }) => {
+    onRpc("partner", "web_save", ({args}) => {
         expect.step("web_save");
-        // server representation does not have HTML entities
+        // Server representation does not have HTML entities
         args[1].txt = `<div data-value='{"myString":"myString"}'><p>content</p></div><p>first</p>`;
     });
 
@@ -504,7 +513,7 @@ test("edit a html field in new form view dialog and close the dialog with 'escap
 });
 
 test("onchange update html field in edition", async () => {
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1]).toEqual({
             txt: "<p>testfirst</p>",
         });
@@ -531,9 +540,9 @@ test("onchange update html field in edition", async () => {
 
 test("create new record and load it correctly", async () => {
     class Composer extends models.Model {
-        linked_composer_id = fields.Many2one({ relation: "composer" });
+        linked_composer_id = fields.Many2one({relation: "composer"});
         name = fields.Char();
-        body = fields.Html({ trim: true });
+        body = fields.Html({trim: true});
 
         _records = [
             {
@@ -585,12 +594,16 @@ test("create new record and load it correctly", async () => {
     expect(".odoo-editor-editable").toHaveInnerHTML("<p>2</p>");
     await contains(".o_input#linked_composer_id_0").click();
     await animationFrame();
-    await contains(".ui-menu-item:contains(first), .o_kanban_record:contains(first)").click();
+    await contains(
+        ".ui-menu-item:contains(first), .o_kanban_record:contains(first)"
+    ).click();
     await animationFrame();
     expect(".odoo-editor-editable").toHaveInnerHTML("<p>1</p>");
     await contains(".o_input#linked_composer_id_0").click();
     await animationFrame();
-    await contains(".ui-menu-item:contains(second), .o_kanban_record:contains(second)").click();
+    await contains(
+        ".ui-menu-item:contains(second), .o_kanban_record:contains(second)"
+    ).click();
     await animationFrame();
     expect(".odoo-editor-editable").toHaveInnerHTML("<p>2</p>");
 });
@@ -623,13 +636,13 @@ test("edit a html field with `o-contenteditable-true` or `o-contenteditable-fals
             txt: getTxtValue("inside"),
         },
     ];
-    onRpc("partner", "web_save", ({ args }) => {
+    onRpc("partner", "web_save", ({args}) => {
         expect.step("web_save");
-        // server representation removes `contenteditable` attribute
+        // Server representation removes `contenteditable` attribute
         let txt = args[1].txt;
         txt = txt.replace(` contenteditable="true"`, "");
         txt = txt.replace(` contenteditable="false"`, "");
-        return [{ id: 1, txt }];
+        return [{id: 1, txt}];
     });
     await mountView({
         type: "form",
@@ -663,7 +676,7 @@ test("edit html field and blur multiple time should apply 1 onchange", async () 
     Partner._onChanges = {
         txt() {},
     };
-    onRpc("partner", "onchange", async ({ args }) => {
+    onRpc("partner", "onchange", async ({args}) => {
         expect.step(`onchange: ${args[1].txt}`);
         await def;
     });
@@ -701,7 +714,7 @@ test("edit an html field during an onchange", async () => {
             record.txt = "<p>New Value</p>";
         },
     };
-    onRpc("partner", "onchange", async ({ args }) => {
+    onRpc("partner", "onchange", async ({args}) => {
         expect.step(`onchange: ${args[1].txt}`);
         await def;
     });
@@ -725,11 +738,15 @@ test("edit an html field during an onchange", async () => {
 
     setSelectionInHtmlField();
     await insertText(htmlEditor, "Yop ");
-    expect("[name='txt'] .odoo-editor-editable").toHaveInnerHTML("<p>Yop Hello first </p>");
+    expect("[name='txt'] .odoo-editor-editable").toHaveInnerHTML(
+        "<p>Yop Hello first </p>"
+    );
 
     def.resolve();
     await animationFrame();
-    expect("[name='txt'] .odoo-editor-editable").toHaveInnerHTML("<p>Yop Hello first </p>");
+    expect("[name='txt'] .odoo-editor-editable").toHaveInnerHTML(
+        "<p>Yop Hello first </p>"
+    );
 });
 
 test("click on next/previous page", async () => {
@@ -753,7 +770,7 @@ test("click on next/previous page", async () => {
 });
 
 test("edit and switch page", async () => {
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1]).toEqual({
             txt: "<p>testfirst</p>",
         });
@@ -803,7 +820,7 @@ test("discard changes in html field in form", async () => {
     expect(".odoo-editor-editable p").toHaveText("first");
     expect(`.o_form_button_save`).not.toBeVisible();
 
-    // move the hoot focus in the editor
+    // Move the hoot focus in the editor
     await click(".odoo-editor-editable");
     setSelectionInHtmlField();
     await insertText(htmlEditor, "test");
@@ -831,7 +848,7 @@ test("undo after discard html field changes in form", async () => {
     expect(".odoo-editor-editable p").toHaveText("first");
     expect(`.o_form_button_save`).not.toBeVisible();
 
-    // move the hoot focus in the editor
+    // Move the hoot focus in the editor
     await click(".odoo-editor-editable");
     setSelectionInHtmlField();
     await insertText(htmlEditor, "test");
@@ -862,7 +879,7 @@ test("A new MediaDialog after switching record in a Form view should have the co
             this.title = "TEST";
             this.tabs = [];
             this.state = {};
-            // no call to super to avoid services dependencies
+            // No call to super to avoid services dependencies
             // this test only cares about the props given to the dialog
         },
     });
@@ -924,7 +941,10 @@ test("Embed video by pasting video URL", async () => {
     await animationFrame();
     expect(anchorNode.outerHTML).toBe(`<p>${videoURL}</p>`);
     await expectElementCount(".o-we-powerbox", 1);
-    expect(queryAllTexts(".o-we-command-name")).toEqual(["Embed Youtube Video", "Paste as URL"]);
+    expect(queryAllTexts(".o-we-command-name")).toEqual([
+        "Embed Youtube Video",
+        "Paste as URL",
+    ]);
 
     // Press Enter to select first option in the powerbox ("Embed Youtube Video").
     await press("Enter");
@@ -969,7 +989,9 @@ test("Embedded video shouldn't have the 'media_iframe_video' class", async () =>
     await animationFrame();
 
     await contains(".o_video_dialog_form textarea").edit(videoURL);
-    await waitFor(".modal-dialog .modal-footer .btn-primary:not(:disabled)", { timeout: 2000 });
+    await waitFor(".modal-dialog .modal-footer .btn-primary:not(:disabled)", {
+        timeout: 2000,
+    });
     await contains(".modal-dialog .modal-footer .btn-primary").click();
     await animationFrame();
 
@@ -1088,14 +1110,14 @@ test("html field with a placeholder", async () => {
 
     expect(`[name="txt"] .odoo-editor-editable`).toHaveInnerHTML(
         '<div class="o-paragraph o-we-hint" o-we-hint-text="test"><br></div>',
-        { type: "html" }
+        {type: "html"}
     );
 
     setSelectionInHtmlField("div.o-paragraph");
     await tick();
     expect(`[name="txt"] .odoo-editor-editable`).toHaveInnerHTML(
         '<div class="o-paragraph o-we-hint" o-we-hint-text="Type &quot;/&quot; for commands"><br></div>',
-        { type: "html" }
+        {type: "html"}
     );
 
     moveSelectionOutsideEditor();
@@ -1103,7 +1125,7 @@ test("html field with a placeholder", async () => {
     await tick();
     expect(`[name="txt"] .odoo-editor-editable`).toHaveInnerHTML(
         '<div class="o-paragraph o-we-hint" o-we-hint-text="test"><br></div>',
-        { type: "html" }
+        {type: "html"}
     );
 });
 
@@ -1133,7 +1155,7 @@ test("should display overlay on video hover and handle video replacement and rem
                     autoplay: 0,
                 },
             };
-        } else {
+        }
             return {
                 video_id: "gbE3azm_Io0",
                 platform: "youtube",
@@ -1143,7 +1165,7 @@ test("should display overlay on video hover and handle video replacement and rem
                     autoplay: 0,
                 },
             };
-        }
+
     });
 
     // Insert video
@@ -1160,7 +1182,7 @@ test("should display overlay on video hover and handle video replacement and rem
     manuallyDispatchProgrammaticEvent(input, "input", {
         inputType: "insertText",
     });
-    await waitFor(".o_video_dialog_options", { timeout: 1500 });
+    await waitFor(".o_video_dialog_options", {timeout: 1500});
     await click(queryOne(".modal-footer").firstChild);
     const embeddedVideoEl = await waitFor("div[data-embedded='video'] iframe");
     const iframeSrcBefore = embeddedVideoEl.dataset.src;
@@ -1184,7 +1206,7 @@ test("should display overlay on video hover and handle video replacement and rem
     });
     await waitFor(
         '.o_video_dialog_iframe[data-src="https://www.youtube.com/embed/gbE3azm_Io0?rel=0&autoplay=0"]',
-        { timeout: 1500 }
+        {timeout: 1500}
     );
     await click(queryOne(".modal-footer").firstChild);
 
@@ -1240,7 +1262,7 @@ test("add Vimeo video link in 'Videos' tab of MediaDialog", async () => {
     manuallyDispatchProgrammaticEvent(input, "input", {
         inputType: "insertText",
     });
-    await waitFor(".o_video_dialog_options", { timeout: 1500 });
+    await waitFor(".o_video_dialog_options", {timeout: 1500});
     expect(input).toHaveClass("is-valid");
     await click(queryOne(".modal-footer").firstChild);
 });
@@ -1299,8 +1321,8 @@ test("MediaDialog does not contain 'Videos' tab when sanitize = true and embedde
     class SanitizePartner extends models.Model {
         _name = "sanitize.partner";
 
-        txt = fields.Html({ sanitize: true });
-        _records = [{ id: 1, txt: "<p>first sanitize</p>" }];
+        txt = fields.Html({sanitize: true});
+        _records = [{id: 1, txt: "<p>first sanitize</p>"}];
     }
 
     defineModels([SanitizePartner]);
@@ -1331,8 +1353,8 @@ test("MediaDialog contains 'Videos' tab when sanitize_tags = true and 'allowVide
     class SanitizePartner extends models.Model {
         _name = "sanitize.partner";
 
-        txt = fields.Html({ sanitize_tags: true });
-        _records = [{ id: 1, txt: "<p>first sanitize tags</p>" }];
+        txt = fields.Html({sanitize_tags: true});
+        _records = [{id: 1, txt: "<p>first sanitize tags</p>"}];
     }
 
     defineModels([SanitizePartner]);
@@ -1480,7 +1502,7 @@ test("codeview is not available by default", async () => {
             </form>`,
     });
     const node = queryOne(".odoo-editor-editable p");
-    setSelection({ anchorNode: node, anchorOffset: 0, focusNode: node, focusOffset: 1 });
+    setSelection({anchorNode: node, anchorOffset: 0, focusNode: node, focusOffset: 1});
     await waitFor(".o-we-toolbar");
     expect(".o-we-toolbar button[name='codeview']").toHaveCount(0);
 });
@@ -1496,7 +1518,7 @@ test("codeview is not available when not in debug mode", async () => {
             </form>`,
     });
     const node = queryOne(".odoo-editor-editable p");
-    setSelection({ anchorNode: node, anchorOffset: 0, focusNode: node, focusOffset: 1 });
+    setSelection({anchorNode: node, anchorOffset: 0, focusNode: node, focusOffset: 1});
     await waitFor(".o-we-toolbar");
     expect(".o-we-toolbar button[name='codeview']").toHaveCount(0);
 });
@@ -1513,7 +1535,7 @@ test("codeview is available when option is active and in debug mode", async () =
             </form>`,
     });
     const node = queryOne(".odoo-editor-editable p");
-    setSelection({ anchorNode: node, anchorOffset: 0, focusNode: node, focusOffset: 1 });
+    setSelection({anchorNode: node, anchorOffset: 0, focusNode: node, focusOffset: 1});
     await expandToolbar();
     expect(".o-we-toolbar button[name='codeview']").toHaveCount(1);
 });
@@ -1535,7 +1557,7 @@ test("enable/disable codeview with editor toolbar", async () => {
 
     // Switch to code view
     const node = queryOne(".odoo-editor-editable p");
-    setSelection({ anchorNode: node, anchorOffset: 0, focusNode: node, focusOffset: 1 });
+    setSelection({anchorNode: node, anchorOffset: 0, focusNode: node, focusOffset: 1});
     await expandToolbar();
     await contains(".o-we-toolbar button[name='codeview']").click();
     expect("[name='txt'] .odoo-editor-editable").toHaveClass("d-none");
@@ -1549,7 +1571,7 @@ test("enable/disable codeview with editor toolbar", async () => {
 
 test("edit and enable/disable codeview with editor toolbar", async () => {
     serverState.debug = "1";
-    onRpc("partner", "web_save", ({ args }) => {
+    onRpc("partner", "web_save", ({args}) => {
         expect(args[1].txt).toBe("<div></div>");
         expect.step("web_save");
     });
@@ -1570,7 +1592,7 @@ test("edit and enable/disable codeview with editor toolbar", async () => {
 
     // Switch to code view
     const node = queryOne(".odoo-editor-editable p");
-    setSelection({ anchorNode: node, anchorOffset: 0, focusNode: node, focusOffset: 1 });
+    setSelection({anchorNode: node, anchorOffset: 0, focusNode: node, focusOffset: 1});
     await expandToolbar();
     await contains(".o-we-toolbar button[name='codeview']").click();
     expect("[name='txt'] textarea").toHaveValue("<p>Hello first</p>");
@@ -1597,7 +1619,7 @@ test("edit and save a html field in collaborative should keep the same wysiwyg",
         },
     });
 
-    onRpc("partner", "web_save", ({ args }) => {
+    onRpc("partner", "web_save", ({args}) => {
         const txt = args[1].txt;
         expect(normalizeHTML(txt, stripHistoryIds)).toBe("<p>Hello first</p>");
         expect.step("web_save");
@@ -1607,7 +1629,7 @@ test("edit and save a html field in collaborative should keep the same wysiwyg",
         );
     });
     onRpc("/html_editor/get_ice_servers", () => []);
-    onRpc("/html_editor/bus_broadcast", (params) => ({ id: 10 }));
+    onRpc("/html_editor/bus_broadcast", (params) => ({id: 10}));
 
     await mountView({
         type: "form",
@@ -1655,7 +1677,7 @@ test("'checklist' toolbar option is not available when 'allowChecklist' = false"
             </form>`,
     });
     const node = queryOne(".odoo-editor-editable p");
-    setSelection({ anchorNode: node, anchorOffset: 0, focusNode: node, focusOffset: 1 });
+    setSelection({anchorNode: node, anchorOffset: 0, focusNode: node, focusOffset: 1});
     await waitFor(".o-we-toolbar");
     await expandToolbar();
     await contains(".o-we-toolbar button[name='list_selector']").click();
@@ -1733,7 +1755,9 @@ describe("sandbox", () => {
         );
         expect(readonlyIframe.contentDocument.body).toHaveText("Hello");
         expect(
-            readonlyIframe.contentWindow.getComputedStyle(readonlyIframe.contentDocument.body).color
+            readonlyIframe.contentWindow.getComputedStyle(
+                readonlyIframe.contentDocument.body
+            ).color
         ).toBe("rgb(0, 0, 255)");
         expect("#codeview-btn-group > button").toHaveCount(0, {
             message: "Codeview toggle should not be possible in readonly mode.",
@@ -1764,7 +1788,7 @@ describe("sandbox", () => {
                 txt: htmlDocumentTextTemplate("Hello", "red"),
             },
         ];
-        onRpc("partner", "web_save", ({ args }) => {
+        onRpc("partner", "web_save", ({args}) => {
             expect(args[1].txt).toBe(htmlDocumentTextTemplate("Hi", "blue"));
             expect.step("web_save");
         });
@@ -1784,23 +1808,26 @@ describe("sandbox", () => {
                 </form>`,
         });
 
-        // check original displayed content
+        // Check original displayed content
         let iframe = queryOne(
             '.o_field_html[name="txt"] iframe[sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"]'
         );
         expect(`.o_form_button_save`).not.toBeVisible();
         expect(iframe.contentDocument.body).toHaveText("Hello");
         expect(
-            iframe.contentDocument.head.querySelector("style").textContent.trim().replace(/\s/g, "")
+            iframe.contentDocument.head
+                .querySelector("style")
+                .textContent.trim()
+                .replace(/\s/g, "")
         ).toBe("body{color:red;}", {
             message: "Head nodes should remain unaltered in the head",
         });
-        expect(iframe.contentWindow.getComputedStyle(iframe.contentDocument.body).color).toBe(
-            "rgb(255, 0, 0)"
-        );
+        expect(
+            iframe.contentWindow.getComputedStyle(iframe.contentDocument.body).color
+        ).toBe("rgb(255, 0, 0)");
         expect("#codeview-btn-group > button").toHaveCount(1);
 
-        // switch to XML editor and edit
+        // Switch to XML editor and edit
         await contains("#codeview-btn-group > button").click();
         expect('.o_field_html[name="txt"] textarea').toHaveCount(1);
 
@@ -1809,7 +1836,7 @@ describe("sandbox", () => {
         );
         expect(`.o_form_button_save`).toBeVisible();
 
-        // check displayed content after edit
+        // Check displayed content after edit
         await contains("#codeview-btn-group > button").click();
         iframe = queryOne(
             '.o_field_html[name="txt"] iframe[sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"]'
@@ -1817,13 +1844,16 @@ describe("sandbox", () => {
         await animationFrame();
         expect(iframe.contentDocument.body).toHaveText("Hi");
         expect(
-            iframe.contentDocument.head.querySelector("style").textContent.trim().replace(/\s/g, "")
+            iframe.contentDocument.head
+                .querySelector("style")
+                .textContent.trim()
+                .replace(/\s/g, "")
         ).toBe("body{color:blue;}", {
             message: "Head nodes should remain unaltered in the head",
         });
-        expect(iframe.contentWindow.getComputedStyle(iframe.contentDocument.body).color).toBe(
-            "rgb(0, 0, 255)"
-        );
+        expect(
+            iframe.contentWindow.getComputedStyle(iframe.contentDocument.body).color
+        ).toBe("rgb(0, 0, 255)");
 
         await contains(".o_form_button_save").click();
         expect.verifySteps(["web_save"]);
@@ -1840,7 +1870,7 @@ describe("sandbox", () => {
                 txt: htmlDocumentTextTemplate("Bye", "green"),
             },
         ];
-        onRpc("partner", "web_save", ({ args }) => {
+        onRpc("partner", "web_save", ({args}) => {
             expect(args[1].txt).toBe(htmlDocumentTextTemplate("Hi", "blue"));
             expect.step("web_save");
         });
@@ -1861,7 +1891,7 @@ describe("sandbox", () => {
                 </form>`,
         });
 
-        // switch to XML editor and edit
+        // Switch to XML editor and edit
         await contains("#codeview-btn-group > button").click();
         expect('.o_field_html[name="txt"] textarea').toHaveValue(
             htmlDocumentTextTemplate("Hello", "red")
@@ -1972,7 +2002,9 @@ describe("sandbox", () => {
         });
 
         let readonlyIframe = queryOne('.o_field_html[name="txt"] iframe');
-        expect(readonlyIframe.contentDocument.body.querySelector("p")).toHaveText("first");
+        expect(readonlyIframe.contentDocument.body.querySelector("p")).toHaveText(
+            "first"
+        );
         for (const link of readonlyIframe.contentDocument.body.querySelectorAll("a")) {
             expect(link.getAttribute("target")).toBe("_blank");
             expect(link.getAttribute("rel")).toBe("noreferrer");
@@ -1980,7 +2012,9 @@ describe("sandbox", () => {
 
         await contains(`.o_pager_next`).click();
         readonlyIframe = queryOne('.o_field_html[name="txt"] iframe');
-        expect(readonlyIframe.contentDocument.body.querySelector("p")).toHaveText("second");
+        expect(readonlyIframe.contentDocument.body.querySelector("p")).toHaveText(
+            "second"
+        );
         for (const link of readonlyIframe.contentDocument.body.querySelectorAll("a")) {
             expect(link.getAttribute("target")).toBe("_blank");
             expect(link.getAttribute("rel")).toBe("noreferrer");
@@ -1988,7 +2022,9 @@ describe("sandbox", () => {
     });
 
     test("html field in readonly updated by onchange in sandboxedPreview", async () => {
-        Partner._records = [{ id: 1, name: "first", txt: getSandboxContent("<p>first</p>") }];
+        Partner._records = [
+            {id: 1, name: "first", txt: getSandboxContent("<p>first</p>")},
+        ];
         Partner._onChanges = {
             name(record) {
                 record.txt = getSandboxContent(`<p>${record.name}</p>`);
@@ -2096,7 +2132,7 @@ describe("direction config", () => {
         });
         expect(".odoo-editor-editable").toHaveAttribute("dir", "ltr");
         const node = queryOne(".odoo-editor-editable p");
-        setSelection({ anchorNode: node.firstChild, anchorOffset: 0 });
+        setSelection({anchorNode: node.firstChild, anchorOffset: 0});
         await insertText(htmlEditor, "/Switchdirection");
         await animationFrame();
         expect(queryAllTexts(".o-we-command-name")).toEqual(["Switch direction"]);
@@ -2121,7 +2157,7 @@ describe("direction config", () => {
         });
         expect(".odoo-editor-editable").toHaveAttribute("dir", "rtl");
         const node = queryOne(".odoo-editor-editable p");
-        setSelection({ anchorNode: node.firstChild, anchorOffset: 0 });
+        setSelection({anchorNode: node.firstChild, anchorOffset: 0});
         await insertText(htmlEditor, "/Switchdirection");
         await animationFrame();
         expect(queryAllTexts(".o-we-command-name")).toEqual(["Switch direction"]);
@@ -2134,7 +2170,7 @@ describe("save image", () => {
     function pasteFile(editor, file) {
         const clipboardData = new DataTransfer();
         clipboardData.items.add(file);
-        const pasteEvent = new ClipboardEvent("paste", { clipboardData, bubbles: true });
+        const pasteEvent = new ClipboardEvent("paste", {clipboardData, bubbles: true});
         editor.editable.dispatchEvent(pasteEvent);
     }
 
@@ -2144,7 +2180,7 @@ describe("save image", () => {
         for (let i = 0; i < binaryImageData.length; i++) {
             uint8Array[i] = binaryImageData.charCodeAt(i);
         }
-        return new File([uint8Array], "test_image.png", { type: "image/png" });
+        return new File([uint8Array], "test_image.png", {type: "image/png"});
     }
 
     test("Ensure that urgentSave works even with modified image to save", async () => {
@@ -2158,9 +2194,12 @@ describe("save image", () => {
         let sendBeaconDef;
         mockSendBeacon((route, blob) => {
             blob.text().then((r) => {
-                const { params } = JSON.parse(r);
-                const { args, model } = params;
-                if (route === "/web/dataset/call_kw/partner/web_save" && model === "partner") {
+                const {params} = JSON.parse(r);
+                const {args, model} = params;
+                if (
+                    route === "/web/dataset/call_kw/partner/web_save" &&
+                    model === "partner"
+                ) {
                     if (writeCount === 0) {
                         // Save normal value without image.
                         expect(args[1].txt).toBe(`<p class="test_target">a</p>`);
@@ -2169,10 +2208,14 @@ describe("save image", () => {
                         expect(args[1].txt).toBe(imageContainerHTML);
                     } else if (writeCount === 2) {
                         // Save the modified image.
-                        expect(args[1].txt).toBe(getImageContainerHTML(newImageSrc, false));
+                        expect(args[1].txt).toBe(
+                            getImageContainerHTML(newImageSrc, false)
+                        );
                     } else {
                         // Fail the test if too many write are called.
-                        throw new Error("Write should only be called 3 times during this test");
+                        throw new Error(
+                            "Write should only be called 3 times during this test"
+                        );
                     }
                     writeCount += 1;
                 }
@@ -2232,16 +2275,18 @@ describe("save image", () => {
         });
         onRpc(`/html_editor/modify_image/${imageRecord.id}`, async (request) => {
             if (modifyImageCount === 0) {
-                const { params } = await request.json();
+                const {params} = await request.json();
                 expect(params.res_model).toBe("partner");
                 expect(params.res_id).toBe(1);
                 await modifyImagePromise;
                 modifyImageCount++;
                 return newImageSrc;
-            } else {
-                // Fail the test if too many modify_image are called.
-                throw new Error("The image should only have been modified once during this test");
             }
+                // Fail the test if too many modify_image are called.
+                throw new Error(
+                    "The image should only have been modified once during this test"
+                );
+
         });
         await mountView({
             type: "form",
@@ -2263,7 +2308,10 @@ describe("save image", () => {
 
         // Replace the empty paragraph with a paragrah containing an unsaved
         // modified image
-        const imageContainerElement = parseHTML(htmlEditor.document, imageContainerHTML).firstChild;
+        const imageContainerElement = parseHTML(
+            htmlEditor.document,
+            imageContainerHTML
+        ).firstChild;
         const paragraph = htmlEditor.editable.querySelector(".test_target");
         htmlEditor.editable.replaceChild(imageContainerElement, paragraph);
         htmlEditor.shared.history.addStep();
@@ -2293,8 +2341,8 @@ describe("save image", () => {
             },
         ];
         onRpc("/html_editor/attachment/add_data", async (request) => {
-            const { params } = await request.json();
-            const { res_id, res_model } = params;
+            const {params} = await request.json();
+            const {res_id, res_model} = params;
             expect.step(`add_data: ${res_model} ${res_id}`);
             return {
                 image_src: "/test_image_url.png",
@@ -2343,8 +2391,8 @@ describe("save image", () => {
 
         const def = new Deferred();
         onRpc("/html_editor/attachment/add_data", async (request) => {
-            const { params } = await request.json();
-            const { res_id, res_model } = params;
+            const {params} = await request.json();
+            const {res_id, res_model} = params;
             expect.step(`add_data-start: ${res_model} ${res_id}`);
             await def;
             expect.step(`add_data-end: ${res_model} ${res_id}`);
@@ -2355,7 +2403,7 @@ describe("save image", () => {
             };
         });
 
-        onRpc("partner", "web_save", ({ args }) => {
+        onRpc("partner", "web_save", ({args}) => {
             expect.step("web_save");
             expect(args[1].txt).toBe(
                 `<p class="test_target"><img class="img-fluid" data-file-name="test_image.png" src="/test_image_url.png?access_token=1234"></p>`
@@ -2395,7 +2443,11 @@ describe("save image", () => {
         expect(img.getAttribute("src")).toBe("/test_image_url.png?access_token=1234");
         expect(img).not.toHaveClass("o_b64_image_to_save");
 
-        expect.verifySteps(["add_data-start: partner 1", "add_data-end: partner 1", "web_save"]);
+        expect.verifySteps([
+            "add_data-start: partner 1",
+            "add_data-end: partner 1",
+            "web_save",
+        ]);
     });
 
     test("Pasted/dropped images are converted once to attachments on switch page with slow network", async () => {
@@ -2412,8 +2464,8 @@ describe("save image", () => {
 
         const def = new Deferred();
         onRpc("/html_editor/attachment/add_data", async (request) => {
-            const { params } = await request.json();
-            const { res_id, res_model } = params;
+            const {params} = await request.json();
+            const {res_id, res_model} = params;
             expect.step(`add_data-start: ${res_model} ${res_id}`);
             await def;
             expect.step(`add_data-end: ${res_model} ${res_id}`);
@@ -2424,7 +2476,7 @@ describe("save image", () => {
             };
         });
 
-        onRpc("partner", "web_save", ({ args }) => {
+        onRpc("partner", "web_save", ({args}) => {
             expect.step("web_save");
             expect(args[1].txt).toBe(
                 `<p class="test_target"><img class="img-fluid" data-file-name="test_image.png" src="/test_image_url.png?access_token=1234"></p>`
@@ -2465,7 +2517,11 @@ describe("save image", () => {
         await animationFrame();
 
         expect(".test_target_2").toHaveCount(1);
-        expect.verifySteps(["add_data-start: partner 1", "add_data-end: partner 1", "web_save"]);
+        expect.verifySteps([
+            "add_data-start: partner 1",
+            "add_data-end: partner 1",
+            "web_save",
+        ]);
     });
 
     test("Pasted/dropped images are converted to attachments without access_token on save", async () => {
@@ -2476,8 +2532,8 @@ describe("save image", () => {
             },
         ];
         onRpc("/html_editor/attachment/add_data", async (request) => {
-            const { params } = await request.json();
-            const { res_id, res_model } = params;
+            const {params} = await request.json();
+            const {res_id, res_model} = params;
             expect.step(`add_data: ${res_model} ${res_id}`);
             return {
                 image_src: "/test_image_url.png",
@@ -2486,7 +2542,7 @@ describe("save image", () => {
             };
         });
 
-        onRpc("ir.attachment", "generate_access_token", ({ args }) => {
+        onRpc("ir.attachment", "generate_access_token", ({args}) => {
             expect.step(`generate_access_token: ${args}`);
             return ["12345"];
         });
@@ -2530,10 +2586,10 @@ describe("save image", () => {
         ];
 
         onRpc("/html_editor/attachment/add_data", async (request) => {
-            const { params } = await request.json();
-            const { res_id, res_model } = params;
+            const {params} = await request.json();
+            const {res_id, res_model} = params;
             expect.step(`add_data-start: ${res_model} ${res_id}`);
-            // add a delay to emulate saving a big image.
+            // Add a delay to emulate saving a big image.
             await delay(50);
             expect.step(`add_data-end: ${res_model} ${res_id}`);
             return {
@@ -2574,10 +2630,12 @@ describe("save image", () => {
         // Switch tab, this should trigger the image save.
         await contains(".o_notebook_headers .nav-link:not(.active)").click();
         await delay(50);
-        // reswitch tab, and check the image was saved properly.
+        // Reswitch tab, and check the image was saved properly.
         await contains(".o_notebook_headers .nav-link:not(.active)").click();
         const savedImg = htmlEditor.editable.querySelector("img");
-        expect(savedImg.getAttribute("src")).toBe("/test_image_url.png?access_token=1234");
+        expect(savedImg.getAttribute("src")).toBe(
+            "/test_image_url.png?access_token=1234"
+        );
         expect(savedImg).not.toHaveClass("o_b64_image_to_save");
 
         expect.verifySteps(["add_data-start: partner 1", "add_data-end: partner 1"]);
@@ -2586,7 +2644,7 @@ describe("save image", () => {
 
 describe("translatable", () => {
     test("should display translate button when html field is translatable", async () => {
-        Partner._fields.txt = fields.Html({ string: "txt", translate: true });
+        Partner._fields.txt = fields.Html({string: "txt", translate: true});
         serverState.lang = "en_US";
         serverState.multiLang = true;
 
@@ -2628,7 +2686,7 @@ describe("codeview enabled", () => {
                 </form>`,
         });
         const anchorNode = queryOne(`[name='txt'] .odoo-editor-editable p`);
-        setSelection({ anchorNode, anchorOffset: 0 });
+        setSelection({anchorNode, anchorOffset: 0});
         await insertText(htmlEditor, "/code");
         await waitFor(".o-we-powerbox");
         expect(queryAllTexts(".o-we-command-name")).toInclude("Code");
@@ -2645,7 +2703,7 @@ describe("codeview enabled", () => {
                 </form>`,
         });
         const anchorNode = queryOne(`[name='txt'] .odoo-editor-editable p`);
-        setSelection({ anchorNode, anchorOffset: 0 });
+        setSelection({anchorNode, anchorOffset: 0});
         await insertText(htmlEditor, "/video");
         await waitFor(".o-we-powerbox");
         await click(".o-we-powerbox .o-we-command-name:contains('Media')");

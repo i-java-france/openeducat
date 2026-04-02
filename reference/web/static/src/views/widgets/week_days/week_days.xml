@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
     <t t-name="web.WeekDays">
@@ -7,7 +7,10 @@
                 <tr>
                     <t t-foreach="weekdays" t-as="day" t-key="day">
                         <th class="text-center border fw-bold">
-                            <div class="o_recurrent_weekday_label" t-att-data-tooltip="props.record.fields[day].string">
+                            <div
+                                class="o_recurrent_weekday_label"
+                                t-att-data-tooltip="props.record.fields[day].string"
+                            >
                                 <t t-esc="props.record.fields[day].string" />
                             </div>
                         </th>

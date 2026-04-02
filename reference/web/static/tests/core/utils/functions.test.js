@@ -1,7 +1,7 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
 
-import { memoize, uniqueId } from "@web/core/utils/functions";
+import {memoize, uniqueId} from "@web/core/utils/functions";
 
 describe.current.tags("headless");
 
@@ -46,7 +46,7 @@ test("memoized function inherit function name if possible", () => {
 });
 
 test("uniqueId", () => {
-    patchWithCleanup(uniqueId, { nextId: 0 });
+    patchWithCleanup(uniqueId, {nextId: 0});
     expect(uniqueId("test_")).toBe("test_1");
     expect(uniqueId("bla")).toBe("bla2");
     expect(uniqueId("test_")).toBe("test_3");

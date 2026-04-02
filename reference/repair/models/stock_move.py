@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, Command, fields, models
+from odoo import Command, api, fields, models
 from odoo.tools.misc import groupby
 
 MAP_REPAIR_LINE_TYPE_TO_MOVE_LOCATIONS_FROM_REPAIR = {
@@ -73,7 +73,7 @@ class StockMove(models.Model):
     def copy_data(self, default=None):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
-        for move, vals in zip(self, vals_list):
+        for move, vals in zip(self, vals_list, strict=False):
             if 'repair_id' in default or move.repair_id:
                 vals['sale_line_id'] = False
         return vals_list
@@ -218,7 +218,7 @@ class StockMove(models.Model):
         # When setting the Repair Order as done with partially done moves, do not split these moves
         if self.repair_id:
             return []
-        return super(StockMove, self)._split(qty, restrict_partner_id)
+        return super()._split(qty, restrict_partner_id)
 
     def action_show_details(self):
         action = super().action_show_details()

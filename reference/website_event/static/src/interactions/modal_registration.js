@@ -1,12 +1,13 @@
-import { ReCaptcha } from "@google_recaptcha/js/recaptcha";
-import { registry } from "@web/core/registry";
-import { session } from "@web/session";
-import { Interaction } from "@web/public/interaction";
+import {ReCaptcha} from "@google_recaptcha/js/recaptcha";
+import {registry} from "@web/core/registry";
+import {session} from "@web/session";
+import {Interaction} from "@web/public/interaction";
 
 export class ModalRegistration extends Interaction {
-    static selector = "#modal_attendees_registration,.o_wevent_modal_slot_ticket_registration";
+    static selector =
+        "#modal_attendees_registration,.o_wevent_modal_slot_ticket_registration";
     dynamicContent = {
-        "form": {
+        form: {
             "t-on-submit": this.onSubmit,
         },
         ".js_goto_event, .btn-close": {
@@ -17,7 +18,7 @@ export class ModalRegistration extends Interaction {
     setup() {
         // dynamic get rather than import as we don't depend on this module
         if (session.turnstile_site_key) {
-            const { TurnStile } = odoo.loader.modules.get(
+            const {TurnStile} = odoo.loader.modules.get(
                 "@website_cf_turnstile/interactions/turnstile"
             );
             if (TurnStile) {
@@ -84,7 +85,9 @@ export class ModalRegistration extends Interaction {
         ev.preventDefault();
 
         const form = ev.currentTarget;
-        this.recaptchaToken = await this.recaptcha.getToken("website_event_registration");
+        this.recaptchaToken = await this.recaptcha.getToken(
+            "website_event_registration"
+        );
         if (this.recaptchaToken.error) {
             this.services.notification.add(this.recaptchaToken.error, {
                 type: "danger",

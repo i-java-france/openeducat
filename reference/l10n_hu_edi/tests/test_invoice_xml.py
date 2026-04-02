@@ -1,11 +1,13 @@
-from odoo import tools, fields, Command
-from odoo.tests.common import tagged
-from odoo.addons.l10n_hu_edi.tests.common import L10nHuEdiTestCommon
+import base64
+import io
+import zipfile
 
 from freezegun import freeze_time
-import base64
-import zipfile
-import io
+
+from odoo import Command, fields, tools
+from odoo.tests.common import tagged
+
+from odoo.addons.l10n_hu_edi.tests.common import L10nHuEdiTestCommon
 
 
 @tagged('post_install_l10n', '-at_install', 'post_install')

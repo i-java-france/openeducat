@@ -7,42 +7,42 @@
       "colNumber": 7,
       "rowNumber": 55,
       "rows": {
-        "6": { "size": 40 },
-        "22": { "size": 40 },
-        "23": { "size": 40 },
-        "24": { "size": 30 },
-        "25": { "size": 30 },
-        "26": { "size": 30 },
-        "27": { "size": 30 },
-        "28": { "size": 30 },
-        "29": { "size": 30 },
-        "30": { "size": 30 },
-        "31": { "size": 30 },
-        "32": { "size": 30 },
-        "33": { "size": 30 },
-        "34": { "size": 30 },
-        "35": { "size": 40 },
-        "36": { "size": 40 },
-        "37": { "size": 30 },
-        "38": { "size": 30 },
-        "39": { "size": 30 },
-        "40": { "size": 30 },
-        "41": { "size": 30 },
-        "42": { "size": 30 },
-        "43": { "size": 30 },
-        "44": { "size": 30 },
-        "45": { "size": 30 },
-        "46": { "size": 30 },
-        "47": { "size": 30 }
+        "6": {"size": 40},
+        "22": {"size": 40},
+        "23": {"size": 40},
+        "24": {"size": 30},
+        "25": {"size": 30},
+        "26": {"size": 30},
+        "27": {"size": 30},
+        "28": {"size": 30},
+        "29": {"size": 30},
+        "30": {"size": 30},
+        "31": {"size": 30},
+        "32": {"size": 30},
+        "33": {"size": 30},
+        "34": {"size": 30},
+        "35": {"size": 40},
+        "36": {"size": 40},
+        "37": {"size": 30},
+        "38": {"size": 30},
+        "39": {"size": 30},
+        "40": {"size": 30},
+        "41": {"size": 30},
+        "42": {"size": 30},
+        "43": {"size": 30},
+        "44": {"size": 30},
+        "45": {"size": 30},
+        "46": {"size": 30},
+        "47": {"size": 30}
       },
       "cols": {
-        "0": { "size": 275 },
-        "1": { "size": 103 },
-        "2": { "size": 100 },
-        "3": { "size": 50 },
-        "4": { "size": 275 },
-        "5": { "size": 103 },
-        "6": { "size": 100 }
+        "0": {"size": 275},
+        "1": {"size": 103},
+        "2": {"size": 100},
+        "3": {"size": 50},
+        "4": {"size": 275},
+        "5": {"size": 103},
+        "6": {"size": 100}
       },
       "merges": [],
       "cells": {
@@ -238,22 +238,22 @@
       },
       "conditionalFormats": [
         {
-          "rule": { "type": "DataBarRule", "color": 15531509, "rangeValues": "C25:C34" },
+          "rule": {"type": "DataBarRule", "color": 15531509, "rangeValues": "C25:C34"},
           "id": "62781980-687b-452e-bf4b-1d95aa74b206",
           "ranges": ["A25:A34"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 15726335, "rangeValues": "G25:G34" },
+          "rule": {"type": "DataBarRule", "color": 15726335, "rangeValues": "G25:G34"},
           "id": "fa3cf786-7e59-4040-b972-a8ea6adfa84a",
           "ranges": ["E25:E34"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 16775149, "rangeValues": "C38:C47" },
+          "rule": {"type": "DataBarRule", "color": 16775149, "rangeValues": "C38:C47"},
           "id": "4da45c58-2120-47f1-9c38-efc72705ce1e",
           "ranges": ["A38:A47"]
         },
         {
-          "rule": { "type": "DataBarRule", "color": 16708338, "rangeValues": "F38:F47" },
+          "rule": {"type": "DataBarRule", "color": 16708338, "rangeValues": "F38:F47"},
           "id": "1de4a8fb-1ffa-4cc5-977c-e9bce8921269",
           "ranges": ["E38:E47"]
         }
@@ -266,7 +266,7 @@
           "height": 344,
           "tag": "chart",
           "data": {
-            "title": { "text": "" },
+            "title": {"text": ""},
             "background": "#FFFFFF",
             "legendPosition": "top",
             "metaData": {
@@ -292,14 +292,30 @@
             "verticalAxisPosition": "left",
             "stacked": true,
             "fieldMatching": {
-              "83b5c62c-1c67-4477-a057-c0ec29edd595": { "chain": "create_date", "type": "datetime", "offset": 0 },
-              "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": { "chain": "user_ids", "type": "many2many" },
-              "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": { "chain": "project_id", "type": "many2one" },
-              "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": { "chain": "tag_ids", "type": "many2many" },
-              "9c9461c3-974d-41c1-8cbd-2fa8e89de148": { "chain": "partner_id", "type": "many2one" }
+              "83b5c62c-1c67-4477-a057-c0ec29edd595": {
+                "chain": "create_date",
+                "type": "datetime",
+                "offset": 0
+              },
+              "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": {
+                "chain": "user_ids",
+                "type": "many2many"
+              },
+              "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": {
+                "chain": "project_id",
+                "type": "many2one"
+              },
+              "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": {
+                "chain": "tag_ids",
+                "type": "many2many"
+              },
+              "9c9461c3-974d-41c1-8cbd-2fa8e89de148": {
+                "chain": "partner_id",
+                "type": "many2one"
+              }
             }
           },
-          "offset": { "x": 0, "y": 178 },
+          "offset": {"x": 0, "y": 178},
           "col": 0,
           "row": 0
         },
@@ -309,7 +325,7 @@
           "height": 344,
           "tag": "chart",
           "data": {
-            "title": { "text": "" },
+            "title": {"text": ""},
             "background": "#FFFFFF",
             "legendPosition": "top",
             "metaData": {
@@ -333,14 +349,30 @@
             "type": "odoo_pie",
             "dataSets": [],
             "fieldMatching": {
-              "83b5c62c-1c67-4477-a057-c0ec29edd595": { "chain": "create_date", "type": "datetime", "offset": 0 },
-              "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": { "chain": "user_ids", "type": "many2many" },
-              "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": { "chain": "project_id", "type": "many2one" },
-              "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": { "chain": "tag_ids", "type": "many2many" },
-              "9c9461c3-974d-41c1-8cbd-2fa8e89de148": { "chain": "partner_id", "type": "many2one" }
+              "83b5c62c-1c67-4477-a057-c0ec29edd595": {
+                "chain": "create_date",
+                "type": "datetime",
+                "offset": 0
+              },
+              "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": {
+                "chain": "user_ids",
+                "type": "many2many"
+              },
+              "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": {
+                "chain": "project_id",
+                "type": "many2one"
+              },
+              "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": {
+                "chain": "tag_ids",
+                "type": "many2many"
+              },
+              "9c9461c3-974d-41c1-8cbd-2fa8e89de148": {
+                "chain": "partner_id",
+                "type": "many2one"
+              }
             }
           },
-          "offset": { "x": 525, "y": 178 },
+          "offset": {"x": 525, "y": 178},
           "col": 0,
           "row": 0
         },
@@ -353,13 +385,13 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "difference",
-            "title": { "text": "Tasks", "bold": true, "color": "#434343" },
+            "title": {"text": "Tasks", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#EFF6FF",
             "keyValue": "Data!D2",
             "humanize": false
           },
-          "offset": { "x": 0, "y": 10 },
+          "offset": {"x": 0, "y": 10},
           "col": 0,
           "row": 0
         },
@@ -372,15 +404,15 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "percentage",
-            "title": { "text": "Hours Logged", "bold": true, "color": "#434343" },
+            "title": {"text": "Hours Logged", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FEF2F2",
             "baseline": "Data!E3",
-            "baselineDescr": { "text": "since last period" },
+            "baselineDescr": {"text": "since last period"},
             "keyValue": "Data!D3",
             "humanize": false
           },
-          "offset": { "x": 210, "y": 10 },
+          "offset": {"x": 210, "y": 10},
           "col": 0,
           "row": 0
         },
@@ -393,15 +425,15 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "difference",
-            "title": { "text": "Time to Assign", "bold": true, "color": "#434343" },
+            "title": {"text": "Time to Assign", "bold": true, "color": "#434343"},
             "type": "scorecard",
             "background": "#FEF2F2",
             "baseline": "Data!E4",
-            "baselineDescr": { "text": "last period" },
+            "baselineDescr": {"text": "last period"},
             "keyValue": "Data!D4",
             "humanize": false
           },
-          "offset": { "x": 420, "y": 10 },
+          "offset": {"x": 420, "y": 10},
           "col": 0,
           "row": 0
         },
@@ -414,15 +446,15 @@
             "baselineColorDown": "#DC6965",
             "baselineColorUp": "#00A04A",
             "baselineMode": "difference",
-            "title": { "text": "Time to Close", "color": "#434343", "bold": true },
+            "title": {"text": "Time to Close", "color": "#434343", "bold": true},
             "type": "scorecard",
             "background": "#FEF2F2",
             "baseline": "Data!E5",
-            "baselineDescr": { "text": "last period" },
+            "baselineDescr": {"text": "last period"},
             "keyValue": "Data!D5",
             "humanize": false
           },
-          "offset": { "x": 629, "y": 10 },
+          "offset": {"x": 629, "y": 10},
           "col": 0,
           "row": 0
         }
@@ -504,11 +536,11 @@
       "rowNumber": 90,
       "rows": {},
       "cols": {
-        "0": { "size": 119 },
-        "1": { "size": 119 },
-        "2": { "size": 97 },
-        "3": { "size": 144 },
-        "4": { "size": 138 }
+        "0": {"size": 119},
+        "1": {"size": 119},
+        "2": {"size": 97},
+        "3": {"size": 144},
+        "4": {"size": 138}
       },
       "merges": [],
       "cells": {
@@ -538,7 +570,7 @@
         "E4": "=ROUND(C4)",
         "E5": "=ROUND(C5)"
       },
-      "styles": { "A1:C1": 5, "D1:E1": 6, "D2:E3": 7, "D4:E5": 8 },
+      "styles": {"A1:C1": 5, "D1:E1": 6, "D2:E3": 7, "D4:E5": 8},
       "formats": {},
       "borders": {},
       "conditionalFormats": [],
@@ -555,41 +587,41 @@
     }
   ],
   "styles": {
-    "1": { "textColor": "#01666b", "fontSize": 16, "bold": true },
-    "2": { "textColor": "#434343", "bold": true, "fontSize": 11 },
-    "3": { "textColor": "#434343", "verticalAlign": "middle" },
+    "1": {"textColor": "#01666b", "fontSize": 16, "bold": true},
+    "2": {"textColor": "#434343", "bold": true, "fontSize": 11},
+    "3": {"textColor": "#434343", "verticalAlign": "middle"},
     "4": {
       "textColor": "#434343",
       "bold": true,
       "fontSize": 11,
       "align": "center"
     },
-    "5": { "bold": true },
-    "6": { "bold": true, "fillColor": "#f2f2f2" },
-    "7": { "fillColor": "#f2f2f2" },
-    "8": { "align": "right", "fillColor": "#f2f2f2" }
+    "5": {"bold": true},
+    "6": {"bold": true, "fillColor": "#f2f2f2"},
+    "7": {"fillColor": "#f2f2f2"},
+    "8": {"align": "right", "fillColor": "#f2f2f2"}
   },
   "formats": {},
   "borders": {
     "1": {
-      "bottom": { "style": "thin", "color": "#CCCCCC" }
+      "bottom": {"style": "thin", "color": "#CCCCCC"}
     },
     "2": {
-      "top": { "style": "thin", "color": "#CCCCCC" }
+      "top": {"style": "thin", "color": "#CCCCCC"}
     },
     "3": {
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     },
     "4": {
-      "top": { "style": "thick", "color": "#FFFFFF" },
-      "bottom": { "style": "thick", "color": "#FFFFFF" }
+      "top": {"style": "thick", "color": "#FFFFFF"},
+      "bottom": {"style": "thick", "color": "#FFFFFF"}
     },
     "5": {
-      "top": { "style": "thick", "color": "#FFFFFF" },
-      "bottom": { "style": "thin", "color": "#FFFFFF" }
+      "top": {"style": "thick", "color": "#FFFFFF"},
+      "bottom": {"style": "thin", "color": "#FFFFFF"}
     },
     "6": {
-      "top": { "style": "thin", "color": "#FFFFFF" }
+      "top": {"style": "thin", "color": "#FFFFFF"}
     }
   },
   "revisionId": "START_REVISION",
@@ -610,23 +642,37 @@
     "1": {
       "type": "ODOO",
       "fieldMatching": {
-        "83b5c62c-1c67-4477-a057-c0ec29edd595": { "chain": "date_assign", "type": "datetime", "offset": 0 },
-        "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": { "chain": "user_ids", "type": "many2many" },
-        "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": { "chain": "project_id", "type": "many2one" },
-        "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": { "chain": "tag_ids", "type": "many2many" },
-        "9c9461c3-974d-41c1-8cbd-2fa8e89de148": { "chain": "partner_id", "type": "many2one" }
+        "83b5c62c-1c67-4477-a057-c0ec29edd595": {
+          "chain": "date_assign",
+          "type": "datetime",
+          "offset": 0
+        },
+        "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": {
+          "chain": "user_ids",
+          "type": "many2many"
+        },
+        "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": {
+          "chain": "project_id",
+          "type": "many2one"
+        },
+        "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": {
+          "chain": "tag_ids",
+          "type": "many2many"
+        },
+        "9c9461c3-974d-41c1-8cbd-2fa8e89de148": {
+          "chain": "partner_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "group_by": [],
         "graph_measure": "__count__"
       },
-      "domain": [
-        ["user_ids", "!=", false]
-      ],
+      "domain": [["user_ids", "!=", false]],
       "id": "1",
       "measures": [
-        { "id": "effective_hours", "fieldName": "effective_hours" },
-        { "id": "nbr", "fieldName": "nbr" }
+        {"id": "effective_hours", "fieldName": "effective_hours"},
+        {"id": "nbr", "fieldName": "nbr"}
       ],
       "model": "report.project.task.user",
       "name": "Tasks Analysis by Assignees",
@@ -637,30 +683,42 @@
       },
       "formulaId": "1",
       "columns": [],
-      "rows": [
-        { "fieldName": "user_ids" }
-      ]
+      "rows": [{"fieldName": "user_ids"}]
     },
     "2": {
       "type": "ODOO",
       "fieldMatching": {
-        "83b5c62c-1c67-4477-a057-c0ec29edd595": { "chain": "create_date", "type": "datetime", "offset": 0 },
-        "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": { "chain": "user_ids", "type": "many2many" },
-        "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": { "chain": "project_id", "type": "many2one" },
-        "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": { "chain": "tag_ids", "type": "many2many" },
-        "9c9461c3-974d-41c1-8cbd-2fa8e89de148": { "chain": "partner_id", "type": "many2one" }
+        "83b5c62c-1c67-4477-a057-c0ec29edd595": {
+          "chain": "create_date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": {
+          "chain": "user_ids",
+          "type": "many2many"
+        },
+        "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": {
+          "chain": "project_id",
+          "type": "many2one"
+        },
+        "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": {
+          "chain": "tag_ids",
+          "type": "many2many"
+        },
+        "9c9461c3-974d-41c1-8cbd-2fa8e89de148": {
+          "chain": "partner_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "group_by": [],
         "graph_measure": "__count__"
       },
-      "domain": [
-        ["project_id", "!=", false]
-      ],
+      "domain": [["project_id", "!=", false]],
       "id": "2",
       "measures": [
-        { "id": "effective_hours", "fieldName": "effective_hours" },
-        { "id": "nbr", "fieldName": "nbr" }
+        {"id": "effective_hours", "fieldName": "effective_hours"},
+        {"id": "nbr", "fieldName": "nbr"}
       ],
       "model": "report.project.task.user",
       "name": "Tasks Analysis by Project",
@@ -671,30 +729,42 @@
       },
       "formulaId": "2",
       "columns": [],
-      "rows": [
-        { "fieldName": "project_id" }
-      ]
+      "rows": [{"fieldName": "project_id"}]
     },
     "3": {
       "type": "ODOO",
       "fieldMatching": {
-        "83b5c62c-1c67-4477-a057-c0ec29edd595": { "chain": "create_date", "type": "datetime", "offset": 0 },
-        "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": { "chain": "user_ids", "type": "many2many" },
-        "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": { "chain": "project_id", "type": "many2one" },
-        "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": { "chain": "tag_ids", "type": "many2many" },
-        "9c9461c3-974d-41c1-8cbd-2fa8e89de148": { "chain": "partner_id", "type": "many2one" }
+        "83b5c62c-1c67-4477-a057-c0ec29edd595": {
+          "chain": "create_date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": {
+          "chain": "user_ids",
+          "type": "many2many"
+        },
+        "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": {
+          "chain": "project_id",
+          "type": "many2one"
+        },
+        "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": {
+          "chain": "tag_ids",
+          "type": "many2many"
+        },
+        "9c9461c3-974d-41c1-8cbd-2fa8e89de148": {
+          "chain": "partner_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "group_by": [],
         "graph_measure": "__count__"
       },
-      "domain": [
-        ["tag_ids", "!=", false]
-      ],
+      "domain": [["tag_ids", "!=", false]],
       "id": "3",
       "measures": [
-        { "id": "effective_hours", "fieldName": "effective_hours" },
-        { "id": "nbr", "fieldName": "nbr" }
+        {"id": "effective_hours", "fieldName": "effective_hours"},
+        {"id": "nbr", "fieldName": "nbr"}
       ],
       "model": "report.project.task.user",
       "name": "Tasks Analysis by Tags",
@@ -705,30 +775,42 @@
       },
       "formulaId": "3",
       "columns": [],
-      "rows": [
-        { "fieldName": "tag_ids" }
-      ]
+      "rows": [{"fieldName": "tag_ids"}]
     },
     "4": {
       "type": "ODOO",
       "fieldMatching": {
-        "83b5c62c-1c67-4477-a057-c0ec29edd595": { "chain": "create_date", "type": "datetime", "offset": 0 },
-        "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": { "chain": "user_ids", "type": "many2many" },
-        "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": { "chain": "project_id", "type": "many2one" },
-        "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": { "chain": "tag_ids", "type": "many2many" },
-        "9c9461c3-974d-41c1-8cbd-2fa8e89de148": { "chain": "partner_id", "type": "many2one" }
+        "83b5c62c-1c67-4477-a057-c0ec29edd595": {
+          "chain": "create_date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": {
+          "chain": "user_ids",
+          "type": "many2many"
+        },
+        "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": {
+          "chain": "project_id",
+          "type": "many2one"
+        },
+        "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": {
+          "chain": "tag_ids",
+          "type": "many2many"
+        },
+        "9c9461c3-974d-41c1-8cbd-2fa8e89de148": {
+          "chain": "partner_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "group_by": [],
         "graph_measure": "__count__"
       },
-      "domain": [
-        ["partner_id", "!=", false]
-      ],
+      "domain": [["partner_id", "!=", false]],
       "id": "4",
       "measures": [
-        { "id": "effective_hours", "fieldName": "effective_hours" },
-        { "id": "nbr", "fieldName": "nbr" }
+        {"id": "effective_hours", "fieldName": "effective_hours"},
+        {"id": "nbr", "fieldName": "nbr"}
       ],
       "model": "report.project.task.user",
       "name": "Tasks Analysis by Customer",
@@ -739,18 +821,32 @@
       },
       "formulaId": "4",
       "columns": [],
-      "rows": [
-        { "fieldName": "partner_id" }
-      ]
+      "rows": [{"fieldName": "partner_id"}]
     },
     "5": {
       "type": "ODOO",
       "fieldMatching": {
-        "83b5c62c-1c67-4477-a057-c0ec29edd595": { "chain": "create_date", "type": "datetime", "offset": 0 },
-        "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": { "chain": "user_ids", "type": "many2many" },
-        "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": { "chain": "project_id", "type": "many2one" },
-        "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": { "chain": "tag_ids", "type": "many2many" },
-        "9c9461c3-974d-41c1-8cbd-2fa8e89de148": { "chain": "partner_id", "type": "many2one" }
+        "83b5c62c-1c67-4477-a057-c0ec29edd595": {
+          "chain": "create_date",
+          "type": "datetime",
+          "offset": 0
+        },
+        "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": {
+          "chain": "user_ids",
+          "type": "many2many"
+        },
+        "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": {
+          "chain": "project_id",
+          "type": "many2one"
+        },
+        "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": {
+          "chain": "tag_ids",
+          "type": "many2many"
+        },
+        "9c9461c3-974d-41c1-8cbd-2fa8e89de148": {
+          "chain": "partner_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "group_by": [],
@@ -759,10 +855,10 @@
       "domain": [],
       "id": "5",
       "measures": [
-        { "id": "nbr", "fieldName": "nbr" },
-        { "id": "effective_hours", "fieldName": "effective_hours" },
-        { "id": "working_days_open", "fieldName": "working_days_open" },
-        { "id": "working_days_close", "fieldName": "working_days_close" }
+        {"id": "nbr", "fieldName": "nbr"},
+        {"id": "effective_hours", "fieldName": "effective_hours"},
+        {"id": "working_days_open", "fieldName": "working_days_open"},
+        {"id": "working_days_close", "fieldName": "working_days_close"}
       ],
       "model": "report.project.task.user",
       "name": "stats - current",
@@ -778,11 +874,27 @@
     "6": {
       "type": "ODOO",
       "fieldMatching": {
-        "83b5c62c-1c67-4477-a057-c0ec29edd595": { "chain": "create_date", "type": "datetime", "offset": -1 },
-        "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": { "chain": "user_ids", "type": "many2many" },
-        "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": { "chain": "project_id", "type": "many2one" },
-        "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": { "chain": "tag_ids", "type": "many2many" },
-        "9c9461c3-974d-41c1-8cbd-2fa8e89de148": { "chain": "partner_id", "type": "many2one" }
+        "83b5c62c-1c67-4477-a057-c0ec29edd595": {
+          "chain": "create_date",
+          "type": "datetime",
+          "offset": -1
+        },
+        "fb7f6ae2-e19c-40d5-9976-7a05b1f18c2d": {
+          "chain": "user_ids",
+          "type": "many2many"
+        },
+        "3fc9b370-1aae-436e-b77e-6bbc5f10f56c": {
+          "chain": "project_id",
+          "type": "many2one"
+        },
+        "cfccbf2c-c86e-4915-a73d-c1e8ae69abe9": {
+          "chain": "tag_ids",
+          "type": "many2many"
+        },
+        "9c9461c3-974d-41c1-8cbd-2fa8e89de148": {
+          "chain": "partner_id",
+          "type": "many2one"
+        }
       },
       "context": {
         "group_by": [],
@@ -791,10 +903,10 @@
       "domain": [],
       "id": "6",
       "measures": [
-        { "id": "nbr", "fieldName": "nbr" },
-        { "id": "effective_hours", "fieldName": "effective_hours" },
-        { "id": "working_days_open", "fieldName": "working_days_open" },
-        { "id": "working_days_close", "fieldName": "working_days_close" }
+        {"id": "nbr", "fieldName": "nbr"},
+        {"id": "effective_hours", "fieldName": "effective_hours"},
+        {"id": "working_days_open", "fieldName": "working_days_open"},
+        {"id": "working_days_close", "fieldName": "working_days_close"}
       ],
       "model": "report.project.task.user",
       "name": "stats - previous",

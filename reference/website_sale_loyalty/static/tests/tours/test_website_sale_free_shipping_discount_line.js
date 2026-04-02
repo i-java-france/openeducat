@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import {
     addToCart,
     assertCartAmounts,
@@ -29,7 +29,6 @@ function selectDelivery(provider) {
     };
 }
 
-
 const webTours = registry.category("web_tour.tours");
 
 webTours.add("check_shipping_discount", {
@@ -48,10 +47,10 @@ webTours.add("check_shipping_discount", {
         },
         {
             content: "click on 'Add to Cart' button",
-            trigger: '#product_detail form #add_to_cart',
+            trigger: "#product_detail form #add_to_cart",
             run: "click",
         },
-        goToCart({ quantity: 3 }),
+        goToCart({quantity: 3}),
         goToCheckout(),
         waitForInteractionToLoad(),
         selectDelivery("delivery2"),
@@ -59,32 +58,33 @@ webTours.add("check_shipping_discount", {
             delivery: "10.00", // delivery2 is $10, ignoring shipping discount
             total: "304.00", // $100 per Plumbus, plus discounted delivery
         }),
-        ...assertRewardAmounts({ shipping: "- 6.00" }),
+        ...assertRewardAmounts({shipping: "- 6.00"}),
         {
             content: "pay with eWallet",
-            trigger: "form[name=claim_reward] button[name='o_loyalty_claim']:contains('Use')",
+            trigger:
+                "form[name=claim_reward] button[name='o_loyalty_claim']:contains('Use')",
             run: "click",
             expectUnloadPage: true,
         },
-        ...assertRewardAmounts({ discount: "- 304.00" }),
+        ...assertRewardAmounts({discount: "- 304.00"}),
         waitForInteractionToLoad(),
         selectDelivery("delivery1"),
-        ...assertCartAmounts({ delivery: "5.00" }),
-        ...assertRewardAmounts({ discount: "- 300.00", shipping: "- 5.00" }),
+        ...assertCartAmounts({delivery: "5.00"}),
+        ...assertRewardAmounts({discount: "- 300.00", shipping: "- 5.00"}),
         {
             content: "confirm shipping method",
             trigger: ".o_total_card a[name=website_sale_main_button]",
             run: "click",
             expectUnloadPage: true,
         },
-        ...pay({ expectUnloadPage: true }),
+        ...pay({expectUnloadPage: true}),
     ],
 });
 
 webTours.add("update_shipping_after_discount", {
     url: "/shop",
     steps: () => [
-        ...addToCart({ productName: "Plumbus", expectUnloadPage: true }),
+        ...addToCart({productName: "Plumbus", expectUnloadPage: true}),
         goToCart(),
         {
             content: "use eWallet to check it doesn't impact `free_over` shipping",
@@ -94,7 +94,8 @@ webTours.add("update_shipping_after_discount", {
         },
         {
             content: "Check pay with eWallet is applied",
-            trigger: ".o_cart_product [name=website_sale_cart_line_price]:contains(- 100.00)",
+            trigger:
+                ".o_cart_product [name=website_sale_cart_line_price]:contains(- 100.00)",
         },
         goToCheckout(),
         selectDelivery("delivery1"),
@@ -102,7 +103,7 @@ webTours.add("update_shipping_after_discount", {
             total: "0.00", // $100 total is covered by eWallet
             delivery: "0.00", // $100 is over $75 `free_over` amount, so free shipping
         }),
-        ...assertRewardAmounts({ discount: "- 100.00" }),
+        ...assertRewardAmounts({discount: "- 100.00"}),
         confirmOrder(),
         {
             content: "enter discount code",
@@ -121,11 +122,12 @@ webTours.add("update_shipping_after_discount", {
         }),
         {
             content: "check discount code discount doesn't apply to shipping",
-            trigger: '[data-reward-type=discount] .oe_currency_value:text(- 50.00)',
+            trigger: "[data-reward-type=discount] .oe_currency_value:text(- 50.00)",
         },
         {
-            content: "check eWallet discount applies to shipping ($50 for Plumbus + $5 for delivery)",
-            trigger: '[data-reward-type=discount] .oe_currency_value:text(- 55.00)',
+            content:
+                "check eWallet discount applies to shipping ($50 for Plumbus + $5 for delivery)",
+            trigger: "[data-reward-type=discount] .oe_currency_value:text(- 55.00)",
         },
     ],
 });

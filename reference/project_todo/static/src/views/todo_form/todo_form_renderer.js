@@ -1,5 +1,5 @@
-import { FormRendererWithHtmlExpander } from "@resource/views/form_with_html_expander/form_renderer_with_html_expander";
-import { useBus } from "@web/core/utils/hooks";
+import {FormRendererWithHtmlExpander} from "@resource/views/form_with_html_expander/form_renderer_with_html_expander";
+import {useBus} from "@web/core/utils/hooks";
 
 export class TodoFormRenderer extends FormRendererWithHtmlExpander {
     setup() {

@@ -1,8 +1,11 @@
-import { EXHIBITOR_FILTER, SPONSOR } from "@website_event/website_builder/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {
+    EXHIBITOR_FILTER,
+    SPONSOR,
+} from "@website_event/website_builder/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 export class EventPageFilterOption extends BaseOptionComponent {
     static template = "website_event_exhibitor.EventPageFilterOption";
@@ -28,4 +31,6 @@ class EventPageOptionPlugin extends Plugin {
     };
 }
 
-registry.category("website-plugins").add(EventPageOptionPlugin.id, EventPageOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(EventPageOptionPlugin.id, EventPageOptionPlugin);

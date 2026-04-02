@@ -6,13 +6,14 @@ document.addEventListener("DOMContentLoaded", function () {
             if (closestInputGroup) {
                 const formControl = closestInputGroup.querySelector(".form-control");
                 if (formControl) {
-                    formControl.type = formControl.type === "text" ? "password" : "text";
+                    formControl.type =
+                        formControl.type === "text" ? "password" : "text";
                 }
             }
         }
     });
 
-    // db modal
+    // Db modal
     document.body.addEventListener("click", function (ev) {
         if (ev.target.classList.contains("o_database_action")) {
             ev.preventDefault();
@@ -27,19 +28,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-   document.getElementById('backup_format').addEventListener("change", function (ev) {
-            ev.preventDefault();
-            const no_filestore_flag = document.getElementById("filestore_div");
-            if (no_filestore_flag) {
-                if (ev.target.value != "zip") {
-                    no_filestore_flag.classList.add("d-none");
-                } else {
-                    no_filestore_flag.classList.remove("d-none");
-                }
+    document.getElementById("backup_format").addEventListener("change", function (ev) {
+        ev.preventDefault();
+        const no_filestore_flag = document.getElementById("filestore_div");
+        if (no_filestore_flag) {
+            if (ev.target.value != "zip") {
+                no_filestore_flag.classList.add("d-none");
+            } else {
+                no_filestore_flag.classList.remove("d-none");
             }
+        }
     });
 
-    // close modal on submit
+    // Close modal on submit
     const modals = document.querySelectorAll(".modal");
     for (const modalEl of modals) {
         modalEl.addEventListener("submit", function (ev) {
@@ -63,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-    // generate a random master password
+    // Generate a random master password
     // removed l1O0 to avoid confusions
     const charset = "abcdefghijkmnpqrstuvwxyz23456789";
     let password = "";

@@ -1,4 +1,4 @@
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 import {
     click,
     edit,
@@ -9,22 +9,22 @@ import {
     setInputFiles,
     waitFor,
 } from "@odoo/hoot-dom";
-import { animationFrame, runAllTimers, mockDate } from "@odoo/hoot-mock";
+import {animationFrame, mockDate, runAllTimers} from "@odoo/hoot-mock";
 import {
     clickSave,
+    contains,
     defineModels,
     fields,
     models,
     mountView,
     onRpc,
     pagerNext,
-    contains,
     webModels,
 } from "@web/../tests/web_test_helpers";
 
-import { getOrigin } from "@web/core/utils/urls";
+import {getOrigin} from "@web/core/utils/urls";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 const MY_IMAGE =
     "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==";
@@ -37,21 +37,21 @@ function getUnique(target) {
 }
 
 async function setFiles(files, name = "document") {
-    await click("input[type=file]", { visible: false });
+    await click("input[type=file]", {visible: false});
     await setInputFiles(files);
-    await waitFor(`div[name=${name}] img[data-src^="data:image/"]`, { timeout: 1000 });
+    await waitFor(`div[name=${name}] img[data-src^="data:image/"]`, {timeout: 1000});
 }
 
 class Partner extends models.Model {
     name = fields.Char();
-    timmy = fields.Many2many({ relation: "partner.type" });
+    timmy = fields.Many2many({relation: "partner.type"});
     foo = fields.Char();
     document = fields.Binary();
 
     _records = [
-        { id: 1, name: "first record", timmy: [], document: "coucou==" },
-        { id: 2, name: "second record", timmy: [] },
-        { id: 4, name: "aaa" },
+        {id: 1, name: "first record", timmy: [], document: "coucou=="},
+        {id: 2, name: "second record", timmy: []},
+        {id: 4, name: "aaa"},
     ];
 }
 
@@ -62,8 +62,8 @@ class PartnerType extends models.Model {
     color = fields.Integer();
 
     _records = [
-        { id: 12, name: "gold", color: 2 },
-        { id: 14, name: "silver", color: 5 },
+        {id: 12, name: "gold", color: 2},
+        {id: 14, name: "silver", color: 5},
     ];
 }
 
@@ -75,7 +75,7 @@ test("ImageField is correctly rendered", async () => {
     Partner._records[0].write_date = "2017-02-08 10:00:00";
     Partner._records[0].document = MY_IMAGE;
 
-    onRpc("web_read", ({ kwargs }) => {
+    onRpc("web_read", ({kwargs}) => {
         expect(kwargs.specification).toEqual(
             {
                 display_name: {},
@@ -108,7 +108,7 @@ test("ImageField is correctly rendered", async () => {
     expect('div[name="document"] img').toHaveAttribute(
         "data-src",
         `data:image/png;base64,${MY_IMAGE}`,
-        { message: "the image should have the correct src" }
+        {message: "the image should have the correct src"}
     );
     expect(".o_field_widget[name='document'] img").toHaveClass("img-fluid", {
         message: "the image should have the correct class",
@@ -169,7 +169,7 @@ test("ImageField with alt attribute", async () => {
 });
 
 test("ImageField on a many2one", async () => {
-    Partner._fields.parent_id = fields.Many2one({ relation: "partner" });
+    Partner._fields.parent_id = fields.Many2one({relation: "partner"});
     Partner._records[1].parent_id = 1;
 
     mockDate("2017-02-06 10:00:00");
@@ -189,12 +189,15 @@ test("ImageField on a many2one", async () => {
         "data-src",
         `${getOrigin()}/web/image/partner/1/document?unique=1486375200000`
     );
-    expect(".o_field_widget[name='parent_id'] img").toHaveAttribute("alt", "first record");
+    expect(".o_field_widget[name='parent_id'] img").toHaveAttribute(
+        "alt",
+        "first record"
+    );
 });
 
 test("url should not use the record last updated date when the field is related", async () => {
-    Partner._fields.related = fields.Binary({ related: "parent_id.document" });
-    Partner._fields.parent_id = fields.Many2one({ relation: "partner" });
+    Partner._fields.related = fields.Binary({related: "parent_id.document"});
+    Partner._fields.parent_id = fields.Many2one({relation: "partner"});
     Partner._records[1].parent_id = 1;
     Partner._records[0].write_date = "2017-02-04 10:00:00";
     Partner._records[0].document = "3 kb";
@@ -213,24 +216,29 @@ test("url should not use the record last updated date when the field is related"
     });
 
     const initialUnique = Number(getUnique(queryFirst('div[name="related"] img')));
-    expect(DateTime.fromMillis(initialUnique).hasSame(DateTime.fromISO("2017-02-06"), "days")).toBe(
-        true
-    );
+    expect(
+        DateTime.fromMillis(initialUnique).hasSame(
+            DateTime.fromISO("2017-02-06"),
+            "days"
+        )
+    ).toBe(true);
 
     await click(".o_field_widget[name='foo'] input");
     await edit("grrr");
     await animationFrame();
 
-    expect(Number(getUnique(queryFirst('div[name="related"] img')))).toBe(initialUnique);
+    expect(Number(getUnique(queryFirst('div[name="related"] img')))).toBe(
+        initialUnique
+    );
 
     mockDate("2017-02-09 10:00:00");
 
-    await click("input[type=file]", { visible: false });
+    await click("input[type=file]", {visible: false});
     await setFiles(
         new File(
             [Uint8Array.from([...atob(MY_IMAGE)].map((c) => c.charCodeAt(0)))],
             "fake_file.png",
-            { type: "png" }
+            {type: "png"}
         ),
         "related"
     );
@@ -243,11 +251,13 @@ test("url should not use the record last updated date when the field is related"
     await clickSave();
 
     const unique = Number(getUnique(queryFirst('div[name="related"] img')));
-    expect(DateTime.fromMillis(unique).hasSame(DateTime.fromISO("2017-02-09"), "days")).toBe(true);
+    expect(
+        DateTime.fromMillis(unique).hasSame(DateTime.fromISO("2017-02-09"), "days")
+    ).toBe(true);
 });
 
 test("url should use the record last updated date when the field is related on the same model", async () => {
-    Partner._fields.related = fields.Binary({ related: "document" });
+    Partner._fields.related = fields.Binary({related: "document"});
     Partner._records[0].write_date = "2017-02-04 10:00:00"; // 1486202400000
     Partner._records[0].document = "3 kb";
 
@@ -303,7 +313,7 @@ test("ImageField is correctly replaced when given an incorrect value", async () 
     expect('div[name="document"] img').toHaveAttribute(
         "data-src",
         "/web/static/img/placeholder.png",
-        { message: "the image should have the correct src" }
+        {message: "the image should have the correct src"}
     );
     expect(".o_field_widget[name='document'] img").toHaveClass("img-fluid", {
         message: "the image should have the correct class",
@@ -327,7 +337,7 @@ test("ImageField preview is updated when an image is uploaded", async () => {
     const imageFile = new File(
         [Uint8Array.from([...atob(MY_IMAGE)].map((c) => c.charCodeAt(0)))],
         "fake_file.png",
-        { type: "png" }
+        {type: "png"}
     );
     await mountView({
         type: "form",
@@ -343,7 +353,7 @@ test("ImageField preview is updated when an image is uploaded", async () => {
     expect('div[name="document"] img').toHaveAttribute(
         "data-src",
         "data:image/png;base64,coucou==",
-        { message: "the image should have the initial src" }
+        {message: "the image should have the initial src"}
     );
     // Whitebox: replace the event target before the event is handled by the field so that we can modify
     // the files that it will take into account. This relies on the fact that it reads the files from
@@ -351,7 +361,9 @@ test("ImageField preview is updated when an image is uploaded", async () => {
     await click(".o_select_file_button");
     await setInputFiles(imageFile);
     // It can take some time to encode the data as a base64 url
-    await waitFor(`div[name=document] img[data-src="data:image/png;base64,${MY_IMAGE}"]`);
+    await waitFor(
+        `div[name=document] img[data-src="data:image/png;base64,${MY_IMAGE}"]`
+    );
 });
 
 test("clicking save manually after uploading new image should change the unique of the image src", async () => {
@@ -365,7 +377,7 @@ test("clicking save manually after uploading new image should change the unique 
     const lastUpdates = ["2022-08-05 09:37:00", "2022-08-05 10:37:00"];
     let index = 0;
 
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         args[1].write_date = lastUpdates[index];
         args[1].document = "4 kb";
         index++;
@@ -383,12 +395,12 @@ test("clicking save manually after uploading new image should change the unique 
     });
     expect(getUnique(queryFirst(".o_field_image img"))).toBe("1659688620000");
 
-    await click("input[type=file]", { visible: false });
+    await click("input[type=file]", {visible: false});
     await setFiles(
         new File(
             [Uint8Array.from([...atob(MY_IMAGE)].map((c) => c.charCodeAt(0)))],
             "fake_file.png",
-            { type: "png" }
+            {type: "png"}
         )
     );
     expect("div[name=document] img").toHaveAttribute(
@@ -408,12 +420,12 @@ test("clicking save manually after uploading new image should change the unique 
     expect(getUnique(queryFirst(".o_field_image img"))).toBe("1659692220000");
 
     // Change the image again. After clicking save, it should have the correct new url.
-    await click("input[type=file]", { visible: false });
+    await click("input[type=file]", {visible: false});
     await setFiles(
         new File(
             [Uint8Array.from([...atob(PRODUCT_IMAGE)].map((c) => c.charCodeAt(0)))],
             "fake_file2.gif",
-            { type: "gif" }
+            {type: "gif"}
         )
     );
     expect("div[name=document] img").toHaveAttribute(
@@ -437,7 +449,7 @@ test("save record with image field modified by onchange", async () => {
     const lastUpdates = ["2022-08-05 09:37:00"];
     let index = 0;
 
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         args[1].write_date = lastUpdates[index];
         args[1].document = "3 kb";
         index++;
@@ -455,7 +467,7 @@ test("save record with image field modified by onchange", async () => {
     });
     expect(getUnique(queryFirst(".o_field_image img"))).toBe("1659688620000");
     await click("[name='foo'] input");
-    await edit("grrr", { confirm: "enter" });
+    await edit("grrr", {confirm: "enter"});
     await animationFrame();
     expect("div[name=document] img").toHaveAttribute(
         "data-src",
@@ -499,13 +511,20 @@ test("ImageField: set 0 width/height in the size option", async () => {
 
     const imgs = queryAll(".o_field_widget img");
 
-    expect([imgs[0].attributes.width, imgs[0].attributes.height]).toEqual([undefined, undefined], {
-        message: "if both size are set to 0, both attributes are undefined",
-    });
+    expect([imgs[0].attributes.width, imgs[0].attributes.height]).toEqual(
+        [undefined, undefined],
+        {
+            message: "if both size are set to 0, both attributes are undefined",
+        }
+    );
 
-    expect([imgs[1].attributes.width, imgs[1].attributes.height.value]).toEqual([undefined, "50"], {
-        message: "if only the width is set to 0, the width attribute is not set on the img",
-    });
+    expect([imgs[1].attributes.width, imgs[1].attributes.height.value]).toEqual(
+        [undefined, "50"],
+        {
+            message:
+                "if only the width is set to 0, the width attribute is not set on the img",
+        }
+    );
     expect([
         imgs[1].style.width,
         imgs[1].style.maxWidth,
@@ -515,9 +534,13 @@ test("ImageField: set 0 width/height in the size option", async () => {
         message: "the image should correctly set its attributes",
     });
 
-    expect([imgs[2].attributes.width.value, imgs[2].attributes.height]).toEqual(["50", undefined], {
-        message: "if only the height is set to 0, the height attribute is not set on the img",
-    });
+    expect([imgs[2].attributes.width.value, imgs[2].attributes.height]).toEqual(
+        ["50", undefined],
+        {
+            message:
+                "if only the height is set to 0, the height attribute is not set on the img",
+        }
+    );
     expect([
         imgs[2].style.width,
         imgs[2].style.maxWidth,
@@ -541,11 +564,11 @@ test("ImageField: zoom and zoom_delay options (readonly)", async () => {
             </form>
         `,
     });
-    // data-tooltip attribute is used by the tooltip service
+    // Data-tooltip attribute is used by the tooltip service
     expect(".o_field_image img").toHaveAttribute(
         "data-tooltip-info",
         `{"url":"data:image/png;base64,${MY_IMAGE}"}`,
-        { message: "shows a tooltip on hover" }
+        {message: "shows a tooltip on hover"}
     );
     expect(".o_field_image img").toHaveAttribute("data-tooltip-delay", "600", {
         message: "tooltip has the right delay",
@@ -570,7 +593,7 @@ test("ImageField: zoom and zoom_delay options (edit)", async () => {
     expect(".o_field_image img").toHaveAttribute(
         "data-tooltip-info",
         `{"url":"${getOrigin()}/web/image/partner/1/document?unique=1659688620000"}`,
-        { message: "tooltip show the full image from the field value" }
+        {message: "tooltip show the full image from the field value"}
     );
     expect(".o_field_image img").toHaveAttribute("data-tooltip-delay", "600", {
         message: "tooltip has the right delay",
@@ -594,7 +617,7 @@ test("ImageField displays the right images with zoom and preview_image options (
     expect(".o_field_image img").toHaveAttribute(
         "data-tooltip-info",
         `{"url":"${getOrigin()}/web/image/partner/1/document?unique=1659688620000"}`,
-        { message: "tooltip show the full image from the field value" }
+        {message: "tooltip show the full image from the field value"}
     );
     expect(".o_field_image img").toHaveAttribute("data-tooltip-delay", "600", {
         message: "tooltip has the right delay",
@@ -632,12 +655,14 @@ test("ImageField in subviews is loaded correctly", async () => {
     });
 
     expect(`img[data-src="data:image/png;base64,${MY_IMAGE}"]`).toHaveCount(1);
-    expect(".o_kanban_record:not(.o_kanban_ghost):not(.o-kanban-button-new)").toHaveCount(1);
+    expect(
+        ".o_kanban_record:not(.o_kanban_ghost):not(.o-kanban-button-new)"
+    ).toHaveCount(1);
 
     // Actual flow: click on an element of the m2m to get its form view
     await click(".o_kanban_record:not(.o_kanban_ghost):not(.o-kanban-button-new)");
     await animationFrame();
-    expect(".modal").toHaveCount(1, { message: "The modal should have opened" });
+    expect(".modal").toHaveCount(1, {message: "The modal should have opened"});
 
     expect(`img[data-src="data:image/gif;base64,${PRODUCT_IMAGE}"]`).toHaveCount(1);
 });
@@ -706,11 +731,11 @@ test("ImageField is reset when changing record", async () => {
         `,
     });
 
-    const imageFile = new File([imageData], "fake_file.png", { type: "png" });
+    const imageFile = new File([imageData], "fake_file.png", {type: "png"});
     expect("img[alt='Binary file']").toHaveAttribute(
         "data-src",
         "/web/static/img/placeholder.png",
-        { message: "image field should not be set" }
+        {message: "image field should not be set"}
     );
 
     await setFiles(imageFile);
@@ -729,7 +754,7 @@ test("ImageField is reset when changing record", async () => {
     expect("img[alt='Binary file']").toHaveAttribute(
         "data-src",
         "/web/static/img/placeholder.png",
-        { message: "image field should be reset" }
+        {message: "image field should be reset"}
     );
 
     await setFiles(imageFile);
@@ -748,7 +773,7 @@ test("unique in url doesn't change on onchange", async () => {
     rec.document = "3 kb";
     rec.write_date = "2022-08-05 08:37:00";
 
-    onRpc(({ method, args }) => {
+    onRpc(({method, args}) => {
         expect.step(method);
         if (method === "web_save") {
             args[1].write_date = "2022-08-05 09:37:00"; // 1659692220000
@@ -770,14 +795,14 @@ test("unique in url doesn't change on onchange", async () => {
     expect(getUnique(queryFirst(".o_field_image img"))).toBe("1659688620000");
 
     expect.verifySteps([]);
-    // same unique as before
+    // Same unique as before
     expect(getUnique(queryFirst(".o_field_image img"))).toBe("1659688620000");
 
     await click(".o_field_widget[name='foo'] input");
-    await edit("grrr", { confirm: "enter" });
+    await edit("grrr", {confirm: "enter"});
     await animationFrame();
     expect.verifySteps(["onchange"]);
-    // also same unique
+    // Also same unique
     expect(getUnique(queryFirst(".o_field_image img"))).toBe("1659688620000");
 
     await clickSave();
@@ -831,14 +856,14 @@ test("unique in url does not change on record change if reload option is set to 
     });
     expect(getUnique(queryFirst(".o_field_image img"))).toBe("1659688620000");
     await contains("div[name='write_date'] > div > button").click();
-    await edit("2022-08-05 08:39:00", { confirm: "enter" });
+    await edit("2022-08-05 08:39:00", {confirm: "enter"});
     await animationFrame();
     await clickSave();
     expect(getUnique(queryFirst(".o_field_image img"))).toBe("1659688620000");
 });
 
 test("convert image to webp", async () => {
-    onRpc("ir.attachment", "create_unique", ({ args }) => {
+    onRpc("ir.attachment", "create_unique", ({args}) => {
         // This RPC call is done two times - once for storing webp and once for storing jpeg
         // This handles first RPC call to store webp
         if (!args[0][0].res_id) {
@@ -865,18 +890,18 @@ test("convert image to webp", async () => {
         `,
     });
 
-    const imageFile = new File([imageData], "fake_file.jpeg", { type: "jpeg" });
+    const imageFile = new File([imageData], "fake_file.jpeg", {type: "jpeg"});
     expect("img[alt='Binary file']").toHaveAttribute(
         "data-src",
         "/web/static/img/placeholder.png",
-        { message: "image field should not be set" }
+        {message: "image field should not be set"}
     );
     await setFiles(imageFile);
 });
 
 test.tags("desktop");
 test("ImageField with width attribute in list", async () => {
-    const { ResCompany, ResPartner, ResUsers } = webModels;
+    const {ResCompany, ResPartner, ResUsers} = webModels;
     defineModels([ResCompany, ResPartner, ResUsers]);
 
     await mountView({
@@ -892,5 +917,7 @@ test("ImageField with width attribute in list", async () => {
 
     expect(".o_data_row").toHaveCount(3);
     expect(".o_field_widget[name=document] img").toHaveCount(3);
-    expect(queryAllProperties(".o_list_table th[data-name=document]", "offsetWidth")).toEqual([39]);
+    expect(
+        queryAllProperties(".o_list_table th[data-name=document]", "offsetWidth")
+    ).toEqual([39]);
 });

@@ -1,13 +1,16 @@
-import { describe, expect, test, before } from "@odoo/hoot";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
-import { bold, deleteBackward, keydownShiftTab } from "../_helpers/user_actions";
-import { getContent } from "../_helpers/selection";
+import {before, describe, expect, test} from "@odoo/hoot";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
+import {bold, deleteBackward, keydownShiftTab} from "../_helpers/user_actions";
+import {getContent} from "../_helpers/selection";
 
 before(
     () =>
         document.fonts.add(
-            new FontFace("Roboto", "url(/web/static/fonts/google/Roboto/Roboto-Regular.ttf)")
+            new FontFace(
+                "Roboto",
+                "url(/web/static/fonts/google/Roboto/Roboto-Regular.ttf)"
+            )
         ).ready
 );
 
@@ -506,14 +509,14 @@ describe("with selection collapsed", () => {
         });
     });
     test("should not crash when outdenting a list item with empty nodes", async () => {
-        const { el, editor } = await setupEditor(
+        const {el, editor} = await setupEditor(
             unformat(`
                 <ul>
                     <li>a</li>
                     <li>[]</li>
                 </ul>`)
         );
-        // add an empty text node to the list item
+        // Add an empty text node to the list item
         el.firstChild.lastChild.append(editor.document.createTextNode(""));
         keydownShiftTab(editor);
         expect(getContent(el)).toBe(
@@ -532,9 +535,9 @@ describe("with selection collapsed", () => {
                     <li>[]<br></li>
                 </ul>`),
             stepFunction: (editor) => {
-                bold(editor); // produces a <strong> tag with zws inside
-                deleteBackward(editor); // removes the marker
-                deleteBackward(editor); // outdents the list item
+                bold(editor); // Produces a <strong> tag with zws inside
+                deleteBackward(editor); // Removes the marker
+                deleteBackward(editor); // Outdents the list item
             },
             contentAfter: unformat(`
                 <ul>

@@ -1,4 +1,5 @@
 from odoo.tests import common, tagged
+
 from odoo.addons.partner_autocomplete.tests.common import MockIAPPartnerAutocomplete
 
 
@@ -7,7 +8,7 @@ class TestResCompany(common.TransactionCase, MockIAPPartnerAutocomplete):
 
     @classmethod
     def setUpClass(cls):
-        super(TestResCompany, cls).setUpClass()
+        super().setUpClass()
         cls._init_mock_partner_autocomplete()
 
     def test_enrich(self):

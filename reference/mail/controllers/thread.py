@@ -1,6 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime
+
 from markupsafe import Markup
 from werkzeug.exceptions import NotFound
 
@@ -8,7 +9,8 @@ from odoo import http
 from odoo.exceptions import UserError
 from odoo.http import request
 from odoo.tools.misc import verify_limited_field_access_token
-from odoo.addons.mail.tools.discuss import add_guest_to_context, Store
+
+from odoo.addons.mail.tools.discuss import Store, add_guest_to_context
 
 
 class ThreadController(http.Controller):

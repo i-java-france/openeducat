@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { EQ, AbstractNumbers } from "@point_of_sale/app/utils/numbers";
+import {expect, test} from "@odoo/hoot";
+import {AbstractNumbers, EQ} from "@point_of_sale/app/utils/numbers";
 
 class CustomNumbers extends AbstractNumbers {
     constructor() {

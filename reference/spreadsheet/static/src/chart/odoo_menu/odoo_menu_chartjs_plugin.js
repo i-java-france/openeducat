@@ -5,7 +5,7 @@ import {
 
 export const chartOdooMenuPlugin = {
     id: "chartOdooMenuPlugin",
-    afterEvent(chart, { event }, { env, menu }) {
+    afterEvent(chart, {event}, {env, menu}) {
         const isDashboard = env?.model.getters.isDashboard();
         event.native.target.style.cursor = menu && isDashboard ? "pointer" : "";
 
@@ -18,6 +18,11 @@ export const chartOdooMenuPlugin = {
         ) {
             return;
         }
-        navigateToOdooMenu(menu, env.services.action, env.services.notification, middleClick);
+        navigateToOdooMenu(
+            menu,
+            env.services.action,
+            env.services.notification,
+            middleClick
+        );
     },
 };

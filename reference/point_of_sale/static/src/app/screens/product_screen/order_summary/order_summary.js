@@ -1,13 +1,13 @@
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { Component } from "@odoo/owl";
-import { Orderline } from "@point_of_sale/app/components/orderline/orderline";
-import { useService } from "@web/core/utils/hooks";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { _t } from "@web/core/l10n/translation";
-import { makeAwaitable } from "@point_of_sale/app/utils/make_awaitable_dialog";
-import { NumberPopup } from "@point_of_sale/app/components/popups/number_popup/number_popup";
-import { parseFloat } from "@web/views/fields/parsers";
-import { OrderDisplay } from "@point_of_sale/app/components/order_display/order_display";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {Component} from "@odoo/owl";
+import {Orderline} from "@point_of_sale/app/components/orderline/orderline";
+import {useService} from "@web/core/utils/hooks";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {_t} from "@web/core/l10n/translation";
+import {makeAwaitable} from "@point_of_sale/app/utils/make_awaitable_dialog";
+import {NumberPopup} from "@point_of_sale/app/components/popups/number_popup/number_popup";
+import {parseFloat} from "@web/views/fields/parsers";
+import {OrderDisplay} from "@point_of_sale/app/components/order_display/order_display";
 
 export class OrderSummary extends Component {
     static template = "point_of_sale.OrderSummary";
@@ -74,8 +74,13 @@ export class OrderSummary extends Component {
                 "get_preparation_change",
                 [order.id]
             );
-            const prep = JSON.parse(preparation_data.last_order_preparation_change || "{}");
-            if (prep.lines && Object.keys(prep.lines).some((l) => l === orderline.uuid)) {
+            const prep = JSON.parse(
+                preparation_data.last_order_preparation_change || "{}"
+            );
+            if (
+                prep.lines &&
+                Object.keys(prep.lines).some((l) => l === orderline.uuid)
+            ) {
                 this.dialog.add(AlertDialog, {
                     title: _t("Cannot edit orderline"),
                     body: _t(
@@ -124,9 +129,8 @@ export class OrderSummary extends Component {
             orderline.attribute_value_ids = values.attribute_value_ids.map((a) => a[1]);
         }
         if (values.custom_attribute_value_ids !== undefined) {
-            const createManyCustomAttributeValues = values.custom_attribute_value_ids.map(
-                (a) => a[1]
-            );
+            const createManyCustomAttributeValues =
+                values.custom_attribute_value_ids.map((a) => a[1]);
             orderline.custom_attribute_value_ids = this.pos.models[
                 "product.attribute.custom.value"
             ].createMany(createManyCustomAttributeValues);
@@ -152,12 +156,15 @@ export class OrderSummary extends Component {
         return true;
     }
 
-    async updateSelectedOrderline({ buffer, key }) {
+    async updateSelectedOrderline({buffer, key}) {
         const order = this.pos.getOrder();
         const selectedLine = order.getSelectedOrderline();
         // Handling negation of value on first input
         if (buffer === "-0" && key == "-") {
-            if (this.pos.numpadMode === "quantity" && !selectedLine.refunded_orderline_id) {
+            if (
+                this.pos.numpadMode === "quantity" &&
+                !selectedLine.refunded_orderline_id
+            ) {
                 buffer = selectedLine.getQuantity() * -1;
             } else if (this.pos.numpadMode === "discount") {
                 buffer = selectedLine.getDiscount() * -1;
@@ -167,7 +174,11 @@ export class OrderSummary extends Component {
             this.numberBuffer.state.buffer = buffer.toString();
         }
         // This validation must not be affected by `disallowLineQuantityChange`
-        if (selectedLine && selectedLine.isTipLine() && this.pos.numpadMode !== "price") {
+        if (
+            selectedLine &&
+            selectedLine.isTipLine() &&
+            this.pos.numpadMode !== "price"
+        ) {
             /**
              * You can actually type numbers from your keyboard, while a popup is shown, causing
              * the number buffer storage to be filled up with the data typed. So we force the
@@ -232,7 +243,7 @@ export class OrderSummary extends Component {
     }
 
     _setValue(val) {
-        const { numpadMode } = this.pos;
+        const {numpadMode} = this.pos;
         let selectedLine = this.currentOrder.getSelectedOrderline();
         if (selectedLine) {
             if (numpadMode === "quantity") {
@@ -273,7 +284,8 @@ export class OrderSummary extends Component {
             title: _t("Set the new quantity"),
         });
         if (inputNumber) {
-            const newQuantity = inputNumber && inputNumber !== "" ? parseFloat(inputNumber) : null;
+            const newQuantity =
+                inputNumber && inputNumber !== "" ? parseFloat(inputNumber) : null;
             return await this.updateQuantityNumber(newQuantity);
         }
     }
@@ -285,7 +297,10 @@ export class OrderSummary extends Component {
             }
             const currentQuantity = selectedLine.getQuantity();
             if (newQuantity >= currentQuantity) {
-                selectedLine.setQuantity(newQuantity, Boolean(selectedLine.combo_line_ids?.length));
+                selectedLine.setQuantity(
+                    newQuantity,
+                    Boolean(selectedLine.combo_line_ids?.length)
+                );
             } else if (newQuantity >= selectedLine.uiState.savedQuantity) {
                 await this.handleDecreaseUnsavedLine(newQuantity);
             } else {
@@ -301,7 +316,10 @@ export class OrderSummary extends Component {
             selectedLine = selectedLine.combo_parent_id;
         }
         const decreaseQuantity = selectedLine.getQuantity() - newQuantity;
-        selectedLine.setQuantity(newQuantity, Boolean(selectedLine.combo_line_ids?.length));
+        selectedLine.setQuantity(
+            newQuantity,
+            Boolean(selectedLine.combo_line_ids?.length)
+        );
         return decreaseQuantity;
     }
     async handleDecreaseLine(newQuantity) {
@@ -315,7 +333,8 @@ export class OrderSummary extends Component {
                 current_saved_quantity += line.uiState.savedQuantity;
             } else if (
                 line.product_id.id === selectedLine.product_id.id &&
-                line.prices.total_excluded_currency === selectedLine.prices.total_excluded_currency
+                line.prices.total_excluded_currency ===
+                    selectedLine.prices.total_excluded_currency
             ) {
                 current_saved_quantity += line.qty;
             }
@@ -352,7 +371,7 @@ export class OrderSummary extends Component {
                     return line;
                 }
             }
-            const data = selectedLine.serializeForORM({ keepCommands: true });
+            const data = selectedLine.serializeForORM({keepCommands: true});
             delete data.uuid;
             newLine = this.pos.models["pos.order.line"].create(
                 {

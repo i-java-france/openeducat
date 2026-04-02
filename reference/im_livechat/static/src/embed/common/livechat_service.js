@@ -1,12 +1,12 @@
-import { expirableStorage } from "@im_livechat/core/common/expirable_storage";
+import {expirableStorage} from "@im_livechat/core/common/expirable_storage";
 
-import { reactive } from "@odoo/owl";
-import { rpc } from "@web/core/network/rpc";
+import {reactive} from "@odoo/owl";
+import {rpc} from "@web/core/network/rpc";
 
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { session } from "@web/session";
-import { canLoadLivechat } from "@im_livechat/embed/common/misc";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {session} from "@web/session";
+import {canLoadLivechat} from "@im_livechat/embed/common/misc";
 
 export const RATING = Object.freeze({
     GOOD: 5,
@@ -41,7 +41,9 @@ export class LivechatService {
     }
 
     async initialize() {
-        this.store.fetchStoreData("init_livechat", this.options.channel_id, { readonly: false });
+        this.store.fetchStoreData("init_livechat", this.options.channel_id, {
+            readonly: false,
+        });
         if (this.options.chatbot_test_store) {
             await this.store.chatHub.initPromise;
             this.store.insert(this.options.chatbot_test_store);
@@ -54,8 +56,8 @@ export class LivechatService {
      * @returns {Promise<import("models").Thread|undefined>}
      */
     async open(options = {}) {
-        const thread = await this._createThread({ persist: false, options});
-        await thread?.openChatWindow({ focus: true });
+        const thread = await this._createThread({persist: false, options});
+        await thread?.openChatWindow({focus: true});
         return thread;
     }
 
@@ -72,10 +74,15 @@ export class LivechatService {
         const temporaryThread = thread;
         const deleteTemporary = async () => {
             await this.store.chatHub.initPromise;
-            await this.store.ChatWindow.get({ thread: temporaryThread })?.close({ force: true });
+            await this.store.ChatWindow.get({thread: temporaryThread})?.close({
+                force: true,
+            });
             temporaryThread?.delete();
         };
-        const savedThread = await this._createThread({ originThread: thread, persist: true });
+        const savedThread = await this._createThread({
+            originThread: thread,
+            persist: true,
+        });
         if (!savedThread) {
             await deleteTemporary();
             return;
@@ -91,7 +98,7 @@ export class LivechatService {
             // same issue.
             savedThread.scrollUnread = false;
             deleteTemporary();
-            savedThread.openChatWindow({ focus: true });
+            savedThread.openChatWindow({focus: true});
         });
         return savedThread;
     }
@@ -101,7 +108,7 @@ export class LivechatService {
      * @param {boolean} param0.notifyServer Whether to call the `visitor_leave_session` route.
      */
     async leave(thread) {
-        await rpc("/im_livechat/visitor_leave_session", { channel_id: thread.id });
+        await rpc("/im_livechat/visitor_leave_session", {channel_id: thread.id});
     }
 
     /**
@@ -110,24 +117,31 @@ export class LivechatService {
      * @param {import("models").Thread} [param0.originThread]
      * @returns {Promise<import("models").Thread>}
      */
-    async _createThread({ originThread, persist = false, options = {} }) {
-        const { store_data, channel_id } = await rpc(
+    async _createThread({originThread, persist = false, options = {}}) {
+        const {store_data, channel_id} = await rpc(
             "/im_livechat/get_session",
             {
                 channel_id: options.channel_id ?? this.options.channel_id,
                 previous_operator_id: expirableStorage.getItem(OPERATOR_STORAGE_KEY),
-                chatbot_script_id: originThread?.chatbot?.script.id ?? this.store.livechat_rule?.chatbot_script_id?.id,
+                chatbot_script_id:
+                    originThread?.chatbot?.script.id ??
+                    this.store.livechat_rule?.chatbot_script_id?.id,
                 persisted: options.persist ?? persist,
                 ...this.getSessionExtraParams(originThread, options),
             },
-            { silent: true }
+            {silent: true}
         );
         if (!channel_id) {
-            this.notificationService.add(_t("No available collaborator, please try again later."));
+            this.notificationService.add(
+                _t("No available collaborator, please try again later.")
+            );
             return;
         }
         this.store.insert(store_data);
-        const thread = this.store.Thread.get({ id: channel_id, model: "discuss.channel" });
+        const thread = this.store.Thread.get({
+            id: channel_id,
+            model: "discuss.channel",
+        });
         const ONE_DAY_TTL = 60 * 60 * 24;
         expirableStorage.setItem(
             "im_livechat_previous_operator",

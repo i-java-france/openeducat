@@ -1,8 +1,8 @@
-import { Plugin } from "@html_editor/plugin";
-import { baseContainerGlobalSelector } from "@html_editor/utils/base_container";
-import { isEmptyBlock } from "@html_editor/utils/dom_info";
-import { childNodes } from "@html_editor/utils/dom_traversal";
-import { withSequence } from "@html_editor/utils/resource";
+import {Plugin} from "@html_editor/plugin";
+import {baseContainerGlobalSelector} from "@html_editor/utils/base_container";
+import {isEmptyBlock} from "@html_editor/utils/dom_info";
+import {childNodes} from "@html_editor/utils/dom_traversal";
+import {withSequence} from "@html_editor/utils/resource";
 
 /**
  * This plugin works with the composer used in Discuss, ChatWindow and Chatter.
@@ -12,7 +12,8 @@ export class MailComposerPlugin extends Plugin {
     static id = "mail_composer";
     static dependencies = ["clipboard", "hint", "input", "selection"];
     resources = {
-        before_paste_handlers: this.config.composerPluginDependencies.onBeforePaste.bind(this),
+        before_paste_handlers:
+            this.config.composerPluginDependencies.onBeforePaste.bind(this),
         bypass_paste_image_files: () => true,
         create_link_handlers: (linkEl) => (linkEl.target = "_blank"),
         hints: [

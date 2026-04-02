@@ -1,23 +1,29 @@
-import { DateTimeInput } from "@web/core/datetime/datetime_input";
-import { Domain } from "@web/core/domain";
+import {DateTimeInput} from "@web/core/datetime/datetime_input";
+import {Domain} from "@web/core/domain";
 import {
     deserializeDate,
     deserializeDateTime,
     serializeDate,
     serializeDateTime,
 } from "@web/core/l10n/dates";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { connector, formatValue, isTree } from "@web/core/tree_editor/condition_tree";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {connector, formatValue, isTree} from "@web/core/tree_editor/condition_tree";
 import {
     DomainSelectorAutocomplete,
     DomainSelectorSingleAutocomplete,
 } from "@web/core/tree_editor/tree_editor_autocomplete";
-import { Input, InRange, List, Range, Select } from "@web/core/tree_editor/tree_editor_components";
-import { disambiguate, getResModel, isId } from "@web/core/tree_editor/utils";
-import { unique } from "@web/core/utils/arrays";
+import {
+    Input,
+    InRange,
+    List,
+    Range,
+    Select,
+} from "@web/core/tree_editor/tree_editor_components";
+import {disambiguate, getResModel, isId} from "@web/core/tree_editor/utils";
+import {unique} from "@web/core/utils/arrays";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 // ============================================================================
 
@@ -65,7 +71,7 @@ function placeholderForInput(displayPlaceholder) {
 
 const STRING_EDITOR = {
     component: Input,
-    extractProps: ({ value, update, displayPlaceholder }) => ({
+    extractProps: ({value, update, displayPlaceholder}) => ({
         value,
         update,
         placeholder: placeholderForInput(displayPlaceholder),
@@ -78,7 +84,7 @@ function makeSelectEditor(options, params = {}) {
     const getOption = (value) => options.find(([v]) => v === value) || null;
     return {
         component: Select,
-        extractProps: ({ value, update, displayPlaceholder }) => ({
+        extractProps: ({value, update, displayPlaceholder}) => ({
             value,
             update,
             options,
@@ -89,7 +95,11 @@ function makeSelectEditor(options, params = {}) {
         defaultValue: () => options[0]?.[0] ?? false,
         stringify: (value, disambiguate) => {
             const option = getOption(value);
-            return option ? option[1] : disambiguate ? formatValue(value) : String(value);
+            return option
+                ? option[1]
+                : disambiguate
+                  ? formatValue(value)
+                  : String(value);
         },
         message: _t("Value not in selection"),
     };
@@ -109,7 +119,7 @@ function getDomain(fieldDef) {
 function makeAutoCompleteEditor(fieldDef) {
     return {
         component: DomainSelectorAutocomplete,
-        extractProps: ({ value, update }) => ({
+        extractProps: ({value, update}) => ({
             resModel: getResModel(fieldDef),
             fieldString: fieldDef.string,
             domain: getDomain(fieldDef),
@@ -148,13 +158,13 @@ function getPartialValueEditorInfo(fieldDef, operator, params = {}) {
             return STRING_EDITOR;
         case "between": {
             const editorInfo = getValueEditorInfo(fieldDef, "=", params);
-            const { defaultValue } = getValueEditorInfo(fieldDef, "=", {
+            const {defaultValue} = getValueEditorInfo(fieldDef, "=", {
                 ...params,
                 forBetween: true,
             });
             return {
                 component: Range,
-                extractProps: ({ value, update }) => ({
+                extractProps: ({value, update}) => ({
                     value,
                     update,
                     editorInfo,
@@ -162,16 +172,19 @@ function getPartialValueEditorInfo(fieldDef, operator, params = {}) {
                 isSupported: (value) => Array.isArray(value) && value.length === 2,
                 defaultValue: () => {
                     const value = defaultValue();
-                    return isLitteralObject(value) ? [value.start, value.end] : [value, value];
+                    return isLitteralObject(value)
+                        ? [value.start, value.end]
+                        : [value, value];
                 },
                 shouldResetValue: (value) =>
-                    !editorInfo.isSupported(value[0]) || !editorInfo.isSupported(value[1]),
+                    !editorInfo.isSupported(value[0]) ||
+                    !editorInfo.isSupported(value[1]),
             };
         }
         case "in range": {
             return {
                 component: InRange,
-                extractProps: ({ value, update }) => ({
+                extractProps: ({value, update}) => ({
                     value,
                     update,
                     valueTypeEditorInfo: makeSelectEditor(InRange.options, params),
@@ -202,9 +215,9 @@ function getPartialValueEditorInfo(fieldDef, operator, params = {}) {
                     });
                     return {
                         component: List,
-                        extractProps: ({ value, update }) => {
+                        extractProps: ({value, update}) => {
                             if (!disambiguate(value)) {
-                                const { stringify } = editorInfo;
+                                const {stringify} = editorInfo;
                                 editorInfo.stringify = (val) => stringify(val, false);
                             }
                             return {
@@ -215,7 +228,8 @@ function getPartialValueEditorInfo(fieldDef, operator, params = {}) {
                         },
                         isSupported: (value) => Array.isArray(value),
                         defaultValue: () => [],
-                        shouldResetValue: (value) => !value.every(editorInfo.isSupported),
+                        shouldResetValue: (value) =>
+                            !value.every(editorInfo.isSupported),
                     };
                 }
             }
@@ -237,7 +251,7 @@ function getPartialValueEditorInfo(fieldDef, operator, params = {}) {
         }
     }
 
-    const { type } = fieldDef;
+    const {type} = fieldDef;
     switch (type) {
         case "integer":
         case "float":
@@ -245,7 +259,7 @@ function getPartialValueEditorInfo(fieldDef, operator, params = {}) {
             const formatType = type === "integer" ? "integer" : "float";
             return {
                 component: Input,
-                extractProps: ({ value, update, displayPlaceholder }) => ({
+                extractProps: ({value, update, displayPlaceholder}) => ({
                     value: String(value),
                     update: (value) => update(parseValue(formatType, value)),
                     startEmpty: params.startEmpty,
@@ -260,7 +274,7 @@ function getPartialValueEditorInfo(fieldDef, operator, params = {}) {
         case "datetime":
             return {
                 component: DateTimeInput,
-                extractProps: ({ value, update, displayPlaceholder }) => ({
+                extractProps: ({value, update, displayPlaceholder}) => ({
                     value:
                         params.startEmpty || value === false
                             ? false
@@ -269,13 +283,17 @@ function getPartialValueEditorInfo(fieldDef, operator, params = {}) {
                     onApply: (value) => {
                         if (!params.startEmpty || value) {
                             update(
-                                genericSerializeDate(type, value || DateTime.local().startOf("day"))
+                                genericSerializeDate(
+                                    type,
+                                    value || DateTime.local().startOf("day")
+                                )
                             );
                         }
                     },
                     placeholder: placeholderForSelect(displayPlaceholder),
                 }),
-                isSupported: (value) => typeof value === "string" && isParsable(type, value),
+                isSupported: (value) =>
+                    typeof value === "string" && isParsable(type, value),
                 defaultValue: (operator) => {
                     const datetime = DateTime.local();
                     if (operator === ">") {
@@ -283,7 +301,10 @@ function getPartialValueEditorInfo(fieldDef, operator, params = {}) {
                     }
                     const start = genericSerializeDate(type, datetime.startOf("day"));
                     if (params.forBetween) {
-                        return { start, end: genericSerializeDate(type, datetime.endOf("day")) };
+                        return {
+                            start,
+                            end: genericSerializeDate(type, datetime.endOf("day")),
+                        };
                     }
                     return start;
                 },
@@ -308,7 +329,7 @@ function getPartialValueEditorInfo(fieldDef, operator, params = {}) {
             if (["=", "!="].includes(operator)) {
                 return {
                     component: DomainSelectorSingleAutocomplete,
-                    extractProps: ({ value, update }) => ({
+                    extractProps: ({value, update}) => ({
                         resModel: getResModel(fieldDef),
                         fieldString: fieldDef.string,
                         update,
@@ -344,7 +365,7 @@ function getPartialValueEditorInfo(fieldDef, operator, params = {}) {
     // It is hardly useful to produce a string in general.
     return {
         component: Input,
-        extractProps: ({ value, update }) => ({
+        extractProps: ({value, update}) => ({
             value: String(value),
             update,
         }),
@@ -356,7 +377,7 @@ function getPartialValueEditorInfo(fieldDef, operator, params = {}) {
 export function getValueEditorInfo(fieldDef, operator, options = {}) {
     const info = getPartialValueEditorInfo(fieldDef || {}, operator, options);
     return {
-        extractProps: ({ value, update }) => ({ value, update }),
+        extractProps: ({value, update}) => ({value, update}),
         message: _t("Value not supported"),
         stringify: (val, disambiguate = true) => {
             if (disambiguate) {
@@ -369,7 +390,10 @@ export function getValueEditorInfo(fieldDef, operator, options = {}) {
 }
 
 export function getDefaultValue(fieldDef, operator, value = null) {
-    const { isSupported, shouldResetValue, defaultValue } = getValueEditorInfo(fieldDef, operator);
+    const {isSupported, shouldResetValue, defaultValue} = getValueEditorInfo(
+        fieldDef,
+        operator
+    );
     if (value === null || !isSupported(value) || shouldResetValue?.(value)) {
         return defaultValue(operator);
     }

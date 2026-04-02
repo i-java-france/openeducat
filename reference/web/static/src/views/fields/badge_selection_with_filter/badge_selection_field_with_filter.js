@@ -1,5 +1,5 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
 import {
     BadgeSelectionField,
     badgeSelectionField,
@@ -8,11 +8,12 @@ import {
 export class BadgeSelectionWithFilterField extends BadgeSelectionField {
     static props = {
         ...BadgeSelectionField.props,
-        allowedSelectionField: { type: String },
+        allowedSelectionField: {type: String},
     };
 
     get options() {
-        const allowedSelection = this.props.record.data[this.props.allowedSelectionField];
+        const allowedSelection =
+            this.props.record.data[this.props.allowedSelectionField];
         return super.options.filter(([value, _]) => allowedSelection.includes(value));
     }
 }
@@ -22,7 +23,7 @@ export const badgeSelectionFieldWithFilter = {
     component: BadgeSelectionWithFilterField,
     displayName: _t("Badges for Selection With Filter"),
     supportedTypes: ["selection"],
-    extractProps({ options }) {
+    extractProps({options}) {
         return {
             ...badgeSelectionField.extractProps(...arguments),
             allowedSelectionField: options.allowed_selection_field,
@@ -30,4 +31,6 @@ export const badgeSelectionFieldWithFilter = {
     },
 };
 
-registry.category("fields").add("selection_badge_with_filter", badgeSelectionFieldWithFilter);
+registry
+    .category("fields")
+    .add("selection_badge_with_filter", badgeSelectionFieldWithFilter);

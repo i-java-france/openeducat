@@ -1,7 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.hr.tests.common import TestHrCommon
 from odoo.tests.common import tagged
+
+from odoo.addons.hr.tests.common import TestHrCommon
 
 
 @tagged("post_install", "-at_install")
@@ -9,7 +10,7 @@ class TestChannel(TestHrCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestChannel, cls).setUpClass()
+        super().setUpClass()
 
         cls.channel = cls.env['discuss.channel'].create({'name': 'Test'})
 

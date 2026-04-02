@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models, fields, _
-from odoo.exceptions import UserError
-
 from collections import defaultdict
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class AccountJournal(models.Model):

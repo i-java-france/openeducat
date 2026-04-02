@@ -1,8 +1,9 @@
 from odoo import Command
 from odoo.tests import tagged
 from odoo.tools import float_compare, float_round
-from odoo.addons.l10n_jo_edi.tests.jo_edi_common import JoEdiCommon
+
 from odoo.addons.l10n_jo_edi.models.account_edi_xml_ubl_21_jo import JO_MAX_DP
+from odoo.addons.l10n_jo_edi.tests.jo_edi_common import JoEdiCommon
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')
@@ -410,7 +411,7 @@ class TestJoEdiPrecision(JoEdiCommon):
         })
         invoice_file = self.env['account.edi.xml.ubl_21.jo']._export_invoice(invoice)[0]
         refund_file = self.env['account.edi.xml.ubl_21.jo']._export_invoice(refund)[0]
-        for invoice_price_unit, refund_price_unit in zip(get_price_units(invoice_file), get_price_units(refund_file)):
+        for invoice_price_unit, refund_price_unit in zip(get_price_units(invoice_file), get_price_units(refund_file), strict=False):
             self.assertEqual(invoice_price_unit, refund_price_unit)
 
     def test_jo_total_tax_and_lines_taxes_rounding_error(self):

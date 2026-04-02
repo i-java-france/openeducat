@@ -1,24 +1,24 @@
-import { navigateTo } from "@spreadsheet/actions/helpers";
-import { Domain } from "@web/core/domain";
-import { _t } from "@web/core/l10n/translation";
+import {navigateTo} from "@spreadsheet/actions/helpers";
+import {Domain} from "@web/core/domain";
+import {_t} from "@web/core/l10n/translation";
 
 export function onOdooChartItemClick(getters, chart) {
     return navigateInOdooMenuOnClick(getters, chart, (chartJsItem, chartData) => {
-        const { datasets, labels } = chartData;
-        const { datasetIndex, index } = chartJsItem;
+        const {datasets, labels} = chartData;
+        const {datasetIndex, index} = chartJsItem;
         const dataset = datasets[datasetIndex];
         let name = labels[index];
         if (dataset.label) {
             name += ` / ${dataset.label}`;
         }
-        return { name, domain: dataset.domains[index] };
+        return {name, domain: dataset.domains[index]};
     });
 }
 
 export function onWaterfallOdooChartItemClick(getters, chart) {
     return navigateInOdooMenuOnClick(getters, chart, (chartJsItem, chartData) => {
         const showSubtotals = chart.showSubTotals;
-        const { datasets, labels } = chartData;
+        const {datasets, labels} = chartData;
 
         // DataSource datasets are all merged in a single dataset in waterfall charts (with possibly subtotals)
         // We need to transform back the chartJS index to the DataSource index
@@ -44,16 +44,18 @@ export function onWaterfallOdooChartItemClick(getters, chart) {
         if (!domain) {
             const datasetItemDomain = dataset.domains[0];
             const firstGroupBy = chart.dataSource._metaData.groupBy[0];
-            domain = Domain.removeDomainLeaves(datasetItemDomain, [firstGroupBy]).toList();
+            domain = Domain.removeDomainLeaves(datasetItemDomain, [
+                firstGroupBy,
+            ]).toList();
         }
-        return { name, domain };
+        return {name, domain};
     });
 }
 
 export function onGeoOdooChartItemClick(getters, chart) {
     return navigateInOdooMenuOnClick(getters, chart, (chartJsItem) => {
         const label = chartJsItem.element.feature.properties.name;
-        const { datasets, labels } = chart.dataSource.getData();
+        const {datasets, labels} = chart.dataSource.getData();
         const index = labels.indexOf(label);
         if (index === -1) {
             return {};
@@ -63,37 +65,47 @@ export function onGeoOdooChartItemClick(getters, chart) {
         if (dataset.label) {
             name += ` / ${dataset.label}`;
         }
-        return { name, domain: dataset.domains[index] };
+        return {name, domain: dataset.domains[index]};
     });
 }
 
 export function onSunburstOdooChartItemClick(getters, chart) {
-    return navigateInOdooMenuOnClick(getters, chart, (chartJsItem, chartData, chartJSChart) => {
-        const { datasetIndex, index } = chartJsItem;
-        const rawItem = chartJSChart.data.datasets[datasetIndex].data[index];
-        const domain = chart.dataSource.buildDomainFromGroupByLabels(rawItem.groups);
-        return { name: rawItem.groups.join(" / "), domain: domain };
-    });
+    return navigateInOdooMenuOnClick(
+        getters,
+        chart,
+        (chartJsItem, chartData, chartJSChart) => {
+            const {datasetIndex, index} = chartJsItem;
+            const rawItem = chartJSChart.data.datasets[datasetIndex].data[index];
+            const domain = chart.dataSource.buildDomainFromGroupByLabels(
+                rawItem.groups
+            );
+            return {name: rawItem.groups.join(" / "), domain: domain};
+        }
+    );
 }
 
 export function onTreemapOdooChartItemClick(getters, chart) {
-    return navigateInOdooMenuOnClick(getters, chart, (chartJsItem, chartData, chartJSChart) => {
-        const { datasetIndex, index } = chartJsItem;
-        const rawItem = chartJSChart.data.datasets[datasetIndex].data[index];
-        const depth = rawItem.l;
-        const groups = [];
-        for (let i = 0; i <= depth; i++) {
-            groups.push(rawItem._data[i]);
+    return navigateInOdooMenuOnClick(
+        getters,
+        chart,
+        (chartJsItem, chartData, chartJSChart) => {
+            const {datasetIndex, index} = chartJsItem;
+            const rawItem = chartJSChart.data.datasets[datasetIndex].data[index];
+            const depth = rawItem.l;
+            const groups = [];
+            for (let i = 0; i <= depth; i++) {
+                groups.push(rawItem._data[i]);
+            }
+            const domain = chart.dataSource.buildDomainFromGroupByLabels(groups);
+            return {name: groups.join(" / "), domain: domain};
         }
-        const domain = chart.dataSource.buildDomainFromGroupByLabels(groups);
-        return { name: groups.join(" / "), domain: domain };
-    });
+    );
 }
 
 function navigateInOdooMenuOnClick(getters, chart, getDomainFromChartItem) {
     return async (event, items, chartJSChart) => {
         const env = getters.getOdooEnv();
-        const { datasets, labels } = chart.dataSource.getData();
+        const {datasets, labels} = chart.dataSource.getData();
         if (!items.length || !env || !datasets[items[0].datasetIndex]) {
             return;
         }
@@ -102,9 +114,9 @@ function navigateInOdooMenuOnClick(getters, chart, getDomainFromChartItem) {
         } else {
             return;
         }
-        const { name, domain } = getDomainFromChartItem(
+        const {name, domain} = getDomainFromChartItem(
             items[0],
-            { datasets, labels },
+            {datasets, labels},
             chartJSChart
         );
         if (!domain || !name) {
@@ -123,7 +135,7 @@ function navigateInOdooMenuOnClick(getters, chart, getDomainFromChartItem) {
                 ],
                 domain,
             },
-            { viewType: "list", newWindow: isChartJSMiddleClick(event) }
+            {viewType: "list", newWindow: isChartJSMiddleClick(event)}
         );
     };
 }
@@ -155,7 +167,12 @@ export function onGeoOdooChartItemHover() {
     };
 }
 
-export async function navigateToOdooMenu(menu, actionService, notificationService, newWindow) {
+export async function navigateToOdooMenu(
+    menu,
+    actionService,
+    notificationService,
+    newWindow
+) {
     if (!menu) {
         throw new Error(`Cannot find any menu associated with the chart`);
     }
@@ -164,11 +181,11 @@ export async function navigateToOdooMenu(menu, actionService, notificationServic
             _t(
                 "The menu linked to this chart doesn't have an corresponding action. Please link the chart to another menu."
             ),
-            { type: "danger" }
+            {type: "danger"}
         );
         return;
     }
-    await actionService.doAction(menu.actionID, { newWindow });
+    await actionService.doAction(menu.actionID, {newWindow});
 }
 
 /**

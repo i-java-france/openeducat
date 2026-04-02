@@ -1,6 +1,6 @@
-import { exprToBoolean } from "@web/core/utils/strings";
-import { visitXML } from "@web/core/utils/xml";
-import { evaluateExpr } from "@web/core/py_js/py";
+import {exprToBoolean} from "@web/core/utils/strings";
+import {visitXML} from "@web/core/utils/xml";
+import {evaluateExpr} from "@web/core/py_js/py";
 
 export class PivotArchParser {
     parse(arch) {
@@ -39,7 +39,8 @@ export class PivotArchParser {
 
                     archInfo.fieldAttrs[fieldName] = {};
                     if (node.hasAttribute("string")) {
-                        archInfo.fieldAttrs[fieldName].string = node.getAttribute("string");
+                        archInfo.fieldAttrs[fieldName].string =
+                            node.getAttribute("string");
                     }
                     if (
                         node.getAttribute("invisible") === "True" ||
@@ -48,12 +49,22 @@ export class PivotArchParser {
                         archInfo.fieldAttrs[fieldName].isInvisible = true;
                         break;
                     }
-                    for (const { name, value } of node.attributes) {
-                        if (["name", "type", "operator", "interval", "string", "widget"].includes(name)) {
+                    for (const {name, value} of node.attributes) {
+                        if (
+                            [
+                                "name",
+                                "type",
+                                "operator",
+                                "interval",
+                                "string",
+                                "widget",
+                            ].includes(name)
+                        ) {
                             continue;
                         }
                         if (name === "options") {
-                            archInfo.fieldAttrs[fieldName].options = evaluateExpr(value);
+                            archInfo.fieldAttrs[fieldName].options =
+                                evaluateExpr(value);
                         } else {
                             archInfo.fieldAttrs[fieldName][name] = value;
                         }
@@ -65,7 +76,10 @@ export class PivotArchParser {
                     if (node.hasAttribute("widget")) {
                         archInfo.widgets[fieldName] = node.getAttribute("widget");
                     }
-                    if (node.getAttribute("type") === "measure" || node.hasAttribute("operator")) {
+                    if (
+                        node.getAttribute("type") === "measure" ||
+                        node.hasAttribute("operator")
+                    ) {
                         archInfo.activeMeasures.push(fieldName);
                     }
                     if (node.getAttribute("type") === "col") {

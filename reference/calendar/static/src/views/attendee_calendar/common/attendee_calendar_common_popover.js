@@ -1,10 +1,10 @@
-import { onWillStart } from "@odoo/owl";
-import { CalendarCommonPopover } from "@web/views/calendar/calendar_common/calendar_common_popover";
-import { useService } from "@web/core/utils/hooks";
-import { useAskRecurrenceUpdatePolicy } from "@calendar/views/ask_recurrence_update_policy_hook";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { user } from "@web/core/user";
+import {onWillStart} from "@odoo/owl";
+import {CalendarCommonPopover} from "@web/views/calendar/calendar_common/calendar_common_popover";
+import {useService} from "@web/core/utils/hooks";
+import {useAskRecurrenceUpdatePolicy} from "@calendar/views/ask_recurrence_update_policy_hook";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {user} from "@web/core/user";
 
 export class AttendeeCalendarCommonPopover extends CalendarCommonPopover {
     static components = {
@@ -67,8 +67,9 @@ export class AttendeeCalendarCommonPopover extends CalendarCommonPopover {
 
     get displayAttendeeAnswerChoice() {
         return (
-            this.props.record.rawRecord.partner_ids.some((partner) => partner !== user.partnerId) &&
-            this.props.record.isCurrentPartner
+            this.props.record.rawRecord.partner_ids.some(
+                (partner) => partner !== user.partnerId
+            ) && this.props.record.isCurrentPartner
         );
     }
 
@@ -81,9 +82,11 @@ export class AttendeeCalendarCommonPopover extends CalendarCommonPopover {
     }
 
     async onClickOpenRecord() {
-        const action = await this.orm.call("calendar.event", "action_open_calendar_event", [
-            this.props.record.id,
-        ]);
+        const action = await this.orm.call(
+            "calendar.event",
+            "action_open_calendar_event",
+            [this.props.record.id]
+        );
         this.actionService.doAction(action);
     }
 
@@ -91,7 +94,9 @@ export class AttendeeCalendarCommonPopover extends CalendarCommonPopover {
      * @override
      */
     get isEventDeletable() {
-        return super.isEventDeletable && this.isEventEditable && !this.isEventArchivable;
+        return (
+            super.isEventDeletable && this.isEventEditable && !this.isEventArchivable
+        );
     }
 
     /**
@@ -124,11 +129,11 @@ export class AttendeeCalendarCommonPopover extends CalendarCommonPopover {
                 return this.props.close();
             }
         }
-        await this.env.services.orm.call(this.props.model.resModel, "change_attendee_status", [
-            [record.id],
-            selectedStatus,
-            recurrenceUpdate,
-        ]);
+        await this.env.services.orm.call(
+            this.props.model.resModel,
+            "change_attendee_status",
+            [[record.id], selectedStatus, recurrenceUpdate]
+        );
         await this.props.model.load();
         this.props.close();
     }

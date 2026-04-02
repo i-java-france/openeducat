@@ -1,5 +1,5 @@
-import { useService } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
 import {
     PopoverComponent,
     PopoverWidgetField,
@@ -19,19 +19,17 @@ import {
  */
 
 class WorkOrderPopover extends PopoverComponent {
-    setup(){
+    setup() {
         this.orm = useService("orm");
     }
 
     async onReplanClick() {
-        await this.orm.call(
-            'mrp.workorder',
-            'action_replan',
-            [this.props.record.resId]
-        );
+        await this.orm.call("mrp.workorder", "action_replan", [
+            this.props.record.resId,
+        ]);
         await this.props.record.model.load();
     }
-};
+}
 
 class WorkOrderPopoverField extends PopoverWidgetField {
     static components = {

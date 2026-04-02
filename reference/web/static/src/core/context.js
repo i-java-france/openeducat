@@ -1,6 +1,6 @@
-import { evaluateExpr, parseExpr } from "./py_js/py";
-import { BUILTINS } from "./py_js/py_builtin";
-import { evaluate } from "./py_js/py_interpreter";
+import {evaluateExpr, parseExpr} from "./py_js/py";
+import {BUILTINS} from "./py_js/py_builtin";
+import {evaluate} from "./py_js/py_interpreter";
 
 /**
  * @typedef {{
@@ -71,7 +71,9 @@ export function evalPartialContext(_context, evaluationContext = {}) {
     for (const key in ast.value) {
         const value = ast.value[key];
         if (
-            getPartialNames(value).some((name) => !(name in evaluationContext || name in BUILTINS))
+            getPartialNames(value).some(
+                (name) => !(name in evaluationContext || name in BUILTINS)
+            )
         ) {
             continue;
         }

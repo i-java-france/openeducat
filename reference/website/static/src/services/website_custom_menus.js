@@ -1,8 +1,8 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { EditMenuDialog } from "@website/components/dialog/edit_menu";
-import { OptimizeSEODialog } from "@website/components/dialog/seo";
-import { PagePropertiesDialog } from "@website/components/dialog/page_properties";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {EditMenuDialog} from "@website/components/dialog/edit_menu";
+import {OptimizeSEODialog} from "@website/components/dialog/seo";
+import {PagePropertiesDialog} from "@website/components/dialog/page_properties";
 
 /**
  * This service displays contextual menus, depending of the state of the
@@ -12,8 +12,8 @@ import { PagePropertiesDialog } from "@website/components/dialog/page_properties
  */
 export const websiteCustomMenus = {
     dependencies: ["website", "orm", "dialog", "ui"],
-    start(env, { website, orm, dialog, ui }) {
-        const services = { website, orm, dialog, ui };
+    start(env, {website, orm, dialog, ui}) {
+        const services = {website, orm, dialog, ui};
         return {
             get(xmlId) {
                 return registry.category("website_custom_menus").get(xmlId, null);
@@ -54,7 +54,7 @@ export const websiteCustomMenus = {
                                     (menu, index) => ({
                                         ...section,
                                         name: _t("Edit %s", menu[0]),
-                                        dynamicProps: { rootID: parseInt(menu[1], 10) },
+                                        dynamicProps: {rootID: parseInt(menu[1], 10)},
                                         // Prevent a 't-foreach' duplicate key on menus template.
                                         id: `${section.id}-${index}`,
                                     })
@@ -62,7 +62,7 @@ export const websiteCustomMenus = {
                             );
                         } else {
                             filteredSections.push(
-                                Object.assign({}, section, { childrenTree: subSections })
+                                Object.assign({}, section, {childrenTree: subSections})
                             );
                         }
                     }
@@ -107,10 +107,12 @@ registry.category("website_custom_menus").add("website.menu_page_properties", {
         env.services.website.currentWebsite &&
         env.services.website.isDesigner &&
         !!env.services.website.currentWebsite.metadata.mainObject,
-    getProps: async ({ orm, website }) => {
+    getProps: async ({orm, website}) => {
         const mainObject = website.currentWebsite.metadata.mainObject;
         const isPage = mainObject.model === "website.page";
-        const model = isPage ? "website.page.properties" : "website.page.properties.base";
+        const model = isPage
+            ? "website.page.properties"
+            : "website.page.properties.base";
         const websiteId = website.currentWebsite.id;
         // Do not rely on window.location.pathname: while the editor boots it can
         // still be "/web" or even empty, which would give the dialog a wrong URL.
@@ -147,7 +149,13 @@ registry.category("website_custom_menus").add("website.menu_page_properties", {
             resModel: model,
             onRecordSaved: async (record) => {
                 const page = isPage
-                    ? (await orm.read("website.page", [mainObject.id], ["website_id", "url"]))[0]
+                    ? (
+                          await orm.read(
+                              "website.page",
+                              [mainObject.id],
+                              ["website_id", "url"]
+                          )
+                      )[0]
                     : undefined;
                 return website.goToWebsite({
                     websiteId: page?.website_id?.[0] ?? website.currentWebsite.id,

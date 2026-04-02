@@ -1,5 +1,6 @@
-from odoo.addons.point_of_sale.tests.common import CommonPosTest
 from odoo.fields import Command
+
+from odoo.addons.point_of_sale.tests.common import CommonPosTest
 
 
 class CommonPosMrpTest(CommonPosTest):

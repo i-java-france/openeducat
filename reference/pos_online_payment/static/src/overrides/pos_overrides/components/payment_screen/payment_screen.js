@@ -1,6 +1,6 @@
-import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
-import { patch } from "@web/core/utils/patch";
-import { serializeDateTime } from "@web/core/l10n/dates";
+import {PaymentScreen} from "@point_of_sale/app/screens/payment_screen/payment_screen";
+import {patch} from "@web/core/utils/patch";
+import {serializeDateTime} from "@web/core/l10n/dates";
 
 patch(PaymentScreen.prototype, {
     async addNewPaymentLine(paymentMethod) {

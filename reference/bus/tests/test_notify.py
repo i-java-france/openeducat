@@ -7,7 +7,12 @@ import threading
 import odoo
 from odoo.tests import TransactionCase
 
-from ..models.bus import json_dump, get_notify_payloads, NOTIFY_PAYLOAD_MAX_LENGTH, ODOO_NOTIFY_FUNCTION
+from ..models.bus import (
+    NOTIFY_PAYLOAD_MAX_LENGTH,
+    ODOO_NOTIFY_FUNCTION,
+    get_notify_payloads,
+    json_dump,
+)
 
 
 class NotifyTests(TransactionCase):

@@ -1,9 +1,9 @@
-import { Form } from "@website/snippets/s_website_form/form";
-import { patch } from "@web/core/utils/patch";
+import {Form} from "@website/snippets/s_website_form/form";
+import {patch} from "@web/core/utils/patch";
 
-import { uniqueId } from "@web/core/utils/functions";
-import { session } from "@web/session";
-import { TurnStile } from "./turnstile";
+import {uniqueId} from "@web/core/utils/functions";
+import {session} from "@web/session";
+import {TurnStile} from "./turnstile";
 
 patch(Form.prototype, {
     /**
@@ -20,7 +20,9 @@ patch(Form.prototype, {
             this.uniq = uniqueId("turnstile_");
             this.el.classList.add(this.uniq);
             const turnstile = new TurnStile("website_form");
-            const formSendEl = this.el.querySelector(".s_website_form_send, .o_website_form_send");
+            const formSendEl = this.el.querySelector(
+                ".s_website_form_send, .o_website_form_send"
+            );
             TurnStile.disableSubmit(formSendEl);
             formSendEl.parentNode.insertBefore(turnstile.turnstileEl, formSendEl);
             turnstile.insertScripts(this.el);

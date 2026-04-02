@@ -1,13 +1,13 @@
-import { registry } from "@web/core/registry";
-import { ListRenderer } from "@web/views/list/list_renderer";
-import { X2ManyField, x2ManyField } from "@web/views/fields/x2many/x2many_field";
-import { ProductNameAndDescriptionListRendererMixin } from "@product/product_name_and_description/product_name_and_description";
-import { user } from "@web/core/user";
-import { patch } from "@web/core/utils/patch";
-import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
-import { onWillStart } from "@odoo/owl";
-import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog";
-import { _t } from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {ListRenderer} from "@web/views/list/list_renderer";
+import {X2ManyField, x2ManyField} from "@web/views/fields/x2many/x2many_field";
+import {ProductNameAndDescriptionListRendererMixin} from "@product/product_name_and_description/product_name_and_description";
+import {user} from "@web/core/user";
+import {patch} from "@web/core/utils/patch";
+import {useOwnedDialogs, useService} from "@web/core/utils/hooks";
+import {onWillStart} from "@odoo/owl";
+import {SelectCreateDialog} from "@web/views/view_dialogs/select_create_dialog";
+import {_t} from "@web/core/l10n/translation";
 
 export class MovesListRenderer extends ListRenderer {
     static rowsTemplate = "stock.AddPackageListRendererRows";
@@ -46,10 +46,11 @@ export class MovesListRenderer extends ListRenderer {
             },
             onSelected: async (resIds) => {
                 if (resIds.length) {
-                    const done = await this.orm.call("stock.picking", "action_add_entire_packs", [
-                        [this.pickingId],
-                        resIds,
-                    ]);
+                    const done = await this.orm.call(
+                        "stock.picking",
+                        "action_add_entire_packs",
+                        [[this.pickingId], resIds]
+                    );
                     if (done) {
                         await this.actionService.doAction({
                             type: "ir.actions.client",
@@ -82,7 +83,7 @@ export class MovesListRenderer extends ListRenderer {
 patch(MovesListRenderer.prototype, ProductNameAndDescriptionListRendererMixin);
 
 export class StockMoveX2ManyField extends X2ManyField {
-    static components = { ...X2ManyField.components, ListRenderer: MovesListRenderer };
+    static components = {...X2ManyField.components, ListRenderer: MovesListRenderer};
 }
 
 export const stockMoveX2ManyField = {

@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { Component } from "@odoo/owl";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+import {registry} from "@web/core/registry";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {Component} from "@odoo/owl";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
 
 /**
  * Extend this to add functionality to Popover (custom methods etc.)
@@ -27,25 +27,28 @@ export class PopoverComponent extends Component {
 
 export class PopoverWidgetField extends Component {
     static template = "stock.popoverButton";
-    static components = { Popover: PopoverComponent };
+    static components = {Popover: PopoverComponent};
     static props = {...standardFieldProps};
-    setup(){
+    setup() {
         let fieldValue = this.props.record.data[this.props.name];
         this.jsonValue = JSON.parse(fieldValue || "{}");
         const position = this.jsonValue.position || "top";
-        this.popover = usePopover(this.constructor.components.Popover, { position });
-        this.color = this.jsonValue.color || 'text-primary';
-        this.icon = this.jsonValue.icon || 'fa-info-circle';
+        this.popover = usePopover(this.constructor.components.Popover, {position});
+        this.color = this.jsonValue.color || "text-primary";
+        this.icon = this.jsonValue.icon || "fa-info-circle";
     }
 
-    showPopup(ev){
-        this.popover.open(ev.currentTarget, { ...this.jsonValue, record: this.props.record });
+    showPopup(ev) {
+        this.popover.open(ev.currentTarget, {
+            ...this.jsonValue,
+            record: this.props.record,
+        });
     }
 }
 
 export const popoverWidgetField = {
     component: PopoverWidgetField,
-    supportedTypes: ['char'],
+    supportedTypes: ["char"],
 };
 
 registry.category("fields").add("popover_widget", popoverWidgetField);

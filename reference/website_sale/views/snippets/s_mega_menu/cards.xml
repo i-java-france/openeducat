@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <template
         id="website_sale.s_mega_menu_cards"
         name="eCommerce: Menu - Cards"
@@ -28,7 +27,7 @@
                                         alt=""
                                     />
                                 </div>
-                                <h4 t-esc="category.name"/>
+                                <h4 t-esc="category.name" />
                             </a>
                         </div>
                     </t>
@@ -36,5 +35,4 @@
             </div>
         </section>
     </template>
-
 </odoo>

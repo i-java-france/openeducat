@@ -1,10 +1,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
-from threading import Thread
 import time
+from threading import Thread
 
-from odoo.addons.iot_drivers.main import drivers, interfaces, iot_devices, unsupported_devices
+from odoo.addons.iot_drivers.main import (
+    drivers,
+    interfaces,
+    iot_devices,
+    unsupported_devices,
+)
 
 _logger = logging.getLogger(__name__)
 

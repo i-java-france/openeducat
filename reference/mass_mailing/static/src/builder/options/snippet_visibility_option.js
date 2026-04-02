@@ -1,7 +1,7 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { Domain } from "@web/core/domain";
-import { DomainSelectorDialog } from "@web/core/domain_selector_dialog/domain_selector_dialog";
-import { useService } from "@web/core/utils/hooks";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {Domain} from "@web/core/domain";
+import {DomainSelectorDialog} from "@web/core/domain_selector_dialog/domain_selector_dialog";
+import {useService} from "@web/core/utils/hooks";
 
 /**
  * Option Component to enable the user to filter some snippets to a specific subset of ids following
@@ -41,7 +41,11 @@ export class SnippetVisibilityOption extends BaseOptionComponent {
      */
     async parseTree(domain) {
         const resModel = this.getModel();
-        const tree = await this.treeProcessor.treeFromDomain(resModel, domain, !this.env.debug);
+        const tree = await this.treeProcessor.treeFromDomain(
+            resModel,
+            domain,
+            !this.env.debug
+        );
         // Extract subtrees connected by an `&`, Odoo Standard for domain facets
         const trees = !tree.negate && tree.value === "&" ? tree.children : [tree];
         this.state.facets = await Promise.all(
@@ -66,7 +70,7 @@ export class SnippetVisibilityOption extends BaseOptionComponent {
                         this.state.domain.toJson()
                     );
                     this.parseTree(newDomain);
-                    this.config.onChange?.({ isPreviewing: false });
+                    this.config.onChange?.({isPreviewing: false});
                 },
             },
             {

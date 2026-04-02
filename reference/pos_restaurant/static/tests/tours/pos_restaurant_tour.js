@@ -3,21 +3,21 @@ import * as Dialog from "@point_of_sale/../tests/generic_helpers/dialog_util";
 import * as ReceiptScreen from "@point_of_sale/../tests/pos/tours/utils/receipt_screen_util";
 import * as ChromePos from "@point_of_sale/../tests/pos/tours/utils/chrome_util";
 import * as ChromeRestaurant from "@pos_restaurant/../tests/tours/utils/chrome";
-const Chrome = { ...ChromePos, ...ChromeRestaurant };
+const Chrome = {...ChromePos, ...ChromeRestaurant};
 import * as FloorScreen from "@pos_restaurant/../tests/tours/utils/floor_screen_util";
 import * as ProductScreenPos from "@point_of_sale/../tests/pos/tours/utils/product_screen_util";
 import * as ProductScreenResto from "@pos_restaurant/../tests/tours/utils/product_screen_util";
 import * as Order from "@point_of_sale/../tests/generic_helpers/order_widget_util";
 import * as TicketScreen from "@point_of_sale/../tests/pos/tours/utils/ticket_screen_util";
 import * as combo from "@point_of_sale/../tests/pos/tours/utils/combo_popup_util";
-import { inLeftSide } from "@point_of_sale/../tests/pos/tours/utils/common";
-import { registry } from "@web/core/registry";
+import {inLeftSide} from "@point_of_sale/../tests/pos/tours/utils/common";
+import {registry} from "@web/core/registry";
 import * as Numpad from "@point_of_sale/../tests/generic_helpers/numpad_util";
-import { delay } from "@web/core/utils/concurrency";
+import {delay} from "@web/core/utils/concurrency";
 import * as TextInputPopup from "@point_of_sale/../tests/generic_helpers/text_input_popup_util";
 import * as PreparationReceipt from "@point_of_sale/../tests/pos/tours/utils/preparation_receipt_util";
 import * as NumberPopup from "@point_of_sale/../tests/generic_helpers/number_popup_util";
-import { checkPreparationTicketData } from "@point_of_sale/../tests/pos/tours/utils/preparation_receipt_util";
+import {checkPreparationTicketData} from "@point_of_sale/../tests/pos/tours/utils/preparation_receipt_util";
 import {
     negate,
     negateStep,
@@ -25,7 +25,7 @@ import {
     refresh,
 } from "@point_of_sale/../tests/generic_helpers/utils";
 import * as FeedbackScreen from "@point_of_sale/../tests/pos/tours/utils/feedback_screen_util";
-const ProductScreen = { ...ProductScreenPos, ...ProductScreenResto };
+const ProductScreen = {...ProductScreenPos, ...ProductScreenResto};
 
 registry.category("web_tour.tours").add("pos_restaurant_sync", {
     steps: () =>
@@ -46,13 +46,13 @@ registry.category("web_tour.tours").add("pos_restaurant_sync", {
             FloorScreen.clickTable("5"),
             Chrome.isTabActive("5"),
             ProductScreen.clickDisplayedProduct("Coca-Cola", true),
-            inLeftSide(Order.hasLine({ productName: "Coca-Cola", run: "dblclick" })),
+            inLeftSide(Order.hasLine({productName: "Coca-Cola", run: "dblclick"})),
             ProductScreen.clickDisplayedProduct("Water", true),
             ProductScreen.orderlineIsToOrder("Water"),
             ProductScreen.orderlineIsToOrder("Coca-Cola"),
             checkPreparationTicketData([
-                { name: "Coca-Cola", qty: 1 },
-                { name: "Water", qty: 1 },
+                {name: "Coca-Cola", qty: 1},
+                {name: "Water", qty: 1},
             ]),
             ProductScreen.clickOrderButton(),
             Chrome.closePrintingWarning(),
@@ -68,8 +68,8 @@ registry.category("web_tour.tours").add("pos_restaurant_sync", {
             ProductScreen.clickDisplayedProduct("Minute Maid", true),
             ProductScreen.totalAmountIs("4.40"),
             checkPreparationTicketData([
-                { name: "Coca-Cola", qty: 1 },
-                { name: "Minute Maid", qty: 1 },
+                {name: "Coca-Cola", qty: 1},
+                {name: "Minute Maid", qty: 1},
             ]),
             ProductScreen.clickPayButton(false),
             ProductScreen.discardOrderWarningDialog(),
@@ -87,7 +87,7 @@ registry.category("web_tour.tours").add("pos_restaurant_sync", {
             },
             ProductScreen.selectedOrderlineHas("Desk Organizer"),
             checkPreparationTicketData([
-                { name: "Desk Organizer", qty: 1, attributes: ["S", "Leather"] },
+                {name: "Desk Organizer", qty: 1, attributes: ["S", "Leather"]},
             ]),
             ProductScreen.clickOrderButton(),
             Chrome.closePrintingWarning(),
@@ -265,7 +265,8 @@ registry.category("web_tour.tours").add("test_pos_restaurant_course", {
             ProductScreen.clickCourseButton(),
             ProductScreen.selectCourseLine("Course 2"),
             {
-                content: "Wait atleast 1 sec so that courses have different fired_date timestamps",
+                content:
+                    "Wait atleast 1 sec so that courses have different fired_date timestamps",
                 trigger: "body",
                 run: async () => await delay(1000),
             },
@@ -428,30 +429,36 @@ registry.category("web_tour.tours").add("PreparationPrinterContent", {
             // Cutomer Note on orderline
             ProductScreen.addCustomerNote("Test customer note - orderline"),
             ProductScreen.totalAmountIs("10"),
-            checkPreparationTicketData([{ name: "Product Test", qty: 1, attribute: ["Value 1"] }], {
-                visibleInDom: [
-                    "10:00",
-                    "Value 1",
-                    "Guest: 5",
-                    "Eat in",
-                    "Test customer note - orderline",
-                ],
-                invisibleInDom: ["DUPLICATA!"],
-            }),
+            checkPreparationTicketData(
+                [{name: "Product Test", qty: 1, attribute: ["Value 1"]}],
+                {
+                    visibleInDom: [
+                        "10:00",
+                        "Value 1",
+                        "Guest: 5",
+                        "Eat in",
+                        "Test customer note - orderline",
+                    ],
+                    invisibleInDom: ["DUPLICATA!"],
+                }
+            ),
             ProductScreen.clickOrderButton(),
             Chrome.closePrintingWarning(),
             FloorScreen.clickTable("5"),
             ProductScreen.clickLine("Product Test"),
             ProductScreen.addCustomerNote("Updated customer note - orderline"),
-            checkPreparationTicketData([{ name: "Product Test", qty: 1, attribute: ["Value 1"] }], {
-                visibleInDom: ["NOTE UPDATE", "Updated customer note - orderline"],
-            }),
+            checkPreparationTicketData(
+                [{name: "Product Test", qty: 1, attribute: ["Value 1"]}],
+                {
+                    visibleInDom: ["NOTE UPDATE", "Updated customer note - orderline"],
+                }
+            ),
             Chrome.clickPlanButton(),
             FloorScreen.clickTable("2"),
             ProductScreen.clickDisplayedProduct("Water"),
             ...ProductScreen.clickSelectedLine("Water"),
             ProductScreen.addInternalNote("To Serve"),
-            checkPreparationTicketData([{ name: "Water", qty: 1 }], {
+            checkPreparationTicketData([{name: "Water", qty: 1}], {
                 visibleInDom: ["10:00", "To Serve"],
                 invisibleInDom: ["colorIndex"],
             }),
@@ -462,7 +469,7 @@ registry.category("web_tour.tours").add("PreparationPrinterContent", {
             Chrome.presetTimingSlotHourNotExists("09:00"),
             Chrome.selectPresetTimingSlotHour("12:00"),
             Chrome.presetTimingSlotIs("12:00"),
-            checkPreparationTicketData([{ name: "Water", qty: 1 }], {
+            checkPreparationTicketData([{name: "Water", qty: 1}], {
                 visibleInDom: ["12:00", "Takeaway"],
                 invisibleInDom: ["colorIndex"],
             }),
@@ -483,9 +490,9 @@ registry.category("web_tour.tours").add("test_course_restaurant_preparation_tour
             ProductScreen.clickDisplayedProduct("Minute Maid"),
             checkPreparationTicketData(
                 [
-                    { name: "Coca-Cola", qty: 1 },
-                    { name: "Water", qty: 1 },
-                    { name: "Minute Maid", qty: 1 },
+                    {name: "Coca-Cola", qty: 1},
+                    {name: "Water", qty: 1},
+                    {name: "Minute Maid", qty: 1},
                 ],
                 {
                     visibleInDom: ["Course 1", "Course 2", "Course 3"],
@@ -504,11 +511,14 @@ registry.category("web_tour.tours").add("test_course_restaurant_preparation_tour
             Dialog.confirm(),
             FloorScreen.clickTable("5"),
             ProductScreen.selectCourseLine("Course 3"),
-            checkPreparationTicketData([{ name: "Product Test", qty: 1, attribute: ["Value 1"] }], {
-                visibleInDom: ["Course 3"],
-                invisibleInDom: ["DUPLICATA!"],
-                fireCourse: true,
-            }),
+            checkPreparationTicketData(
+                [{name: "Product Test", qty: 1, attribute: ["Value 1"]}],
+                {
+                    visibleInDom: ["Course 3"],
+                    invisibleInDom: ["DUPLICATA!"],
+                    fireCourse: true,
+                }
+            ),
             ProductScreen.fireCourseButton(),
         ].flat(),
 });
@@ -530,14 +540,14 @@ registry.category("web_tour.tours").add("test_combo_preparation_receipt", {
             combo.select("Combo Product 8"),
             Dialog.confirm(),
             checkPreparationTicketData([
-                { name: "Office Combo", qty: 1 },
-                { name: "Combo Product 2", qty: 1 },
-                { name: "Combo Product 4", qty: 1 },
-                { name: "Combo Product 6", qty: 1 },
-                { name: "Office Combo", qty: 1 },
-                { name: "Combo Product 1", qty: 1 },
-                { name: "Combo Product 5", qty: 1 },
-                { name: "Combo Product 8", qty: 1 },
+                {name: "Office Combo", qty: 1},
+                {name: "Combo Product 2", qty: 1},
+                {name: "Combo Product 4", qty: 1},
+                {name: "Combo Product 6", qty: 1},
+                {name: "Office Combo", qty: 1},
+                {name: "Combo Product 1", qty: 1},
+                {name: "Combo Product 5", qty: 1},
+                {name: "Combo Product 8", qty: 1},
             ]),
             ProductScreen.totalAmountIs("95.00"),
             ProductScreen.clickPayButton(false),
@@ -598,20 +608,22 @@ registry.category("web_tour.tours").add("FinishResidualOrder", {
         ].flat(),
 });
 
-registry.category("web_tour.tours").add("test_multiple_preparation_printer_different_categories", {
-    steps: () =>
-        [
-            Chrome.startPoS(),
-            Dialog.confirm("Open Register"),
-            FloorScreen.clickTable("5"),
-            ProductScreen.clickDisplayedProduct("Product 1"),
-            ProductScreen.clickDisplayedProduct("Product 2"),
-            ProductScreen.clickOrderButton(),
-            Dialog.bodyIs("Printer 1: The printer is not reachable."),
-            Dialog.bodyIs("Printer 2: The printer is not reachable."),
-            Dialog.confirm(),
-        ].flat(),
-});
+registry
+    .category("web_tour.tours")
+    .add("test_multiple_preparation_printer_different_categories", {
+        steps: () =>
+            [
+                Chrome.startPoS(),
+                Dialog.confirm("Open Register"),
+                FloorScreen.clickTable("5"),
+                ProductScreen.clickDisplayedProduct("Product 1"),
+                ProductScreen.clickDisplayedProduct("Product 2"),
+                ProductScreen.clickOrderButton(),
+                Dialog.bodyIs("Printer 1: The printer is not reachable."),
+                Dialog.bodyIs("Printer 2: The printer is not reachable."),
+                Dialog.confirm(),
+            ].flat(),
+    });
 registry.category("web_tour.tours").add("test_preset_delivery_restaurant", {
     steps: () =>
         [
@@ -622,7 +634,7 @@ registry.category("web_tour.tours").add("test_preset_delivery_restaurant", {
             ProductScreen.clickCustomer("Partner Full"),
             ProductScreen.clickDisplayedProduct("Coca-Cola", true),
             ProductScreen.clickControlButton("Cancel Order"),
-            Dialog.cancel({ title: "Existing orderlines" }),
+            Dialog.cancel({title: "Existing orderlines"}),
             Dialog.isNot(),
             ProductScreen.isShown(),
             ProductScreen.clickControlButton("Cancel Order"),
@@ -680,11 +692,11 @@ registry.category("web_tour.tours").add("test_open_register_with_preset_takeaway
             Chrome.waitRequest(),
             ProductScreen.clickDisplayedProduct("Coca-Cola", true),
             ProductScreen.clickControlButton("Cancel Order"),
-            Dialog.cancel({ title: "Existing orderlines" }),
-            Dialog.isNot({ title: "Existing orderlines" }),
+            Dialog.cancel({title: "Existing orderlines"}),
+            Dialog.isNot({title: "Existing orderlines"}),
             ProductScreen.clickControlButton("Cancel Order"),
             Dialog.confirm("ok"),
-            Dialog.isNot({ title: "Existing orderlines" }),
+            Dialog.isNot({title: "Existing orderlines"}),
             FloorScreen.isShown(),
             Chrome.clickOrders(),
             {
@@ -745,10 +757,10 @@ registry.category("web_tour.tours").add("test_combo_preparation_receipt_layout",
             combo.select("Combo Product 6"),
             Dialog.confirm(),
             checkPreparationTicketData([
-                { name: "Office Combo", qty: 1 },
-                { name: "Combo Product 2", qty: 1 },
-                { name: "Combo Product 4", qty: 1 },
-                { name: "Combo Product 6", qty: 1 },
+                {name: "Office Combo", qty: 1},
+                {name: "Combo Product 2", qty: 1},
+                {name: "Combo Product 4", qty: 1},
+                {name: "Combo Product 6", qty: 1},
             ]),
         ].flat(),
 });
@@ -795,9 +807,12 @@ registry
                         content: "Check the content of the preparation receipt",
                         trigger: "body",
                         run: async () => {
-                            const receipts = await PreparationReceipt.generatePreparationReceipts();
+                            const receipts =
+                                await PreparationReceipt.generatePreparationReceipts();
                             if (!receipts[0].innerHTML.includes("Coca-Cola")) {
-                                throw new Error("Coca-Cola not found in printed receipt");
+                                throw new Error(
+                                    "Coca-Cola not found in printed receipt"
+                                );
                             }
                             if (!receipts[0].innerHTML.includes("NEW")) {
                                 throw new Error("NEW not found in printed receipt");
@@ -816,9 +831,12 @@ registry
                         content: "Check the content of the preparation receipt",
                         trigger: "body",
                         run: async () => {
-                            const receipts = await PreparationReceipt.generatePreparationReceipts();
+                            const receipts =
+                                await PreparationReceipt.generatePreparationReceipts();
                             if (!receipts[0].innerHTML.includes("Coca-Cola")) {
-                                throw new Error("Coca-Cola not found in printed receipt");
+                                throw new Error(
+                                    "Coca-Cola not found in printed receipt"
+                                );
                             }
                             if (!receipts[0].innerHTML.includes("NEW")) {
                                 throw new Error("NEW not found in printed receipt");
@@ -852,9 +870,12 @@ registry
                         content: "Check the content of the preparation receipt",
                         trigger: "body",
                         run: async () => {
-                            const receipts = await PreparationReceipt.generatePreparationReceipts();
+                            const receipts =
+                                await PreparationReceipt.generatePreparationReceipts();
                             if (!receipts[0].innerHTML.includes("Coca-Cola")) {
-                                throw new Error("Coca-Cola not found in printed receipt");
+                                throw new Error(
+                                    "Coca-Cola not found in printed receipt"
+                                );
                             }
                             if (!receipts[0].innerHTML.includes("NEW")) {
                                 throw new Error("NEW not found in printed receipt");
@@ -872,9 +893,12 @@ registry
                         content: "Check the content of the preparation receipt",
                         trigger: "body",
                         run: async () => {
-                            const receipts = await PreparationReceipt.generatePreparationReceipts();
+                            const receipts =
+                                await PreparationReceipt.generatePreparationReceipts();
                             if (!receipts[0].innerHTML.includes("Coca-Cola")) {
-                                throw new Error("Coca-Cola not found in printed receipt");
+                                throw new Error(
+                                    "Coca-Cola not found in printed receipt"
+                                );
                             }
                             if (!receipts[0].innerHTML.includes("NEW")) {
                                 throw new Error("NEW not found in printed receipt");
@@ -1042,14 +1066,14 @@ registry.category("web_tour.tours").add("test_sync_lines_qty_update", {
             Dialog.confirm("Open Register"),
             FloorScreen.clickTable("5"),
             ProductScreen.clickDisplayedProduct("Coca-Cola"),
-            Order.hasLine({ productName: "Coca-Cola" }),
+            Order.hasLine({productName: "Coca-Cola"}),
             Chrome.clickPlanButton(),
             FloorScreen.clickTable("5"),
             ProductScreen.clickLine("Coca-Cola"),
             Chrome.waitRequest(), // Wait for sync request (the order is created)
             assertCurrentOrderDirty(false),
             Numpad.click("3"),
-            Order.hasLine({ productName: "Coca-Cola", quantity: 3 }),
+            Order.hasLine({productName: "Coca-Cola", quantity: 3}),
             assertCurrentOrderDirty(true),
             Chrome.clickPlanButton(),
             FloorScreen.isShown(),
@@ -1067,7 +1091,7 @@ registry.category("web_tour.tours").add("test_sync_set_partner", {
             Dialog.confirm("Open Register"),
             FloorScreen.clickTable("5"),
             ProductScreen.clickDisplayedProduct("Coca-Cola"),
-            Order.hasLine({ productName: "Coca-Cola" }),
+            Order.hasLine({productName: "Coca-Cola"}),
             Chrome.clickPlanButton(),
             FloorScreen.clickTable("5"),
             Chrome.waitRequest(), // Wait for sync request
@@ -1088,7 +1112,7 @@ registry.category("web_tour.tours").add("test_sync_set_note", {
             Dialog.confirm("Open Register"),
             FloorScreen.clickTable("5"),
             ProductScreen.clickDisplayedProduct("Coca-Cola"),
-            Order.hasLine({ productName: "Coca-Cola" }),
+            Order.hasLine({productName: "Coca-Cola"}),
             Chrome.clickPlanButton(),
             FloorScreen.clickTable("5"),
             Chrome.waitRequest(), // Wait for sync request
@@ -1109,7 +1133,7 @@ registry.category("web_tour.tours").add("test_sync_set_line_note", {
             Dialog.confirm("Open Register"),
             FloorScreen.clickTable("5"),
             ProductScreen.clickDisplayedProduct("Coca-Cola"),
-            Order.hasLine({ productName: "Coca-Cola" }),
+            Order.hasLine({productName: "Coca-Cola"}),
             Chrome.clickPlanButton(),
             FloorScreen.clickTable("5"),
             Chrome.waitRequest(), // Wait for sync request
@@ -1131,7 +1155,7 @@ registry.category("web_tour.tours").add("test_sync_set_pricelist", {
             Dialog.confirm("Open Register"),
             FloorScreen.clickTable("5"),
             ProductScreen.clickDisplayedProduct("Coca-Cola"),
-            Order.hasLine({ productName: "Coca-Cola" }),
+            Order.hasLine({productName: "Coca-Cola"}),
             Chrome.clickPlanButton(),
             FloorScreen.clickTable("5"),
             Chrome.waitRequest(), // Wait for sync request
@@ -1153,7 +1177,7 @@ registry.category("web_tour.tours").add("test_delete_line_release_table", {
             Dialog.confirm("Open Register"),
             FloorScreen.clickTable("5"),
             ProductScreen.clickDisplayedProduct("Coca-Cola"),
-            Order.hasLine({ productName: "Coca-Cola" }),
+            Order.hasLine({productName: "Coca-Cola"}),
             Chrome.clickPlanButton(),
             FloorScreen.clickTable("5"),
             ProductScreen.clickLine("Coca-Cola"),
@@ -1162,7 +1186,7 @@ registry.category("web_tour.tours").add("test_delete_line_release_table", {
             ProductScreen.releaseTable(),
             FloorScreen.clickTable("5"),
             Chrome.waitRequest(),
-            negateStep(...Order.hasLine({ productName: "Coca-Cola" })),
+            negateStep(...Order.hasLine({productName: "Coca-Cola"})),
         ].flat(),
 });
 
@@ -1200,7 +1224,9 @@ registry.category("web_tour.tours").add("test_combo_synchronisation", {
                         .lines.every((x) => x.course_id.name === "Course 2");
 
                     if (!onlyCourse2) {
-                        throw new Error("The entire combo must be transferred to Course 2.");
+                        throw new Error(
+                            "The entire combo must be transferred to Course 2."
+                        );
                     }
                 },
             },
@@ -1216,7 +1242,7 @@ registry.category("web_tour.tours").add("test_guest_count_bank_payment", {
             NumberPopup.isShown("5"),
             Dialog.confirm(),
             ProductScreen.clickDisplayedProduct("Coca-Cola"),
-            Order.hasLine({ productName: "Coca-Cola" }),
+            Order.hasLine({productName: "Coca-Cola"}),
             ProductScreen.clickPayButton(false),
             ProductScreen.confirmOrderWarningDialog(),
             PaymentScreen.clickPaymentMethod("Bank"),

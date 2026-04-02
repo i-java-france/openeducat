@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <odoo>
     <data>
         <!-- EVENT.TAG.CATEGORY VIEWS -->
@@ -7,9 +7,13 @@
             <field name="model">event.tag.category</field>
             <field name="arch" type="xml">
                 <list string="Event Category">
-                    <field name="sequence" widget="handle"/>
-                    <field name="name"/>
-                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    <field name="sequence" widget="handle" />
+                    <field name="name" />
+                    <field
+                        name="tag_ids"
+                        widget="many2many_tags"
+                        options="{'color_field': 'color'}"
+                    />
                 </list>
             </field>
         </record>
@@ -21,14 +25,23 @@
                 <form string="Event Category">
                     <sheet>
                         <div class="oe_title">
-                            <h1><field nolabel="1" name="name" placeholder='e.g. "Age Category"'/></h1>
+                            <h1>
+                                <field
+                                    nolabel="1"
+                                    name="name"
+                                    placeholder='e.g. "Age Category"'
+                                />
+                            </h1>
                         </div>
                         <group>
                             <field name="tag_ids" context="{'default_category_id': id}">
                                 <list string="Tags" editable="bottom">
-                                    <field name="sequence" widget="handle"/>
-                                    <field name="name" placeholder='e.g. "12-16 years old"'/>
-                                    <field name="color" widget="color_picker"/>
+                                    <field name="sequence" widget="handle" />
+                                    <field
+                                        name="name"
+                                        placeholder='e.g. "12-16 years old"'
+                                    />
+                                    <field name="color" widget="color_picker" />
                                 </list>
                             </field>
                         </group>
@@ -37,14 +50,15 @@
             </field>
         </record>
 
-        <record id="event_tag_category_action_tree" model="ir.actions.act_window" >
+        <record id="event_tag_category_action_tree" model="ir.actions.act_window">
             <field name="name">Event Tags Categories</field>
             <field name="res_model">event.tag.category</field>
             <field name="view_mode">list,form</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Create an Event Tag Category
-                </p><p>
+                </p>
+                <p>
                     Use Event Tag Categories to classify and organize your event tags.
                 </p>
             </field>
@@ -56,10 +70,10 @@
             <field name="model">event.tag</field>
             <field name="arch" type="xml">
                 <list string="Event Tags Categories">
-                    <field name="sequence" widget="handle"/>
-                    <field name="name"/>
-                    <field name="category_id" options="{'no_quick_create':True}"/>
-                    <field name="color" widget="color_picker"/>
+                    <field name="sequence" widget="handle" />
+                    <field name="name" />
+                    <field name="category_id" options="{'no_quick_create':True}" />
+                    <field name="color" widget="color_picker" />
                 </list>
             </field>
         </record>
@@ -71,9 +85,13 @@
                 <form string="Event Category Tag">
                     <sheet>
                         <group>
-                            <field name="name"/>
-                            <field name="category_id" options="{'no_quick_create':True}" widget="many2one"/>
-                            <field name="color" widget="color_picker"/>
+                            <field name="name" />
+                            <field
+                                name="category_id"
+                                options="{'no_quick_create':True}"
+                                widget="many2one"
+                            />
+                            <field name="color" widget="color_picker" />
                         </group>
                     </sheet>
                 </form>
@@ -81,8 +99,7 @@
         </record>
 
         <record id="menu_event_category" model="ir.ui.menu">
-            <field name="action" ref="event.event_tag_category_action_tree"/>
+            <field name="action" ref="event.event_tag_category_action_tree" />
         </record>
-
     </data>
 </odoo>

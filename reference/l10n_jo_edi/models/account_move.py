@@ -1,5 +1,6 @@
 import base64
 import uuid
+
 from werkzeug.urls import url_encode
 
 from odoo import _, api, fields, models

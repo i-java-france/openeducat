@@ -25,7 +25,7 @@ import {
     uncheck,
     waitFor,
 } from "@odoo/hoot";
-import { hasTouch } from "@web/core/browser/feature_detection";
+import {hasTouch} from "@web/core/browser/feature_detection";
 
 /**
  * @typedef {import("@odoo/hoot").DragHelpers} DragHelpers
@@ -108,7 +108,7 @@ const dragForTolerance = async (node, distance) => {
         x: distance || 100,
         y: distance || 100,
     };
-    await hover(node, { position, relative: true });
+    await hover(node, {position, relative: true});
     await advanceFrame();
 };
 
@@ -171,7 +171,7 @@ export function contains(target, options) {
     unconsumedContains.push(target);
 
     /** @type {Promise<Element>} */
-    const nodePromise = waitFor.as("contains")(target, { visible: true, ...options });
+    const nodePromise = waitFor.as("contains")(target, {visible: true, ...options});
     return {
         /**
          * @param {PointerOptions} [options]
@@ -187,7 +187,7 @@ export function contains(target, options) {
         clear: async (options) => {
             consumeContains();
             await focusCurrent();
-            await clear({ confirm: "auto", ...options });
+            await clear({confirm: "auto", ...options});
             await animationFrame();
         },
         /**
@@ -239,7 +239,7 @@ export function contains(target, options) {
             await cancelCurrentDragSequence?.();
             cancelCurrentDragSequence = cancelWithDelay;
 
-            const { cancel, drop, moveTo } = await drag(nodePromise, options);
+            const {cancel, drop, moveTo} = await drag(nodePromise, options);
             const helpersWithDelay = {
                 cancel: cancelWithDelay,
                 drop: dropWithDelay,
@@ -263,7 +263,7 @@ export function contains(target, options) {
             await cancelCurrentDragSequence?.();
 
             const [from, to] = await Promise.all([nodePromise, waitFor(target)]);
-            const { drop, moveTo } = await drag(from, dragOptions);
+            const {drop, moveTo} = await drag(from, dragOptions);
 
             await waitForTouchDelay(dropOptions?.pointerDownDuration);
 
@@ -282,7 +282,7 @@ export function contains(target, options) {
         edit: async (value, options) => {
             consumeContains();
             await focusCurrent();
-            await edit(value, { confirm: "auto", ...options });
+            await edit(value, {confirm: "auto", ...options});
             await animationFrame();
         },
         /**
@@ -292,7 +292,7 @@ export function contains(target, options) {
         fill: async (value, options) => {
             consumeContains();
             await focusCurrent();
-            await fill(value, { confirm: "auto", ...options });
+            await fill(value, {confirm: "auto", ...options});
             await animationFrame();
         },
         focus: async () => {
@@ -341,7 +341,7 @@ export function contains(target, options) {
         scroll: async (position) => {
             consumeContains();
             // disable "scrollable" check
-            await scroll(nodePromise, position, { scrollable: false, ...options });
+            await scroll(nodePromise, position, {scrollable: false, ...options});
             await animationFrame();
         },
         /**
@@ -349,7 +349,7 @@ export function contains(target, options) {
          */
         select: async (value) => {
             consumeContains();
-            await select(value, { target: nodePromise });
+            await select(value, {target: nodePromise});
             await animationFrame();
         },
         /**
@@ -357,7 +357,10 @@ export function contains(target, options) {
          */
         selectDropdownItem: async (value) => {
             consumeContains();
-            await callClick(click, queryOne(".dropdown-toggle", { root: await nodePromise }));
+            await callClick(
+                click,
+                queryOne(".dropdown-toggle", {root: await nodePromise})
+            );
             const item = await waitFor(`.dropdown-item:contains(${value})`);
             await callClick(click, item);
             await animationFrame();
@@ -392,11 +395,17 @@ export async function editAce(value) {
     // mobile. To support both environments, a single "mouedown" event is triggered
     // in this specific case. This should not be reproduced and is only accepted
     // because the tested behaviour comes from a lib on which we have no control.
-    await manuallyDispatchProgrammaticEvent(queryOne(".ace_editor .ace_content"), "mousedown");
+    await manuallyDispatchProgrammaticEvent(
+        queryOne(".ace_editor .ace_content"),
+        "mousedown"
+    );
 
-    await contains(".ace_editor textarea", { displayed: true, visible: false }).edit(value, {
-        instantly: true,
-    });
+    await contains(".ace_editor textarea", {displayed: true, visible: false}).edit(
+        value,
+        {
+            instantly: true,
+        }
+    );
 }
 
 /**
@@ -411,7 +420,7 @@ export async function editAce(value) {
  */
 export async function sortableDrag(from, options) {
     const fromRect = queryRect(from);
-    const { cancel, drop, moveTo } = await contains(from).drag({
+    const {cancel, drop, moveTo} = await contains(from).drag({
         initialPointerMoveDistance: 0,
         ...options,
     });
@@ -453,5 +462,5 @@ export async function sortableDrag(from, options) {
         isFirstMove = false;
     };
 
-    return { cancel, moveAbove, moveTo, moveUnder, drop };
+    return {cancel, moveAbove, moveTo, moveUnder, drop};
 }

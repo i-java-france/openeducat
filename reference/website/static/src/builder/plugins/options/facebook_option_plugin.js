@@ -1,9 +1,9 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { getCommonAncestor, selectElements } from "@html_editor/utils/dom_traversal";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {getCommonAncestor, selectElements} from "@html_editor/utils/dom_traversal";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 export class FacebookOption extends BaseOptionComponent {
     static template = "website.FacebookOption";
@@ -58,7 +58,8 @@ class FacebookOptionPlugin extends Plugin {
             ["social_facebook"]
         );
         if (res) {
-            this.facebookUrl = res[0].social_facebook || "https://www.facebook.com/Odoo";
+            this.facebookUrl =
+                res[0].social_facebook || "https://www.facebook.com/Odoo";
 
             // WARNING: the call to ignoreDOMMutations is very dangerous,
             // and should be avoided in most cases (if you think you need those, ask html_editor team)
@@ -69,7 +70,7 @@ class FacebookOptionPlugin extends Plugin {
             if (hasChanged) {
                 const commonAncestor = getCommonAncestor(nodes, this.editable);
                 this.dispatchTo("content_manually_updated_handlers", commonAncestor);
-                this.config.onChange({ isPreviewing: false });
+                this.config.onChange({isPreviewing: false});
             }
         }
     }
@@ -88,17 +89,19 @@ class FacebookOptionPlugin extends Plugin {
 
 export class DataAttributeListAction extends BuilderAction {
     static id = "dataAttributeList";
-    isApplied({ editingElement, params: { mainParam } = {}, value }) {
+    isApplied({editingElement, params: {mainParam} = {}, value}) {
         return (editingElement.dataset[mainParam]?.split(",") || []).includes(value);
     }
-    apply({ editingElement, params: { mainParam } = {}, value }) {
+    apply({editingElement, params: {mainParam} = {}, value}) {
         editingElement.dataset[mainParam] = [
             ...(editingElement.dataset[mainParam]?.split(",") || []),
             value,
         ].join(",");
     }
-    clean({ editingElement, params: { mainParam } = {}, value }) {
-        editingElement.dataset[mainParam] = (editingElement.dataset[mainParam]?.split(",") || [])
+    clean({editingElement, params: {mainParam} = {}, value}) {
+        editingElement.dataset[mainParam] = (
+            editingElement.dataset[mainParam]?.split(",") || []
+        )
             .filter((e) => e !== value)
             .join(",");
     }
@@ -108,7 +111,7 @@ export class CheckFacebookLinkAction extends BuilderAction {
     setup() {
         this.closeNotif = () => {};
     }
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         editingElement.dataset.id = "";
         const id = this.idFromFacebookLink(value);
         if (id) {
@@ -120,7 +123,7 @@ export class CheckFacebookLinkAction extends BuilderAction {
                 } else {
                     this.closeNotif = this.services.notification.add(
                         _t("We couldn't find the Facebook page"),
-                        { type: "warning" }
+                        {type: "warning"}
                     );
                 }
             });
@@ -128,7 +131,7 @@ export class CheckFacebookLinkAction extends BuilderAction {
             this.closeNotif();
             this.closeNotif = this.services.notification.add(
                 _t("You didn't provide a valid Facebook link"),
-                { type: "warning" }
+                {type: "warning"}
             );
         }
     }

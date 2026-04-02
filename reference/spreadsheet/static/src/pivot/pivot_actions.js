@@ -1,8 +1,8 @@
 // @ts-check
 
-import { navigateTo } from "../actions/helpers";
-import { helpers } from "@odoo/o-spreadsheet";
-const { getNumberOfPivotFunctions } = helpers;
+import {navigateTo} from "../actions/helpers";
+import {helpers} from "@odoo/o-spreadsheet";
+const {getNumberOfPivotFunctions} = helpers;
 
 /**
  * @param {import("@odoo/o-spreadsheet").CellPosition} position
@@ -15,8 +15,8 @@ export const SEE_RECORDS_PIVOT = async (position, env, newWindow) => {
     const pivotId = env.model.getters.getPivotIdFromPosition(position);
     const pivot = env.model.getters.getPivot(pivotId);
     await pivot.load();
-    const { model } = pivot.definition;
-    const { actionXmlId, context } = env.model.getters.getPivotCoreDefinition(pivotId);
+    const {model} = pivot.definition;
+    const {actionXmlId, context} = env.model.getters.getPivotCoreDefinition(pivotId);
     const pivotCell = env.model.getters.getPivotCellFromPosition(position);
     const domain = pivot.getPivotCellDomain(pivotCell.domain);
     const name = await pivot.getModelLabel();
@@ -35,7 +35,7 @@ export const SEE_RECORDS_PIVOT = async (position, env, newWindow) => {
             domain,
             context,
         },
-        { viewType: "list", newWindow }
+        {viewType: "list", newWindow}
     );
 };
 
@@ -82,7 +82,10 @@ export function SET_FILTER_MATCHING_CONDITION(position, getters) {
     if (pivotCell.type === "EMPTY") {
         return false;
     }
-    const matchingFilters = getters.getFiltersMatchingPivotArgs(pivotId, pivotCell.domain);
+    const matchingFilters = getters.getFiltersMatchingPivotArgs(
+        pivotId,
+        pivotCell.domain
+    );
     return matchingFilters.length > 0 && pivotCell.type === "HEADER";
 }
 
@@ -90,5 +93,5 @@ export function SET_FILTER_MATCHING(position, env) {
     const pivotId = env.model.getters.getPivotIdFromPosition(position);
     const domain = env.model.getters.getPivotCellFromPosition(position).domain;
     const filters = env.model.getters.getFiltersMatchingPivotArgs(pivotId, domain);
-    env.model.dispatch("SET_MANY_GLOBAL_FILTER_VALUE", { filters });
+    env.model.dispatch("SET_MANY_GLOBAL_FILTER_VALUE", {filters});
 }

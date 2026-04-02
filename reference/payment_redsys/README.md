@@ -2,10 +2,11 @@
 
 ## Technical details
 
-API: [Redirection API](https://pagosonline.redsys.es/desarrolladores-inicio/documentacion-tipos-de-integracion/desarrolladores-redireccion/)
+API:
+[Redirection API](https://pagosonline.redsys.es/desarrolladores-inicio/documentacion-tipos-de-integracion/desarrolladores-redireccion/)
 
-This module integrates Redsys using the generic payment with redirection flow based on form
-submission provided by the `payment` module.
+This module integrates Redsys using the generic payment with redirection flow based on
+form submission provided by the `payment` module.
 
 ## Supported features
 
@@ -29,5 +30,4 @@ submission provided by the `payment` module.
 
 ### VISA
 
-**Card Number**: `4548810000000003`
-**CVV**: `123`
+**Card Number**: `4548810000000003` **CVV**: `123`

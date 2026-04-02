@@ -1,5 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import fields, models, Command, _
+from odoo import Command, _, fields, models
 from odoo.exceptions import UserError
 
 
@@ -30,7 +30,7 @@ class BillToPoWizard(models.TransientModel):
             new_po_lines = self.purchase_order_id.order_line
 
         self.purchase_order_id.button_confirm()
-        for aml, pol in zip(lines_to_add, new_po_lines):
+        for aml, pol in zip(lines_to_add, new_po_lines, strict=False):
             if aml.product_id == pol.product_id:
                 aml.purchase_line_id = pol.id
         return {
@@ -66,7 +66,7 @@ class BillToPoWizard(models.TransientModel):
         del context
 
         downpayment_lines = self.purchase_order_id._create_downpayments(line_vals)
-        for aml, dpl in zip(lines_to_convert, downpayment_lines):
+        for aml, dpl in zip(lines_to_convert, downpayment_lines, strict=False):
             aml.purchase_line_id = dpl.id
 
         return {

@@ -1,11 +1,11 @@
-import { expect, test } from "@odoo/hoot";
-import { click, queryOne } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, xml } from "@odoo/owl";
+import {expect, test} from "@odoo/hoot";
+import {click, queryOne} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Component, xml} from "@odoo/owl";
 
-import { mountWithCleanup, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+import {mountWithCleanup, patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 
 const DROPDOWN_TOGGLE = ".o-dropdown.dropdown-toggle";
 const DROPDOWN_MENU = ".o-dropdown--menu.dropdown-menu";
@@ -15,26 +15,30 @@ function getHexcode(selector, pseudoSelector) {
     const content = getComputedStyle(queryOne(selector), pseudoSelector).content;
     if (content !== "none") {
         return "\\" + content.replace(/['"]/g, "").charCodeAt(0).toString(16);
-    } else {
-        return content;
     }
+        return content;
+
 }
 
 test("can be rendered as <span/>", async () => {
     class Parent extends Component {
-        static components = { DropdownItem };
+        static components = {DropdownItem};
         static props = [];
         static template = xml`<DropdownItem>coucou</DropdownItem>`;
     }
     await mountWithCleanup(Parent);
 
-    expect(".dropdown-item").toHaveClass(["o-dropdown-item", "o-navigable", "dropdown-item"]);
+    expect(".dropdown-item").toHaveClass([
+        "o-dropdown-item",
+        "o-navigable",
+        "dropdown-item",
+    ]);
     expect(".dropdown-item").toHaveAttribute("role", "menuitem");
 });
 
 test("can be rendered using the tag prop", async () => {
     class Parent extends Component {
-        static components = { DropdownItem };
+        static components = {DropdownItem};
         static props = [];
         static template = xml`<DropdownItem tag="'button'">coucou</DropdownItem>`;
     }
@@ -45,7 +49,7 @@ test("can be rendered using the tag prop", async () => {
 
 test("(with href prop) can be rendered as <a/>", async () => {
     class Parent extends Component {
-        static components = { DropdownItem };
+        static components = {DropdownItem};
         static props = [];
         static template = xml`<DropdownItem attrs="{ href: '#' }">coucou</DropdownItem>`;
     }
@@ -62,12 +66,14 @@ test("prevents click default with href", async () => {
             expect(!ev.defaultPrevented).toBe(true);
             super.onClick(...arguments);
             const href = ev.target.getAttribute("href");
-            // defaultPrevented only if props.href is defined
-            expect(href !== null ? ev.defaultPrevented : !ev.defaultPrevented).toBe(true);
+            // DefaultPrevented only if props.href is defined
+            expect(href !== null ? ev.defaultPrevented : !ev.defaultPrevented).toBe(
+                true
+            );
         },
     });
     class Parent extends Component {
-        static components = { Dropdown, DropdownItem };
+        static components = {Dropdown, DropdownItem};
         static props = [];
         static template = xml`
                 <Dropdown>
@@ -92,7 +98,7 @@ test("prevents click default with href", async () => {
 
 test("can be styled", async () => {
     class Parent extends Component {
-        static components = { Dropdown, DropdownItem };
+        static components = {Dropdown, DropdownItem};
         static props = [];
         static template = xml`
                 <Dropdown menuClass="'test-menu'">
@@ -116,7 +122,7 @@ test("can be styled", async () => {
 test.tags("desktop");
 test("'active' and 'selected' classes shows a checked icon", async () => {
     class Parent extends Component {
-        static components = { Dropdown, DropdownItem };
+        static components = {Dropdown, DropdownItem};
         static props = [];
         static template = xml`
                 <Dropdown menuClass="'test-menu'">
@@ -142,7 +148,7 @@ test("'active' and 'selected' classes shows a checked icon", async () => {
 test.tags("mobile");
 test("'active' and 'selected' classes shows a checked icon (mobile)", async () => {
     class Parent extends Component {
-        static components = { Dropdown, DropdownItem };
+        static components = {Dropdown, DropdownItem};
         static props = [];
         static template = xml`
                 <Dropdown menuClass="'test-menu'">

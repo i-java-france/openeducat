@@ -4,9 +4,13 @@
         <field name="model">l10n.in.hr.leave.optional.holiday</field>
         <field name="arch" type="xml">
             <list editable="bottom">
-                <field name="name"/>
-                <field name="date" string="Date"/>
-                <field name="company_id" string="Company" groups="base.group_multi_company"/>
+                <field name="name" />
+                <field name="date" string="Date" />
+                <field
+                    name="company_id"
+                    string="Company"
+                    groups="base.group_multi_company"
+                />
             </list>
         </field>
     </record>
@@ -15,14 +19,27 @@
         <field name="model">l10n.in.hr.leave.optional.holiday</field>
         <field name="arch" type="xml">
             <search string="Optional Holidays">
-                <field name="name"/>
-                <field name="date" string="Start Date"/>
-                <field name="company_id" string="Company" groups="base.group_multi_company"/>
-                <separator/>
-                <filter name="filter_date" date="date" default_period="year" string="Period"/>
+                <field name="name" />
+                <field name="date" string="Start Date" />
+                <field
+                    name="company_id"
+                    string="Company"
+                    groups="base.group_multi_company"
+                />
+                <separator />
+                <filter
+                    name="filter_date"
+                    date="date"
+                    default_period="year"
+                    string="Period"
+                />
                 <group>
-                    <filter name="company" string="Company" context="{'group_by': 'company_id'}"
-                        groups="base.group_multi_company"/>
+                    <filter
+                        name="company"
+                        string="Company"
+                        context="{'group_by': 'company_id'}"
+                        groups="base.group_multi_company"
+                    />
                 </group>
             </search>
         </field>
@@ -41,5 +58,6 @@
         name="Optional Holidays"
         parent="hr_holidays.menu_hr_holidays_configuration"
         groups="hr_holidays.group_hr_holidays_manager"
-        sequence="5"/>
+        sequence="5"
+    />
 </odoo>

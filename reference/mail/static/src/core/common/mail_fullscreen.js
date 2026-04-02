@@ -1,6 +1,6 @@
-import { Component, reactive } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
+import {Component, reactive} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
 
 const DEFAULT_ID = Symbol("default");
 
@@ -16,7 +16,7 @@ export class MailFullscreen extends Component {
 
 export const fullscreenService = {
     start(env) {
-        const state = reactive({ enter, exit, id: undefined, closeOverlay: undefined });
+        const state = reactive({enter, exit, id: undefined, closeOverlay: undefined});
         async function exit(id = state.id) {
             if (!id || id !== state.id) {
                 return;
@@ -48,14 +48,14 @@ export const fullscreenService = {
          */
         async function enter(
             component,
-            { keepBrowserHeader = false, props, rootId, id = DEFAULT_ID } = {}
+            {keepBrowserHeader = false, props, rootId, id = DEFAULT_ID} = {}
         ) {
             state.closeOverlay?.();
             state.id = id;
             state.closeOverlay = env.services.overlay.add(
                 MailFullscreen,
-                { component, props },
-                { rootId }
+                {component, props},
+                {rootId}
             );
             const el = document.body;
             if (keepBrowserHeader) {

@@ -2,12 +2,12 @@
  * Provides a way to start JS code for public contents.
  */
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 import Class from "@web/legacy/js/core/class";
-import { loadBundle, loadCSS, loadJS } from '@web/core/assets';
-import { SERVICES_METADATA } from "@web/core/utils/hooks";
-import { renderToElement } from "@web/core/utils/render";
-import { makeAsyncHandler, makeButtonHandler } from "@web/legacy/js/public/minimal_dom";
+import {loadBundle, loadCSS, loadJS} from "@web/core/assets";
+import {SERVICES_METADATA} from "@web/core/utils/hooks";
+import {renderToElement} from "@web/core/utils/render";
+import {makeAsyncHandler, makeButtonHandler} from "@web/legacy/js/public/minimal_dom";
 
 /**
  * Mixin to structure objects' life-cycles following a parent-children
@@ -134,8 +134,10 @@ class Events {
                     continue;
                 }
                 while ((node = node.next) && node.next) {
-                    if (node.callback === callback
-                            && (!context || node.context === context)) {
+                    if (
+                        node.callback === callback &&
+                        (!context || node.context === context)
+                    ) {
                         continue;
                     }
                     this.on(ev, node.callback, node.context);
@@ -167,7 +169,7 @@ class Events {
                 events.push({
                     next: all.next,
                     tail: all.tail,
-                    event: event
+                    event: event,
                 });
             }
             if (!(node = calls[event])) {
@@ -175,7 +177,7 @@ class Events {
             }
             events.push({
                 next: node.next,
-                tail: node.tail
+                tail: node.tail,
             });
         }
         rest = Array.prototype.slice.call(arguments, 1);
@@ -205,7 +207,7 @@ class Events {
  */
 const EventDispatcherMixin = Object.assign({}, ParentedMixin, {
     __eventDispatcherMixin: true,
-    "custom_events": {},
+    custom_events: {},
 
     init() {
         ParentedMixin.init.call(this);
@@ -234,9 +236,11 @@ const EventDispatcherMixin = Object.assign({}, ParentedMixin, {
     proxy(method) {
         var self = this;
         return function () {
-            var fn = (typeof method === 'string') ? self[method] : method;
+            var fn = typeof method === "string" ? self[method] : method;
             if (fn === void 0) {
-                throw new Error("Couldn't find method '" + method + "' in widget " + self);
+                throw new Error(
+                    "Couldn't find method '" + method + "' in widget " + self
+                );
             }
             return fn.apply(self, arguments);
         };
@@ -263,7 +267,11 @@ const EventDispatcherMixin = Object.assign({}, ParentedMixin, {
         events.forEach((eventName) => {
             self.__edispatcherEvents.on(eventName, func, dest);
             if (dest && dest.__eventDispatcherMixin) {
-                dest.__edispatcherRegisteredEvents.push({name: eventName, func: func, source: self});
+                dest.__edispatcherRegisteredEvents.push({
+                    name: eventName,
+                    func: func,
+                    source: self,
+                });
             }
         });
         return this;
@@ -274,9 +282,14 @@ const EventDispatcherMixin = Object.assign({}, ParentedMixin, {
         events.forEach((eventName) => {
             self.__edispatcherEvents.off(eventName, func, dest);
             if (dest && dest.__eventDispatcherMixin) {
-                dest.__edispatcherRegisteredEvents = dest.__edispatcherRegisteredEvents.filter(el => {
-                    return !(el.name === eventName && el.func === func && el.source === self);
-                });
+                dest.__edispatcherRegisteredEvents =
+                    dest.__edispatcherRegisteredEvents.filter((el) => {
+                        return !(
+                            el.name === eventName &&
+                            el.func === func &&
+                            el.source === self
+                        );
+                    });
             }
         });
         return this;
@@ -285,13 +298,13 @@ const EventDispatcherMixin = Object.assign({}, ParentedMixin, {
         this.__edispatcherEvents.trigger.apply(this.__edispatcherEvents, arguments);
         return this;
     },
-    "trigger_up": function (name, info) {
+    trigger_up: function (name, info) {
         var event = new OdooEvent(this, name, info);
         //console.info('event: ', name, info);
         this._trigger_up(event);
         return event;
     },
-    "_trigger_up": function (event) {
+    _trigger_up: function (event) {
         var parent;
         this.__edispatcherEvents.trigger(event.name, event);
         if (!event.is_stopped() && (parent = this.getParent())) {
@@ -334,7 +347,7 @@ function protectMethod(widget, fn) {
 
 const ServicesMixin = {
     bindService: function (serviceName) {
-        const { services } = Component.env;
+        const {services} = Component.env;
         const service = services[serviceName];
         if (!service) {
             throw new Error(`Service ${serviceName} is not available`);
@@ -361,7 +374,7 @@ const ServicesMixin = {
     call: function (service, method) {
         var args = Array.prototype.slice.call(arguments, 2);
         var result;
-        this.trigger_up('call_service', {
+        this.trigger_up("call_service", {
             service: service,
             method: method,
             args: args,
@@ -437,7 +450,7 @@ const ServicesMixin = {
  */
 export const PublicWidget = Class.extend(EventDispatcherMixin, ServicesMixin, {
     // Backbone-ish API
-    tagName: 'div',
+    tagName: "div",
     id: null,
     className: null,
     attributes: {},
@@ -719,7 +732,7 @@ export const PublicWidget = Class.extend(EventDispatcherMixin, ServicesMixin, {
             this._undelegateEvents();
         }
 
-        this.$el = (element instanceof $) ? element : $(element);
+        this.$el = element instanceof $ ? element : $(element);
         this.el = this.$el[0];
 
         this._delegateEvents();
@@ -761,7 +774,7 @@ export const PublicWidget = Class.extend(EventDispatcherMixin, ServicesMixin, {
             var event = match[1];
             var selector = match[3];
 
-            event += '.widget_events';
+            event += ".widget_events";
             if (!selector) {
                 self.$el.on(event, method);
             } else {
@@ -770,20 +783,20 @@ export const PublicWidget = Class.extend(EventDispatcherMixin, ServicesMixin, {
         };
         Object.entries(this.events || {}).forEach(([event, method]) => {
             // If the method is a function, use the default Widget system
-            if (typeof method !== 'string') {
+            if (typeof method !== "string") {
                 _delegateEvent(self.proxy(method), event);
                 return;
             }
             // If the method is only a function name without options, use the
             // default Widget system
-            var methodOptions = method.split(' ');
+            var methodOptions = method.split(" ");
             if (methodOptions.length <= 1) {
                 _delegateEvent(self.proxy(method), event);
                 return;
             }
             // If the method has no meaningful options, use the default Widget
             // system
-            var isAsync = methodOptions.includes('async');
+            var isAsync = methodOptions.includes("async");
             if (!isAsync) {
                 _delegateEvent(self.proxy(method), event);
                 return;
@@ -811,7 +824,7 @@ export const PublicWidget = Class.extend(EventDispatcherMixin, ServicesMixin, {
      */
     _getContext: function (extra, extraContext) {
         var context;
-        this.trigger_up('context_get', {
+        this.trigger_up("context_get", {
             extra: extra || false,
             context: extraContext,
             callback: function (ctx) {
@@ -833,7 +846,7 @@ export const PublicWidget = Class.extend(EventDispatcherMixin, ServicesMixin, {
             attrs.id = this.id;
         }
         if (this.className) {
-            attrs['class'] = this.className;
+            attrs["class"] = this.className;
         }
         var $el = $(document.createElement(this.tagName));
         if (Object.keys(attrs || {}).length > 0) {
@@ -854,7 +867,7 @@ export const PublicWidget = Class.extend(EventDispatcherMixin, ServicesMixin, {
         this.setElement($el);
         if ($oldel && !$oldel.is(this.$el)) {
             if ($oldel.length > 1) {
-                $oldel.wrapAll('<div/>');
+                $oldel.wrapAll("<div/>");
                 $oldel.parent().replaceWith(this.$el);
             } else {
                 $oldel.replaceWith(this.$el);
@@ -868,7 +881,7 @@ export const PublicWidget = Class.extend(EventDispatcherMixin, ServicesMixin, {
      * @private
      */
     _undelegateEvents: function () {
-        this.$el.off('.widget_events');
+        this.$el.off(".widget_events");
     },
     /**
      * Render the widget.  This is a private method, and should really never be

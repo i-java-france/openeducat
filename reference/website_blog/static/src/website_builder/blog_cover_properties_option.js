@@ -1,13 +1,15 @@
-import { patch } from "@web/core/utils/patch";
-import { useDomState } from "@html_builder/core/utils";
-import { CoverPropertiesOption } from "@website/builder/plugins/options/cover_properties_option";
-import { _t } from "@web/core/l10n/translation";
+import {patch} from "@web/core/utils/patch";
+import {useDomState} from "@html_builder/core/utils";
+import {CoverPropertiesOption} from "@website/builder/plugins/options/cover_properties_option";
+import {_t} from "@web/core/l10n/translation";
 
 patch(CoverPropertiesOption.prototype, {
     setup() {
         super.setup();
         this.blogState = useDomState((editingElement) => ({
-            isRegularCover: editingElement.classList.contains("o_wblog_post_page_cover_regular"),
+            isRegularCover: editingElement.classList.contains(
+                "o_wblog_post_page_cover_regular"
+            ),
         }));
     },
 

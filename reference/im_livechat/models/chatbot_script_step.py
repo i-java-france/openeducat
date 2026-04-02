@@ -1,13 +1,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import _, api, models, fields
+from collections import defaultdict
+
+from markupsafe import Markup
+
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.fields import Command, Domain
-from odoo.tools import html2plaintext, email_normalize
-from odoo.addons.mail.tools.discuss import Store
+from odoo.tools import email_normalize, html2plaintext
 
-from collections import defaultdict
-from markupsafe import Markup
+from odoo.addons.mail.tools.discuss import Store
 
 
 class ChatbotScriptStep(models.Model):

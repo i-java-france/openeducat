@@ -1,16 +1,16 @@
 import {
     addBuilderAction,
     addBuilderOption,
-    setupHTMLBuilder,
     addLegacyBuilderOption,
+    setupHTMLBuilder,
 } from "@html_builder/../tests/helpers";
-import { Builder } from "@html_builder/builder";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { SavePlugin } from "@html_builder/core/save_plugin";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { advanceTime, animationFrame, Deferred, tick } from "@odoo/hoot-dom";
-import { useState, xml } from "@odoo/owl";
+import {Builder} from "@html_builder/builder";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {SavePlugin} from "@html_builder/core/save_plugin";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {Deferred, advanceTime, animationFrame, tick} from "@odoo/hoot-dom";
+import {useState, xml} from "@odoo/owl";
 import {
     contains,
     defineModels,
@@ -24,10 +24,10 @@ describe.current.tags("desktop");
 
 class TestAction extends BuilderAction {
     static id = "testAction";
-    isApplied({ editingElement }) {
+    isApplied({editingElement}) {
         return editingElement.classList.contains("applied");
     }
-    apply({ editingElement }) {
+    apply({editingElement}) {
         editingElement.classList.toggle("applied");
         expect.step("apply");
     }
@@ -49,10 +49,10 @@ test("apply is called if clean is not defined", async () => {
     await contains(":iframe .s_test").click();
     await contains("[data-action-id='testAction']").click();
     expect("[data-action-id='testAction']").toHaveClass("active");
-    expect.verifySteps(["apply", "apply"]); // preview, apply
+    expect.verifySteps(["apply", "apply"]); // Preview, apply
     await contains("[data-action-id='testAction']").click();
     expect("[data-action-id='testAction']").not.toHaveClass("active");
-    expect.verifySteps(["apply"]); // clean
+    expect.verifySteps(["apply"]); // Clean
 });
 
 test("check Legacy Builder Option is supported", async () => {
@@ -64,10 +64,10 @@ test("check Legacy Builder Option is supported", async () => {
     await contains(":iframe .s_test").click();
     await contains("[data-action-id='testAction']").click();
     expect("[data-action-id='testAction']").toHaveClass("active");
-    expect.verifySteps(["apply", "apply"]); // preview, apply
+    expect.verifySteps(["apply", "apply"]); // Preview, apply
     await contains("[data-action-id='testAction']").click();
     expect("[data-action-id='testAction']").not.toHaveClass("active");
-    expect.verifySteps(["apply"]); // clean
+    expect.verifySteps(["apply"]); // Clean
 });
 
 test("custom action and shorthand action: clean actions are independent, apply is called on custom action if clean is not defined", async () => {
@@ -81,10 +81,10 @@ test("custom action and shorthand action: clean actions are independent, apply i
     await contains(":iframe .s_test").click();
     await contains("[data-action-id='testAction']").click();
     expect("[data-action-id='testAction']").toHaveClass("active");
-    expect.verifySteps(["apply", "apply"]); // preview, apply
+    expect.verifySteps(["apply", "apply"]); // Preview, apply
     await contains("[data-action-id='testAction']").click();
     expect("[data-action-id='testAction']").not.toHaveClass("active");
-    expect.verifySteps(["apply"]); // clean
+    expect.verifySteps(["apply"]); // Clean
 });
 
 test("Prepare is triggered on props updated", async () => {
@@ -96,7 +96,7 @@ test("Prepare is triggered on props updated", async () => {
         static props = {};
         setup() {
             super.setup();
-            this.state = useState({ param: "old param" });
+            this.state = useState({param: "old param"});
             newPropDeferred.then(() => {
                 this.state.param = "new param";
             });
@@ -146,21 +146,21 @@ describe("isPreviewing is passed to action's apply and clean", () => {
         addBuilderAction({
             IsPreviewingAction: class extends BuilderAction {
                 static id = "isPreviewing";
-                isApplied({ editingElement }) {
+                isApplied({editingElement}) {
                     return editingElement.classList.contains("o_applied");
                 }
 
-                getValue({ editingElement }) {
+                getValue({editingElement}) {
                     return editingElement.dataset.value;
                 }
 
-                apply({ isPreviewing, editingElement, value }) {
+                apply({isPreviewing, editingElement, value}) {
                     expect.step(`apply ${isPreviewing}`);
                     editingElement.classList.add("o_applied");
                     editingElement.dataset.value = value;
                 }
 
-                clean({ isPreviewing, editingElement }) {
+                clean({isPreviewing, editingElement}) {
                     expect.step(`clean ${isPreviewing}`);
                     editingElement.classList.remove("o_applied");
                     delete editingElement.dataset.value;
@@ -176,17 +176,19 @@ describe("isPreviewing is passed to action's apply and clean", () => {
                 static template = xml`<BuilderButton action="'isPreviewing'" actionValue="true">Toggle</BuilderButton>`;
             }
         );
-        await setupHTMLBuilder(`<section class="test-options-target">Homepage</section>`);
+        await setupHTMLBuilder(
+            `<section class="test-options-target">Homepage</section>`
+        );
         await contains(":iframe .test-options-target").click();
 
-        // apply
+        // Apply
         await contains("[data-action-id='isPreviewing']").click();
         expect.verifySteps(["apply true", "apply false"]);
 
         // Hover something else, making sure we have a preview on next click
         await contains(":iframe .test-options-target").click();
 
-        // clean
+        // Clean
         await contains("[data-action-id='isPreviewing']").click();
         expect.verifySteps(["clean true", "clean false"]);
     });
@@ -198,10 +200,12 @@ describe("isPreviewing is passed to action's apply and clean", () => {
                 static template = xml`<BuilderTextInput action="'isPreviewing'"/>`;
             }
         );
-        await setupHTMLBuilder(`<section class="test-options-target">Homepage</section>`);
+        await setupHTMLBuilder(
+            `<section class="test-options-target">Homepage</section>`
+        );
         await contains(":iframe .test-options-target").click();
 
-        // apply
+        // Apply
         await contains("[data-action-id='isPreviewing'] input").edit("truthy");
         expect.verifySteps(["apply true", "apply false"]);
     });
@@ -213,10 +217,12 @@ describe("isPreviewing is passed to action's apply and clean", () => {
                 static template = xml`<BuilderColorPicker action="'isPreviewing'"/>`;
             }
         );
-        await setupHTMLBuilder(`<section class="test-options-target">Homepage</section>`);
+        await setupHTMLBuilder(
+            `<section class="test-options-target">Homepage</section>`
+        );
         await contains(":iframe .test-options-target").click();
 
-        // apply
+        // Apply
         await contains(".o_we_color_preview").click();
         await contains("button:contains(Custom)").click();
         await contains("button[data-color='600']").click();
@@ -227,9 +233,9 @@ describe("isPreviewing is passed to action's apply and clean", () => {
         class Test extends models.Model {
             _name = "test";
             _records = [
-                { id: 1, name: "First" },
-                { id: 2, name: "Second" },
-                { id: 3, name: "Third" },
+                {id: 1, name: "First"},
+                {id: 2, name: "Second"},
+                {id: 3, name: "Third"},
             ];
             name = fields.Char();
         }
@@ -247,17 +253,19 @@ describe("isPreviewing is passed to action's apply and clean", () => {
                 static template = xml`<BuilderMany2One action="'isPreviewing'" model="'test'" limit="10" allowUnselect="true"/>`;
             }
         );
-        await setupHTMLBuilder(`<section class="test-options-target">Homepage</section>`);
+        await setupHTMLBuilder(
+            `<section class="test-options-target">Homepage</section>`
+        );
         await contains(":iframe .test-options-target").click();
 
-        // apply
+        // Apply
         await contains(".o_select_menu button").click();
-        await contains(".o_select_menu button").click(); // issue with select menu + builder many2one in tests: does not load on first open
+        await contains(".o_select_menu button").click(); // Issue with select menu + builder many2one in tests: does not load on first open
         await contains(".o_select_menu button").click();
         await contains(".o_select_menu_item[data-choice-index='0']").click();
         expect.verifySteps(["apply true", "apply false"]);
 
-        // clean
+        // Clean
         await contains(".o_select_menu + button > .oi-close").click();
         expect.verifySteps(["clean true", "clean false"]);
     });
@@ -291,16 +299,16 @@ test("reload action: apply, clean save and reload are called in the right order 
             setup() {
                 this.reload = {};
             }
-            isApplied({ editingElement }) {
+            isApplied({editingElement}) {
                 return editingElement.dataset.applied === "true";
             }
-            async apply({ editingElement }) {
+            async apply({editingElement}) {
                 expect.step("apply sync");
                 await applyDef;
                 expect.step("apply async");
                 editingElement.dataset.applied = "true";
             }
-            async clean({ editingElement }) {
+            async clean({editingElement}) {
                 expect.step("clean sync");
                 await cleanDef;
                 expect.step("clean async");

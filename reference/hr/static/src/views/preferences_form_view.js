@@ -1,6 +1,6 @@
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { formView } from "@web/views/form/form_view";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {formView} from "@web/views/form/form_view";
 
 export class HrUserPreferencesController extends formView.Controller {
     setup() {

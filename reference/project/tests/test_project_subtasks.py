@@ -3,11 +3,12 @@
 from lxml import etree
 from psycopg2.errors import CheckViolation
 
-from odoo import Command, _
-from odoo.addons.project.tests.test_project_base import TestProjectCommon
+from odoo import Command
+from odoo.exceptions import ValidationError
 from odoo.tests import Form, tagged
 from odoo.tools import mute_logger
-from odoo.exceptions import ValidationError
+
+from odoo.addons.project.tests.test_project_base import TestProjectCommon
 
 
 @tagged('-at_install', 'post_install')
@@ -228,7 +229,7 @@ class TestProjectSubtasks(TestProjectCommon):
         visited = {}
         tasks_copied_count = 0
         for task in project_goats_duplicated.tasks:
-            if not task.id in visited:
+            if task.id not in visited:
                 tasks_copied_count += dfs(task)
 
         self.assertEqual(

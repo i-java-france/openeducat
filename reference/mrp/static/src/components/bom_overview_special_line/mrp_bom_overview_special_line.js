@@ -1,11 +1,15 @@
-import { formatFloat, formatFloatTime, formatMonetary } from "@web/views/fields/formatters";
-import { Component } from "@odoo/owl";
+import {
+    formatFloat,
+    formatFloatTime,
+    formatMonetary,
+} from "@web/views/fields/formatters";
+import {Component} from "@odoo/owl";
 
 export class BomOverviewSpecialLine extends Component {
     static template = "mrp.BomOverviewSpecialLine";
     static props = {
         type: String,
-        isFolded: { type: Boolean, optional: true },
+        isFolded: {type: Boolean, optional: true},
         showOptions: {
             type: Object,
             shape: {
@@ -16,7 +20,7 @@ export class BomOverviewSpecialLine extends Component {
         },
         data: Object,
         precision: Number,
-        toggleFolded: { type: Function, optional: true },
+        toggleFolded: {type: Function, optional: true},
     };
     static defaultProps = {
         isFolded: true,
@@ -26,7 +30,8 @@ export class BomOverviewSpecialLine extends Component {
     setup() {
         this.formatFloat = formatFloat;
         this.formatFloatTime = formatFloatTime;
-        this.formatMonetary = (val) => formatMonetary(val, { currencyId: this.data.currency_id });
+        this.formatMonetary = (val) =>
+            formatMonetary(val, {currencyId: this.data.currency_id});
     }
 
     //---- Getters ----

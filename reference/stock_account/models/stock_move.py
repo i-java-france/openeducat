@@ -2,10 +2,10 @@
 
 from collections import defaultdict
 
-from odoo import api, fields, models, _, Command
+from odoo import Command, _, api, fields, models
+from odoo.exceptions import UserError
 from odoo.fields import Domain
 from odoo.tools import OrderedSet
-from odoo.exceptions import UserError
 
 VALUATION_DICT = {
     'value': 0,

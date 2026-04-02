@@ -1,9 +1,13 @@
-import { expect, test, describe, destroy } from "@odoo/hoot";
-import { tick, Deferred } from "@odoo/hoot-mock";
-import { press } from "@odoo/hoot-dom";
-import { mountWithCleanup, contains, makeDialogMockEnv } from "@web/../tests/web_test_helpers";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { Component, xml } from "@odoo/owl";
+import {describe, destroy, expect, test} from "@odoo/hoot";
+import {Deferred, tick} from "@odoo/hoot-mock";
+import {press} from "@odoo/hoot-dom";
+import {
+    contains,
+    makeDialogMockEnv,
+    mountWithCleanup,
+} from "@web/../tests/web_test_helpers";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {Component, xml} from "@odoo/owl";
 
 describe.current.tags("desktop");
 
@@ -322,7 +326,7 @@ test("Focus is correctly restored after confirmation", async () => {
         static props = ["*"];
     }
 
-    await mountWithCleanup(Parent, { env });
+    await mountWithCleanup(Parent, {env});
     await contains(".my-input").focus();
     expect(".my-input").toBeFocused();
 

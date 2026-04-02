@@ -1,4 +1,4 @@
-import { models } from "@web/../tests/web_test_helpers";
+import {models} from "@web/../tests/web_test_helpers";
 
 export class ProductTemplate extends models.ServerModel {
     _name = "product.template";
@@ -577,7 +577,7 @@ export class ProductTemplate extends models.ServerModel {
     ];
     get_product_info_pos() {
         return {
-            all_prices: { tax_details: [] },
+            all_prices: {tax_details: []},
             pricelists: [],
             warehouses: [],
             suppliers: [],

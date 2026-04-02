@@ -1,33 +1,33 @@
-import { HtmlUpgradeManager } from "@html_editor/html_migrations/html_upgrade_manager";
-import { stripVersion } from "@html_editor/html_migrations/html_migrations_utils";
-import { stripHistoryIds } from "@html_editor/others/collaboration/collaboration_odoo_plugin";
+import {HtmlUpgradeManager} from "@html_editor/html_migrations/html_upgrade_manager";
+import {stripVersion} from "@html_editor/html_migrations/html_migrations_utils";
+import {stripHistoryIds} from "@html_editor/others/collaboration/collaboration_odoo_plugin";
 import {
     COLLABORATION_PLUGINS,
     EMBEDDED_COMPONENT_PLUGINS,
     MAIN_PLUGINS,
     NO_EMBEDDED_COMPONENTS_FALLBACK_PLUGINS,
 } from "@html_editor/plugin_sets";
-import { DYNAMIC_PLACEHOLDER_PLUGINS } from "@html_editor/backend/plugin_sets";
+import {DYNAMIC_PLACEHOLDER_PLUGINS} from "@html_editor/backend/plugin_sets";
 import {
     MAIN_EMBEDDINGS,
     READONLY_MAIN_EMBEDDINGS,
 } from "@html_editor/others/embedded_components/embedding_sets";
-import { normalizeHTML } from "@html_editor/utils/html";
-import { Wysiwyg } from "@html_editor/wysiwyg";
-import { Component, markup, status, useRef, useState } from "@odoo/owl";
-import { localization } from "@web/core/l10n/localization";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { Mutex } from "@web/core/utils/concurrency";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { useRecordObserver } from "@web/model/relational_model/utils";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
-import { TranslationButton } from "@web/views/fields/translation_button";
-import { HtmlViewer } from "@html_editor/components/html_viewer/html_viewer";
-import { EditorVersionPlugin } from "@html_editor/core/editor_version_plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { fixInvalidHTML, instanceofMarkup } from "@html_editor/utils/sanitize";
-import { isHtmlContentSupported } from "@html_editor/core/selection_plugin";
+import {normalizeHTML} from "@html_editor/utils/html";
+import {Wysiwyg} from "@html_editor/wysiwyg";
+import {Component, markup, status, useRef, useState} from "@odoo/owl";
+import {localization} from "@web/core/l10n/localization";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {Mutex} from "@web/core/utils/concurrency";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {useRecordObserver} from "@web/model/relational_model/utils";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
+import {TranslationButton} from "@web/views/fields/translation_button";
+import {HtmlViewer} from "@html_editor/components/html_viewer/html_viewer";
+import {EditorVersionPlugin} from "@html_editor/core/editor_version_plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {fixInvalidHTML, instanceofMarkup} from "@html_editor/utils/sanitize";
+import {isHtmlContentSupported} from "@html_editor/core/selection_plugin";
 
 const HTML_FIELD_METADATA_ATTRIBUTES = ["data-last-history-steps"];
 
@@ -51,16 +51,16 @@ export class HtmlField extends Component {
     static template = "html_editor.HtmlField";
     static props = {
         ...standardFieldProps,
-        isCollaborative: { type: Boolean, optional: true },
-        collaborativeTrigger: { type: String, optional: true },
-        dynamicPlaceholder: { type: Boolean, optional: true, default: false },
-        dynamicPlaceholderModelReferenceField: { type: String, optional: true },
-        migrateHTML: { type: Boolean, optional: true },
-        cssReadonlyAssetId: { type: String, optional: true },
-        sandboxedPreview: { type: Boolean, optional: true },
-        codeview: { type: Boolean, optional: true },
-        editorConfig: { type: Object, optional: true },
-        embeddedComponents: { type: Boolean, optional: true },
+        isCollaborative: {type: Boolean, optional: true},
+        collaborativeTrigger: {type: String, optional: true},
+        dynamicPlaceholder: {type: Boolean, optional: true, default: false},
+        dynamicPlaceholderModelReferenceField: {type: String, optional: true},
+        migrateHTML: {type: Boolean, optional: true},
+        cssReadonlyAssetId: {type: String, optional: true},
+        sandboxedPreview: {type: Boolean, optional: true},
+        codeview: {type: Boolean, optional: true},
+        editorConfig: {type: Object, optional: true},
+        embeddedComponents: {type: Boolean, optional: true},
     };
     static defaultProps = {
         dynamicPlaceholder: false,
@@ -77,9 +77,11 @@ export class HtmlField extends Component {
 
         this.codeViewRef = useRef("codeView");
 
-        const { model } = this.props.record;
-        useBus(model.bus, "WILL_SAVE_URGENTLY", () => this.commitChanges({ urgent: true }));
-        useBus(model.bus, "NEED_LOCAL_CHANGES", ({ detail }) =>
+        const {model} = this.props.record;
+        useBus(model.bus, "WILL_SAVE_URGENTLY", () =>
+            this.commitChanges({urgent: true})
+        );
+        useBus(model.bus, "NEED_LOCAL_CHANGES", ({detail}) =>
             detail.proms.push(this.commitChanges())
         );
         this.busService = this.env.services.bus_service;
@@ -98,16 +100,23 @@ export class HtmlField extends Component {
             // Reset Wysiwyg when we discard or onchange value
             const newValue = fixInvalidHTML(record.data[this.props.name]);
             if (!this.isDirty) {
-                const value = normalizeHTML(newValue, this.clearElementToCompare.bind(this));
+                const value = normalizeHTML(
+                    newValue,
+                    this.clearElementToCompare.bind(this)
+                );
                 if (this.lastValue !== value) {
                     this.state.key++;
-                    this.state.containsComplexHTML = computeContainsComplexHTML(newValue);
+                    this.state.containsComplexHTML =
+                        computeContainsComplexHTML(newValue);
                     this.lastValue = value;
                 }
             }
         });
         useRecordObserver((record) => {
-            const value = record.data[this.props.dynamicPlaceholderModelReferenceField || "model"];
+            const value =
+                record.data[
+                    this.props.dynamicPlaceholderModelReferenceField || "model"
+                ];
             // update Dynamic Placeholder reference model
             if (this.props.dynamicPlaceholder && this.editor) {
                 this.editor.shared.dynamicPlaceholder?.updateDphDefaultModel(value);
@@ -131,7 +140,9 @@ export class HtmlField extends Component {
     }
 
     get displayReadonly() {
-        return this.props.readonly || (this.sandboxedPreview && !this.state.showCodeView);
+        return (
+            this.props.readonly || (this.sandboxedPreview && !this.state.showCodeView)
+        );
     }
 
     get wysiwygKey() {
@@ -157,7 +168,7 @@ export class HtmlField extends Component {
     async updateValue(value) {
         this.lastValue = normalizeHTML(value, this.clearElementToCompare.bind(this));
         this.isDirty = false;
-        await this.props.record.update({ [this.props.name]: value }).catch(() => {
+        await this.props.record.update({[this.props.name]: value}).catch(() => {
             this.isDirty = true;
         });
         this.props.record.model.bus.trigger("FIELD_IS_DIRTY", this.isDirty);
@@ -165,7 +176,8 @@ export class HtmlField extends Component {
 
     async getEditorContent() {
         const content = this.editor.getElContent();
-        const oldSrcToNewSrcMap = await this.editor.shared.imageSave?.savePendingImages(content);
+        const oldSrcToNewSrcMap =
+            await this.editor.shared.imageSave?.savePendingImages(content);
         // Update the actual editable if still in the DOM.
         if (this.editor.editable && oldSrcToNewSrcMap) {
             this.editor.editable
@@ -184,7 +196,7 @@ export class HtmlField extends Component {
         return content;
     }
 
-    async _commitChanges({ urgent }) {
+    async _commitChanges({urgent}) {
         if (status(this) === "destroyed") {
             return;
         }
@@ -206,11 +218,11 @@ export class HtmlField extends Component {
         }
     }
 
-    async commitChanges({ urgent } = {}) {
+    async commitChanges({urgent} = {}) {
         if (urgent) {
-            return this._commitChanges({ urgent });
+            return this._commitChanges({urgent});
         } else {
-            return this.mutex.exec(() => this._commitChanges({ urgent }));
+            return this.mutex.exec(() => this._commitChanges({urgent}));
         }
     }
 
@@ -264,11 +276,13 @@ export class HtmlField extends Component {
             dropImageAsAttachment: true, // @todo @phoenix always true ?
             dynamicPlaceholder: this.props.dynamicPlaceholder,
             dynamicPlaceholderResModel:
-                this.props.record.data[this.props.dynamicPlaceholderModelReferenceField || "model"],
+                this.props.record.data[
+                    this.props.dynamicPlaceholderModelReferenceField || "model"
+                ],
             direction: localization.direction || "ltr",
             getRecordInfo: () => {
-                const { resModel, resId, data, fields, id } = this.props.record;
-                return { resModel, resId, data, fields, id };
+                const {resModel, resId, data, fields, id} = this.props.record;
+                return {resModel, resId, data, fields, id};
             },
             resources: {},
             ...this.props.editorConfig,
@@ -280,10 +294,10 @@ export class HtmlField extends Component {
 
         if (this.props.embeddedComponents) {
             config.resources.embedded_components = [...MAIN_EMBEDDINGS];
-            config.embeddedComponentInfo = { app: this.__owl__.app, env: this.env };
+            config.embeddedComponentInfo = {app: this.__owl__.app, env: this.env};
         }
 
-        const { sanitize_tags, sanitize } = this.props.record.fields[this.props.name];
+        const {sanitize_tags, sanitize} = this.props.record.fields[this.props.name];
         if (
             !("allowVideo" in config) &&
             !this.props.embeddedComponents &&
@@ -338,7 +352,7 @@ export const htmlField = {
     component: HtmlField,
     displayName: _t("Html"),
     supportedTypes: ["html"],
-    extractProps({ attrs, options }, dynamicInfo) {
+    extractProps({attrs, options}, dynamicInfo) {
         const editorConfig = {
             mediaModalParams: {
                 useMediaLibrary: true,
@@ -387,7 +401,9 @@ export const htmlField = {
             dynamicPlaceholderModelReferenceField:
                 options.dynamic_placeholder_model_reference_field,
             embeddedComponents:
-                "embedded_components" in options ? Boolean(options.embedded_components) : true,
+                "embedded_components" in options
+                    ? Boolean(options.embedded_components)
+                    : true,
             sandboxedPreview: Boolean(options.sandboxedPreview),
             cssReadonlyAssetId: options.cssReadonly,
             codeview: Boolean(odoo.debug && options.codeview),
@@ -395,7 +411,7 @@ export const htmlField = {
     },
 };
 
-registry.category("fields").add("html", htmlField, { force: true });
+registry.category("fields").add("html", htmlField, {force: true});
 
 export function getHtmlFieldMetadata(content) {
     const metadata = {};

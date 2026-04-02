@@ -1,25 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <!-- Re-render lists form as no reload is done on portal page -->
     <t t-name="mass_mailing.portal.list_form_content">
         <p t-if="listsMember.length">
             Choose your mailing subscriptions
         </p>
-        <ul id="o_mailing_subscription_form_lists"
+        <ul
+            id="o_mailing_subscription_form_lists"
             t-if="listsMember.length"
-            class="list-group">
-            <li t-foreach="listsMember"
+            class="list-group"
+        >
+            <li
+                t-foreach="listsMember"
                 t-as="mailing_list"
                 t-key="mailing_list_key"
-                class="list-group-item d-flex align-items-center">
-                <input type="checkbox"
-                       name="mailing_list_ids"
-                       t-att-data-member="1"
-                       t-att-value="mailing_list['id']"
-                       t-att-checked="mailing_list['opt_out'] ? undefined : 'checked'"
-                       t-att-title="mailing_list['name']"/>
-                <span class="ms-1" t-out="mailing_list['name']"/>
+                class="list-group-item d-flex align-items-center"
+            >
+                <input
+                    type="checkbox"
+                    name="mailing_list_ids"
+                    t-att-data-member="1"
+                    t-att-value="mailing_list['id']"
+                    t-att-checked="mailing_list['opt_out'] ? undefined : 'checked'"
+                    t-att-title="mailing_list['name']"
+                />
+                <span class="ms-1" t-out="mailing_list['name']" />
                 <span class="o_mailing_list_unsubscribed ms-auto">
                     <t t-if="mailing_list['opt_out']">
                         Not subscribed
@@ -33,18 +38,24 @@
         <p t-if="listsProposal.length">
             You may also be interested in
         </p>
-        <ul id="o_mailing_subscription_form_lists_additional"
+        <ul
+            id="o_mailing_subscription_form_lists_additional"
             t-if="listsProposal.length"
-            class="list-group">
-            <li t-foreach="listsProposal"
+            class="list-group"
+        >
+            <li
+                t-foreach="listsProposal"
                 t-as="mailing_list"
                 t-key="mailing_list_key"
-                class="list-group-item">
-                <input type="checkbox"
-                       name="mailing_list_ids"
-                       t-att-value="mailing_list['id']"
-                       t-att-title="mailing_list['name']"/>
-                <span class="ms-1" t-out="mailing_list['name']"/>
+                class="list-group-item"
+            >
+                <input
+                    type="checkbox"
+                    name="mailing_list_ids"
+                    t-att-value="mailing_list['id']"
+                    t-att-title="mailing_list['name']"
+                />
+                <span class="ms-1" t-out="mailing_list['name']" />
             </li>
         </ul>
     </t>
@@ -60,13 +71,10 @@
                 You will not hear from us anymore.
             </t>
         </p>
-        <ul class="list-group mb-4"
-            t-if="listsOptin.length">
-            <t t-foreach="listsOptin"
-               t-as="mailing_list"
-               t-key="mailing_list_key">
+        <ul class="list-group mb-4" t-if="listsOptin.length">
+            <t t-foreach="listsOptin" t-as="mailing_list" t-key="mailing_list_key">
                 <li class="list-group-item d-flex align-items-center">
-                    <strong t-out="mailing_list['name']"/>
+                    <strong t-out="mailing_list['name']" />
                 </li>
             </t>
         </ul>
@@ -75,11 +83,11 @@
     <!-- Post action informative span -->
     <t t-name="mass_mailing.portal.list_form_update_info">
         <t t-if="infoKey == 'subscription_updated'">
-            <i class="fa fa-check me-1"/>
+            <i class="fa fa-check me-1" />
             <span>Membership updated</span>
         </t>
         <t t-else="">
-            <i class="fa fa-exclamation-triangle me-1"/>
+            <i class="fa fa-exclamation-triangle me-1" />
             <span>An error occurred. Please retry later.</span>
         </t>
     </t>

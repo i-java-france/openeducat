@@ -1,5 +1,5 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { areColsCustomized } from "@html_builder/utils/column_layout_utils";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {areColsCustomized} from "@html_builder/utils/column_layout_utils";
 
 export class SelectNumberColumn extends BaseOptionComponent {
     static template = "html_builder.SelectNumberColumn";

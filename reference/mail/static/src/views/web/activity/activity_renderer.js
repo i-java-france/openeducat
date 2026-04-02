@@ -1,14 +1,14 @@
-import { MailColumnProgress } from "@mail/core/web/mail_column_progress";
-import { ActivityCell } from "@mail/views/web/activity/activity_cell";
-import { ActivityRecord } from "@mail/views/web/activity/activity_record";
+import {MailColumnProgress} from "@mail/core/web/mail_column_progress";
+import {ActivityCell} from "@mail/views/web/activity/activity_cell";
+import {ActivityRecord} from "@mail/views/web/activity/activity_record";
 
-import { Component, useState } from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 
-import { browser } from "@web/core/browser/browser";
-import { CheckBox } from "@web/core/checkbox/checkbox";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { _t } from "@web/core/l10n/translation";
+import {browser} from "@web/core/browser/browser";
+import {CheckBox} from "@web/core/checkbox/checkbox";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {_t} from "@web/core/l10n/translation";
 
 export class ActivityRenderer extends Component {
     static components = {
@@ -20,18 +20,18 @@ export class ActivityRenderer extends Component {
         CheckBox,
     };
     static props = {
-        activityTypes: { type: Object },
-        activityResIds: { type: Array },
-        fields: { type: Object },
-        resModel: { type: String },
-        records: { type: Array },
-        archInfo: { type: Object },
-        groupedActivities: { type: Object },
-        scheduleActivity: { type: Function },
-        onReloadData: { type: Function },
-        onEmptyCell: { type: Function },
-        onSendMailTemplate: { type: Function },
-        openRecord: { type: Function },
+        activityTypes: {type: Object},
+        activityResIds: {type: Array},
+        fields: {type: Object},
+        resModel: {type: String},
+        records: {type: Array},
+        archInfo: {type: Object},
+        groupedActivities: {type: Object},
+        scheduleActivity: {type: Function},
+        onReloadData: {type: Function},
+        onEmptyCell: {type: Function},
+        onSendMailTemplate: {type: Function},
+        openRecord: {type: Function},
     };
     static template = "mail.ActivityRenderer";
 
@@ -44,7 +44,11 @@ export class ActivityRenderer extends Component {
             resIds: new Set(Object.keys(this.props.groupedActivities)),
         });
 
-        this.storageKey = ["activity_columns", this.props.resModel, this.env.config.viewId];
+        this.storageKey = [
+            "activity_columns",
+            this.props.resModel,
+            this.env.config.viewId,
+        ];
         this.setupStorageActiveColumns();
     }
 
@@ -77,7 +81,9 @@ export class ActivityRenderer extends Component {
         }
         const typeId = activityType.id;
         const isColumnFiltered = this.activeFilter.activityTypeId === activityType.id;
-        const progressValue = isColumnFiltered ? this.activeFilter.progressValue : { active: null };
+        const progressValue = isColumnFiltered
+            ? this.activeFilter.progressValue
+            : {active: null};
 
         let totalCountWithoutDone = 0;
         for (const activities of Object.values(this.props.groupedActivities)) {
@@ -109,7 +115,8 @@ export class ActivityRenderer extends Component {
             }
         }
 
-        const ongoingActivityCount = types.overdue.value + types.today.value + types.planned.value;
+        const ongoingActivityCount =
+            types.overdue.value + types.today.value + types.planned.value;
         const ongoingAndDoneCount = ongoingActivityCount + types.done.value;
         const labelAggregate = `${types.overdue.label} + ${types.today.label} + ${types.planned.label}`;
         const aggregateOn = ongoingAndDoneCount
@@ -121,7 +128,9 @@ export class ActivityRenderer extends Component {
         return {
             aggregate: {
                 title: labelAggregate,
-                value: isColumnFiltered ? types[progressValue.active].value : ongoingActivityCount,
+                value: isColumnFiltered
+                    ? types[progressValue.active].value
+                    : ongoingActivityCount,
             },
             aggregateOn: aggregateOn,
             data: {
@@ -142,14 +151,17 @@ export class ActivityRenderer extends Component {
         if (this.activeFilter.progressValue.active === name) {
             this.activeFilter.progressValue.active = null;
             this.activeFilter.activityTypeId = null;
-            this.activeFilter.resIds = new Set(Object.keys(this.props.groupedActivities));
+            this.activeFilter.resIds = new Set(
+                Object.keys(this.props.groupedActivities)
+            );
         } else {
             this.activeFilter.progressValue.active = name;
             this.activeFilter.activityTypeId = typeId;
             this.activeFilter.resIds = new Set(
                 Object.entries(this.props.groupedActivities)
                     .filter(
-                        ([, resIds]) => typeId in resIds && name in resIds[typeId].count_by_state
+                        ([, resIds]) =>
+                            typeId in resIds && name in resIds[typeId].count_by_state
                     )
                     .map(([key]) => parseInt(key))
             );
@@ -163,14 +175,15 @@ export class ActivityRenderer extends Component {
     }
 
     setupStorageActiveColumns() {
-        const storageActiveColumnsList = browser.localStorage.getItem(this.storageKey)?.split(",");
+        const storageActiveColumnsList = browser.localStorage
+            .getItem(this.storageKey)
+            ?.split(",");
 
         this.storageActiveColumns = useState({});
         for (const activityType of this.props.activityTypes) {
             if (storageActiveColumnsList) {
-                this.storageActiveColumns[activityType.id] = storageActiveColumnsList.includes(
-                    activityType.id.toString()
-                );
+                this.storageActiveColumns[activityType.id] =
+                    storageActiveColumnsList.includes(activityType.id.toString());
             } else {
                 this.storageActiveColumns[activityType.id] = true;
             }

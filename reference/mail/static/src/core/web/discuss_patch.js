@@ -1,13 +1,13 @@
-import { useEffect } from "@odoo/owl";
+import {useEffect} from "@odoo/owl";
 
-import { Discuss } from "@mail/core/public_web/discuss";
-import { MessagingMenu } from "@mail/core/public_web/messaging_menu";
+import {Discuss} from "@mail/core/public_web/discuss";
+import {MessagingMenu} from "@mail/core/public_web/messaging_menu";
 
-import { ControlPanel } from "@web/search/control_panel/control_panel";
-import { _t } from "@web/core/l10n/translation";
-import { patch } from "@web/core/utils/patch";
+import {ControlPanel} from "@web/search/control_panel/control_panel";
+import {_t} from "@web/core/l10n/translation";
+import {patch} from "@web/core/utils/patch";
 
-Object.assign(Discuss.components, { ControlPanel, MessagingMenu });
+Object.assign(Discuss.components, {ControlPanel, MessagingMenu});
 
 patch(Discuss.prototype, {
     setup() {

@@ -1,9 +1,9 @@
-import { Thread } from "@mail/core/common/thread_model";
-import { expirableStorage } from "@im_livechat/core/common/expirable_storage";
-import { GUEST_TOKEN_STORAGE_KEY } from "@im_livechat/embed/common/store_service_patch";
+import {Thread} from "@mail/core/common/thread_model";
+import {expirableStorage} from "@im_livechat/core/common/expirable_storage";
+import {GUEST_TOKEN_STORAGE_KEY} from "@im_livechat/embed/common/store_service_patch";
 
-import { patch } from "@web/core/utils/patch";
-import { url } from "@web/core/utils/urls";
+import {patch} from "@web/core/utils/patch";
+import {url} from "@web/core/utils/urls";
 
 patch(Thread.prototype, {
     get transcriptUrl() {

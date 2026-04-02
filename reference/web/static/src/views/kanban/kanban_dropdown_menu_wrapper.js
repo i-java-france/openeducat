@@ -1,5 +1,5 @@
-import { Component, useEffect, useRef } from "@odoo/owl";
-import { useDropdownCloser } from "@web/core/dropdown/dropdown_hooks";
+import {Component, useEffect, useRef} from "@odoo/owl";
+import {useDropdownCloser} from "@web/core/dropdown/dropdown_hooks";
 
 export class KanbanDropdownMenuWrapper extends Component {
     static template = "web.KanbanDropdownMenuWrapper";

@@ -1,7 +1,13 @@
-import { formatAST, parseExpr } from "@web/core/py_js/py";
-import { isNot, isValidPath, not } from "./ast_utils";
-import { addChild, complexCondition, condition, connector, toValue } from "./condition_tree";
-import { COMPARATORS } from "./operators";
+import {formatAST, parseExpr} from "@web/core/py_js/py";
+import {isNot, isValidPath, not} from "./ast_utils";
+import {
+    addChild,
+    complexCondition,
+    condition,
+    connector,
+    toValue,
+} from "./condition_tree";
+import {COMPARATORS} from "./operators";
 
 const EXCHANGE = {
     "<": ">",
@@ -13,15 +19,20 @@ const EXCHANGE = {
 };
 
 function or(left, right) {
-    return { type: 14, op: "or", left, right };
+    return {type: 14, op: "or", left, right};
 }
 
 function and(left, right) {
-    return { type: 14, op: "and", left, right };
+    return {type: 14, op: "and", left, right};
 }
 
 function isSet(ast) {
-    return ast.type === 8 && ast.fn.type === 5 && ast.fn.value === "set" && ast.args.length <= 1;
+    return (
+        ast.type === 8 &&
+        ast.fn.type === 5 &&
+        ast.fn.value === "set" &&
+        ast.args.length <= 1
+    );
 }
 
 function isValidPath2(ast, options) {
@@ -97,7 +108,7 @@ function _getConditionFromIntersection(ast, options, negate = false) {
     // we only make simple conversions here
     if (isSet(right)) {
         if (!right.args[0]) {
-            right = { type: 4, value: [] };
+            right = {type: 4, value: []};
         }
         if ([4, 10].includes(right.args[0].type)) {
             right = right.args[0];
@@ -167,14 +178,21 @@ function _treeFromAST(ast, options, negate = false) {
         }
         const subASTs = [ast.left, ast.right];
         for (const subAST of subASTs) {
-            const child = _treeFromAST(subAST, options, options.distributeNot && negate);
+            const child = _treeFromAST(
+                subAST,
+                options,
+                options.distributeNot && negate
+            );
             addChild(tree, child);
         }
         return tree;
     }
 
     if (ast.type === 13) {
-        const newAST = or(and(ast.condition, ast.ifTrue), and(not(ast.condition), ast.ifFalse));
+        const newAST = or(
+            and(ast.condition, ast.ifTrue),
+            and(not(ast.condition), ast.ifFalse)
+        );
         return _treeFromAST(newAST, options, negate);
     }
 

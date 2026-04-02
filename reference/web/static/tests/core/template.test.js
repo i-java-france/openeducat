@@ -1,18 +1,22 @@
-import { after, expect, test } from "@odoo/hoot";
-import { Component, useRef, xml } from "@odoo/owl";
-import { mountWithCleanup, patchTranslations } from "@web/../tests/web_test_helpers";
-import { registerTemplate, registerTemplateExtension, setUrlFilters } from "@web/core/templates";
+import {after, expect, test} from "@odoo/hoot";
+import {Component, useRef, xml} from "@odoo/owl";
+import {mountWithCleanup, patchTranslations} from "@web/../tests/web_test_helpers";
+import {
+    registerTemplate,
+    registerTemplateExtension,
+    setUrlFilters,
+} from "@web/core/templates";
 
-function makeTemplate({ name, content, inheritFrom }) {
+function makeTemplate({name, content, inheritFrom}) {
     return `<t t-name="${name}" ${inheritFrom ? `t-inherit="${inheritFrom}"` : ``}>${content}</t>`;
 }
 
-function makeTemplateExtension({ content, inheritFrom }) {
+function makeTemplateExtension({content, inheritFrom}) {
     return `<t t-inherit="${inheritFrom}" t-inherit-mode="extension">${content}</t>`;
 }
 
 function visit(node, addon, terms) {
-    for (const { value } of node.attributes) {
+    for (const {value} of node.attributes) {
         terms[value] = `${value} (${addon})`;
     }
     for (const childNode of node.childNodes) {
@@ -37,12 +41,12 @@ function extractTranslations(template, addon) {
 function registerTemplates(...templates) {
     const translations = {};
 
-    for (const { name, content, inheritFrom, inheritMode } of templates) {
-        // we should avoid do twice makeTemplate/makeTemplateExtension
+    for (const {name, content, inheritFrom, inheritMode} of templates) {
+        // We should avoid do twice makeTemplate/makeTemplateExtension
         const template =
             inheritMode === "extension"
-                ? makeTemplateExtension({ content, inheritFrom })
-                : makeTemplate({ name, content, inheritFrom });
+                ? makeTemplateExtension({content, inheritFrom})
+                : makeTemplate({name, content, inheritFrom});
         const addon = `addon_${name}`;
         const terms = extractTranslations(template, addon);
         translations[addon] = terms;
@@ -86,7 +90,10 @@ test("translation-context: single template", async () => {
 
 test("translation-context: xpath position replace (outer)", async () => {
     registerTemplates(
-        { name: "A", content: `<div class="o_test_component" title="title"> text </div>` },
+        {
+            name: "A",
+            content: `<div class="o_test_component" title="title"> text </div>`,
+        },
         {
             name: "B",
             content: `
@@ -107,7 +114,10 @@ test("translation-context: xpath position replace (outer)", async () => {
 
 test("translation-context: xpath position replace (outer) with $0", async () => {
     registerTemplates(
-        { name: "A", content: `<div class="o_test_component" title="title"> text </div>` },
+        {
+            name: "A",
+            content: `<div class="o_test_component" title="title"> text </div>`,
+        },
         {
             name: "B",
             content: `
@@ -173,7 +183,10 @@ test("translation-context: xpath position replace (inner)", async () => {
 
 test("translation-context: xpath position attributes", async () => {
     registerTemplates(
-        { name: "A", content: `<div class="o_test_component" title="title"> text </div>` },
+        {
+            name: "A",
+            content: `<div class="o_test_component" title="title"> text </div>`,
+        },
         {
             name: "B",
             content: `
@@ -195,7 +208,10 @@ test("translation-context: xpath position attributes", async () => {
 
 test("translation-context: xpath position inside", async () => {
     registerTemplates(
-        { name: "A", content: `<div class="o_test_component" title="title"> text </div>` },
+        {
+            name: "A",
+            content: `<div class="o_test_component" title="title"> text </div>`,
+        },
         {
             name: "B",
             content: `

@@ -1,9 +1,9 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { click, edit } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { mountView } from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {click, edit} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {mountView} from "@web/../tests/web_test_helpers";
 
-import { HRTimesheet, defineTimesheetModels } from "./hr_timesheet_models";
+import {HRTimesheet, defineTimesheetModels} from "./hr_timesheet_models";
 
 HRTimesheet._views.list = `
     <list editable="bottom">
@@ -19,7 +19,7 @@ async function _expectCreateAndEdit(rowN) {
     const taskField = `.o_list_table .o_data_row:nth-of-type(${rowN}) .o_list_many2one[name=task_id]`;
     await click(taskField);
     await animationFrame();
-    await edit("NonExistingTask", { confirm: false });
+    await edit("NonExistingTask", {confirm: false});
     await click(`${taskField} input`);
     await animationFrame();
     return expect(
@@ -48,7 +48,8 @@ test("hr.timesheet (tree): the text of the task includes hours in the drop down 
         resModel: "account.analytic.line",
         type: "list",
     });
-    const taskField = ".o_list_table .o_data_row:first-of-type .o_list_many2one[name=task_id]";
+    const taskField =
+        ".o_list_table .o_data_row:first-of-type .o_list_many2one[name=task_id]";
     expect(taskField).toHaveText("Task 3");
     await click(taskField);
     await animationFrame();

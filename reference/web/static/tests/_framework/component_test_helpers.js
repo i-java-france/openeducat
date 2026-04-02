@@ -1,16 +1,16 @@
-import { after, destroy, getFixture, queryFirst, queryOne } from "@odoo/hoot";
-import { App, Component, xml } from "@odoo/owl";
-import { appTranslateFn } from "@web/core/l10n/translation";
-import { MainComponentsContainer } from "@web/core/main_components_container";
-import { getPopoverForTarget } from "@web/core/popover/popover";
-import { getTemplate as defaultGetTemplate } from "@web/core/templates";
-import { isIterable } from "@web/core/utils/arrays";
-import { patch } from "@web/core/utils/patch";
+import {after, destroy, getFixture, queryFirst, queryOne} from "@odoo/hoot";
+import {App, Component, xml} from "@odoo/owl";
+import {appTranslateFn} from "@web/core/l10n/translation";
+import {MainComponentsContainer} from "@web/core/main_components_container";
+import {getPopoverForTarget} from "@web/core/popover/popover";
+import {getTemplate as defaultGetTemplate} from "@web/core/templates";
+import {isIterable} from "@web/core/utils/arrays";
+import {patch} from "@web/core/utils/patch";
 import {
     customDirectives as defaultCustomDirectives,
     globalValues as defaultGlobalValues,
 } from "@web/env";
-import { getMockEnv, makeMockEnv } from "./env_test_helpers";
+import {getMockEnv, makeMockEnv} from "./env_test_helpers";
 
 /**
  * @typedef {import("@odoo/hoot").Target} Target
@@ -61,7 +61,7 @@ export function findComponent(parent, predicate) {
     const rootNode = parent instanceof App ? parent.root : parent.__owl__;
     const queue = [rootNode, ...Object.values(rootNode.children)];
     while (queue.length) {
-        const { children, component } = queue.pop();
+        const {children, component} = queue.pop();
         if (predicate(component)) {
             return component;
         }
@@ -78,14 +78,16 @@ export function findComponent(parent, predicate) {
  */
 export function getDropdownMenu(togglerSelector) {
     if (getMockEnv().isSmall) {
-        return queryFirst(".o-dropdown--menu", { eq: -1 });
+        return queryFirst(".o-dropdown--menu", {eq: -1});
     }
     let el = queryFirst(togglerSelector);
     if (el && !el.classList.contains("o-dropdown")) {
         el = el.querySelector(".o-dropdown");
     }
     if (!el) {
-        throw new Error(`getDropdownMenu: Could not find element "${togglerSelector}".`);
+        throw new Error(
+            `getDropdownMenu: Could not find element "${togglerSelector}".`
+        );
     }
     return getPopoverForTarget(el);
 }
@@ -146,7 +148,9 @@ export async function mountWithCleanup(ComponentClass, options) {
     const fixture = getFixture();
     const targetEl = target ? queryOne(target) : fixture;
     if (fixtureClassName) {
-        const list = isIterable(fixtureClassName) ? fixtureClassName : [fixtureClassName];
+        const list = isIterable(fixtureClassName)
+            ? fixtureClassName
+            : [fixtureClassName];
         fixture.classList.add(...list);
     }
 
@@ -168,7 +172,11 @@ export async function mountWithCleanup(ComponentClass, options) {
     };
 
     /** @type {InstanceType<C>} */
-    const component = await mountComponentWithCleanup(ComponentClass, targetEl, componentConfig);
+    const component = await mountComponentWithCleanup(
+        ComponentClass,
+        targetEl,
+        componentConfig
+    );
 
     if (!noMainContainer && !hasMainComponent) {
         const containerConfig = {
@@ -177,7 +185,11 @@ export async function mountWithCleanup(ComponentClass, options) {
             name: `TEST: ${ComponentClass.name} (main container)`,
             props: {},
         };
-        await mountComponentWithCleanup(MainComponentsContainer, targetEl, containerConfig);
+        await mountComponentWithCleanup(
+            MainComponentsContainer,
+            targetEl,
+            containerConfig
+        );
     }
 
     return component;

@@ -1,13 +1,19 @@
-import { before, describe, expect, test } from "@odoo/hoot";
-import { animationFrame, queryOne } from "@odoo/hoot-dom";
-import { setupInteractionWhiteList, startInteractions } from "@web/../tests/public/helpers";
+import {before, describe, expect, test} from "@odoo/hoot";
+import {animationFrame, queryOne} from "@odoo/hoot-dom";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 import {
     EmbeddedComponentInteraction,
     getEmbeddingMap,
 } from "@html_editor/public/embedded_components/embedded_component_interaction";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { EmbeddedWrapperMixin, embedding } from "@html_editor/../tests/_helpers/embedded_component";
-import { getEditableDescendants } from "@html_editor/others/embedded_component_utils";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {
+    EmbeddedWrapperMixin,
+    embedding,
+} from "@html_editor/../tests/_helpers/embedded_component";
+import {getEditableDescendants} from "@html_editor/others/embedded_component_utils";
 
 setupInteractionWhiteList("html_editor.embedded_component");
 
@@ -27,11 +33,11 @@ describe("Mount and Destroy embedded components", () => {
     test("Can mount and destroy embedded components in editable descendants", async () => {
         const SimpleEmbeddedWrapper = EmbeddedWrapperMixin("deep");
         setupEmbeddedComponentsWhitelist([
-            embedding("wrapper", SimpleEmbeddedWrapper, (host) => ({ host }), {
+            embedding("wrapper", SimpleEmbeddedWrapper, (host) => ({host}), {
                 getEditableDescendants,
             }),
         ]);
-        const { core } = await startInteractions(
+        const {core} = await startInteractions(
             `<div data-embedded="wrapper">
                 <div data-embedded-editable="deep">
                     <div data-embedded="wrapper">

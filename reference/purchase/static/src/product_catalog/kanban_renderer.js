@@ -1,6 +1,6 @@
-import { useService } from "@web/core/utils/hooks";
+import {useService} from "@web/core/utils/hooks";
 
-import { ProductCatalogKanbanRenderer } from "@product/product_catalog/kanban_renderer";
+import {ProductCatalogKanbanRenderer} from "@product/product_catalog/kanban_renderer";
 
 export class PurchaseProductCatalogKanbanRenderer extends ProductCatalogKanbanRenderer {
     static template = "PurchaseProductCatalogKanbanRenderer";
@@ -11,7 +11,11 @@ export class PurchaseProductCatalogKanbanRenderer extends ProductCatalogKanbanRe
     }
 
     get createProductContext() {
-        return {default_seller_ids: [{partner_id:this.props.list._config.context.partner_id}],};
+        return {
+            default_seller_ids: [
+                {partner_id: this.props.list._config.context.partner_id},
+            ],
+        };
     }
 
     async createProduct() {
@@ -33,7 +37,7 @@ export class PurchaseProductCatalogKanbanRenderer extends ProductCatalogKanbanRe
                             type: "ir.actions.act_window_close",
                         });
                     },
-                }
+                },
             }
         );
     }

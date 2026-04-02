@@ -1,7 +1,7 @@
-import { expect, test } from "@odoo/hoot";
-import { middleClick, rightClick } from "@odoo/hoot-dom";
-import { Component, xml } from "@odoo/owl";
-import { contains, mountWithCleanup } from "@web/../tests/web_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {middleClick, rightClick} from "@odoo/hoot-dom";
+import {Component, xml} from "@odoo/owl";
+import {contains, mountWithCleanup} from "@web/../tests/web_test_helpers";
 
 test(`main button click`, async () => {
     class MyComponent extends Component {
@@ -13,7 +13,7 @@ test(`main button click`, async () => {
         }
     }
 
-    await mountWithCleanup(MyComponent, { props: { text: "text from props" } });
+    await mountWithCleanup(MyComponent, {props: {text: "text from props"}});
 
     expect(".clickMe").toHaveText("text from props");
     await contains(".clickMe").click();
@@ -32,7 +32,7 @@ test(`handler is bound`, async () => {
         }
     }
 
-    await mountWithCleanup(MyComponent, { props: { text: "text from props" } });
+    await mountWithCleanup(MyComponent, {props: {text: "text from props"}});
 
     expect(".clickMe").toHaveText("text from props");
     await contains(".clickMe").click();
@@ -48,7 +48,7 @@ test(`detect if middle Click`, async () => {
         }
     }
 
-    await mountWithCleanup(MyComponent, { props: { text: "text from props" } });
+    await mountWithCleanup(MyComponent, {props: {text: "text from props"}});
     await middleClick(".clickMe");
 
     expect.verifySteps(["isMiddleClick: true"]);
@@ -63,10 +63,10 @@ test(`detect if middle Click (ctrl+click)`, async () => {
         }
     }
 
-    await mountWithCleanup(MyComponent, { props: { text: "text from props" } });
+    await mountWithCleanup(MyComponent, {props: {text: "text from props"}});
 
     expect(".clickMe").toHaveText("text from props");
-    await contains(".clickMe").click({ ctrlKey: true });
+    await contains(".clickMe").click({ctrlKey: true});
     expect.verifySteps(["isMiddleClick: true"]);
 });
 
@@ -80,7 +80,7 @@ test(`main button (arrow function)`, async () => {
         }
     }
 
-    await mountWithCleanup(MyComponent, { props: { text: "text from props" } });
+    await mountWithCleanup(MyComponent, {props: {text: "text from props"}});
 
     expect(".clickMe").toHaveText("text from props");
     await contains(".clickMe").click();
@@ -100,7 +100,7 @@ test(`handler is bound (arrow function)`, async () => {
         }
     }
 
-    await mountWithCleanup(MyComponent, { props: { text: "text from props" } });
+    await mountWithCleanup(MyComponent, {props: {text: "text from props"}});
 
     expect(".clickMe").toHaveText("text from props");
     await contains(".clickMe").click();
@@ -117,10 +117,10 @@ test(`detect if middle Click (arrow function)`, async () => {
         }
     }
 
-    await mountWithCleanup(MyComponent, { props: { text: "text from props" } });
+    await mountWithCleanup(MyComponent, {props: {text: "text from props"}});
 
     expect(".clickMe").toHaveText("text from props");
-    await contains(".clickMe").click({ ctrlKey: true });
+    await contains(".clickMe").click({ctrlKey: true});
     expect.verifySteps(["isMiddleClick: true", "text: test"]);
 });
 
@@ -137,10 +137,10 @@ test(`"stop" and "prevent" modifiers`, async () => {
         }
     }
 
-    await mountWithCleanup(MyComponent, { props: { text: "text from props" } });
+    await mountWithCleanup(MyComponent, {props: {text: "text from props"}});
 
     expect(".clickMe").toHaveText("text from props");
-    await contains(".clickMe").click({ ctrlKey: true });
+    await contains(".clickMe").click({ctrlKey: true});
     expect.verifySteps(["isMiddleClick: true", "preventDefaulted: true"]);
 });
 
@@ -153,7 +153,7 @@ test(`"synthetic" modifier`, async () => {
         }
     }
 
-    await mountWithCleanup(MyComponent, { props: { text: "text from props" } });
+    await mountWithCleanup(MyComponent, {props: {text: "text from props"}});
 
     expect(".clickMe").toHaveText("text from props");
     await contains(".clickMe").click();
@@ -168,7 +168,7 @@ test(`Secondary button clicked`, async () => {
         }
     }
 
-    await mountWithCleanup(MyComponent, { props: { text: "text from props" } });
+    await mountWithCleanup(MyComponent, {props: {text: "text from props"}});
     await rightClick(".clickMe");
 
     expect.verifySteps([]);

@@ -16,4 +16,3 @@ class L10nECSalePortalAccount(L10nLatamBasePortalAccount):
             )
             payment_form_values['payment_methods_sudo'] = payment_methods
         return payment_form_values
-

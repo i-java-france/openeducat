@@ -1,4 +1,4 @@
-from odoo import api, fields, models, tools, _
+from odoo import _, api, fields, models, tools
 from odoo.fields import Domain
 
 

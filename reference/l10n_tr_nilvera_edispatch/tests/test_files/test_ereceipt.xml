@@ -1,10 +1,13 @@
-<DespatchAdvice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+<DespatchAdvice
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
     xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
     xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
     xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
     xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
-    xmlns="urn:oasis:names:specification:ubl:schema:xsd:DespatchAdvice-2">
+    xmlns="urn:oasis:names:specification:ubl:schema:xsd:DespatchAdvice-2"
+>
     <cbc:UBLVersionID>2.1</cbc:UBLVersionID>
     <cbc:CustomizationID>TR1.2.1</cbc:CustomizationID>
     <cbc:ProfileID>TEMELIRSALIYE</cbc:ProfileID>
@@ -21,9 +24,12 @@
         <cbc:DocumentType>XSLT</cbc:DocumentType>
         <cbc:DocumentDescription>E-İrsaliye stil dosyası.</cbc:DocumentDescription>
         <cac:Attachment>
-            <cbc:EmbeddedDocumentBinaryObject characterSetCode="UTF-8" encodingCode="Base64"
-                mimeCode="application/xml" filename="e894550a-48c6-40f0-8b14-0c9c0cb6a32f.xslt">
-            </cbc:EmbeddedDocumentBinaryObject>
+            <cbc:EmbeddedDocumentBinaryObject
+                characterSetCode="UTF-8"
+                encodingCode="Base64"
+                mimeCode="application/xml"
+                filename="e894550a-48c6-40f0-8b14-0c9c0cb6a32f.xslt"
+            />
         </cac:Attachment>
     </cac:AdditionalDocumentReference>
     <cac:DespatchSupplierParty>
@@ -195,7 +201,9 @@
                 <cac:InvoiceLine>
                     <cbc:ID />
                     <cbc:InvoicedQuantity>1</cbc:InvoicedQuantity>
-                    <cbc:LineExtensionAmount currencyID="TRY">4500</cbc:LineExtensionAmount>
+                    <cbc:LineExtensionAmount
+                        currencyID="TRY"
+                    >4500</cbc:LineExtensionAmount>
                     <cac:Item>
                         <cbc:Name>Test Product 1</cbc:Name>
                     </cac:Item>
@@ -227,7 +235,9 @@
                 <cac:InvoiceLine>
                     <cbc:ID />
                     <cbc:InvoicedQuantity>3</cbc:InvoicedQuantity>
-                    <cbc:LineExtensionAmount currencyID="TRY">800</cbc:LineExtensionAmount>
+                    <cbc:LineExtensionAmount
+                        currencyID="TRY"
+                    >800</cbc:LineExtensionAmount>
                     <cac:Item>
                         <cbc:Name>Test Product 2</cbc:Name>
                     </cac:Item>
@@ -259,7 +269,9 @@
                 <cac:InvoiceLine>
                     <cbc:ID />
                     <cbc:InvoicedQuantity>4</cbc:InvoicedQuantity>
-                    <cbc:LineExtensionAmount currencyID="TRY">650</cbc:LineExtensionAmount>
+                    <cbc:LineExtensionAmount
+                        currencyID="TRY"
+                    >650</cbc:LineExtensionAmount>
                     <cac:Item>
                         <cbc:Name>Product in GRM</cbc:Name>
                     </cac:Item>

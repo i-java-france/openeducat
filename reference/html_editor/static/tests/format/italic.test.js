@@ -1,17 +1,17 @@
-import { expect, test } from "@odoo/hoot";
-import { press } from "@odoo/hoot-dom";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { getContent } from "../_helpers/selection";
+import {expect, test} from "@odoo/hoot";
+import {press} from "@odoo/hoot-dom";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {getContent} from "../_helpers/selection";
 import {
-    italic,
-    tripleClick,
-    simulateArrowKeyPress,
     insertText,
+    italic,
+    simulateArrowKeyPress,
+    tripleClick,
     undo,
 } from "../_helpers/user_actions";
-import { unformat } from "../_helpers/format";
-import { tick } from "@odoo/hoot-mock";
+import {unformat} from "../_helpers/format";
+import {tick} from "@odoo/hoot-mock";
 
 test("should make a few characters italic", async () => {
     await testEditor({
@@ -177,14 +177,16 @@ test("should not format non-editable text (italic)", async () => {
 });
 
 test("should remove empty italic tag when changing selection", async () => {
-    const { editor, el } = await setupEditor("<p>ab[]cd</p>");
+    const {editor, el} = await setupEditor("<p>ab[]cd</p>");
 
     italic(editor);
     await tick();
-    expect(getContent(el)).toBe(`<p>ab<em data-oe-zws-empty-inline="">[]\u200B</em>cd</p>`);
+    expect(getContent(el)).toBe(
+        `<p>ab<em data-oe-zws-empty-inline="">[]\u200B</em>cd</p>`
+    );
 
     await simulateArrowKeyPress(editor, "ArrowLeft");
-    await tick(); // await selectionchange
+    await tick(); // Await selectionchange
     expect(getContent(el)).toBe(`<p>a[]bcd</p>`);
 });
 
@@ -237,15 +239,17 @@ test("should make a few characters italic inside table (italic)", async () => {
 });
 
 test("should not add history step for italic on collapsed selection", async () => {
-    const { editor, el } = await setupEditor("<p>abcd[]</p>");
+    const {editor, el} = await setupEditor("<p>abcd[]</p>");
 
-    patchWithCleanup(console, { warn: () => {} });
+    patchWithCleanup(console, {warn: () => {}});
 
     // Collapsed formatting shortcuts (e.g. Ctrl+I) shouldn’t create a history
     // step. The empty inline tag is temporary: auto-cleaned if unused. We want
     // to avoid having a phantom step in the history.
     await press(["ctrl", "i"]);
-    expect(getContent(el)).toBe(`<p>abcd<em data-oe-zws-empty-inline="">[]\u200B</em></p>`);
+    expect(getContent(el)).toBe(
+        `<p>abcd<em data-oe-zws-empty-inline="">[]\u200B</em></p>`
+    );
 
     await insertText(editor, "A");
     expect(getContent(el)).toBe(`<p>abcd<em>A[]</em></p>`);

@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.tests import common
-from odoo.exceptions import ValidationError
 from odoo import Command
+from odoo.exceptions import ValidationError
+from odoo.tests import common
 
 
 class TestFiscalPosition(common.TransactionCase):
@@ -14,7 +13,7 @@ class TestFiscalPosition(common.TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestFiscalPosition, cls).setUpClass()
+        super().setUpClass()
         cls.fp = cls.env['account.fiscal.position']
 
         # reset any existing FP

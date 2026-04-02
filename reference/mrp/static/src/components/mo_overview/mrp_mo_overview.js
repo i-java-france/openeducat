@@ -1,12 +1,12 @@
-import { Component, EventBus, onWillStart, useSubEnv, useState } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { Layout } from "@web/search/layout";
-import { standardActionServiceProps } from "@web/webclient/actions/action_service";
-import { MoOverviewLine } from "../mo_overview_line/mrp_mo_overview_line";
-import { MoOverviewDisplayFilter } from "../mo_overview_display_filter/mrp_mo_overview_display_filter";
-import { MoOverviewComponentsBlock } from "../mo_overview_components_block/mrp_mo_overview_components_block";
-import { formatMonetary } from "@web/views/fields/formatters";
+import {Component, EventBus, onWillStart, useSubEnv, useState} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {Layout} from "@web/search/layout";
+import {standardActionServiceProps} from "@web/webclient/actions/action_service";
+import {MoOverviewLine} from "../mo_overview_line/mrp_mo_overview_line";
+import {MoOverviewDisplayFilter} from "../mo_overview_display_filter/mrp_mo_overview_display_filter";
+import {MoOverviewComponentsBlock} from "../mo_overview_components_block/mrp_mo_overview_components_block";
+import {formatMonetary} from "@web/views/fields/formatters";
 
 export class MoOverview extends Component {
     static components = {
@@ -15,7 +15,7 @@ export class MoOverview extends Component {
         MoOverviewDisplayFilter,
         MoOverviewComponentsBlock,
     };
-    static props = { ...standardActionServiceProps };
+    static props = {...standardActionServiceProps};
 
     static template = "mrp.MoOverview";
 
@@ -30,12 +30,14 @@ export class MoOverview extends Component {
             showOptions: this.getDefaultConfig(),
         });
 
-        useSubEnv({ overviewBus: new EventBus() });
+        useSubEnv({overviewBus: new EventBus()});
 
         onWillStart(async () => {
             await this.getManufacturingData();
         });
-        useBus(this.env.overviewBus, "update-folded", (ev) => this.onChangeFolded(ev.detail));
+        useBus(this.env.overviewBus, "update-folded", (ev) =>
+            this.onChangeFolded(ev.detail)
+        );
         useBus(this.env.overviewBus, "reload", () => this.getManufacturingData());
     }
 
@@ -43,7 +45,7 @@ export class MoOverview extends Component {
         const reportValues = await this.ormService.call(
             "report.mrp.report_mo_overview",
             "get_report_values",
-            [this.activeId],
+            [this.activeId]
         );
         this.state.data = reportValues.data;
         if (this.isProductionStarted) {
@@ -77,9 +79,9 @@ export class MoOverview extends Component {
     }
 
     onChangeFolded(foldInfo) {
-        const { indexes, isFolded } = foldInfo;
+        const {indexes, isFolded} = foldInfo;
         const operation = isFolded ? "delete" : "add";
-        indexes.forEach(index => this.unfoldedIds[operation](index));
+        indexes.forEach((index) => this.unfoldedIds[operation](index));
     }
 
     async onPrint() {
@@ -92,7 +94,7 @@ export class MoOverview extends Component {
     }
 
     onUnfold() {
-        this.env.overviewBus.trigger("unfold-all")
+        this.env.overviewBus.trigger("unfold-all");
     }
 
     //---- Helpers ----
@@ -115,7 +117,7 @@ export class MoOverview extends Component {
     }
 
     formatCost(cost) {
-        return formatMonetary(cost, { currencyId: this.state.data.summary.currency_id });
+        return formatMonetary(cost, {currencyId: this.state.data.summary.currency_id});
     }
 
     //---- Getters ----
@@ -181,9 +183,9 @@ export class MoOverview extends Component {
     }
 
     get totalColspan() {
-        let colspan = 2;  // Name & Quantity
+        let colspan = 2; // Name & Quantity
         if (this.showReplenishments) colspan++;
-        if (this.showAvailabilities) colspan += 2;  // Free to use / On Hand & Reserved
+        if (this.showAvailabilities) colspan += 2; // Free to use / On Hand & Reserved
         if (this.showUom) colspan++;
         if (this.showReceipts) colspan++;
         if (this.showUnitCosts) colspan++;
@@ -191,15 +193,17 @@ export class MoOverview extends Component {
     }
 
     get reportName() {
-        return `mrp.report_mo_overview?docids=${this.activeId}`
-            + `&replenishments=${+this.state.showOptions.replenishments}`
-            + `&availabilities=${+this.state.showOptions.availabilities}`
-            + `&receipts=${+this.state.showOptions.receipts}`
-            + `&unitCosts=${+this.state.showOptions.unitCosts}`
-            + `&moCosts=${+this.state.showOptions.moCosts}`
-            + `&bomCosts=${+this.state.showOptions.bomCosts}`
-            + `&realCosts=${+this.state.showOptions.realCosts}`
-            + `&unfoldedIds=${JSON.stringify(Array.from(this.unfoldedIds))}`;
+        return (
+            `mrp.report_mo_overview?docids=${this.activeId}` +
+            `&replenishments=${+this.state.showOptions.replenishments}` +
+            `&availabilities=${+this.state.showOptions.availabilities}` +
+            `&receipts=${+this.state.showOptions.receipts}` +
+            `&unitCosts=${+this.state.showOptions.unitCosts}` +
+            `&moCosts=${+this.state.showOptions.moCosts}` +
+            `&bomCosts=${+this.state.showOptions.bomCosts}` +
+            `&realCosts=${+this.state.showOptions.realCosts}` +
+            `&unfoldedIds=${JSON.stringify(Array.from(this.unfoldedIds))}`
+        );
     }
 }
 

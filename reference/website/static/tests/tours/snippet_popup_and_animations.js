@@ -75,7 +75,9 @@ registerWebsitePreviewTour(
                 );
                 // When the animated element is fully visible, its animation
                 // delay should be rounded to -1 in the following condition.
-                if (Math.round(parseFloat(animatedColumnEl.style.animationDelay)) !== -1) {
+                if (
+                    Math.round(parseFloat(animatedColumnEl.style.animationDelay)) !== -1
+                ) {
                     throw new Error(
                         "The scroll animation in the page did not start properly with the cookies bar open."
                     );
@@ -94,7 +96,7 @@ registerWebsitePreviewTour(
             content: "Wait for the page to be scrolled to the top.",
             trigger: ":iframe .s_three_columns .row > .o_animating:last-child",
             isActive: [`:iframe .s_three_columns .row > .o_animating:last-child`],
-            async run({ waitUntil, anchor }) {
+            async run({waitUntil, anchor}) {
                 await waitUntil(() => !anchor.classList.contains(`o_animating`), {
                     timeout: 10000,
                 });
@@ -108,20 +110,25 @@ registerWebsitePreviewTour(
         ...insertSnippet(snippets[0]), // Popup
         ...insertSnippet(snippets[1]), // Media List
         {
-            content: "Drag the Columns snippet group and drop it at the bottom of the popup.",
+            content:
+                "Drag the Columns snippet group and drop it at the bottom of the popup.",
             trigger:
                 ".o-snippets-menu .o_block_tab:not(.o_we_ongoing_insertion) .o_snippet[name='Columns'].o_draggable .o_snippet_thumbnail",
             run: "drag_and_drop :iframe #wrap .s_popup .modal-content.oe_structure .oe_drop_zone:last",
         },
         {
             content: "Click on the s_three_columns snippet.",
-            trigger: ":iframe .o_add_snippets_preview [data-snippet-id='s_three_columns']",
+            trigger:
+                ":iframe .o_add_snippets_preview [data-snippet-id='s_three_columns']",
             run: "click",
         },
         {
             trigger: ":iframe:not(:has(.o_loading_screen))",
         },
-        clickOnElement("3rd columns", ":iframe .s_popup .s_three_columns .row > :last-child"),
+        clickOnElement(
+            "3rd columns",
+            ":iframe .s_popup .s_three_columns .row > :last-child"
+        ),
         ...setOnScrollAnim(),
         {
             content:
@@ -133,8 +140,12 @@ registerWebsitePreviewTour(
                 );
                 // When the animated element is fully visible, its animation
                 // delay should be rounded to -1 in the following condition.
-                if (Math.round(parseFloat(animatedColumnEl.style.animationDelay)) !== -1) {
-                    throw new Error("The scroll animation in the modal did not start properly.");
+                if (
+                    Math.round(parseFloat(animatedColumnEl.style.animationDelay)) !== -1
+                ) {
+                    throw new Error(
+                        "The scroll animation in the modal did not start properly."
+                    );
                 }
                 this.anchor.closest(".modal").scrollTo({
                     top: 0,
@@ -147,7 +158,7 @@ registerWebsitePreviewTour(
             content: "Wait until the column is no longer animated/visible.",
             trigger: ":iframe .s_three_columns .row > .o_animating:last-child",
             isActive: [`:iframe .s_three_columns .row > .o_animating:last-child`],
-            async run({ anchor, waitUntil }) {
+            async run({anchor, waitUntil}) {
                 await waitUntil(() => !anchor.classList.contains(`o_animating`), {
                     timeout: 10000,
                 });
@@ -155,7 +166,8 @@ registerWebsitePreviewTour(
         },
         {
             content: "Close the Popup",
-            trigger: ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Popup') i.fa-eye",
+            trigger:
+                ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Popup') i.fa-eye",
             run: "click",
         },
         {
@@ -169,7 +181,8 @@ registerWebsitePreviewTour(
         ),
         ...changeOptionInPopover("Image", "Animation", "On Hover"),
         {
-            content: "Check that the hover effect animation has been applied on the image",
+            content:
+                "Check that the hover effect animation has been applied on the image",
             trigger:
                 ":iframe .s_three_columns .o_animate_on_scroll img[data-hover-effect='overlay']",
         },
@@ -222,7 +235,8 @@ registerWebsitePreviewTour(
         },
         {
             content: "Check that the Blur filter has been applied on the image",
-            trigger: ":iframe .s_three_columns .o_animate_on_scroll img[data-gl-filter='blur']",
+            trigger:
+                ":iframe .s_three_columns .o_animate_on_scroll img[data-gl-filter='blur']",
         },
         {
             content: "Click on the 'undo' button",

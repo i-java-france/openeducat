@@ -1,7 +1,7 @@
-import { expect, test, getFixture } from "@odoo/hoot";
-import { click, press, keyDown, keyUp, queryAll, queryFirst } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { reactive } from "@odoo/owl";
+import {expect, getFixture, test} from "@odoo/hoot";
+import {click, keyDown, keyUp, press, queryAll, queryFirst} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {reactive} from "@odoo/owl";
 import {
     contains,
     defineModels,
@@ -13,8 +13,8 @@ import {
     onRpc,
 } from "@web/../tests/web_test_helpers";
 
-import { ControlPanel } from "@web/search/control_panel/control_panel";
-import { WebClient } from "@web/webclient/webclient";
+import {ControlPanel} from "@web/search/control_panel/control_panel";
+import {WebClient} from "@web/webclient/webclient";
 
 class Foo extends models.Model {
     _views = {
@@ -24,7 +24,7 @@ class Foo extends models.Model {
 defineModels([Foo]);
 
 test("simple rendering", async () => {
-    await mountWithSearch(ControlPanel, { resModel: "foo" });
+    await mountWithSearch(ControlPanel, {resModel: "foo"});
 
     expect(`.o_control_panel_breadcrumbs`).toHaveCount(1);
     expect(`.o_control_panel_actions`).toHaveCount(1);
@@ -39,7 +39,7 @@ test.tags("desktop");
 test("breadcrumbs", async () => {
     await mountWithSearch(
         ControlPanel,
-        { resModel: "foo" },
+        {resModel: "foo"},
         {
             breadcrumbs: [
                 {
@@ -56,7 +56,9 @@ test("breadcrumbs", async () => {
         }
     );
 
-    const breadcrumbItems = queryAll(`.o_breadcrumb li.breadcrumb-item, .o_breadcrumb .active`);
+    const breadcrumbItems = queryAll(
+        `.o_breadcrumb li.breadcrumb-item, .o_breadcrumb .active`
+    );
     expect(breadcrumbItems).toHaveCount(2);
     expect(breadcrumbItems[0]).toHaveText("Previous");
     expect(breadcrumbItems[1]).toHaveText("Current");
@@ -70,11 +72,11 @@ test.tags("desktop");
 test("view switcher", async () => {
     await mountWithSearch(
         ControlPanel,
-        { resModel: "foo" },
+        {resModel: "foo"},
         {
             viewSwitcherEntries: [
-                { type: "list", active: true, icon: "oi-view-list", name: "List" },
-                { type: "kanban", icon: "oi-view-kanban", name: "Kanban" },
+                {type: "list", active: true, icon: "oi-view-list", name: "List"},
+                {type: "kanban", icon: "oi-view-kanban", name: "Kanban"},
             ],
         }
     );
@@ -98,11 +100,11 @@ test.tags("desktop");
 test("view switcher (middle click)", async () => {
     await mountWithSearch(
         ControlPanel,
-        { resModel: "foo" },
+        {resModel: "foo"},
         {
             viewSwitcherEntries: [
-                { type: "list", active: true, icon: "oi-view-list", name: "List" },
-                { type: "kanban", icon: "oi-view-kanban", name: "Kanban" },
+                {type: "list", active: true, icon: "oi-view-list", name: "List"},
+                {type: "kanban", icon: "oi-view-kanban", name: "Kanban"},
             ],
         }
     );
@@ -110,9 +112,11 @@ test("view switcher (middle click)", async () => {
     expect(`.o_switch_view`).toHaveCount(2);
 
     getService("action").switchView = (viewType, props, options) =>
-        expect.step(`${viewType} -- ${JSON.stringify(props)} -- ${JSON.stringify(options)}`);
+        expect.step(
+            `${viewType} -- ${JSON.stringify(props)} -- ${JSON.stringify(options)}`
+        );
 
-    await contains(".o_switch_view.o_kanban").click({ ctrlKey: true });
+    await contains(".o_switch_view.o_kanban").click({ctrlKey: true});
     expect.verifySteps([`kanban -- {} -- {"newWindow":true}`]);
 });
 
@@ -120,11 +124,11 @@ test.tags("desktop");
 test("views aria labels", async () => {
     await mountWithSearch(
         ControlPanel,
-        { resModel: "foo" },
+        {resModel: "foo"},
         {
             viewSwitcherEntries: [
-                { type: "list", active: true, icon: "oi-view-list", name: "List" },
-                { type: "kanban", icon: "oi-view-kanban", name: "Kanban" },
+                {type: "list", active: true, icon: "oi-view-list", name: "List"},
+                {type: "kanban", icon: "oi-view-kanban", name: "Kanban"},
             ],
         }
     );
@@ -138,11 +142,11 @@ test.tags("mobile");
 test("view switcher on mobile", async () => {
     await mountWithSearch(
         ControlPanel,
-        { resModel: "foo" },
+        {resModel: "foo"},
         {
             viewSwitcherEntries: [
-                { type: "list", active: true, icon: "oi-view-list", name: "List" },
-                { type: "kanban", icon: "oi-view-kanban", name: "Kanban" },
+                {type: "list", active: true, icon: "oi-view-list", name: "List"},
+                {type: "kanban", icon: "oi-view-kanban", name: "Kanban"},
             ],
         }
     );
@@ -156,10 +160,10 @@ test("view switcher on mobile", async () => {
     const views = queryAll`.dropdown-item`;
     expect(views[0]).toHaveText("List");
     expect(views[0]).toHaveClass("selected");
-    expect(queryAll(`.oi-view-list`, { root: views[0] })).toHaveCount(1);
+    expect(queryAll(`.oi-view-list`, {root: views[0]})).toHaveCount(1);
     expect(views[1]).toHaveText("Kanban");
     expect(views[1]).not.toHaveClass("selected");
-    expect(queryAll(`.oi-view-kanban`, { root: views[1] })).toHaveCount(1);
+    expect(queryAll(`.oi-view-kanban`, {root: views[1]})).toHaveCount(1);
 
     getService("action").switchView = (viewType) => expect.step(viewType);
     await click(views[1]);
@@ -174,7 +178,7 @@ test("pager", async () => {
         onUpdate: () => {},
     });
 
-    await mountWithSearch(ControlPanel, { resModel: "foo" }, { pagerProps });
+    await mountWithSearch(ControlPanel, {resModel: "foo"}, {pagerProps});
     expect(`.o_pager`).toHaveCount(1);
 
     pagerProps.total = 0;
@@ -224,9 +228,12 @@ test("hotkey overlay not overlapped by active view button", async () => {
     expect(`.o_switch_view.active`).toHaveCount(1);
 
     const hotkeyZIndex = Number(
-        getComputedStyle(queryFirst(`.o_cp_switch_buttons .o_web_hotkey_overlay`)).zIndex
+        getComputedStyle(queryFirst(`.o_cp_switch_buttons .o_web_hotkey_overlay`))
+            .zIndex
     );
-    const buttonZIndex = Number(getComputedStyle(queryFirst(`.o_switch_view.active`)).zIndex);
+    const buttonZIndex = Number(
+        getComputedStyle(queryFirst(`.o_switch_view.active`)).zIndex
+    );
 
     expect(hotkeyZIndex).toBeGreaterThan(buttonZIndex);
 
@@ -246,7 +253,7 @@ test("control panel layout buttons in dialog", async () => {
             char: "b",
         },
     ];
-    Foo._views["list"] = `<list editable="top"><field name="char"/></list>`;
+    Foo._views.list = `<list editable="top"><field name="char"/></list>`;
 
     await mountWithCleanup(WebClient);
     await getService("action").doAction({
@@ -259,7 +266,8 @@ test("control panel layout buttons in dialog", async () => {
     await contains(".o_data_cell").click();
     expect(".modal-footer button:visible").toHaveCount(2);
     expect(".o_control_panel_main_buttons button").toHaveCount(0, {
-        message: "layout buttons are not replicated in the control panel when inside a dialog",
+        message:
+            "layout buttons are not replicated in the control panel when inside a dialog",
     });
 });
 
@@ -267,11 +275,11 @@ test.tags("mobile");
 test("Control panel is shown/hide on top when scrolling", async () => {
     await mountWithSearch(
         ControlPanel,
-        { resModel: "foo" },
+        {resModel: "foo"},
         {
             viewSwitcherEntries: [
-                { type: "list", active: true, icon: "oi-view-list", name: "List" },
-                { type: "kanban", icon: "oi-view-kanban", name: "Kanban" },
+                {type: "list", active: true, icon: "oi-view-list", name: "List"},
+                {type: "kanban", icon: "oi-view-kanban", name: "Kanban"},
             ],
         }
     );
@@ -282,12 +290,12 @@ test("Control panel is shown/hide on top when scrolling", async () => {
     target.appendChild(sampleContent);
     target.style.maxHeight = `${contentHeight}px`;
     target.style.overflow = "auto";
-    target.scrollTo({ top: 50 });
+    target.scrollTo({top: 50});
     await animationFrame();
     expect(".o_control_panel").toHaveClass("o_mobile_sticky", {
         message: "control panel becomes sticky when the target is not on top",
     });
-    target.scrollTo({ top: -50 });
+    target.scrollTo({top: -50});
     await animationFrame();
     expect(".o_control_panel").not.toHaveClass("o_mobile_sticky", {
         message: "control panel is not sticky anymore",

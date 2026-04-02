@@ -1,15 +1,21 @@
-import { Component, onWillRender, useEffect, useExternalListener, useRef } from "@odoo/owl";
-import { useCommand } from "@web/core/commands/command_hook";
-import { Domain } from "@web/core/domain";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { groupBy } from "@web/core/utils/arrays";
-import { throttleForAnimation } from "@web/core/utils/timing";
-import { getFieldDomain } from "@web/model/relational_model/utils";
-import { useSpecialData } from "@web/views/fields/relational_utils";
-import { standardFieldProps } from "../standard_field_props";
+import {
+    Component,
+    onWillRender,
+    useEffect,
+    useExternalListener,
+    useRef,
+} from "@odoo/owl";
+import {useCommand} from "@web/core/commands/command_hook";
+import {Domain} from "@web/core/domain";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {groupBy} from "@web/core/utils/arrays";
+import {throttleForAnimation} from "@web/core/utils/timing";
+import {getFieldDomain} from "@web/model/relational_model/utils";
+import {useSpecialData} from "@web/views/fields/relational_utils";
+import {standardFieldProps} from "../standard_field_props";
 
 /**
  * @typedef {import("../standard_field_props").StandardFieldProps & {
@@ -50,11 +56,11 @@ export class StatusBarField extends Component {
     };
     static props = {
         ...standardFieldProps,
-        domain: { type: [Array, Function], optional: true },
-        foldField: { type: String, optional: true },
-        isDisabled: { type: Boolean, optional: true },
-        visibleSelection: { type: Array, element: String, optional: true },
-        withCommand: { type: Boolean, optional: true },
+        domain: {type: [Array, Function], optional: true},
+        foldField: {type: String, optional: true},
+        isDisabled: {type: Boolean, optional: true},
+        visibleSelection: {type: Array, element: String, optional: true},
+        withCommand: {type: Boolean, optional: true},
     };
 
     setup() {
@@ -95,8 +101,8 @@ export class StatusBarField extends Component {
         // Special data
         if (this.field.type === "many2one") {
             this.specialData = useSpecialData(async (orm, props) => {
-                const { foldField, name: fieldName, record } = props;
-                const { relation } = record.fields[fieldName];
+                const {foldField, name: fieldName, record} = props;
+                const {relation} = record.fields[fieldName];
                 const fieldNames = ["display_name"];
                 if (foldField) {
                     fieldNames.push(foldField);
@@ -193,7 +199,9 @@ export class StatusBarField extends Component {
     adjustVisibleItems() {
         // Get all visible buttons
         const itemEls = [
-            ...this.rootRef.el.querySelectorAll(".o_arrow_button:not(.dropdown-toggle)"),
+            ...this.rootRef.el.querySelectorAll(
+                ".o_arrow_button:not(.dropdown-toggle)"
+            ),
         ];
         const selectedIndex = itemEls.findIndex((el) =>
             el.classList.contains("o_arrow_button_current")
@@ -250,8 +258,8 @@ export class StatusBarField extends Component {
         if (!firstItem) {
             return false;
         }
-        const { height: currentHeight } = root.getBoundingClientRect();
-        const { height: targetHeight } = firstItem.getBoundingClientRect();
+        const {height: currentHeight} = root.getBoundingClientRect();
+        const {height: targetHeight} = firstItem.getBoundingClientRect();
         return currentHeight > targetHeight;
     }
 
@@ -259,7 +267,7 @@ export class StatusBarField extends Component {
      * @returns {StatusBarItem[]}
      */
     getAllItems() {
-        const { foldField, name, record } = this.props;
+        const {foldField, name, record} = this.props;
         const currentValue = record.data[name];
         if (this.field.type === "many2one") {
             // Many2one
@@ -271,11 +279,12 @@ export class StatusBarField extends Component {
             }));
         } else {
             // Selection
-            let { selection } = this.field;
-            const { visibleSelection } = this.props;
+            let {selection} = this.field;
+            const {visibleSelection} = this.props;
             if (visibleSelection?.length) {
                 selection = selection.filter(
-                    ([value]) => value === currentValue || visibleSelection.includes(value)
+                    ([value]) =>
+                        value === currentValue || visibleSelection.includes(value)
                 );
             }
             return selection.map(([value, label]) => ({
@@ -308,25 +317,25 @@ export class StatusBarField extends Component {
     getSortedItems() {
         const before = [];
         const after = [];
-        const { true: inline = [], false: folded = [] } = groupBy(
+        const {true: inline = [], false: folded = []} = groupBy(
             this.getAllItems(),
             (item) => item.isSelected || !item.isFolded
         );
         inline.reverse(); // CSS rules account for this list to be reversed
         after.push(...folded);
-        return { inline, before, after, folded };
+        return {inline, before, after, folded};
     }
 
     /**
      * @param {StatusBarItem} item
      */
     async selectItem(item) {
-        const { name, record } = this.props;
+        const {name, record} = this.props;
         const value =
             this.field.type === "many2one"
-                ? { id: item.value, display_name: item.label }
+                ? {id: item.value, display_name: item.label}
                 : item.value;
-        await record.update({ [name]: value });
+        await record.update({[name]: value});
         await record.save();
     }
 
@@ -360,7 +369,7 @@ export const statusBarField = {
     ],
     supportedTypes: ["many2one", "selection"],
     isEmpty: (record, fieldName) => !record.data[fieldName],
-    extractProps: ({ attrs, options, viewType }, dynamicInfo) => ({
+    extractProps: ({attrs, options, viewType}, dynamicInfo) => ({
         isDisabled: !options.clickable || dynamicInfo.readonly,
         visibleSelection: attrs.statusbar_visible?.trim().split(/\s*,\s*/g),
         withCommand: viewType === "form",

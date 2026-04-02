@@ -1,20 +1,19 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import json
-
-from babel.dates import format_date
 from collections import defaultdict
-from dateutil import relativedelta
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
 from functools import partial
-from pytz import timezone
 from random import randint
 
-from odoo import api, exceptions, fields, models, _
+from babel.dates import format_date
+from dateutil import relativedelta
+from pytz import timezone
+
+from odoo import _, api, exceptions, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.intervals import Intervals
-from odoo.tools.date_utils import start_of, end_of, localized, to_timezone
+from odoo.tools.date_utils import end_of, localized, start_of, to_timezone
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
+from odoo.tools.intervals import Intervals
 from odoo.tools.misc import get_lang
 
 
@@ -302,7 +301,7 @@ class MrpWorkcenter(models.Model):
     def write(self, vals):
         if 'company_id' in vals:
             self.resource_id.company_id = vals['company_id']
-        return super(MrpWorkcenter, self).write(vals)
+        return super().write(vals)
 
     def action_show_operations(self):
         self.ensure_one()

@@ -1,14 +1,14 @@
-import { Component, useEffect, useRef, xml } from "@odoo/owl";
-import { useIsChildLarger } from "@point_of_sale/app/hooks/hooks";
-import { useService } from "@web/core/utils/hooks";
-import { Dialog } from "@web/core/dialog/dialog";
-import { _t } from "@web/core/l10n/translation";
+import {Component, useEffect, useRef, xml} from "@odoo/owl";
+import {useIsChildLarger} from "@point_of_sale/app/hooks/hooks";
+import {useService} from "@web/core/utils/hooks";
+import {Dialog} from "@web/core/dialog/dialog";
+import {_t} from "@web/core/l10n/translation";
 
 class ListContainerDialog extends Component {
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
         items: Array,
-        slots: { type: Object },
+        slots: {type: Object},
         close: Function,
     };
     static template = xml`
@@ -28,10 +28,10 @@ class ListContainerDialog extends Component {
 export class ListContainer extends Component {
     static props = {
         items: Array,
-        onClickPlus: { type: Function, optional: true },
-        slots: { type: Object },
-        class: { type: String, optional: true },
-        forceSmall: { type: Boolean, optional: true },
+        onClickPlus: {type: Function, optional: true},
+        slots: {type: Object},
+        class: {type: String, optional: true},
+        forceSmall: {type: Boolean, optional: true},
     };
     static defaultProps = {
         class: "",

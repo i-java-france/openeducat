@@ -1,6 +1,6 @@
-import { browser } from "@web/core/browser/browser";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
+import {browser} from "@web/core/browser/browser";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
 
 const PREVIEW_MSG_MAX_SIZE = 350; // optimal for native English speakers
 
@@ -89,7 +89,7 @@ export class OutOfFocusService {
      * @param {string} [param0.icon] The icon to be displayed in the
      * notification.
      */
-    async sendNotification({ message, sound = true, title, type, icon }) {
+    async sendNotification({message, sound = true, title, type, icon}) {
         if (!this.canSendNativeNotification || !(await this.multiTab.isOnMainTab())) {
             if (sound) {
                 this._playSound();
@@ -97,13 +97,13 @@ export class OutOfFocusService {
             return;
         }
         try {
-            this.sendNativeNotification(title, message, icon, { sound });
+            this.sendNativeNotification(title, message, icon, {sound});
         } catch (error) {
             // Notification without Serviceworker in Chrome Android doesn't works anymore
             // So we fallback to the notification service in this case
             // https://bugs.chromium.org/p/chromium/issues/detail?id=481856
             if (error.message.includes("ServiceWorkerRegistration")) {
-                this.sendOdooNotification(message, { sound, title, type });
+                this.sendOdooNotification(message, {sound, title, type});
             } else {
                 throw error;
             }
@@ -115,7 +115,7 @@ export class OutOfFocusService {
      * @param {Object} options
      */
     async sendOdooNotification(message, options) {
-        const { sound } = options;
+        const {sound} = options;
         delete options.sound;
         this.closeFuncs.push(this.notificationService.add(message, options));
         if (this.closeFuncs.length > 3) {
@@ -130,12 +130,12 @@ export class OutOfFocusService {
      * @param {string} title
      * @param {string} message
      */
-    sendNativeNotification(title, message, icon, { sound = true } = {}) {
+    sendNativeNotification(title, message, icon, {sound = true} = {}) {
         const notification = new Notification(title, {
             body: message,
             icon,
         });
-        notification.addEventListener("click", ({ target: notification }) => {
+        notification.addEventListener("click", ({target: notification}) => {
             window.focus();
             notification.close();
         });
@@ -159,7 +159,9 @@ export class OutOfFocusService {
     }
 
     get canSendNativeNotification() {
-        return Boolean(window.Notification && window.Notification.permission === "granted");
+        return Boolean(
+            window.Notification && window.Notification.permission === "granted"
+        );
     }
 }
 

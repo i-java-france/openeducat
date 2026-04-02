@@ -1,9 +1,9 @@
-import { Component, useState } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { useRecordObserver } from "@web/model/relational_model/utils";
-import { computeM2OProps, Many2One } from "../many2one/many2one";
-import { extractM2OFieldProps, Many2OneField } from "../many2one/many2one_field";
+import {Component, useState} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useRecordObserver} from "@web/model/relational_model/utils";
+import {computeM2OProps, Many2One} from "../many2one/many2one";
+import {extractM2OFieldProps, Many2OneField} from "../many2one/many2one_field";
 
 /**
  * @typedef ReferenceValue
@@ -35,11 +35,11 @@ import { extractM2OFieldProps, Many2OneField } from "../many2one/many2one_field"
  */
 export class ReferenceField extends Component {
     static template = "web.ReferenceField";
-    static components = { Many2One };
+    static components = {Many2One};
     static props = {
         ...Many2OneField.props,
-        hideModel: { type: Boolean, optional: true },
-        modelField: { type: String, optional: true },
+        hideModel: {type: Boolean, optional: true},
+        modelField: {type: String, optional: true},
     };
 
     setup() {
@@ -54,7 +54,8 @@ export class ReferenceField extends Component {
             let currentValue = undefined;
             useRecordObserver(async (record, props) => {
                 if (currentValue !== record.data[props.name]) {
-                    this.state.formattedCharValue = await this._fetchReferenceCharData(props);
+                    this.state.formattedCharValue =
+                        await this._fetchReferenceCharData(props);
                     currentValue = record.data[props.name];
                 }
             });
@@ -64,7 +65,7 @@ export class ReferenceField extends Component {
                 if (this.currentModelId !== record.data[props.modelField]?.id) {
                     this.state.modelName = await this._fetchModelTechnicalName(props);
                     if (this.currentModelId !== undefined) {
-                        record.update({ [props.name]: false });
+                        record.update({[props.name]: false});
                     }
                     this.currentModelId = record.data[props.modelField]?.id;
                 }
@@ -77,7 +78,7 @@ export class ReferenceField extends Component {
         return {
             ...computeM2OProps(this.props),
             relation: this.getRelation(),
-            value: value && { id: value.resId, display_name: value.displayName },
+            value: value && {id: value.resId, display_name: value.displayName},
             update: this.updateM2O.bind(this),
         };
     }
@@ -126,7 +127,7 @@ export class ReferenceField extends Component {
 
     updateModel(value) {
         this.state.currentRelation = value;
-        this.props.record.update({ [this.props.name]: false });
+        this.props.record.update({[this.props.name]: false});
     }
 
     updateM2O(value) {
@@ -161,7 +162,7 @@ export class ReferenceField extends Component {
         const [resModel, _resId] = recordData.split(",");
         const resId = parseInt(_resId, 10);
         if (resModel && resId) {
-            const { specialDataCaches, orm } = props.record.model;
+            const {specialDataCaches, orm} = props.record.model;
             const key = `__reference__name_get-${recordData}`;
             if (!specialDataCaches[key]) {
                 specialDataCaches[key] = orm.read(resModel, [resId], ["display_name"]);
@@ -201,7 +202,7 @@ export class ReferenceField extends Component {
         if (!modelId) {
             return false;
         }
-        const { specialDataCaches, orm } = props.record.model;
+        const {specialDataCaches, orm} = props.record.model;
         const key = `__reference__ir_model-${modelId}`;
         if (!specialDataCaches[key]) {
             specialDataCaches[key] = orm.read("ir.model", [modelId], ["model"]);
@@ -228,7 +229,7 @@ export const referenceField = {
         },
     ],
     supportedTypes: ["reference", "char"],
-    extractProps({ options }) {
+    extractProps({options}) {
         /*
         1 - <field name="ref" options="{'model_field': 'model_id'}" />
         2 - <field name="ref" options="{'hide_model': True}" />

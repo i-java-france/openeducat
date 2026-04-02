@@ -1,7 +1,13 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
-import { expect, test } from "@odoo/hoot";
-import { queryOne } from "@odoo/hoot-dom";
-import { defineModels, fields, models, mountView, onRpc } from "@web/../tests/web_test_helpers";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {queryOne} from "@odoo/hoot-dom";
+import {
+    defineModels,
+    fields,
+    models,
+    mountView,
+    onRpc,
+} from "@web/../tests/web_test_helpers";
 
 class Employee extends models.Model {
     _name = "hr.employee";
@@ -27,7 +33,7 @@ test("hr org chart: empty render", async () => {
     expect.assertions(3);
 
     onRpc("/hr/get_org_chart", async (request) => {
-        const { params: args } = await request.json();
+        const {params: args} = await request.json();
         expect(args).toInclude("employee_id", {
             message: "it should have 'employee_id' as argument",
         });
@@ -59,14 +65,14 @@ test("hr org chart: render without data", async () => {
     expect.assertions(3);
 
     onRpc("/hr/get_org_chart", async (request) => {
-        const { params: args } = await request.json();
+        const {params: args} = await request.json();
         expect(args).toInclude("employee_id", {
             message: "it should have 'employee_id' as argument",
         });
         expect("new_parent_id" in args).toBe(true, {
             message: "it should have 'new_parent_id' as argument",
         });
-        return {}; // return no data
+        return {}; // Return no data
     });
     await mountView({
         type: "form",
@@ -86,7 +92,7 @@ test("hr org chart: basic render", async () => {
     expect.assertions(4);
 
     onRpc("/hr/get_org_chart", async (request) => {
-        const { params: args } = await request.json();
+        const {params: args} = await request.json();
         expect(args).toInclude("employee_id", {
             message: "it should have 'employee_id' as argument",
         });
@@ -147,7 +153,7 @@ test("hr org chart: basic manager render", async () => {
     expect.assertions(5);
 
     onRpc("/hr/get_org_chart", async (request) => {
-        const { params: args } = await request.json();
+        const {params: args} = await request.json();
         expect(args).toInclude("employee_id", {
             message: "it should have 'employee_id' as argument",
         });

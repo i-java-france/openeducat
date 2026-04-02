@@ -98,7 +98,8 @@ registerWebsitePreviewTour(
         },
         ...clickOnEditAndWaitEditMode(),
         {
-            content: "Check if the element is visible as it should always be visible in edit view",
+            content:
+                "Check if the element is visible as it should always be visible in edit view",
             trigger: ":iframe #wrap .s_text_image",
             run: function (actions) {
                 const style = window.getComputedStyle(this.anchor);
@@ -156,13 +157,18 @@ registerWebsitePreviewTour(
             trigger: ":iframe #wrapwrap header",
             run: "click",
         },
-        ...changeOptionInPopover("Header", "Header Position", "[data-action-value='hidden']"),
+        ...changeOptionInPopover(
+            "Header",
+            "Header Position",
+            "[data-action-value='hidden']"
+        ),
         checkEyeIcon("Header", false),
         ...clickOnSnippet(snippets[1]),
         ...changeOptionInPopover("Banner", "Visibility", "Conditionally"),
         {
             content: "Toggle the visibility of the Banner",
-            trigger: ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Banner')",
+            trigger:
+                ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Banner')",
             run: "click",
         },
         checkEyeIcon("Banner", false),
@@ -193,7 +199,8 @@ registerWebsitePreviewTour(
         },
         {
             content: "Toggle the visibility of the Footer",
-            trigger: ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Footer')",
+            trigger:
+                ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Footer')",
             run: "click",
         },
         {
@@ -210,7 +217,8 @@ registerWebsitePreviewTour(
         ...checkEyesIconAfterSave(false),
         {
             content: "Check the order on the 'Invisible Elements' panel",
-            trigger: ".o_we_invisible_el_panel div:nth-child(3):contains('Text - Image')",
+            trigger:
+                ".o_we_invisible_el_panel div:nth-child(3):contains('Text - Image')",
         },
     ]
 );
@@ -224,7 +232,8 @@ registerWebsitePreviewTour(
     () => [
         {
             content: "Toggle the visibility of the Footer",
-            trigger: ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Footer')",
+            trigger:
+                ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Footer')",
             run: "click",
         },
         {
@@ -245,8 +254,10 @@ registerWebsitePreviewTour(
             run: "click",
         },
         {
-            content: "Check that the Column has been added in the 'Invisible Elements' panel",
-            trigger: ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Column')",
+            content:
+                "Check that the Column has been added in the 'Invisible Elements' panel",
+            trigger:
+                ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Column')",
         },
         {
             content: "Click on the 'Image - Text' snippet",
@@ -266,7 +277,8 @@ registerWebsitePreviewTour(
                 ".o_we_invisible_el_panel .o_we_invisible_root_parent.o_we_invisible_entry:contains('Image - Text') + .o_we_invisible_entry:not(.o_we_sublevel_1)",
         },
         {
-            content: "Click on the 'Image - Text' entry on the 'Invisible Elements' panel",
+            content:
+                "Click on the 'Image - Text' entry on the 'Invisible Elements' panel",
             trigger:
                 ".o_we_invisible_el_panel .o_we_invisible_root_parent.o_we_invisible_entry:contains('Image - Text')",
             run: "click",
@@ -277,7 +289,8 @@ registerWebsitePreviewTour(
                 ":iframe .s_text_image[data-snippet=s_image_text].o_snippet_desktop_invisible.o_snippet_override_invisible",
         },
         {
-            content: "Check that the 'Column' entry is in the 'Invisible Elements' panel",
+            content:
+                "Check that the 'Column' entry is in the 'Invisible Elements' panel",
             trigger:
                 ".o_we_invisible_el_panel ul .o_we_invisible_entry.o_we_sublevel_1:contains('Column')",
         },
@@ -295,7 +308,8 @@ registerWebsitePreviewTour(
         },
         {
             content: "Click on the 'Column' entry on the 'Invisible Elements' panel",
-            trigger: ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Column')",
+            trigger:
+                ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Column')",
             run: "click",
         },
         {
@@ -310,7 +324,8 @@ registerWebsitePreviewTour(
             run: "click",
         },
         {
-            content: "Check that the column has been removed from the 'Invisible Elements' panel",
+            content:
+                "Check that the column has been removed from the 'Invisible Elements' panel",
             trigger:
                 ".o_we_invisible_el_panel:not(:visible):not(:has(.o_we_invisible_entry:contains('Column')))",
         },
@@ -326,8 +341,10 @@ registerWebsitePreviewTour(
             run: "click",
         },
         {
-            content: "Check that the 'Image - Text' entry is in the 'Invisible Elements' panel",
-            trigger: ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Image - Text')",
+            content:
+                "Check that the 'Image - Text' entry is in the 'Invisible Elements' panel",
+            trigger:
+                ".o_we_invisible_el_panel .o_we_invisible_entry:contains('Image - Text')",
         },
     ]
 );

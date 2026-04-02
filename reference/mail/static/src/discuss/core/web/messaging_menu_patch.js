@@ -1,9 +1,9 @@
-import { DiscussSearch } from "@mail/core/public_web/discuss_search";
-import { MessagingMenu } from "@mail/core/public_web/messaging_menu";
-import { patch } from "@web/core/utils/patch";
-import { useService } from "@web/core/utils/hooks";
+import {DiscussSearch} from "@mail/core/public_web/discuss_search";
+import {MessagingMenu} from "@mail/core/public_web/messaging_menu";
+import {patch} from "@web/core/utils/patch";
+import {useService} from "@web/core/utils/hooks";
 
-Object.assign(MessagingMenu.components, { DiscussSearch });
+Object.assign(MessagingMenu.components, {DiscussSearch});
 
 patch(MessagingMenu.prototype, {
     setup() {
@@ -16,7 +16,7 @@ patch(MessagingMenu.prototype, {
         return res;
     },
     onClickNewMessage() {
-        this.command.openMainPalette({ searchValue: "@" });
+        this.command.openMainPalette({searchValue: "@"});
         if (!this.ui.isSmall && !this.env.inDiscussApp) {
             this.dropdown.close();
         }

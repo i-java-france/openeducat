@@ -1,12 +1,12 @@
 /** @odoo-module alias=@web/../tests/views/calendar/helpers default=false */
 
-import { uiService } from "@web/core/ui/ui_service";
-import { createElement } from "@web/core/utils/xml";
-import { registry } from "@web/core/registry";
-import { Field } from "@web/views/fields/field";
-import { clearRegistryWithCleanup, makeTestEnv } from "../../helpers/mock_env";
-import { click, getFixture, mount, nextTick, triggerEvent } from "../../helpers/utils";
-import { setupViewRegistries } from "@web/../tests/views/helpers";
+import {uiService} from "@web/core/ui/ui_service";
+import {createElement} from "@web/core/utils/xml";
+import {registry} from "@web/core/registry";
+import {Field} from "@web/views/fields/field";
+import {clearRegistryWithCleanup, makeTestEnv} from "../../helpers/mock_env";
+import {click, getFixture, mount, nextTick, triggerEvent} from "../../helpers/utils";
+import {setupViewRegistries} from "@web/../tests/views/helpers";
 
 export function makeEnv(services = {}) {
     clearRegistryWithCleanup(registry.category("main_components"));
@@ -19,7 +19,7 @@ export function makeEnv(services = {}) {
     );
 
     for (const [key, service] of Object.entries(services)) {
-        registry.category("services").add(key, service, { force: true });
+        registry.category("services").add(key, service, {force: true});
     }
 
     return makeTestEnv({
@@ -33,7 +33,7 @@ export function makeEnv(services = {}) {
 
 export async function mountComponent(C, env, props) {
     const target = getFixture();
-    return await mount(C, target, { env, props });
+    return await mount(C, target, {env, props});
 }
 
 //------------------------------------------------------------------------------
@@ -54,30 +54,30 @@ export function makeFakeRecords() {
         2: {
             id: 2,
             title: "3 days, all day in July",
-            start: makeFakeDate().plus({ days: 2 }),
+            start: makeFakeDate().plus({days: 2}),
             isAllDay: true,
-            end: makeFakeDate().plus({ days: 4 }),
+            end: makeFakeDate().plus({days: 4}),
         },
         3: {
             id: 3,
             title: "1 day, all day in June",
-            start: makeFakeDate().plus({ months: -1 }),
+            start: makeFakeDate().plus({months: -1}),
             isAllDay: true,
-            end: makeFakeDate().plus({ months: -1 }),
+            end: makeFakeDate().plus({months: -1}),
         },
         4: {
             id: 4,
             title: "3 days, all day in June",
-            start: makeFakeDate().plus({ months: -1, days: 2 }),
+            start: makeFakeDate().plus({months: -1, days: 2}),
             isAllDay: true,
-            end: makeFakeDate().plus({ months: -1, days: 4 }),
+            end: makeFakeDate().plus({months: -1, days: 4}),
         },
         5: {
             id: 5,
             title: "Over June and July",
-            start: makeFakeDate().startOf("month").plus({ days: -2 }),
+            start: makeFakeDate().startOf("month").plus({days: -2}),
             isAllDay: true,
-            end: makeFakeDate().startOf("month").plus({ days: 2 }),
+            end: makeFakeDate().startOf("month").plus({days: 2}),
         },
     };
 }
@@ -178,8 +178,8 @@ export const FAKE_FILTER_SECTIONS = [
 ];
 
 export const FAKE_FIELDS = {
-    id: { string: "Id", type: "integer" },
-    user_id: { string: "User", type: "many2one", relation: "user", default: -1 },
+    id: {string: "Id", type: "integer"},
+    user_id: {string: "User", type: "many2one", relation: "user", default: -1},
     partner_id: {
         string: "Partner",
         type: "many2one",
@@ -187,27 +187,27 @@ export const FAKE_FIELDS = {
         related: "user_id.partner_id",
         default: 1,
     },
-    name: { string: "Name", type: "char" },
-    start_date: { string: "Start Date", type: "date" },
-    stop_date: { string: "Stop Date", type: "date" },
-    start: { string: "Start Datetime", type: "datetime" },
-    stop: { string: "Stop Datetime", type: "datetime" },
-    delay: { string: "Delay", type: "float" },
-    allday: { string: "Is All Day", type: "boolean" },
+    name: {string: "Name", type: "char"},
+    start_date: {string: "Start Date", type: "date"},
+    stop_date: {string: "Stop Date", type: "date"},
+    start: {string: "Start Datetime", type: "datetime"},
+    stop: {string: "Stop Datetime", type: "datetime"},
+    delay: {string: "Delay", type: "float"},
+    allday: {string: "Is All Day", type: "boolean"},
     partner_ids: {
         string: "Attendees",
         type: "one2many",
         relation: "partner",
         default: [[6, 0, [1]]],
     },
-    type: { string: "Type", type: "integer" },
-    event_type_id: { string: "Event Type", type: "many2one", relation: "event_type" },
-    color: { string: "Color", type: "integer", related: "event_type_id.color" },
+    type: {string: "Type", type: "integer"},
+    event_type_id: {string: "Event Type", type: "many2one", relation: "event_type"},
+    color: {string: "Color", type: "integer", related: "event_type_id.color"},
 };
 
 function makeFakeModelState() {
-    const fakeFieldNode = createElement("field", { name: "name" });
-    const fakeModels = { event: { fields: FAKE_FIELDS } };
+    const fakeFieldNode = createElement("field", {name: "name"});
+    const fakeModels = {event: {fields: FAKE_FIELDS}};
     return {
         canCreate: true,
         canDelete: true,
@@ -280,9 +280,9 @@ export function findPickedDate(target) {
 export async function pickDate(target, date) {
     const day = date.split("-")[2];
     const iDay = parseInt(day, 10) - 1;
-    const el = target.querySelectorAll(`.o_datetime_picker .o_date_item_cell:not(.o_out_of_range)`)[
-        iDay
-    ];
+    const el = target.querySelectorAll(
+        `.o_datetime_picker .o_date_item_cell:not(.o_out_of_range)`
+    )[iDay];
     el.scrollIntoView();
     await click(el);
 }
@@ -523,7 +523,10 @@ export async function changeScale(target, scale) {
 }
 
 export async function navigate(target, direction) {
-    await click(target, `.o_calendar_navigation_buttons .o_calendar_button_${direction}`);
+    await click(
+        target,
+        `.o_calendar_navigation_buttons .o_calendar_button_${direction}`
+    );
 }
 
 export function findFilterPanelSection(target, sectionName) {
@@ -543,7 +546,9 @@ export function findFilterPanelSectionFilter(target, sectionName) {
 }
 
 export async function toggleFilter(target, sectionName, filterValue) {
-    const el = findFilterPanelFilter(target, sectionName, filterValue).querySelector(`input`);
+    const el = findFilterPanelFilter(target, sectionName, filterValue).querySelector(
+        `input`
+    );
     await scrollTo(el);
     await click(el);
 }

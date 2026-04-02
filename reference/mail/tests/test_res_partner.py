@@ -1,16 +1,17 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from contextlib import contextmanager
-from markupsafe import Markup
 from unittest.mock import patch
 from uuid import uuid4
 
+from markupsafe import Markup
+
 from odoo import tools
-from odoo.addons.base.models.res_partner import ResPartner
-from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
 from odoo.tests import Form, tagged, users
 from odoo.tools import mute_logger
+
+from odoo.addons.base.models.res_partner import ResPartner
+from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
 
 
 @tagged('res_partner', 'mail_tools', 'mail_thread_api')
@@ -104,7 +105,7 @@ class TestPartner(MailCommon):
         company_partner.city = 'Some Other City Name'
         self.env.flush_all()
         self.cr.precommit.run()
-        for partner, original_messages in zip(partners, partner_original_messages):
+        for partner, original_messages in zip(partners, partner_original_messages, strict=False):
             change_messages = partner.message_ids - original_messages
             self.assertEqual(len(change_messages), 1)
             tracking_values = change_messages.tracking_value_ids
@@ -171,7 +172,7 @@ class TestPartner(MailCommon):
              False, False, False,
              # multi email
              False],
-            [0, 0, 0, 0, 0, 0, 0, 6, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 6, 0, 0], strict=False,
         ):
             with self.subTest(text_input=text_input):
                 if not expected_partner and find_idx:
@@ -275,7 +276,7 @@ class TestPartner(MailCommon):
         self.assertEqual(len(partners), len(self.samples))
         self.assertEqual(len(self._new_partners), len(self.samples) - 2, 'Two duplicates in samples')
 
-        for (sample, exp_name, exp_email), partner in zip(self.samples, partners):
+        for (sample, exp_name, exp_email), partner in zip(self.samples, partners, strict=False):
             # specific to '_from_emails': name used as email is no email found
             exp_email = exp_email or exp_name
             with self.subTest(sample=sample):
@@ -313,7 +314,7 @@ class TestPartner(MailCommon):
         self.assertEqual(len(partners), len(new_samples))
         self.assertEqual(len(self._new_partners), 2, 'Only 2 real new partners in new sample')
 
-        for (sample, exp_name, exp_email), partner in zip(new_samples, partners):
+        for (sample, exp_name, exp_email), partner in zip(new_samples, partners, strict=False):
             with self.subTest(sample=sample, exp_name=exp_name, exp_email=exp_email, partner=partner):
                 # specific to '_from_emails': name used as email is no email found
                 exp_email = exp_email or exp_name
@@ -414,7 +415,7 @@ class TestPartner(MailCommon):
                     'test.different.1@test.dupe.example.com']))
         # results
         self.assertEqual(len(new_partners), len(new_samples))
-        for partner, (expected_partner, expected_name, expected_email) in zip(new_partners, expected):
+        for partner, (expected_partner, expected_name, expected_email) in zip(new_partners, expected, strict=False):
             with self.subTest(partner=partner, expected_name=expected_name):
                 if expected_partner:
                     self.assertEqual(partner, expected_partner)
@@ -449,7 +450,7 @@ class TestPartner(MailCommon):
         self.assertEqual(self._mock_partner_search.call_count, 1)
         self.assertEqual(len(self._new_partners), 2)
         self.assertEqual(sorted(self._new_partners.mapped('email')), ['"Falsy" <falsy>', "falsy"])
-        for partner, (expected_partner, expected_name, expected_email) in zip(no_new_partners, expected):
+        for partner, (expected_partner, expected_name, expected_email) in zip(no_new_partners, expected, strict=False):
             with self.subTest(partner=partner, expected_name=expected_name):
                 if expected_partner:
                     self.assertEqual(partner, expected_partner)
@@ -548,7 +549,7 @@ class TestPartner(MailCommon):
             # email only: email used as both name and email
             ('lenny.bar@gmail.com', 'lenny.bar@gmail.com')
         ]
-        for (expected_name, expected_email), sample in zip(expected, samples):
+        for (expected_name, expected_email), sample in zip(expected, samples, strict=False):
             with self.subTest(sample=sample):
                 partner = self.env['res.partner'].browse(
                     self.env['res.partner'].name_create(sample)[0]

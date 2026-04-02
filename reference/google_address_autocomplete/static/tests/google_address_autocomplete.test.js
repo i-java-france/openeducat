@@ -1,5 +1,5 @@
-import { expect, test } from "@odoo/hoot";
-import { runAllTimers } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {runAllTimers} from "@odoo/hoot-mock";
 import {
     contains,
     defineModels,
@@ -35,8 +35,8 @@ class ResPartner extends webModels.ResPartner {
     street2 = fields.Char();
     city = fields.Char();
     zip = fields.Char();
-    country_id = fields.Many2one({ relation: "res.country" });
-    state_id = fields.Many2one({ relation: "res.country.state" });
+    country_id = fields.Many2one({relation: "res.country"});
+    state_id = fields.Many2one({relation: "res.country.state"});
 }
 
 class OtherModel extends models.Model {
@@ -45,12 +45,17 @@ class OtherModel extends models.Model {
     some_char = fields.Char();
     some_char2 = fields.Char();
     some_char3 = fields.Char();
-    m2o = fields.Many2one({ relation: "res.country.state" });
+    m2o = fields.Many2one({relation: "res.country.state"});
 }
 defineModels([ResPartner, ResCountryState, ResCountry, OtherModel]);
 
 onRpc("/autocomplete/address", () => ({
-    results: [{ formatted_address: "rue des Bourlottes 9, 1367 Ramillies", google_place_id: "1" }],
+    results: [
+        {
+            formatted_address: "rue des Bourlottes 9, 1367 Ramillies",
+            google_place_id: "1",
+        },
+    ],
 }));
 
 onRpc("/autocomplete/address_full", () => ({
@@ -68,7 +73,7 @@ test("correctly fill all standard fields", async () => {
     let googleSessionToken;
     let currentInput;
     onRpc("/autocomplete/address", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         googleSessionToken = params.session_id;
         expect(googleSessionToken).toMatch(/\w+-\w+-\w+-\w+/);
         expect(params.use_employees_key).toBe(true);
@@ -76,18 +81,18 @@ test("correctly fill all standard fields", async () => {
         expect.step("/autocomplete/address");
     });
     onRpc("/autocomplete/address_full", async (request) => {
-        const { params } = await request.json();
+        const {params} = await request.json();
         expect(params.session_id).toBe(googleSessionToken);
         expect(params.use_employees_key).toBe(true);
         expect(params.google_place_id).toBe("1");
         expect.step("/autocomplete/address_full");
     });
-    onRpc("res.partner", "web_save", ({ args }) => {
+    onRpc("res.partner", "web_save", ({args}) => {
         expect(args[1]).toEqual({
             city: "Ramillies",
             country_id: 13,
             state_id: 2,
-            // this was input by the user
+            // This was input by the user
             // save as is
             street: "odoo farm 3",
             street2: "Ferme 2",
@@ -109,7 +114,9 @@ test("correctly fill all standard fields", async () => {
         </form>`,
     });
     currentInput = "odoo farm 2";
-    await contains(".o_field_widget[name='street'] input").edit("odoo farm 2", { confirm: false });
+    await contains(".o_field_widget[name='street'] input").edit("odoo farm 2", {
+        confirm: false,
+    });
     await runAllTimers();
     expect.verifySteps(["/autocomplete/address"]);
 
@@ -131,7 +138,9 @@ test("correctly fill all standard fields", async () => {
 
     const formerToken = googleSessionToken;
     currentInput = "odoo farm 3";
-    await contains(".o_field_widget[name='street'] input").edit("odoo farm 3", { confirm: false });
+    await contains(".o_field_widget[name='street'] input").edit("odoo farm 3", {
+        confirm: false,
+    });
     await runAllTimers();
     expect.verifySteps(["/autocomplete/address"]);
     expect(googleSessionToken).not.toBe(formerToken);
@@ -168,7 +177,7 @@ test("fills current field with values of unknown ones", async () => {
 });
 
 test("typing in input should make form dirty", async () => {
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect.step(args[1]);
     });
     await mountView({
@@ -180,9 +189,11 @@ test("typing in input should make form dirty", async () => {
         resId: 1,
     });
     expect(".o_form_button_save:visible").toHaveCount(0);
-    await contains(".o_field_widget[name='street'] input").edit("odoo farm 3", { confirm: false });
+    await contains(".o_field_widget[name='street'] input").edit("odoo farm 3", {
+        confirm: false,
+    });
     await contains(".o_form_button_save:visible").click();
-    expect.verifySteps([{ street: "odoo farm 3" }]);
+    expect.verifySteps([{street: "odoo farm 3"}]);
 });
 
 test("support field mapping in options", async () => {

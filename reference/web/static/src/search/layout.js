@@ -1,6 +1,6 @@
-import { Component, useRef } from "@odoo/owl";
-import { ControlPanel } from "@web/search/control_panel/control_panel";
-import { SearchPanel } from "@web/search/search_panel/search_panel";
+import {Component, useRef} from "@odoo/owl";
+import {ControlPanel} from "@web/search/control_panel/control_panel";
+import {SearchPanel} from "@web/search/search_panel/search_panel";
 
 /**
  * @param {Object} params
@@ -17,9 +17,9 @@ export function extractLayoutComponents(params) {
 export class Layout extends Component {
     static template = "web.Layout";
     static props = {
-        className: { type: String, optional: true },
-        display: { type: Object, optional: true },
-        slots: { type: Object, optional: true },
+        className: {type: String, optional: true},
+        display: {type: Object, optional: true},
+        slots: {type: Object, optional: true},
     };
     static defaultProps = {
         display: {},
@@ -29,7 +29,7 @@ export class Layout extends Component {
         this.contentRef = useRef("content");
     }
     get controlPanelSlots() {
-        const slots = { ...this.props.slots };
+        const slots = {...this.props.slots};
         if (this.env.inDialog) {
             delete slots["layout-buttons"];
         }

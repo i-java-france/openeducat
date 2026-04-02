@@ -1,7 +1,7 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { CourseTagAddDialog } from "@website_slides/js/public/components/course_tag_add_dialog/course_tag_add_dialog";
+import {CourseTagAddDialog} from "@website_slides/js/public/components/course_tag_add_dialog/course_tag_add_dialog";
 
 export class TagAdd extends Interaction {
     static selector = ".o_wslides_js_channel_tag_add";
@@ -20,6 +20,4 @@ export class TagAdd extends Interaction {
     }
 }
 
-registry
-    .category("public.interactions")
-    .add("website_slides.tag_add", TagAdd);
+registry.category("public.interactions").add("website_slides.tag_add", TagAdd);

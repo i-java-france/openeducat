@@ -1,5 +1,5 @@
-import { deepCopy } from "@web/core/utils/objects";
-import { MockServerError } from "./mock_server_utils";
+import {deepCopy} from "@web/core/utils/objects";
+import {MockServerError} from "./mock_server_utils";
 
 /**
  * @typedef {import("fields").INumerical["aggregator"]} Aggregator
@@ -22,7 +22,8 @@ import { MockServerError } from "./mock_server_utils";
  */
 function camelToPascal(name) {
     return (
-        name[0].toUpperCase() + name.slice(1).replace(R_CAMEL_CASE, (_, char) => char.toUpperCase())
+        name[0].toUpperCase() +
+        name.slice(1).replace(R_CAMEL_CASE, (_, char) => char.toUpperCase())
     );
 }
 
@@ -45,9 +46,9 @@ function camelToPascal(name) {
  *  requiredKeys?: R[];
  * }} params
  */
-function makeFieldGenerator(type, { aggregator, requiredKeys = [] } = {}) {
+function makeFieldGenerator(type, {aggregator, requiredKeys = []} = {}) {
     const constructorFnName = camelToPascal(type);
-    const defaultDef = { ...DEFAULT_FIELD_PROPERTIES };
+    const defaultDef = {...DEFAULT_FIELD_PROPERTIES};
     if (aggregator) {
         defaultDef.aggregator = aggregator;
     }

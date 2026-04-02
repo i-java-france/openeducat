@@ -1,5 +1,12 @@
-import { Component, onMounted, onPatched, status, useExternalListener, useRef } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
+import {
+    Component,
+    onMounted,
+    onPatched,
+    status,
+    useExternalListener,
+    useRef,
+} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
 
 /**
  * @typedef {Object} Props

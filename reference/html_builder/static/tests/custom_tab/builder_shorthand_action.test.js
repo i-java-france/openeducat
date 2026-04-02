@@ -1,9 +1,9 @@
-import { addBuilderOption, setupHTMLBuilder } from "@html_builder/../tests/helpers";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { describe, expect, test } from "@odoo/hoot";
-import { fill } from "@odoo/hoot-dom";
-import { xml } from "@odoo/owl";
-import { contains } from "@web/../tests/web_test_helpers";
+import {addBuilderOption, setupHTMLBuilder} from "@html_builder/../tests/helpers";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {describe, expect, test} from "@odoo/hoot";
+import {fill} from "@odoo/hoot-dom";
+import {xml} from "@odoo/owl";
+import {contains} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 
@@ -97,18 +97,23 @@ describe("styleAction", () => {
                 `;
             }
         );
-        await setupHTMLBuilder(`<div class="test-options-target" style="width: 10px;">a</div>`);
+        await setupHTMLBuilder(
+            `<div class="test-options-target" style="width: 10px;">a</div>`
+        );
         await contains(":iframe .test-options-target").click();
         expect("input").toHaveValue("10");
         expect(".options-container").toBeDisplayed();
-        expect(":iframe .test-options-target").toHaveStyle({ width: "10px" });
-        expect(":iframe .test-options-target").toHaveAttribute("style", "width: 10px;"); // no !important
+        expect(":iframe .test-options-target").toHaveStyle({width: "10px"});
+        expect(":iframe .test-options-target").toHaveAttribute("style", "width: 10px;"); // No !important
 
         await contains("input").click();
         await fill("1");
         expect("input").toHaveValue("101");
-        expect(":iframe .test-options-target").toHaveStyle({ width: "101px" });
-        expect(":iframe .test-options-target").toHaveAttribute("style", "width: 101px;"); // no !important
+        expect(":iframe .test-options-target").toHaveStyle({width: "101px"});
+        expect(":iframe .test-options-target").toHaveAttribute(
+            "style",
+            "width: 101px;"
+        ); // No !important
 
         await contains("input").edit("");
         expect(":iframe .test-options-target").toHaveAttribute("style", "width: 0px;");

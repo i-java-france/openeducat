@@ -1,8 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
 from collections import defaultdict
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class PurchaseRequisition(models.Model):
@@ -215,7 +216,7 @@ class PurchaseRequisitionLine(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         lines = super().create(vals_list)
-        for line, vals in zip(lines, vals_list):
+        for line, vals in zip(lines, vals_list, strict=False):
             if line.requisition_id.requisition_type == 'blanket_order' and line.requisition_id.state not in ['draft', 'cancel', 'done']:
                 if vals['price_unit'] <= 0.0:
                     raise UserError(_("You cannot have a negative or unit price of 0 for an already confirmed blanket order."))

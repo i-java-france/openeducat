@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
 import logging as logger
 
 from odoo import api, fields, models
-from ..tools.jwt import generate_vapid_keys, InvalidVapidError
+
+from ..tools.jwt import InvalidVapidError, generate_vapid_keys
 
 _logger = logger.getLogger(__name__)
 

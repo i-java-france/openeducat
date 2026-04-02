@@ -1,6 +1,6 @@
-import { Component } from "@odoo/owl";
-import { TagsList } from "@web/core/tags_list/tags_list";
-import { _t } from "@web/core/l10n/translation";
+import {Component} from "@odoo/owl";
+import {TagsList} from "@web/core/tags_list/tags_list";
+import {_t} from "@web/core/l10n/translation";
 
 export class Input extends Component {
     static props = ["value", "update", "placeholder?", "startEmpty?"];
@@ -61,12 +61,12 @@ export class InRange extends Component {
 }
 
 export class List extends Component {
-    static components = { TagsList };
+    static components = {TagsList};
     static props = ["value", "update", "editorInfo"];
     static template = "web.TreeEditor.List";
 
     get tags() {
-        const { isSupported, stringify } = this.props.editorInfo;
+        const {isSupported, stringify} = this.props.editorInfo;
         return this.props.value.map((val, index) => ({
             text: stringify(val),
             colorIndex: isSupported(val) ? 0 : 2,

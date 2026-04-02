@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 registry.category("web_tour.tours").add("im_livechat.meeting_view_tour", {
     steps: () => [
@@ -29,7 +29,8 @@ registry.category("web_tour.tours").add("im_livechat.meeting_view_tour", {
             trigger: ".o-livechat-root:shadow .o-mail-Meeting",
         },
         {
-            trigger: ".o-livechat-root:shadow .o-mail-MeetingSideActions [name^='more-action:'] ",
+            trigger:
+                ".o-livechat-root:shadow .o-mail-MeetingSideActions [name^='more-action:'] ",
             run: "click",
         },
         {

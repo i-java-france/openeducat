@@ -1,14 +1,14 @@
-import { expect, test, describe, beforeEach } from "@odoo/hoot";
-import { queryFirst, click, queryText } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {click, queryFirst, queryText} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 
-import { contains, mountWithCleanup, onRpc } from "@web/../tests/web_test_helpers";
+import {contains, mountWithCleanup, onRpc} from "@web/../tests/web_test_helpers";
 
-import { ActivityMenu } from "@mail/core/web/activity_menu";
-import { triggerHotkey } from "@mail/../tests/mail_test_helpers";
+import {ActivityMenu} from "@mail/core/web/activity_menu";
+import {triggerHotkey} from "@mail/../tests/mail_test_helpers";
 
-import { defineTodoModels } from "./todo_test_helpers";
-import { MailActivityTodoCreate } from "./mock_server/mock_models/mail_activity_todo_create";
+import {defineTodoModels} from "./todo_test_helpers";
+import {MailActivityTodoCreate} from "./mock_server/mock_models/mail_activity_todo_create";
 
 describe.current.tags("desktop");
 defineTodoModels();
@@ -44,14 +44,19 @@ test("Check that todo_activity_wizard view focuses on the first element", async 
 });
 
 test("global shortcut", async () => {
-    onRpc("/web/dataset/call_button/mail.activity.todo.create/create_todo_activity", () => true);
-    onRpc("mail.activity.todo.create", "web_save", ({ args }) => expect.step(args[1].summary));
+    onRpc(
+        "/web/dataset/call_button/mail.activity.todo.create/create_todo_activity",
+        () => true
+    );
+    onRpc("mail.activity.todo.create", "web_save", ({args}) =>
+        expect.step(args[1].summary)
+    );
     await mountWithCleanup(ActivityMenu);
     await triggerHotkey("control+k");
     await animationFrame();
     expect(queryText(`.o_command:contains("Add a To-Do") .o_command_hotkey`)).toEqual(
         "Add a To-Do\nALT + SHIFT + T",
-        { message: "The command should be registered with the right hotkey" }
+        {message: "The command should be registered with the right hotkey"}
     );
 
     await triggerHotkey("alt+shift+t");

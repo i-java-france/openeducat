@@ -16,7 +16,6 @@ from odoo.addons.payment.logging import get_payment_logger
 from odoo.addons.payment_razorpay import const
 from odoo.addons.payment_razorpay.controllers.main import RazorpayController
 
-
 _logger = get_payment_logger(__name__)
 
 

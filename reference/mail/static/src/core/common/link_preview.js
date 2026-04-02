@@ -1,9 +1,9 @@
-import { Gif } from "@mail/core/common/gif";
-import { LinkPreviewConfirmDelete } from "@mail/core/common/link_preview_confirm_delete";
+import {Gif} from "@mail/core/common/gif";
+import {LinkPreviewConfirmDelete} from "@mail/core/common/link_preview_confirm_delete";
 
-import { Component, useEffect, useRef, useState } from "@odoo/owl";
+import {Component, useEffect, useRef, useState} from "@odoo/owl";
 
-import { useService } from "@web/core/utils/hooks";
+import {useService} from "@web/core/utils/hooks";
 
 /**
  * @typedef {Object} Props
@@ -17,12 +17,12 @@ import { useService } from "@web/core/utils/hooks";
 export class LinkPreview extends Component {
     static template = "mail.LinkPreview";
     static props = ["linkPreview", "delete?", "deleteAll?", "gifPaused?", "message?"];
-    static components = { Gif };
+    static components = {Gif};
 
     setup() {
         super.setup();
         this.dialogService = useService("dialog");
-        this.state = useState({ startVideo: false, videoLoaded: false });
+        this.state = useState({startVideo: false, videoLoaded: false});
         this.videoRef = useRef("video");
         useEffect(
             (el) => {

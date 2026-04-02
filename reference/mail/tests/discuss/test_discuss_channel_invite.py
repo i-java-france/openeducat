@@ -1,11 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from lxml import html
 from itertools import product
 
-from odoo.addons.mail.tests.common import MailCommon
+from lxml import html
+
 from odoo.exceptions import UserError
 from odoo.tests import HttpCase, new_test_user, tagged, users
 from odoo.tools.misc import hash_sign
+
+from odoo.addons.mail.tests.common import MailCommon
 
 
 @tagged("-at_install", "post_install")

@@ -1,17 +1,17 @@
-import { Dialog } from "@web/core/dialog/dialog";
-import { useService } from "@web/core/utils/hooks";
+import {Dialog} from "@web/core/dialog/dialog";
+import {useService} from "@web/core/utils/hooks";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class FormErrorDialog extends Component {
     static template = "web.FormErrorDialog";
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
-        message: { type: String, optional: true },
-        data: { type: Object },
+        message: {type: String, optional: true},
+        data: {type: Object},
         onDiscard: Function,
         onStayHere: Function,
-        onRedirect: { type: Function, optional: true },
+        onRedirect: {type: Function, optional: true},
         close: Function,
     };
 

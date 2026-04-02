@@ -1,4 +1,4 @@
-from odoo import api, Command
+from odoo import Command, api
 from odoo.tests.common import HttpCase
 
 

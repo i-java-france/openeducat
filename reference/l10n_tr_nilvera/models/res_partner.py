@@ -1,11 +1,10 @@
 import logging
 import urllib.parse
-
 from collections import defaultdict
 
 from odoo import _, api, fields, models
-from odoo.addons.l10n_tr_nilvera.lib.nilvera_client import _get_nilvera_client
 
+from odoo.addons.l10n_tr_nilvera.lib.nilvera_client import _get_nilvera_client
 
 _logger = logging.getLogger(__name__)
 

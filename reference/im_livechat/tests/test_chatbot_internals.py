@@ -3,10 +3,11 @@
 from freezegun import freeze_time
 
 from odoo import Command, fields
-from odoo.addons.im_livechat.tests import chatbot_common
 from odoo.tests.common import JsonRpcException, new_test_user, tagged
 from odoo.tools.misc import mute_logger
-from odoo.addons.mail.tests.common import freeze_all_time, MailCommon
+
+from odoo.addons.im_livechat.tests import chatbot_common
+from odoo.addons.mail.tests.common import MailCommon, freeze_all_time
 from odoo.addons.mail.tools.discuss import Store
 
 

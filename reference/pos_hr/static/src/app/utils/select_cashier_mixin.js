@@ -1,15 +1,17 @@
 /* global Sha1 */
 
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
-import { NumberPopup } from "@point_of_sale/app/components/popups/number_popup/number_popup";
-import { useBarcodeReader } from "@point_of_sale/app/hooks/barcode_reader_hook";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { useService } from "@web/core/utils/hooks";
-import { makeAwaitable, ask } from "@point_of_sale/app/utils/make_awaitable_dialog";
-import { CashierSelectionPopup } from "@pos_hr/app/components/popups/cashier_selection_popup/cashier_selection_popup";
+import {NumberPopup} from "@point_of_sale/app/components/popups/number_popup/number_popup";
+import {useBarcodeReader} from "@point_of_sale/app/hooks/barcode_reader_hook";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {useService} from "@web/core/utils/hooks";
+import {makeAwaitable, ask} from "@point_of_sale/app/utils/make_awaitable_dialog";
+import {CashierSelectionPopup} from "@pos_hr/app/components/popups/cashier_selection_popup/cashier_selection_popup";
 
-export function useCashierSelector({ exclusive, onScan } = { onScan: () => {}, exclusive: false }) {
+export function useCashierSelector(
+    {exclusive, onScan} = {onScan: () => {}, exclusive: false}
+) {
     const pos = usePos();
     const dialog = useService("dialog");
     const notification = useService("notification");

@@ -1,8 +1,8 @@
-import { Component } from "@odoo/owl";
-import { SelectMenu } from "@web/core/select_menu/select_menu";
-import { ImportDataColumnError } from "../import_data_column_error/import_data_column_error";
-import { ImportDataOptions } from "../import_data_options/import_data_options";
-import { _t } from "@web/core/l10n/translation";
+import {Component} from "@odoo/owl";
+import {SelectMenu} from "@web/core/select_menu/select_menu";
+import {ImportDataColumnError} from "../import_data_column_error/import_data_column_error";
+import {ImportDataOptions} from "../import_data_options/import_data_options";
+import {_t} from "@web/core/l10n/translation";
 
 export class ImportDataContent extends Component {
     static template = "ImportDataContent";
@@ -12,19 +12,22 @@ export class ImportDataContent extends Component {
         SelectMenu,
     };
     static props = {
-        columns: { type: Array },
-        isFieldSet: { type: Function },
-        onOptionChanged: { type: Function },
-        onFieldChanged: { type: Function },
-        options: { type: Object },
-        importMessages: { type: Object },
-        previewError: { type: String, optional: true },
+        columns: {type: Array},
+        isFieldSet: {type: Function},
+        onOptionChanged: {type: Function},
+        onFieldChanged: {type: Function},
+        options: {type: Object},
+        importMessages: {type: Object},
+        previewError: {type: String, optional: true},
     };
 
     getGroups(column) {
         const groups = [
-            { choices: this.makeChoices(column.fields.basic) },
-            { choices: this.makeChoices(column.fields.suggested), label: _t("Suggested Fields") },
+            {choices: this.makeChoices(column.fields.basic)},
+            {
+                choices: this.makeChoices(column.fields.suggested),
+                label: _t("Suggested Fields"),
+            },
             {
                 choices: this.makeChoices(column.fields.additional),
                 label:
@@ -32,7 +35,10 @@ export class ImportDataContent extends Component {
                         ? _t("Additional Fields")
                         : _t("Standard Fields"),
             },
-            { choices: this.makeChoices(column.fields.relational), label: _t("Relation Fields") },
+            {
+                choices: this.makeChoices(column.fields.relational),
+                label: _t("Relation Fields"),
+            },
         ];
         return groups;
     }
@@ -67,7 +73,7 @@ export class ImportDataContent extends Component {
                 ],
             });
         } else {
-            return JSON.stringify({ lines: column.previews.slice(0, displayCount) });
+            return JSON.stringify({lines: column.previews.slice(0, displayCount)});
         }
     }
 

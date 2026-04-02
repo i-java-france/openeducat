@@ -1,4 +1,4 @@
-import { isColorGradient } from "@web/core/utils/colors";
+import {isColorGradient} from "@web/core/utils/colors";
 
 /**
  * Extracts url and gradient parts from the background-image CSS property.
@@ -68,7 +68,7 @@ export async function isImageCorsProtected(img) {
         //    same database behind.
         // 2. A "attachment-url" which is just a redirect to the real image
         //    which could be hosted on another website.
-        isCorsProtected = await fetch(src, { method: "HEAD" })
+        isCorsProtected = await fetch(src, {method: "HEAD"})
             .then(() => false)
             .catch(() => true);
     }

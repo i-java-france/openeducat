@@ -1,19 +1,19 @@
-import { Reactive } from "@web/core/utils/reactive";
-import { Base, createRelatedModels } from "@point_of_sale/app/models/related_models";
-import { registry } from "@web/core/registry";
-import { Mutex } from "@web/core/utils/concurrency";
-import { markRaw } from "@odoo/owl";
-import { debounce } from "@web/core/utils/timing";
+import {Reactive} from "@web/core/utils/reactive";
+import {Base, createRelatedModels} from "@point_of_sale/app/models/related_models";
+import {registry} from "@web/core/registry";
+import {Mutex} from "@web/core/utils/concurrency";
+import {markRaw} from "@odoo/owl";
+import {debounce} from "@web/core/utils/timing";
 import IndexedDB from "../models/utils/indexed_db";
-import { DataServiceOptions } from "../models/data_service_options";
-import { getOnNotified, uuidv4 } from "@point_of_sale/utils";
-import { browser } from "@web/core/browser/browser";
-import { ConnectionLostError, rpc, RPCError } from "@web/core/network/rpc";
-import { _t } from "@web/core/l10n/translation";
+import {DataServiceOptions} from "../models/data_service_options";
+import {getOnNotified, uuidv4} from "@point_of_sale/utils";
+import {browser} from "@web/core/browser/browser";
+import {ConnectionLostError, rpc, RPCError} from "@web/core/network/rpc";
+import {_t} from "@web/core/l10n/translation";
 import DeviceIdentifierSequence from "../utils/devices_identifier_sequence";
-import { logPosMessage } from "../utils/pretty_console_log";
+import {logPosMessage} from "../utils/pretty_console_log";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 const CONSOLE_COLOR = "#28ffeb";
 
 export class PosData extends Reactive {
@@ -25,7 +25,7 @@ export class PosData extends Reactive {
         this.ready = this.setup(...arguments).then(() => this);
     }
 
-    async setup(env, { orm, bus_service }) {
+    async setup(env, {orm, bus_service}) {
         this.orm = orm;
         this.bus = bus_service;
         this.relations = [];
@@ -61,7 +61,7 @@ export class PosData extends Reactive {
     }
 
     async initializeDeviceIdentifier() {
-        this.device = new DeviceIdentifierSequence({ orm: this.orm });
+        this.device = new DeviceIdentifierSequence({orm: this.orm});
         await this.device.initialize();
     }
 
@@ -145,7 +145,10 @@ export class PosData extends Reactive {
         // But some models have another key configured in data_service_options.js. These models are
         // generally those that can be created in the frontend.
         const allModelNames = Array.from(
-            new Set([...Object.keys(relations), ...Object.keys(this.opts.databaseTable)])
+            new Set([
+                ...Object.keys(relations),
+                ...Object.keys(this.opts.databaseTable),
+            ])
         );
         const models = allModelNames.map((model) => {
             const key = this.opts.databaseTable[model]?.key || "id";
@@ -296,7 +299,8 @@ export class PosData extends Reactive {
                     [odoo.pos_session_id, PosData.modelToLoad],
                     {
                         context: {
-                            pos_last_server_date: serverDateTime > lastConfigChange && serverDate,
+                            pos_last_server_date:
+                                serverDateTime > lastConfigChange && serverDate,
                             pos_limited_loading: limitedLoading,
                         },
                     }
@@ -310,10 +314,11 @@ export class PosData extends Reactive {
                     }
                 }
 
-                const data_to_remove = await this.orm.call("pos.session", "filter_local_data", [
-                    odoo.pos_session_id,
-                    local_records_to_filter,
-                ]);
+                const data_to_remove = await this.orm.call(
+                    "pos.session",
+                    "filter_local_data",
+                    [odoo.pos_session_id, local_records_to_filter]
+                );
 
                 for (const [model, values] of Object.entries(data)) {
                     let local = localData[model] || [];
@@ -336,7 +341,9 @@ export class PosData extends Reactive {
 
                 this.synchronizeServerDataInIndexedDB(localData);
             } catch (error) {
-                let message = _t("An error occurred while loading the Point of Sale: \n");
+                let message = _t(
+                    "An error occurred while loading the Point of Sale: \n"
+                );
                 if (error instanceof RPCError) {
                     message += error.data.message;
                 } else {
@@ -359,13 +366,18 @@ export class PosData extends Reactive {
         delete data["pos.order.line"];
 
         this.models.loadConnectedData(data, this.modelToLoad);
-        this.models.loadConnectedData({ "pos.order": order, "pos.order.line": orderlines }, []);
+        this.models.loadConnectedData(
+            {"pos.order": order, "pos.order.line": orderlines},
+            []
+        );
         this.sanitizeData();
     }
 
     async sanitizeData() {
         const order_to_delete = this.models["pos.order"].filter((order) =>
-            order.lines.some((line) => line.is_reward_line && !line.coupon_id && !line.reward_id)
+            order.lines.some(
+                (line) => line.is_reward_line && !line.coupon_id && !line.reward_id
+            )
         );
         for (const order of order_to_delete) {
             for (let i = order.lines.length - 1; i >= 0; i--) {
@@ -417,7 +429,7 @@ export class PosData extends Reactive {
             };
         }
 
-        const { models } = createRelatedModels(relations, modelClasses, this.opts);
+        const {models} = createRelatedModels(relations, modelClasses, this.opts);
 
         this.fields = fields;
         this.relations = relations;
@@ -489,7 +501,7 @@ export class PosData extends Reactive {
                     }
                 }
 
-                this.synchronizeServerDataInIndexedDB({ [model]: [record] });
+                this.synchronizeServerDataInIndexedDB({[model]: [record]});
             });
         }
     }
@@ -582,7 +594,9 @@ export class PosData extends Reactive {
 
                             if (X2MANY_TYPES.has(fieldsParams.type)) {
                                 formattedForUpdate[field] = value
-                                    .filter((id) => this.models[fieldsParams.relation].get(id))
+                                    .filter((id) =>
+                                        this.models[fieldsParams.relation].get(id)
+                                    )
                                     .map((id) => [
                                         "link",
                                         this.models[fieldsParams.relation].get(id),
@@ -599,8 +613,12 @@ export class PosData extends Reactive {
                             }
                         }
 
-                        localRecord.update(formattedForUpdate, { omitUnknownField: true });
-                        this.synchronizeServerDataInIndexedDB({ [model]: [localRecord.raw] });
+                        localRecord.update(formattedForUpdate, {
+                            omitUnknownField: true,
+                        });
+                        this.synchronizeServerDataInIndexedDB({
+                            [model]: [localRecord.raw],
+                        });
                     } else {
                         nonExistentRecords.push(record);
                     }
@@ -622,15 +640,15 @@ export class PosData extends Reactive {
                 this.opts.autoLoadedOrmMethods.includes(type) &&
                 (!limitedFields || nonExistentRecords.length)
             ) {
-                const data = await this.missingRecursive({ [model]: result });
+                const data = await this.missingRecursive({[model]: result});
                 this.synchronizeServerDataInIndexedDB(data);
                 const results = this.models.connectNewData(data);
                 result = results[model];
             } else if (type === "write") {
                 const localRecord = this.models[model].get(ids[0]);
                 if (localRecord) {
-                    localRecord.update(values, { omitUnknownField: true });
-                    this.synchronizeServerDataInIndexedDB({ [model]: [localRecord.raw] });
+                    localRecord.update(values, {omitUnknownField: true});
+                    this.synchronizeServerDataInIndexedDB({[model]: [localRecord.raw]});
                 }
             }
 
@@ -672,10 +690,13 @@ export class PosData extends Reactive {
         }
 
         const missingRecords = {};
-        const recordInMapByModelIds = Object.entries(recordMap).reduce((acc, [model, records]) => {
-            acc[model] = new Set(records.map((r) => r.id));
-            return acc;
-        }, {});
+        const recordInMapByModelIds = Object.entries(recordMap).reduce(
+            (acc, [model, records]) => {
+                acc[model] = new Set(records.map((r) => r.id));
+                return acc;
+            },
+            {}
+        );
 
         for (const [model, records] of Object.entries(recordMap)) {
             if (!acc[model]) {
@@ -697,19 +718,26 @@ export class PosData extends Reactive {
                     continue;
                 }
 
-                if (this.opts.prohibitedAutoLoadedFields[rel.model]?.includes(rel.name)) {
+                if (
+                    this.opts.prohibitedAutoLoadedFields[rel.model]?.includes(rel.name)
+                ) {
                     continue;
                 }
 
                 const values = records.map((record) => record[rel.name]).flat();
                 const missing = values.filter((value) => {
-                    if (!value || typeof value !== "number" || idsMap[rel.relation]?.has(value)) {
+                    if (
+                        !value ||
+                        typeof value !== "number" ||
+                        idsMap[rel.relation]?.has(value)
+                    ) {
                         return false;
                     }
 
                     const record = this.models[rel.relation].get(value);
                     return (
-                        (!record || !record.id) && !recordInMapByModelIds[rel.relation]?.has(value)
+                        (!record || !record.id) &&
+                        !recordInMapByModelIds[rel.relation]?.has(value)
                     );
                 });
 
@@ -736,7 +764,8 @@ export class PosData extends Reactive {
 
             try {
                 if (["product.product", "product.template"].includes(model)) {
-                    const domain = model === "product.product" ? "product_variant_ids.id" : "id";
+                    const domain =
+                        model === "product.product" ? "product_variant_ids.id" : "id";
                     await this.callRelated(
                         "product.template",
                         "load_product_from_pos",
@@ -750,9 +779,14 @@ export class PosData extends Reactive {
                     continue;
                 }
 
-                const data = await this.orm.read(model, Array.from(ids), this.fields[model], {
-                    load: false,
-                });
+                const data = await this.orm.read(
+                    model,
+                    Array.from(ids),
+                    this.fields[model],
+                    {
+                        load: false,
+                    }
+                );
                 newRecordMap[model] = data;
             } catch {
                 newRecordMap[model] = [];
@@ -772,7 +806,7 @@ export class PosData extends Reactive {
         await this.mutex.exec(async () => {
             while (this.network.unsyncData.length > 0) {
                 const data = this.network.unsyncData[0];
-                const result = await this.execute({ ...data.args[0], uuid: data.uuid });
+                const result = await this.execute({...data.args[0], uuid: data.uuid});
 
                 if (result) {
                     this.network.unsyncData.shift();
@@ -809,7 +843,9 @@ export class PosData extends Reactive {
 
     async checkAndDeleteMissingOrders(results) {
         if (results && results["pos.order"]) {
-            const ids = new Set(results["pos.order"].filter((o) => o.isSynced).map((o) => o.id));
+            const ids = new Set(
+                results["pos.order"].filter((o) => o.isSynced).map((o) => o.id)
+            );
             if (ids.size) {
                 const orders = await this.loadServerOrders([["id", "in", [...ids]]]);
                 const serverIds = orders.map((r) => r.id);
@@ -828,7 +864,7 @@ export class PosData extends Reactive {
         for (const id of ids) {
             const record = this.models[model].get(id);
             delete vals.id;
-            record.update(vals, { omitUnknownField: true });
+            record.update(vals, {omitUnknownField: true});
 
             const dataToUpdate = {};
             const keysToUpdate = Object.keys(vals);
@@ -870,19 +906,32 @@ export class PosData extends Reactive {
     }
 
     async read(model, ids, fields = [], options = [], queue = false) {
-        return await this.execute({ type: "read", model, ids, fields, options, queue });
+        return await this.execute({type: "read", model, ids, fields, options, queue});
     }
 
     async call(model, method, args = [], kwargs = {}, queue = false) {
-        return await this.execute({ type: "call", model, method, args, kwargs, queue });
+        return await this.execute({type: "call", model, method, args, kwargs, queue});
     }
 
     // In a silent call we ignore the error and return false instead
     async silentCall(model, method, args = [], kwargs = {}, queue = false) {
         try {
-            return await this.execute({ type: "call", model, method, args, kwargs, queue });
+            return await this.execute({
+                type: "call",
+                model,
+                method,
+                args,
+                kwargs,
+                queue,
+            });
         } catch (e) {
-            logPosMessage("DataService", "silentCall", "Silent call failed", CONSOLE_COLOR, [e]);
+            logPosMessage(
+                "DataService",
+                "silentCall",
+                "Silent call failed",
+                CONSOLE_COLOR,
+                [e]
+            );
             return false;
         }
     }
@@ -895,7 +944,14 @@ export class PosData extends Reactive {
         queue = true,
         loadMessingRecords = false
     ) {
-        let data = await this.execute({ type: "call", model, method, args, kwargs, queue });
+        let data = await this.execute({
+            type: "call",
+            model,
+            method,
+            args,
+            kwargs,
+            queue,
+        });
 
         if (loadMessingRecords) {
             data = await this.missingRecursive(data);
@@ -911,18 +967,18 @@ export class PosData extends Reactive {
     }
 
     async create(model, values, queue = true) {
-        return await this.execute({ type: "create", model, values, queue });
+        return await this.execute({type: "create", model, values, queue});
     }
 
     async ormWrite(model, ids, values, queue = true) {
-        const result = await this.execute({ type: "write", model, ids, values, queue });
+        const result = await this.execute({type: "write", model, ids, values, queue});
         this.deviceSync?.dispatch &&
-            this.deviceSync.dispatch({ [model]: ids.map((id) => ({ id })) });
+            this.deviceSync.dispatch({[model]: ids.map((id) => ({id}))});
         return result;
     }
 
     async ormDelete(model, ids, queue = true) {
-        return await this.execute({ type: "delete", model, ids, queue });
+        return await this.execute({type: "delete", model, ids, queue});
     }
 
     localDeleteCascade(record, removeFromServer = false) {
@@ -931,17 +987,19 @@ export class PosData extends Reactive {
         const relationsToDelete = Object.values(this.relations[recordModel])
             .filter((rel) => this.opts.cascadeDeleteModels.includes(rel.relation))
             .map((rel) => rel.name);
-        const recordsToDelete = relationsToDelete.flatMap((relation) => record[relation] || []);
+        const recordsToDelete = relationsToDelete.flatMap(
+            (relation) => record[relation] || []
+        );
 
         // Delete all children records before main record
         this.deleteRecordsInIndexedDB(recordModel, [record.uuid]);
         for (const item of recordsToDelete) {
             this.deleteRecordsInIndexedDB(item.model.name, [item.uuid]);
-            item.delete({ silent: !removeFromServer });
+            item.delete({silent: !removeFromServer});
         }
 
         // Delete the main record
-        const result = record.delete({ silent: !removeFromServer });
+        const result = record.delete({silent: !removeFromServer});
         return result;
     }
 
@@ -951,7 +1009,8 @@ export class PosData extends Reactive {
 
     isLimitedLoading() {
         const url = new URL(window.location.href);
-        const limitedLoading = url.searchParams.get("limited_loading") === "0" ? false : true;
+        const limitedLoading =
+            url.searchParams.get("limited_loading") === "0" ? false : true;
 
         if (!limitedLoading) {
             url.searchParams.delete("limited_loading");

@@ -1,9 +1,9 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
-import { formView } from "@web/views/form/form_view";
-import { FormController } from "@web/views/form/form_controller";
+import {formView} from "@web/views/form/form_view";
+import {FormController} from "@web/views/form/form_controller";
 
-import { useArchiveEmployee } from "@hr/views/archive_employee_hook";
+import {useArchiveEmployee} from "@hr/views/archive_employee_hook";
 
 export class EmployeeFormController extends FormController {
     setup() {
@@ -13,7 +13,9 @@ export class EmployeeFormController extends FormController {
 
     getStaticActionMenuItems() {
         const menuItems = super.getStaticActionMenuItems();
-        menuItems.archive.callback = this.archiveEmployee.bind(this, [this.model.root.resId]);
+        menuItems.archive.callback = this.archiveEmployee.bind(this, [
+            this.model.root.resId,
+        ]);
         return menuItems;
     }
 }

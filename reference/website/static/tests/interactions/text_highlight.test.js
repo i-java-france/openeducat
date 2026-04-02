@@ -1,7 +1,10 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame, queryAll, queryFirst } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {animationFrame, queryAll, queryFirst} from "@odoo/hoot-dom";
 
 setupInteractionWhiteList("website.text_highlight");
 
@@ -21,7 +24,7 @@ const highlightTemplate = `
 `;
 
 test("text_highlight is started when there is an element #wrapwrap", async () => {
-    const { core } = await startInteractions(highlightTemplate);
+    const {core} = await startInteractions(highlightTemplate);
     expect(core.interactions).toHaveLength(1);
 });
 
@@ -62,7 +65,7 @@ test("[rtl] SVG positionned inside highlighted text", async () => {
             position.push("afterBottom");
         }
         return position.join() || "inside";
-    }
+    };
     await startInteractions(`
       <p style="direction: rtl">
         اَلْعَرَﺐِﻳَّ<span class="o_text_highlight o_text_highlight_circle_1" style="--text-highlight-width: 2px;">ةُ<br>اَ</span>لْعَرَبِيَّةُ
@@ -75,13 +78,13 @@ test("[rtl] SVG positionned inside highlighted text", async () => {
     expect(".o_text_highlight svg").toHaveCount(4);
     const containers = queryAll(".o_text_highlight");
     const items = queryAll(".o_text_highlight svg");
-    // all SVG are positionned inside the container
+    // All SVG are positionned inside the container
     expect(relativePosition(items[0], containers[0])).toBe("inside");
     expect(relativePosition(items[1], containers[0])).toBe("inside");
     expect(relativePosition(items[2], containers[1])).toBe("inside");
     expect(relativePosition(items[3], containers[1])).toBe("inside");
-    // in RTL with RTL content, hightlight of previous line is top left
+    // In RTL with RTL content, hightlight of previous line is top left
     expect(relativePosition(items[1], items[0])).toBe("afterRight,afterBottom");
-    // in RTL with LTR content, highlight of previous line is top right
+    // In RTL with LTR content, highlight of previous line is top right
     expect(relativePosition(items[3], items[2])).toBe("beforeLeft,afterBottom");
 });

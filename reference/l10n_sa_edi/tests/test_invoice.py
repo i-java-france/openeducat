@@ -1,5 +1,6 @@
 from odoo import Command
 from odoo.tests import tagged
+
 from odoo.addons.l10n_sa_edi.tests.common import TestSaEdiCommon
 
 

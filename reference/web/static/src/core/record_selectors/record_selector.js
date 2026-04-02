@@ -1,20 +1,20 @@
-import { Component, onWillStart, onWillUpdateProps } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { isId } from "@web/core/tree_editor/utils";
-import { useService } from "@web/core/utils/hooks";
-import { RecordAutocomplete } from "./record_autocomplete";
+import {Component, onWillStart, onWillUpdateProps} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {isId} from "@web/core/tree_editor/utils";
+import {useService} from "@web/core/utils/hooks";
+import {RecordAutocomplete} from "./record_autocomplete";
 
 export class RecordSelector extends Component {
     static props = {
-        resId: [Number, { value: false }],
+        resId: [Number, {value: false}],
         resModel: String,
         update: Function,
-        domain: { type: Array, optional: true },
-        context: { type: Object, optional: true },
-        fieldString: { type: String, optional: true },
-        placeholder: { type: String, optional: true },
+        domain: {type: Array, optional: true},
+        context: {type: Object, optional: true},
+        fieldString: {type: String, optional: true},
+        placeholder: {type: String, optional: true},
     };
-    static components = { RecordAutocomplete };
+    static components = {RecordAutocomplete};
     static template = "web.RecordSelector";
 
     setup() {
@@ -25,9 +25,12 @@ export class RecordSelector extends Component {
 
     get isAvatarModel() {
         // bof
-        return ["res.partner", "res.users", "hr.employee", "hr.employee.public"].includes(
-            this.props.resModel
-        );
+        return [
+            "res.partner",
+            "res.users",
+            "hr.employee",
+            "hr.employee.public",
+        ].includes(this.props.resModel);
     }
 
     get hasAvatarImg() {
@@ -45,7 +48,7 @@ export class RecordSelector extends Component {
     }
 
     getDisplayName(props = this.props, displayNames) {
-        const { resId } = props;
+        const {resId} = props;
         if (resId === false) {
             return "";
         }

@@ -2,8 +2,8 @@
 
 from unittest.mock import patch
 
-from odoo.tests.common import HttpCase, tagged
 from odoo.exceptions import UserError
+from odoo.tests.common import HttpCase, tagged
 
 CALL_API_METHOD = 'odoo.addons.l10n_tw_edi_ecpay_website_sale.controllers.main.call_ecpay_api'
 

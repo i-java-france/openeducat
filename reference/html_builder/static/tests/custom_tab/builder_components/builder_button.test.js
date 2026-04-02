@@ -3,13 +3,13 @@ import {
     addBuilderOption,
     setupHTMLBuilder,
 } from "@html_builder/../tests/helpers";
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { undo } from "@html_editor/../tests/_helpers/user_actions";
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame, click, Deferred, hover, runAllTimers } from "@odoo/hoot-dom";
-import { xml } from "@odoo/owl";
-import { contains } from "@web/../tests/web_test_helpers";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {undo} from "@html_editor/../tests/_helpers/user_actions";
+import {describe, expect, test} from "@odoo/hoot";
+import {Deferred, animationFrame, click, hover, runAllTimers} from "@odoo/hoot-dom";
+import {xml} from "@odoo/owl";
+import {contains} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 
@@ -19,7 +19,7 @@ test("call a specific action with some params and value", async () => {
     addBuilderAction({
         customAction: class extends BuilderAction {
             static id = "customAction";
-            apply({ params: { mainParam: testParam }, value }) {
+            apply({params: {mainParam: testParam}, value}) {
                 expect.step(`customAction ${testParam} ${value}`);
             }
         },
@@ -37,7 +37,10 @@ test("call a specific action with some params and value", async () => {
     await click("[data-action-id='customAction']");
     await animationFrame();
     // The function `apply` should be called twice (on hover (for preview), then, on click).
-    expect.verifySteps(["customAction myParam myValue", "customAction myParam myValue"]);
+    expect.verifySteps([
+        "customAction myParam myValue",
+        "customAction myParam myValue",
+    ]);
 });
 test("call a shorthand action", async () => {
     addBuilderOption(
@@ -57,7 +60,7 @@ test("call a shorthand action and a specific action", async () => {
     addBuilderAction({
         customAction: class extends BuilderAction {
             static id = "customAction";
-            apply({ editingElement }) {
+            apply({editingElement}) {
                 expect.step(`customAction`);
                 editingElement.innerHTML = "c";
             }
@@ -83,7 +86,7 @@ test("preview a shorthand action and a specific action", async () => {
     addBuilderAction({
         customAction: class extends BuilderAction {
             static id = "customAction";
-            apply({ editingElement }) {
+            apply({editingElement}) {
                 expect.step(`customAction`);
                 editingElement.innerHTML = "c";
             }
@@ -242,7 +245,7 @@ test("clean should provide the next action value", async () => {
     addBuilderAction({
         customAction: class extends BuilderAction {
             static id = "customAction";
-            clean({ nextAction }) {
+            clean({nextAction}) {
                 expect.step(
                     `customAction clean ${nextAction.params.mainParam} ${nextAction.value}`
                 );
@@ -289,7 +292,7 @@ test("clean should only be called on the currently selected item", async () => {
                 expect.step(`customAction${n} apply`);
             }
         };
-        return { action };
+        return {action};
     }
     addBuilderAction({
         customAction1: makeAction(1).action,
@@ -326,7 +329,7 @@ test("clean should only be called on the currently selected item", async () => {
 });
 test("clean should be async", async () => {
     function makeAction(n) {
-        const { promise, resolve } = Promise.withResolvers();
+        const {promise, resolve} = Promise.withResolvers();
         const action = class extends BuilderAction {
             static id = `customAction${n}`;
             async clean() {
@@ -338,7 +341,7 @@ test("clean should be async", async () => {
                 expect.step(`customAction${n} apply`);
             }
         };
-        return { action, resolve };
+        return {action, resolve};
     }
     const action1 = makeAction(1);
     addBuilderAction({
@@ -419,7 +422,7 @@ test("apply classAction on multi elements", async () => {
             static template = xml`<BuilderButton applyTo="'.target-apply'" classAction="'my-custom-class'"/>`;
         }
     );
-    const { getEditableContent } = await setupHTMLBuilder(`
+    const {getEditableContent} = await setupHTMLBuilder(`
             <div class="test-options-target">
                 <p class="target-apply">a</p>
                 <p class="target-apply">b</p>
@@ -459,7 +462,7 @@ test("hide/display base on applyTo", async () => {
         }
     );
 
-    const { getEditableContent } = await setupHTMLBuilder(
+    const {getEditableContent} = await setupHTMLBuilder(
         `<div class="parent-target"><div class="child-target">b</div></div>`
     );
     const editableContent = getEditableContent();
@@ -479,16 +482,16 @@ test("hide/display base on applyTo", async () => {
     expect("[data-class-action='test']").not.toHaveClass("active");
 });
 describe("inherited actions", () => {
-    function makeAction(n, { async, isApplied } = {}) {
+    function makeAction(n, {async, isApplied} = {}) {
         const action = class extends BuilderAction {
             static id = `customAction${n}`;
             isApplied() {
                 return isApplied?.();
             }
-            clean({ params: { mainParam: testParam }, value }) {
+            clean({params: {mainParam: testParam}, value}) {
                 expect.step(`customAction${n} clean ${testParam} ${value}`);
             }
-            apply({ params: { mainParam: testParam }, value }) {
+            apply({params: {mainParam: testParam}, value}) {
                 expect.step(`customAction${n} apply ${testParam} ${value}`);
             }
         };
@@ -497,19 +500,19 @@ describe("inherited actions", () => {
             const promise = new Promise((r) => {
                 resolve = r;
             });
-            action.prototype.load = async ({ params: { mainParam: testParam }, value }) => {
+            action.prototype.load = async ({params: {mainParam: testParam}, value}) => {
                 expect.step(`customAction${n} load ${testParam} ${value}`);
                 return promise;
             };
-            return { action, resolve };
+            return {action, resolve};
         }
-        return { action };
+        return {action};
     }
     test("inherit actions for another button", async () => {
         addBuilderAction({
             customAction1: makeAction(1).action,
             customAction2: makeAction(2).action,
-            customAction3: makeAction(3, { isApplied: falsy }).action,
+            customAction3: makeAction(3, {isApplied: falsy}).action,
         });
         addBuilderOption(
             class extends BaseOptionComponent {
@@ -534,10 +537,10 @@ describe("inherited actions", () => {
         ]);
     });
     test("inherit actions for another button (with async)", async () => {
-        const action1 = makeAction(1, { async: true });
-        const action2 = makeAction(2, { async: true });
-        const action3 = makeAction(3, { async: true });
-        const action4 = makeAction(4, { async: true, isApplied: falsy });
+        const action1 = makeAction(1, {async: true});
+        const action2 = makeAction(2, {async: true});
+        const action3 = makeAction(3, {async: true});
+        const action4 = makeAction(4, {async: true, isApplied: falsy});
         addBuilderAction({
             customAction1: action1.action,
             customAction2: action2.action,
@@ -581,7 +584,7 @@ describe("inherited actions", () => {
         addBuilderAction({
             customAction1: makeAction(1).action,
             customAction2: makeAction(2).action,
-            customAction3: makeAction(3, { isApplied: falsy }).action,
+            customAction3: makeAction(3, {isApplied: falsy}).action,
         });
         addBuilderOption(
             class extends BaseOptionComponent {
@@ -620,9 +623,9 @@ describe("Operation", () => {
                     expect.step(`load ${actionName}`);
                     await promise;
                 }
-                async apply({ editingElement }) {
+                async apply({editingElement}) {
                     expect.step(`apply ${actionName}`);
-                    editingElement.innerText = editingElement.innerText + `-${actionName}`;
+                    editingElement.innerText += `-${actionName}`;
                 }
             },
         });
@@ -632,9 +635,9 @@ describe("Operation", () => {
         addBuilderAction({
             [actionName]: class extends BuilderAction {
                 static id = actionName;
-                apply({ editingElement }) {
+                apply({editingElement}) {
                     expect.step(actionName);
-                    editingElement.innerText = editingElement.innerText + `-${actionName}`;
+                    editingElement.innerText += `-${actionName}`;
                 }
             },
         });
@@ -668,7 +671,7 @@ describe("Operation", () => {
         hover("[data-action-id='asyncAction2']");
         hover("[data-action-id='asyncAction3']");
         await runAllTimers();
-        // we check here that the action2 load operation has been cancelled by
+        // We check here that the action2 load operation has been cancelled by
         // the action 3.
         expect.verifySteps(["load asyncAction1", "load asyncAction3"]);
         await animationFrame();
@@ -682,14 +685,18 @@ describe("Operation", () => {
         await new Promise((resolve) => setTimeout(resolve, 0));
 
         expect.verifySteps(["load asyncAction3", "apply asyncAction3", "action1"]);
-        expect(":iframe .test-options-target").toHaveInnerHTML("a-asyncAction3-action1");
+        expect(":iframe .test-options-target").toHaveInnerHTML(
+            "a-asyncAction3-action1"
+        );
 
         // If the code is not working properly, hovering on another action at
         // this moment could revert the changes made by asyncAction3 through the
         // revert of the preview. In order to test this case, we hover action2.
         await hover("[data-action-id='action2']");
         await animationFrame();
-        expect(":iframe .test-options-target").toHaveInnerHTML("a-asyncAction3-action2");
+        expect(":iframe .test-options-target").toHaveInnerHTML(
+            "a-asyncAction3-action2"
+        );
         expect.verifySteps(["action2"]);
     });
     test("handle async actions with commit and preview (separated by running all timers)", async () => {
@@ -738,14 +745,18 @@ describe("Operation", () => {
             "apply asyncAction3",
             "action1",
         ]);
-        expect(":iframe .test-options-target").toHaveInnerHTML("a-asyncAction3-action1");
+        expect(":iframe .test-options-target").toHaveInnerHTML(
+            "a-asyncAction3-action1"
+        );
 
         // If the code is not working properly, hovering on another action at
         // this moment could revert the changes made by asyncAction3 through the
         // revert of the preview. In order to test this case, we hover action2.
         await hover("[data-action-id='action2']");
         await animationFrame();
-        expect(":iframe .test-options-target").toHaveInnerHTML("a-asyncAction3-action2");
+        expect(":iframe .test-options-target").toHaveInnerHTML(
+            "a-asyncAction3-action2"
+        );
         expect.verifySteps(["action2"]);
     });
 });
@@ -771,7 +782,7 @@ test("do not load when an operation is cleaned", async () => {
     addBuilderAction({
         customAction: class extends BuilderAction {
             static id = "customAction";
-            isApplied({ editingElement }) {
+            isApplied({editingElement}) {
                 return editingElement.classList.contains("applied");
             }
             clean() {
@@ -780,7 +791,7 @@ test("do not load when an operation is cleaned", async () => {
             async load() {
                 expect.step("load");
             }
-            apply({ editingElement }) {
+            apply({editingElement}) {
                 expect.step("apply");
                 editingElement.classList.add("applied");
             }
@@ -804,10 +815,10 @@ test("click on BuilderButton with async action", async () => {
     addBuilderAction({
         customAction: class extends BuilderAction {
             static id = "customAction";
-            isApplied({ editingElement }) {
+            isApplied({editingElement}) {
                 return editingElement.classList.contains("applied");
             }
-            async apply({ editingElement }) {
+            async apply({editingElement}) {
                 await def;
                 editingElement.classList.add("applied");
             }
@@ -822,7 +833,9 @@ test("click on BuilderButton with async action", async () => {
             `;
         }
     );
-    const { getEditor } = await setupHTMLBuilder(`<div class="test-options-target">b</div>`);
+    const {getEditor} = await setupHTMLBuilder(
+        `<div class="test-options-target">b</div>`
+    );
     const editor = getEditor();
     await contains(":iframe .test-options-target").click();
     await contains("[data-action-id='customAction']").click();

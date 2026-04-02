@@ -1,15 +1,17 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import tools, Command
-from odoo.tests.common import tagged
-from odoo.exceptions import UserError
-from odoo.addons.account.tests.test_account_move_send import TestAccountMoveSendCommon
-from odoo.addons.l10n_hu_edi.tests.common import L10nHuEdiTestCommon
+import contextlib
+from unittest import mock
 
 import requests
-from unittest import mock
 from freezegun import freeze_time
-import contextlib
+
+from odoo import Command, tools
+from odoo.exceptions import UserError
+from odoo.tests.common import tagged
+
+from odoo.addons.account.tests.test_account_move_send import TestAccountMoveSendCommon
+from odoo.addons.l10n_hu_edi.tests.common import L10nHuEdiTestCommon
 
 
 @tagged('post_install_l10n', '-at_install', 'post_install')

@@ -1,18 +1,18 @@
 import {
     mockSendRequests,
-    startInteractions,
     setupInteractionWhiteList,
+    startInteractions,
 } from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { animationFrame, click } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {animationFrame, click} from "@odoo/hoot-dom";
 
 setupInteractionWhiteList("website.post_link");
 
 describe.current.tags("interaction_dev");
 
 test("post_link adds and removes class on setup/destroy", async () => {
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <div id="wrapwrap">
             <span data-post="/some/url" class="post_link">All</span>
         </div>
@@ -34,5 +34,5 @@ test("post_link handle clicks by sending a request", async () => {
     expect(requests).toEqual([]);
     click("span");
     await animationFrame();
-    expect(requests).toEqual([{ url: "/some/url", method: "POST" }]);
+    expect(requests).toEqual([{url: "/some/url", method: "POST"}]);
 });

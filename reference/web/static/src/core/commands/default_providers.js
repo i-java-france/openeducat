@@ -1,12 +1,12 @@
-import { isMacOS } from "@web/core/browser/feature_detection";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { capitalize } from "@web/core/utils/strings";
-import { getVisibleElements } from "@web/core/utils/ui";
-import { DefaultCommandItem } from "./command_palette";
+import {isMacOS} from "@web/core/browser/feature_detection";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {capitalize} from "@web/core/utils/strings";
+import {getVisibleElements} from "@web/core/utils/ui";
+import {DefaultCommandItem} from "./command_palette";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 const commandSetupRegistry = registry.category("command_setup");
 commandSetupRegistry.add("default", {
@@ -16,13 +16,20 @@ commandSetupRegistry.add("default", {
 
 export class HotkeyCommandItem extends Component {
     static template = "web.HotkeyCommandItem";
-    static props = ["hotkey", "hotkeyOptions?", "name?", "searchValue?", "executeCommand", "slots"];
+    static props = [
+        "hotkey",
+        "hotkeyOptions?",
+        "name?",
+        "searchValue?",
+        "executeCommand",
+        "slots",
+    ];
     setup() {
         useHotkey(this.props.hotkey, this.props.executeCommand);
     }
 
     getKeysToPress(command) {
-        const { hotkey } = command;
+        const {hotkey} = command;
         let result = hotkey.split("+");
         if (isMacOS()) {
             result = result
@@ -45,12 +52,16 @@ commandProviderRegistry.add("command", {
                     : "default";
                 return cmd;
             })
-            .filter((command) => command.isAvailable === undefined || command.isAvailable());
+            .filter(
+                (command) => command.isAvailable === undefined || command.isAvailable()
+            );
         // Filter out same category dupplicate commands
         const uniqueCommands = commands.filter((obj, index) => {
             return (
                 index ===
-                commands.findIndex((o) => obj.name === o.name && obj.category === o.category)
+                commands.findIndex(
+                    (o) => obj.name === o.name && obj.category === o.category
+                )
             );
         });
         return uniqueCommands.map((command) => ({
@@ -69,7 +80,9 @@ commandProviderRegistry.add("command", {
 commandProviderRegistry.add("data-hotkeys", {
     provide: (env, options = {}) => {
         const commands = [];
-        const overlayModifier = registry.category("services").get("hotkey").overlayModifier;
+        const overlayModifier = registry
+            .category("services")
+            .get("hotkey").overlayModifier;
         // Also retrieve all hotkeyables elements
         for (const el of getVisibleElements(
             options.activeElement,

@@ -1,7 +1,6 @@
-import { registry } from "@web/core/registry";
-import { GraphRenderer } from "@web/views/graph/graph_renderer";
-import { graphView } from "@web/views/graph/graph_view";
-
+import {registry} from "@web/core/registry";
+import {GraphRenderer} from "@web/views/graph/graph_renderer";
+import {graphView} from "@web/views/graph/graph_view";
 
 export class SubscriptionGraphRenderer extends GraphRenderer {
     /**
@@ -17,7 +16,10 @@ export class SubscriptionGraphRenderer extends GraphRenderer {
                 res_model: this.model.metaData.resModel,
                 target: "current",
                 type: "ir.actions.act_window",
-                views: [[false, "pivot"], [false, "form"]],
+                views: [
+                    [false, "pivot"],
+                    [false, "form"],
+                ],
             },
             {
                 viewType: "pivot",

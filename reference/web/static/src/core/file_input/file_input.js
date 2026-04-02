@@ -1,5 +1,5 @@
-import { Component, onMounted, useRef, useState } from "@odoo/owl";
-import { useFileUploader } from "@web/core/utils/files";
+import {Component, onMounted, useRef, useState} from "@odoo/owl";
+import {useFileUploader} from "@web/core/utils/files";
 
 /**
  * Custom file input
@@ -30,15 +30,15 @@ export class FileInput extends Component {
         beforeOpen: async () => true,
     };
     static props = {
-        acceptedFileExtensions: { type: String, optional: true },
-        autoOpen: { type: Boolean, optional: true },
-        hidden: { type: Boolean, optional: true },
-        multiUpload: { type: Boolean, optional: true },
-        onUpload: { type: Function, optional: true },
-        beforeOpen: { type: Function, optional: true },
-        resId: { type: Number, optional: true },
-        resModel: { type: String, optional: true },
-        route: { type: String, optional: true },
+        acceptedFileExtensions: {type: String, optional: true},
+        autoOpen: {type: Boolean, optional: true},
+        hidden: {type: Boolean, optional: true},
+        multiUpload: {type: Boolean, optional: true},
+        onUpload: {type: Function, optional: true},
+        beforeOpen: {type: Function, optional: true},
+        resId: {type: Number, optional: true},
+        resModel: {type: String, optional: true},
+        route: {type: String, optional: true},
         "*": true,
     };
 
@@ -58,7 +58,7 @@ export class FileInput extends Component {
     }
 
     get httpParams() {
-        const { resId, resModel } = this.props;
+        const {resId, resModel} = this.props;
         const params = {
             csrf_token: odoo.csrf_token,
             ufile: [...this.fileInputRef.el.files],

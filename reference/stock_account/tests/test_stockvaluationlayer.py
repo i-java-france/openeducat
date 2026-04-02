@@ -1,10 +1,8 @@
 """ Implementation of "INVENTORY VALUATION TESTS" spreadsheet. """
 
-from odoo import Command
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.addons.stock_account.tests.common import TestStockValuationCommon
-from odoo.exceptions import ValidationError
 from odoo.tests import Form, tagged
+
+from odoo.addons.stock_account.tests.common import TestStockValuationCommon
 
 
 class TestStockValuationStandard(TestStockValuationCommon):
@@ -742,7 +740,7 @@ class TestStockValuationChangeCostMethod(TestStockValuationCommon):
 class TestStockValuationChangeValuation(TestStockValuationCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestStockValuationChangeValuation, cls).setUpClass()
+        super().setUpClass()
         cls.product = cls.product_standard
 
     def test_standard_manual_to_auto_1(self):

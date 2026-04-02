@@ -1,9 +1,9 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { _t } from "@web/core/l10n/translation";
-import { setupAutoplay, triggerAutoplay } from "@website/utils/videos";
-import { generateVideoIframe } from "@website/js/content/generate_video_iframe";
+import {_t} from "@web/core/l10n/translation";
+import {setupAutoplay, triggerAutoplay} from "@website/utils/videos";
+import {generateVideoIframe} from "@website/js/content/generate_video_iframe";
 
 export class MediaVideo extends Interaction {
     static selector = ".media_iframe_video";
@@ -30,7 +30,7 @@ export class MediaVideo extends Interaction {
             },
         },
         ":scope > .media_iframe_video_size": {
-            "t-att-class": () => ({ "d-none": !this.cookiesAccepted }),
+            "t-att-class": () => ({"d-none": !this.cookiesAccepted}),
         },
     };
 
@@ -45,7 +45,10 @@ export class MediaVideo extends Interaction {
         // In some cases (e.g., when adding a new video block), we don’t need
         // to rebuild the same iframe while starting the widget.
         if (!iframeEl) {
-            iframeEl = generateVideoIframe(this.el, this.services.website_cookies.manageIframeSrc);
+            iframeEl = generateVideoIframe(
+                this.el,
+                this.services.website_cookies.manageIframeSrc
+            );
         }
 
         if (iframeEl && !iframeEl.getAttribute("aria-label")) {

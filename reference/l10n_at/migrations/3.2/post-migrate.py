@@ -1,5 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import api, SUPERUSER_ID, Command
+from odoo import SUPERUSER_ID, Command, api
 
 
 def migrate(cr, version):

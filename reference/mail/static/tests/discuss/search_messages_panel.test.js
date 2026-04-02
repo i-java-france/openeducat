@@ -1,4 +1,5 @@
 import {
+    SIZES,
     click,
     contains,
     defineMailModels,
@@ -7,24 +8,23 @@ import {
     openDiscuss,
     patchUiSize,
     scroll,
-    SIZES,
     start,
     startServer,
     triggerHotkey,
 } from "@mail/../tests/mail_test_helpers";
-import { expect, mockTouch, mockUserAgent, test } from "@odoo/hoot";
-import { press } from "@odoo/hoot-dom";
-import { tick } from "@odoo/hoot-mock";
-import { serverState } from "@web/../tests/web_test_helpers";
+import {expect, mockTouch, mockUserAgent, test} from "@odoo/hoot";
+import {press} from "@odoo/hoot-dom";
+import {tick} from "@odoo/hoot-mock";
+import {serverState} from "@web/../tests/web_test_helpers";
 
-import { HIGHLIGHT_CLASS } from "@mail/core/common/message_search_hook";
+import {HIGHLIGHT_CLASS} from "@mail/core/common/message_search_hook";
 
 defineMailModels();
 
 test.tags("desktop");
 test("Should have a search button", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await contains("[title='Search Messages']");
@@ -33,10 +33,10 @@ test("Should have a search button", async () => {
 test.tags("desktop");
 test("Should open the search panel when search button is clicked", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
-    await contains(".o-discuss-ChannelMemberList"); // wait for auto-open of this panel
+    await contains(".o-discuss-ChannelMemberList"); // Wait for auto-open of this panel
     await click("[title='Search Messages']");
     await contains(".o-mail-SearchMessagesPanel");
     await contains(".o_searchview");
@@ -46,7 +46,7 @@ test("Should open the search panel when search button is clicked", async () => {
 test.tags("desktop");
 test("Should open the search panel with hotkey 'f'", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     pyEnv["mail.message"].create({
         author_id: serverState.partnerId,
         body: "This is a message",
@@ -65,7 +65,7 @@ test("Should open the search panel with hotkey 'f'", async () => {
 test.tags("desktop");
 test("Search a message", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     pyEnv["mail.message"].create({
         author_id: serverState.partnerId,
         body: "This is a message",
@@ -86,7 +86,7 @@ test("Search a message", async () => {
 test.tags("desktop");
 test("Search should be hightlighted", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     pyEnv["mail.message"].create({
         author_id: serverState.partnerId,
         body: "This is a message",
@@ -107,7 +107,7 @@ test("Search should be hightlighted", async () => {
 test.tags("desktop");
 test("Search a starred message", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     pyEnv["mail.message"].create({
         author_id: serverState.partnerId,
         body: "This is a message",
@@ -129,7 +129,7 @@ test("Search a starred message", async () => {
 test.tags("desktop");
 test("Search a message in inbox", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     pyEnv["mail.message"].create({
         author_id: serverState.partnerId,
         body: "This is a message",
@@ -151,7 +151,7 @@ test("Search a message in inbox", async () => {
 test.tags("desktop");
 test("Search a message in history (desktop)", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     const messageId = pyEnv["mail.message"].create({
         author_id: serverState.partnerId,
         body: "This is a message",
@@ -182,9 +182,9 @@ test.tags("mobile");
 test("Search a message in history (mobile)", async () => {
     mockTouch(true);
     mockUserAgent("android");
-    patchUiSize({ size: SIZES.SM });
+    patchUiSize({size: SIZES.SM});
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     const messageId = pyEnv["mail.message"].create({
         author_id: serverState.partnerId,
         body: "This is a message",
@@ -206,22 +206,22 @@ test("Search a message in history (mobile)", async () => {
     await contains(".o-mail-Thread");
     await click("[title='Search Messages']");
     await contains(".o-mail-SearchMessagesPanel");
-    await contains(".o-mail-Thread", { count: 0 });
+    await contains(".o-mail-Thread", {count: 0});
     await insertText(".o_searchview_input", "message");
     await triggerHotkey("Enter");
     await contains(".o-mail-SearchMessagesPanel .o-mail-Message");
     await click(".o-mail-MessageCard-jump");
     await contains(".o-mail-Thread");
-    await contains(".o-mail-SearchMessagesPanel", { count: 0 });
+    await contains(".o-mail-SearchMessagesPanel", {count: 0});
 });
 
 test.tags("desktop");
 test("Should close the search panel when search button is clicked again", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
-    await contains(".o-discuss-ChannelMemberList"); // wait for auto-open of this panel
+    await contains(".o-discuss-ChannelMemberList"); // Wait for auto-open of this panel
     await click("[title='Search Messages']");
     await click("[title='Close Search']");
     await contains(".o-mail-SearchMessagesPanel");
@@ -230,7 +230,7 @@ test("Should close the search panel when search button is clicked again", async 
 test.tags("desktop");
 test("Search a message in 60 messages should return 30 message first", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     for (let i = 0; i < 60; i++) {
         pyEnv["mail.message"].create({
             author_id: serverState.partnerId,
@@ -243,20 +243,20 @@ test("Search a message in 60 messages should return 30 message first", async () 
     }
     await start();
     await openDiscuss(channelId);
-    await contains(".o-mail-Message", { count: 30 });
+    await contains(".o-mail-Message", {count: 30});
     await click("[title='Search Messages']");
     await insertText(".o_searchview_input", "message");
     triggerHotkey("Enter");
-    await contains(".o-mail-SearchMessagesPanel .o-mail-Message", { count: 30 });
-    // give enough time to useVisible to potentially load more (unexpected) messages
+    await contains(".o-mail-SearchMessagesPanel .o-mail-Message", {count: 30});
+    // Give enough time to useVisible to potentially load more (unexpected) messages
     await tick();
-    await contains(".o-mail-SearchMessagesPanel .o-mail-Message", { count: 30 });
+    await contains(".o-mail-SearchMessagesPanel .o-mail-Message", {count: 30});
 });
 
 test.tags("desktop");
 test("Scrolling to the bottom should load more searched message", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     for (let i = 0; i < 90; i++) {
         pyEnv["mail.message"].create({
             author_id: serverState.partnerId,
@@ -269,22 +269,22 @@ test("Scrolling to the bottom should load more searched message", async () => {
     }
     await start();
     await openDiscuss(channelId);
-    await contains(".o-mail-Message", { count: 30 });
+    await contains(".o-mail-Message", {count: 30});
     await click("[title='Search Messages']");
     await insertText(".o_searchview_input", "message");
     triggerHotkey("Enter");
-    await contains(".o-mail-SearchMessagesPanel .o-mail-Message", { count: 30 });
+    await contains(".o-mail-SearchMessagesPanel .o-mail-Message", {count: 30});
     await scroll(".o-mail-SearchMessagesPanel .o-mail-ActionPanel", "bottom");
-    await contains(".o-mail-SearchMessagesPanel .o-mail-Message", { count: 60 });
-    // give enough time to useVisible to potentially load more (unexpected) messages
+    await contains(".o-mail-SearchMessagesPanel .o-mail-Message", {count: 60});
+    // Give enough time to useVisible to potentially load more (unexpected) messages
     await tick();
-    await contains(".o-mail-SearchMessagesPanel .o-mail-Message", { count: 60 });
+    await contains(".o-mail-SearchMessagesPanel .o-mail-Message", {count: 60});
 });
 
 test.tags("desktop");
 test("Editing the searched term should not edit the current searched term", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     for (let i = 0; i < 60; i++) {
         pyEnv["mail.message"].create({
             author_id: serverState.partnerId,
@@ -297,13 +297,13 @@ test("Editing the searched term should not edit the current searched term", asyn
     }
     onRpcBefore("/discuss/channel/messages", (args) => {
         if (args.search_term) {
-            const { search_term } = args;
+            const {search_term} = args;
             expect(search_term).toBe("message");
         }
     });
     await start();
     await openDiscuss(channelId);
-    await contains(".o-discuss-ChannelMemberList"); // wait for auto-open of this panel
+    await contains(".o-discuss-ChannelMemberList"); // Wait for auto-open of this panel
     await click("[title='Search Messages']");
     await insertText(".o_searchview_input", "message");
     triggerHotkey("Enter");
@@ -314,7 +314,7 @@ test("Editing the searched term should not edit the current searched term", asyn
 test.tags("desktop");
 test("Search a message containing round brackets", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     pyEnv["mail.message"].create({
         author_id: serverState.partnerId,
         body: "This is a (message)",
@@ -335,7 +335,7 @@ test("Search a message containing round brackets", async () => {
 test.tags("desktop");
 test("Search a message containing single quotes", async () => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    const channelId = pyEnv["discuss.channel"].create({name: "General"});
     await start();
     await openDiscuss(channelId);
     await insertText(".o-mail-Composer-input", "I can't do it");

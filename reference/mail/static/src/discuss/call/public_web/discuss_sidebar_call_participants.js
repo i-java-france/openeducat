@@ -1,12 +1,15 @@
-import { Component, useEffect, useState } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
-import { Thread } from "@mail/core/common/thread_model";
-import { CALL_ICON_DEAFEN, CALL_ICON_MUTED } from "@mail/discuss/call/common/call_actions";
-import { AvatarStack } from "@mail/discuss/core/common/avatar_stack";
-import { useHover } from "@mail/utils/common/hooks";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { _t } from "@web/core/l10n/translation";
+import {Component, useEffect, useState} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {Thread} from "@mail/core/common/thread_model";
+import {
+    CALL_ICON_DEAFEN,
+    CALL_ICON_MUTED,
+} from "@mail/discuss/call/common/call_actions";
+import {AvatarStack} from "@mail/discuss/core/common/avatar_stack";
+import {useHover} from "@mail/utils/common/hooks";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {_t} from "@web/core/l10n/translation";
 
 /**
  * @typedef {Object} Props
@@ -15,8 +18,8 @@ import { _t } from "@web/core/l10n/translation";
  */
 export class DiscussSidebarCallParticipants extends Component {
     static template = "mail.DiscussSidebarCallParticipants";
-    static props = { thread: { type: Thread }, compact: { type: Boolean, optional: true } };
-    static components = { AvatarStack, DiscussSidebarCallParticipants, Dropdown };
+    static props = {thread: {type: Thread}, compact: {type: Boolean, optional: true}};
+    static components = {AvatarStack, DiscussSidebarCallParticipants, Dropdown};
 
     setup() {
         super.setup();
@@ -26,7 +29,7 @@ export class DiscussSidebarCallParticipants extends Component {
             onHover: () => (this.floating.isOpen = true),
             onAway: () => (this.floating.isOpen = false),
         });
-        this.state = useState({ expanded: false });
+        this.state = useState({expanded: false});
         this.floating = useDropdownState();
         this.CALL_ICON_DEAFEN = CALL_ICON_DEAFEN;
         this.CALL_ICON_MUTED = CALL_ICON_MUTED;
@@ -106,7 +109,9 @@ export class DiscussSidebarCallParticipants extends Component {
     }
 
     get title() {
-        return this.state.expanded ? _t("Collapse participants") : _t("Expand participants");
+        return this.state.expanded
+            ? _t("Collapse participants")
+            : _t("Expand participants");
     }
 
     onClickParticipant(ev, session) {}

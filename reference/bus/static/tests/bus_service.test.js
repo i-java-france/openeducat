@@ -8,32 +8,37 @@ import {
 } from "@bus/../tests/bus_test_helpers";
 import {
     WEBSOCKET_CLOSE_CODES,
-    WebsocketWorker,
     WORKER_STATE,
+    WebsocketWorker,
 } from "@bus/workers/websocket_worker";
-import { describe, expect, test } from "@odoo/hoot";
-import { Deferred, manuallyDispatchProgrammaticEvent, runAllTimers, waitFor } from "@odoo/hoot-dom";
-import { mockWebSocket } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
 import {
+    Deferred,
+    manuallyDispatchProgrammaticEvent,
+    runAllTimers,
+    waitFor,
+} from "@odoo/hoot-dom";
+import {mockWebSocket} from "@odoo/hoot-mock";
+import {
+    MockServer,
     asyncStep,
     contains,
     getService,
     makeMockEnv,
     makeMockServer,
-    MockServer,
     mockService,
     mountWithCleanup,
     patchWithCleanup,
     restoreRegistry,
     waitForSteps,
 } from "@web/../tests/web_test_helpers";
-import { getWebSocketWorker, onWebsocketEvent } from "./mock_websocket";
+import {getWebSocketWorker, onWebsocketEvent} from "./mock_websocket";
 
-import { browser } from "@web/core/browser/browser";
-import { registry } from "@web/core/registry";
-import { user } from "@web/core/user";
-import { session } from "@web/session";
-import { WebClient } from "@web/webclient/webclient";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
+import {user} from "@web/core/user";
+import {session} from "@web/session";
+import {WebClient} from "@web/webclient/webclient";
 
 defineBusModels();
 describe.current.tags("desktop");
@@ -42,7 +47,7 @@ test("notifications not received after stoping the service", async () => {
     const firstTabEnv = await makeMockEnv();
     stepWorkerActions("BUS:LEAVE");
     restoreRegistry(registry);
-    const secondTabEnv = await makeMockEnv(null, { makeNew: true });
+    const secondTabEnv = await makeMockEnv(null, {makeNew: true});
     startBusService(firstTabEnv);
     startBusService(secondTabEnv);
     firstTabEnv.services.bus_service.addChannel("lambda");
@@ -57,7 +62,7 @@ test("notifications not received after stoping the service", async () => {
     MockServer.env["bus.bus"]._sendone("lambda", "notifType", "epsilon");
     await waitNotifications(
         [firstTabEnv, "notifType", "epsilon"],
-        [secondTabEnv, "notifType", "epsilon", { received: false }]
+        [secondTabEnv, "notifType", "epsilon", {received: false}]
     );
 });
 
@@ -71,7 +76,9 @@ test("notifications still received after disconnect/reconnect", async () => {
     await waitForChannels(["lambda"]);
     MockServer.env["bus.bus"]._sendone("lambda", "notifType", "beta");
     await waitNotifications(["notifType", "beta"]);
-    MockServer.env["bus.bus"]._simulateDisconnection(WEBSOCKET_CLOSE_CODES.ABNORMAL_CLOSURE);
+    MockServer.env["bus.bus"]._simulateDisconnection(
+        WEBSOCKET_CLOSE_CODES.ABNORMAL_CLOSURE
+    );
     await waitForSteps(["BUS:DISCONNECT"]);
     await runAllTimers();
     await waitForSteps(["BUS:RECONNECT"]);
@@ -82,7 +89,7 @@ test("notifications still received after disconnect/reconnect", async () => {
 test("notifications are received by each tab", async () => {
     const firstTabEnv = await makeMockEnv();
     restoreRegistry(registry);
-    const secondTabEnv = await makeMockEnv(null, { makeNew: true });
+    const secondTabEnv = await makeMockEnv(null, {makeNew: true});
     firstTabEnv.services.bus_service.addChannel("lambda");
     secondTabEnv.services.bus_service.addChannel("lambda");
     await waitForChannels(["lambda"]);
@@ -115,17 +122,20 @@ test("second tab still receives notifications after main pagehide", async () => 
         },
     });
     restoreRegistry(registry);
-    const secondEnv = await makeMockEnv(null, { makeNew: true });
+    const secondEnv = await makeMockEnv(null, {makeNew: true});
     secondEnv.services.bus_service.addChannel("lambda");
     await waitForChannels(["lambda"]);
     MockServer.env["bus.bus"]._sendone("lambda", "notifType", "beta");
-    await waitNotifications([mainEnv, "notifType", "beta"], [secondEnv, "notifType", "beta"]);
-    // simulate unloading main
+    await waitNotifications(
+        [mainEnv, "notifType", "beta"],
+        [secondEnv, "notifType", "beta"]
+    );
+    // Simulate unloading main
     await manuallyDispatchProgrammaticEvent(window, "pagehide");
     await waitForSteps(["BUS:LEAVE"]);
     MockServer.env["bus.bus"]._sendone("lambda", "notifType", "gamma");
     await waitNotifications(
-        [mainEnv, "notifType", "gamma", { received: false }],
+        [mainEnv, "notifType", "gamma", {received: false}],
         [secondEnv, "notifType", "gamma"]
     );
 });
@@ -133,7 +143,7 @@ test("second tab still receives notifications after main pagehide", async () => 
 test("add two different channels from different tabs", async () => {
     const firstTabEnv = await makeMockEnv();
     restoreRegistry(registry);
-    const secondTabEnv = await makeMockEnv(null, { makeNew: true });
+    const secondTabEnv = await makeMockEnv(null, {makeNew: true});
     firstTabEnv.services.bus_service.addChannel("alpha");
     secondTabEnv.services.bus_service.addChannel("beta");
     await waitForChannels(["alpha", "beta"]);
@@ -150,10 +160,12 @@ test("add two different channels from different tabs", async () => {
 });
 
 test("channel management from multiple tabs", async () => {
-    onWebsocketEvent("subscribe", (data) => asyncStep(`subscribe - [${data.channels.toString()}]`));
+    onWebsocketEvent("subscribe", (data) =>
+        asyncStep(`subscribe - [${data.channels.toString()}]`)
+    );
     const firstTabEnv = await makeMockEnv();
     restoreRegistry(registry);
-    const secondTabEnv = await makeMockEnv(null, { makeNew: true });
+    const secondTabEnv = await makeMockEnv(null, {makeNew: true});
     firstTabEnv.services.bus_service.addChannel("channel1");
     await waitForSteps(["subscribe - [channel1]"]);
     // Already known: no subscription.
@@ -169,21 +181,25 @@ test("channel management from multiple tabs", async () => {
 });
 
 test("re-subscribe on reconnect", async () => {
-    onWebsocketEvent("subscribe", (data) => asyncStep(`subscribe - [${data.channels.toString()}]`));
+    onWebsocketEvent("subscribe", (data) =>
+        asyncStep(`subscribe - [${data.channels.toString()}]`)
+    );
     addBusServiceListeners(["BUS:RECONNECT", () => asyncStep("BUS:RECONNECT")]);
     await makeMockEnv();
     startBusService();
     await waitForSteps(["subscribe - []"]);
-    MockServer.env["bus.bus"]._simulateDisconnection(WEBSOCKET_CLOSE_CODES.KEEP_ALIVE_TIMEOUT);
+    MockServer.env["bus.bus"]._simulateDisconnection(
+        WEBSOCKET_CLOSE_CODES.KEEP_ALIVE_TIMEOUT
+    );
     await runAllTimers();
     await waitForSteps(["BUS:RECONNECT", "subscribe - []"]);
 });
 
 test("pass last notification id on initialization", async () => {
     patchWithCleanup(WebsocketWorker.prototype, {
-        _onClientMessage(_client, { action, data }) {
+        _onClientMessage(_client, {action, data}) {
             if (action === "BUS:INITIALIZE_CONNECTION") {
-                asyncStep(`${action} - ${data["lastNotificationId"]}`);
+                asyncStep(`${action} - ${data.lastNotificationId}`);
             }
             return super._onClientMessage(...arguments);
         },
@@ -196,7 +212,7 @@ test("pass last notification id on initialization", async () => {
     MockServer.env["bus.bus"]._sendone("lambda", "notifType", "beta");
     await waitNotifications([firstEnv, "notifType", "beta"]);
     restoreRegistry(registry);
-    const secondEnv = await makeMockEnv(null, { makeNew: true });
+    const secondEnv = await makeMockEnv(null, {makeNew: true});
     startBusService(secondEnv);
     await waitForSteps([`BUS:INITIALIZE_CONNECTION - 1`]);
 });
@@ -207,21 +223,21 @@ test("websocket disconnects when user logs out", async () => {
         ["BUS:RECONNECT", () => asyncStep("BUS:CONNECT")],
         ["BUS:DISCONNECT", () => asyncStep("BUS:DISCONNECT")]
     );
-    patchWithCleanup(session, { user_id: null, db: "openerp" });
-    patchWithCleanup(user, { userId: 1 });
+    patchWithCleanup(session, {user_id: null, db: "openerp"});
+    patchWithCleanup(user, {userId: 1});
     const firstTabEnv = await makeMockEnv();
     await startBusService(firstTabEnv);
     await waitForSteps(["BUS:CONNECT"]);
-    // second tab connects to the worker, omitting the DB name. Consider same DB.
-    patchWithCleanup(session, { db: undefined });
+    // Second tab connects to the worker, omitting the DB name. Consider same DB.
+    patchWithCleanup(session, {db: undefined});
     restoreRegistry(registry);
-    const env2 = await makeMockEnv(null, { makeNew: true });
+    const env2 = await makeMockEnv(null, {makeNew: true});
     await startBusService(env2);
     await waitForSteps([]);
-    // third tab connects to the worker after disconnection: userId is now false.
-    patchWithCleanup(user, { userId: false });
+    // Third tab connects to the worker after disconnection: userId is now false.
+    patchWithCleanup(user, {userId: false});
     restoreRegistry(registry);
-    const env3 = await makeMockEnv(null, { makeNew: true });
+    const env3 = await makeMockEnv(null, {makeNew: true});
     await startBusService(env3);
     await waitForSteps(["BUS:DISCONNECT", "BUS:CONNECT"]);
 });
@@ -231,21 +247,21 @@ test("websocket reconnects upon user log in", async () => {
         ["BUS:CONNECT", () => asyncStep("BUS:CONNECT")],
         ["BUS:DISCONNECT", () => asyncStep("BUS:DISCONNECT")]
     );
-    patchWithCleanup(session, { user_id: null });
-    patchWithCleanup(user, { userId: false });
+    patchWithCleanup(session, {user_id: null});
+    patchWithCleanup(user, {userId: false});
     await makeMockEnv();
     startBusService();
     await waitForSteps(["BUS:CONNECT"]);
-    patchWithCleanup(user, { userId: 1 });
+    patchWithCleanup(user, {userId: 1});
     restoreRegistry(registry);
-    const secondTabEnv = await makeMockEnv(null, { makeNew: true });
+    const secondTabEnv = await makeMockEnv(null, {makeNew: true});
     startBusService(secondTabEnv);
     await waitForSteps(["BUS:DISCONNECT", "BUS:CONNECT"]);
 });
 
 test("websocket connects with URL corresponding to given serverURL", async () => {
     const serverURL = "http://random-website.com";
-    mockService("bus.parameters", { serverURL });
+    mockService("bus.parameters", {serverURL});
     await makeMockEnv();
     mockWebSocket((ws) => asyncStep(ws.url));
     startBusService();
@@ -327,7 +343,9 @@ test("can reconnect after late close event", async () => {
     closeDeferred.resolve();
     await waitForSteps([]);
     // Server closes the connection, the worker should reconnect.
-    MockServer.env["bus.bus"]._simulateDisconnection(WEBSOCKET_CLOSE_CODES.KEEP_ALIVE_TIMEOUT);
+    MockServer.env["bus.bus"]._simulateDisconnection(
+        WEBSOCKET_CLOSE_CODES.KEEP_ALIVE_TIMEOUT
+    );
     await waitForSteps(["BUS:DISCONNECT", "BUS:RECONNECTING", "BUS:RECONNECT"]);
 });
 
@@ -372,7 +390,10 @@ test("subscribe to single notification", async () => {
     getService("bus_service").subscribe("message_type", (payload) =>
         asyncStep(`message - ${JSON.stringify(payload)}`)
     );
-    MockServer.env["bus.bus"]._sendone("my_channel", "message_type", { body: "hello", id: 1 });
+    MockServer.env["bus.bus"]._sendone("my_channel", "message_type", {
+        body: "hello",
+        id: 1,
+    });
     await waitForSteps(['message - {"body":"hello","id":1}']);
 });
 
@@ -388,17 +409,22 @@ test("do not reconnect when worker version is outdated", async () => {
     await waitForSteps(["BUS:CONNECT"]);
     const worker = getWebSocketWorker();
     expect(worker.state).toBe(WORKER_STATE.CONNECTED);
-    MockServer.env["bus.bus"]._simulateDisconnection(WEBSOCKET_CLOSE_CODES.ABNORMAL_CLOSURE);
+    MockServer.env["bus.bus"]._simulateDisconnection(
+        WEBSOCKET_CLOSE_CODES.ABNORMAL_CLOSURE
+    );
     await waitForSteps(["BUS:DISCONNECT"]);
     await runAllTimers();
     await waitForSteps(["BUS:RECONNECT"]);
     expect(worker.state).toBe(WORKER_STATE.CONNECTED);
-    patchWithCleanup(console, { warn: (message) => asyncStep(message) });
+    patchWithCleanup(console, {warn: (message) => asyncStep(message)});
     MockServer.env["bus.bus"]._simulateDisconnection(
         WEBSOCKET_CLOSE_CODES.CLEAN,
         "OUTDATED_VERSION"
     );
-    await waitForSteps(["Worker deactivated due to an outdated version.", "BUS:DISCONNECT"]);
+    await waitForSteps([
+        "Worker deactivated due to an outdated version.",
+        "BUS:DISCONNECT",
+    ]);
     await runAllTimers();
     stepWorkerActions("BUS:START");
     startBusService();
@@ -419,7 +445,9 @@ test("reconnect on demande after clean close code", async () => {
     startBusService();
     await runAllTimers();
     await waitForSteps(["BUS:CONNECT"]);
-    MockServer.env["bus.bus"]._simulateDisconnection(WEBSOCKET_CLOSE_CODES.ABNORMAL_CLOSURE);
+    MockServer.env["bus.bus"]._simulateDisconnection(
+        WEBSOCKET_CLOSE_CODES.ABNORMAL_CLOSURE
+    );
     await waitForSteps(["BUS:DISCONNECT"]);
     await runAllTimers();
     await waitForSteps(["BUS:RECONNECT"]);
@@ -436,7 +464,7 @@ test("remove from main tab candidates when version is outdated", async () => {
         ["BUS:DISCONNECT", () => asyncStep("BUS:DISCONNECT")]
     );
     await makeMockEnv();
-    patchWithCleanup(console, { warn: (message) => asyncStep(message) });
+    patchWithCleanup(console, {warn: (message) => asyncStep(message)});
     getService("multi_tab").bus.addEventListener("no_longer_main_tab", () =>
         asyncStep("no_longer_main_tab")
     );
@@ -460,14 +488,17 @@ test("show notification when version is outdated", async () => {
         ["BUS:CONNECT", () => asyncStep("BUS:CONNECT")],
         ["BUS:DISCONNECT", () => asyncStep("BUS:DISCONNECT")]
     );
-    patchWithCleanup(console, { warn: (message) => asyncStep(message) });
+    patchWithCleanup(console, {warn: (message) => asyncStep(message)});
     await mountWithCleanup(WebClient);
     await waitForSteps(["BUS:CONNECT"]);
     MockServer.env["bus.bus"]._simulateDisconnection(
         WEBSOCKET_CLOSE_CODES.CLEAN,
         "OUTDATED_VERSION"
     );
-    await waitForSteps(["Worker deactivated due to an outdated version.", "BUS:DISCONNECT"]);
+    await waitForSteps([
+        "Worker deactivated due to an outdated version.",
+        "BUS:DISCONNECT",
+    ]);
     await runAllTimers();
     await waitFor(".o_notification", {
         contains:

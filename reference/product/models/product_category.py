@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -64,6 +63,6 @@ class ProductCategory(models.Model):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
         if 'name' not in default:
-            for category, vals in zip(self, vals_list):
+            for category, vals in zip(self, vals_list, strict=False):
                 vals['name'] = _("%s (copy)", category.name)
         return vals_list

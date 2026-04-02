@@ -1,15 +1,16 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import pytz
 import logging
-
-from odoo import api, fields, models, _
-from odoo.fields import Domain
-
-from .lunch_supplier import float_to_time
 from datetime import datetime, timedelta
 from textwrap import dedent
 
+import pytz
+
+from odoo import _, api, fields, models
+from odoo.fields import Domain
+
 from odoo.addons.base.models.res_partner import _tz_get
+
+from .lunch_supplier import float_to_time
 
 _logger = logging.getLogger(__name__)
 WEEKDAY_TO_NAME = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
@@ -136,7 +137,7 @@ class LunchAlert(models.Model):
             # noupdate is set to true to avoid to delete record at module update
             'noupdate': True,
         } for cron in crons])
-        for vals, cron in zip(vals_list, crons):
+        for vals, cron in zip(vals_list, crons, strict=False):
             vals['cron_id'] = cron.id
 
         alerts = super().create(vals_list)

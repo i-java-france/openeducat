@@ -1,6 +1,6 @@
-import { Domain } from "@web/core/domain";
-import { formatAST, parseExpr } from "@web/core/py_js/py";
-import { toPyValue } from "@web/core/py_js/py_utils";
+import {Domain} from "@web/core/domain";
+import {formatAST, parseExpr} from "@web/core/py_js/py";
+import {toPyValue} from "@web/core/py_js/py_utils";
 
 /** @typedef { import("@web/core/py_js/py_parser").AST } AST */
 /** @typedef {import("@web/core/domain").DomainRepr} DomainRepr */
@@ -79,7 +79,7 @@ export function expression(expr) {
  * @returns {Connector}
  */
 export function connector(value, children = [], negate = false) {
-    return { type: "connector", value, children, negate };
+    return {type: "connector", value, children, negate};
 }
 
 /**
@@ -88,7 +88,7 @@ export function connector(value, children = [], negate = false) {
  */
 export function complexCondition(value) {
     parseExpr(value);
-    return { type: "complex_condition", value };
+    return {type: "complex_condition", value};
 }
 
 /**
@@ -99,7 +99,7 @@ export function complexCondition(value) {
  * @returns {Condition}
  */
 export function condition(path, operator, value, negate = false) {
-    return { type: "condition", path, operator, value, negate };
+    return {type: "condition", path, operator, value, negate};
 }
 
 export const TRUE_TREE = condition(1, "=", 1);
@@ -131,7 +131,8 @@ export function cloneTree(tree) {
     return clone;
 }
 
-const areEqualValues = (value, otherValue) => formatValue(value) === formatValue(otherValue);
+const areEqualValues = (value, otherValue) =>
+    formatValue(value) === formatValue(otherValue);
 
 const areEqualArraysOfTrees = (array, otherArray) => {
     if (array.length !== otherArray.length) {
@@ -210,7 +211,7 @@ export function astFromValue(value) {
         return value.toAST();
     }
     if (Array.isArray(value)) {
-        return { type: 4, value: value.map(astFromValue) };
+        return {type: 4, value: value.map(astFromValue)};
     }
     return toPyValue(value);
 }
@@ -254,14 +255,14 @@ export function applyTransformations(transformations, transformed, ...fixedParam
 }
 
 function normalizeConnector(connector) {
-    const newTree = { ...connector, children: [] };
+    const newTree = {...connector, children: []};
     for (const child of connector.children) {
         addChild(newTree, child);
     }
     if (newTree.children.length === 1) {
         const child = newTree.children[0];
         if (newTree.negate) {
-            const newChild = { ...child, negate: !child.negate };
+            const newChild = {...child, negate: !child.negate};
             if (newChild.type === "condition") {
                 return newChild;
             }
@@ -334,7 +335,10 @@ export function rewriteNConsecutiveChildren(transformation, N = 2) {
             const NconsecutiveChildren = currentChildren.slice(i, i + N);
             let replacement = null;
             if (NconsecutiveChildren.length === N) {
-                replacement = transformation(connector(c.value, NconsecutiveChildren), options);
+                replacement = transformation(
+                    connector(c.value, NconsecutiveChildren),
+                    options
+                );
             }
             if (replacement) {
                 children.push(replacement);
@@ -343,6 +347,6 @@ export function rewriteNConsecutiveChildren(transformation, N = 2) {
                 children.push(NconsecutiveChildren[0]);
             }
         }
-        return { ...c, children };
+        return {...c, children};
     };
 }

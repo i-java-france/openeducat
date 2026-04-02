@@ -1,11 +1,11 @@
 import os
-from PIL import Image
 from functools import partial
 
-from odoo.tests import TransactionCase, tagged, Form
-from odoo.tools import frozendict
-from odoo.tools.image import image_to_base64, hex_to_rgb
+from PIL import Image
 
+from odoo.tests import Form, TransactionCase, tagged
+from odoo.tools import frozendict
+from odoo.tools.image import hex_to_rgb, image_to_base64
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 _file_cache = {}
@@ -16,7 +16,7 @@ class TestBaseDocumentLayoutHelpers(TransactionCase):
     #   Public
     #
     def setUp(self):
-        super(TestBaseDocumentLayoutHelpers, self).setUp()
+        super().setUp()
         self.color_fields = ['primary_color', 'secondary_color']
         self.company = self.env.company
         self.css_color_error = 0
@@ -52,7 +52,7 @@ class TestBaseDocumentLayoutHelpers(TransactionCase):
     def _set_images(self):
         for fname in self._get_images_for_test():
             fname_split = fname.split('.')
-            if not fname_split[0] in _file_cache:
+            if fname_split[0] not in _file_cache:
                 with Image.open(os.path.join(dir_path, fname), 'r') as img:
                     base64_img = image_to_base64(img, 'PNG')
                     primary, secondary = self.env['base.document.layout'].extract_image_primary_secondary_colors(base64_img)

@@ -1,11 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import odoo
-from odoo import api, models, fields
-from odoo.http import request, DEFAULT_MAX_CONTENT_LENGTH
+from odoo import api, fields, models
+from odoo.http import DEFAULT_MAX_CONTENT_LENGTH, request
 from odoo.tools import config
 from odoo.tools.misc import hmac, str2bool
-
 
 """
 Debug mode is stored in session and should always be a string.

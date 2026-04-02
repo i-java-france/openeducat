@@ -1,13 +1,19 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { computeM2OProps, Many2One } from "@web/views/fields/many2one/many2one";
-import { buildM2OFieldDescription, Many2OneField } from "@web/views/fields/many2one/many2one_field";
-import { Component } from "@odoo/owl";
-import { Many2XAutocomplete, useOpenMany2XRecord } from "@web/views/fields/relational_utils";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {computeM2OProps, Many2One} from "@web/views/fields/many2one/many2one";
+import {
+    buildM2OFieldDescription,
+    Many2OneField,
+} from "@web/views/fields/many2one/many2one_field";
+import {Component} from "@odoo/owl";
+import {
+    Many2XAutocomplete,
+    useOpenMany2XRecord,
+} from "@web/views/fields/relational_utils";
 
-import { usePartnerAutocomplete } from "@partner_autocomplete/js/partner_autocomplete_core";
-import { PartnerAutoComplete } from "@partner_autocomplete/js/partner_autocomplete_component";
+import {usePartnerAutocomplete} from "@partner_autocomplete/js/partner_autocomplete_core";
+import {PartnerAutoComplete} from "@partner_autocomplete/js/partner_autocomplete_component";
 
 export class PartnerMany2XAutocomplete extends Many2XAutocomplete {
     static components = {
@@ -24,8 +30,8 @@ export class PartnerMany2One extends Many2One {
 
 export class PartnerAutoCompleteMany2one extends Component {
     static template = "partner_autocomplete.PartnerAutoCompleteMany2one";
-    static components = { Many2One: PartnerMany2One };
-    static props = { ...Many2OneField.props };
+    static components = {Many2One: PartnerMany2One};
+    static props = {...Many2OneField.props};
 
     setup() {
         super.setup();
@@ -39,14 +45,16 @@ export class PartnerAutoCompleteMany2one extends Component {
                 write: this.props.canWrite,
             },
             isToMany: false,
-            onRecordSaved: (record) => this.props.record.update({
-                [this.props.name]: {
-                    id: record.resId,
-                    display_name: record.data.display_name || record.data.name,
-                },
-            }),
+            onRecordSaved: (record) =>
+                this.props.record.update({
+                    [this.props.name]: {
+                        id: record.resId,
+                        display_name: record.data.display_name || record.data.name,
+                    },
+                }),
             onRecordDiscarded: () => this.props.record.update(false),
-            fieldString: this.props.string || this.props.record.fields[this.props.name].string,
+            fieldString:
+                this.props.string || this.props.record.fields[this.props.name].string,
         });
     }
 
@@ -70,18 +78,21 @@ export class PartnerAutoCompleteMany2one extends Component {
                 options: async (request, shouldSearchWorldWide) => {
                     if (this.validateSearchTerm(request)) {
                         let queryCountryId = false;
-                    	if (shouldSearchWorldWide){
-							queryCountryId = 0;
-						}
-                        const suggestions = await this.partnerAutocomplete.autocomplete(request, queryCountryId);
+                        if (shouldSearchWorldWide) {
+                            queryCountryId = 0;
+                        }
+                        const suggestions = await this.partnerAutocomplete.autocomplete(
+                            request,
+                            queryCountryId
+                        );
                         return suggestions.map((suggestion) => ({
                             cssClass: "partner_autocomplete_dropdown_many2one",
                             data: suggestion,
                             label: suggestion.name,
-                            onSelect: () => this.onSelectPartnerAutocompleteOption(suggestion),
+                            onSelect: () =>
+                                this.onSelectPartnerAutocompleteOption(suggestion),
                         }));
-                    }
-                    else {
+                    } else {
                         return [];
                     }
                 },
@@ -93,22 +104,22 @@ export class PartnerAutoCompleteMany2one extends Component {
 
     async onSelectPartnerAutocompleteOption(option) {
         const data = await this.partnerAutocomplete.getCreateData(option);
-		if (!data?.company) {
-			return;
-		}
+        if (!data?.company) {
+            return;
+        }
         let context = {
-            'default_is_company': true
+            default_is_company: true,
         };
 
         for (const [key, val] of Object.entries(data.company)) {
-            context['default_' + key] = val && val.id ? val.id : val;
+            context["default_" + key] = val && val.id ? val.id : val;
         }
 
         if (data.logo) {
             context.default_image_1920 = data.logo;
         }
 
-        return this.openRecord({ context });
+        return this.openRecord({context});
     }
 }
 
@@ -116,4 +127,6 @@ export const PartnerAutoCompleteMany2oneField = {
     ...buildM2OFieldDescription(PartnerAutoCompleteMany2one),
 };
 
-registry.category("fields").add("res_partner_many2one", PartnerAutoCompleteMany2oneField);
+registry
+    .category("fields")
+    .add("res_partner_many2one", PartnerAutoCompleteMany2oneField);

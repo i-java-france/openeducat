@@ -8,7 +8,10 @@
             </BuilderSelect>
         </BuilderRow>
         <BuilderRow label.translate="Background Color">
-            <BuilderColorPicker styleAction="'background-color'" enabledTabs="['solid', 'custom']"/>
+            <BuilderColorPicker
+                styleAction="'background-color'"
+                enabledTabs="['solid', 'custom']"
+            />
         </BuilderRow>
     </t>
 </templates>

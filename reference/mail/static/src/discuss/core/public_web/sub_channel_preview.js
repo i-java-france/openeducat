@@ -1,7 +1,7 @@
-import { isToday } from "@mail/utils/common/dates";
-import { Component } from "@odoo/owl";
+import {isToday} from "@mail/utils/common/dates";
+import {Component} from "@odoo/owl";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class SubChannelPreview extends Component {
     static template = "mail.SubChannelPreview";

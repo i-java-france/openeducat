@@ -1,11 +1,17 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, Command, models, fields
-from odoo.http import request
-from odoo.tools import email_normalize, get_lang, html2plaintext, is_html_empty, plaintext2html
-from odoo.addons.mail.tools.discuss import Store
+from odoo import Command, api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.http import request
+from odoo.tools import (
+    email_normalize,
+    get_lang,
+    html2plaintext,
+    is_html_empty,
+    plaintext2html,
+)
+
+from odoo.addons.mail.tools.discuss import Store
 
 
 class ChatbotScript(models.Model):
@@ -69,7 +75,7 @@ class ChatbotScript(models.Model):
 
     def copy_data(self, default=None):
         vals_list = super().copy_data(default=default)
-        return [dict(vals, title=self.env._("%s (copy)", script.title)) for script, vals in zip(self, vals_list)]
+        return [dict(vals, title=self.env._("%s (copy)", script.title)) for script, vals in zip(self, vals_list, strict=False)]
 
     def copy(self, default=None):
         """ Correctly copy the 'triggering_answer_ids' field from the original script_step_ids to the clone.
@@ -83,16 +89,16 @@ class ChatbotScript(models.Model):
         if 'question_ids' in default:
             return new_scripts
 
-        for old_script, new_script in zip(self, new_scripts):
+        for old_script, new_script in zip(self, new_scripts, strict=False):
             original_steps = old_script.script_step_ids.sorted()
             clone_steps = new_script.script_step_ids.sorted()
 
             answers_map = {}
-            for clone_step, original_step in zip(clone_steps, original_steps):
-                for clone_answer, original_answer in zip(clone_step.answer_ids.sorted(), original_step.answer_ids.sorted()):
+            for clone_step, original_step in zip(clone_steps, original_steps, strict=False):
+                for clone_answer, original_answer in zip(clone_step.answer_ids.sorted(), original_step.answer_ids.sorted(), strict=False):
                     answers_map[original_answer] = clone_answer
 
-            for clone_step, original_step in zip(clone_steps, original_steps):
+            for clone_step, original_step in zip(clone_steps, original_steps, strict=False):
                 clone_step.write({
                     'triggering_answer_ids': [
                         (4, answer.id)
@@ -117,7 +123,7 @@ class ChatbotScript(models.Model):
 
         for vals, partner in zip(
             [vals for vals in vals_list if 'operator_partner_id' not in vals and 'title' in vals],
-            operator_partners
+            operator_partners, strict=False
         ):
             vals['operator_partner_id'] = partner.id
 

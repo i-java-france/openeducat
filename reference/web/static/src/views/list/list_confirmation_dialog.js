@@ -1,15 +1,15 @@
-import { Dialog } from "@web/core/dialog/dialog";
-import { _t } from "@web/core/l10n/translation";
-import { useAutofocus } from "@web/core/utils/hooks";
-import { TagsList } from "@web/core/tags_list/tags_list";
-import { Operation } from "@web/model/relational_model/operation";
-import { Field, fieldVisualFeedback } from "@web/views/fields/field";
+import {Dialog} from "@web/core/dialog/dialog";
+import {_t} from "@web/core/l10n/translation";
+import {useAutofocus} from "@web/core/utils/hooks";
+import {TagsList} from "@web/core/tags_list/tags_list";
+import {Operation} from "@web/model/relational_model/operation";
+import {Field, fieldVisualFeedback} from "@web/views/fields/field";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class ListConfirmationDialog extends Component {
     static template = "web.ListView.ConfirmationModal";
-    static components = { Dialog, Field, TagsList };
+    static components = {Dialog, Field, TagsList};
     static props = {
         close: Function,
         title: {
@@ -18,8 +18,8 @@ export class ListConfirmationDialog extends Component {
                 (typeof m === "object" && typeof m.toString === "function"),
             optional: true,
         },
-        confirm: { type: Function, optional: true },
-        cancel: { type: Function, optional: true },
+        confirm: {type: Function, optional: true},
+        cancel: {type: Function, optional: true},
         isDomainSelected: Boolean,
         fields: Object,
         nbRecords: Number,
@@ -83,11 +83,16 @@ export class ListConfirmationDialog extends Component {
 
     isValueEmpty(field) {
         const fieldNode = field.fieldNode || {};
-        return fieldVisualFeedback(fieldNode.field || {}, this.props.record, field.name, {
-            ...fieldNode,
-            // force readonly as we force that state on the Field component
-            readonly: true,
-        }).empty;
+        return fieldVisualFeedback(
+            fieldNode.field || {},
+            this.props.record,
+            field.name,
+            {
+                ...fieldNode,
+                // force readonly as we force that state on the Field component
+                readonly: true,
+            }
+        ).empty;
     }
 
     isValueOperation(field) {

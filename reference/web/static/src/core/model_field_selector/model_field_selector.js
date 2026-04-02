@@ -1,8 +1,8 @@
-import { Component, onWillStart, onWillUpdateProps, useState } from "@odoo/owl";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { KeepLast } from "@web/core/utils/concurrency";
-import { useService } from "@web/core/utils/hooks";
-import { ModelFieldSelectorPopover } from "./model_field_selector_popover";
+import {Component, onWillStart, onWillUpdateProps, useState} from "@odoo/owl";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {KeepLast} from "@web/core/utils/concurrency";
+import {useService} from "@web/core/utils/hooks";
+import {ModelFieldSelectorPopover} from "./model_field_selector_popover";
 
 export class ModelFieldSelector extends Component {
     static template = "web._ModelFieldSelector";
@@ -11,17 +11,17 @@ export class ModelFieldSelector extends Component {
     };
     static props = {
         resModel: String,
-        path: { optional: true },
-        allowEmpty: { type: Boolean, optional: true },
-        readonly: { type: Boolean, optional: true },
-        readProperty: { type: Boolean, optional: true },
-        showSearchInput: { type: Boolean, optional: true },
-        isDebugMode: { type: Boolean, optional: true },
-        update: { type: Function, optional: true },
-        filter: { type: Function, optional: true },
-        sort: { type: Function, optional: true },
-        followRelations: { type: Boolean, optional: true },
-        showDebugInput: { type: Boolean, optional: true },
+        path: {optional: true},
+        allowEmpty: {type: Boolean, optional: true},
+        readonly: {type: Boolean, optional: true},
+        readProperty: {type: Boolean, optional: true},
+        showSearchInput: {type: Boolean, optional: true},
+        isDebugMode: {type: Boolean, optional: true},
+        update: {type: Function, optional: true},
+        filter: {type: Function, optional: true},
+        sort: {type: Function, optional: true},
+        followRelations: {type: Boolean, optional: true},
+        showDebugInput: {type: Boolean, optional: true},
     };
     static defaultProps = {
         readonly: true,
@@ -47,7 +47,7 @@ export class ModelFieldSelector extends Component {
             },
         });
         this.keepLast = new KeepLast();
-        this.state = useState({ isInvalid: false, displayNames: [] });
+        this.state = useState({isInvalid: false, displayNames: []});
         onWillStart(() => this.updateState(this.props));
         onWillUpdateProps((nextProps) => this.updateState(nextProps));
     }
@@ -64,7 +64,7 @@ export class ModelFieldSelector extends Component {
             update: (path, _fieldInfo, debug = false) => {
                 this.newPath = path;
                 if (!debug) {
-                    this.updateState({ ...this.props, path }, true);
+                    this.updateState({...this.props, path}, true);
                 }
             },
             showSearchInput: this.props.showSearchInput,
@@ -77,7 +77,7 @@ export class ModelFieldSelector extends Component {
     }
 
     async updateState(params, isConcurrent) {
-        const { resModel, path, allowEmpty } = params;
+        const {resModel, path, allowEmpty} = params;
         let prom = this.fieldService.loadPathDescription(resModel, path, allowEmpty);
         if (isConcurrent) {
             prom = this.keepLast.add(prom);
@@ -92,6 +92,6 @@ export class ModelFieldSelector extends Component {
             this.popover.close();
             return;
         }
-        this.props.update("", { resModel: this.props.resModel, fieldDef: null });
+        this.props.update("", {resModel: this.props.resModel, fieldDef: null});
     }
 }

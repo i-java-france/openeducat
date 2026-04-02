@@ -1,15 +1,15 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { advanceTime, animationFrame, queryOne, waitFor } from "@odoo/hoot-dom";
-import { contains } from "@web/../tests/web_test_helpers";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {advanceTime, animationFrame, queryOne, waitFor} from "@odoo/hoot-dom";
+import {contains} from "@web/../tests/web_test_helpers";
 import {
     addPlugin,
     defineWebsiteModels,
     insertCategorySnippet,
     setupWebsiteBuilder,
 } from "@website/../tests/builder/website_helpers";
-import { Plugin } from "@html_editor/plugin";
-import { insertText, redo, undo } from "@html_editor/../tests/_helpers/user_actions";
-import { setSelection } from "@html_editor/../tests/_helpers/selection";
+import {Plugin} from "@html_editor/plugin";
+import {insertText, redo, undo} from "@html_editor/../tests/_helpers/user_actions";
+import {setSelection} from "@html_editor/../tests/_helpers/selection";
 
 defineWebsiteModels();
 
@@ -25,7 +25,7 @@ defineWebsiteModels();
 async function expectToTriggerEvent(target, type, callback) {
     const el = await waitFor(target);
     const step = `event '${type}' triggered on '${target}'`;
-    el.addEventListener(type, () => expect.step(step), { once: true });
+    el.addEventListener(type, () => expect.step(step), {once: true});
     const res = await callback();
     await expect.waitForSteps([step]);
     return res;
@@ -35,14 +35,17 @@ describe("Popup options: empty page before edit", () => {
     // Note: for some reason, `before()` doesn't work.
     // Done in `beforeEach` because frontend JS takes too much time to load.
     beforeEach(async () => {
-        await setupWebsiteBuilder("", { loadIframeBundles: true, loadAssetsFrontendJS: true });
+        await setupWebsiteBuilder("", {
+            loadIframeBundles: true,
+            loadAssetsFrontendJS: true,
+        });
     });
     test("dropping the popup snippet automatically displays it", async () => {
-        await insertCategorySnippet({ group: "content", snippet: "s_popup" });
+        await insertCategorySnippet({group: "content", snippet: "s_popup"});
         expect(".o_add_snippet_dialog").toHaveCount(0);
         // Check if the popup is visible.
         expect(":iframe .s_popup .modal").toHaveClass("show");
-        expect(":iframe .s_popup .modal").toHaveStyle({ display: "block" });
+        expect(":iframe .s_popup .modal").toHaveStyle({display: "block"});
     });
 });
 describe("Popup options: popup in page before edit", () => {
@@ -66,7 +69,10 @@ describe("Popup options: popup in page before edit", () => {
                     // TODO: once the service website_edit runs during the
                     // tests, this plugin should be removed
                     savable_mutation_record_predicates: (record) =>
-                        !(record.target.matches?.(".s_popup") && record.className === "d-none"),
+                        !(
+                            record.target.matches?.(".s_popup") &&
+                            record.className === "d-none"
+                        ),
                 };
             }
         );
@@ -98,7 +104,7 @@ describe("Popup options: popup in page before edit", () => {
         await expectToTriggerEvent(":iframe .s_popup .modal", "shown.bs.modal", () =>
             contains(".o_we_invisible_entry .fa-eye-slash").click()
         );
-        await waitFor(":iframe .s_popup .modal", { visible: true });
+        await waitFor(":iframe .s_popup .modal", {visible: true});
         expect(".o_we_invisible_entry .fa").toHaveClass("fa-eye");
         expect(":iframe .s_popup .modal").toBeVisible();
         await expectToTriggerEvent(":iframe .s_popup .modal", "hidden.bs.modal", () =>
@@ -116,10 +122,13 @@ describe("Popup options: popup in page before edit", () => {
         await expectToTriggerEvent(":iframe .s_popup .modal", "shown.bs.modal", () =>
             contains(".o_we_invisible_entry .fa-eye-slash").click()
         );
-        await waitFor(":iframe .s_popup .modal", { visible: true });
+        await waitFor(":iframe .s_popup .modal", {visible: true});
         expect(".o_we_invisible_entry .fa").toHaveClass("fa-eye");
         expect(":iframe .s_popup .modal").toBeVisible();
-        setSelection({ anchorNode: queryOne(":iframe .s_popup section p"), anchorOffset: 0 });
+        setSelection({
+            anchorNode: queryOne(":iframe .s_popup section p"),
+            anchorOffset: 0,
+        });
         await insertText(editor, "Other content");
         await expectToTriggerEvent(":iframe .s_popup .modal", "hidden.bs.modal", () =>
             contains(":iframe .s_popup div.js_close_popup").click()
@@ -127,16 +136,18 @@ describe("Popup options: popup in page before edit", () => {
         expect(".o_we_invisible_entry .fa").toHaveClass("fa-eye-slash");
         expect(":iframe .s_popup .modal").not.toBeVisible();
         expect(editor.shared.history.canUndo()).toBe(true);
-        await expectToTriggerEvent(":iframe .s_popup .modal", "shown.bs.modal", () => undo(editor));
+        await expectToTriggerEvent(":iframe .s_popup .modal", "shown.bs.modal", () =>
+            undo(editor)
+        );
         expect(".o_we_invisible_entry .fa").toHaveClass("fa-eye");
         expect(":iframe .s_popup .modal").toBeVisible();
     });
 
     test("undoing something on a target outside s_popup closes it", async () => {
-        await insertCategorySnippet({ group: "intro", snippet: "s_cover" });
+        await insertCategorySnippet({group: "intro", snippet: "s_cover"});
         expect(".o_add_snippet_dialog").toHaveCount(0);
         await contains(":iframe .s_cover").click();
-        await contains("button:contains(Grid)").click(); // arbitrary thing to undo
+        await contains("button:contains(Grid)").click(); // Arbitrary thing to undo
         await expectToTriggerEvent(":iframe .s_popup .modal", "shown.bs.modal", () =>
             contains(".o_we_invisible_entry .fa-eye-slash").click()
         );
@@ -152,7 +163,7 @@ describe("Popup options: popup in page before edit", () => {
         await expectToTriggerEvent(":iframe .s_popup .modal", "shown.bs.modal", () =>
             contains(".o_we_invisible_entry .fa-eye-slash").click()
         );
-        await waitFor(":iframe .s_popup .modal", { visible: true });
+        await waitFor(":iframe .s_popup .modal", {visible: true});
         expect(".o_we_invisible_entry .fa").toHaveClass("fa-eye");
         expect(":iframe .s_popup .modal").toBeVisible();
 

@@ -1,17 +1,15 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta
+from datetime import datetime, timedelta
 
-from odoo.addons.stock.tests.common import TestStockCommon
-from odoo.exceptions import UserError
+from dateutil.relativedelta import relativedelta
 
 from odoo import Command
+from odoo.exceptions import UserError
 from odoo.tests import Form
-from odoo.tools import float_is_zero, float_compare
 
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
+from odoo.addons.stock.tests.common import TestStockCommon
+
 
 class TestPickShip(TestStockCommon):
     def create_pick_ship(self):
@@ -2608,12 +2606,12 @@ class TestSinglePicking(TestStockCommon):
         """
         new_location, new_destination = self.env['stock.location'].create([
             {
-                'name': f'Super location',
+                'name': 'Super location',
                 'usage': 'internal',
                 'location_id': self.stock_location.id,
             },
             {
-                'name': f'Super destination',
+                'name': 'Super destination',
                 'usage': 'internal',
                 'location_id': self.stock_location.id,
             }

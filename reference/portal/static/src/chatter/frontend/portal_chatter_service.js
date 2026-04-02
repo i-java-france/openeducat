@@ -1,11 +1,11 @@
-import { PortalChatter } from "@portal/chatter/frontend/portal_chatter";
-import { App } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { rpc } from "@web/core/network/rpc";
-import { session } from "@web/session";
-import { appTranslateFn } from "@web/core/l10n/translation";
-import { getTemplate } from "@web/core/templates";
-import { loadCssFromBundle } from "@mail/utils/common/misc";
+import {PortalChatter} from "@portal/chatter/frontend/portal_chatter";
+import {App} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {rpc} from "@web/core/network/rpc";
+import {session} from "@web/session";
+import {appTranslateFn} from "@web/core/l10n/translation";
+import {getTemplate} from "@web/core/templates";
+import {loadCssFromBundle} from "@mail/utils/common/misc";
 
 export class PortalChatterService {
     constructor(env, services) {
@@ -18,7 +18,7 @@ export class PortalChatterService {
     }
 
     async createShadow(root) {
-        const shadow = root.attachShadow({ mode: "open" });
+        const shadow = root.attachShadow({mode: "open"});
         await loadCssFromBundle(shadow, "portal.assets_chatter_style");
         return shadow;
     }
@@ -31,8 +31,10 @@ export class PortalChatterService {
             composer:
                 parseInt(chatterEl.getAttribute("data-allow_composer")) &&
                 (chatterEl.getAttribute("data-token") || !session.is_public),
-            twoColumns: chatterEl.getAttribute("data-two_columns") === "true" ? true : false,
-            displayRating: chatterEl.getAttribute("data-display_rating") === "True" ? true : false,
+            twoColumns:
+                chatterEl.getAttribute("data-two_columns") === "true" ? true : false,
+            displayRating:
+                chatterEl.getAttribute("data-display_rating") === "True" ? true : false,
         };
         const root = document.createElement("div");
         root.setAttribute("id", "chatterRoot");
@@ -50,7 +52,10 @@ export class PortalChatterService {
                 dev: env.debug,
             }).mount(shadow);
         });
-        const thread = this.store.Thread.insert({ model: props.resModel, id: props.resId });
+        const thread = this.store.Thread.insert({
+            model: props.resModel,
+            id: props.resId,
+        });
         Object.assign(thread, {
             access_token: chatterEl.getAttribute("data-token"),
             hash: chatterEl.getAttribute("data-hash"),
@@ -63,7 +68,7 @@ export class PortalChatterService {
                 thread_id: props.resId,
                 ...thread.rpcParams,
             },
-            { silent: true }
+            {silent: true}
         );
         this.store.insert(data);
         odoo.portalChatterReady.resolve(true);

@@ -1,5 +1,5 @@
-import { Component, useExternalListener, useState, useRef } from "@odoo/owl";
-import { useScrollShadow } from "../../utils/scroll_shadow_hook";
+import {Component, useExternalListener, useState, useRef} from "@odoo/owl";
+import {useScrollShadow} from "../../utils/scroll_shadow_hook";
 export class ProductInfoPopup extends Component {
     static template = "pos_self_order.ProductInfoPopup";
     static props = {

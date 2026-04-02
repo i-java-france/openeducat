@@ -3,14 +3,14 @@ import {
     SNIPPET_SPECIFIC_NEXT,
     splitBetween,
 } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
-import { HeaderElementsOption } from "./header_elements_option";
-import { HeaderFontOption } from "./header_font_option";
-import { HeaderTemplateOption } from "./header_template_option";
-import { HeaderIconBackgroundOption } from "./header_icon_background_option";
-import { HeaderTopOptions } from "./header_top_options";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
+import {HeaderElementsOption} from "./header_elements_option";
+import {HeaderFontOption} from "./header_font_option";
+import {HeaderTemplateOption} from "./header_template_option";
+import {HeaderIconBackgroundOption} from "./header_icon_background_option";
+import {HeaderTopOptions} from "./header_top_options";
 
 const [
     HEADER_TEMPLATE,
@@ -62,7 +62,9 @@ export class HeaderOptionPlugin extends Plugin {
         // to avoid wrapping the button in a <p> or <div>, which would remove
         // this button if it's empty
         are_inlines_allowed_at_root_predicates: (node) =>
-            node.matches("#o_main_nav .oe_structure_solo .oe_unremovable [contenteditable='true']"),
+            node.matches(
+                "#o_main_nav .oe_structure_solo .oe_unremovable [contenteditable='true']"
+            ),
     };
 }
 

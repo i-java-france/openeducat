@@ -1,8 +1,9 @@
-from markupsafe import Markup
 import re
-from dateutil.relativedelta import relativedelta
 
-from odoo import api, models, fields
+from dateutil.relativedelta import relativedelta
+from markupsafe import Markup
+
+from odoo import api, fields, models
 
 
 class BaseDocumentLayout(models.TransientModel):

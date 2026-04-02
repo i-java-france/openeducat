@@ -1,11 +1,11 @@
-import { browser } from "@web/core/browser/browser";
-import { router } from "@web/core/browser/router";
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { htmlSprintf } from "@web/core/utils/html";
+import {browser} from "@web/core/browser/browser";
+import {router} from "@web/core/browser/router";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {htmlSprintf} from "@web/core/utils/html";
 
-import { markup } from "@odoo/owl";
-import { makeErrorFromResponse } from "../../core/network/rpc";
+import {markup} from "@odoo/owl";
+import {makeErrorFromResponse} from "../../core/network/rpc";
 
 export function displayNotificationAction(env, action) {
     const params = action.params || {};
@@ -40,8 +40,8 @@ registry.category("actions").add("display_exception", displayException);
  * If action.params.action_id, it opens the given action.
  */
 function reload(env, action) {
-    const { menu_id, action_id } = action.params || {};
-    let route = { ...router.current };
+    const {menu_id, action_id} = action.params || {};
+    let route = {...router.current};
 
     if (menu_id || action_id) {
         route = {};
@@ -53,7 +53,7 @@ function reload(env, action) {
         }
     }
 
-    router.pushState(route, { replace: true, reload: true });
+    router.pushState(route, {replace: true, reload: true});
 }
 
 registry.category("actions").add("reload", reload);

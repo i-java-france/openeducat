@@ -109,7 +109,8 @@ registerWebsitePreviewTour(
         },
         {
             content: "Try to crop the image",
-            trigger: "#oe_snippets .o_we_customize_panel .o_we_user_value_widget[data-crop='true']",
+            trigger:
+                "#oe_snippets .o_we_customize_panel .o_we_user_value_widget[data-crop='true']",
             run: "click",
         },
         {
@@ -177,7 +178,8 @@ registerWebsitePreviewTour(
         }),
         {
             content: "Click on the image",
-            trigger: ":iframe .s_text_image img:not(:visible), :iframe .s_text_image img",
+            trigger:
+                ":iframe .s_text_image img:not(:visible), :iframe .s_text_image img",
             run: "click",
         },
         changeOption("Image", "[data-label='Shape'] .dropdown-toggle"),
@@ -193,7 +195,8 @@ registerWebsitePreviewTour(
         },
         {
             content: "Click on the 'Icons' tab",
-            trigger: '.o_select_media_dialog .o_notebook_headers .nav-item a:contains("Icons")',
+            trigger:
+                '.o_select_media_dialog .o_notebook_headers .nav-item a:contains("Icons")',
             run: "click",
         },
         {

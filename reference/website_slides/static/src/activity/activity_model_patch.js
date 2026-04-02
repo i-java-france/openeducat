@@ -1,6 +1,6 @@
-import { Activity } from "@mail/core/common/activity_model";
-import { fields } from "@mail/model/misc";
-import { patch } from "@web/core/utils/patch";
+import {Activity} from "@mail/core/common/activity_model";
+import {fields} from "@mail/model/misc";
+import {patch} from "@web/core/utils/patch";
 
 /** @type {import("models").Activity} */
 const activityPatch = {

@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="utm_source_view_tree" model="ir.ui.view">
         <field name="name">utm.source.view.list</field>
         <field name="model">utm.source</field>
         <field name="arch" type="xml">
             <list string="Source" editable="bottom" sample="1">
-                <field name="name" placeholder='e.g. "Christmas Mailing"'/>
+                <field name="name" placeholder='e.g. "Christmas Mailing"' />
             </list>
         </field>
     </record>
@@ -17,7 +17,7 @@
             <form string="Source">
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="name" />
                     </group>
                 </sheet>
             </form>
@@ -31,7 +31,8 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No Sources yet!
-            </p><p>
+            </p>
+            <p>
                 UTM Sources track where traffic comes from  (e.g. "May Newsletter", "", ...).
             </p>
         </field>

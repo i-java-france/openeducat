@@ -3,7 +3,6 @@
     --KanbanRecord-padding-h: #{$o-kanban-dashboard-hpadding};
 
     .o_kanban_record {
-
         &:not(.o_kanban_ghost) {
             min-height: 150px;
         }
@@ -73,10 +72,13 @@
     canvas {
         height: 150px;
     }
-
 }
 
-.o_sample_data .o_dashboard_graph.o_graph_linechart > svg g.nv-linesWrap g.nv-group.nv-series-0 {
+.o_sample_data
+    .o_dashboard_graph.o_graph_linechart
+    > svg
+    g.nv-linesWrap
+    g.nv-group.nv-series-0 {
     fill: gray !important;
     opacity: 0.1;
 }

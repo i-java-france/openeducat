@@ -1,15 +1,14 @@
-# -*- coding: utf-8 -*-
-from datetime import date
-
-from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
-from odoo.tools.misc import format_date
-from odoo.tools import frozendict, date_utils, index_exists, SQL
-
 import logging
 import re
 from collections import defaultdict
+from datetime import date
+
 from psycopg2 import errors as pgerrors
+
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
+from odoo.tools import SQL, date_utils, frozendict, index_exists
+from odoo.tools.misc import format_date
 
 _logger = logging.getLogger(__name__)
 

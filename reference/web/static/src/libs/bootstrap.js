@@ -1,4 +1,4 @@
-import { compensateScrollbar, getScrollingElement } from "@web/core/utils/scrolling";
+import {compensateScrollbar, getScrollingElement} from "@web/core/utils/scrolling";
 
 /**
  * The bootstrap library extensions and fixes should be done here to avoid
@@ -50,7 +50,7 @@ Tooltip.Default.html = true;
 Tooltip.Default.trigger = "hover";
 Tooltip.Default.container = "body";
 Tooltip.Default.boundary = "window";
-Tooltip.Default.delay = { show: 1000, hide: 0 };
+Tooltip.Default.delay = {show: 1000, hide: 0};
 
 const bootstrapShowFunction = Tooltip.prototype.show;
 Tooltip.prototype.show = function () {

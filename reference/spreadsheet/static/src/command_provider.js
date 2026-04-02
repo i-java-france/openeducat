@@ -1,8 +1,8 @@
-import { registries } from "@odoo/o-spreadsheet";
-import { useEffect, useEnv } from "@odoo/owl";
-import { registry } from "@web/core/registry";
+import {registries} from "@odoo/o-spreadsheet";
+import {useEffect, useEnv} from "@odoo/owl";
+import {registry} from "@web/core/registry";
 
-const { topbarMenuRegistry } = registries;
+const {topbarMenuRegistry} = registries;
 const commandProviderRegistry = registry.category("command_provider");
 const commandCategoryRegistry = registry.category("command_categories");
 
@@ -23,10 +23,14 @@ export function useSpreadsheetCommandPalette() {
 
 function setupSpreadsheetCategories(spreadsheetEnv) {
     let sequence = 5;
-    commandCategoryRegistry.add("spreadsheet_insert_link", {}, { sequence: 0, force: true });
+    commandCategoryRegistry.add(
+        "spreadsheet_insert_link",
+        {},
+        {sequence: 0, force: true}
+    );
     for (const menu of topbarMenuRegistry.getMenuItems()) {
         const category = `spreadsheet_${menu.name(spreadsheetEnv)}`;
-        commandCategoryRegistry.add(category, {}, { sequence, force: true });
+        commandCategoryRegistry.add(category, {}, {sequence, force: true});
         sequence++;
     }
 }
@@ -51,7 +55,10 @@ function registerCommand(spreadsheetEnv, menu, parentName, category) {
         for (const subMenu of menu
             .children(spreadsheetEnv)
             .sort((a, b) => a.sequence - b.sequence)) {
-            if (!subMenu.isVisible(spreadsheetEnv) || !subMenu.isEnabled(spreadsheetEnv)) {
+            if (
+                !subMenu.isVisible(spreadsheetEnv) ||
+                !subMenu.isEnabled(spreadsheetEnv)
+            ) {
                 continue;
             }
             const subMenuName = `${subMenu.name(spreadsheetEnv)}`;
@@ -60,7 +67,10 @@ function registerCommand(spreadsheetEnv, menu, parentName, category) {
                     action() {
                         subMenu.execute(spreadsheetEnv);
                     },
-                    category: subMenu.id === "insert_link" ? "spreadsheet_insert_link" : category,
+                    category:
+                        subMenu.id === "insert_link"
+                            ? "spreadsheet_insert_link"
+                            : category,
                     name: `${parentName} / ${subMenuName}`,
                 });
             } else {

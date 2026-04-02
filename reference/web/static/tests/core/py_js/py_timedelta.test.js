@@ -1,16 +1,18 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 
-import { evaluateExpr } from "@web/core/py_js/py";
-import { PyTimeDelta } from "@web/core/py_js/py_date";
+import {evaluateExpr} from "@web/core/py_js/py";
+import {PyTimeDelta} from "@web/core/py_js/py_date";
 
 const expectDelta = (expr, res) => {
-    const timedelta = evaluateExpr(expr, { td: PyTimeDelta });
-    expect(`${timedelta.days}, ${timedelta.seconds}, ${timedelta.microseconds}`).toBe(res);
+    const timedelta = evaluateExpr(expr, {td: PyTimeDelta});
+    expect(`${timedelta.days}, ${timedelta.seconds}, ${timedelta.microseconds}`).toBe(
+        res
+    );
 };
 
 const expectEquality = (expr1, expr2, ctx) => {
     const equality = `${expr1} == ${expr2}`;
-    expect(evaluateExpr(equality, Object.assign({ td: PyTimeDelta }, ctx))).toBe(true, {
+    expect(evaluateExpr(equality, Object.assign({td: PyTimeDelta}, ctx))).toBe(true, {
         message: `evaluating ${equality}`,
     });
 };
@@ -55,7 +57,7 @@ test("create", () => {
 test("massive normalization", () => {
     expect.assertions(3);
 
-    const td = PyTimeDelta.create({ microseconds: -1 });
+    const td = PyTimeDelta.create({microseconds: -1});
 
     expect(td.days).toBe(-1);
     expect(td.seconds).toBe(24 * 3600 - 1);
@@ -65,7 +67,7 @@ test("massive normalization", () => {
 test("attributes", () => {
     expect.assertions(3);
 
-    const ctx = { td: PyTimeDelta };
+    const ctx = {td: PyTimeDelta};
 
     expect(evaluateExpr("td(1, 7, 31).days", ctx)).toBe(1);
     expect(evaluateExpr("td(1, 7, 31).seconds", ctx)).toBe(7);
@@ -91,13 +93,13 @@ test("basic operations: +, -, *, //", () => {
     expectEquality("td(0, 0, 60*1000000)", "b", ctx);
     expectEquality("a*10", "td(70)", ctx);
     expectEquality("a*10", "10*a", ctx);
-    // expectEquality('a*10L', '10*a', ctx);
+    // ExpectEquality('a*10L', '10*a', ctx);
     expectEquality("b*10", "td(0, 600)", ctx);
     expectEquality("10*b", "td(0, 600)", ctx);
-    // expectEquality('b*10L', 'td(0, 600)', ctx);
+    // ExpectEquality('b*10L', 'td(0, 600)', ctx);
     expectEquality("c*10", "td(0, 0, 10000)", ctx);
     expectEquality("10*c", "td(0, 0, 10000)", ctx);
-    // expectEquality('c*10L', 'td(0, 0, 10000)', ctx);
+    // ExpectEquality('c*10L', 'td(0, 0, 10000)', ctx);
     expectEquality("a*-1", "-a", ctx);
     expectEquality("b*-2", "-b-b", ctx);
     expectEquality("c*-2", "-c+-c", ctx);
@@ -110,18 +112,25 @@ test("basic operations: +, -, *, //", () => {
     expectEquality("c//1000", "td(0, 0, 1)", ctx);
     expectEquality("a//10", "td(0, 7*24*360)", ctx);
     expectEquality("a//3600000", "td(0, 0, 7*24*1000)", ctx);
-    expectEquality("td(999999999, 86399, 999999) - td(999999999, 86399, 999998)", "td(0, 0, 1)");
+    expectEquality(
+        "td(999999999, 86399, 999999) - td(999999999, 86399, 999998)",
+        "td(0, 0, 1)"
+    );
     expectEquality("td(999999999, 1, 1) - td(999999999, 1, 0)", "td(0, 0, 1)");
 });
 
 test("total_seconds", () => {
     expect.assertions(6);
 
-    const ctx = { td: PyTimeDelta };
+    const ctx = {td: PyTimeDelta};
 
     expect(evaluateExpr("td(365).total_seconds()", ctx)).toBe(31536000);
-    expect(evaluateExpr("td(seconds=123456.789012).total_seconds()", ctx)).toBe(123456.789012);
-    expect(evaluateExpr("td(seconds=-123456.789012).total_seconds()", ctx)).toBe(-123456.789012);
+    expect(evaluateExpr("td(seconds=123456.789012).total_seconds()", ctx)).toBe(
+        123456.789012
+    );
+    expect(evaluateExpr("td(seconds=-123456.789012).total_seconds()", ctx)).toBe(
+        -123456.789012
+    );
     expect(evaluateExpr("td(seconds=0.123456).total_seconds()", ctx)).toBe(0.123456);
     expect(evaluateExpr("td().total_seconds()", ctx)).toBe(0);
     expect(evaluateExpr("td(seconds=1000000).total_seconds()", ctx)).toBe(1e6);
@@ -130,7 +139,7 @@ test("total_seconds", () => {
 test("bool", () => {
     expect.assertions(5);
 
-    const ctx = { td: PyTimeDelta };
+    const ctx = {td: PyTimeDelta};
 
     expect(evaluateExpr("bool(td(1))", ctx)).toBe(true);
     expect(evaluateExpr("bool(td(0, 1))", ctx)).toBe(true);

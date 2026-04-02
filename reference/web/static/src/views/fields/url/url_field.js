@@ -1,21 +1,21 @@
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { useInputField } from "../input_field_hook";
-import { standardFieldProps } from "../standard_field_props";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {useInputField} from "../input_field_hook";
+import {standardFieldProps} from "../standard_field_props";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class UrlField extends Component {
     static template = "web.UrlField";
     static props = {
         ...standardFieldProps,
-        placeholder: { type: String, optional: true },
-        text: { type: String, optional: true },
-        websitePath: { type: Boolean, optional: true },
+        placeholder: {type: String, optional: true},
+        text: {type: String, optional: true},
+        websitePath: {type: Boolean, optional: true},
     };
 
     setup() {
-        useInputField({ getValue: () => this.value });
+        useInputField({getValue: () => this.value});
     }
 
     get value() {
@@ -40,7 +40,9 @@ export const urlField = {
             label: _t("Is a website path"),
             name: "website_path",
             type: "boolean",
-            help: _t("If True, the url will be used as it is, without any prefix added to it."),
+            help: _t(
+                "If True, the url will be used as it is, without any prefix added to it."
+            ),
         },
         {
             label: _t("Dynamic Placeholder"),
@@ -50,7 +52,7 @@ export const urlField = {
         },
     ],
     supportedTypes: ["char"],
-    extractProps: ({ attrs, options, placeholder }) => ({
+    extractProps: ({attrs, options, placeholder}) => ({
         placeholder,
         text: attrs.text,
         websitePath: options.website_path,

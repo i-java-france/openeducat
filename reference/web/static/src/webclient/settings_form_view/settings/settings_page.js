@@ -1,15 +1,15 @@
-import { ActionSwiper } from "@web/core/action_swiper/action_swiper";
+import {ActionSwiper} from "@web/core/action_swiper/action_swiper";
 
-import { Component, useState, useRef, useEffect } from "@odoo/owl";
-import { browser } from "@web/core/browser/browser";
+import {Component, useState, useRef, useEffect} from "@odoo/owl";
+import {browser} from "@web/core/browser/browser";
 
 export class SettingsPage extends Component {
     static template = "web.SettingsPage";
-    static components = { ActionSwiper };
+    static components = {ActionSwiper};
     static props = {
         modules: Array,
         anchors: Array,
-        initialTab: { type: String, optional: 1 },
+        initialTab: {type: String, optional: 1},
         slots: Object,
     };
     setup() {
@@ -45,7 +45,7 @@ export class SettingsPage extends Component {
                     return;
                 }
 
-                const { scrollTop } = this.scrollMap[currentTab] || 0;
+                const {scrollTop} = this.scrollMap[currentTab] || 0;
                 settingsEl.scrollTop = scrollTop;
             },
             () => [this.settingsRef.el, this.state.selectedTab]
@@ -60,7 +60,9 @@ export class SettingsPage extends Component {
 
     hasRightSwipe() {
         return (
-            this.env.isSmall && this.state.search.value.length === 0 && this.getCurrentIndex() !== 0
+            this.env.isSmall &&
+            this.state.search.value.length === 0 &&
+            this.getCurrentIndex() !== 0
         );
     }
     hasLeftSwipe() {
@@ -85,13 +87,13 @@ export class SettingsPage extends Component {
         const key = this.state.selectedTab;
         this.settingsTabRef.el
             .querySelector(`[data-key='${key}']`)
-            .scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+            .scrollIntoView({behavior: "smooth", inline: "center", block: "nearest"});
     }
 
     onSettingTabClick(key) {
         if (this.settingsRef.el) {
-            const { scrollTop } = this.settingsRef.el;
-            this.scrollMap[this.state.selectedTab] = { scrollTop };
+            const {scrollTop} = this.settingsRef.el;
+            this.scrollMap[this.state.selectedTab] = {scrollTop};
         }
         this.state.selectedTab = key;
         this.env.searchState.value = "";

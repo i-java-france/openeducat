@@ -1,13 +1,13 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
 from datetime import timedelta
 
-from odoo.addons.crm.tests.common import TestLeadConvertMassCommon
 from odoo.fields import Datetime
 from odoo.tests.common import tagged, users
 from odoo.tools import mute_logger
+
+from odoo.addons.crm.tests.common import TestLeadConvertMassCommon
 
 
 class TestLeadMergeCommon(TestLeadConvertMassCommon):
@@ -16,7 +16,7 @@ class TestLeadMergeCommon(TestLeadConvertMassCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestLeadMergeCommon, cls).setUpClass()
+        super().setUpClass()
 
         cls.leads = cls.lead_1 + cls.lead_w_partner + cls.lead_w_contact + cls.lead_w_email + cls.lead_w_partner_company + cls.lead_w_email_lost
         # reset some assigned users to test salesmen assign

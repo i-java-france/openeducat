@@ -1,12 +1,12 @@
-import { Component, onMounted, onWillUnmount, useState } from "@odoo/owl";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { Dialog } from "@web/core/dialog/dialog";
-import { useService } from "@web/core/utils/hooks";
-import { _t } from "@web/core/l10n/translation";
+import {Component, onMounted, onWillUnmount, useState} from "@odoo/owl";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {Dialog} from "@web/core/dialog/dialog";
+import {useService} from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
 
 export class ScaleScreen extends Component {
     static template = "point_of_sale.ScaleScreen";
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
         getPayload: Function,
         close: Function,
@@ -32,7 +32,7 @@ export class ScaleScreen extends Component {
                 title: _t("Scale error"),
                 body: message,
             },
-            { onClose: this.props.close }
+            {onClose: this.props.close}
         );
     }
 }

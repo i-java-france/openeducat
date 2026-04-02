@@ -1,7 +1,7 @@
-import { registry } from "../registry";
-import { useSortable } from "@web/core/utils/sortable";
-import { throttleForAnimation } from "@web/core/utils/timing";
-import { reactive } from "@odoo/owl";
+import {registry} from "../registry";
+import {useSortable} from "@web/core/utils/sortable";
+import {throttleForAnimation} from "@web/core/utils/timing";
+import {reactive} from "@odoo/owl";
 
 /**
  * @typedef SortableServiceHookParams
@@ -63,19 +63,22 @@ export const sortableService = {
                     throttle: throttleForAnimation,
                     addListener: (el, type, listener) => {
                         el.addEventListener(type, listener);
-                        cleanupFunctions.push(() => el.removeEventListener(type, listener));
+                        cleanupFunctions.push(() =>
+                            el.removeEventListener(type, listener)
+                        );
                     },
-                    setup: (setupFn, dependenciesFn) => setupFunctions.set(setupFn, dependenciesFn),
+                    setup: (setupFn, dependenciesFn) =>
+                        setupFunctions.set(setupFn, dependenciesFn),
                     teardown: (fn) => cleanupFunctions.push(fn),
                 };
 
-                useSortable({ setupHooks, ...hookParams });
+                useSortable({setupHooks, ...hookParams});
 
                 const boundElement = boundElements.get(element);
                 if (boundElement) {
                     boundElement[sortableId] = cleanup;
                 } else {
-                    boundElements.set(element, { [sortableId]: cleanup });
+                    boundElements.set(element, {[sortableId]: cleanup});
                 }
 
                 return {

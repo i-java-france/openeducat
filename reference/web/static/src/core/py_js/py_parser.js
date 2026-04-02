@@ -1,4 +1,4 @@
-import { binaryOperators, comparators } from "./py_tokenizer";
+import {binaryOperators, comparators} from "./py_tokenizer";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -124,17 +124,17 @@ function isSymbol(token, value) {
 function parsePrefix(current, tokens) {
     switch (current.type) {
         case 0 /* Number */:
-            return { type: 0 /* Number */, value: current.value };
+            return {type: 0 /* Number */, value: current.value};
         case 1 /* String */:
-            return { type: 1 /* String */, value: current.value };
+            return {type: 1 /* String */, value: current.value};
         case 4 /* Constant */:
             if (current.value === "None") {
-                return { type: 3 /* None */ };
+                return {type: 3 /* None */};
             } else {
-                return { type: 2 /* Boolean */, value: current.value === "True" };
+                return {type: 2 /* Boolean */, value: current.value === "True"};
             }
         case 3 /* Name */:
-            return { type: 5 /* Name */, value: current.value };
+            return {type: 5 /* Name */, value: current.value};
         case 2 /* Symbol */:
             switch (current.value) {
                 case "-":
@@ -172,7 +172,9 @@ function parsePrefix(current, tokens) {
                     }
                     tokens.shift();
                     isTuple = isTuple || content.length === 0;
-                    return isTuple ? { type: 10 /* Tuple */, value: content } : content[0];
+                    return isTuple
+                        ? {type: 10 /* Tuple */, value: content}
+                        : content[0];
                 }
                 case "[": {
                     const value = [];
@@ -190,14 +192,15 @@ function parsePrefix(current, tokens) {
                         throw new ParserError("parsing error");
                     }
                     tokens.shift();
-                    return { type: 4 /* List */, value };
+                    return {type: 4 /* List */, value};
                 }
                 case "{": {
                     const dict = {};
                     while (tokens[0] && !isSymbol(tokens[0], "}")) {
                         const key = _parse(tokens, 0);
                         if (
-                            (key.type !== 1 /* String */ && key.type !== 0) /* Number */ ||
+                            (key.type !== 1 /* String */ &&
+                                key.type !== 0) /* Number */ ||
                             !tokens[0] ||
                             !isSymbol(tokens[0], ":")
                         ) {
@@ -214,7 +217,7 @@ function parsePrefix(current, tokens) {
                     if (!tokens.shift()) {
                         throw new ParserError("parsing error");
                     }
-                    return { type: 11 /* Dictionary */, value: dict };
+                    return {type: 11 /* Dictionary */, value: dict};
                 }
             }
     }
@@ -298,7 +301,7 @@ function parseInfix(left, current, tokens) {
                         throw new ParserError("parsing error");
                     }
                     tokens.shift();
-                    return { type: 8 /* FunctionCall */, fn: left, args, kwargs };
+                    return {type: 8 /* FunctionCall */, fn: left, args, kwargs};
                 }
                 case "=":
                     if (left.type === 5 /* Name */) {

@@ -1,11 +1,11 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { SNIPPET_SPECIFIC_END } from "@html_builder/utils/option_sequence";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { localization } from "@web/core/l10n/localization";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {SNIPPET_SPECIFIC_END} from "@html_builder/utils/option_sequence";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {localization} from "@web/core/l10n/localization";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 /**
  * @typedef { Object } NavTabsStyleOptionShared
@@ -39,7 +39,7 @@ class NavTabsStyleOptionPlugin extends Plugin {
             SetStyleAction,
             SetDirectionAction,
         },
-        has_overlay_options: { hasOption: (el) => this.isNavItem(el) },
+        has_overlay_options: {hasOption: (el) => this.isNavItem(el)},
         get_overlay_buttons: withSequence(0, {
             getButtons: this.getActiveOverlayButtons.bind(this),
         }),
@@ -77,8 +77,8 @@ class NavTabsStyleOptionPlugin extends Plugin {
                 title: isVertical
                     ? _t("Move up")
                     : this.isEditableRTL
-                    ? _t("Move right")
-                    : _t("Move left"),
+                      ? _t("Move right")
+                      : _t("Move left"),
                 handler: this.moveNavItem.bind(this, "prev"),
             });
         }
@@ -90,8 +90,8 @@ class NavTabsStyleOptionPlugin extends Plugin {
                 title: isVertical
                     ? _t("Move down")
                     : this.isEditableRTL
-                    ? _t("Move left")
-                    : _t("Move right"),
+                      ? _t("Move left")
+                      : _t("Move right"),
                 handler: this.moveNavItem.bind(this, "next"),
             });
         }
@@ -175,7 +175,10 @@ export class BaseNavtabsStyleOption extends BuilderAction {
         editingElement.classList.toggle("row", isVertical);
         editingElement.classList.toggle("s_col_no_resize", isVertical);
         editingElement.classList.toggle("s_col_no_bgcolor", isVertical);
-        navEl.classList.toggle(isTabsImages ? "flex-md-column" : "flex-sm-column", isVertical);
+        navEl.classList.toggle(
+            isTabsImages ? "flex-md-column" : "flex-sm-column",
+            isVertical
+        );
         editingElement
             .querySelectorAll(".s_tabs_nav > .nav-link")
             .forEach((linkEl) => linkEl.classList.toggle("py-2", isVertical));
@@ -203,7 +206,7 @@ export class BaseNavtabsStyleOption extends BuilderAction {
 
 class SetStyleAction extends BaseNavtabsStyleOption {
     static id = "setStyle";
-    isApplied({ editingElement, value }) {
+    isApplied({editingElement, value}) {
         const navEl = this.getNavEl(editingElement);
         // 'nav-buttons' also applies 'nav-pills'
         if (navEl.classList.contains("nav-buttons")) {
@@ -211,7 +214,7 @@ class SetStyleAction extends BaseNavtabsStyleOption {
         }
         return navEl.classList.contains(value);
     }
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         const isTabs = value === "nav-tabs";
         const isBtns = value === "nav-buttons";
         const tabsEl = getTabsEl(editingElement);
@@ -236,7 +239,7 @@ class SetStyleAction extends BaseNavtabsStyleOption {
         navEl.classList.toggle("overflow-y-hidden", !isTabs);
         editingElement.querySelector(".s_tabs_content").classList.toggle("p-3", isTabs);
     }
-    clean({ editingElement, value }) {
+    clean({editingElement, value}) {
         const isTabs = value === "nav-tabs";
         const isBtns = value === "nav-buttons";
         const tabsEl = getTabsEl(editingElement);
@@ -254,15 +257,18 @@ class SetStyleAction extends BaseNavtabsStyleOption {
 }
 class SetDirectionAction extends BaseNavtabsStyleOption {
     static id = "setDirection";
-    isApplied({ editingElement, value }) {
+    isApplied({editingElement, value}) {
         const classList = this.getNavEl(editingElement).classList;
         const containsFlexColumn =
-            classList.contains("flex-sm-column") || classList.contains("flex-md-column");
+            classList.contains("flex-sm-column") ||
+            classList.contains("flex-md-column");
         return value === "vertical" ? containsFlexColumn : !containsFlexColumn;
     }
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         this.applyDirection(editingElement, value);
     }
 }
 
-registry.category("website-plugins").add(NavTabsStyleOptionPlugin.id, NavTabsStyleOptionPlugin);
+registry
+    .category("website-plugins")
+    .add(NavTabsStyleOptionPlugin.id, NavTabsStyleOptionPlugin);

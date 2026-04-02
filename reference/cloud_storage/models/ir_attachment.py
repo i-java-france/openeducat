@@ -1,10 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
-import requests
 import uuid
 
-from odoo import models, fields, _
+import requests
+
+from odoo import _, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.http import Stream
 

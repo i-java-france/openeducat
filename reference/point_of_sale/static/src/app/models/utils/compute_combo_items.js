@@ -8,7 +8,13 @@ export const computeComboItems = (
     currency_id = false
 ) => {
     const comboItems = [];
-    const parentLstPrice = parentProduct.getPrice(pricelist, 1, 0, false, parentProduct);
+    const parentLstPrice = parentProduct.getPrice(
+        pricelist,
+        1,
+        0,
+        false,
+        parentProduct
+    );
     let originalTotal = childLineConf.reduce((acc, conf) => {
         const originalPrice = conf.combo_item_id.combo_id.base_price * conf.qty;
         return acc + originalPrice;
@@ -20,11 +26,14 @@ export const computeComboItems = (
             .reduce((acc, price) => acc + price, 0);
 
     let remainingTotal = parentLstPrice;
-    const ProductPrice = currency_id || decimalPrecision.find((dp) => dp.name === "Product Price");
+    const ProductPrice =
+        currency_id || decimalPrecision.find((dp) => dp.name === "Product Price");
     for (const conf of childLineConf) {
         const comboItem = conf.combo_item_id;
         const combo = comboItem.combo_id;
-        let priceUnit = ProductPrice.round((combo.base_price * parentLstPrice) / originalTotal);
+        let priceUnit = ProductPrice.round(
+            (combo.base_price * parentLstPrice) / originalTotal
+        );
         remainingTotal -= priceUnit * conf.qty;
 
         if (comboItem.id == childLineConf[childLineConf.length - 1].combo_item_id.id) {
@@ -36,7 +45,9 @@ export const computeComboItems = (
         );
 
         const totalPriceExtra =
-            priceUnit + getAttributesPriceExtra(attribute_value_ids) + comboItem.extra_price;
+            priceUnit +
+            getAttributesPriceExtra(attribute_value_ids) +
+            comboItem.extra_price;
         comboItems.push({
             combo_item_id: comboItem,
             price_unit: totalPriceExtra,
@@ -65,7 +76,10 @@ export const computeComboItems = (
             priceUnit += remaining;
             remainingTotal -= remaining * extra.qty;
 
-            if (comboItem.id == childLineExtra[childLineExtra.length - 1].combo_item_id.id) {
+            if (
+                comboItem.id ==
+                childLineExtra[childLineExtra.length - 1].combo_item_id.id
+            ) {
                 priceUnit += remainingTotal / extra.qty;
             }
         }
@@ -74,7 +88,9 @@ export const computeComboItems = (
         );
 
         const totalPriceExtra =
-            priceUnit + getAttributesPriceExtra(attribute_value_ids) + comboItem.extra_price;
+            priceUnit +
+            getAttributesPriceExtra(attribute_value_ids) +
+            comboItem.extra_price;
         comboItems.push({
             combo_item_id: comboItem,
             price_unit: totalPriceExtra,

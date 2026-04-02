@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
     <t t-name="web.TextField">
@@ -25,7 +25,8 @@
                         fieldName="props.name"
                         record="props.record"
                     />
-                    <button t-if="props.dynamicPlaceholder"
+                    <button
+                        t-if="props.dynamicPlaceholder"
                         class="btn m-0 py-2 px-2 fa fa-magic position-relative"
                         title="Insert Field"
                         t-on-click="onDynamicPlaceholderOpen"

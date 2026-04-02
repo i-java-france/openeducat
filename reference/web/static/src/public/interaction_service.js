@@ -1,9 +1,9 @@
-import { registry } from "@web/core/registry";
-import { appTranslateFn } from "@web/core/l10n/translation";
-import { Interaction } from "./interaction";
-import { getTemplate } from "@web/core/templates";
-import { PairSet } from "./utils";
-import { Colibri } from "./colibri";
+import {registry} from "@web/core/registry";
+import {appTranslateFn} from "@web/core/l10n/translation";
+import {Interaction} from "./interaction";
+import {getTemplate} from "@web/core/templates";
+import {PairSet} from "./utils";
+import {Colibri} from "./colibri";
 
 /**
  * Website Core
@@ -59,7 +59,7 @@ class InteractionService {
 
     prepareRoot(el, C, props, position = "beforeend") {
         if (!this.owlApp) {
-            const { App } = odoo.loader.modules.get("@odoo/owl");
+            const {App} = odoo.loader.modules.get("@odoo/owl");
             const appConfig = {
                 name: "Odoo Website",
                 getTemplate,
@@ -71,7 +71,7 @@ class InteractionService {
             };
             this.owlApp = new App(null, appConfig);
         }
-        const root = this.owlApp.createRoot(C, { props, env: this.env });
+        const root = this.owlApp.createRoot(C, {props, env: this.env});
         const rootEl = document.createElement("owl-root");
         rootEl.setAttribute("contenteditable", "false");
         rootEl.dataset.oeProtected = "true";
@@ -118,13 +118,19 @@ class InteractionService {
                     ? [el, ...el.querySelectorAll(I.selector)]
                     : el.querySelectorAll(I.selector);
                 if (I.selectorHas) {
-                    targets = [...targets].filter((el) => !!el.querySelector(I.selectorHas));
+                    targets = [...targets].filter(
+                        (el) => !!el.querySelector(I.selectorHas)
+                    );
                 }
                 if (I.selectorNotHas) {
-                    targets = [...targets].filter((el) => !el.querySelector(I.selectorNotHas));
+                    targets = [...targets].filter(
+                        (el) => !el.querySelector(I.selectorNotHas)
+                    );
                 }
             } catch {
-                const selectorHasError = I.selectorHas ? ` or selectorHas: '${I.selectorHas}'` : "";
+                const selectorHasError = I.selectorHas
+                    ? ` or selectorHas: '${I.selectorHas}'`
+                    : "";
                 const selectorNotHasError = I.selectorNotHas
                     ? ` or selectorNotHas: '${I.selectorNotHas}'`
                     : "";
@@ -165,7 +171,7 @@ class InteractionService {
     }
 
     shouldStop(el, interaction) {
-        const { selectorNotHas, selectorHas } = interaction.interaction.constructor;
+        const {selectorNotHas, selectorHas} = interaction.interaction.constructor;
         if (!interaction.el) {
             return true;
         }
@@ -182,7 +188,10 @@ class InteractionService {
         for (const interaction of this.interactions.slice().reverse()) {
             if (this.shouldStop(el, interaction)) {
                 interaction.destroy();
-                this.activeInteractions.delete(interaction.el, interaction.interaction.constructor);
+                this.activeInteractions.delete(
+                    interaction.el,
+                    interaction.interaction.constructor
+                );
             } else {
                 interactions.push(interaction);
             }
@@ -218,7 +227,8 @@ export const publicInteractionService = {
     dependencies: ["localization"],
     async start(env) {
         // fallback if #wrapwrap is not present in the dom
-        const el = document.querySelector("#wrapwrap") || document.querySelector("body");
+        const el =
+            document.querySelector("#wrapwrap") || document.querySelector("body");
         const Interactions = registry.category("public.interactions").getAll();
         const service = new InteractionService(el, env);
         service.activate(Interactions);

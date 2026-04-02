@@ -5,30 +5,34 @@
             <td class="line_name w-50" t-on-click="onClick">
                 <div class="wrapper">
                     <t t-if="label">
-                        <a t-if="props.onClickMethod" href="#" t-out="label"/>
-                        <span t-else="" t-out="label"/>
+                        <a t-if="props.onClickMethod" href="#" t-out="label" />
+                        <span t-else="" t-out="label" />
                     </t>
                 </div>
             </td>
             <td class="w-25">
-                <div t-if="formattedValue" t-out="formattedValue"/>
-                <div t-elif="debit" t-out="debit"/>
+                <div t-if="formattedValue" t-out="formattedValue" />
+                <div t-elif="debit" t-out="debit" />
             </td>
             <td t-if="credit" class="w-25">
-                <div t-out="credit"/>
+                <div t-out="credit" />
             </td>
             <td t-else="" t-on-click="onClickToggle" class="w-25">
-                <button t-attf-class="btn btn_foldable#{props.sublines ? '' : '_empty'}"
-                        t-att-tabindex="props.lines ? 0 : -1">
-                    <i t-if="hasSublines"
-                        t-attf-class="fa fa-folder#{state.displaySublines ? '-open' : ''}-o"/>
+                <button
+                    t-attf-class="btn btn_foldable#{props.sublines ? '' : '_empty'}"
+                    t-att-tabindex="props.lines ? 0 : -1"
+                >
+                    <i
+                        t-if="hasSublines"
+                        t-attf-class="fa fa-folder#{state.displaySublines ? '-open' : ''}-o"
+                    />
                 </button>
             </td>
         </tr>
         <t t-if="state.displaySublines &amp;&amp; hasSublines">
             <t t-if="props.displayDebitCredit">
                 <tr>
-                    <td/>
+                    <td />
                     <td>Debit</td>
                     <td>Credit</td>
                 </tr>
@@ -40,7 +44,8 @@
                     sublines="line.lines"
                     level="props.level + 2"
                     onClickMethod="line.method"
-                    value="line.value"/>
+                    value="line.value"
+                />
             </t>
         </t>
     </t>

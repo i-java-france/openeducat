@@ -1,11 +1,11 @@
-import { TimeOffCard } from "./time_off_card";
-import { useNewAllocationRequest } from "@hr_holidays/views/hooks";
-import { useBus, useService } from "@web/core/utils/hooks";
-import { DateTimeInput } from "@web/core/datetime/datetime_input";
-import { Component, useState, onWillStart } from "@odoo/owl";
+import {TimeOffCard} from "./time_off_card";
+import {useNewAllocationRequest} from "@hr_holidays/views/hooks";
+import {useBus, useService} from "@web/core/utils/hooks";
+import {DateTimeInput} from "@web/core/datetime/datetime_input";
+import {Component, useState, onWillStart} from "@odoo/owl";
 
 export class TimeOffDashboard extends Component {
-    static components = { TimeOffCard, DateTimeInput };
+    static components = {TimeOffCard, DateTimeInput};
     static template = "hr_holidays.TimeOffDashboard";
     static props = ["employeeId"];
 
@@ -29,7 +29,7 @@ export class TimeOffDashboard extends Component {
     }
 
     getContext() {
-        const context = { from_dashboard: true };
+        const context = {from_dashboard: true};
         if (this.props && this.props.employeeId !== null) {
             context["employee_id"] = this.props.employeeId;
         }
@@ -45,11 +45,11 @@ export class TimeOffDashboard extends Component {
             "hr.employee",
             "get_time_off_dashboard_data",
             [this.state.date],
-            { context }
-        )
-        this.state.holidays = dashboardData['allocation_data'];
-        this.state.allocationRequests = dashboardData['allocation_request_amount'];
-        this.hasAccrualAllocation = dashboardData['has_accrual_allocation'];
+            {context}
+        );
+        this.state.holidays = dashboardData["allocation_data"];
+        this.state.allocationRequests = dashboardData["allocation_request_amount"];
+        this.hasAccrualAllocation = dashboardData["has_accrual_allocation"];
     }
 
     async newAllocationRequest() {

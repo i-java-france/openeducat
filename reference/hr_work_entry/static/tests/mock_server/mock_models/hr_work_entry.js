@@ -1,4 +1,4 @@
-import { models } from "@web/../tests/web_test_helpers";
+import {models} from "@web/../tests/web_test_helpers";
 
 export class HrWorkEntry extends models.ServerModel {
     _name = "hr.work.entry";
@@ -12,7 +12,7 @@ export class HrWorkEntry extends models.ServerModel {
         calendar: `
             <calendar
                 date_start="date"
-                date_stop="date" 
+                date_stop="date"
                 mode="month"
                 scales="month"
                 month_overflow="0"

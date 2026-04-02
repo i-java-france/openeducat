@@ -1,15 +1,18 @@
 // Part of Odoo. See LICENSE file for full copyright and licensing details.
-import { ProductCard } from "@point_of_sale/app/components/product_card/product_card";
-import { patch } from "@web/core/utils/patch";
+import {ProductCard} from "@point_of_sale/app/components/product_card/product_card";
+import {patch} from "@web/core/utils/patch";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 patch(ProductCard.prototype, {
     get displayRemainingSeats() {
         return Boolean(this.props.product.event_id);
     },
     get isEventMultiSlot() {
-        return Boolean(this.props.product.event_id) && this.props.product.event_id.is_multi_slots;
+        return (
+            Boolean(this.props.product.event_id) &&
+            this.props.product.event_id.is_multi_slots
+        );
     },
     get totalFutureSlots() {
         return (
@@ -34,6 +37,8 @@ patch(ProductCard.prototype, {
         if (event.seats_limited && !event.seats_max) {
             return -1;
         }
-        return eventTickets.reduce((acc, ticket) => acc + ticket.seats_available, 0) || -1;
+        return (
+            eventTickets.reduce((acc, ticket) => acc + ticket.seats_available, 0) || -1
+        );
     },
 });

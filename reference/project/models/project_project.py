@@ -2,20 +2,20 @@
 
 import ast
 import json
-
 from collections import defaultdict
-from datetime import timedelta
 
 from odoo import api, fields, models
-from odoo.addons.mail.tools.discuss import Store
-from odoo.addons.rating.models import rating_data
 from odoo.exceptions import UserError
 from odoo.fields import Command, Domain
-from odoo.tools import get_lang, float_utils, formatLang, SQL, LazyTranslate
+from odoo.tools import SQL, LazyTranslate, float_utils, formatLang, get_lang
 from odoo.tools.misc import unquote
 from odoo.tools.translate import _
-from .project_update import STATUS_COLOR
+
+from odoo.addons.mail.tools.discuss import Store
+from odoo.addons.rating.models import rating_data
+
 from .project_task import CLOSED_STATES
+from .project_update import STATUS_COLOR
 
 _lt = LazyTranslate(__name__)
 
@@ -474,7 +474,7 @@ class ProjectProject(models.Model):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
         copy_from_template = self.env.context.get('copy_from_template')
-        for project, vals in zip(self, vals_list):
+        for project, vals in zip(self, vals_list, strict=False):
             if project.is_template and not copy_from_template:
                 vals['is_template'] = True
             if copy_from_template:
@@ -500,7 +500,7 @@ class ProjectProject(models.Model):
         new_projects = super(ProjectProject, self.with_context(copy_context)).copy(default=default)
         if 'milestone_mapping' not in self.env.context:
             self = self.with_context(milestone_mapping={})
-        for old_project, new_project in zip(self, new_projects):
+        for old_project, new_project in zip(self, new_projects, strict=False):
             for follower in old_project.message_follower_ids:
                 new_project.message_subscribe(partner_ids=follower.partner_id.ids, subtype_ids=follower.subtype_ids.ids)
             if old_project.allow_milestones:
@@ -525,12 +525,12 @@ class ProjectProject(models.Model):
             aggregates=['id:recordset'],
         ))
         shared_embedded_actions_mapping = dict()
-        for project, new_project in zip(self, new_projects):
+        for project, new_project in zip(self, new_projects, strict=False):
             # Copy the shared embedded actions in the new record
             shared_embedded_actions = shared_embedded_actions_per_record.get(project.id)
             if shared_embedded_actions:
                 copy_shared_embedded_actions = shared_embedded_actions.copy({'parent_res_id': new_project.id})
-                for original_action, copied_action in zip(shared_embedded_actions, copy_shared_embedded_actions):
+                for original_action, copied_action in zip(shared_embedded_actions, copy_shared_embedded_actions, strict=False):
                     shared_embedded_actions_mapping[original_action.id] = copied_action.id
                     copied_action.filter_ids = original_action.filter_ids.copy({'embedded_parent_res_id': new_project.id})
         return shared_embedded_actions_mapping
@@ -551,7 +551,7 @@ class ProjectProject(models.Model):
             ],
         ).ids + [False]
         new_embedded_actions_config_vals_list = []
-        for project, new_project in zip(self, new_projects):
+        for project, new_project in zip(self, new_projects, strict=False):
             configs = embedded_action_configs_per_project.get(project.id, self.env['res.users.settings.embedded.action'])
             config_vals_list = configs.copy_data({'res_id': new_project.id})
             for config_vals in config_vals_list:
@@ -1182,7 +1182,7 @@ class ProjectProject(models.Model):
     def _create_analytic_account(self):
         analytic_accounts_values = self._get_values_analytic_account_batch(self._read_format(['name', 'company_id', 'partner_id'], None))
         analytic_accounts = self.env['account.analytic.account'].create(analytic_accounts_values)
-        for project, analytic_account in zip(self, analytic_accounts):
+        for project, analytic_account in zip(self, analytic_accounts, strict=False):
             project.account_id = analytic_account
 
     def _get_projects_to_make_billable_domain(self):

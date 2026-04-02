@@ -2,6 +2,7 @@ from freezegun import freeze_time
 
 from odoo import Command
 from odoo.tests import tagged
+
 from odoo.addons.l10n_in.tests.common import L10nInTestInvoicingCommon
 
 
@@ -112,7 +113,7 @@ class TestEdiJson(L10nInTestInvoicingCommon):
             cls.company_data["company"]).ref('igst_sale_18')
         cls.invoice_with_intra_igst.write({
             'invoice_line_ids': [
-                Command.update(line_id, {'tax_ids': [Command.clear(), Command.set(igst_18.ids)]}) 
+                Command.update(line_id, {'tax_ids': [Command.clear(), Command.set(igst_18.ids)]})
                 for line_id in cls.invoice_with_intra_igst.invoice_line_ids.ids
             ]
         })
@@ -132,7 +133,7 @@ class TestEdiJson(L10nInTestInvoicingCommon):
         cls.invoice_with_export.write({
             'l10n_in_state_id': cls.env.ref('l10n_in.state_in_oc').id,
             'invoice_line_ids': [
-                Command.update(line_id, {'tax_ids': [Command.clear(), Command.set(igst_18.ids)]}) 
+                Command.update(line_id, {'tax_ids': [Command.clear(), Command.set(igst_18.ids)]})
                 for line_id in cls.invoice_with_export.invoice_line_ids.ids
             ]
         })

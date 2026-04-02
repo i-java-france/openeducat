@@ -3,7 +3,7 @@ import {
     StateChangeManager,
     useEmbeddedState,
 } from "@html_editor/others/embedded_component_utils";
-import { getVideoUrl } from "@html_editor/utils/url";
+import {getVideoUrl} from "@html_editor/utils/url";
 import {
     Component,
     onMounted,
@@ -12,22 +12,22 @@ import {
     useExternalListener,
     useRef,
 } from "@odoo/owl";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { ReadonlyEmbeddedVideoComponent } from "../../core/video/readonly_video";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {ReadonlyEmbeddedVideoComponent} from "../../core/video/readonly_video";
 
 export class EmbeddedVideoComponent extends ReadonlyEmbeddedVideoComponent {
     static template = "html_editor.EmbeddedVideo";
     static props = {
-        platform: { type: String },
-        videoId: { type: String },
-        params: { type: Object, optional: true },
-        host: { type: HTMLElement },
-        createOverlay: { type: Function, optional: true },
-        focusEditable: { type: Function, optional: true },
-        addStep: { type: Function, optional: true },
-        openVideoSelectorDialog: { type: Function, optional: true },
+        platform: {type: String},
+        videoId: {type: String},
+        params: {type: Object, optional: true},
+        host: {type: HTMLElement},
+        createOverlay: {type: Function, optional: true},
+        focusEditable: {type: Function, optional: true},
+        addStep: {type: Function, optional: true},
+        openVideoSelectorDialog: {type: Function, optional: true},
     };
 
     setup() {
@@ -79,7 +79,11 @@ export class EmbeddedVideoComponent extends ReadonlyEmbeddedVideoComponent {
     }
 
     get url() {
-        return getVideoUrl(this.state.platform, this.state.videoId, this.state.params).toString();
+        return getVideoUrl(
+            this.state.platform,
+            this.state.videoId,
+            this.state.params
+        ).toString();
     }
 
     /**
@@ -97,20 +101,20 @@ export class EmbeddedVideoComponent extends ReadonlyEmbeddedVideoComponent {
 export const videoEmbedding = {
     name: "video",
     Component: EmbeddedVideoComponent,
-    getProps: (host) => ({ host, ...getEmbeddedProps(host) }),
+    getProps: (host) => ({host, ...getEmbeddedProps(host)}),
     getStateChangeManager: (config) => new StateChangeManager(config),
 };
 
 export class VideoSettings extends Component {
     static template = "html_editor.VideoSettings";
-    static components = { Dropdown, DropdownItem };
+    static components = {Dropdown, DropdownItem};
     static props = {
-        videoBlock: { type: HTMLElement },
-        overlay: { type: Object },
-        replaceVideo: { type: Function },
-        removeVideo: { type: Function },
-        focusEditable: { type: Function },
-        dropdown: { type: Object },
+        videoBlock: {type: HTMLElement},
+        overlay: {type: Object},
+        replaceVideo: {type: Function},
+        removeVideo: {type: Function},
+        focusEditable: {type: Function},
+        dropdown: {type: Object},
     };
 
     setup() {

@@ -1,11 +1,11 @@
-import { serverState } from "../../mock_server_state.hoot";
-import { ServerModel } from "../mock_model";
+import {serverState} from "../../mock_server_state.hoot";
+import {ServerModel} from "../mock_model";
 import * as fields from "../mock_fields";
 
 export class ResGroups extends ServerModel {
     _name = "res.groups";
 
-    full_name = fields.Char({ compute: "_compute_full_name" });
+    full_name = fields.Char({compute: "_compute_full_name"});
 
     _compute_full_name() {
         for (const group of this) {

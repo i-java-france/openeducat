@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
+
 from pytz import timezone, utc
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 
 
 class ResourceCalendarLeaves(models.Model):
@@ -148,7 +148,7 @@ class ResourceCalendarLeaves(models.Model):
         ], ['employee_id'], ['date_from:array_agg', 'date_to:array_agg'])
         holidays_by_employee = {
             employee.id: [
-                (date_from.date(), date_to.date()) for date_from, date_to in zip(date_from_list, date_to_list)
+                (date_from.date(), date_to.date()) for date_from, date_to in zip(date_from_list, date_to_list, strict=False)
             ] for employee, date_from_list, date_to_list in holidays_read_group
         }
         vals_list = []

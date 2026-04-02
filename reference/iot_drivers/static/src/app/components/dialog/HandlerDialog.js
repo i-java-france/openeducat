@@ -1,14 +1,14 @@
 /* global owl */
 
 import useStore from "../../hooks/useStore.js";
-import { BootstrapDialog } from "./BootstrapDialog.js";
-import { LoadingFullScreen } from "../LoadingFullScreen.js";
+import {BootstrapDialog} from "./BootstrapDialog.js";
+import {LoadingFullScreen} from "../LoadingFullScreen.js";
 
-const { Component, xml, useState } = owl;
+const {Component, xml, useState} = owl;
 
 export class HandlerDialog extends Component {
     static props = {};
-    static components = { BootstrapDialog, LoadingFullScreen };
+    static components = {BootstrapDialog, LoadingFullScreen};
 
     setup() {
         this.store = useStore();

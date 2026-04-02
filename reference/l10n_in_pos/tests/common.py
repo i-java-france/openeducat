@@ -2,8 +2,9 @@
 from contextlib import contextmanager
 
 from odoo.fields import Command
-from odoo.addons.point_of_sale.tests.common import TestPoSCommon
+
 from odoo.addons.account.tests.common import TestTaxCommon
+from odoo.addons.point_of_sale.tests.common import TestPoSCommon
 
 
 class TestInPosBase(TestPoSCommon):

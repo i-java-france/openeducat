@@ -1,4 +1,5 @@
-from odoo import _, api, models
+from odoo import api, models
+
 
 class MailTemplate(models.Model):
     _name = 'mail.template'

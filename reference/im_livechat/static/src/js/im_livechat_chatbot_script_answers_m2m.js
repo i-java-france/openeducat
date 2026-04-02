@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { user } from "@web/core/user";
+import {registry} from "@web/core/registry";
+import {user} from "@web/core/user";
 import {
     Many2ManyTagsField,
     many2ManyTagsField,
@@ -28,4 +28,7 @@ export const chatbotScriptTriggeringAnswersMany2Many = {
     component: ChatbotScriptTriggeringAnswersMany2Many,
 };
 
-fieldRegistry.add("chatbot_triggering_answers_widget", chatbotScriptTriggeringAnswersMany2Many);
+fieldRegistry.add(
+    "chatbot_triggering_answers_widget",
+    chatbotScriptTriggeringAnswersMany2Many
+);

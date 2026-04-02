@@ -1,4 +1,4 @@
-import { Plugin } from "@html_editor/plugin";
+import {Plugin} from "@html_editor/plugin";
 
 /** @typedef {import("plugins").CSSSelector} CSSSelector */
 /**
@@ -27,7 +27,9 @@ export class DropZoneSelectorPlugin extends Plugin {
             {
                 plugin: this,
                 get selector() {
-                    return this.plugin.getResource("so_snippet_addition_selector").join(", ");
+                    return this.plugin
+                        .getResource("so_snippet_addition_selector")
+                        .join(", ");
                 },
                 dropIn: so_snippet_addition_drop_in,
             },

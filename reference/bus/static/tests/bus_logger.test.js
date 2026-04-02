@@ -1,7 +1,7 @@
-import { Logger } from "@bus/workers/bus_worker_utils";
+import {Logger} from "@bus/workers/bus_worker_utils";
 
-import { after, before, describe, expect, test } from "@odoo/hoot";
-import { advanceTime } from "@odoo/hoot-dom";
+import {after, before, describe, expect, test} from "@odoo/hoot";
+import {advanceTime} from "@odoo/hoot-dom";
 
 describe.current.tags("desktop");
 

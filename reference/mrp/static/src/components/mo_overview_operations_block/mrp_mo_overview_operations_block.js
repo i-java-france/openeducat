@@ -1,8 +1,12 @@
-import { Component, useState } from "@odoo/owl";
-import { useBus } from "@web/core/utils/hooks";
-import { formatFloat, formatFloatTime, formatMonetary } from "@web/views/fields/formatters";
-import { MoOverviewLine } from "../mo_overview_line/mrp_mo_overview_line";
-import { SHOW_OPTIONS } from "../mo_overview_display_filter/mrp_mo_overview_display_filter";
+import {Component, useState} from "@odoo/owl";
+import {useBus} from "@web/core/utils/hooks";
+import {
+    formatFloat,
+    formatFloatTime,
+    formatMonetary,
+} from "@web/views/fields/formatters";
+import {MoOverviewLine} from "../mo_overview_line/mrp_mo_overview_line";
+import {SHOW_OPTIONS} from "../mo_overview_display_filter/mrp_mo_overview_display_filter";
 
 export class MoOverviewOperationsBlock extends Component {
     static template = "mrp.MoOverviewOperationsBlock";
@@ -10,23 +14,23 @@ export class MoOverviewOperationsBlock extends Component {
         MoOverviewLine,
     };
     static props = {
-        unfoldAll: { type: Boolean, optional: true },
+        unfoldAll: {type: Boolean, optional: true},
         operations: Array,
         summary: {
             type: Object,
             shape: {
                 index: String,
-                quantity: { type: Number, optional: true },
-                quantity_decorator: { type: [String, Boolean], optional: true },
-                mo_cost: { type: Number, optional: true },
-                mo_cost_decorator: { type: [String, Boolean], optional: true },
-                bom_cost: { type: [Number, Boolean], optional: true },
-                real_cost: { type: Number, optional: true },
-                real_cost_decorator: { type: [String, Boolean], optional: true },
-                uom_name: { type: String, optional: true },
-                currency_id: { type: Number, optional: true },
-                currency: { type: String, optional: true },
-                done: { type: Boolean, optional: true },
+                quantity: {type: Number, optional: true},
+                quantity_decorator: {type: [String, Boolean], optional: true},
+                mo_cost: {type: Number, optional: true},
+                mo_cost_decorator: {type: [String, Boolean], optional: true},
+                bom_cost: {type: [Number, Boolean], optional: true},
+                real_cost: {type: Number, optional: true},
+                real_cost_decorator: {type: [String, Boolean], optional: true},
+                uom_name: {type: String, optional: true},
+                currency_id: {type: Number, optional: true},
+                currency: {type: String, optional: true},
+                done: {type: Boolean, optional: true},
             },
         },
         showOptions: SHOW_OPTIONS,
@@ -42,7 +46,10 @@ export class MoOverviewOperationsBlock extends Component {
             isFolded: this.level > 0 && !this.props.unfoldAll,
         });
         if (this.props.unfoldAll) {
-            this.env.overviewBus.trigger("update-folded", { indexes: [this.index], isFolded: false });
+            this.env.overviewBus.trigger("update-folded", {
+                indexes: [this.index],
+                isFolded: false,
+            });
         }
 
         useBus(this.env.overviewBus, "unfold-all", () => this.unfold());
@@ -52,18 +59,24 @@ export class MoOverviewOperationsBlock extends Component {
 
     toggleFolded() {
         this.state.isFolded = !this.state.isFolded;
-        this.env.overviewBus.trigger("update-folded", { indexes: [this.index], isFolded: this.state.isFolded });
+        this.env.overviewBus.trigger("update-folded", {
+            indexes: [this.index],
+            isFolded: this.state.isFolded,
+        });
     }
 
     unfold() {
         this.state.isFolded = false;
-        this.env.overviewBus.trigger("update-folded", { indexes: [this.index], isFolded: false });
+        this.env.overviewBus.trigger("update-folded", {
+            indexes: [this.index],
+            isFolded: false,
+        });
     }
 
     //---- Helpers ----
 
     formatMonetary(val) {
-        return formatMonetary(val, { currencyId: this.props.summary.currency_id });
+        return formatMonetary(val, {currencyId: this.props.summary.currency_id});
     }
 
     getColorClass(decorator) {
@@ -86,8 +99,10 @@ export class MoOverviewOperationsBlock extends Component {
 
     get totalQuantity() {
         // Float for Hours when displaying done productions, FloatTime for Minutes otherwise.
-        return this.props.summary?.done ?
-            formatFloat(this.props.summary.quantity, { digits: [false, this.props.operations[0].uom_precision || undefined] }) :
-            formatFloatTime(this.props.summary.quantity)
+        return this.props.summary?.done
+            ? formatFloat(this.props.summary.quantity, {
+                  digits: [false, this.props.operations[0].uom_precision || undefined],
+              })
+            : formatFloatTime(this.props.summary.quantity);
     }
 }

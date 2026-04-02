@@ -1,4 +1,4 @@
-import { rpc } from "@web/core/network/rpc";
+import {rpc} from "@web/core/network/rpc";
 
 function makeGooglePlacesSession() {
     let current;

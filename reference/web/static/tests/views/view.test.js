@@ -1,7 +1,7 @@
-import { before, expect, test } from "@odoo/hoot";
-import { click, queryOne } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, onWillStart, onWillUpdateProps, useState, xml } from "@odoo/owl";
+import {before, expect, test} from "@odoo/hoot";
+import {click, queryOne} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Component, onWillStart, onWillUpdateProps, useState, xml} from "@odoo/owl";
 import {
     defineModels,
     expectMarkup,
@@ -15,10 +15,10 @@ import {
     serverState,
 } from "@web/../tests/web_test_helpers";
 
-import { registry } from "@web/core/registry";
-import { pick } from "@web/core/utils/objects";
-import { View } from "@web/views/view";
-import { CallbackRecorder } from "@web/search/action_hook";
+import {registry} from "@web/core/registry";
+import {pick} from "@web/core/utils/objects";
+import {View} from "@web/views/view";
+import {CallbackRecorder} from "@web/search/action_hook";
 
 const viewRegistry = registry.category("views");
 
@@ -45,10 +45,10 @@ class ToyControllerImp extends ToyController {
 
 before(() => {
     patchWithCleanup(serverState.view_info, {
-        toy: { multi_record: true, display_name: "Toy", icon: "fab fa-android" },
+        toy: {multi_record: true, display_name: "Toy", icon: "fab fa-android"},
     });
     viewRegistry.add("toy", toyView);
-    viewRegistry.add("toy_imp", { ...toyView, Controller: ToyControllerImp });
+    viewRegistry.add("toy_imp", {...toyView, Controller: ToyControllerImp});
 });
 
 class Animal extends models.Model {
@@ -90,23 +90,23 @@ class Animal extends models.Model {
 
 defineModels([Animal]);
 
-////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////
 // get_views
-////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////
 
 test("simple rendering", async function () {
     expect.assertions(9);
     patchWithCleanup(ToyController.prototype, {
         setup() {
             super.setup();
-            const { arch, fields, info } = this.props;
+            const {arch, fields, info} = this.props;
             expectMarkup(arch.outerHTML).toBe(`<toy>Arch content (id=false)</toy>`);
             expect(fields).toEqual({});
             expect(info.actionMenus).toBe(undefined);
             expect(this.env.config.viewId).toBe(false);
         },
     });
-    onRpc("get_views", ({ model, kwargs }) => {
+    onRpc("get_views", ({model, kwargs}) => {
         expect(model).toBe("animal");
         expect(kwargs.views).toEqual([[false, "toy"]]);
         expect(pick(kwargs.options, "action_id", "load_filters", "toolbar")).toEqual({
@@ -115,7 +115,7 @@ test("simple rendering", async function () {
             toolbar: false,
         });
     });
-    await mountWithCleanup(View, { props: { resModel: "animal", type: "toy" } });
+    await mountWithCleanup(View, {props: {resModel: "animal", type: "toy"}});
     expect(".o_toy_view.o_view_controller").toHaveCount(1);
     expect(".o_toy_view.toy").toHaveInnerHTML(`<toy>Arch content (id=false)</toy>`);
 });
@@ -125,14 +125,14 @@ test("rendering with given viewId", async function () {
     patchWithCleanup(ToyController.prototype, {
         setup() {
             super.setup();
-            const { arch, fields, info } = this.props;
+            const {arch, fields, info} = this.props;
             expectMarkup(arch.outerHTML).toBe(`<toy>Arch content (id=1)</toy>`);
             expect(fields).toEqual({});
             expect(info.actionMenus).toBe(undefined);
             expect(this.env.config.viewId).toBe(1);
         },
     });
-    onRpc("get_views", ({ kwargs }) => {
+    onRpc("get_views", ({kwargs}) => {
         expect(kwargs.views).toEqual([[1, "toy"]]);
         expect(pick(kwargs.options, "action_id", "load_filters", "toolbar")).toEqual({
             action_id: false,
@@ -140,7 +140,7 @@ test("rendering with given viewId", async function () {
             toolbar: false,
         });
     });
-    await mountWithCleanup(View, { props: { resModel: "animal", type: "toy", viewId: 1 } });
+    await mountWithCleanup(View, {props: {resModel: "animal", type: "toy", viewId: 1}});
     expect(".o_toy_view.o_view_controller").toHaveCount(1);
     expect(".o_toy_view.toy").toHaveInnerHTML(`<toy>Arch content (id=1)</toy>`);
 });
@@ -150,14 +150,14 @@ test("rendering with given 'views' param", async function () {
     patchWithCleanup(ToyController.prototype, {
         setup() {
             super.setup();
-            const { arch, fields, info } = this.props;
+            const {arch, fields, info} = this.props;
             expectMarkup(arch.outerHTML).toBe(`<toy>Arch content (id=1)</toy>`);
             expect(fields).toEqual({});
             expect(info.actionMenus).toBe(undefined);
             expect(this.env.config.viewId).toBe(1);
         },
     });
-    onRpc("get_views", ({ kwargs }) => {
+    onRpc("get_views", ({kwargs}) => {
         expect(kwargs.views).toEqual([[1, "toy"]]);
         expect(pick(kwargs.options, "action_id", "load_filters", "toolbar")).toEqual({
             action_id: false,
@@ -165,8 +165,8 @@ test("rendering with given 'views' param", async function () {
             toolbar: false,
         });
     });
-    await makeMockEnv({ config: { views: [[1, "toy"]] } });
-    await mountWithCleanup(View, { props: { resModel: "animal", type: "toy" } });
+    await makeMockEnv({config: {views: [[1, "toy"]]}});
+    await mountWithCleanup(View, {props: {resModel: "animal", type: "toy"}});
     expect(".o_toy_view.o_view_controller").toHaveCount(1);
     expect(".o_toy_view.toy").toHaveInnerHTML(`<toy>Arch content (id=1)</toy>`);
 });
@@ -176,14 +176,14 @@ test("rendering with given 'views' param not containing view id", async function
     patchWithCleanup(ToyController.prototype, {
         setup() {
             super.setup();
-            const { arch, fields, info } = this.props;
+            const {arch, fields, info} = this.props;
             expectMarkup(arch.outerHTML).toBe(`<toy>Arch content (id=false)</toy>`);
             expect(fields).toEqual({});
             expect(info.actionMenus).toBe(undefined);
             expect(this.env.config.viewId).toBe(false);
         },
     });
-    onRpc("get_views", ({ kwargs }) => {
+    onRpc("get_views", ({kwargs}) => {
         expect(kwargs.views).toEqual([
             [false, "other"],
             [false, "toy"],
@@ -194,8 +194,8 @@ test("rendering with given 'views' param not containing view id", async function
             toolbar: false,
         });
     });
-    await makeMockEnv({ config: { views: [[false, "other"]] } });
-    await mountWithCleanup(View, { props: { resModel: "animal", type: "toy" } });
+    await makeMockEnv({config: {views: [[false, "other"]]}});
+    await mountWithCleanup(View, {props: {resModel: "animal", type: "toy"}});
     expect(".o_toy_view.o_view_controller").toHaveCount(1);
     expect(".o_toy_view.toy").toHaveInnerHTML(`<toy>Arch content (id=false)</toy>`);
 });
@@ -205,14 +205,14 @@ test("viewId defined as prop and in 'views' prop", async function () {
     patchWithCleanup(ToyController.prototype, {
         setup() {
             super.setup();
-            const { arch, fields, info } = this.props;
+            const {arch, fields, info} = this.props;
             expectMarkup(arch.outerHTML).toBe(`<toy>Arch content (id=1)</toy>`);
             expect(fields).toEqual({});
             expect(info.actionMenus).toBe(undefined);
             expect(this.env.config.viewId).toBe(1);
         },
     });
-    onRpc("get_views", ({ kwargs }) => {
+    onRpc("get_views", ({kwargs}) => {
         expect(kwargs.views).toEqual([
             [1, "toy"],
             [false, "other"],
@@ -231,7 +231,7 @@ test("viewId defined as prop and in 'views' prop", async function () {
             ],
         },
     });
-    await mountWithCleanup(View, { props: { resModel: "animal", type: "toy", viewId: 1 } });
+    await mountWithCleanup(View, {props: {resModel: "animal", type: "toy", viewId: 1}});
     expect(".o_toy_view.o_view_controller").toHaveCount(1);
     expect(".o_toy_view.toy").toHaveInnerHTML(`<toy>Arch content (id=1)</toy>`);
 });
@@ -241,7 +241,7 @@ test("rendering with given arch and fields", async function () {
     patchWithCleanup(ToyController.prototype, {
         setup() {
             super.setup();
-            const { arch, fields, info } = this.props;
+            const {arch, fields, info} = this.props;
             expectMarkup(arch.outerHTML).toBe(`<toy>Specific arch content</toy>`);
             expect(fields).toEqual({});
             expect(info.actionMenus).toBe(undefined);
@@ -268,14 +268,14 @@ test("rendering with loadActionMenus='true'", async function () {
     patchWithCleanup(ToyController.prototype, {
         setup() {
             super.setup();
-            const { arch, fields, info } = this.props;
+            const {arch, fields, info} = this.props;
             expectMarkup(arch.outerHTML).toBe(`<toy>Arch content (id=false)</toy>`);
             expect(fields).toEqual({});
             expect(info.actionMenus).toEqual({});
             expect(this.env.config.viewId).toBe(false);
         },
     });
-    onRpc("get_views", ({ kwargs }) => {
+    onRpc("get_views", ({kwargs}) => {
         expect(kwargs.views).toEqual([[false, "toy"]]);
         expect(pick(kwargs.options, "action_id", "load_filters", "toolbar")).toEqual({
             action_id: false,
@@ -284,7 +284,7 @@ test("rendering with loadActionMenus='true'", async function () {
         });
     });
     await mountWithCleanup(View, {
-        props: { resModel: "animal", type: "toy", loadActionMenus: true },
+        props: {resModel: "animal", type: "toy", loadActionMenus: true},
     });
     expect(".o_toy_view.o_view_controller").toHaveCount(1);
     expect(".o_toy_view.toy").toHaveInnerHTML(`<toy>Arch content (id=false)</toy>`);
@@ -295,14 +295,14 @@ test("rendering with given arch, fields, and loadActionMenus='true'", async func
     patchWithCleanup(ToyController.prototype, {
         setup() {
             super.setup();
-            const { arch, fields, info } = this.props;
+            const {arch, fields, info} = this.props;
             expectMarkup(arch.outerHTML).toBe(`<toy>Specific arch content</toy>`);
             expect(fields).toEqual({});
             expect(info.actionMenus).toEqual({});
             expect(this.env.config.viewId).toBe(false);
         },
     });
-    onRpc("get_views", ({ kwargs }) => {
+    onRpc("get_views", ({kwargs}) => {
         expect(kwargs.views).toEqual([[false, "toy"]]);
         expect(pick(kwargs.options, "action_id", "load_filters", "toolbar")).toEqual({
             action_id: false,
@@ -328,7 +328,7 @@ test("rendering with given arch, fields, actionMenus, and loadActionMenus='true'
     patchWithCleanup(ToyController.prototype, {
         setup() {
             super.setup();
-            const { arch, fields, info } = this.props;
+            const {arch, fields, info} = this.props;
             expectMarkup(arch.outerHTML).toBe(`<toy>Specific arch content</toy>`);
             expect(fields).toEqual({});
             expect(info.actionMenus).toEqual({});
@@ -357,7 +357,8 @@ test("rendering with given searchViewId", async function () {
     patchWithCleanup(ToyController.prototype, {
         setup() {
             super.setup();
-            const { irFilters, searchViewArch, searchViewFields, searchViewId } = this.props.info;
+            const {irFilters, searchViewArch, searchViewFields, searchViewId} =
+                this.props.info;
             expect(searchViewArch).toBe(`<search/>`);
             expect(searchViewFields).toEqual({
                 id: {
@@ -438,7 +439,7 @@ test("rendering with given searchViewId", async function () {
             expect(irFilters).toBe(undefined);
         },
     });
-    onRpc("get_views", ({ kwargs }) => {
+    onRpc("get_views", ({kwargs}) => {
         expect(kwargs.views).toEqual([
             [false, "toy"],
             [false, "search"],
@@ -450,7 +451,7 @@ test("rendering with given searchViewId", async function () {
         });
     });
     await mountWithCleanup(View, {
-        props: { resModel: "animal", type: "toy", searchViewId: false },
+        props: {resModel: "animal", type: "toy", searchViewId: false},
     });
     expect(".o_toy_view.o_view_controller").toHaveCount(1);
     expect(".o_toy_view.toy").toHaveInnerHTML(`<toy>Arch content (id=false)</toy>`);
@@ -461,7 +462,8 @@ test("rendering with given arch, fields, searchViewId, searchViewArch, and searc
     patchWithCleanup(ToyController.prototype, {
         setup() {
             super.setup();
-            const { irFilters, searchViewArch, searchViewFields, searchViewId } = this.props.info;
+            const {irFilters, searchViewArch, searchViewFields, searchViewId} =
+                this.props.info;
             expect(searchViewArch).toBe(`<search/>`);
             expect(searchViewFields).toEqual({});
             expect(searchViewId).toBe(false);
@@ -491,7 +493,8 @@ test("rendering with given arch, fields, searchViewArch, and searchViewFields", 
     patchWithCleanup(ToyController.prototype, {
         setup() {
             super.setup();
-            const { irFilters, searchViewArch, searchViewFields, searchViewId } = this.props.info;
+            const {irFilters, searchViewArch, searchViewFields, searchViewId} =
+                this.props.info;
             expect(searchViewArch).toBe(`<search/>`);
             expect(searchViewFields).toEqual({});
             expect(searchViewId).toBe(undefined);
@@ -520,7 +523,8 @@ test("rendering with given arch, fields, searchViewId, searchViewArch, searchVie
     patchWithCleanup(ToyController.prototype, {
         setup() {
             super.setup();
-            const { irFilters, searchViewArch, searchViewFields, searchViewId } = this.props.info;
+            const {irFilters, searchViewArch, searchViewFields, searchViewId} =
+                this.props.info;
             expect(searchViewArch).toBe(`<search/>`);
             expect(searchViewFields).toEqual({});
             expect(searchViewId).toBe(false);
@@ -537,7 +541,7 @@ test("rendering with given arch, fields, searchViewId, searchViewArch, searchVie
             ]);
         },
     });
-    onRpc("get_views", ({ kwargs }) => {
+    onRpc("get_views", ({kwargs}) => {
         expect(kwargs.views).toEqual([
             [false, "toy"],
             [false, "search"],
@@ -589,7 +593,7 @@ test("rendering with given arch, fields, searchViewId, searchViewArch, searchVie
             expect(searchViewArch).toBe(`<search/>`);
             expect(searchViewFields).toEqual({});
             expect(searchViewId).toBe(undefined);
-            expect(filters).toBe(irFilters); // irFilters is passed as it is without transformation -> we can use toBe instead of toEqual to avoid a warning
+            expect(filters).toBe(irFilters); // IrFilters is passed as it is without transformation -> we can use toBe instead of toEqual to avoid a warning
         },
     });
     onRpc("get_views", () => {
@@ -629,9 +633,9 @@ test("can click on action-bound links -- 1", async () => {
     `;
     onRpc("setTheControl", () => {
         expect.step("root called");
-        return { type: "ir.actions.client", tag: "someAction" };
+        return {type: "ir.actions.client", tag: "someAction"};
     });
-    await mountWithCleanup(View, { props: { resModel: "animal", type: "toy", viewId: 1 } });
+    await mountWithCleanup(View, {props: {resModel: "animal", type: "toy", viewId: 1}});
     expect("a").toHaveCount(1);
     await click("a");
     await animationFrame();
@@ -657,7 +661,7 @@ test("can click on action-bound links -- 2", async () => {
             </a>
         </toy>
     `;
-    await mountWithCleanup(View, { props: { resModel: "animal", type: "toy", viewId: 1 } });
+    await mountWithCleanup(View, {props: {resModel: "animal", type: "toy", viewId: 1}});
     expect("a").toHaveCount(1);
     await click("a");
     await animationFrame();
@@ -690,19 +694,19 @@ test("can click on action-bound links -- 3", async () => {
             </a>
         </toy>
     `;
-    await mountWithCleanup(View, { props: { resModel: "animal", type: "toy", viewId: 1 } });
+    await mountWithCleanup(View, {props: {resModel: "animal", type: "toy", viewId: 1}});
     expect("a").toHaveCount(1);
     await click("a");
     await animationFrame();
 });
 
-////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////
 // js_class
-////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////
 
 test("rendering with given jsClass", async function () {
     expect.assertions(4);
-    onRpc("get_views", ({ kwargs }) => {
+    onRpc("get_views", ({kwargs}) => {
         expect(kwargs.views).toEqual([[false, "toy"]]);
         expect(pick(kwargs.options, "action_id", "load_filters", "toolbar")).toEqual({
             action_id: false,
@@ -712,7 +716,7 @@ test("rendering with given jsClass", async function () {
     });
 
     await mountWithCleanup(View, {
-        props: { resModel: "animal", type: "toy", jsClass: "toy_imp" },
+        props: {resModel: "animal", type: "toy", jsClass: "toy_imp"},
     });
     expect(".o_toy_view.toy_imp").toHaveCount(1);
     expect(".o_toy_view.toy_imp").toHaveText("Arch content (id=false)");
@@ -720,7 +724,7 @@ test("rendering with given jsClass", async function () {
 
 test("rendering with loaded arch attribute 'js_class'", async function () {
     expect.assertions(4);
-    onRpc("get_views", ({ kwargs }) => {
+    onRpc("get_views", ({kwargs}) => {
         expect(kwargs.views).toEqual([[2, "toy"]]);
         expect(pick(kwargs.options, "action_id", "load_filters", "toolbar")).toEqual({
             action_id: false,
@@ -728,7 +732,7 @@ test("rendering with loaded arch attribute 'js_class'", async function () {
             toolbar: false,
         });
     });
-    await mountWithCleanup(View, { props: { resModel: "animal", type: "toy", viewId: 2 } });
+    await mountWithCleanup(View, {props: {resModel: "animal", type: "toy", viewId: 2}});
     expect(".o_toy_view.toy_imp").toHaveCount(1);
     expect(".o_toy_view.toy_imp").toHaveText("Arch content (id=2)");
 });
@@ -747,7 +751,9 @@ test("rendering with given arch attribute 'js_class'", async function () {
         },
     });
     expect(".o_toy_view.toy_imp").toHaveCount(1);
-    expect(".o_toy_view.toy_imp").toHaveText("Specific arch content for specific class");
+    expect(".o_toy_view.toy_imp").toHaveText(
+        "Specific arch content for specific class"
+    );
 });
 
 test("rendering with loaded arch attribute 'js_class' and given jsClass", async function () {
@@ -760,7 +766,7 @@ test("rendering with loaded arch attribute 'js_class' and given jsClass", async 
             static type = "toy";
         },
     });
-    onRpc("get_views", ({ kwargs }) => {
+    onRpc("get_views", ({kwargs}) => {
         expect(kwargs.views).toEqual([[2, "toy"]]);
         expect(pick(kwargs.options, "action_id", "load_filters", "toolbar")).toEqual({
             action_id: false,
@@ -791,7 +797,7 @@ test("rendering with given arch attribute 'js_class' and given jsClass", async f
                 static type = "toy";
             },
         },
-        { force: true }
+        {force: true}
     );
     onRpc("get_views", () => {
         throw new Error("no get_views expected");
@@ -808,14 +814,14 @@ test("rendering with given arch attribute 'js_class' and given jsClass", async f
     expect(".o_toy_view.toy_imp").toHaveCount(1);
 });
 
-////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////
 // props validation
-////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////
 
 test("'resModel' must be passed as prop", async function () {
     const props = {};
     try {
-        await mountWithCleanup(View, { props });
+        await mountWithCleanup(View, {props});
     } catch (error) {
         expect.step(error.message);
     }
@@ -823,9 +829,9 @@ test("'resModel' must be passed as prop", async function () {
 });
 
 test("'type' must be passed as prop", async function () {
-    const props = { resModel: "animal" };
+    const props = {resModel: "animal"};
     try {
-        await mountWithCleanup(View, { props });
+        await mountWithCleanup(View, {props});
     } catch (error) {
         expect.step(error.message);
     }
@@ -833,9 +839,9 @@ test("'type' must be passed as prop", async function () {
 });
 
 test("'arch' cannot be passed as prop alone", async function () {
-    const props = { resModel: "animal", type: "toy", arch: "<toy/>" };
+    const props = {resModel: "animal", type: "toy", arch: "<toy/>"};
     try {
-        await mountWithCleanup(View, { props });
+        await mountWithCleanup(View, {props});
     } catch (error) {
         expect.step(error.message);
     }
@@ -843,9 +849,9 @@ test("'arch' cannot be passed as prop alone", async function () {
 });
 
 test("'fields' cannot be passed as prop alone", async function () {
-    const props = { resModel: "animal", type: "toy", fields: {} };
+    const props = {resModel: "animal", type: "toy", fields: {}};
     try {
-        await mountWithCleanup(View, { props });
+        await mountWithCleanup(View, {props});
     } catch (error) {
         expect.step(error.message);
     }
@@ -853,28 +859,32 @@ test("'fields' cannot be passed as prop alone", async function () {
 });
 
 test("'searchViewArch' cannot be passed as prop alone", async function () {
-    const props = { resModel: "animal", type: "toy", searchViewArch: "<toy/>" };
+    const props = {resModel: "animal", type: "toy", searchViewArch: "<toy/>"};
     try {
-        await mountWithCleanup(View, { props });
+        await mountWithCleanup(View, {props});
     } catch (error) {
         expect.step(error.message);
     }
-    expect.verifySteps([`"searchViewArch" and "searchViewFields" props must be given together`]);
+    expect.verifySteps([
+        `"searchViewArch" and "searchViewFields" props must be given together`,
+    ]);
 });
 
 test("'searchViewFields' cannot be passed as prop alone", async function () {
-    const props = { resModel: "animal", type: "toy", searchViewFields: {} };
+    const props = {resModel: "animal", type: "toy", searchViewFields: {}};
     try {
-        await mountWithCleanup(View, { props });
+        await mountWithCleanup(View, {props});
     } catch (error) {
         expect.step(error.message);
     }
-    expect.verifySteps([`"searchViewArch" and "searchViewFields" props must be given together`]);
+    expect.verifySteps([
+        `"searchViewArch" and "searchViewFields" props must be given together`,
+    ]);
 });
 
-////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////
 // props
-////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////
 
 test("search query props are passed as props to concrete view (default search arch)", async function () {
     expect.assertions(4);
@@ -882,7 +892,7 @@ test("search query props are passed as props to concrete view (default search ar
         static props = ["*"];
         static template = xml`<div/>`;
         setup() {
-            const { context, domain, groupBy, orderBy } = this.props;
+            const {context, domain, groupBy, orderBy} = this.props;
             expect(context).toEqual({
                 lang: "en",
                 tz: "taht",
@@ -892,19 +902,19 @@ test("search query props are passed as props to concrete view (default search ar
             });
             expect(domain).toEqual([[0, "=", 1]]);
             expect(groupBy).toEqual(["birthday"]);
-            expect(orderBy).toEqual([{ name: "bar", asc: true }]);
+            expect(orderBy).toEqual([{name: "bar", asc: true}]);
         }
     }
-    viewRegistry.add("toy", { type: "toy", Controller: ToyController }, { force: true });
+    viewRegistry.add("toy", {type: "toy", Controller: ToyController}, {force: true});
     const props = {
         resModel: "animal",
         type: "toy",
         domain: [[0, "=", 1]],
         groupBy: ["birthday"],
-        context: { key: "val" },
-        orderBy: [{ name: "bar", asc: true }],
+        context: {key: "val"},
+        orderBy: [{name: "bar", asc: true}],
     };
-    await mountWithCleanup(View, { props });
+    await mountWithCleanup(View, {props});
 });
 
 test("non empty prop 'noContentHelp'", async function () {
@@ -916,13 +926,13 @@ test("non empty prop 'noContentHelp'", async function () {
             expect(this.props.info.noContentHelp).toBe("<div>Help</div>");
         }
     }
-    viewRegistry.add("toy", { type: "toy", Controller: ToyController }, { force: true });
+    viewRegistry.add("toy", {type: "toy", Controller: ToyController}, {force: true});
     const props = {
         resModel: "animal",
         type: "toy",
         noContentHelp: "<div>Help</div>",
     };
-    await mountWithCleanup(View, { props });
+    await mountWithCleanup(View, {props});
 });
 
 test("useSampleModel false by default", async function () {
@@ -934,9 +944,9 @@ test("useSampleModel false by default", async function () {
             expect(this.props.useSampleModel).toBe(false);
         }
     }
-    viewRegistry.add("toy", { type: "toy", Controller: ToyController }, { force: true });
-    const props = { resModel: "animal", type: "toy" };
-    await mountWithCleanup(View, { props });
+    viewRegistry.add("toy", {type: "toy", Controller: ToyController}, {force: true});
+    const props = {resModel: "animal", type: "toy"};
+    await mountWithCleanup(View, {props});
 });
 
 test("sample='1' on arch", async function () {
@@ -948,14 +958,14 @@ test("sample='1' on arch", async function () {
             expect(this.props.useSampleModel).toBe(true);
         }
     }
-    viewRegistry.add("toy", { type: "toy", Controller: ToyController }, { force: true });
+    viewRegistry.add("toy", {type: "toy", Controller: ToyController}, {force: true});
     const props = {
         resModel: "animal",
         type: "toy",
         arch: `<toy sample="1"/>`,
         fields: {},
     };
-    await mountWithCleanup(View, { props });
+    await mountWithCleanup(View, {props});
 });
 
 test("sample='0' on arch and useSampleModel=true", async function () {
@@ -967,7 +977,7 @@ test("sample='0' on arch and useSampleModel=true", async function () {
             expect(this.props.useSampleModel).toBe(true);
         }
     }
-    viewRegistry.add("toy", { type: "toy", Controller: ToyController }, { force: true });
+    viewRegistry.add("toy", {type: "toy", Controller: ToyController}, {force: true});
     const props = {
         resModel: "animal",
         type: "toy",
@@ -975,7 +985,7 @@ test("sample='0' on arch and useSampleModel=true", async function () {
         arch: `<toy sample="0"/>`,
         fields: {},
     };
-    await mountWithCleanup(View, { props });
+    await mountWithCleanup(View, {props});
 });
 
 test("sample='1' on arch and useSampleModel=false", async function () {
@@ -987,7 +997,7 @@ test("sample='1' on arch and useSampleModel=false", async function () {
             expect(this.props.useSampleModel).toBe(false);
         }
     }
-    viewRegistry.add("toy", { type: "toy", Controller: ToyController }, { force: true });
+    viewRegistry.add("toy", {type: "toy", Controller: ToyController}, {force: true});
     const props = {
         resModel: "animal",
         type: "toy",
@@ -995,7 +1005,7 @@ test("sample='1' on arch and useSampleModel=false", async function () {
         arch: `<toy sample="1"/>`,
         fields: {},
     };
-    await mountWithCleanup(View, { props });
+    await mountWithCleanup(View, {props});
 });
 
 test("useSampleModel=true", async function () {
@@ -1007,9 +1017,9 @@ test("useSampleModel=true", async function () {
             expect(this.props.useSampleModel).toBe(true);
         }
     }
-    viewRegistry.add("toy", { type: "toy", Controller: ToyController }, { force: true });
-    const props = { resModel: "animal", type: "toy", useSampleModel: true };
-    await mountWithCleanup(View, { props });
+    viewRegistry.add("toy", {type: "toy", Controller: ToyController}, {force: true});
+    const props = {resModel: "animal", type: "toy", useSampleModel: true};
+    await mountWithCleanup(View, {props});
 });
 
 test("rendering with given prop", async function () {
@@ -1021,9 +1031,9 @@ test("rendering with given prop", async function () {
             expect(this.props.specificProp).toBe("specificProp");
         }
     }
-    viewRegistry.add("toy", { type: "toy", Controller: ToyController }, { force: true });
-    const props = { resModel: "animal", type: "toy", specificProp: "specificProp" };
-    await mountWithCleanup(View, { props });
+    viewRegistry.add("toy", {type: "toy", Controller: ToyController}, {force: true});
+    const props = {resModel: "animal", type: "toy", specificProp: "specificProp"};
+    await mountWithCleanup(View, {props});
 });
 
 test("search query props are passed as props to concrete view (specific search arch)", async function () {
@@ -1032,7 +1042,7 @@ test("search query props are passed as props to concrete view (specific search a
         static props = ["*"];
         static template = xml`<div/>`;
         setup() {
-            const { context, domain, groupBy, orderBy } = this.props;
+            const {context, domain, groupBy, orderBy} = this.props;
             expect(context).toEqual({
                 lang: "en",
                 tz: "taht",
@@ -1041,20 +1051,20 @@ test("search query props are passed as props to concrete view (specific search a
             });
             expect(domain).toEqual(["&", [0, "=", 1], [1, "=", 1]]);
             expect(groupBy).toEqual(["display_name"]);
-            expect(orderBy).toEqual([{ name: "bar", asc: true }]);
+            expect(orderBy).toEqual([{name: "bar", asc: true}]);
         }
     }
-    viewRegistry.add("toy", { type: "toy", Controller: ToyController }, { force: true });
+    viewRegistry.add("toy", {type: "toy", Controller: ToyController}, {force: true});
     const props = {
         type: "toy",
         resModel: "animal",
         searchViewId: 1,
         domain: [[0, "=", 1]],
         groupBy: ["birthday"],
-        context: { search_default_filter: 1, search_default_group_by: 1 },
-        orderBy: [{ name: "bar", asc: true }],
+        context: {search_default_filter: 1, search_default_group_by: 1},
+        orderBy: [{name: "bar", asc: true}],
     };
-    await mountWithCleanup(View, { props });
+    await mountWithCleanup(View, {props});
 });
 
 test("multiple ways to pass classes for styling", async () => {
@@ -1070,7 +1080,7 @@ test("multiple ways to pass classes for styling", async () => {
         `,
         fields: {},
     };
-    await mountWithCleanup(View, { props });
+    await mountWithCleanup(View, {props});
     const view = queryOne(".o_toy_view");
     expect(view).toHaveClass("o_toy_imp_view", {
         message: "should have the class from js_class attribute",
@@ -1095,26 +1105,26 @@ test("callback recorders are moved from props to subenv", async () => {
         static props = ["*"];
         static template = xml`<div/>`;
         setup() {
-            expect(this.env.__getGlobalState__).toBeInstanceOf(CallbackRecorder); // put in env by View
-            expect(this.env.__getContext__).toBeInstanceOf(CallbackRecorder); // put in env by View
-            expect(this.env.__getLocalState__).toBe(null); // set by View
-            expect(this.env.__beforeLeave__).toBe(null); // set by View
-            expect(this.env.__getOrderBy__).toBeInstanceOf(CallbackRecorder); // put in env by WithSearch
+            expect(this.env.__getGlobalState__).toBeInstanceOf(CallbackRecorder); // Put in env by View
+            expect(this.env.__getContext__).toBeInstanceOf(CallbackRecorder); // Put in env by View
+            expect(this.env.__getLocalState__).toBe(null); // Set by View
+            expect(this.env.__beforeLeave__).toBe(null); // Set by View
+            expect(this.env.__getOrderBy__).toBeInstanceOf(CallbackRecorder); // Put in env by WithSearch
         }
     }
-    viewRegistry.add("toy", { type: "toy", Controller: ToyController }, { force: true });
+    viewRegistry.add("toy", {type: "toy", Controller: ToyController}, {force: true});
     const props = {
         type: "toy",
         resModel: "animal",
         __getGlobalState__: new CallbackRecorder(),
         __getContext__: new CallbackRecorder(),
     };
-    await mountWithCleanup(View, { props });
+    await mountWithCleanup(View, {props});
 });
 
-////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////
 // update props
-////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////
 
 test("react to prop 'domain' changes", async function () {
     expect.assertions(2);
@@ -1130,11 +1140,11 @@ test("react to prop 'domain' changes", async function () {
             });
         }
     }
-    viewRegistry.add("toy", { type: "toy", Controller: ToyController }, { force: true });
+    viewRegistry.add("toy", {type: "toy", Controller: ToyController}, {force: true});
     class Parent extends Component {
         static props = ["*"];
         static template = xml`<View t-props="state"/>`;
-        static components = { View };
+        static components = {View};
         setup() {
             this.state = useState({
                 type: "toy",
@@ -1148,15 +1158,15 @@ test("react to prop 'domain' changes", async function () {
     await animationFrame();
 });
 
-////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////
 // cache
-////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////
 
 test("Cache: refresh with debug mode", async () => {
     const env = await makeMockEnv();
 
-    onRpc("get_views", ({ kwargs }) => {
-        expect.step("Fetch, debug = " + !!kwargs.options.debug);
+    onRpc("get_views", ({kwargs}) => {
+        expect.step("Fetch, debug = " + Boolean(kwargs.options.debug));
         return {
             models: {
                 "res.partner": {

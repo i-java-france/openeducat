@@ -1,8 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from psycopg2 import sql
 
-from odoo import tools
-from odoo import fields, models
+from odoo import fields, models, tools
 
 
 class OdometerReport(models.Model):

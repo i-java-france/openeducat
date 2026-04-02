@@ -41,10 +41,12 @@ export function computeAppsAndMenuItems(menuTree) {
             if (menuItem.webIconData) {
                 item.webIconData = menuItem.webIconData;
             } else {
-                const [iconClass, color, backgroundColor] = (menuItem.webIcon || "").split(",");
+                const [iconClass, color, backgroundColor] = (
+                    menuItem.webIcon || ""
+                ).split(",");
                 if (backgroundColor !== undefined) {
                     // Could split in three parts?
-                    item.webIcon = { iconClass, color, backgroundColor };
+                    item.webIcon = {iconClass, color, backgroundColor};
                 } else {
                     item.webIconData = "/web/static/img/default_icon_app.png";
                 }
@@ -58,7 +60,7 @@ export function computeAppsAndMenuItems(menuTree) {
             menuItems.push(item);
         }
     });
-    return { apps, menuItems };
+    return {apps, menuItems};
 }
 
 /**

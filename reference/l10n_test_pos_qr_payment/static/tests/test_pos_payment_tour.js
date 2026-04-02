@@ -3,7 +3,7 @@ import * as PaymentScreen from "@point_of_sale/../tests/pos/tours/utils/payment_
 import * as Dialog from "@point_of_sale/../tests/generic_helpers/dialog_util";
 import * as Chrome from "@point_of_sale/../tests/pos/tours/utils/chrome_util";
 
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 
 /**
  * HELPERS
@@ -11,7 +11,7 @@ import { registry } from "@web/core/registry";
 
 function isQRDisplayedinDialog() {
     return [
-        Dialog.is({ title: "QR Code" }),
+        Dialog.is({title: "QR Code"}),
         {
             content: "Verify QR image is displayed",
             trigger: ".modal-content img[src^='data:image/png;base64,']",
@@ -33,7 +33,7 @@ function addProductandPay(isPartialPay = false) {
                   PaymentScreen.clickNumpad("⌫"),
                   PaymentScreen.clickNumpad("+10"),
               ]
-            : [PaymentScreen.clickPaymentMethod("QR Code", true, { amount: "48" })]),
+            : [PaymentScreen.clickPaymentMethod("QR Code", true, {amount: "48"})]),
         {
             content: "Display QR Code Payment dialog",
             trigger: ".button.send_payment_request.highlight",
@@ -52,7 +52,7 @@ registry.category("web_tour.tours").add("PaymentScreenWithQRPaymentFailure", {
             Chrome.startPoS(),
             Dialog.confirm("Open Register"),
             addProductandPay(),
-            Dialog.is({ title: "Failure to generate Payment QR Code" }),
+            Dialog.is({title: "Failure to generate Payment QR Code"}),
             Dialog.confirm(),
         ].flat(),
 });
@@ -104,7 +104,7 @@ registry.category("web_tour.tours").add("PaymentScreenWithQRPaymentSwiss", {
             ProductScreen.clickCustomer("AAA Partner Swiss"),
             ProductScreen.clickPayButton(),
             PaymentScreen.totalIs("48"),
-            PaymentScreen.clickPaymentMethod("QR Code", true, { amount: "48" }),
+            PaymentScreen.clickPaymentMethod("QR Code", true, {amount: "48"}),
             {
                 content: "Display QR Code Payment dialog",
                 trigger: ".button.send_payment_request.highlight",

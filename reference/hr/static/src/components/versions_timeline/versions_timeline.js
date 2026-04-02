@@ -1,11 +1,14 @@
-import { onWillUpdateProps, useComponent, useState } from "@odoo/owl";
-import { useDateTimePicker } from "@web/core/datetime/datetime_picker_hook";
-import { Domain } from "@web/core/domain";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { getFieldDomain, useRecordObserver } from "@web/model/relational_model/utils";
-import { statusBarField, StatusBarField } from "@web/views/fields/statusbar/statusbar_field";
-import { _t } from "@web/core/l10n/translation";
+import {onWillUpdateProps, useComponent, useState} from "@odoo/owl";
+import {useDateTimePicker} from "@web/core/datetime/datetime_picker_hook";
+import {Domain} from "@web/core/domain";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {getFieldDomain, useRecordObserver} from "@web/model/relational_model/utils";
+import {
+    statusBarField,
+    StatusBarField,
+} from "@web/views/fields/statusbar/statusbar_field";
+import {_t} from "@web/core/l10n/translation";
 
 export class VersionsTimeline extends StatusBarField {
     static template = "hr.VersionsTimeline";
@@ -18,8 +21,8 @@ export class VersionsTimeline extends StatusBarField {
 
         if (this.field.type === "many2one") {
             this.specialData = useSpecialDataNoCache((orm, props) => {
-                const { foldField, name: fieldName, record } = props;
-                const { relation } = record.fields[fieldName];
+                const {foldField, name: fieldName, record} = props;
+                const {relation} = record.fields[fieldName];
                 const fieldNames = [
                     "display_name",
                     "contract_type_id",
@@ -56,7 +59,7 @@ export class VersionsTimeline extends StatusBarField {
                 }
             },
             get pickerProps() {
-                return { type: "date" };
+                return {type: "date"};
             },
         });
     }
@@ -71,7 +74,7 @@ export class VersionsTimeline extends StatusBarField {
         await this.props.record.save();
         const version_id = await this.orm.call("hr.employee", "create_version", [
             this.props.record.evalContext.id,
-            { date_version: date },
+            {date_version: date},
         ]);
 
         await this.props.record.model.load({
@@ -88,7 +91,7 @@ export class VersionsTimeline extends StatusBarField {
 
     /** @override **/
     async selectItem(item) {
-        const { record } = this.props;
+        const {record} = this.props;
         await record.save();
         await this.props.record.model.load({
             context: {
@@ -116,8 +119,11 @@ export class VersionsTimeline extends StatusBarField {
             const itemSpecialData = dataById.get(item.value) || {};
             const contractDateStart = itemSpecialData.contract_date_start;
             let contractDateEnd = itemSpecialData.contract_date_end;
-            contractDateEnd = contractDateEnd ? format(contractDateEnd) : _t("Indefinite");
-            const contractType = itemSpecialData.contract_type_id?.[1] ?? _t("Contract");
+            contractDateEnd = contractDateEnd
+                ? format(contractDateEnd)
+                : _t("Indefinite");
+            const contractType =
+                itemSpecialData.contract_type_id?.[1] ?? _t("Contract");
             const toolTip = contractDateStart
                 ? `${contractType}: ${format(contractDateStart)} - ${contractDateEnd}`
                 : _t("No contract");
@@ -137,9 +143,9 @@ export function useSpecialDataNoCache(loadFn) {
     const orm = component.env.services.orm;
 
     /** @type {{ data: Record<string, T> }} */
-    const result = useState({ data: {} });
+    const result = useState({data: {}});
     useRecordObserver(async (record, props) => {
-        result.data = await loadFn(orm, { ...props, record });
+        result.data = await loadFn(orm, {...props, record});
     });
     onWillUpdateProps(async (props) => {
         // useRecordObserver callback is not called when the record doesn't change

@@ -1,6 +1,6 @@
-import { useAutoresize } from "@web/core/utils/autoresize";
+import {useAutoresize} from "@web/core/utils/autoresize";
 
-import { Component, useRef } from "@odoo/owl";
+import {Component, useRef} from "@odoo/owl";
 
 export class PropertyText extends Component {
     static template = "web.PropertyText";

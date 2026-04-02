@@ -1,5 +1,5 @@
-import { patch } from "@web/core/utils/patch";
-import { PosConfig } from "@point_of_sale/../tests/unit/data/pos_config.data";
+import {patch} from "@web/core/utils/patch";
+import {PosConfig} from "@point_of_sale/../tests/unit/data/pos_config.data";
 
 patch(PosConfig.prototype, {
     _load_pos_self_data_read(records) {

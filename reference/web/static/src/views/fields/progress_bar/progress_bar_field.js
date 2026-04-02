@@ -1,31 +1,31 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { useNumpadDecimal } from "../numpad_decimal_hook";
-import { parseFloat } from "../parsers";
-import { useInputField } from "@web/views/fields/input_field_hook";
-import { standardFieldProps } from "../standard_field_props";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useNumpadDecimal} from "../numpad_decimal_hook";
+import {parseFloat} from "../parsers";
+import {useInputField} from "@web/views/fields/input_field_hook";
+import {standardFieldProps} from "../standard_field_props";
 
-import { Component, useRef, useState } from "@odoo/owl";
+import {Component, useRef, useState} from "@odoo/owl";
 const formatters = registry.category("formatters");
 
 export class ProgressBarField extends Component {
     static template = "web.ProgressBarField";
     static props = {
         ...standardFieldProps,
-        maxValueField: { type: [String, Number], optional: true },
-        currentValueField: { type: String, optional: true },
-        isEditable: { type: Boolean, optional: true },
-        isCurrentValueEditable: { type: Boolean, optional: true },
-        isMaxValueEditable: { type: Boolean, optional: true },
-        title: { type: String, optional: true },
-        overflowClass: { type: String, optional: true },
+        maxValueField: {type: [String, Number], optional: true},
+        currentValueField: {type: String, optional: true},
+        isEditable: {type: Boolean, optional: true},
+        isCurrentValueEditable: {type: Boolean, optional: true},
+        isMaxValueEditable: {type: Boolean, optional: true},
+        title: {type: String, optional: true},
+        overflowClass: {type: String, optional: true},
     };
 
     setup() {
         useNumpadDecimal();
         this.root = useRef("numpadDecimal");
 
-        const { currentValueField, maxValueField, name } = this.props;
+        const {currentValueField, maxValueField, name} = this.props;
         this.currentValueField = currentValueField ? currentValueField : name;
         if (maxValueField) {
             this.maxValueField = maxValueField;
@@ -66,17 +66,23 @@ export class ProgressBarField extends Component {
     }
 
     get progressBarColorClass() {
-        return this.currentValue > this.maxValue ? this.props.overflowClass : "bg-primary";
+        return this.currentValue > this.maxValue
+            ? this.props.overflowClass
+            : "bg-primary";
     }
 
     formatCurrentValue(humanReadable = !this.state.isEditing) {
-        const formatter = formatters.get(this.props.record.fields[this.currentValueField].type);
-        return formatter(this.currentValue, { humanReadable });
+        const formatter = formatters.get(
+            this.props.record.fields[this.currentValueField].type
+        );
+        return formatter(this.currentValue, {humanReadable});
     }
 
     formatMaxValue(humanReadable = !this.state.isEditing) {
-        const formatter = formatters.get(this.props.record.fields[this.maxValueField]?.type ?? "integer");
-        return formatter(this.maxValue, { humanReadable });
+        const formatter = formatters.get(
+            this.props.record.fields[this.maxValueField]?.type ?? "integer"
+        );
+        return formatter(this.maxValue, {humanReadable});
     }
 
     parseCurrentValue(value) {
@@ -152,7 +158,7 @@ export const progressBarField = {
         },
     ],
     supportedTypes: ["integer", "float"],
-    extractProps: ({ attrs, options }) => ({
+    extractProps: ({attrs, options}) => ({
         maxValueField: options.max_value,
         currentValueField: options.current_value,
         isEditable: !options.readonly && options.editable,

@@ -1,6 +1,6 @@
-import { Component, xml } from "@odoo/owl";
-import { basicContainerBuilderComponentProps, useBuilderComponent } from "../utils";
-import { BuilderComponent } from "./builder_component";
+import {Component, xml} from "@odoo/owl";
+import {basicContainerBuilderComponentProps, useBuilderComponent} from "../utils";
+import {BuilderComponent} from "./builder_component";
 
 export class BuilderContext extends Component {
     static template = xml`
@@ -10,7 +10,7 @@ export class BuilderContext extends Component {
     `;
     static props = {
         ...basicContainerBuilderComponentProps,
-        slots: { type: Object },
+        slots: {type: Object},
     };
     static components = {
         BuilderComponent,

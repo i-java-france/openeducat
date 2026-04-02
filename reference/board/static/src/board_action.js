@@ -1,17 +1,17 @@
-import { rpc } from "@web/core/network/rpc";
-import { useService } from "@web/core/utils/hooks";
-import { View } from "@web/views/view";
-import { makeContext } from "@web/core/context";
-import { user } from "@web/core/user";
-import { Component, onWillStart } from "@odoo/owl";
+import {rpc} from "@web/core/network/rpc";
+import {useService} from "@web/core/utils/hooks";
+import {View} from "@web/views/view";
+import {makeContext} from "@web/core/context";
+import {user} from "@web/core/user";
+import {Component, onWillStart} from "@odoo/owl";
 
 export class BoardAction extends Component {
     static template = "board.BoardAction";
-    static components = { View };
+    static components = {View};
     static props = {
         action: Object,
-        actionId: { type: Number, optional: true },
-        className: { type: String, optional: true },
+        actionId: {type: Number, optional: true},
+        className: {type: String, optional: true},
     };
     static cache = {};
     setup() {
@@ -22,7 +22,7 @@ export class BoardAction extends Component {
         onWillStart(async () => {
             let result = BoardAction.cache[action.actionId];
             if (!result) {
-                result = await rpc("/web/action/load", { action_id: action.actionId });
+                result = await rpc("/web/action/load", {action_id: action.actionId});
                 BoardAction.cache[action.actionId] = result;
             }
             if (!result) {
@@ -38,7 +38,7 @@ export class BoardAction extends Component {
             this.viewProps = {
                 resModel: result.res_model,
                 type: viewMode,
-                display: { controlPanel: false },
+                display: {controlPanel: false},
                 selectRecord: (resId) => this.selectRecord(result.res_model, resId),
             };
             const view = result.views.find((v) => v[1] === viewMode);
@@ -52,10 +52,14 @@ export class BoardAction extends Component {
             ];
 
             if (action.context) {
-                this.viewProps.context = makeContext([action.context, { lang: user.context.lang }]);
+                this.viewProps.context = makeContext([
+                    action.context,
+                    {lang: user.context.lang},
+                ]);
                 if ("group_by" in this.viewProps.context) {
                     const groupBy = this.viewProps.context.group_by;
-                    this.viewProps.groupBy = typeof groupBy === "string" ? [groupBy] : groupBy;
+                    this.viewProps.groupBy =
+                        typeof groupBy === "string" ? [groupBy] : groupBy;
                 }
             }
             if (action.domain) {

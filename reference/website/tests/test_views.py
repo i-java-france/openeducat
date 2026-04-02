@@ -1,16 +1,18 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from hashlib import sha256
 import json
 import unittest
-from unittest.mock import patch
+from hashlib import sha256
 from itertools import zip_longest
-from lxml import etree as ET, html
+from unittest.mock import patch
+
+from lxml import etree as ET
+from lxml import html
 from lxml.html import builder as h
 
 from odoo.exceptions import MissingError
 from odoo.modules.module import _DEFAULT_MANIFEST, Manifest
-from odoo.tests import common, HttpCase, tagged
+from odoo.tests import HttpCase, common, tagged
 
 
 def attrs(**kwargs):
@@ -204,7 +206,7 @@ class TestViewSaving(TestViewSavingCommon):
             self.eq(ca, cb)
 
     def setUp(self):
-        super(TestViewSaving, self).setUp()
+        super().setUp()
         self.arch = h.DIV(
             h.DIV(
                 h.H3("Column 1"),
@@ -367,14 +369,14 @@ class TestViewSaving(TestViewSavingCommon):
     def test_save_escaped_text(self):
         """ Test saving html special chars in text nodes """
         view = self.env['ir.ui.view'].create({
-            'arch': u'<t t-name="dummy"><p><h1>hello world</h1></p></t>',
+            'arch': '<t t-name="dummy"><p><h1>hello world</h1></p></t>',
             'type': 'qweb'
         })
         # script and style text nodes should not escaped client side
-        replacement = u'<script>1 && "hello & world"</script>'
+        replacement = '<script>1 && "hello & world"</script>'
         view.save(replacement, xpath='/t/p/h1')
         self.assertIn(
-            replacement.replace(u'&', u'&amp;'),
+            replacement.replace('&', '&amp;'),
             view.arch,
             'inline script should be escaped server side'
         )
@@ -384,22 +386,22 @@ class TestViewSaving(TestViewSavingCommon):
             'inline script should not be escaped when rendering'
         )
         # common text nodes should be be escaped client side
-        replacement = u'world &amp;amp; &amp;lt;b&amp;gt;cie'
+        replacement = 'world &amp;amp; &amp;lt;b&amp;gt;cie'
         view.save(replacement, xpath='/t/p')
         self.assertIn(replacement, view.arch, 'common text node should not be escaped server side')
         self.assertIn(
             replacement,
-            str(self.env['ir.qweb']._render(view.id)).replace(u'&', u'&amp;'),
+            str(self.env['ir.qweb']._render(view.id)).replace('&', '&amp;'),
             'text node characters wrongly unescaped when rendering'
         )
 
     def test_save_oe_structure_with_attr(self):
         """ Test saving oe_structure with attributes """
         view = self.env['ir.ui.view'].create({
-            'arch': u'<t t-name="dummy"><div class="oe_structure" t-att-test="1" data-test="1" id="oe_structure_test"/></t>',
+            'arch': '<t t-name="dummy"><div class="oe_structure" t-att-test="1" data-test="1" id="oe_structure_test"/></t>',
             'type': 'qweb'
         }).with_context(website_id=1, load_all_views=True)
-        replacement = u'<div class="oe_structure" data-test="1" id="oe_structure_test" data-oe-id="55" test="2">hello</div>'
+        replacement = '<div class="oe_structure" data-test="1" id="oe_structure_test" data-oe-id="55" test="2">hello</div>'
         view.save(replacement, xpath='/t/div')
         # branding data-oe-* should be stripped
         self.assertIn(
@@ -454,7 +456,7 @@ class TestViewSaving(TestViewSavingCommon):
 @tagged('-at_install', 'post_install')
 class TestCowViewSaving(TestViewSavingCommon, HttpCase):
     def setUp(self):
-        super(TestCowViewSaving, self).setUp()
+        super().setUp()
         View = self.env['ir.ui.view']
 
         self.base_view = View.create({
@@ -1380,7 +1382,7 @@ class TestCowViewSaving(TestViewSavingCommon, HttpCase):
 @tagged('-at_install', 'post_install')
 class Crawler(HttpCase):
     def setUp(self):
-        super(Crawler, self).setUp()
+        super().setUp()
         View = self.env['ir.ui.view']
 
         self.base_view = View.create({

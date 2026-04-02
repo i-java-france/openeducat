@@ -1,21 +1,22 @@
-# -*- coding: utf-8 -*-
 
 from contextlib import contextmanager
-from freezegun import freeze_time
 from unittest.mock import patch
 
+from freezegun import freeze_time
+
 from odoo import exceptions, tools
+from odoo.tests import common
+
 from odoo.addons.mail.tests.common import MailCommon
 from odoo.addons.phone_validation.tools import phone_validation
 from odoo.addons.sms.models.sms_sms import SmsSms
 from odoo.addons.sms.tools.sms_api import SmsApi
-from odoo.tests import common
 
 
 class MockSMS(common.HttpCase):
 
     def tearDown(self):
-        super(MockSMS, self).tearDown()
+        super().tearDown()
         self._clear_sms_sent()
 
     # ------------------------------------------------------------

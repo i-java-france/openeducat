@@ -1,19 +1,19 @@
 /* global owl */
 
 import useStore from "../../hooks/useStore.js";
-import { BootstrapDialog } from "./BootstrapDialog.js";
-import { LoadingFullScreen } from "../LoadingFullScreen.js";
+import {BootstrapDialog} from "./BootstrapDialog.js";
+import {LoadingFullScreen} from "../LoadingFullScreen.js";
 
-const { Component, xml, useState } = owl;
+const {Component, xml, useState} = owl;
 
 export class ServerDialog extends Component {
     static props = {};
-    static components = { BootstrapDialog, LoadingFullScreen };
+    static components = {BootstrapDialog, LoadingFullScreen};
 
     setup() {
         this.store = useStore();
-        this.state = useState({ waitRestart: false, loading: false, error: null });
-        this.form = useState({ token: "" });
+        this.state = useState({waitRestart: false, loading: false, error: null});
+        this.form = useState({token: ""});
     }
 
     async connectToServer() {
@@ -73,7 +73,7 @@ export class ServerDialog extends Component {
                     </div>
                     <div class="small" t-else="">
                         <p class="m-0">
-                            Your current database is: <br/> 
+                            Your current database is: <br/>
                             <strong t-esc="store.base.server_status" />
                         </p>
                     </div>

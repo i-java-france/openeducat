@@ -1,6 +1,6 @@
-import { mailDataHelpers } from "@mail/../tests/mock_server/mail_mock_server";
+import {mailDataHelpers} from "@mail/../tests/mock_server/mail_mock_server";
 
-import { getKwArgs, makeKwArgs, webModels } from "@web/../tests/web_test_helpers";
+import {getKwArgs, makeKwArgs, webModels} from "@web/../tests/web_test_helpers";
 
 export class IrAttachment extends webModels.IrAttachment {
     /**

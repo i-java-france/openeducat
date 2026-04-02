@@ -1,8 +1,8 @@
-import { useService } from "@web/core/utils/hooks";
-import { registry } from '@web/core/registry';
-import { listView } from '@web/views/list/list_view';
-import { ListController } from "@web/views/list/list_controller";
-import { useSubEnv } from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {listView} from "@web/views/list/list_view";
+import {ListController} from "@web/views/list/list_controller";
+import {useSubEnv} from "@odoo/owl";
 
 export class HolidaysListController extends ListController {
     static template = "hr_holidays.HolidaysListView";
@@ -25,7 +25,8 @@ export class HolidaysListController extends ListController {
      */
     get actionFilters() {
         return {
-            action_approve: (record) => record.data.can_approve || record.data.can_validate,
+            action_approve: (record) =>
+                record.data.can_approve || record.data.can_validate,
             action_refuse: (record) => record.data.can_refuse,
         };
     }
@@ -60,7 +61,7 @@ export class HolidaysListController extends ListController {
      * @returns {boolean} True if button should be displayed
      */
     displayButton(button) {
-        const { selection } = this.model.root;
+        const {selection} = this.model.root;
         if (!selection.length) {
             return false;
         }
@@ -75,11 +76,9 @@ export class HolidaysListController extends ListController {
      * @param {Array} records - Array of record objects to process
      */
     async executeAction(functionName, records) {
-        await this.orm.call(
-            this.props.resModel,
-            functionName,
-            [records.map((record) => record.resId)],
-        );
+        await this.orm.call(this.props.resModel, functionName, [
+            records.map((record) => record.resId),
+        ]);
         await this.actionService.doAction({
             type: "ir.actions.client",
             tag: "soft_reload",
@@ -92,4 +91,4 @@ export const holidaysListView = {
     Controller: HolidaysListController,
 };
 
-registry.category('views').add('hr_holidays_payslip_list', holidaysListView)
+registry.category("views").add("hr_holidays_payslip_list", holidaysListView);

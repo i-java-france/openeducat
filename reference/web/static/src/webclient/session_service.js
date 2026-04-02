@@ -1,9 +1,9 @@
-import { registry } from "@web/core/registry";
-import { deepCopy } from "@web/core/utils/objects";
+import {registry} from "@web/core/registry";
+import {deepCopy} from "@web/core/utils/objects";
 
 export const lazySession = {
     dependencies: ["orm"],
-    start(env, { orm }) {
+    start(env, {orm}) {
         let resolveWebClientReady;
         let lazyConfigPromise;
         const fetchServerData = async () => {
@@ -11,7 +11,9 @@ export const lazySession = {
             return orm.call("ir.http", "lazy_session_info");
         };
         const webClientReadyPromise = new Promise((r) => (resolveWebClientReady = r));
-        env.bus.addEventListener("WEB_CLIENT_READY", resolveWebClientReady, { once: true });
+        env.bus.addEventListener("WEB_CLIENT_READY", resolveWebClientReady, {
+            once: true,
+        });
         return {
             getValue(key, callback) {
                 if (!lazyConfigPromise) {

@@ -1,4 +1,4 @@
-import { SearchModel } from "@web/search/search_model";
+import {SearchModel} from "@web/search/search_model";
 
 export class AccountProductCatalogSearchModel extends SearchModel {
     setup() {

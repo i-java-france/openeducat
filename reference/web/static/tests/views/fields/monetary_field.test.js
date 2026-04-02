@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { queryAll, queryAllTexts, queryFirst } from "@odoo/hoot-dom";
-import { Deferred, animationFrame } from "@odoo/hoot-mock";
+import {expect, test} from "@odoo/hoot";
+import {queryAll, queryAllTexts, queryFirst} from "@odoo/hoot-dom";
+import {Deferred, animationFrame} from "@odoo/hoot-mock";
 
 import {
     clickSave,
@@ -19,17 +19,17 @@ class Partner extends models.Model {
     float_field = fields.Float({
         digits: [16, 1],
     });
-    p = fields.One2many({ relation: "partner" });
-    currency_id = fields.Many2one({ relation: "res.currency" });
-    monetary_field = fields.Monetary({ currency_field: "currency_id" });
+    p = fields.One2many({relation: "partner"});
+    currency_id = fields.Many2one({relation: "res.currency"});
+    monetary_field = fields.Monetary({currency_field: "currency_id"});
 
     _records = [
-        { id: 1, int_field: 10, float_field: 0.44444 },
-        { id: 2, int_field: 0, float_field: 0, currency_id: 2 },
-        { id: 3, int_field: 80, float_field: -3.89859 },
-        { id: 4, int_field: 0, float_field: 0 },
-        { id: 5, int_field: -4, float_field: 9.1, monetary_field: 9.1, currency_id: 1 },
-        { id: 6, float_field: 3.9, monetary_field: 4.2, currency_id: 1 },
+        {id: 1, int_field: 10, float_field: 0.44444},
+        {id: 2, int_field: 0, float_field: 0, currency_id: 2},
+        {id: 3, int_field: 80, float_field: -3.89859},
+        {id: 4, int_field: 0, float_field: 0},
+        {id: 5, int_field: -4, float_field: 9.1, monetary_field: 9.1, currency_id: 1},
+        {id: 6, float_field: 3.9, monetary_field: 4.2, currency_id: 1},
     ];
 }
 
@@ -37,7 +37,7 @@ class Currency extends models.Model {
     _name = "res.currency";
 
     name = fields.Char();
-    symbol = fields.Char({ string: "Currency Sumbol" });
+    symbol = fields.Char({string: "Currency Sumbol"});
     position = fields.Selection({
         selection: [
             ["after", "A"],
@@ -47,8 +47,8 @@ class Currency extends models.Model {
     inverse_rate = fields.Float();
 
     _records = [
-        { id: 1, name: "USD", symbol: "$", position: "before", inverse_rate: 1 },
-        { id: 2, name: "EUR", symbol: "€", position: "after", inverse_rate: 0.5 },
+        {id: 1, name: "USD", symbol: "$", position: "before", inverse_rate: 1},
+        {id: 2, name: "EUR", symbol: "€", position: "after", inverse_rate: 0.5},
         {
             id: 3,
             name: "VEF",
@@ -80,7 +80,8 @@ test("basic flow in form view - float field", async () => {
         message: "The input should be rendered without the currency symbol.",
     });
     expect(".o_field_widget .o_input span:eq(0)").toHaveText("$", {
-        message: "The input should be preceded by a span containing the currency symbol.",
+        message:
+            "The input should be preceded by a span containing the currency symbol.",
     });
 
     await contains(".o_field_monetary input").edit("108.2458938598598");
@@ -110,7 +111,8 @@ test("basic flow in form view - monetary field", async () => {
         message: "The input should be rendered without the currency symbol.",
     });
     expect(".o_field_widget .o_input span:eq(0)").toHaveText("$", {
-        message: "The input should be preceded by a span containing the currency symbol.",
+        message:
+            "The input should be preceded by a span containing the currency symbol.",
     });
 
     await contains(".o_field_monetary input").edit("108.2458938598598");
@@ -166,8 +168,8 @@ test("rounding using formula in form view - monetary field", async () => {
 
 test("with currency digits != 2 - float field", async () => {
     serverState.currencies = [
-        { id: 1, name: "USD", symbol: "$", position: "before" },
-        { id: 2, name: "EUR", symbol: "€", position: "after" },
+        {id: 1, name: "USD", symbol: "$", position: "before"},
+        {id: 2, name: "EUR", symbol: "€", position: "after"},
         {
             id: 3,
             name: "VEF",
@@ -200,7 +202,8 @@ test("with currency digits != 2 - float field", async () => {
         message: "The input should be rendered without the currency symbol.",
     });
     expect(".o_field_widget .o_input span:eq(1)").toHaveText("Bs.F", {
-        message: "The input should be superposed with a span containing the currency symbol.",
+        message:
+            "The input should be superposed with a span containing the currency symbol.",
     });
 
     await contains(".o_field_widget input").edit("99.111111111");
@@ -216,8 +219,8 @@ test("with currency digits != 2 - float field", async () => {
 
 test("with currency digits != 2 - monetary field", async () => {
     serverState.currencies = [
-        { id: 1, name: "USD", symbol: "$", position: "before" },
-        { id: 2, name: "EUR", symbol: "€", position: "after" },
+        {id: 1, name: "USD", symbol: "$", position: "before"},
+        {id: 2, name: "EUR", symbol: "€", position: "after"},
         {
             id: 3,
             name: "VEF",
@@ -251,7 +254,8 @@ test("with currency digits != 2 - monetary field", async () => {
         message: "The input should be rendered without the currency symbol.",
     });
     expect(".o_field_widget .o_input span:eq(1)").toHaveText("Bs.F", {
-        message: "The input should be superposed with a span containing the currency symbol.",
+        message:
+            "The input should be superposed with a span containing the currency symbol.",
     });
 
     await contains(".o_field_widget input").edit("99.111111111");
@@ -303,17 +307,21 @@ test("basic flow in editable list view - float field", async () => {
     });
 
     const dollarValues = queryAll("td:contains($)");
-    expect(dollarValues).toHaveLength(2, { message: "Only 2 line has dollar as a currency." });
+    expect(dollarValues).toHaveLength(2, {
+        message: "Only 2 line has dollar as a currency.",
+    });
 
     const euroValues = queryAll("td:contains(€)");
-    expect(euroValues).toHaveLength(1, { message: "Only 1 line has euro as a currency." });
+    expect(euroValues).toHaveLength(1, {
+        message: "Only 1 line has euro as a currency.",
+    });
 
     const noCurrencyValues = queryAll("td.o_data_cell").filter(
         (x) => !(x.textContent.includes("€") || x.textContent.includes("$"))
     );
-    expect(noCurrencyValues).toHaveLength(1, { message: "Only 1 line has no currency." });
+    expect(noCurrencyValues).toHaveLength(1, {message: "Only 1 line has no currency."});
 
-    // switch to edit mode
+    // Switch to edit mode
     const dollarCell = queryFirst("td.o_field_cell");
     await contains(dollarCell).click();
 
@@ -329,11 +337,16 @@ test("basic flow in editable list view - float field", async () => {
     });
 
     expect(".o_field_widget .o_input span:eq(0)").toHaveText("$", {
-        message: "The input should be preceded by a span containing the currency symbol.",
+        message:
+            "The input should be preceded by a span containing the currency symbol.",
     });
 
-    await contains(".o_field_widget input").edit("108.2458938598598", { confirm: "blur" });
-    expect(dollarCell).toHaveText("$ 108.25", { message: "The new value should be correct" });
+    await contains(".o_field_widget input").edit("108.2458938598598", {
+        confirm: "blur",
+    });
+    expect(dollarCell).toHaveText("$ 108.25", {
+        message: "The new value should be correct",
+    });
 });
 
 test("basic flow in editable list view - monetary field", async () => {
@@ -374,17 +387,21 @@ test("basic flow in editable list view - monetary field", async () => {
     });
 
     const dollarValues = queryAll("td:contains($)");
-    expect(dollarValues).toHaveLength(2, { message: "Only 2 line has dollar as a currency." });
+    expect(dollarValues).toHaveLength(2, {
+        message: "Only 2 line has dollar as a currency.",
+    });
 
     const euroValues = queryAll("td:contains(€)");
-    expect(euroValues).toHaveLength(1, { message: "Only 1 line has euro as a currency." });
+    expect(euroValues).toHaveLength(1, {
+        message: "Only 1 line has euro as a currency.",
+    });
 
     const noCurrencyValues = queryAll("td.o_data_cell").filter(
         (x) => !(x.textContent.includes("€") || x.textContent.includes("$"))
     );
-    expect(noCurrencyValues).toHaveLength(1, { message: "Only 1 line has no currency." });
+    expect(noCurrencyValues).toHaveLength(1, {message: "Only 1 line has no currency."});
 
-    // switch to edit mode
+    // Switch to edit mode
     const dollarCell = queryFirst("td.o_field_cell");
     await contains(dollarCell).click();
 
@@ -400,11 +417,16 @@ test("basic flow in editable list view - monetary field", async () => {
     });
 
     expect(".o_field_widget .o_input span:eq(0)").toHaveText("$", {
-        message: "The input should be preceded by a span containing the currency symbol.",
+        message:
+            "The input should be preceded by a span containing the currency symbol.",
     });
 
-    await contains(".o_field_widget input").edit("108.2458938598598", { confirm: "blur" });
-    expect(dollarCell).toHaveText("$ 108.25", { message: "The new value should be correct" });
+    await contains(".o_field_widget input").edit("108.2458938598598", {
+        confirm: "blur",
+    });
+    expect(dollarCell).toHaveText("$ 108.25", {
+        message: "The new value should be correct",
+    });
 });
 
 test.tags("desktop");
@@ -530,26 +552,28 @@ test("should keep the focus when being edited in x2many lists", async () => {
             </form>`,
     });
 
-    // test the monetary field inside the one2many
+    // Test the monetary field inside the one2many
     await contains(".o_field_x2many_list_row_add a").click();
-    await contains(".o_field_widget[name=float_field] input").edit("22", { confirm: "blur" });
+    await contains(".o_field_widget[name=float_field] input").edit("22", {
+        confirm: "blur",
+    });
 
-    expect(".o_field_widget[name=p] .o_field_widget[name=float_field] span").toHaveInnerHTML(
-        "$&nbsp;22.00",
-        { type: "html" }
-    );
+    expect(
+        ".o_field_widget[name=p] .o_field_widget[name=float_field] span"
+    ).toHaveInnerHTML("$&nbsp;22.00", {type: "html"});
 
-    // test the monetary field inside the many2many
+    // Test the monetary field inside the many2many
     await contains(".o_field_widget[name=m2m] .o_data_cell").click();
-    await contains(".o_field_widget[name=float_field] input").edit("22", { confirm: "blur" });
-    expect(".o_field_widget[name=m2m] .o_field_widget[name=float_field] span").toHaveInnerHTML(
-        "22.00&nbsp;€",
-        { type: "html" }
-    );
+    await contains(".o_field_widget[name=float_field] input").edit("22", {
+        confirm: "blur",
+    });
+    expect(
+        ".o_field_widget[name=m2m] .o_field_widget[name=float_field] span"
+    ).toHaveInnerHTML("22.00&nbsp;€", {type: "html"});
 });
 
 test("MonetaryField with currency set by an onchange", async () => {
-    // this test ensures that the monetary field can be re-rendered with and
+    // This test ensures that the monetary field can be re-rendered with and
     // without currency (which can happen as the currency can be set by an
     // onchange)
     Partner._onChanges = {
@@ -571,37 +595,47 @@ test("MonetaryField with currency set by an onchange", async () => {
 
     await contains(".o_control_panel_main_buttons .o_list_button_add").click();
     expect(".o_selected_row .o_field_widget[name=float_field] input").toHaveCount(1, {
-        message: "monetary field should have been rendered correctly (without currency)",
+        message:
+            "monetary field should have been rendered correctly (without currency)",
     });
     expect(".o_selected_row .o_field_widget[name=float_field] span").toHaveCount(2, {
-        message: "monetary field should have been rendered correctly (without currency)",
+        message:
+            "monetary field should have been rendered correctly (without currency)",
     });
 
-    // set a value for int_field -> should set the currency and re-render float_field
-    await contains(".o_field_widget[name=int_field] input").edit("7", { confirm: "blur" });
+    // Set a value for int_field -> should set the currency and re-render float_field
+    await contains(".o_field_widget[name=int_field] input").edit("7", {
+        confirm: "blur",
+    });
     await contains(".o_field_cell[name=int_field]").click();
     expect(".o_selected_row .o_field_widget[name=float_field] input").toHaveCount(1, {
-        message: "monetary field should have been re-rendered correctly (with currency)",
+        message:
+            "monetary field should have been re-rendered correctly (with currency)",
     });
     expect(
         queryAllTexts(".o_selected_row .o_field_widget[name=float_field] .o_input span")
     ).toEqual(["0.00", "€"], {
-        message: "monetary field should have been re-rendered correctly (with currency)",
+        message:
+            "monetary field should have been re-rendered correctly (with currency)",
     });
     await contains(".o_field_widget[name=float_field] input").click();
     expect(".o_field_widget[name=float_field] input").toBeFocused({
         message: "focus should be on the float_field field's input",
     });
 
-    // unset the value of int_field -> should unset the currency and re-render float_field
+    // Unset the value of int_field -> should unset the currency and re-render float_field
     await contains(".o_field_widget[name=int_field]").click();
-    await contains(".o_field_widget[name=int_field] input").edit("0", { confirm: "blur" });
+    await contains(".o_field_widget[name=int_field] input").edit("0", {
+        confirm: "blur",
+    });
     await contains(".o_field_cell[name=int_field]").click();
     expect(".o_selected_row .o_field_widget[name=float_field] input").toHaveCount(1, {
-        message: "monetary field should have been re-rendered correctly (without currency)",
+        message:
+            "monetary field should have been re-rendered correctly (without currency)",
     });
     expect(".o_selected_row .o_field_widget[name=float_field] span").toHaveCount(2, {
-        message: "monetary field should have been re-rendered correctly (without currency)",
+        message:
+            "monetary field should have been re-rendered correctly (without currency)",
     });
     await contains(".o_field_widget[name=float_field] input").click();
     expect(".o_field_widget[name=float_field] input").toBeFocused({
@@ -610,7 +644,7 @@ test("MonetaryField with currency set by an onchange", async () => {
 });
 
 test("float widget on monetary field", async () => {
-    Partner._fields.monetary = fields.Monetary({ currency_field: "currency_id" });
+    Partner._fields.monetary = fields.Monetary({currency_field: "currency_id"});
     Partner._records[0].monetary = 9.99;
     Partner._records[0].currency_id = 1;
 
@@ -641,8 +675,8 @@ test("float field with monetary widget and decimal precision", async () => {
         },
     ];
     serverState.currencies = [
-        { id: 1, name: "USD", symbol: "$", position: "before", digits: [0, 4] },
-        { id: 2, name: "EUR", symbol: "€", position: "after" },
+        {id: 1, name: "USD", symbol: "$", position: "before", digits: [0, 4]},
+        {id: 2, name: "EUR", symbol: "€", position: "after"},
     ];
 
     await mountView({
@@ -662,7 +696,8 @@ test("float field with monetary widget and decimal precision", async () => {
         message: "The input should be rendered without the currency symbol.",
     });
     expect(".o_field_widget .o_input span:eq(0)").toHaveText("$", {
-        message: "The input should be preceded by a span containing the currency symbol.",
+        message:
+            "The input should be preceded by a span containing the currency symbol.",
     });
 
     await contains(".o_field_monetary input").edit("109.2458938598598");
@@ -724,7 +759,8 @@ test("uses 'currency_id' as currency field by default", async () => {
 
     expect(".o_form_editable").toHaveCount(1);
     expect(".o_field_widget .o_input span:eq(0)").toHaveText("$", {
-        message: "The input should be preceded by a span containing the currency symbol.",
+        message:
+            "The input should be preceded by a span containing the currency symbol.",
     });
 });
 
@@ -749,7 +785,8 @@ test("automatically uses currency_field if defined", async () => {
 
     expect(".o_form_editable").toHaveCount(1);
     expect(".o_field_widget .o_input span:eq(0)").toHaveText("$", {
-        message: "The input should be preceded by a span containing the currency symbol.",
+        message:
+            "The input should be preceded by a span containing the currency symbol.",
     });
 });
 
@@ -775,8 +812,12 @@ test("monetary field with pending onchange", async () => {
         resId: 1,
     });
 
-    await contains(".o_field_widget[name='name'] input").edit("test", { confirm: "blur" });
-    await contains(".o_field_widget[name='float_field'] input").edit("1", { confirm: false });
+    await contains(".o_field_widget[name='name'] input").edit("test", {
+        confirm: "blur",
+    });
+    await contains(".o_field_widget[name='float_field'] input").edit("1", {
+        confirm: false,
+    });
     def.resolve();
     await animationFrame();
     expect(".o_field_monetary .o_monetary_ghost_value").toHaveText("1");

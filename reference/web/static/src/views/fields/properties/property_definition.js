@@ -1,19 +1,19 @@
-import { _t } from "@web/core/l10n/translation";
-import { PropertyValue } from "./property_value";
-import { CheckBox } from "@web/core/checkbox/checkbox";
-import { DomainSelector } from "@web/core/domain_selector/domain_selector";
-import { Domain } from "@web/core/domain";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { ModelSelector } from "@web/core/model_selector/model_selector";
-import { Many2XAutocomplete } from "@web/views/fields/relational_utils";
-import { useService, useOwnedDialogs } from "@web/core/utils/hooks";
-import { PropertyDefinitionSelection } from "./property_definition_selection";
-import { PropertyTags } from "./property_tags";
-import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog";
-import { uuid } from "@web/core/utils/strings";
+import {_t} from "@web/core/l10n/translation";
+import {PropertyValue} from "./property_value";
+import {CheckBox} from "@web/core/checkbox/checkbox";
+import {DomainSelector} from "@web/core/domain_selector/domain_selector";
+import {Domain} from "@web/core/domain";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
+import {ModelSelector} from "@web/core/model_selector/model_selector";
+import {Many2XAutocomplete} from "@web/views/fields/relational_utils";
+import {useService, useOwnedDialogs} from "@web/core/utils/hooks";
+import {PropertyDefinitionSelection} from "./property_definition_selection";
+import {PropertyTags} from "./property_tags";
+import {SelectCreateDialog} from "@web/views/view_dialogs/select_create_dialog";
+import {uuid} from "@web/core/utils/strings";
 
-import { Component, useState, onWillUpdateProps, useEffect, useRef } from "@odoo/owl";
+import {Component, useState, onWillUpdateProps, useEffect, useRef} from "@odoo/owl";
 
 export class PropertyDefinition extends Component {
     static template = "web.PropertyDefinition";
@@ -29,22 +29,22 @@ export class PropertyDefinition extends Component {
         PropertyTags,
     };
     static props = {
-        fieldName: { type: String },
-        readonly: { type: Boolean, optional: true },
-        canChangeDefinition: { type: Boolean, optional: true },
-        propertyDefinition: { optional: true },
-        context: { type: Object },
-        isNewlyCreated: { type: Boolean, optional: true },
+        fieldName: {type: String},
+        readonly: {type: Boolean, optional: true},
+        canChangeDefinition: {type: Boolean, optional: true},
+        propertyDefinition: {optional: true},
+        context: {type: Object},
+        isNewlyCreated: {type: Boolean, optional: true},
         // index and number of properties, to hide the move arrows when needed
-        propertyIndex: { type: Number },
-        propertiesSize: { type: Number },
+        propertyIndex: {type: Number},
+        propertiesSize: {type: Number},
         // events
-        onChange: { type: Function, optional: true },
-        onDelete: { type: Function, optional: true },
-        onPropertyMove: { type: Function, optional: true },
+        onChange: {type: Function, optional: true},
+        onDelete: {type: Function, optional: true},
+        onPropertyMove: {type: Function, optional: true},
         // prop needed by the popover service
-        close: { type: Function, optional: true },
-        record: { type: Object, optional: true },
+        close: {type: Function, optional: true},
+        record: {type: Object, optional: true},
     };
     static _propertyParametersMap = new Map([
         ["comodel", ["many2one", "many2many"]],
@@ -94,7 +94,8 @@ export class PropertyDefinition extends Component {
                 return;
             }
             this.labelFocused = true;
-            const labelInput = this.propertyDefinitionRef.el.querySelectorAll("input")[0];
+            const labelInput =
+                this.propertyDefinitionRef.el.querySelectorAll("input")[0];
             if (labelInput) {
                 if (this.props.isNewlyCreated) {
                     labelInput.select();
@@ -134,14 +135,17 @@ export class PropertyDefinition extends Component {
     }
 
     get currencyFields() {
-        return Object
-            .values(this.props.record.fields)
-            .filter((fieldDef) => fieldDef.type === "many2one" && fieldDef.relation === "res.currency");
+        return Object.values(this.props.record.fields).filter(
+            (fieldDef) =>
+                fieldDef.type === "many2one" && fieldDef.relation === "res.currency"
+        );
     }
 
     get defaultCurrencyField() {
         const currencyFields = this.currencyFields.map((fieldDef) => fieldDef.name);
-        return currencyFields.includes("currency_id") ? "currency_id" : currencyFields[0] || false;
+        return currencyFields.includes("currency_id")
+            ? "currency_id"
+            : currencyFields[0] || false;
     }
 
     /**
@@ -269,7 +273,7 @@ export class PropertyDefinition extends Component {
      * @param {string} newModel
      */
     async onModelChange(newModel) {
-        const { label, technical } = newModel;
+        const {label, technical} = newModel;
 
         // if we change the model, we should reset the default value and the domain
         const modelChanged = technical !== this.state.resModel;
@@ -432,7 +436,9 @@ export class PropertyDefinition extends Component {
             // retrieve the model id and the model description from it's name
             // "res.partner" => (5, "Contact")
             try {
-                const result = await this.orm.call("ir.model", "display_name_for", [[newModel]]);
+                const result = await this.orm.call("ir.model", "display_name_for", [
+                    [newModel],
+                ]);
                 if (!result || !result.length) {
                     return;
                 }
@@ -456,7 +462,9 @@ export class PropertyDefinition extends Component {
      */
     async _updateMatchingRecordsCount() {
         if (this.state.resModel && this.state.resModel.length) {
-            const domainList = new Domain(this.state.propertyDefinition.domain || "[]").toList();
+            const domainList = new Domain(
+                this.state.propertyDefinition.domain || "[]"
+            ).toList();
 
             const result = await this.orm.call(
                 this.state.propertyDefinition.comodel,

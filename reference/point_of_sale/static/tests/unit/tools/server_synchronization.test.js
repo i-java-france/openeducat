@@ -1,6 +1,6 @@
-import { expect, test } from "@odoo/hoot";
-import { getFilledOrder, setupPosEnv } from "../utils";
-import { definePosModels } from "../data/generate_model_definitions";
+import {expect, test} from "@odoo/hoot";
+import {getFilledOrder, setupPosEnv} from "../utils";
+import {definePosModels} from "../data/generate_model_definitions";
 
 definePosModels();
 
@@ -46,7 +46,7 @@ test("Check behavior when deleting records", async () => {
     // But if we sync before downloading, the deletion must be kept
     order.removeOrderline(order.lines[0]);
     expect(order.lines).toHaveLength(1);
-    await store.syncAllOrders({ orders: [order] });
+    await store.syncAllOrders({orders: [order]});
     await store.data.loadServerOrders([["id", "=", order.id]]);
     expect(order.lines).toHaveLength(1);
 });

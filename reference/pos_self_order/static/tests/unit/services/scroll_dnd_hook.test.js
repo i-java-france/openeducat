@@ -1,9 +1,9 @@
-import { test, describe, expect } from "@odoo/hoot";
-import { useDraggableScroll } from "@pos_self_order/app/utils/scroll_dnd_hook";
-import { Component, useRef, xml } from "@odoo/owl";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { setupSelfPosEnv } from "../utils";
-import { definePosSelfModels } from "../data/generate_model_definitions";
+import {describe, expect, test} from "@odoo/hoot";
+import {useDraggableScroll} from "@pos_self_order/app/utils/scroll_dnd_hook";
+import {Component, useRef, xml} from "@odoo/owl";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {setupSelfPosEnv} from "../utils";
+import {definePosSelfModels} from "../data/generate_model_definitions";
 
 definePosSelfModels();
 
@@ -31,26 +31,26 @@ const setupComponent = async () => {
             })
         );
     };
-    return { comp, scrollEl, dispatchEvent };
+    return {comp, scrollEl, dispatchEvent};
 };
 
 describe("useDraggableScroll", () => {
     test.tags("desktop");
     test("drags and scrolls horizontally", async () => {
-        const { scrollEl, dispatchEvent } = await setupComponent();
+        const {scrollEl, dispatchEvent} = await setupComponent();
         // Simulate mouse drag
         dispatchEvent("mousedown", 800);
-        dispatchEvent("mousemove", 500); // drag left
+        dispatchEvent("mousemove", 500); // Drag left
         dispatchEvent("mouseup");
         expect(scrollEl.scrollLeft).toBeGreaterThan(0);
     });
 
     test.tags("desktop");
     test("does not scroll if movement is less than threshold", async () => {
-        const { scrollEl, dispatchEvent } = await setupComponent();
+        const {scrollEl, dispatchEvent} = await setupComponent();
 
         dispatchEvent("mousedown", 500);
-        dispatchEvent("mousemove", 500 + 2); // small move
+        dispatchEvent("mousemove", 500 + 2); // Small move
         dispatchEvent("mouseup");
         expect(scrollEl.scrollLeft).toBe(0);
     });

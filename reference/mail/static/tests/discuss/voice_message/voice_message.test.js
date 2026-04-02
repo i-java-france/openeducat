@@ -8,20 +8,20 @@ import {
     start,
     startServer,
 } from "@mail/../tests/mail_test_helpers";
-import { describe, globals, test } from "@odoo/hoot";
-import { Deferred, mockDate } from "@odoo/hoot-mock";
-import { Command, patchWithCleanup, serverState } from "@web/../tests/web_test_helpers";
+import {describe, globals, test} from "@odoo/hoot";
+import {Deferred, mockDate} from "@odoo/hoot-mock";
+import {Command, patchWithCleanup, serverState} from "@web/../tests/web_test_helpers";
 
-import { loadLamejs } from "@mail/discuss/voice_message/common/voice_message_service";
-import { VoicePlayer } from "@mail/discuss/voice_message/common/voice_player";
-import { patchable } from "@mail/discuss/voice_message/common/voice_recorder";
-import { Mp3Encoder } from "@mail/discuss/voice_message/common/mp3_encoder";
+import {loadLamejs} from "@mail/discuss/voice_message/common/voice_message_service";
+import {VoicePlayer} from "@mail/discuss/voice_message/common/voice_player";
+import {patchable} from "@mail/discuss/voice_message/common/voice_recorder";
+import {Mp3Encoder} from "@mail/discuss/voice_message/common/mp3_encoder";
 
 describe.current.tags("desktop");
 defineMailModels();
 
 test("make voice message in chat", async () => {
-    const file = new File([new Uint8Array(25000)], "test.mp3", { type: "audio/mp3" });
+    const file = new File([new Uint8Array(25000)], "test.mp3", {type: "audio/mp3"});
     const voicePlayerDrawing = new Deferred();
     patchWithCleanup(Mp3Encoder.prototype, {
         encode() {},
@@ -29,7 +29,7 @@ test("make voice message in chat", async () => {
             return Array(500).map(() => new Int8Array());
         },
     });
-    patchWithCleanup(patchable, { makeFile: () => file });
+    patchWithCleanup(patchable, {makeFile: () => file});
     patchWithCleanup(VoicePlayer.prototype, {
         async drawWave(...args) {
             voicePlayerDrawing.resolve();
@@ -49,22 +49,22 @@ test("make voice message in chat", async () => {
     mockGetMedia();
     const resources = patchVoiceMessageAudio();
     const pyEnv = await startServer();
-    const partnerId = pyEnv["res.partner"].create({ name: "Demo" });
+    const partnerId = pyEnv["res.partner"].create({name: "Demo"});
     const channelId = pyEnv["discuss.channel"].create({
         channel_member_ids: [
-            Command.create({ partner_id: serverState.partnerId }),
-            Command.create({ partner_id: partnerId }),
+            Command.create({partner_id: serverState.partnerId}),
+            Command.create({partner_id: partnerId}),
         ],
         channel_type: "chat",
     });
     await start();
     await openDiscuss(channelId);
-    await loadLamejs(); // simulated AudioProcess.process() requires lamejs fully loaded
+    await loadLamejs(); // Simulated AudioProcess.process() requires lamejs fully loaded
     await click(".o-mail-Composer button[title='More Actions']");
     await contains(".dropdown-item:contains('Voice Message')");
     mockDate("2023-07-31 13:00:00");
     await click(".dropdown-item:contains('Voice Message')");
-    await contains(".o-mail-VoiceRecorder", { text: "00 : 00" });
+    await contains(".o-mail-VoiceRecorder", {text: "00 : 00"});
     /**
      * Simulate 10 sec elapsed.
      * `patchDate` does not freeze the time, it merely changes the value of "now" at the time it was
@@ -80,17 +80,17 @@ test("make voice message in chat", async () => {
      * The best bet is therefore to use 10s + 500ms difference.
      */
     mockDate("2023-07-31 13:00:10.500");
-    // simulate some microphone data
+    // Simulate some microphone data
     resources.audioProcessor.process([[new Float32Array(128)]]);
-    await contains(".o-mail-VoiceRecorder", { text: "00 : 10" });
+    await contains(".o-mail-VoiceRecorder", {text: "00 : 10"});
     await click(".o-mail-Composer button[title='Stop Recording']");
     await contains(".o-mail-VoicePlayer");
-    // wait for audio stream decode + drawing of waves
+    // Wait for audio stream decode + drawing of waves
     await voicePlayerDrawing;
     await contains(".o-mail-VoicePlayer button[title='Play']");
-    await contains(".o-mail-VoicePlayer canvas", { count: 2 }); // 1 for global waveforms, 1 for played waveforms
-    await contains(".o-mail-VoicePlayer", { text: "00 : 03" }); // duration of call-invitation_.mp3
+    await contains(".o-mail-VoicePlayer canvas", {count: 2}); // 1 for global waveforms, 1 for played waveforms
+    await contains(".o-mail-VoicePlayer", {text: "00 : 03"}); // Duration of call-invitation_.mp3
     await click(".o-mail-Composer button[title='More Actions']");
-    await contains(".dropdown-item:contains('Attach Files')"); // check menu loaded
-    await contains(".dropdown-item:contains('Voice Message')", { count: 0 }); // only 1 voice message at a time
+    await contains(".dropdown-item:contains('Attach Files')"); // Check menu loaded
+    await contains(".dropdown-item:contains('Voice Message')", {count: 0}); // Only 1 voice message at a time
 });

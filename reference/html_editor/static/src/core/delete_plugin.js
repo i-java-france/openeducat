@@ -1,5 +1,5 @@
-import { Plugin } from "../plugin";
-import { closestBlock, isBlock } from "../utils/blocks";
+import {Plugin} from "../plugin";
+import {closestBlock, isBlock} from "../utils/blocks";
 import {
     isAllowedContent,
     isButton,
@@ -18,7 +18,12 @@ import {
     previousLeaf,
     isEmptyBlock,
 } from "../utils/dom_info";
-import { getState, isFakeLineBreak, observeMutations, prepareUpdate } from "../utils/dom_state";
+import {
+    getState,
+    isFakeLineBreak,
+    observeMutations,
+    prepareUpdate,
+} from "../utils/dom_state";
 import {
     childNodes,
     closestElement,
@@ -38,11 +43,14 @@ import {
     rightPos,
     startPos,
 } from "../utils/position";
-import { CTYPES } from "../utils/content_types";
-import { withSequence } from "@html_editor/utils/resource";
-import { compareListTypes } from "@html_editor/main/list/utils";
-import { hasTouch, isBrowserChrome, isMacOS } from "@web/core/browser/feature_detection";
-import { normalizeDeepCursorPosition, normalizeFakeBR } from "@html_editor/utils/selection";
+import {CTYPES} from "../utils/content_types";
+import {withSequence} from "@html_editor/utils/resource";
+import {compareListTypes} from "@html_editor/main/list/utils";
+import {hasTouch, isBrowserChrome, isMacOS} from "@web/core/browser/feature_detection";
+import {
+    normalizeDeepCursorPosition,
+    normalizeFakeBR,
+} from "@html_editor/utils/selection";
 
 /**
  * @typedef {Object} RangeLike
@@ -97,26 +105,38 @@ export const unremovableNodePredicates = [
 ];
 
 export class DeletePlugin extends Plugin {
-    static dependencies = ["baseContainer", "selection", "history", "input", "userCommand"];
+    static dependencies = [
+        "baseContainer",
+        "selection",
+        "history",
+        "input",
+        "userCommand",
+    ];
     static id = "delete";
-    static shared = ["deleteBackward", "deleteForward", "deleteRange", "deleteSelection", "delete"];
+    static shared = [
+        "deleteBackward",
+        "deleteForward",
+        "deleteRange",
+        "deleteSelection",
+        "delete",
+    ];
     /** @type {import("plugins").EditorResources} */
     resources = {
         user_commands: [
-            { id: "deleteBackward", run: () => this.delete("backward", "character") },
-            { id: "deleteForward", run: () => this.delete("forward", "character") },
-            { id: "deleteBackwardWord", run: () => this.delete("backward", "word") },
-            { id: "deleteForwardWord", run: () => this.delete("forward", "word") },
-            { id: "deleteBackwardLine", run: () => this.delete("backward", "line") },
-            { id: "deleteForwardLine", run: () => this.delete("forward", "line") },
+            {id: "deleteBackward", run: () => this.delete("backward", "character")},
+            {id: "deleteForward", run: () => this.delete("forward", "character")},
+            {id: "deleteBackwardWord", run: () => this.delete("backward", "word")},
+            {id: "deleteForwardWord", run: () => this.delete("forward", "word")},
+            {id: "deleteBackwardLine", run: () => this.delete("backward", "line")},
+            {id: "deleteForwardLine", run: () => this.delete("forward", "line")},
         ],
         shortcuts: [
-            { hotkey: "backspace", commandId: "deleteBackward" },
-            { hotkey: "delete", commandId: "deleteForward" },
-            { hotkey: "control+backspace", commandId: "deleteBackwardWord" },
-            { hotkey: "control+delete", commandId: "deleteForwardWord" },
-            { hotkey: "control+shift+backspace", commandId: "deleteBackwardLine" },
-            { hotkey: "control+shift+delete", commandId: "deleteForwardLine" },
+            {hotkey: "backspace", commandId: "deleteBackward"},
+            {hotkey: "delete", commandId: "deleteForward"},
+            {hotkey: "control+backspace", commandId: "deleteBackwardWord"},
+            {hotkey: "control+delete", commandId: "deleteForwardWord"},
+            {hotkey: "control+shift+backspace", commandId: "deleteBackwardLine"},
+            {hotkey: "control+shift+delete", commandId: "deleteForwardLine"},
         ],
         /** Handlers */
         beforeinput_handlers: [
@@ -124,17 +144,29 @@ export class DeletePlugin extends Plugin {
             this.onBeforeInputDelete.bind(this),
         ],
         input_handlers: (ev) => this.onAndroidChromeInput?.(ev),
-        selectionchange_handlers: withSequence(5, () => this.onAndroidChromeSelectionChange?.()),
+        selectionchange_handlers: withSequence(5, () =>
+            this.onAndroidChromeSelectionChange?.()
+        ),
         /** Overrides */
-        delete_backward_overrides: withSequence(30, this.deleteBackwardUnmergeable.bind(this)),
-        delete_backward_word_overrides: withSequence(20, this.deleteBackwardUnmergeable.bind(this)),
+        delete_backward_overrides: withSequence(
+            30,
+            this.deleteBackwardUnmergeable.bind(this)
+        ),
+        delete_backward_word_overrides: withSequence(
+            20,
+            this.deleteBackwardUnmergeable.bind(this)
+        ),
         delete_backward_line_overrides: this.deleteBackwardUnmergeable.bind(this),
-        delete_forward_overrides: withSequence(20, this.deleteForwardUnmergeable.bind(this)),
+        delete_forward_overrides: withSequence(
+            20,
+            this.deleteForwardUnmergeable.bind(this)
+        ),
         delete_forward_word_overrides: this.deleteForwardUnmergeable.bind(this),
         delete_forward_line_overrides: this.deleteForwardUnmergeable.bind(this),
 
         unremovable_node_predicates: unremovableNodePredicates,
-        invalid_for_base_container_predicates: (node) => this.isUnremovable(node, this.editable),
+        invalid_for_base_container_predicates: (node) =>
+            this.isUnremovable(node, this.editable),
     };
 
     setup() {
@@ -177,7 +209,8 @@ export class DeletePlugin extends Plugin {
      * @returns {Range}
      */
     getNormalizedRange(selection) {
-        let { startContainer, startOffset, endContainer, endOffset, isCollapsed } = selection;
+        let {startContainer, startOffset, endContainer, endOffset, isCollapsed} =
+            selection;
         for (const normalizer of [normalizeDeepCursorPosition, normalizeFakeBR]) {
             [startContainer, startOffset] = normalizer(startContainer, startOffset);
             [endContainer, endOffset] = isCollapsed
@@ -213,7 +246,9 @@ export class DeletePlugin extends Plugin {
         const canBeDeleted = (node) =>
             this.dependencies.selection.isNodeEditable(node) ||
             selectedNodes.includes(
-                closestElement(node, (node) => this.dependencies.selection.isNodeEditable(node))
+                closestElement(node, (node) =>
+                    this.dependencies.selection.isNodeEditable(node)
+                )
             );
         if (selectedNodes.some((node) => !canBeDeleted(node))) {
             return;
@@ -262,12 +297,17 @@ export class DeletePlugin extends Plugin {
      * @param {"character"|"word"|"line"} granularity
      */
     deleteBackward(selection, granularity) {
-        const { endContainer, endOffset } = this.getNormalizedRange(selection);
+        const {endContainer, endOffset} = this.getNormalizedRange(selection);
         if (!closestElement(endContainer).isContentEditable) {
             return;
         }
 
-        let range = this.getRangeForDelete(endContainer, endOffset, "backward", granularity);
+        let range = this.getRangeForDelete(
+            endContainer,
+            endOffset,
+            "backward",
+            granularity
+        );
 
         const resourceIds = {
             character: "delete_backward_overrides",
@@ -285,7 +325,7 @@ export class DeletePlugin extends Plugin {
         ]);
         range = this.deleteRange(range);
         this.document.getSelection()?.removeAllRanges();
-        this.setCursorFromRange(range, { collapseToEnd: true });
+        this.setCursorFromRange(range, {collapseToEnd: true});
     }
 
     /**
@@ -293,12 +333,17 @@ export class DeletePlugin extends Plugin {
      * @param {"character"|"word"|"line"} granularity
      */
     deleteForward(selection, granularity) {
-        const { startContainer, startOffset } = this.getNormalizedRange(selection);
+        const {startContainer, startOffset} = this.getNormalizedRange(selection);
         if (!closestElement(startContainer).isContentEditable) {
             return;
         }
 
-        let range = this.getRangeForDelete(startContainer, startOffset, "forward", granularity);
+        let range = this.getRangeForDelete(
+            startContainer,
+            startOffset,
+            "forward",
+            granularity
+        );
 
         const resourceIds = {
             character: "delete_forward_overrides",
@@ -331,21 +376,34 @@ export class DeletePlugin extends Plugin {
             if (
                 (direction === "backward" &&
                     this.isCursorAtStartOfElement(blockEl, node, offset)) ||
-                (direction === "forward" && this.isCursorAtEndOfElement(blockEl, node, offset))
+                (direction === "forward" &&
+                    this.isCursorAtEndOfElement(blockEl, node, offset))
             ) {
                 granularity = "character";
             }
         }
         switch (granularity) {
             case "character":
-                [destContainer, destOffset] = this.findAdjacentPosition(node, offset, direction);
+                [destContainer, destOffset] = this.findAdjacentPosition(
+                    node,
+                    offset,
+                    direction
+                );
                 break;
             case "word":
-                ({ focusNode: destContainer, focusOffset: destOffset } =
-                    this.dependencies.selection.modifySelection("extend", direction, "word"));
+                ({focusNode: destContainer, focusOffset: destOffset} =
+                    this.dependencies.selection.modifySelection(
+                        "extend",
+                        direction,
+                        "word"
+                    ));
                 break;
             case "line":
-                [destContainer, destOffset] = this.findLineBoundary(node, offset, direction);
+                [destContainer, destOffset] = this.findLineBoundary(
+                    node,
+                    offset,
+                    direction
+                );
                 break;
             default:
                 throw new Error("Invalid granularity");
@@ -359,7 +417,7 @@ export class DeletePlugin extends Plugin {
                 ? [node, offset, destContainer, destOffset]
                 : [destContainer, destOffset, node, offset];
 
-        return { startContainer, startOffset, endContainer, endOffset };
+        return {startContainer, startOffset, endContainer, endOffset};
     }
 
     // --------------------------------------------------------------------------
@@ -406,21 +464,29 @@ export class DeletePlugin extends Plugin {
      */
     deleteRange(range) {
         // Do nothing if the range is collapsed.
-        if (range.startContainer === range.endContainer && range.startOffset === range.endOffset) {
+        if (
+            range.startContainer === range.endContainer &&
+            range.startOffset === range.endOffset
+        ) {
             return range;
         }
         // Split text nodes in order to have elements as start/end containers.
         range = this.splitTextNodes(range);
 
-        const { startContainer, startOffset, endContainer, endOffset } = range;
-        const restoreSpaces = prepareUpdate(startContainer, startOffset, endContainer, endOffset);
+        const {startContainer, startOffset, endContainer, endOffset} = range;
+        const restoreSpaces = prepareUpdate(
+            startContainer,
+            startOffset,
+            endContainer,
+            endOffset
+        );
 
         let restoreFakeBRs;
-        ({ restoreFakeBRs, range } = this.removeFakeBRs(range));
+        ({restoreFakeBRs, range} = this.removeFakeBRs(range));
 
         // Remove nodes.
         let allNodesRemoved;
-        ({ allNodesRemoved, range } = this.removeNodes(range));
+        ({allNodesRemoved, range} = this.removeNodes(range));
 
         this.fillEmptyInlines(range);
 
@@ -437,7 +503,7 @@ export class DeletePlugin extends Plugin {
         return range;
     }
 
-    splitTextNodes({ startContainer, startOffset, endContainer, endOffset }) {
+    splitTextNodes({startContainer, startOffset, endContainer, endOffset}) {
         // Splits text nodes only if necessary.
         const split = (textNode, offset) => {
             let didSplit = false;
@@ -458,7 +524,10 @@ export class DeletePlugin extends Plugin {
         }
         if (startContainer.nodeType === Node.TEXT_NODE) {
             let didSplit;
-            [startContainer, startOffset, didSplit] = split(startContainer, startOffset);
+            [startContainer, startOffset, didSplit] = split(
+                startContainer,
+                startOffset
+            );
             if (startContainer === endContainer && didSplit) {
                 endOffset += 1;
             }
@@ -479,13 +548,20 @@ export class DeletePlugin extends Plugin {
     // Removes fake line breaks, so that each BR left is an actual line break.
     // Returns the updated range and a function to later restore the fake BRs.
     removeFakeBRs(range) {
-        let { startContainer, startOffset, endContainer, endOffset, commonAncestorContainer } =
-            range;
+        let {
+            startContainer,
+            startOffset,
+            endContainer,
+            endOffset,
+            commonAncestorContainer,
+        } = range;
         const visitedNodes = new Set();
         const removeBRs = (container, offset) => {
             let node = container;
             while (node !== commonAncestorContainer) {
-                const lastBR = childNodes(node).findLast((child) => child.nodeName === "BR");
+                const lastBR = childNodes(node).findLast(
+                    (child) => child.nodeName === "BR"
+                );
                 if (lastBR && isFakeLineBreak(lastBR)) {
                     if (lastBR === container) {
                         [container, offset] = leftPos(lastBR);
@@ -501,14 +577,22 @@ export class DeletePlugin extends Plugin {
         };
         [startContainer, startOffset] = removeBRs(startContainer, startOffset);
         [endContainer, endOffset] = removeBRs(endContainer, endOffset);
-        range = { startContainer, startOffset, endContainer, endOffset, commonAncestorContainer };
+        range = {
+            startContainer,
+            startOffset,
+            endContainer,
+            endOffset,
+            commonAncestorContainer,
+        };
 
         const restoreFakeBRs = () => {
             for (const node of visitedNodes) {
                 if (!node.isConnected) {
                     continue;
                 }
-                const lastBR = childNodes(node).findLast((child) => child.nodeName === "BR");
+                const lastBR = childNodes(node).findLast(
+                    (child) => child.nodeName === "BR"
+                );
                 if (lastBR && isFakeLineBreak(lastBR)) {
                     lastBR.after(this.document.createElement("br"));
                 }
@@ -516,7 +600,7 @@ export class DeletePlugin extends Plugin {
             }
         };
 
-        return { restoreFakeBRs, range };
+        return {restoreFakeBRs, range};
     }
 
     fillEmptyInlines(range) {
@@ -528,7 +612,12 @@ export class DeletePlugin extends Plugin {
             // @todo: mind Icons?
             // Probably need to get deepest position's element
             // @todo: update fillEmpty
-            if (!isBlock(node) && !isTangible(node) && !isZWS(node) && !isZwnbsp(node)) {
+            if (
+                !isBlock(node) &&
+                !isTangible(node) &&
+                !isZWS(node) &&
+                !isZwnbsp(node)
+            ) {
                 node.appendChild(this.document.createTextNode("\u200B"));
                 node.setAttribute("data-oe-zws-empty-inline", "");
             }
@@ -542,7 +631,8 @@ export class DeletePlugin extends Plugin {
                 !block.parentElement.isContentEditable
             ) {
                 // @todo: not sure we want this when allowInlineAtRoot is true
-                const baseContainer = this.dependencies.baseContainer.createBaseContainer();
+                const baseContainer =
+                    this.dependencies.baseContainer.createBaseContainer();
                 baseContainer.appendChild(this.document.createElement("br"));
                 block.appendChild(baseContainer);
             } else {
@@ -568,8 +658,9 @@ export class DeletePlugin extends Plugin {
     // --------------------------------------------------------------------------
 
     removeNodes(range) {
-        const { startContainer, startOffset, endContainer, commonAncestorContainer } = range;
-        let { endOffset } = range;
+        const {startContainer, startOffset, endContainer, commonAncestorContainer} =
+            range;
+        let {endOffset} = range;
         const nodesToRemove = [];
 
         // Pick child nodes to the right for later removal, propagate until
@@ -620,16 +711,18 @@ export class DeletePlugin extends Plugin {
         ) {
             const newRange = this.document.createRange();
             newRange.setStart(range.endContainer, endOffset);
-            return { allNodesRemoved, range: newRange };
+            return {allNodesRemoved, range: newRange};
         }
-        return { allNodesRemoved, range: { ...range, endOffset } };
+        return {allNodesRemoved, range: {...range, endOffset}};
     }
 
     // The root argument is used by some predicates in which a node is
     // conditionally unremovable (e.g. a table cell is only removable if its
     // ancestor table is also being removed).
     isUnremovable(node, root = undefined) {
-        return this.getResource("unremovable_node_predicates").some((p) => p(node, root));
+        return this.getResource("unremovable_node_predicates").some((p) =>
+            p(node, root)
+        );
     }
 
     // Returns true if the entire subtree rooted at node was removed.
@@ -688,7 +781,11 @@ export class DeletePlugin extends Plugin {
         const joinableRight = this.getJoinableFragment(range, "end");
         const join = this.getJoinOperation(joinableLeft.type, joinableRight.type);
 
-        const didJoin = join(joinableLeft.node, joinableRight.node, range.commonAncestorContainer);
+        const didJoin = join(
+            joinableLeft.node,
+            joinableRight.node,
+            range.commonAncestorContainer
+        );
 
         return didJoin ? this.collapseRange(range) : range;
     }
@@ -709,16 +806,17 @@ export class DeletePlugin extends Plugin {
             // This means a direct child of the commonAncestor was removed.
             // The joinable in this case is its sibling (previous for the start
             // side, next for the end side), but only if inline.
-            const sibling = childNodes(commonAncestor)[side === "start" ? offset - 1 : offset];
+            const sibling =
+                childNodes(commonAncestor)[side === "start" ? offset - 1 : offset];
             if (
                 sibling &&
                 !isBlock(sibling) &&
                 !(sibling.nodeType === Node.TEXT_NODE && !isVisibleTextNode(sibling))
             ) {
-                return { node: sibling, type: "inline" };
+                return {node: sibling, type: "inline"};
             }
             // No fragment to join.
-            return { node: null, type: "null" };
+            return {node: null, type: "null"};
         }
         // Starting from `container`, find the closest block up to
         // (not-inclusive) the common ancestor. If not found, keep the common
@@ -727,12 +825,12 @@ export class DeletePlugin extends Plugin {
         let element = container;
         while (element !== commonAncestor) {
             if (isBlock(element)) {
-                return { node: element, type: "block" };
+                return {node: element, type: "block"};
             }
             last = element;
             element = element.parentElement;
         }
-        return { node: last, type: "inline" };
+        return {node: last, type: "inline"};
     }
 
     getJoinOperation(leftType, rightType) {
@@ -757,7 +855,8 @@ export class DeletePlugin extends Plugin {
 
     joinBlocks(left, right, commonAncestor) {
         // Check if both blocks are mergeable.
-        const canMerge = (n) => !findUpTo(n, commonAncestor, this.isUnmergeable.bind(this));
+        const canMerge = (n) =>
+            !findUpTo(n, commonAncestor, this.isUnmergeable.bind(this));
         if (!canMerge(left) || !canMerge(right)) {
             return false;
         }
@@ -829,7 +928,7 @@ export class DeletePlugin extends Plugin {
      * @param {((range: Range) => Range)[]} callbacks
      * @returns {RangeLike}
      */
-    adjustRange({ startContainer, startOffset, endContainer, endOffset }, callbacks) {
+    adjustRange({startContainer, startOffset, endContainer, endOffset}, callbacks) {
         let range = this.document.createRange();
         range.setStart(startContainer, startOffset);
         range.setEnd(endContainer, endOffset);
@@ -838,8 +937,8 @@ export class DeletePlugin extends Plugin {
             range = callback.call(this, range);
         }
 
-        ({ startContainer, startOffset, endOffset, endContainer } = range);
-        return { startContainer, startOffset, endOffset, endContainer };
+        ({startContainer, startOffset, endOffset, endContainer} = range);
+        return {startContainer, startOffset, endOffset, endContainer};
     }
 
     /**
@@ -850,7 +949,7 @@ export class DeletePlugin extends Plugin {
      * @returns {Range}
      */
     includeBlockStart(block, range) {
-        const { startContainer, startOffset, commonAncestorContainer } = range;
+        const {startContainer, startOffset, commonAncestorContainer} = range;
         if (
             block === commonAncestorContainer ||
             !this.isCursorAtStartOfElement(block, startContainer, startOffset)
@@ -869,7 +968,8 @@ export class DeletePlugin extends Plugin {
      * @returns {Range}
      */
     includeBlockEnd(block, range) {
-        const { startContainer, endContainer, endOffset, commonAncestorContainer } = range;
+        const {startContainer, endContainer, endOffset, commonAncestorContainer} =
+            range;
         const startList = closestElement(startContainer, "UL, OL");
         const endList = closestElement(endContainer, "UL, OL");
         if (
@@ -902,7 +1002,7 @@ export class DeletePlugin extends Plugin {
      * @returns {Range}
      */
     includeEndOrStartBlock(range) {
-        const { startContainer, endContainer, commonAncestorContainer } = range;
+        const {startContainer, endContainer, commonAncestorContainer} = range;
         const startBlock = findUpTo(startContainer, commonAncestorContainer, isBlock);
         const endBlock = findUpTo(endContainer, commonAncestorContainer, isBlock);
         if (!startBlock || !endBlock) {
@@ -930,12 +1030,24 @@ export class DeletePlugin extends Plugin {
      * @returns {Range}
      */
     fullyIncludeLinks(range) {
-        const { startContainer, startOffset, endContainer, endOffset, commonAncestorContainer } =
-            range;
+        const {
+            startContainer,
+            startOffset,
+            endContainer,
+            endOffset,
+            commonAncestorContainer,
+        } = range;
         const [startLink, endLink] = [startContainer, endContainer].map((container) =>
-            findUpTo(container, commonAncestorContainer, (node) => node.nodeName === "A")
+            findUpTo(
+                container,
+                commonAncestorContainer,
+                (node) => node.nodeName === "A"
+            )
         );
-        if (startLink && this.isCursorAtStartOfElement(startLink, startContainer, startOffset)) {
+        if (
+            startLink &&
+            this.isCursorAtStartOfElement(startLink, startContainer, startOffset)
+        ) {
             range.setStartBefore(startLink);
         }
         if (endLink && this.isCursorAtEndOfElement(endLink, endContainer, endOffset)) {
@@ -976,8 +1088,11 @@ export class DeletePlugin extends Plugin {
      * @returns {Range}
      */
     includeNextZWS(range) {
-        const { endContainer, endOffset } = range;
-        if (isTextNode(endContainer) && endContainer.textContent[endOffset] === "\u200B") {
+        const {endContainer, endOffset} = range;
+        if (
+            isTextNode(endContainer) &&
+            endContainer.textContent[endOffset] === "\u200B"
+        ) {
             range.setEnd(endContainer, endOffset + 1);
         }
         return range;
@@ -988,7 +1103,7 @@ export class DeletePlugin extends Plugin {
      * @returns {Range}
      */
     includePreviousZWS(range) {
-        const { startContainer, startOffset } = range;
+        const {startContainer, startOffset} = range;
         if (
             isTextNode(startContainer) &&
             startContainer.textContent[startOffset - 1] === "\u200B"
@@ -1069,7 +1184,9 @@ export class DeletePlugin extends Plugin {
         const indexAfterChar = isDirectionForward ? charRightPos : charLeftPos;
         const textEdgePos = isDirectionForward ? startPos : endPos;
         // Leaf helpers.
-        const adjacentLeaf = (isDirectionForward ? this.nextLeaf : this.previousLeaf).bind(this);
+        const adjacentLeaf = (
+            isDirectionForward ? this.nextLeaf : this.previousLeaf
+        ).bind(this);
         const adjacentLeafFromPos = (
             isDirectionForward ? this.nextLeafFromPos : this.previousLeafFromPos
         ).bind(this);
@@ -1097,8 +1214,13 @@ export class DeletePlugin extends Plugin {
             }
 
             // Define context: search is restricted to the closest editable root.
-            const isEditableRoot = (n) => n.isContentEditable && !n.parentNode.isContentEditable;
-            const editableRoot = findUpTo(node, this.editable.parentNode, isEditableRoot);
+            const isEditableRoot = (n) =>
+                n.isContentEditable && !n.parentNode.isContentEditable;
+            const editableRoot = findUpTo(
+                node,
+                this.editable.parentNode,
+                isEditableRoot
+            );
 
             let blockSwitch;
             const nodeClosestBlock = closestBlock(node);
@@ -1118,7 +1240,10 @@ export class DeletePlugin extends Plugin {
                 ) {
                     const [char, index] = findVisibleChar(...textEdgePos(leaf));
                     if (char) {
-                        const idx = (blockSwitch ? indexBeforeChar : indexAfterChar)(index, char);
+                        const idx = (blockSwitch ? indexBeforeChar : indexAfterChar)(
+                            index,
+                            char
+                        );
                         return [leaf, idx];
                     }
                 } else if (!leaf.isContentEditable && isBlock(leaf)) {
@@ -1180,7 +1305,9 @@ export class DeletePlugin extends Plugin {
         // If not preceded by content, it is invisible.
         if (offset) {
             return !isWhitespace(textNode.textContent[offset - char.length]);
-        } else if (!(getState(...leftPos(textNode), DIRECTIONS.LEFT).cType & CTYPES.CONTENT)) {
+        } else if (
+            !(getState(...leftPos(textNode), DIRECTIONS.LEFT).cType & CTYPES.CONTENT)
+        ) {
             return false;
         }
 
@@ -1261,7 +1388,8 @@ export class DeletePlugin extends Plugin {
     // leaf instead.
     adjustedLeaf(leaf, refEditableRoot) {
         const isNonEditable = (node) => !isContentEditable(node);
-        const nonEditableRoot = leaf && findFurthest(leaf, refEditableRoot, isNonEditable);
+        const nonEditableRoot =
+            leaf && findFurthest(leaf, refEditableRoot, isNonEditable);
         return nonEditableRoot || leaf;
     }
 
@@ -1314,7 +1442,8 @@ export class DeletePlugin extends Plugin {
 
     onBeforeInputInsertText(ev) {
         if (ev.inputType === "insertText") {
-            const selection = this.dependencies.selection.getSelectionData().deepEditableSelection;
+            const selection =
+                this.dependencies.selection.getSelectionData().deepEditableSelection;
             if (!selection.isCollapsed) {
                 this.dispatchTo("before_delete_handlers");
                 this.deleteSelection(selection);
@@ -1344,8 +1473,13 @@ export class DeletePlugin extends Plugin {
             // Revert selection changes after input event, within the same tick.
             // If further mutations occurred, consider selection change legit
             // (e.g. dictionary input) and do not revert it.
-            const { restore: restoreSelection } = this.dependencies.selection.preserveSelection();
-            const observerOptions = { childList: true, subtree: true, characterData: true };
+            const {restore: restoreSelection} =
+                this.dependencies.selection.preserveSelection();
+            const observerOptions = {
+                childList: true,
+                subtree: true,
+                characterData: true,
+            };
             const getMutationRecords = observeMutations(this.editable, observerOptions);
             this.onAndroidChromeSelectionChange = () => {
                 const shouldRevertSelectionChanges = !getMutationRecords().length;
@@ -1360,14 +1494,24 @@ export class DeletePlugin extends Plugin {
     // ======== AD-HOC STUFF ========
 
     deleteBackwardUnmergeable(range) {
-        const { startContainer, startOffset, endContainer, endOffset } = range;
-        return this.deleteCharUnmergeable(endContainer, endOffset, startContainer, startOffset);
+        const {startContainer, startOffset, endContainer, endOffset} = range;
+        return this.deleteCharUnmergeable(
+            endContainer,
+            endOffset,
+            startContainer,
+            startOffset
+        );
     }
 
     // @todo @phoenix: write tests for this
     deleteForwardUnmergeable(range) {
-        const { startContainer, startOffset, endContainer, endOffset } = range;
-        return this.deleteCharUnmergeable(startContainer, startOffset, endContainer, endOffset);
+        const {startContainer, startOffset, endContainer, endOffset} = range;
+        return this.deleteCharUnmergeable(
+            startContainer,
+            startOffset,
+            endContainer,
+            endOffset
+        );
     }
 
     // Trap cursor inside unmergeable element. Remove it if empty.
@@ -1375,7 +1519,10 @@ export class DeletePlugin extends Plugin {
         if (!destContainer) {
             return;
         }
-        const commonAncestor = getCommonAncestor([sourceContainer, destContainer], this.editable);
+        const commonAncestor = getCommonAncestor(
+            [sourceContainer, destContainer],
+            this.editable
+        );
         const closestUnmergeable = findUpTo(sourceContainer, commonAncestor, (node) =>
             this.isUnmergeable(node)
         );
@@ -1385,7 +1532,9 @@ export class DeletePlugin extends Plugin {
 
         if (
             (isEmpty(closestUnmergeable) ||
-                this.getResource("is_empty_predicates").some((p) => p(closestUnmergeable))) &&
+                this.getResource("is_empty_predicates").some((p) =>
+                    p(closestUnmergeable)
+                )) &&
             !this.isUnremovable(closestUnmergeable)
         ) {
             closestUnmergeable.remove();
@@ -1429,13 +1578,13 @@ export class DeletePlugin extends Plugin {
     /**
      * @param {RangeLike} range
      */
-    setCursorFromRange(range, { collapseToEnd = false } = {}) {
-        range = this.collapseRange(range, { toEnd: collapseToEnd });
+    setCursorFromRange(range, {collapseToEnd = false} = {}) {
+        range = this.collapseRange(range, {toEnd: collapseToEnd});
         const [anchorNode, anchorOffset] = this.normalizeEnterBlock(
             range.startContainer,
             range.startOffset
         );
-        this.dependencies.selection.setSelection({ anchorNode, anchorOffset });
+        this.dependencies.selection.setSelection({anchorNode, anchorOffset});
     }
 
     // @todo: no need for this once selection in the editable root is corrected?
@@ -1449,14 +1598,20 @@ export class DeletePlugin extends Plugin {
     /**
      * @param {RangeLike} range
      */
-    collapseRange(range, { toEnd = false } = {}) {
-        let { startContainer, startOffset, endContainer, endOffset } = range;
+    collapseRange(range, {toEnd = false} = {}) {
+        let {startContainer, startOffset, endContainer, endOffset} = range;
         if (toEnd) {
             [startContainer, startOffset] = [endContainer, endOffset];
         } else {
             [endContainer, endOffset] = [startContainer, startOffset];
         }
         const commonAncestorContainer = startContainer;
-        return { startContainer, startOffset, endContainer, endOffset, commonAncestorContainer };
+        return {
+            startContainer,
+            startOffset,
+            endContainer,
+            endOffset,
+            commonAncestorContainer,
+        };
     }
 }

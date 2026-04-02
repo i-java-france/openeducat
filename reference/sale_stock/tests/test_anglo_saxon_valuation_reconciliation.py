@@ -1,8 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.stock_account.tests.common import TestStockValuationCommon
-from odoo.addons.sale_stock.tests.common import TestSaleStockCommon
 from odoo.tests import Form, tagged
+
+from odoo.addons.sale_stock.tests.common import TestSaleStockCommon
+from odoo.addons.stock_account.tests.common import TestStockValuationCommon
 
 
 @tagged('post_install', '-at_install')
@@ -198,7 +199,7 @@ class TestValuationReconciliationCommon(TestStockValuationCommon, TestSaleStockC
             'picking_type_id': in_type.id,
         } for product, quantity in zip(
             [product_1, product_2],
-            [2.0, 2.0]
+            [2.0, 2.0], strict=False
         )])
         in_moves._action_confirm()
         for move in in_moves:

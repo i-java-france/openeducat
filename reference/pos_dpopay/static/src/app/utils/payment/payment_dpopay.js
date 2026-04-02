@@ -1,16 +1,19 @@
-import { register_payment_method } from "@point_of_sale/app/services/pos_store";
-import { handleRPCError, offlineErrorHandler } from "@point_of_sale/app/utils/error_handlers";
-import { PaymentInterface } from "@point_of_sale/app/utils/payment/payment_interface";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { serializeDateTime } from "@web/core/l10n/dates";
-import { _t } from "@web/core/l10n/translation";
-import { ConnectionLostError, RPCError } from "@web/core/network/rpc";
-import { isNull } from "@web/views/utils";
+import {register_payment_method} from "@point_of_sale/app/services/pos_store";
+import {
+    handleRPCError,
+    offlineErrorHandler,
+} from "@point_of_sale/app/utils/error_handlers";
+import {PaymentInterface} from "@point_of_sale/app/utils/payment/payment_interface";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {serializeDateTime} from "@web/core/l10n/dates";
+import {_t} from "@web/core/l10n/translation";
+import {ConnectionLostError, RPCError} from "@web/core/network/rpc";
+import {isNull} from "@web/views/utils";
 
 const POLLING_REQUEST_MS = 3 * 1000; // 3 seconds
 const CANCEL_REQUEST_TIME_LIMIT_MS = 3 * 60 * 1000; // 3 minutes
 const WAIT_BEFORE_RESULT_FETCH = 3 * 1000; // 3 seconds
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class PaymentDPOPay extends PaymentInterface {
     setup() {
@@ -37,7 +40,10 @@ export class PaymentDPOPay extends PaymentInterface {
         const order = this.pos.getOrder();
         const paymentLine = order.getSelectedPaymentline();
         if (paymentLine.amount <= 0) {
-            this._handleError(undefined, _t("Transaction amount must be greater than zero."));
+            this._handleError(
+                undefined,
+                _t("Transaction amount must be greater than zero.")
+            );
             return false;
         }
 
@@ -61,10 +67,17 @@ export class PaymentDPOPay extends PaymentInterface {
             }
         }
 
-        const orderId = order?.pos_reference?.replace(" ", "").replaceAll("-", "").toUpperCase();
+        const orderId = order?.pos_reference
+            ?.replace(" ", "")
+            .replaceAll("-", "")
+            .toUpperCase();
         const referencePrefix = this.pos.config.name.replace(/\s/g, "").slice(0, 4);
         paymentLine.transaction_id =
-            referencePrefix + "/" + orderId + "/" + crypto.randomUUID().replaceAll("-", "");
+            referencePrefix +
+            "/" +
+            orderId +
+            "/" +
+            crypto.randomUUID().replaceAll("-", "");
 
         const currency = paymentLine.pos_order_id.currency;
         const data = {
@@ -82,7 +95,10 @@ export class PaymentDPOPay extends PaymentInterface {
     async _makePaymentRequestHandler(response) {
         const line = this._pendingDPOPaymentLine();
         if (!response || response?.errorMessage || !line) {
-            this._handleError(response, _t("Unable to initiate DPO payment. Please try again."));
+            this._handleError(
+                response,
+                _t("Unable to initiate DPO payment. Please try again.")
+            );
             return false;
         }
         this.pollingInProgress = true;
@@ -96,7 +112,7 @@ export class PaymentDPOPay extends PaymentInterface {
             return false;
         }
 
-        const data = { sourceId: paymentLine.transaction_id };
+        const data = {sourceId: paymentLine.transaction_id};
         this._stopPendingPayment().then(() => (this.paymentStopped = true));
 
         const dpopayFetchPaymentStatus = async (resolve, reject) => {
@@ -130,7 +146,7 @@ export class PaymentDPOPay extends PaymentInterface {
     }
 
     async _attemptTransactionRecovery(paymentLine) {
-        const data = { sourceId: paymentLine.transaction_id };
+        const data = {sourceId: paymentLine.transaction_id};
 
         const statusResponse = await this._callDpoPayMakeRequest(data, "get-status");
         if (!statusResponse || statusResponse.errorMessage) {
@@ -146,7 +162,10 @@ export class PaymentDPOPay extends PaymentInterface {
 
         const resultResponse = await this._callDpoPayMakeRequest(data, "get-result");
         if (!resultResponse || resultResponse.errorMessage) {
-            this._handleError(resultResponse, _t("Failed to fetch last transaction result."));
+            this._handleError(
+                resultResponse,
+                _t("Failed to fetch last transaction result.")
+            );
             return null;
         }
         if (!resultResponse.success) {
@@ -201,10 +220,12 @@ export class PaymentDPOPay extends PaymentInterface {
 
         if (response.complete) {
             // Wait 3 seconds for DPO Pay to finalize the payment result.
-            await new Promise((resolve) => setTimeout(resolve, WAIT_BEFORE_RESULT_FETCH));
+            await new Promise((resolve) =>
+                setTimeout(resolve, WAIT_BEFORE_RESULT_FETCH)
+            );
 
             const resp = await this._callDpoPayMakeRequest(
-                { sourceId: response.sourceid },
+                {sourceId: response.sourceid},
                 "get-result"
             );
 
@@ -231,14 +252,20 @@ export class PaymentDPOPay extends PaymentInterface {
             cardholder_name: data["CardHolderName"],
             card_no: data["panMasked"]?.slice(-4),
             card_brand: data["cardType"],
-            payment_method_payment_mode: paymentMode ? `${paymentMode} Mobile Money` : "CARD",
+            payment_method_payment_mode: paymentMode
+                ? `${paymentMode} Mobile Money`
+                : "CARD",
             dpopay_rrn: data["rrn"],
-            payment_date: this._getPaymentDate(data["TransactionDate"], data["TransactionTime"]),
+            payment_date: this._getPaymentDate(
+                data["TransactionDate"],
+                data["TransactionTime"]
+            ),
         };
 
         if (data.dataMap) {
             updatedData.dpopay_transaction_ref = data.dataMap["Transaction Ref"];
-            updatedData.dpopay_mobile_money_phone = data.dataMap["Phone Number"]?.slice(-4);
+            updatedData.dpopay_mobile_money_phone =
+                data.dataMap["Phone Number"]?.slice(-4);
         }
 
         line.update(updatedData);
@@ -262,11 +289,11 @@ export class PaymentDPOPay extends PaymentInterface {
 
     async _callDpoPayMakeRequest(data, action) {
         try {
-            return await this.pos.data.call("pos.payment.method", "send_dpopay_request", [
-                [this.payment_method_id.id],
-                data,
-                action,
-            ]);
+            return await this.pos.data.call(
+                "pos.payment.method",
+                "send_dpopay_request",
+                [[this.payment_method_id.id], data, action]
+            );
         } catch (error) {
             const line = this._pendingDPOPaymentLine();
             this.pos.paymentTerminalInProgress = false;
@@ -314,7 +341,10 @@ export class PaymentDPOPay extends PaymentInterface {
     _stopPendingPayment() {
         return new Promise(
             (resolve) =>
-                (this.inactivityTimeout = setTimeout(resolve, CANCEL_REQUEST_TIME_LIMIT_MS))
+                (this.inactivityTimeout = setTimeout(
+                    resolve,
+                    CANCEL_REQUEST_TIME_LIMIT_MS
+                ))
         );
     }
 

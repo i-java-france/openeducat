@@ -1,17 +1,17 @@
-import { PageDependencies } from "@website/components/dialog/page_properties";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
-import { UrlField, urlField } from "@web/views/fields/url/url_field";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { debounce } from "@web/core/utils/timing";
-import { Component, useEffect, useRef } from "@odoo/owl";
+import {PageDependencies} from "@website/components/dialog/page_properties";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
+import {UrlField, urlField} from "@web/views/fields/url/url_field";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {debounce} from "@web/core/utils/timing";
+import {Component, useEffect, useRef} from "@odoo/owl";
 
 /**
  * Displays website page dependencies and URL redirect options when the page URL
  * is updated.
  */
 class PageUrlField extends UrlField {
-    static components = { PageDependencies };
+    static components = {PageDependencies};
     static template = "website.PageUrlField";
     static defaultProps = {
         ...UrlField.defaultProps,
@@ -83,7 +83,7 @@ export class ImageRadioField extends Component {
     static template = "website.FieldImageRadio";
     static props = {
         ...standardFieldProps,
-        images: { type: Array, element: String },
+        images: {type: Array, element: String},
     };
 
     setup() {
@@ -102,7 +102,7 @@ export class ImageRadioField extends Component {
      * @param {String} value
      */
     onSelectValue(value) {
-        this.props.record.update({ [this.props.name]: value });
+        this.props.record.update({[this.props.name]: value});
     }
 }
 
@@ -117,7 +117,7 @@ export const imageRadioField = {
         },
     ],
     supportedTypes: ["selection"],
-    extractProps: ({ options }) => ({
+    extractProps: ({options}) => ({
         images: options.images,
     }),
 };

@@ -90,7 +90,7 @@ export function makeRAMLocalStorage() {
         setItem(key, value) {
             const newValue = String(value);
             store[key] = newValue;
-            window.dispatchEvent(new StorageEvent("storage", { key, newValue }));
+            window.dispatchEvent(new StorageEvent("storage", {key, newValue}));
         },
         getItem(key) {
             return store[key] ?? null;
@@ -100,7 +100,7 @@ export function makeRAMLocalStorage() {
         },
         removeItem(key) {
             delete store[key];
-            window.dispatchEvent(new StorageEvent("storage", { key, newValue: null }));
+            window.dispatchEvent(new StorageEvent("storage", {key, newValue: null}));
         },
         get length() {
             return Object.keys(store).length;

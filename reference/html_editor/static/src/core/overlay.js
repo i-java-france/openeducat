@@ -8,9 +8,9 @@ import {
     useSubEnv,
     xml,
 } from "@odoo/owl";
-import { OVERLAY_SYMBOL } from "@web/core/overlay/overlay_container";
-import { usePosition } from "@web/core/position/position_hook";
-import { useActiveElement } from "@web/core/ui/ui_service";
+import {OVERLAY_SYMBOL} from "@web/core/overlay/overlay_container";
+import {usePosition} from "@web/core/position/position_hook";
+import {useActiveElement} from "@web/core/ui/ui_service";
 
 export class EditorOverlay extends Component {
     static template = xml`
@@ -19,21 +19,21 @@ export class EditorOverlay extends Component {
         </div>`;
 
     static props = {
-        target: { validate: (el) => el.nodeType === Node.ELEMENT_NODE, optional: true },
-        initialSelection: { type: Object, optional: true },
+        target: {validate: (el) => el.nodeType === Node.ELEMENT_NODE, optional: true},
+        initialSelection: {type: Object, optional: true},
         Component: Function,
-        props: { type: Object, optional: true },
-        editable: { validate: (el) => el.nodeType === Node.ELEMENT_NODE },
+        props: {type: Object, optional: true},
+        editable: {validate: (el) => el.nodeType === Node.ELEMENT_NODE},
         bus: Object,
         shared: Object,
         close: Function,
         isOverlayOpen: Function,
 
         // Props from createOverlay
-        positionOptions: { type: Object, optional: true },
-        className: { type: String, optional: true },
-        closeOnPointerdown: { type: Boolean, optional: true },
-        hasAutofocus: { type: Boolean, optional: true },
+        positionOptions: {type: Object, optional: true},
+        className: {type: String, optional: true},
+        closeOnPointerdown: {type: Boolean, optional: true},
+        hasAutofocus: {type: Boolean, optional: true},
     };
 
     static defaultProps = {
@@ -113,8 +113,8 @@ export class EditorOverlay extends Component {
         };
         position = usePosition("root", getTarget, positionOptions);
 
-        this.overlayState = useState({ isOverlayVisible: true });
-        useSubEnv({ overlayState: this.overlayState });
+        this.overlayState = useState({isOverlayVisible: true});
+        useSubEnv({overlayState: this.overlayState});
     }
 
     getSelectionTarget() {
@@ -128,7 +128,7 @@ export class EditorOverlay extends Component {
         let range;
         if (inEditable) {
             range = selection.getRangeAt(0);
-            this.lastSelection = { range };
+            this.lastSelection = {range};
         } else {
             if (!this.lastSelection) {
                 return null;
@@ -184,7 +184,8 @@ export class EditorOverlay extends Component {
         const scrollContainerRect = scrollContainer.getBoundingClientRect();
         let scrollContainerTop = scrollContainerRect.top;
         if (scrollContainer.ownerDocument !== overlayElement.ownerDocument) {
-            const frameElement = scrollContainer.ownerDocument.defaultView?.frameElement;
+            const frameElement =
+                scrollContainer.ownerDocument.defaultView?.frameElement;
             if (frameElement) {
                 scrollContainerTop += frameElement.getBoundingClientRect().top;
             }

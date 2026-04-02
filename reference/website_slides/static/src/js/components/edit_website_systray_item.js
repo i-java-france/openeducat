@@ -1,9 +1,9 @@
-import { EditWebsiteSystrayItem } from "@website/client_actions/website_preview/edit_website_systray_item";
-import { patch } from "@web/core/utils/patch";
+import {EditWebsiteSystrayItem} from "@website/client_actions/website_preview/edit_website_systray_item";
+import {patch} from "@web/core/utils/patch";
 
 patch(EditWebsiteSystrayItem.prototype, {
     isSlidePage() {
-        const { pathname, search } = this.websiteService.contentWindow.location;
+        const {pathname, search} = this.websiteService.contentWindow.location;
         return pathname.includes("slides") && search.includes("fullscreen=1");
     },
     getLocation() {
@@ -19,7 +19,7 @@ patch(EditWebsiteSystrayItem.prototype, {
 
     onClickEditPage() {
         if (this.isSlidePage()) {
-            const { pathname, search, hash } = this.getLocation();
+            const {pathname, search, hash} = this.getLocation();
             this.websiteService.goToWebsite({
                 path: pathname + search + hash,
                 edition: true,

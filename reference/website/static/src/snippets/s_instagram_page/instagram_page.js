@@ -1,7 +1,7 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
 // Note that Instagram can automatically detect the language of the user and
 // translate the embed.
@@ -15,8 +15,8 @@ export class InstagramPage extends Interaction {
     dynamicContent = {
         // We have to setup the message listener before setting the src, because
         // the iframe can send a message before this JS is fully loaded.
-        _window: { "t-on-message": this.onMessage },
-        _iframe: { "t-att-height": () => this.height },
+        _window: {"t-on-message": this.onMessage},
+        _iframe: {"t-att-height": () => this.height},
     };
 
     setup() {

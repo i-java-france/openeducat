@@ -1,9 +1,9 @@
-import { SEE_RECORD_LIST, SEE_RECORD_LIST_VISIBLE } from "@spreadsheet/list/list_actions";
-import { registries, components, readonlyAllowedCommands } from "@odoo/o-spreadsheet";
-import { _t } from "@web/core/l10n/translation";
+import {SEE_RECORD_LIST, SEE_RECORD_LIST_VISIBLE} from "@spreadsheet/list/list_actions";
+import {registries, components, readonlyAllowedCommands} from "@odoo/o-spreadsheet";
+import {_t} from "@web/core/l10n/translation";
 
-const { clickableCellRegistry } = registries;
-const { ClickableCellSortIcon } = components;
+const {clickableCellRegistry} = registries;
+const {ClickableCellSortIcon} = components;
 
 readonlyAllowedCommands.add("UPDATE_ODOO_LIST");
 
@@ -25,7 +25,7 @@ function sortList(env, position, direction) {
         direction === "none"
             ? []
             : [
-                  { name: field.name, asc: direction === "asc" },
+                  {name: field.name, asc: direction === "asc"},
                   ...definition.searchParams.orderBy.filter(
                       (orderBy) => orderBy.name !== field.name
                   ),
@@ -56,7 +56,7 @@ clickableCellRegistry.add("dashboard_list_sorting", {
     sequence: 2,
 });
 
-const NEXT_SORT_DIRECTION = { asc: "desc", desc: "none", none: "asc" };
+const NEXT_SORT_DIRECTION = {asc: "desc", desc: "none", none: "asc"};
 
 function getNextSortDirection(getters, position) {
     return NEXT_SORT_DIRECTION[getters.getListSortDirection(position)];

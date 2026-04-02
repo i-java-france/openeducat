@@ -4,9 +4,8 @@ from datetime import timedelta
 
 import requests
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-
 
 
 class ResUsersSettings(models.Model):

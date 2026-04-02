@@ -1,12 +1,12 @@
 /* global owl */
 
 import useStore from "../hooks/useStore.js";
-import { CredentialDialog } from "./dialog/CredentialDialog.js";
-import { HandlerDialog } from "./dialog/HandlerDialog.js";
-import { RemoteDebugDialog } from "./dialog/RemoteDebugDialog.js";
-import { TimeDialog } from "./dialog/TimeDialog.js";
+import {CredentialDialog} from "./dialog/CredentialDialog.js";
+import {HandlerDialog} from "./dialog/HandlerDialog.js";
+import {RemoteDebugDialog} from "./dialog/RemoteDebugDialog.js";
+import {TimeDialog} from "./dialog/TimeDialog.js";
 
-const { Component, xml } = owl;
+const {Component, xml} = owl;
 
 export class FooterButtons extends Component {
     static props = {};

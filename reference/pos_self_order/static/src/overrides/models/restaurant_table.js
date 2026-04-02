@@ -1,9 +1,11 @@
-import { RestaurantTable } from "@pos_restaurant/app/models/restaurant_table";
-import { patch } from "@web/core/utils/patch";
+import {RestaurantTable} from "@pos_restaurant/app/models/restaurant_table";
+import {patch} from "@web/core/utils/patch";
 
 patch(RestaurantTable.prototype, {
     get useProxy() {
-        return super.useProxy || (this.iot_device_ids && this.iot_device_ids.length > 0);
+        return (
+            super.useProxy || (this.iot_device_ids && this.iot_device_ids.length > 0)
+        );
     },
     get isShareable() {
         return super.isShareable || this.module_pos_restaurant;

@@ -1,9 +1,9 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { tick } from "@odoo/hoot-mock";
-import { press } from "@odoo/hoot-dom";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { getContent } from "../_helpers/selection";
+import {describe, expect, test} from "@odoo/hoot";
+import {tick} from "@odoo/hoot-mock";
+import {press} from "@odoo/hoot-dom";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {getContent} from "../_helpers/selection";
 import {
     insertText,
     italic,
@@ -12,7 +12,7 @@ import {
     underline,
     undo,
 } from "../_helpers/user_actions";
-import { unformat } from "../_helpers/format";
+import {unformat} from "../_helpers/format";
 
 test("should make a few characters underline", async () => {
     await testEditor({
@@ -68,7 +68,7 @@ test("should make a whole heading underline after a triple click", async () => {
 
 test.tags("desktop");
 test("should make a whole heading not underline after a triple click", async () => {
-    const { el, editor } = await setupEditor(`<h1><u>ab</u></h1><p>cd</p>`);
+    const {el, editor} = await setupEditor(`<h1><u>ab</u></h1><p>cd</p>`);
     await tripleClick(el.querySelector("h1"));
     underline(editor);
     expect(getContent(el)).toBe(`<h1>[ab]</h1><p>cd</p>`);
@@ -265,7 +265,7 @@ describe("with strikeThrough", () => {
             contentBefore: `<p>ab<u><s>cd[]ef</s></u></p>`,
             stepFunction: async (editor) => {
                 /** @todo fix warnings */
-                patchWithCleanup(console, { warn: () => {} });
+                patchWithCleanup(console, {warn: () => {}});
 
                 underline(editor);
                 await insertText(editor, "A");
@@ -381,7 +381,7 @@ describe("with italic", () => {
             contentBefore: `<p>ab<u><em>cd[]ef</em></u></p>`,
             stepFunction: async (editor) => {
                 /** @todo fix warnings */
-                patchWithCleanup(console, { warn: () => {} });
+                patchWithCleanup(console, {warn: () => {}});
 
                 underline(editor);
                 await insertText(editor, "A");
@@ -395,28 +395,32 @@ describe("with italic", () => {
     });
 
     test("should remove empty underline tag when changing selection", async () => {
-        const { editor, el } = await setupEditor("<p>ab[]cd</p>");
+        const {editor, el} = await setupEditor("<p>ab[]cd</p>");
 
         underline(editor);
         await tick();
-        expect(getContent(el)).toBe(`<p>ab<u data-oe-zws-empty-inline="">[]\u200B</u>cd</p>`);
+        expect(getContent(el)).toBe(
+            `<p>ab<u data-oe-zws-empty-inline="">[]\u200B</u>cd</p>`
+        );
 
         await simulateArrowKeyPress(editor, "ArrowLeft");
-        await tick(); // await selectionchange
+        await tick(); // Await selectionchange
         expect(getContent(el)).toBe(`<p>a[]bcd</p>`);
     });
 });
 
 test("should not add history step for underline on collapsed selection", async () => {
-    const { editor, el } = await setupEditor("<p>abcd[]</p>");
+    const {editor, el} = await setupEditor("<p>abcd[]</p>");
 
-    patchWithCleanup(console, { warn: () => {} });
+    patchWithCleanup(console, {warn: () => {}});
 
     // Collapsed formatting shortcuts (e.g. Ctrl+U) shouldn’t create a history
     // step. The empty inline tag is temporary: auto-cleaned if unused. We want
     // to avoid having a phantom step in the history.
     await press(["ctrl", "u"]);
-    expect(getContent(el)).toBe(`<p>abcd<u data-oe-zws-empty-inline="">[]\u200B</u></p>`);
+    expect(getContent(el)).toBe(
+        `<p>abcd<u data-oe-zws-empty-inline="">[]\u200B</u></p>`
+    );
 
     await insertText(editor, "A");
     expect(getContent(el)).toBe(`<p>abcd<u>A[]</u></p>`);

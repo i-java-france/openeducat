@@ -1,9 +1,15 @@
-import { expect, test } from "@odoo/hoot";
-import { contains, defineModels, fields, models, mountView } from "@web/../tests/web_test_helpers";
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
+import {expect, test} from "@odoo/hoot";
+import {
+    contains,
+    defineModels,
+    fields,
+    models,
+    mountView,
+} from "@web/../tests/web_test_helpers";
+import {defineMailModels} from "@mail/../tests/mail_test_helpers";
 
 class Partner extends models.Model {
-    lines = fields.One2many({ relation: "lines_sections" });
+    lines = fields.One2many({relation: "lines_sections"});
 
     _records = [
         {
@@ -18,7 +24,7 @@ class LinesSections extends models.Model {
 
     is_page = fields.Boolean();
     title = fields.Char();
-    random_questions_count = fields.Integer({ string: "Question Count" });
+    random_questions_count = fields.Integer({string: "Question Count"});
     sequence = fields.Integer();
     question_type = fields.Char();
 

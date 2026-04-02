@@ -1,18 +1,18 @@
-import { test, expect, describe, beforeEach } from "@odoo/hoot";
-import { queryFirst, queryAll, queryOne } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {queryAll, queryFirst, queryOne} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
 
-import { WebClient } from "@web/webclient/webclient";
+import {WebClient} from "@web/webclient/webclient";
 import {
-    mountView,
-    onRpc,
-    mountWithCleanup,
-    getService,
     contains,
+    getService,
+    mountView,
+    mountWithCleanup,
+    onRpc,
 } from "@web/../tests/web_test_helpers";
 
-import { defineTodoModels } from "./todo_test_helpers";
-import { ProjectTask } from "./mock_server/mock_models/project_task";
+import {defineTodoModels} from "./todo_test_helpers";
+import {ProjectTask} from "./mock_server/mock_models/project_task";
 
 describe.current.tags("desktop");
 defineTodoModels();
@@ -44,7 +44,7 @@ beforeEach(() => {
 });
 
 test("Check clicking on todo_done_checkmark in kanban view with initial state is in progress", async () => {
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1].state).toBe("1_done", {
             message: "The task should be marked as done",
         });
@@ -64,13 +64,14 @@ test("Check clicking on todo_done_checkmark in kanban view with initial state is
     task1.click();
     await animationFrame();
     expect(task1).toHaveClass("done_button_enabled", {
-        message: "The checkmark on this task should be displayed as done as its state is 1_done",
+        message:
+            "The checkmark on this task should be displayed as done as its state is 1_done",
     });
     expect.verifySteps(["web_save"]);
 });
 
 test("Check clicking on todo_done_checkmark in kanban view with initial state is done", async () => {
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1].state).toBe("01_in_progress", {
             message: "The task should be in progress",
         });
@@ -84,7 +85,8 @@ test("Check clicking on todo_done_checkmark in kanban view with initial state is
 
     const task2 = queryAll(".o_kanban_record .o_todo_done_button")[1];
     expect(task2).toHaveClass("done_button_enabled", {
-        message: "The checkmark on this task should be displayed as done as its state is 1_done",
+        message:
+            "The checkmark on this task should be displayed as done as its state is 1_done",
     });
     task2.click();
     await animationFrame();
@@ -96,7 +98,7 @@ test("Check clicking on todo_done_checkmark in kanban view with initial state is
 });
 
 test("Check clicking on todo_done_checkmark in list view with initial state is in progress", async () => {
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1].state).toBe("1_done", {
             message: "The task should be marked as done",
         });
@@ -116,13 +118,14 @@ test("Check clicking on todo_done_checkmark in list view with initial state is i
     task1.click();
     await animationFrame();
     expect(task1).toHaveClass("done_button_enabled", {
-        message: "The checkmark on this task should be displayed as done as its state is 1_done",
+        message:
+            "The checkmark on this task should be displayed as done as its state is 1_done",
     });
     expect.verifySteps(["web_save"]);
 });
 
 test("Check clicking on todo_done_checkmark in list view with initial state is done", async () => {
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1].state).toBe("01_in_progress", {
             message: "The task should be in progress",
         });
@@ -136,7 +139,8 @@ test("Check clicking on todo_done_checkmark in list view with initial state is d
 
     const task2 = queryAll(".o_todo_done_button")[1];
     expect(task2).toHaveClass("done_button_enabled", {
-        message: "The checkmark on this task should be displayed as done as its state is 1_done",
+        message:
+            "The checkmark on this task should be displayed as done as its state is 1_done",
     });
     task2.click();
     await animationFrame();
@@ -148,7 +152,7 @@ test("Check clicking on todo_done_checkmark in list view with initial state is d
 });
 
 test("Check clicking on todo_done_checkmark in form view with initial state is in progress", async () => {
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1].state).toBe("1_done", {
             message: "The task should be marked as done",
         });
@@ -175,12 +179,13 @@ test("Check clicking on todo_done_checkmark in form view with initial state is i
     task1.click();
     await animationFrame();
     expect(task1).toHaveClass("done_button_enabled", {
-        message: "The checkmark on this task should be displayed as done as its state is 1_done",
+        message:
+            "The checkmark on this task should be displayed as done as its state is 1_done",
     });
 });
 
 test("Check clicking on todo_done_checkmark in form view with initial state is done", async () => {
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect(args[1].state).toBe("01_in_progress", {
             message: "The task should be in progress",
         });
@@ -201,7 +206,8 @@ test("Check clicking on todo_done_checkmark in form view with initial state is d
     await contains(queryAll(".o_data_cell")[2]).click();
     const task2 = queryOne(".o_todo_done_button");
     expect(task2).toHaveClass("done_button_enabled", {
-        message: "The checkmark on this task should be displayed as done as its state is 1_done",
+        message:
+            "The checkmark on this task should be displayed as done as its state is 1_done",
     });
     task2.click();
     await animationFrame();

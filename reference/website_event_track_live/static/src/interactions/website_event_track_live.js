@@ -1,8 +1,8 @@
 /* global YT */
 
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
-import { rpc } from "@web/core/network/rpc";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {rpc} from "@web/core/network/rpc";
 
 class WebsiteEventTrackLive extends Interaction {
     static selector = ".o_wevent_event_track_live";
@@ -50,7 +50,11 @@ class WebsiteEventTrackLive extends Interaction {
 
     async onVideoEnded() {
         const divEl = document.createElement("div");
-        divEl.classList.add("owevent_track_suggestion_loading", "position-absolute", "w-100");
+        divEl.classList.add(
+            "owevent_track_suggestion_loading",
+            "position-absolute",
+            "w-100"
+        );
         this.insert(divEl, this.el);
         this.nextSuggestion = await this.waitFor(
             rpc("/event_track/get_track_suggestion", {
@@ -73,7 +77,7 @@ class WebsiteEventTrackLive extends Interaction {
     }
 
     triggerEvent(event) {
-        this.el.dispatchEvent(new Event(event), { bubbles: true });
+        this.el.dispatchEvent(new Event(event), {bubbles: true});
     }
 
     setupYoutubePlayer() {

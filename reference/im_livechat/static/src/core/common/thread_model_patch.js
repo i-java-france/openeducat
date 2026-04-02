@@ -1,9 +1,9 @@
-import { fields } from "@mail/core/common/record";
-import { Thread } from "@mail/core/common/thread_model";
+import {fields} from "@mail/core/common/record";
+import {Thread} from "@mail/core/common/thread_model";
 
-import { _t } from "@web/core/l10n/translation";
-import { patch } from "@web/core/utils/patch";
-import { url } from "@web/core/utils/urls";
+import {_t} from "@web/core/l10n/translation";
+import {patch} from "@web/core/utils/patch";
+import {url} from "@web/core/utils/urls";
 
 patch(Thread.prototype, {
     setup() {
@@ -11,7 +11,9 @@ patch(Thread.prototype, {
         this.livechat_end_dt = fields.Datetime();
         this.livechat_lang_id = fields.One("res.lang");
         this.livechat_operator_id = fields.One("res.partner");
-        this.livechat_conversation_tag_ids = fields.Many("im_livechat.conversation.tag");
+        this.livechat_conversation_tag_ids = fields.Many(
+            "im_livechat.conversation.tag"
+        );
         this.livechatVisitorMember = fields.One("discuss.channel.member", {
             compute() {
                 if (this.channel_type !== "livechat") {
@@ -37,7 +39,7 @@ patch(Thread.prototype, {
             onUpdate() {
                 if (this.open_chat_window) {
                     this.open_chat_window = undefined;
-                    this.openChatWindow({ focus: true });
+                    this.openChatWindow({focus: true});
                 }
             },
         });

@@ -1,7 +1,7 @@
-import { destroy, expect, test } from "@odoo/hoot";
-import { keyDown, keyUp, press, queryAllTexts, queryOne, resize } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, onMounted, useState, xml } from "@odoo/owl";
+import {destroy, expect, test} from "@odoo/hoot";
+import {keyDown, keyUp, press, queryAllTexts, queryOne, resize} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Component, onMounted, useState, xml} from "@odoo/owl";
 import {
     contains,
     getService,
@@ -9,13 +9,13 @@ import {
     mountWithCleanup,
 } from "@web/../tests/web_test_helpers";
 
-import { Dialog } from "@web/core/dialog/dialog";
-import { useService } from "@web/core/utils/hooks";
+import {Dialog} from "@web/core/dialog/dialog";
+import {useService} from "@web/core/utils/hooks";
 
 test("simple rendering", async () => {
     expect.assertions(7);
     class Parent extends Component {
-        static components = { Dialog };
+        static components = {Dialog};
         static template = xml`
             <Dialog title="'Wow(l) Effect'">
                 Hello!
@@ -30,15 +30,21 @@ test("simple rendering", async () => {
         message: "the header is rendered by default",
     });
     expect("header .modal-title").toHaveText("Wow(l) Effect");
-    expect(".o_dialog main").toHaveCount(1, { message: "a dialog has always a main node" });
+    expect(".o_dialog main").toHaveCount(1, {
+        message: "a dialog has always a main node",
+    });
     expect("main").toHaveText("Hello!");
-    expect(".o_dialog footer").toHaveCount(1, { message: "the footer is rendered by default" });
-    expect(".o_dialog footer:visible").toHaveCount(0, { message: "the footer is hidden if empty" });
+    expect(".o_dialog footer").toHaveCount(1, {
+        message: "the footer is rendered by default",
+    });
+    expect(".o_dialog footer:visible").toHaveCount(0, {
+        message: "the footer is hidden if empty",
+    });
 });
 
 test("hotkeys work on dialogs", async () => {
     class Parent extends Component {
-        static components = { Dialog };
+        static components = {Dialog};
         static template = xml`
             <Dialog title="'Wow(l) Effect'">
                 Hello!
@@ -85,12 +91,15 @@ test("simple rendering with two dialogs", async () => {
             </div>
         `;
         static props = ["*"];
-        static components = { Dialog };
+        static components = {Dialog};
     }
     await makeDialogMockEnv();
     await mountWithCleanup(Parent);
     expect(".o_dialog").toHaveCount(2);
-    expect(queryAllTexts("header .modal-title")).toEqual(["First Title", "Second Title"]);
+    expect(queryAllTexts("header .modal-title")).toEqual([
+        "First Title",
+        "Second Title",
+    ]);
     expect(queryAllTexts(".o_dialog .modal-body")).toEqual(["Hello!", "Hello again!"]);
 });
 
@@ -103,7 +112,7 @@ test("click on the button x triggers the service close", async () => {
             </Dialog>
         `;
         static props = ["*"];
-        static components = { Dialog };
+        static components = {Dialog};
     }
     await makeDialogMockEnv({
         dialogData: {
@@ -136,7 +145,7 @@ test("click on the button x triggers the close and dismiss defined by a Child co
             </Dialog>
         `;
         static props = ["*"];
-        static components = { Child, Dialog };
+        static components = {Child, Dialog};
     }
     await makeDialogMockEnv();
     await mountWithCleanup(Parent);
@@ -149,7 +158,7 @@ test("click on the button x triggers the close and dismiss defined by a Child co
 test("render custom footer buttons is possible", async () => {
     expect.assertions(2);
     class SimpleButtonsDialog extends Component {
-        static components = { Dialog };
+        static components = {Dialog};
         static template = xml`
             <Dialog>
                 content
@@ -170,7 +179,7 @@ test("render custom footer buttons is possible", async () => {
               </div>
           `;
         static props = ["*"];
-        static components = { SimpleButtonsDialog };
+        static components = {SimpleButtonsDialog};
         setup() {
             super.setup();
             this.state = useState({
@@ -197,7 +206,7 @@ test("embed an arbitrary component in a dialog is possible", async () => {
         }
     }
     class Parent extends Component {
-        static components = { Dialog, SubComponent };
+        static components = {Dialog, SubComponent};
         static template = xml`
             <Dialog>
                 <SubComponent text="'Wow(l) Effect'" onClicked="_onSubcomponentClicked"/>
@@ -220,7 +229,7 @@ test("embed an arbitrary component in a dialog is possible", async () => {
 test("dialog without header/footer", async () => {
     expect.assertions(4);
     class Parent extends Component {
-        static components = { Dialog };
+        static components = {Dialog};
         static template = xml`
             <Dialog header="false" footer="false">content</Dialog>
         `;
@@ -230,7 +239,7 @@ test("dialog without header/footer", async () => {
     await mountWithCleanup(Parent);
     expect(".o_dialog").toHaveCount(1);
     expect(".o_dialog header").toHaveCount(0);
-    expect("main").toHaveCount(1, { message: "a dialog has always a main node" });
+    expect("main").toHaveCount(1, {message: "a dialog has always a main node"});
     expect(".o_dialog footer").toHaveCount(0);
 });
 
@@ -246,7 +255,7 @@ test("dialog size can be chosen", async () => {
             </div>
         `;
         static props = ["*"];
-        static components = { Dialog };
+        static components = {Dialog};
     }
     await makeDialogMockEnv();
     await mountWithCleanup(Parent);
@@ -264,7 +273,7 @@ test("dialog can be rendered on fullscreen", async () => {
             <Dialog fullscreen="true">content</Dialog>
         `;
         static props = ["*"];
-        static components = { Dialog };
+        static components = {Dialog};
     }
     await makeDialogMockEnv();
     await mountWithCleanup(Parent);
@@ -277,7 +286,7 @@ test("can be the UI active element", async () => {
     class Parent extends Component {
         static template = xml`<Dialog>content</Dialog>`;
         static props = ["*"];
-        static components = { Dialog };
+        static components = {Dialog};
         setup() {
             this.ui = useService("ui");
             expect(this.ui.activeElement).toBe(document, {
@@ -287,7 +296,9 @@ test("can be the UI active element", async () => {
             onMounted(() => {
                 expect(".modal").toHaveCount(1);
                 expect(this.ui.activeElement).toBe(
-                    queryOne(".modal", { message: "UI active element should be the dialog modal" })
+                    queryOne(".modal", {
+                        message: "UI active element should be the dialog modal",
+                    })
                 );
             });
         }
@@ -305,7 +316,7 @@ test.tags("mobile");
 test("dialog can't be moved on small screen", async () => {
     class Parent extends Component {
         static template = xml`<Dialog>content</Dialog>`;
-        static components = { Dialog };
+        static components = {Dialog};
         static props = ["*"];
     }
 
@@ -323,7 +334,7 @@ test("dialog can't be moved on small screen", async () => {
     // Even if the `dragAndDrop` is called, confirms that there are no effects
     await contains(header).dragAndDrop(".modal-content", {
         position: {
-            // the util function sets the source coordinates at (x; y) + (w/2; h/2)
+            // The util function sets the source coordinates at (x; y) + (w/2; h/2)
             // so we need to move the dialog based on these coordinates.
             x: headerRect.x + headerRect.width / 2 + 20,
             y: headerRect.y + headerRect.height / 2 + 50,
@@ -341,7 +352,7 @@ test("dialog can be moved", async () => {
     class Parent extends Component {
         static template = xml`<Dialog>content</Dialog>`;
         static props = ["*"];
-        static components = { Dialog };
+        static components = {Dialog};
     }
     await makeDialogMockEnv();
     await mountWithCleanup(Parent);
@@ -355,7 +366,7 @@ test("dialog can be moved", async () => {
     const headerRect = header.getBoundingClientRect();
     await contains(header).dragAndDrop(".modal-content", {
         position: {
-            // the util function sets the source coordinates at (x; y) + (w/2; h/2)
+            // The util function sets the source coordinates at (x; y) + (w/2; h/2)
             // so we need to move the dialog based on these coordinates.
             x: headerRect.x + headerRect.width / 2 + 20,
             y: headerRect.y + headerRect.height / 2 + 50,
@@ -372,7 +383,7 @@ test("dialog's position is reset on resize", async () => {
     class Parent extends Component {
         static template = xml`<Dialog>content</Dialog>`;
         static props = ["*"];
-        static components = { Dialog };
+        static components = {Dialog};
     }
     await makeDialogMockEnv();
     await mountWithCleanup(Parent);
@@ -386,7 +397,7 @@ test("dialog's position is reset on resize", async () => {
     const headerRect = header.getBoundingClientRect();
     await contains(header).dragAndDrop(".modal-content", {
         position: {
-            // the util function sets the source coordinates at (x; y) + (w/2; h/2)
+            // The util function sets the source coordinates at (x; y) + (w/2; h/2)
             // so we need to move the dialog based on these coordinates.
             x: headerRect.x + headerRect.width / 2 + 20,
             y: headerRect.y + headerRect.height / 2 + 50,

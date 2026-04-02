@@ -1,4 +1,4 @@
-import { LinkPopover } from "@html_editor/main/link/link_popover";
+import {LinkPopover} from "@html_editor/main/link/link_popover";
 
 export class NavbarLinkPopover extends LinkPopover {
     static template = "website.navbarLinkPopover";

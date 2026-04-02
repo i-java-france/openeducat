@@ -1,6 +1,6 @@
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { formView } from "@web/views/form/form_view";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {formView} from "@web/views/form/form_view";
 
 /**
  * This controller is overridden to allow configuring sale_order_lines through a popup
@@ -18,7 +18,7 @@ class EventBoothConfiguratorController extends formView.Controller {
 
     async onRecordSaved(record) {
         await super.onRecordSaved(...arguments);
-        const { event_id, event_booth_category_id, event_booth_ids } = record.data;
+        const {event_id, event_booth_category_id, event_booth_ids} = record.data;
         return this.action.doAction({
             type: "ir.actions.act_window_close",
             infos: {

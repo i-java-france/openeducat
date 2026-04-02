@@ -134,7 +134,7 @@ class TestStockMoveInvoice(TestSaleCommon):
         self.sale_prepaid.action_confirm()
         moves = self.sale_prepaid.picking_ids.move_ids
         # Ship
-        for ml, lot in zip(moves.move_line_ids, serial_numbers):
+        for ml, lot in zip(moves.move_line_ids, serial_numbers, strict=False):
             ml.write({'quantity': 1, 'lot_id': lot.id})
         self.picking = self.sale_prepaid.picking_ids._action_done()
         self.assertEqual(moves[0].move_line_ids[0].sale_price, 862.5, 'wrong shipping value')

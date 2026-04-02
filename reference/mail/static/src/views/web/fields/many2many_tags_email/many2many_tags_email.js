@@ -1,16 +1,16 @@
-import { RecipientsInputTagsList } from "@mail/core/web/recipients_input_tags_list";
-import { RecipientsPopover } from "@mail/core/web/recipients_popover";
-import { parseEmail } from "@mail/utils/common/format";
-import { _t } from "@web/core/l10n/translation";
-import { evaluateBooleanExpr } from "@web/core/py_js/py";
-import { registry } from "@web/core/registry";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { useService } from "@web/core/utils/hooks";
+import {RecipientsInputTagsList} from "@mail/core/web/recipients_input_tags_list";
+import {RecipientsPopover} from "@mail/core/web/recipients_popover";
+import {parseEmail} from "@mail/utils/common/format";
+import {_t} from "@web/core/l10n/translation";
+import {evaluateBooleanExpr} from "@web/core/py_js/py";
+import {registry} from "@web/core/registry";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {useService} from "@web/core/utils/hooks";
 import {
     Many2ManyTagsField,
     many2ManyTagsField,
 } from "@web/views/fields/many2many_tags/many2many_tags_field";
-import { Many2XAutocomplete } from "@web/views/fields/relational_utils";
+import {Many2XAutocomplete} from "@web/views/fields/relational_utils";
 
 export class FieldMany2ManyTagsEmailTagsList extends RecipientsInputTagsList {
     static template = "FieldMany2ManyTagsEmailTagsList";
@@ -41,8 +41,8 @@ export class FieldMany2ManyTagsEmail extends Many2ManyTagsField {
     };
     static props = {
         ...Many2ManyTagsField.props,
-        context: { type: Object, optional: true },
-        canEditTags: { type: Boolean, optional: true },
+        context: {type: Object, optional: true},
+        canEditTags: {type: Boolean, optional: true},
     };
 
     setup() {
@@ -89,7 +89,10 @@ export class FieldMany2ManyTagsEmail extends Many2ManyTagsField {
         return {
             ...super.getTagProps(record),
             text:
-                record.data.name || record.data.email || record.data.display_name || _t("Unnamed"),
+                record.data.name ||
+                record.data.email ||
+                record.data.display_name ||
+                _t("Unnamed"),
             onClick: (ev) => this.onTagClick(ev, record),
         };
     }
@@ -117,15 +120,15 @@ export class FieldMany2ManyTagsEmail extends Many2ManyTagsField {
 
     async quickCreateRecipient(request) {
         const [name, email] = parseEmail(request);
-        const [partnerId] = await this.orm.create("res.partner", [{ name, email }]);
-        return this.props.record.data[this.props.name].addAndRemove({ add: [partnerId] });
+        const [partnerId] = await this.orm.create("res.partner", [{name, email}]);
+        return this.props.record.data[this.props.name].addAndRemove({add: [partnerId]});
     }
 
     async updateRecipient(newEmail, partnerId) {
         const list = this.props.record.data[this.props.name];
         const partnerRecord = list.records.find((r) => r.resId === partnerId);
         partnerRecord.canSaveOnUpdate = true;
-        return partnerRecord.update({ email: newEmail }, { save: true });
+        return partnerRecord.update({email: newEmail}, {save: true});
     }
 }
 
@@ -140,17 +143,19 @@ export const fieldMany2ManyTagsEmail = {
             type: "boolean",
         },
     ],
-    extractProps({ options, attrs }, dynamicInfo) {
+    extractProps({options, attrs}, dynamicInfo) {
         const props = many2ManyTagsField.extractProps(...arguments);
         props.context = dynamicInfo.context;
-        const hasEditPermission = attrs.can_write ? evaluateBooleanExpr(attrs.can_write) : true;
+        const hasEditPermission = attrs.can_write
+            ? evaluateBooleanExpr(attrs.can_write)
+            : true;
         props.canEditTags = options.edit_tags ? hasEditPermission : false;
         return props;
     },
     relatedFields: (fieldInfo) => [
         ...many2ManyTagsField.relatedFields(fieldInfo),
-        { name: "email", type: "char", readonly: false },
-        { name: "name", type: "char" },
+        {name: "email", type: "char", readonly: false},
+        {name: "name", type: "char"},
     ],
     additionalClasses: ["o_field_many2many_tags"],
 };

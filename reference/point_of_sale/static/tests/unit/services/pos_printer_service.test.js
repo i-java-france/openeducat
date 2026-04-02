@@ -1,6 +1,6 @@
-import { test, expect, describe } from "@odoo/hoot";
-import { setupPosEnv } from "../utils";
-import { definePosModels } from "../data/generate_model_definitions";
+import {describe, expect, test} from "@odoo/hoot";
+import {setupPosEnv} from "../utils";
+import {definePosModels} from "../data/generate_model_definitions";
 
 definePosModels();
 
@@ -11,11 +11,11 @@ describe("printer_service.js", () => {
         // Mock renderer
         printerService.renderer = {
             toHtml: async () => document.createElement("div"),
-            whenMounted: ({ callback, el }) => callback(el),
+            whenMounted: ({callback, el}) => callback(el),
         };
         // Mock printer
         const mockPrinter = {
-            printReceipt: async () => ({ successful: true }),
+            printReceipt: async () => ({successful: true}),
         };
         store.env.services.hardware_proxy.printer = mockPrinter;
         // Spy log

@@ -1,11 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import io
 import importlib.util
+import io
 import logging
 import re
 import warnings
 import xml.dom.minidom
 import zipfile
+
 from lxml import etree
 
 from odoo import api, models
@@ -23,7 +24,7 @@ FTYPES = ['docx', 'pptx', 'xlsx', 'opendoc', 'pdf']
 index_content_cache = LRU(1)
 
 def textToString(element):
-    buff = u""
+    buff = ""
     for node in element.childNodes:
         if node.nodeType == xml.dom.Node.TEXT_NODE:
             buff += node.nodeValue
@@ -69,7 +70,7 @@ class IrAttachment(models.Model):
 
     def _index_docx(self, bin_data):
         '''Index Microsoft .docx documents'''
-        buf = u""
+        buf = ""
         f = io.BytesIO(bin_data)
         if zipfile.is_zipfile(f):
             try:
@@ -85,7 +86,7 @@ class IrAttachment(models.Model):
     def _index_pptx(self, bin_data):
         '''Index Microsoft .pptx documents'''
 
-        buf = u""
+        buf = ""
         f = io.BytesIO(bin_data)
         if zipfile.is_zipfile(f):
             try:
@@ -219,9 +220,12 @@ class IrAttachment(models.Model):
         try:
             if not importlib.util.find_spec('pdfminer.high_level'):
                 return ""
-            from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter  # noqa: PLC0415
             from pdfminer.converter import TextConverter  # noqa: PLC0415
             from pdfminer.layout import LAParams  # noqa: PLC0415
+            from pdfminer.pdfinterp import (  # noqa: PLC0415
+                PDFPageInterpreter,
+                PDFResourceManager,
+            )
             from pdfminer.pdfpage import PDFPage  # noqa: PLC0415
             logging.getLogger("pdfminer").setLevel(logging.CRITICAL)
         except ImportError:
@@ -259,7 +263,7 @@ class IrAttachment(models.Model):
                 res = buf.replace('\x00', '')
                 break
 
-        res = res or super(IrAttachment, self)._index(bin_data, mimetype, checksum=checksum)
+        res = res or super()._index(bin_data, mimetype, checksum=checksum)
         if checksum:
             index_content_cache[checksum] = res
         return res

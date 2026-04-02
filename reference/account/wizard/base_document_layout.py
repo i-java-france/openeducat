@@ -1,4 +1,4 @@
-from odoo import api, Command, fields, models
+from odoo import Command, api, fields, models
 
 
 class BaseDocumentLayout(models.TransientModel):
@@ -11,7 +11,7 @@ class BaseDocumentLayout(models.TransientModel):
 
     def document_layout_save(self):
         """Save layout and onboarding step progress, return super() result"""
-        res = super(BaseDocumentLayout, self).document_layout_save()
+        res = super().document_layout_save()
         if step := self.env.ref('account.onboarding_onboarding_step_base_document_layout', raise_if_not_found=False):
             for company_id in self.company_id:
                 step.with_company(company_id).action_set_just_done()

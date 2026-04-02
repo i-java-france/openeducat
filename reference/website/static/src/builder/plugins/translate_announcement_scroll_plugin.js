@@ -1,6 +1,6 @@
-import { InputConfirmationDialog } from "@html_builder/snippets/input_confirmation_dialog";
-import { Plugin } from "@html_editor/plugin";
-import { _t } from "@web/core/l10n/translation";
+import {InputConfirmationDialog} from "@html_builder/snippets/input_confirmation_dialog";
+import {Plugin} from "@html_editor/plugin";
+import {_t} from "@web/core/l10n/translation";
 
 export class TranslateAnnouncementScrollPlugin extends Plugin {
     static id = "translateAnnouncementScroll";
@@ -15,7 +15,9 @@ export class TranslateAnnouncementScrollPlugin extends Plugin {
      * On click, opens a dialog to translate the interaction's text.
      */
     listenToAnnouncementScrollClick() {
-        const announcementScrollEls = this.document.querySelectorAll(".s_announcement_scroll");
+        const announcementScrollEls = this.document.querySelectorAll(
+            ".s_announcement_scroll"
+        );
 
         for (const announcementScrollEl of announcementScrollEls) {
             this.addDomListener(announcementScrollEl, "click", () => {

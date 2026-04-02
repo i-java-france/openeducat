@@ -2,21 +2,18 @@
 import base64
 import json
 import os
-
 from io import BytesIO
+from unittest.mock import patch
 from zipfile import ZipFile
 
 import odoo.tests
-from odoo.tests import new_test_user
-
-
-from unittest.mock import patch
-
 from odoo import release
-from odoo.addons import __path__ as __addons_path__
 from odoo.exceptions import UserError
+from odoo.tests import new_test_user
 from odoo.tools import file_open, file_open_temporary_directory, mute_logger
 from odoo.tools.translate import TranslationModuleReader
+
+from odoo.addons import __path__ as __addons_path__
 
 
 @odoo.tests.tagged('post_install', '-at_install')

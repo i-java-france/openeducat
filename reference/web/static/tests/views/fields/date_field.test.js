@@ -1,6 +1,6 @@
-import { expect, queryFirst, test } from "@odoo/hoot";
-import { click, edit, press, queryAllTexts, queryOne, scroll } from "@odoo/hoot-dom";
-import { Deferred, animationFrame, mockDate, mockTimeZone } from "@odoo/hoot-mock";
+import {expect, queryFirst, test} from "@odoo/hoot";
+import {click, edit, press, queryAllTexts, queryOne, scroll} from "@odoo/hoot-dom";
+import {Deferred, animationFrame, mockDate, mockTimeZone} from "@odoo/hoot-mock";
 import {
     assertDateTimePicker,
     getPickerCell,
@@ -23,7 +23,7 @@ class Partner extends models.Model {
     _name = "res.partner";
 
     date = fields.Date();
-    char_field = fields.Char({ string: "Char" });
+    char_field = fields.Char({string: "Char"});
 
     _records = [
         {
@@ -50,7 +50,7 @@ class Partner extends models.Model {
 defineModels([Partner]);
 
 test("toggle datepicker", async () => {
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
     expect(".o_datetime_picker").toHaveCount(0);
     await contains(".o_field_date button").click();
@@ -66,7 +66,7 @@ test("datepicker is automatically closed after selecting a value", async () => {
     const def = new Deferred();
     onRpc("onchange", () => def);
 
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
     expect(".o_datetime_picker").toHaveCount(0);
     await contains(".o_field_date button").click();
@@ -124,7 +124,7 @@ test("open datepicker on Control+Enter", async () => {
     await animationFrame();
     expect(".o_datetime_picker").toHaveCount(1);
 
-    //edit the input and open the datepicker again with ctrl+enter
+    // Edit the input and open the datepicker again with ctrl+enter
     await contains(".o_field_date .o_input").click();
     await edit("09/01/1997");
     await press(["ctrl", "enter"]);
@@ -149,27 +149,27 @@ test("open datepicker on Control+Enter", async () => {
 });
 test("toggle datepicker far in the future", async () => {
     Partner._records[0].date = "9999-12-31";
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
     expect(".o_datetime_picker").toHaveCount(0);
     await contains(".o_field_date button").click();
     expect(".o_datetime_picker").toHaveCount(1);
 
-    // focus another field
+    // Focus another field
     await fieldInput("char_field").click();
     expect(".o_datetime_picker").toHaveCount(0);
 });
 
 test("date field is empty if no date is set", async () => {
     Partner._records[0].date = false;
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
     expect(".o_field_date input").toHaveCount(1);
     expect(".o_field_date input").toHaveValue("");
 });
 
 test("set an invalid date when the field is already set", async () => {
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
     await contains(".o_field_widget[name='date'] button").click();
     expect(".o_field_widget[name='date'] input").toHaveValue("02/03/2017");
@@ -182,7 +182,7 @@ test("set an invalid date when the field is already set", async () => {
 
 test("set an invalid date when the field is not set yet", async () => {
     Partner._records[0].date = false;
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
     expect(".o_field_widget[name='date'] input").toHaveValue("");
     await fieldInput("date").edit("invalid date");
@@ -191,7 +191,7 @@ test("set an invalid date when the field is not set yet", async () => {
 
 test("value should not set on first click", async () => {
     Partner._records[0].date = false;
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
     await contains(".o_field_date input").click();
     expect(".o_field_widget[name='date'] input").toHaveValue("");
@@ -202,21 +202,21 @@ test("value should not set on first click", async () => {
 });
 
 test("date field in form view (with positive time zone offset)", async () => {
-    mockTimeZone(2); // should be ignored by date fields
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    mockTimeZone(2); // Should be ignored by date fields
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
-    onRpc("web_save", ({ args }) => {
+    onRpc("web_save", ({args}) => {
         expect.step(args[1].date);
     });
 
     expect(".o_field_date").toHaveText("Feb 3, 2017");
 
-    // open datepicker and select another value
+    // Open datepicker and select another value
     await contains(".o_field_date button").click();
     expect(".o_datetime_picker").toHaveCount(1);
     expect(".o_date_item_cell.o_selected").toHaveCount(1);
 
-    // select 22 Feb 2017
+    // Select 22 Feb 2017
     await zoomOut();
     await zoomOut();
     await contains(getPickerCell("2017")).click();
@@ -231,8 +231,8 @@ test("date field in form view (with positive time zone offset)", async () => {
 });
 
 test("date field in form view (with negative time zone offset)", async () => {
-    mockTimeZone(-2); // should be ignored by date fields
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    mockTimeZone(-2); // Should be ignored by date fields
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
     expect(".o_field_date button").toHaveText("Feb 3, 2017");
 });
@@ -254,7 +254,7 @@ test("date field dropdown doesn't dissapear on scroll", async () => {
 
     await contains(".o_field_date button").click();
     expect(".o_datetime_picker").toHaveCount(1);
-    await scroll(".scrollable", { top: 50 });
+    await scroll(".scrollable", {top: 50});
     expect(".scrollable").toHaveProperty("scrollTop", 50);
     expect(".o_datetime_picker").toHaveCount(1);
 });
@@ -276,7 +276,7 @@ test("date field with label opens datepicker on click", async () => {
 });
 
 test("date field with warn_future option ", async () => {
-    Partner._records[0] = { id: 1 };
+    Partner._records[0] = {id: 1};
     await mountView({
         type: "form",
         resModel: "res.partner",
@@ -339,7 +339,7 @@ test("date field in editable list view", async () => {
     expect(".o_field_date button").toHaveCount(1);
     expect(".o_field_date button").toHaveText("Feb 3, 2017");
 
-    // open datepicker and select another value
+    // Open datepicker and select another value
     await contains(".o_field_date button").click();
     expect(".o_datetime_picker").toHaveCount(1);
     await zoomOut();
@@ -358,8 +358,8 @@ test.tags("desktop");
 test("multi edition of date field in list view: clear date in input", async () => {
     onRpc("has_group", () => true);
     Partner._records = [
-        { id: 1, date: "2017-02-03" },
-        { id: 2, date: "2017-02-03" },
+        {id: 1, date: "2017-02-03"},
+        {id: 2, date: "2017-02-03"},
     ];
 
     await mountView({
@@ -387,8 +387,8 @@ test("multi edition of date field in list view: clear date in input", async () =
 });
 
 test("date field remove value", async () => {
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
-    onRpc("web_save", ({ args }) => {
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
+    onRpc("web_save", ({args}) => {
         expect.step(args[1].date);
     });
 
@@ -404,19 +404,21 @@ test("date field remove value", async () => {
 });
 
 test("date field should select its content onclick when there is one", async () => {
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
     await contains(".o_field_date button").click();
     await contains(".o_field_date input").click();
     expect(".o_datetime_picker").toHaveCount(1);
     const active = document.activeElement;
     expect(active.tagName).toBe("INPUT");
-    expect(active.value.slice(active.selectionStart, active.selectionEnd)).toBe("02/03/2017");
+    expect(active.value.slice(active.selectionStart, active.selectionEnd)).toBe(
+        "02/03/2017"
+    );
 });
 
 test("date field supports custom formats", async () => {
-    defineParams({ lang_parameters: { date_format: "%d-%m-%Y" } });
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    defineParams({lang_parameters: {date_format: "%d-%m-%Y"}});
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
     expect(".o_field_date").toHaveText("Feb 3, 2017");
     await contains(".o_field_date button").click();
@@ -429,7 +431,7 @@ test("date field supports custom formats", async () => {
 
 test("date field supports internationalization", async () => {
     serverState.lang = "nb_NO";
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
 
     expect(".o_field_date").toHaveText("3. feb. 2017");
     await contains(".o_field_date button").click();
@@ -443,7 +445,7 @@ test("date field supports internationalization", async () => {
 
 test("hit enter should update value", async () => {
     mockTimeZone(2);
-    await mountView({ type: "form", resModel: "res.partner", resId: 1 });
+    await mountView({type: "form", resModel: "res.partner", resId: 1});
     await contains(".o_field_date button").click();
     await contains(".o_field_date input").edit("01/08");
     expect(".o_field_widget[name='date']").toHaveText("Jan 8");
@@ -453,10 +455,10 @@ test("hit enter should update value", async () => {
 });
 
 test("allow to use compute dates (+5d for instance)", async () => {
-    mockDate({ year: 2021, month: 2, day: 15 });
+    mockDate({year: 2021, month: 2, day: 15});
 
     Partner._fields.date.default = "2019-09-15";
-    await mountView({ type: "form", resModel: "res.partner" });
+    await mountView({type: "form", resModel: "res.partner"});
 
     expect(".o_field_date").toHaveText("Sep 15, 2019");
     await contains(".o_field_date button").click();
@@ -571,20 +573,20 @@ test("DateField with onchange forcing a specific date", async () => {
 
     expect(".o_field_date input").toHaveValue("");
 
-    // enable the onchange
+    // Enable the onchange
     await contains(".o_field_widget[name=char_field] input").edit("force today");
 
-    // open the picker and try to set a value different from today
+    // Open the picker and try to set a value different from today
     await click(".o_field_date input");
     await animationFrame();
     expect(".o_datetime_picker").toHaveCount(1);
     await contains(getPickerCell("22")).click(); // 22 May 2009
-    expect(".o_field_date").toHaveText("May 4"); // value forced by the onchange
+    expect(".o_field_date").toHaveText("May 4"); // Value forced by the onchange
 
     // do it again (the technical flow is a bit different as now the current value is already today)
     await click(".o_field_date button");
     await animationFrame();
     expect(".o_datetime_picker").toHaveCount(1);
     await contains(getPickerCell("22")).click(); // 22 May 2009
-    expect(".o_field_date").toHaveText("May 4"); // value forced by the onchange
+    expect(".o_field_date").toHaveText("May 4"); // Value forced by the onchange
 });

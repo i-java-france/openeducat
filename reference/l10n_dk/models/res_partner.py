@@ -1,4 +1,5 @@
 from odoo import api, models
+
 from odoo.addons.account.models.partner import _ref_company_registry
 
 

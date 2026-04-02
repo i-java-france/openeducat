@@ -1,9 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from collections import defaultdict
-from collections.abc import Iterable
 import json
 from ast import literal_eval
+from collections import defaultdict
+from collections.abc import Iterable
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError

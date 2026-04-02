@@ -1,10 +1,10 @@
-import { registry } from "@web/core/registry";
-import { constructFullProductName, constructAttributeString } from "@point_of_sale/utils";
-import { parseFloat } from "@web/views/fields/parsers";
-import { formatFloat } from "@web/core/utils/numbers";
-import { _t } from "@web/core/l10n/translation";
-import { localization as l10n } from "@web/core/l10n/localization";
-import { PosOrderlineAccounting } from "./accounting/pos_order_line_accounting";
+import {registry} from "@web/core/registry";
+import {constructFullProductName, constructAttributeString} from "@point_of_sale/utils";
+import {parseFloat} from "@web/views/fields/parsers";
+import {formatFloat} from "@web/core/utils/numbers";
+import {_t} from "@web/core/l10n/translation";
+import {localization as l10n} from "@web/core/l10n/localization";
+import {PosOrderlineAccounting} from "./accounting/pos_order_line_accounting";
 
 export class PosOrderline extends PosOrderlineAccounting {
     static pythonModel = "pos.order.line";
@@ -34,13 +34,14 @@ export class PosOrderline extends PosOrderlineAccounting {
 
     setOptions(options) {
         if (options.uiState) {
-            this.uiState = { ...this.uiState, ...options.uiState };
+            this.uiState = {...this.uiState, ...options.uiState};
         }
 
         if (options.code) {
             const code = options.code;
             const blockMerge = ["weight", "quantity", "discount"];
-            const product_packaging_by_barcode = this.models["product.uom"].getAllBy("barcode");
+            const product_packaging_by_barcode =
+                this.models["product.uom"].getAllBy("barcode");
             const uom_by_id = this.models["uom.uom"].getAllBy("id");
 
             if (blockMerge.includes(code.type)) {
@@ -52,8 +53,8 @@ export class PosOrderline extends PosOrderlineAccounting {
 
             if (product_packaging_by_barcode[code.code]) {
                 this.setQuantity(
-                    uom_by_id[product_packaging_by_barcode[code.code].uom_id.id].factor /
-                        this.product_id.product_tmpl_id.uom_id.factor
+                    uom_by_id[product_packaging_by_barcode[code.code].uom_id.id]
+                        .factor / this.product_id.product_tmpl_id.uom_id.factor
                 );
             }
         }
@@ -80,7 +81,9 @@ export class PosOrderline extends PosOrderlineAccounting {
                 if (this.qty % 1 === 0) {
                     unitPart = this.qty.toFixed(0);
                 } else {
-                    const formatted = formatFloat(this.qty, { digits: [69, ProductUnit.digits] });
+                    const formatted = formatFloat(this.qty, {
+                        digits: [69, ProductUnit.digits],
+                    });
                     const parts = formatted.split(decimalPoint);
                     unitPart = parts[0];
                     decimalPart = parts[1] || "";
@@ -135,16 +138,23 @@ export class PosOrderline extends PosOrderlineAccounting {
         return this.attribute_value_ids.reduce((acc, attrValue) => {
             const customValue =
                 this.custom_attribute_value_ids.find(
-                    (c) => c.custom_product_template_attribute_value_id.id === attrValue.id
+                    (c) =>
+                        c.custom_product_template_attribute_value_id.id === attrValue.id
                 )?.custom_value || "";
 
             if (attrValue.attribute_id.display_type === "multi") {
                 if (!acc[attrValue.attribute_id.id]) {
-                    acc[attrValue.attribute_id.id] = { selected: [], custom_value: customValue };
+                    acc[attrValue.attribute_id.id] = {
+                        selected: [],
+                        custom_value: customValue,
+                    };
                 }
                 acc[attrValue.attribute_id.id].selected.push(attrValue);
             } else {
-                acc[attrValue.attribute_id.id] = { selected: attrValue, custom_value: customValue };
+                acc[attrValue.attribute_id.id] = {
+                    selected: attrValue,
+                    custom_value: customValue,
+                };
             }
             return acc;
         }, {});
@@ -185,7 +195,7 @@ export class PosOrderline extends PosOrderlineAccounting {
         this.order_id.selectOrderline(this);
     }
 
-    setPackLotLines({ modifiedPackLotLines, newPackLotLines, setQuantity = true }) {
+    setPackLotLines({modifiedPackLotLines, newPackLotLines, setQuantity = true}) {
         const lotLinesToRemove = [];
 
         for (const lotLine of this.pack_lot_ids) {
@@ -220,8 +230,8 @@ export class PosOrderline extends PosOrderlineAccounting {
             typeof discount === "number"
                 ? discount
                 : isNaN(parseFloat(discount))
-                ? 0
-                : parseFloat("" + discount);
+                  ? 0
+                  : parseFloat("" + discount);
 
         const disc = Math.min(Math.max(parsed_discount || 0, 0), 100);
         this.discount = disc;
@@ -238,7 +248,9 @@ export class PosOrderline extends PosOrderlineAccounting {
 
         this.order_id.assertEditable();
         const quant =
-            typeof quantity === "number" ? quantity : parseFloat("" + (quantity ? quantity : 0));
+            typeof quantity === "number"
+                ? quantity
+                : parseFloat("" + (quantity ? quantity : 0));
 
         const allLineToRefundUuids = this.models["pos.order"].reduce((acc, order) => {
             Object.assign(acc, order.uiState.lineToRefund);
@@ -247,7 +259,8 @@ export class PosOrderline extends PosOrderlineAccounting {
 
         if (this.refunded_orderline_id?.uuid in allLineToRefundUuids) {
             const refundDetails = allLineToRefundUuids[this.refunded_orderline_id.uuid];
-            const maxQtyToRefund = refundDetails.line.qty - refundDetails.line.refundedQty;
+            const maxQtyToRefund =
+                refundDetails.line.qty - refundDetails.line.refundedQty;
             if (quant > 0) {
                 return {
                     title: _t("Positive quantity not allowed"),
@@ -304,7 +317,10 @@ export class PosOrderline extends PosOrderlineAccounting {
         }
         for (const comboLine of this.combo_line_ids) {
             // If each combo contains 2 qty of a product, we wanna keep this ratio after setting the new quantity on the parent product.
-            comboLine.setQuantity((comboLine.qty / this.uiState.oldQty || 1) * quantity, true);
+            comboLine.setQuantity(
+                (comboLine.qty / this.uiState.oldQty || 1) * quantity,
+                true
+            );
         }
         return true;
     }
@@ -323,7 +339,8 @@ export class PosOrderline extends PosOrderlineAccounting {
         }
 
         const valid_product_lot = this.getValidLots();
-        const lotsRequired = this.product_id.tracking == "serial" ? Math.abs(this.qty) : 1;
+        const lotsRequired =
+            this.product_id.tracking == "serial" ? Math.abs(this.qty) : 1;
         return lotsRequired === valid_product_lot.length;
     }
 
@@ -395,8 +412,8 @@ export class PosOrderline extends PosOrderlineAccounting {
         const parsed_price = !isNaN(price)
             ? price
             : isNaN(parseFloat(price))
-            ? 0
-            : parseFloat("" + price);
+              ? 0
+              : parseFloat("" + price);
         this.price_unit = ProductPrice.round(parsed_price || 0);
     }
 
@@ -522,7 +539,8 @@ export class PosOrderline extends PosOrderlineAccounting {
     get refundedQty() {
         return (
             this.refund_orderline_ids?.reduce(
-                (acc, line) => (line.order_id.state !== "cancel" ? acc - line.qty : acc),
+                (acc, line) =>
+                    line.order_id.state !== "cancel" ? acc - line.qty : acc,
                 0
             ) || 0
         );

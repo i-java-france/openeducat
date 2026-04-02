@@ -7,9 +7,14 @@ import {
     start,
     startServer,
 } from "@mail/../tests/mail_test_helpers";
-import { describe, expect, test } from "@odoo/hoot";
-import { Deferred } from "@odoo/hoot-mock";
-import { asyncStep, mockService, onRpc, waitForSteps } from "@web/../tests/web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {Deferred} from "@odoo/hoot-mock";
+import {
+    asyncStep,
+    mockService,
+    onRpc,
+    waitForSteps,
+} from "@web/../tests/web_test_helpers";
 
 describe.current.tags("desktop");
 defineMailModels();
@@ -25,12 +30,14 @@ test("activity mark done popover simplest layout", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await click(".btn", { text: "Mark Done" });
+    await click(".btn", {text: "Mark Done"});
     await contains(".o-mail-ActivityMarkAsDone");
     await contains(".o-mail-ActivityMarkAsDone textarea[placeholder='Write Feedback']");
-    await contains(".o-mail-ActivityMarkAsDone button[aria-label='Done and Schedule Next']");
+    await contains(
+        ".o-mail-ActivityMarkAsDone button[aria-label='Done and Schedule Next']"
+    );
     await contains(".o-mail-ActivityMarkAsDone button[aria-label='Done']");
-    await contains(".o-mail-ActivityMarkAsDone button", { text: "Discard" });
+    await contains(".o-mail-ActivityMarkAsDone button", {text: "Discard"});
 });
 
 test("activity with force next mark done popover simplest layout", async () => {
@@ -49,12 +56,14 @@ test("activity with force next mark done popover simplest layout", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await click(".btn", { text: "Mark Done" });
+    await click(".btn", {text: "Mark Done"});
     await contains(".o-mail-ActivityMarkAsDone");
     await contains(".o-mail-ActivityMarkAsDone textarea[placeholder='Write Feedback']");
-    await contains(".o-mail-ActivityMarkAsDone button[aria-label='Done and Schedule Next']");
-    await contains(".o-mail-ActivityMarkAsDone button[aria-label='Done']", { count: 0 });
-    await contains(".o-mail-ActivityMarkAsDone button", { text: "Discard" });
+    await contains(
+        ".o-mail-ActivityMarkAsDone button[aria-label='Done and Schedule Next']"
+    );
+    await contains(".o-mail-ActivityMarkAsDone button[aria-label='Done']", {count: 0});
+    await contains(".o-mail-ActivityMarkAsDone button", {text: "Discard"});
 });
 
 test("activity mark done popover mark done without feedback", async () => {
@@ -66,19 +75,19 @@ test("activity mark done popover mark done without feedback", async () => {
         res_id: partnerId,
         res_model: "res.partner",
     });
-    onRpc("mail.activity", "action_feedback", ({ args, kwargs }) => {
+    onRpc("mail.activity", "action_feedback", ({args, kwargs}) => {
         asyncStep("action_feedback");
         expect(args).toHaveLength(1);
         expect(args[0]).toHaveLength(1);
         expect(args[0][0]).toBe(activityId);
         expect(kwargs.attachment_ids).toBeEmpty();
         expect(kwargs).not.toInclude("feedback");
-        // random value returned in order for the mock server to know that this route is implemented.
+        // Random value returned in order for the mock server to know that this route is implemented.
         return true;
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await click(".btn", { text: "Mark Done" });
+    await click(".btn", {text: "Mark Done"});
     await click(".o-mail-ActivityMarkAsDone button[aria-label='Done']");
     await waitForSteps(["action_feedback"]);
 });
@@ -92,14 +101,14 @@ test("activity mark done popover mark done with feedback", async () => {
         res_id: partnerId,
         res_model: "res.partner",
     });
-    onRpc("mail.activity", "action_feedback", ({ args, kwargs, method }) => {
+    onRpc("mail.activity", "action_feedback", ({args, kwargs, method}) => {
         asyncStep(method);
         expect(args).toHaveLength(1);
         expect(args[0]).toHaveLength(1);
         expect(args[0][0]).toBe(activityId);
         expect(kwargs.attachment_ids).toBeEmpty();
         expect(kwargs.feedback).toBe("This task is done");
-        // random value returned in order for the mock server to know that this route is implemented.
+        // Random value returned in order for the mock server to know that this route is implemented.
         return true;
     });
     onRpc("mail.activity", "unlink", () => {
@@ -110,7 +119,7 @@ test("activity mark done popover mark done with feedback", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await click(".btn", { text: "Mark Done" });
+    await click(".btn", {text: "Mark Done"});
     await insertText(
         ".o-mail-ActivityMarkAsDone textarea[placeholder='Write Feedback']",
         "This task is done"
@@ -128,14 +137,18 @@ test("activity mark done popover mark done and schedule next", async () => {
         res_id: partnerId,
         res_model: "res.partner",
     });
-    onRpc("mail.activity", "action_feedback_schedule_next", ({ args, kwargs, method }) => {
-        asyncStep(method);
-        expect(args).toHaveLength(1);
-        expect(args[0]).toHaveLength(1);
-        expect(args[0][0]).toBe(activityId);
-        expect(kwargs.feedback).toBe("This task is done");
-        return false;
-    });
+    onRpc(
+        "mail.activity",
+        "action_feedback_schedule_next",
+        ({args, kwargs, method}) => {
+            asyncStep(method);
+            expect(args).toHaveLength(1);
+            expect(args[0]).toHaveLength(1);
+            expect(args[0][0]).toBe(activityId);
+            expect(kwargs.feedback).toBe("This task is done");
+            return false;
+        }
+    );
     onRpc("mail.activity", "unlink", () => {
         // 'unlink' on non-existing record raises a server crash
         throw new Error(
@@ -155,12 +168,14 @@ test("activity mark done popover mark done and schedule next", async () => {
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await click(".btn", { text: "Mark Done" });
+    await click(".btn", {text: "Mark Done"});
     await insertText(
         ".o-mail-ActivityMarkAsDone textarea[placeholder='Write Feedback']",
         "This task is done"
     );
-    await click(".o-mail-ActivityMarkAsDone button[aria-label='Done and Schedule Next']");
+    await click(
+        ".o-mail-ActivityMarkAsDone button[aria-label='Done and Schedule Next']"
+    );
     await waitForSteps(["action_feedback_schedule_next"]);
 });
 
@@ -183,8 +198,8 @@ test("[technical] activity mark done & schedule next with new action", async () 
                 def.resolve();
                 asyncStep("activity_action");
                 expect(action).toEqual(
-                    { type: "ir.actions.act_window" },
-                    { message: "The content of the action should be correct" }
+                    {type: "ir.actions.act_window"},
+                    {message: "The content of the action should be correct"}
                 );
                 return;
             }
@@ -193,8 +208,10 @@ test("[technical] activity mark done & schedule next with new action", async () 
     });
     await start();
     await openFormView("res.partner", partnerId);
-    await click(".btn", { text: "Mark Done" });
-    await click(".o-mail-ActivityMarkAsDone button[aria-label='Done and Schedule Next']");
+    await click(".btn", {text: "Mark Done"});
+    await click(
+        ".o-mail-ActivityMarkAsDone button[aria-label='Done and Schedule Next']"
+    );
     await def;
     await waitForSteps(["activity_action"]);
 });

@@ -1,17 +1,19 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from unittest.mock import patch
-from odoo.exceptions import UserError
-from odoo.addons.mail.models.mail_mail import MailDeliveryException
-from odoo.tests.common import HttpCase
+
 from werkzeug.urls import url_parse
+
+from odoo.exceptions import UserError
+from odoo.tests.common import HttpCase
+
+from odoo.addons.mail.models.mail_mail import MailDeliveryException
 
 
 class TestResetPassword(HttpCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestResetPassword, cls).setUpClass()
+        super().setUpClass()
         cls.test_user = cls.env['res.users'].create({
             'login': 'test',
             'name': 'The King',

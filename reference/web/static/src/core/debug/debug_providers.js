@@ -1,7 +1,7 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "../registry";
-import { browser } from "../browser/browser";
-import { router } from "../browser/router";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "../registry";
+import {browser} from "../browser/browser";
+import {router} from "../browser/router";
 
 const commandProviderRegistry = registry.category("command_provider");
 
@@ -12,7 +12,7 @@ commandProviderRegistry.add("debug", {
             if (!env.debug.includes("assets")) {
                 result.push({
                     action() {
-                        router.pushState({ debug: "assets" }, { reload: true });
+                        router.pushState({debug: "assets"}, {reload: true});
                     },
                     category: "debug",
                     name: _t("Activate debug mode (with assets)"),
@@ -20,7 +20,7 @@ commandProviderRegistry.add("debug", {
             }
             result.push({
                 action() {
-                    router.pushState({ debug: 0 }, { reload: true });
+                    router.pushState({debug: 0}, {reload: true});
                 },
                 category: "debug",
                 name: _t("Deactivate debug mode"),
@@ -37,14 +37,14 @@ commandProviderRegistry.add("debug", {
             if (options.searchValue.toLowerCase() === debugKey) {
                 result.push({
                     action() {
-                        router.pushState({ debug: "1" }, { reload: true });
+                        router.pushState({debug: "1"}, {reload: true});
                     },
                     category: "debug",
                     name: `${_t("Activate debug mode")} (${debugKey})`,
                 });
                 result.push({
                     action() {
-                        router.pushState({ debug: "assets" }, { reload: true });
+                        router.pushState({debug: "assets"}, {reload: true});
                     },
                     category: "debug",
                     name: `${_t("Activate debug mode (with assets)")} (${debugKey})`,

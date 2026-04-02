@@ -1,5 +1,5 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class Parallax extends Interaction {
     static selector = ".parallax";
@@ -8,9 +8,9 @@ export class Parallax extends Interaction {
         _bg: () => this.el.querySelector(":scope > .s_parallax_bg"),
     });
     dynamicContent = {
-        _document: { "t-on-scroll": this.onScroll },
-        _window: { "t-on-resize": this.updateBackgroundHeight },
-        _modal: { "t-on-shown.bs.modal": this.updateBackgroundHeight },
+        _document: {"t-on-scroll": this.onScroll},
+        _window: {"t-on-resize": this.updateBackgroundHeight},
+        _modal: {"t-on-shown.bs.modal": this.updateBackgroundHeight},
         _bg: {
             "t-att-style": () => ({
                 top: this.styleTop,
@@ -41,7 +41,8 @@ export class Parallax extends Interaction {
     }
 
     updateBackgroundHeight() {
-        this.speed = parseFloat(this.el.getAttribute("data-scroll-background-ratio")) || 0;
+        this.speed =
+            parseFloat(this.el.getAttribute("data-scroll-background-ratio")) || 0;
         if (this.speed === 0 || this.speed === 1) {
             return;
         }

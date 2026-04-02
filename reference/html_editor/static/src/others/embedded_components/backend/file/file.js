@@ -4,8 +4,8 @@ import {
     StateChangeManager,
     useEmbeddedState,
 } from "@html_editor/others/embedded_component_utils";
-import { useEffect, useRef, useState } from "@odoo/owl";
-import { ReadonlyEmbeddedFileComponent } from "@html_editor/others/embedded_components/core/file/readonly_file";
+import {useEffect, useRef, useState} from "@odoo/owl";
+import {ReadonlyEmbeddedFileComponent} from "@html_editor/others/embedded_components/core/file/readonly_file";
 
 export class EmbeddedFileComponent extends ReadonlyEmbeddedFileComponent {
     static template = "html_editor.EmbeddedFile";
@@ -78,7 +78,7 @@ export class EmbeddedFileComponent extends ReadonlyEmbeddedFileComponent {
 export const fileEmbedding = {
     name: "file",
     Component: EmbeddedFileComponent,
-    getProps: (host) => ({ host, ...getEmbeddedProps(host) }),
+    getProps: (host) => ({host, ...getEmbeddedProps(host)}),
     getStateChangeManager: (config) =>
         new StateChangeManager(
             Object.assign(config, {

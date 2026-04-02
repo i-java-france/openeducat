@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="view_sale_order_form_inherit_repair" model="ir.ui.view">
         <field name="name">sale.order.form.inherit.repair</field>
         <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">
             <button name="action_view_invoice" position="after">
                 <button
@@ -15,10 +14,9 @@
                     invisible="repair_count == 0"
                     groups="stock.group_stock_user"
                 >
-                    <field name="repair_count" widget="statinfo" string="Repairs"/>
+                    <field name="repair_count" widget="statinfo" string="Repairs" />
                 </button>
             </button>
         </field>
     </record>
-
 </odoo>

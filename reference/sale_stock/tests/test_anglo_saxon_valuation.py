@@ -5,8 +5,8 @@ from odoo import Command, fields
 from odoo.exceptions import UserError
 from odoo.tests import Form, tagged
 
-from odoo.addons.stock_account.tests.common import TestStockValuationCommon
 from odoo.addons.sale_stock.tests.common import TestSaleStockCommon
+from odoo.addons.stock_account.tests.common import TestStockValuationCommon
 
 
 @tagged('post_install', '-at_install')

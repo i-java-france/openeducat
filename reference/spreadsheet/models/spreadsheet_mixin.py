@@ -1,17 +1,18 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import io
-import zipfile
 import base64
+import io
 import json
 import re
-
+import zipfile
 from collections import defaultdict
 
-from odoo import api, fields, models, _, tools
-from odoo.exceptions import ValidationError, MissingError
+from odoo import _, api, fields, models, tools
+from odoo.exceptions import MissingError, ValidationError
 
-from odoo.addons.spreadsheet.utils.validate_data import fields_in_spreadsheet, menus_xml_ids_in_spreadsheet
+from odoo.addons.spreadsheet.utils.validate_data import (
+    fields_in_spreadsheet,
+    menus_xml_ids_in_spreadsheet,
+)
 
 
 class SpreadsheetMixin(models.AbstractModel):

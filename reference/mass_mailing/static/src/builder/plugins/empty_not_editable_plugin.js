@@ -1,7 +1,7 @@
-import { Plugin } from "@html_editor/plugin";
-import { isEmptyBlock } from "@html_editor/utils/dom_info";
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {isEmptyBlock} from "@html_editor/utils/dom_info";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {registry} from "@web/core/registry";
 
 export class EmptyNotEditableElementsPlugin extends Plugin {
     static id = "mass_mailing.EmptyNotEditableElements";
@@ -18,7 +18,10 @@ export class EmptyNotEditableElementsPlugin extends Plugin {
             ".o_not_editable [data-oe-zws-empty-inline]"
         );
         potentiallyEmptyElements.forEach((emptyElement) => {
-            const emptyNonEditableBlock = closestElement(emptyElement, ".o_not_editable");
+            const emptyNonEditableBlock = closestElement(
+                emptyElement,
+                ".o_not_editable"
+            );
             if (isEmptyBlock(emptyNonEditableBlock)) {
                 emptyNonEditableBlock.remove();
             }

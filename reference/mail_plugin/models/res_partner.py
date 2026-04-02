@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from odoo import api, fields, models
 
 
@@ -36,12 +35,12 @@ class ResPartner(models.Model):
             'partner_id': partner.id,
             'iap_enrich_info': vals.get('iap_enrich_info'),
             'iap_search_domain': vals.get('iap_search_domain'),
-        } for partner, vals in zip(partners, vals_list) if vals.get('iap_enrich_info') or vals.get('iap_search_domain')]
+        } for partner, vals in zip(partners, vals_list, strict=False) if vals.get('iap_enrich_info') or vals.get('iap_search_domain')]
         self.env['res.partner.iap'].sudo().create(partner_iap_vals_list)
         return partners
 
     def write(self, vals):
-        res = super(ResPartner, self).write(vals)
+        res = super().write(vals)
 
         if 'iap_enrich_info' in vals or 'iap_search_domain' in vals:
             # Not done with inverse method so we do need to search

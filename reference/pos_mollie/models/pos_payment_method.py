@@ -1,8 +1,8 @@
-from odoo import fields, models, api, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-from odoo.addons.payment_mollie import const
-
 from odoo.tools import hash_sign
+
+from odoo.addons.payment_mollie import const
 
 
 class PosPaymentMethod(models.Model):

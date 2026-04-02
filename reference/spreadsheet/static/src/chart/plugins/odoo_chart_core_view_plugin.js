@@ -1,7 +1,10 @@
-import { Domain } from "@web/core/domain";
-import { ChartDataSource, chartTypeToDataSourceMode } from "../data_source/chart_data_source";
-import { OdooUIPlugin } from "@spreadsheet/plugins";
-import { deepEqual } from "@web/core/utils/objects";
+import {Domain} from "@web/core/domain";
+import {
+    ChartDataSource,
+    chartTypeToDataSourceMode,
+} from "../data_source/chart_data_source";
+import {OdooUIPlugin} from "@spreadsheet/plugins";
+import {deepEqual} from "@web/core/utils/objects";
 
 export class OdooChartCoreViewPlugin extends OdooUIPlugin {
     static getters = /** @type {const} */ (["getChartDataSource", "getOdooEnv"]);
@@ -35,7 +38,9 @@ export class OdooChartCoreViewPlugin extends OdooUIPlugin {
                         this.shouldChartUpdateReloadDataSource = true;
                     } else if (cmd.definition.type !== chart.type) {
                         const dataSource = this.getChartDataSource(cmd.chartId);
-                        dataSource.changeChartType(chartTypeToDataSourceMode(cmd.definition.type));
+                        dataSource.changeChartType(
+                            chartTypeToDataSourceMode(cmd.definition.type)
+                        );
                     }
                 }
                 break;
@@ -195,7 +200,7 @@ export class OdooChartCoreViewPlugin extends OdooUIPlugin {
      * @param {string} chartId Id of the chart
      */
     _refreshOdooChart(chartId) {
-        this.getChartDataSource(chartId).load({ reload: true });
+        this.getChartDataSource(chartId).load({reload: true});
     }
 
     /**

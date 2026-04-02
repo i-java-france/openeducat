@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="payment_provider_form" model="ir.ui.view">
         <field name="name">PayPal Provider Form</field>
         <field name="model">payment.provider</field>
-        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="inherit_id" ref="payment.payment_provider_form" />
         <field name="arch" type="xml">
             <group name="provider_credentials" position='inside'>
                 <group invisible="code != 'paypal'">
@@ -23,9 +22,9 @@
                         password="True"
                         required="code == 'paypal' and state != 'disabled'"
                     />
-                    <label for="paypal_webhook_id" string="Webhook ID"/>
+                    <label for="paypal_webhook_id" string="Webhook ID" />
                     <div class="o_row" col="2">
-                        <field name="paypal_webhook_id"/>
+                        <field name="paypal_webhook_id" />
                         <button
                             string="Generate your webhook"
                             type="object"
@@ -44,5 +43,4 @@
             </group>
         </field>
     </record>
-
 </odoo>

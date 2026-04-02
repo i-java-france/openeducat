@@ -1,22 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data noupdate="1">
-
         <record id="base.res_partner_2" model="res.partner">
-            <field name="is_published" eval="True"/>
-            <field name="website_short_description">Acme Corporation designs, develops, integrates and supports HR and Supply Chain processes in order to make our customers more productive, responsive and profitable.</field>
+            <field name="is_published" eval="True" />
+            <field
+                name="website_short_description"
+            >Acme Corporation designs, develops, integrates and supports HR and Supply Chain processes in order to make our customers more productive, responsive and profitable.</field>
             <field name="website_description" type="html">
                 <p>
                 Acme Corporation designs, develops, integrates and supports HR and Supply
                 Chain processes in order to make our customers more productive,
                 responsive and profitable.
-                </p><p>
+                </p>
+                <p>
                 Our experts invent, imagine and develop solutions which meet
                 your business requirements. They build a new technical
                 environment for your company, but they always take the already
                 installed IT software into account. That is why Idealis
                 Consulting delivers excellence in HR and SC Management.
-                </p><p>
+                </p>
+                <p>
                 Acme Corporation integrates ERP for Global Companies and supports PME
                 with Open Sources software to manage their businesses. Our
                 consultants are experts in the following areas:
@@ -33,21 +36,25 @@
             </field>
         </record>
         <record id="base.res_partner_3" model="res.partner">
-            <field name="is_published" eval="True"/>
-            <field name="website_short_description">A non-profit international educational and scientific organisation, hosting three departments (aeronautics and aerospace, environmental and applied fluid dynamics, and turbomachinery and propulsion).</field>
+            <field name="is_published" eval="True" />
+            <field
+                name="website_short_description"
+            >A non-profit international educational and scientific organisation, hosting three departments (aeronautics and aerospace, environmental and applied fluid dynamics, and turbomachinery and propulsion).</field>
             <field name="website_description" type="html">
                 <p>
                     A non-profit international educational and scientific
                     organisation, hosting three departments (aeronautics and
                     aerospace, environmental and applied fluid dynamics, and
                     turbomachinery and propulsion).
-                </p><p>
+                </p>
+                <p>
                     It provides post-graduate education in fluid dynamics
                     (research master in fluid dynamics, former "Diploma
                     Course", doctoral program, stagiaire program and lecture
                     series) and encourages "training in research through
                     research".
-                </p><p>
+                </p>
+                <p>
                     It undertakes and promotes research in the field of fluid
                     dynamics. It possesses about fifty different wind tunnels,
                     turbomachinery and other specialized test facilities, some
@@ -61,20 +68,24 @@
             </field>
         </record>
         <record id="base.res_partner_4" model="res.partner">
-            <field name="is_published" eval="True"/>
-            <field name="website_short_description">Acme Corporation designs, develops, integrates and supports HR and Supply Chain processes in order to make our customers more productive, responsive and profitable.</field>
+            <field name="is_published" eval="True" />
+            <field
+                name="website_short_description"
+            >Acme Corporation designs, develops, integrates and supports HR and Supply Chain processes in order to make our customers more productive, responsive and profitable.</field>
             <field name="website_description" type="html">
                 <p>
                 Acme Corporation designs, develops, integrates and supports HR and Supply
                 Chain processes in order to make our customers more productive,
                 responsive and profitable.
-                </p><p>
+                </p>
+                <p>
                 Our experts invent, imagine and develop solutions which meet
                 your business requirements. They build a new technical
                 environment for your company, but they always take the already
                 installed IT software into account. That is why Idealis
                 Consulting delivers excellence in HR and SC Management.
-                </p><p>
+                </p>
+                <p>
                 Acme Corporation integrates ERP for Global Companies and supports PME
                 with Open Sources software to manage their businesses. Our
                 consultants are experts in the following areas:
@@ -91,21 +102,25 @@
             </field>
         </record>
         <record id="base.res_partner_3" model="res.partner">
-            <field name="is_published" eval="True"/>
-            <field name="website_short_description">A non-profit international educational and scientific organisation, hosting three departments (aeronautics and aerospace, environmental and applied fluid dynamics, and turbomachinery and propulsion).</field>
+            <field name="is_published" eval="True" />
+            <field
+                name="website_short_description"
+            >A non-profit international educational and scientific organisation, hosting three departments (aeronautics and aerospace, environmental and applied fluid dynamics, and turbomachinery and propulsion).</field>
             <field name="website_description" type="html">
                 <p>
                     A non-profit international educational and scientific
                     organisation, hosting three departments (aeronautics and
                     aerospace, environmental and applied fluid dynamics, and
                     turbomachinery and propulsion).
-                </p><p>
+                </p>
+                <p>
                     It provides post-graduate education in fluid dynamics
                     (research master in fluid dynamics, former "Diploma
                     Course", doctoral program, stagiaire program and lecture
                     series) and encourages "training in research through
                     research".
-                </p><p>
+                </p>
+                <p>
                     It undertakes and promotes research in the field of fluid
                     dynamics. It possesses about fifty different wind tunnels,
                     turbomachinery and other specialized test facilities, some

@@ -1,17 +1,17 @@
-import { Component, useState } from "@odoo/owl";
-import { Domain, InvalidDomainError } from "@web/core/domain";
-import { DomainSelector } from "@web/core/domain_selector/domain_selector";
-import { useGetDefaultLeafDomain } from "@web/core/domain_selector/utils";
-import { DomainSelectorDialog } from "@web/core/domain_selector_dialog/domain_selector_dialog";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { EvaluationError } from "@web/core/py_js/py_builtin";
-import { registry } from "@web/core/registry";
-import { domainContainsExpressions } from "@web/core/tree_editor/domain_contains_expressions";
-import { useBus, useOwnedDialogs, useService } from "@web/core/utils/hooks";
-import { useRecordObserver } from "@web/model/relational_model/utils";
-import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog";
-import { standardFieldProps } from "../standard_field_props";
+import {Component, useState} from "@odoo/owl";
+import {Domain, InvalidDomainError} from "@web/core/domain";
+import {DomainSelector} from "@web/core/domain_selector/domain_selector";
+import {useGetDefaultLeafDomain} from "@web/core/domain_selector/utils";
+import {DomainSelectorDialog} from "@web/core/domain_selector_dialog/domain_selector_dialog";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {EvaluationError} from "@web/core/py_js/py_builtin";
+import {registry} from "@web/core/registry";
+import {domainContainsExpressions} from "@web/core/tree_editor/domain_contains_expressions";
+import {useBus, useOwnedDialogs, useService} from "@web/core/utils/hooks";
+import {useRecordObserver} from "@web/model/relational_model/utils";
+import {SelectCreateDialog} from "@web/views/view_dialogs/select_create_dialog";
+import {standardFieldProps} from "../standard_field_props";
 
 export class DomainField extends Component {
     static template = "web.DomainField";
@@ -20,12 +20,12 @@ export class DomainField extends Component {
     };
     static props = {
         ...standardFieldProps,
-        context: { type: Object, optional: true },
-        editInDialog: { type: Boolean, optional: true },
-        resModel: { type: String, optional: true },
-        isFoldable: { type: Boolean, optional: true },
-        countLimit: { type: Number, optional: true },
-        allowExpressions: { type: Boolean, optional: true },
+        context: {type: Object, optional: true},
+        editInDialog: {type: Boolean, optional: true},
+        resModel: {type: String, optional: true},
+        isFoldable: {type: Boolean, optional: true},
+        countLimit: {type: Number, optional: true},
+        allowExpressions: {type: Boolean, optional: true},
     };
     static defaultProps = {
         editInDialog: false,
@@ -51,7 +51,7 @@ export class DomainField extends Component {
 
         this.debugDomain = null;
         useRecordObserver(async (record, nextProps) => {
-            nextProps = { ...nextProps, record };
+            nextProps = {...nextProps, record};
             if (this.debugDomain && this.props.readonly !== nextProps.readonly) {
                 this.debugDomain = null;
             }
@@ -73,7 +73,7 @@ export class DomainField extends Component {
             if (this.debugDomain) {
                 const props = this.props;
                 const handleChanges = async () => {
-                    await props.record.update({ [props.name]: this.debugDomain });
+                    await props.record.update({[props.name]: this.debugDomain});
                     const isValid = await this.quickValidityCheck(props);
                     if (isValid) {
                         this.debugDomain = null; // will allow the count to be loaded if needed
@@ -109,12 +109,14 @@ export class DomainField extends Component {
                 this.lastDomainChecked = domainStringRepr;
                 this.notification.add(
                     allowExpressions
-                        ? _t("The domain involves non-literals. Their evaluation might fail.")
+                        ? _t(
+                              "The domain involves non-literals. Their evaluation might fail."
+                          )
                         : _t("The domain should not involve non-literals")
                 );
             }
             if (!allowExpressions) {
-                return { isInvalid: true };
+                return {isInvalid: true};
             }
         }
         try {
@@ -124,8 +126,11 @@ export class DomainField extends Component {
             // when loading the record count associated with the domain.
             return domain;
         } catch (error) {
-            if (error instanceof InvalidDomainError || error instanceof EvaluationError) {
-                return { isInvalid: true };
+            if (
+                error instanceof InvalidDomainError ||
+                error instanceof EvaluationError
+            ) {
+                return {isInvalid: true};
             }
             throw error;
         }
@@ -162,13 +167,20 @@ export class DomainField extends Component {
         let promises = [];
         const domain = this.getDomain(props);
         try {
-            const tree = await this.treeProcessor.treeFromDomain(resModel, domain, !this.env.debug);
+            const tree = await this.treeProcessor.treeFromDomain(
+                resModel,
+                domain,
+                !this.env.debug
+            );
             const trees = !tree.negate && tree.value === "&" ? tree.children : [tree];
             promises = trees.map((tree) =>
                 this.treeProcessor.getDomainTreeDescription(resModel, tree)
             );
         } catch (error) {
-            if (error.data?.name === "builtins.KeyError" && error.data.message === resModel) {
+            if (
+                error.data?.name === "builtins.KeyError" &&
+                error.data.message === resModel
+            ) {
                 // we don't want to support invalid models
                 throw new Error(`Invalid model: ${resModel}`);
             }
@@ -192,7 +204,7 @@ export class DomainField extends Component {
 
         const domain = this.getEvaluatedDomain(props);
         if (domain.isInvalid) {
-            this.updateState({ isValid: false, recordCount: 0, hasLimitedCount: false });
+            this.updateState({isValid: false, recordCount: 0, hasLimitedCount: false});
             return;
         }
 
@@ -204,20 +216,26 @@ export class DomainField extends Component {
             limit = props.countLimit + 1;
         }
         try {
-            recordCount = await this.orm.silent.searchCount(resModel, domain, { context, limit });
+            recordCount = await this.orm.silent.searchCount(resModel, domain, {
+                context,
+                limit,
+            });
         } catch (error) {
-            if (error.data?.name === "builtins.KeyError" && error.data.message === resModel) {
+            if (
+                error.data?.name === "builtins.KeyError" &&
+                error.data.message === resModel
+            ) {
                 // we don't want to support invalid models
                 throw new Error(`Invalid model: ${resModel}`);
             }
-            this.updateState({ isValid: false, recordCount: 0, hasLimitedCount: false });
+            this.updateState({isValid: false, recordCount: 0, hasLimitedCount: false});
             return;
         }
         if (limit && recordCount >= limit) {
             hasLimitedCount = true;
             recordCount = props.countLimit;
         }
-        this.updateState({ isValid: true, recordCount, hasLimitedCount });
+        this.updateState({isValid: true, recordCount, hasLimitedCount});
     }
 
     onButtonClick() {
@@ -259,14 +277,14 @@ export class DomainField extends Component {
         if (domain.isInvalid) {
             return false;
         }
-        return rpc("/web/domain/validate", { model: resModel, domain });
+        return rpc("/web/domain/validate", {model: resModel, domain});
     }
 
     update(domain, isDebugEdited = false) {
         if (!isDebugEdited) {
             this.debugDomain = null;
         }
-        this.props.record.update({ [this.props.name]: domain });
+        this.props.record.update({[this.props.name]: domain});
         this.props.record.model.bus.trigger("FIELD_IS_DIRTY", false);
     }
 
@@ -287,7 +305,8 @@ export class DomainField extends Component {
         Object.assign(this.state, {
             isValid: "isValid" in params ? params.isValid : null,
             recordCount: "recordCount" in params ? params.recordCount : null,
-            hasLimitedCount: "hasLimitedCount" in params ? params.hasLimitedCount : null,
+            hasLimitedCount:
+                "hasLimitedCount" in params ? params.hasLimitedCount : null,
         });
     }
 }
@@ -326,7 +345,7 @@ export const domainField = {
     ],
     supportedTypes: ["char", "text"],
     isEmpty: () => false,
-    extractProps({ options }, dynamicInfo) {
+    extractProps({options}, dynamicInfo) {
         return {
             editInDialog: options.in_dialog,
             isFoldable: options.foldable,

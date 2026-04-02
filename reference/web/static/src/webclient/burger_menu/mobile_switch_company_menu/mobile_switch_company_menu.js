@@ -1,4 +1,4 @@
-import { SwitchCompanyMenu } from "@web/webclient/switch_company_menu/switch_company_menu";
+import {SwitchCompanyMenu} from "@web/webclient/switch_company_menu/switch_company_menu";
 
 export class MobileSwitchCompanyMenu extends SwitchCompanyMenu {
     static template = "web.MobileSwitchCompanyMenu";

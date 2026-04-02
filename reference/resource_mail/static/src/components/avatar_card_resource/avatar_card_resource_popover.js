@@ -1,14 +1,14 @@
-import { onWillStart } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
-import { useOpenChat } from "@mail/core/web/open_chat_hook";
-import { AvatarCardPopover } from "@mail/discuss/web/avatar_card/avatar_card_popover";
+import {onWillStart} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
+import {useOpenChat} from "@mail/core/web/open_chat_hook";
+import {AvatarCardPopover} from "@mail/discuss/web/avatar_card/avatar_card_popover";
 
 export class AvatarCardResourcePopover extends AvatarCardPopover {
     static template = "resource_mail.AvatarCardResourcePopover";
 
     static props = {
         ...AvatarCardPopover.props,
-        model: { type: String, optional: true },
+        model: {type: String, optional: true},
         recordModel: {
             type: String,
             optional: true,
@@ -28,7 +28,12 @@ export class AvatarCardResourcePopover extends AvatarCardPopover {
     }
 
     async onWillStart() {
-        [this.record] = await this.orm.call(this.props.recordModel, 'get_avatar_card_data', [[this.props.id], this.fieldNames], {});
+        [this.record] = await this.orm.call(
+            this.props.recordModel,
+            "get_avatar_card_data",
+            [[this.props.id], this.fieldNames],
+            {}
+        );
         await Promise.all(this.loadAdditionalData());
     }
 
@@ -38,7 +43,15 @@ export class AvatarCardResourcePopover extends AvatarCardPopover {
     }
 
     get fieldNames() {
-        return ["email", "im_status", "name", "phone", "resource_type", "share", "user_id"];
+        return [
+            "email",
+            "im_status",
+            "name",
+            "phone",
+            "resource_type",
+            "share",
+            "user_id",
+        ];
     }
 
     get name() {

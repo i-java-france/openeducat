@@ -1,6 +1,6 @@
 // @odoo-module ignore
-/* eslint-disable no-restricted-globals */
-/* eslint-disable no-undef */
+
+
 
 const cacheName = "odoo-pos-cache";
 
@@ -47,7 +47,7 @@ self.addEventListener("message", (event) => {
     const data = event.data;
     if (data.urlsToCache && navigator.onLine) {
         for (const url of data.urlsToCache) {
-            cacheResources({ request: { url } });
+            cacheResources({request: {url}});
         }
     }
 });

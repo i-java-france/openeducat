@@ -1,12 +1,12 @@
-import { Plugin } from "@html_editor/plugin";
+import {Plugin} from "@html_editor/plugin";
 import {
     closestElement,
     getAdjacentNextSiblings,
     getAdjacentPreviousSiblings,
 } from "@html_editor/utils/dom_traversal";
-import { getColumnIndex } from "@html_editor/utils/table";
-import { BORDER_SENSITIVITY } from "@html_editor/main/table/table_plugin";
-import { isTableCell } from "@html_editor/utils/dom_info";
+import {getColumnIndex} from "@html_editor/utils/table";
+import {BORDER_SENSITIVITY} from "@html_editor/main/table/table_plugin";
+import {isTableCell} from "@html_editor/utils/dom_info";
 
 export class TableResizePlugin extends Plugin {
     static id = "tableResize";
@@ -35,9 +35,15 @@ export class TableResizePlugin extends Plugin {
                 return "left";
             } else if (ev.clientY <= targetRect.y + BORDER_SENSITIVITY) {
                 return "top";
-            } else if (ev.clientX >= targetRect.x + target.clientWidth - BORDER_SENSITIVITY) {
+            } else if (
+                ev.clientX >=
+                targetRect.x + target.clientWidth - BORDER_SENSITIVITY
+            ) {
                 return "right";
-            } else if (ev.clientY >= targetRect.y + target.clientHeight - BORDER_SENSITIVITY) {
+            } else if (
+                ev.clientY >=
+                targetRect.y + target.clientHeight - BORDER_SENSITIVITY
+            ) {
                 return "bottom";
             }
         }
@@ -81,7 +87,9 @@ export class TableResizePlugin extends Plugin {
         let [item, neighbor] = [target1 || target2, target2];
         const table = closestElement(item, "table");
         const [sizeProp, positionProp, clientPositionProp] =
-            direction === "col" ? ["width", "x", "clientX"] : ["height", "y", "clientY"];
+            direction === "col"
+                ? ["width", "x", "clientX"]
+                : ["height", "y", "clientY"];
 
         const isRTL = this.config.direction === "rtl";
         // Preserve current width.
@@ -93,7 +101,8 @@ export class TableResizePlugin extends Plugin {
             direction === "col" ? "td" : "tr"
         }:not([style*=${sizeProp}])`;
         for (const unsizedItem of table.querySelectorAll(unsizedItemsSelector)) {
-            unsizedItem.style[sizeProp] = unsizedItem.getBoundingClientRect()[sizeProp] + "px";
+            unsizedItem.style[sizeProp] =
+                unsizedItem.getBoundingClientRect()[sizeProp] + "px";
         }
 
         // TD widths should only be applied in the first row. Change targets and
@@ -127,14 +136,20 @@ export class TableResizePlugin extends Plugin {
         switch (position) {
             case "first": {
                 const marginProp =
-                    direction === "col" ? (isRTL ? "marginRight" : "marginLeft") : "marginTop";
+                    direction === "col"
+                        ? isRTL
+                            ? "marginRight"
+                            : "marginLeft"
+                        : "marginTop";
                 const itemRect = item.getBoundingClientRect();
                 const tableStyle = getComputedStyle(table);
                 const currentMargin = parseFloat(tableStyle[marginProp]);
                 let sizeDelta = itemRect[positionProp] - ev[clientPositionProp];
                 if (direction === "col" && isRTL) {
                     sizeDelta =
-                        ev[clientPositionProp] - itemRect[positionProp] - itemRect[sizeProp];
+                        ev[clientPositionProp] -
+                        itemRect[positionProp] -
+                        itemRect[sizeProp];
                 }
                 const newMargin = currentMargin - sizeDelta;
                 const currentSize = itemRect[sizeProp];
@@ -179,7 +194,8 @@ export class TableResizePlugin extends Plugin {
                 const newNeighborSize = currentNeighborSize - sizeDelta;
                 const enclosingCell = closestElement(table, "td, th");
                 const containerWidth =
-                    enclosingCell?.getBoundingClientRect().width || this.editable.clientWidth;
+                    enclosingCell?.getBoundingClientRect().width ||
+                    this.editable.clientWidth;
                 const maxWidth =
                     containerWidth -
                     parseFloat(editableStyle.paddingLeft) -
@@ -198,15 +214,17 @@ export class TableResizePlugin extends Plugin {
                     if (
                         direction === "col" &&
                         childTable &&
-                        childTable.getBoundingClientRect().right > itemRect.right + sizeDelta - 5
+                        childTable.getBoundingClientRect().right >
+                            itemRect.right + sizeDelta - 5
                     ) {
                         break;
                     }
                     item.style[sizeProp] = newSize + "px";
                     if (direction === "col") {
                         neighbor.style[sizeProp] =
-                            (newNeighborSize > MIN_SIZE ? newNeighborSize : currentNeighborSize) +
-                            "px";
+                            (newNeighborSize > MIN_SIZE
+                                ? newNeighborSize
+                                : currentNeighborSize) + "px";
                     } else if (sizeProp === "width") {
                         table.style[sizeProp] = tableRect[sizeProp] + sizeDelta + "px";
                     }
@@ -216,7 +234,8 @@ export class TableResizePlugin extends Plugin {
             case "last": {
                 const itemRect = item.getBoundingClientRect();
                 let sizeDelta =
-                    ev[clientPositionProp] - (itemRect[positionProp] + itemRect[sizeProp]); // todo: rephrase
+                    ev[clientPositionProp] -
+                    (itemRect[positionProp] + itemRect[sizeProp]); // todo: rephrase
                 if (direction === "col" && isRTL) {
                     sizeDelta = itemRect[positionProp] - ev[clientPositionProp];
                 }
@@ -272,7 +291,8 @@ export class TableResizePlugin extends Plugin {
             const isLeftSideClick = isHoveringTdBorder === "left";
             if (
                 (isLeftSideClick && currentColumnIndex > 0) ||
-                (!isLeftSideClick && currentColumnIndex < table.rows[0].cells.length - 1)
+                (!isLeftSideClick &&
+                    currentColumnIndex < table.rows[0].cells.length - 1)
             ) {
                 const siblingColumnIndex = isLeftSideClick
                     ? currentColumnIndex - 1
@@ -301,8 +321,9 @@ export class TableResizePlugin extends Plugin {
         if (isHoveringTdBorder) {
             ev.preventDefault();
             const direction =
-                { top: "row", right: "col", bottom: "row", left: "col" }[isHoveringTdBorder] ||
-                false;
+                {top: "row", right: "col", bottom: "row", left: "col"}[
+                    isHoveringTdBorder
+                ] || false;
             let target1, target2;
             const column = closestElement(ev.target, "tr");
             if (isHoveringTdBorder === "top" && column) {
@@ -320,7 +341,9 @@ export class TableResizePlugin extends Plugin {
                 }
             } else if (isHoveringTdBorder === "bottom" && column) {
                 target1 = closestElement(ev.target, "tr");
-                target2 = getAdjacentNextSiblings(column).find((node) => node.nodeName === "TR");
+                target2 = getAdjacentNextSiblings(column).find(
+                    (node) => node.nodeName === "TR"
+                );
             } else if (isHoveringTdBorder === "left") {
                 if (isRTL) {
                     target1 = ev.target;
@@ -332,7 +355,8 @@ export class TableResizePlugin extends Plugin {
             }
             this.isResizingTable = true;
             this.setTableResizeCursor(direction);
-            const resizeTable = (ev) => this.resizeTable(ev, direction, target1, target2);
+            const resizeTable = (ev) =>
+                this.resizeTable(ev, direction, target1, target2);
             const stopResizing = (ev) => {
                 ev.preventDefault();
                 this.isResizingTable = false;
@@ -349,8 +373,9 @@ export class TableResizePlugin extends Plugin {
     }
     onMousemove(ev) {
         const direction =
-            { top: "row", right: "col", bottom: "row", left: "col" }[this.isHoveringTdBorder(ev)] ||
-            false;
+            {top: "row", right: "col", bottom: "row", left: "col"}[
+                this.isHoveringTdBorder(ev)
+            ] || false;
         if (direction || !this.isResizingTable) {
             this.setTableResizeCursor(direction);
         }

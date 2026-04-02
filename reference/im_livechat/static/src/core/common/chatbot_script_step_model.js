@@ -1,4 +1,4 @@
-import { fields, Record } from "@mail/core/common/record";
+import {fields, Record} from "@mail/core/common/record";
 
 export class ChatbotScriptStep extends Record {
     static id = "id";

@@ -1,10 +1,10 @@
-import { Component, useState, useEffect, onPatched, markup } from "@odoo/owl";
-import { DocTable, TABLE_TYPES } from "@api_doc/components/doc_table";
-import { getCrudMethodsExamples } from "@api_doc/utils/doc_model_utils";
-import { DocMethod } from "@api_doc/components/doc_method";
-import { DocLoadingIndicator } from "@api_doc/components/doc_loading_indicator";
-import { useDocUI } from "@api_doc/utils/doc_ui_store";
-import { DocErrorDialog } from "@api_doc/components/doc_error_dialog";
+import {Component, useState, useEffect, onPatched, markup} from "@odoo/owl";
+import {DocTable, TABLE_TYPES} from "@api_doc/components/doc_table";
+import {getCrudMethodsExamples} from "@api_doc/utils/doc_model_utils";
+import {DocMethod} from "@api_doc/components/doc_method";
+import {DocLoadingIndicator} from "@api_doc/components/doc_loading_indicator";
+import {useDocUI} from "@api_doc/utils/doc_ui_store";
+import {DocErrorDialog} from "@api_doc/components/doc_error_dialog";
 
 const TYPE_COLORS = {
     "text-success": ["integer", "char", "boolean", "selection", "float"],
@@ -39,7 +39,7 @@ function getTypeData(fieldData) {
     }
 
     return data;
-};
+}
 
 export class DocModel extends Component {
     static template = "web.DocModel";
@@ -54,10 +54,10 @@ export class DocModel extends Component {
     setup() {
         this.state = useState({
             model: undefined,
-            modelData: { items: [] },
+            modelData: {items: []},
             crudMethods: [],
             methods: [],
-            fields: { data: { items: [] }},
+            fields: {data: {items: []}},
             modules: [],
             activeModules: {
                 core: true,
@@ -78,25 +78,23 @@ export class DocModel extends Component {
                 this.modelStore.activeModel,
                 this.modelStore.activeMethod,
                 this.modelStore.activeField,
-            ],
+            ]
         );
 
-        let lastFocusedElement = null
-        onPatched(
-            () => {
-                let el = null;
-                if (this.modelStore.activeMethod) {
-                    el = document.getElementById(this.modelStore.activeMethod);
-                }
-                if (this.modelStore.activeField) {
-                    el = document.getElementById(this.modelStore.activeField);
-                }
-                if (el && el != lastFocusedElement) {
-                    lastFocusedElement = el;
-                    el.scrollIntoView({ behavior: "smooth" });
-                }
+        let lastFocusedElement = null;
+        onPatched(() => {
+            let el = null;
+            if (this.modelStore.activeMethod) {
+                el = document.getElementById(this.modelStore.activeMethod);
             }
-        );
+            if (this.modelStore.activeField) {
+                el = document.getElementById(this.modelStore.activeField);
+            }
+            if (el && el != lastFocusedElement) {
+                lastFocusedElement = el;
+                el.scrollIntoView({behavior: "smooth"});
+            }
+        });
     }
 
     get modelName() {
@@ -104,7 +102,10 @@ export class DocModel extends Component {
     }
 
     async update() {
-        if (!this.state.model || this.state.model.model !== this.modelStore.activeModel.model) {
+        if (
+            !this.state.model ||
+            this.state.model.model !== this.modelStore.activeModel.model
+        ) {
             this.updateModel(this.modelStore.activeModel);
         }
 
@@ -121,11 +122,12 @@ export class DocModel extends Component {
             fields: null,
             error: null,
         };
-        this.state.modelData = { items: [] };
+        this.state.modelData = {items: []};
         this.state.methods = [];
         this.state.modules = [];
 
-        this.modelStore.loadModel(modelId)
+        this.modelStore
+            .loadModel(modelId)
             .then((model) => {
                 if (this.state.model.model !== model.model) {
                     return;
@@ -134,9 +136,9 @@ export class DocModel extends Component {
                 this.state.model = model;
                 this.state.modelData = {
                     items: [
-                        ["Model Name", { type: "code", value: model.model }],
+                        ["Model Name", {type: "code", value: model.model}],
                         ...(model.doc ? [["Description", model.doc]] : []),
-                    ]
+                    ],
                 };
 
                 this.updateModules();
@@ -169,7 +171,9 @@ export class DocModel extends Component {
         Object.values(model.methods).forEach((m) => m.module && modules.add(m.module));
 
         modules = [...modules];
-        modules.sort((a, b) => (a === "core" ? -1 : b === "core" ? 1 : a.localeCompare(b)));
+        modules.sort((a, b) =>
+            a === "core" ? -1 : b === "core" ? 1 : a.localeCompare(b)
+        );
         this.state.modules = modules;
     }
 
@@ -200,7 +204,14 @@ export class DocModel extends Component {
             });
         }
 
-        const crudOrder = ["search_read", "search", "read", "create", "write", "unlink"];
+        const crudOrder = [
+            "search_read",
+            "search",
+            "read",
+            "create",
+            "write",
+            "unlink",
+        ];
         methods.sort((a, b) => {
             const aIndex = crudOrder.indexOf(a.name);
             const bIndex = crudOrder.indexOf(b.name);
@@ -211,7 +222,7 @@ export class DocModel extends Component {
             } else if (bIndex >= 0) {
                 return 1;
             }
-            return a.name.localeCompare(b.name)
+            return a.name.localeCompare(b.name);
         });
         this.state.methods = methods;
     }
@@ -229,10 +240,10 @@ export class DocModel extends Component {
             .filter((fieldData) => this.isModuleActive(fieldData.module))
             .map((fieldData, index) => {
                 if (fieldData.name === this.modelStore.activeField) {
-                    activeIndex = index
+                    activeIndex = index;
                 }
                 return [
-                    { type: TABLE_TYPES.Code, value: fieldData.name },
+                    {type: TABLE_TYPES.Code, value: fieldData.name},
                     getTypeData(fieldData),
                     fieldData.string,
                     {
@@ -248,7 +259,7 @@ export class DocModel extends Component {
                         type: TABLE_TYPES.Code,
                         value: fieldData.module || "",
                     },
-                ]
+                ];
             });
 
         fields.sort((a, b) => a[0].value.localeCompare(b[0].value));

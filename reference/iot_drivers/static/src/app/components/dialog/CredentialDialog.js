@@ -1,18 +1,18 @@
 /* global owl */
 
 import useStore from "../../hooks/useStore.js";
-import { BootstrapDialog } from "./BootstrapDialog.js";
-import { LoadingFullScreen } from "../LoadingFullScreen.js";
+import {BootstrapDialog} from "./BootstrapDialog.js";
+import {LoadingFullScreen} from "../LoadingFullScreen.js";
 
-const { Component, xml, useState, toRaw } = owl;
+const {Component, xml, useState, toRaw} = owl;
 
 export class CredentialDialog extends Component {
     static props = {};
-    static components = { BootstrapDialog, LoadingFullScreen };
+    static components = {BootstrapDialog, LoadingFullScreen};
 
     setup() {
         this.store = toRaw(useStore());
-        this.state = useState({ waitRestart: false });
+        this.state = useState({waitRestart: false});
         this.form = useState({
             db_uuid: this.store.base.db_uuid,
             enterprise_code: "",

@@ -1,18 +1,18 @@
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { UploadProgressToast } from "./upload_progress_toast";
-import { _t } from "@web/core/l10n/translation";
-import { checkFileSize } from "@web/core/utils/files";
-import { humanNumber } from "@web/core/utils/numbers";
-import { getDataURLFromFile } from "@web/core/utils/urls";
-import { reactive } from "@odoo/owl";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {UploadProgressToast} from "./upload_progress_toast";
+import {_t} from "@web/core/l10n/translation";
+import {checkFileSize} from "@web/core/utils/files";
+import {humanNumber} from "@web/core/utils/numbers";
+import {getDataURLFromFile} from "@web/core/utils/urls";
+import {reactive} from "@odoo/owl";
 
 export const AUTOCLOSE_DELAY = 3000;
 export const AUTOCLOSE_DELAY_LONG = 8000;
 
 export const uploadService = {
     dependencies: ["notification"],
-    start(env, { notification }) {
+    start(env, {notification}) {
         let fileId = 0;
         const progressToast = reactive({
             files: {},
@@ -50,7 +50,7 @@ export const uploadService = {
             incrementId() {
                 fileId++;
             },
-            uploadUrl: async (url, { resModel, resId }, onUploaded) => {
+            uploadUrl: async (url, {resModel, resId}, onUploaded) => {
                 const attachment = await rpc("/html_editor/attachment/add_url", {
                     url,
                     res_model: resModel,
@@ -66,7 +66,7 @@ export const uploadService = {
              * @param {Object} options
              * @param {Function} onUploaded
              */
-            uploadFiles: async (files, { resModel, resId, isImage }, onUploaded) => {
+            uploadFiles: async (files, {resModel, resId, isImage}, onUploaded) => {
                 // Upload the smallest file first to block the user the least possible.
                 const sortedFiles = Array.from(files).sort((a, b) => a.size - b.size);
                 for (const file of sortedFiles) {
@@ -102,7 +102,7 @@ export const uploadService = {
                         deleteFile(file.id);
                         env.services.notification.add(
                             _t('Could not load the file "%s".', sortedFile.name),
-                            { type: "danger" }
+                            {type: "danger"}
                         );
                         continue;
                     }
@@ -127,7 +127,7 @@ export const uploadService = {
                                 width: 0,
                                 quality: 0,
                             },
-                            { xhr }
+                            {xhr}
                         );
                         if (attachment.error) {
                             file.hasError = true;
@@ -159,7 +159,7 @@ export const uploadService = {
                                         width: 0,
                                         quality: 0,
                                     },
-                                    { xhr }
+                                    {xhr}
                                 );
                             }
                             file.uploaded = true;

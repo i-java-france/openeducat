@@ -1,11 +1,11 @@
-import { Component } from "@odoo/owl";
-import { useCommand } from "@web/core/commands/command_hook";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { CheckboxItem } from "@web/core/dropdown/checkbox_item";
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { formatSelection } from "../formatters";
-import { standardFieldProps } from "../standard_field_props";
+import {Component} from "@odoo/owl";
+import {useCommand} from "@web/core/commands/command_hook";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {CheckboxItem} from "@web/core/dropdown/checkbox_item";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {formatSelection} from "../formatters";
+import {standardFieldProps} from "../standard_field_props";
 
 export class StateSelectionField extends Component {
     static template = "web.StateSelectionField";
@@ -15,9 +15,9 @@ export class StateSelectionField extends Component {
     };
     static props = {
         ...standardFieldProps,
-        showLabel: { type: Boolean, optional: true },
-        withCommand: { type: Boolean, optional: true },
-        autosave: { type: Boolean, optional: true },
+        showLabel: {type: Boolean, optional: true},
+        withCommand: {type: Boolean, optional: true},
+        autosave: {type: Boolean, optional: true},
     };
     static defaultProps = {
         showLabel: true,
@@ -40,16 +40,19 @@ export class StateSelectionField extends Component {
                     {
                         category: "smart_action",
                         hotkey: hotkeys[index] && "alt+" + hotkeys[index],
-                        isAvailable: () => this.props.record.data[this.props.name] !== value,
+                        isAvailable: () =>
+                            this.props.record.data[this.props.name] !== value,
                     }
                 );
             }
         }
     }
     get options() {
-        return this.props.record.fields[this.props.name].selection.map(([state, label]) => {
-            return [state, this.props.record.data[`legend_${state}`] || label];
-        });
+        return this.props.record.fields[this.props.name].selection.map(
+            ([state, label]) => {
+                return [state, this.props.record.data[`legend_${state}`] || label];
+            }
+        );
     }
     get currentValue() {
         return this.props.record.data[this.props.name] || this.options[0][0];
@@ -57,11 +60,15 @@ export class StateSelectionField extends Component {
     get label() {
         if (
             this.props.record.data[this.props.name] &&
-            this.props.record.data[`legend_${this.props.record.data[this.props.name][0]}`]
+            this.props.record.data[
+                `legend_${this.props.record.data[this.props.name][0]}`
+            ]
         ) {
-            return this.props.record.data[`legend_${this.props.record.data[this.props.name][0]}`];
+            return this.props.record.data[
+                `legend_${this.props.record.data[this.props.name][0]}`
+            ];
         }
-        return formatSelection(this.currentValue, { selection: this.options });
+        return formatSelection(this.currentValue, {selection: this.options});
     }
 
     statusColor(value) {
@@ -69,7 +76,10 @@ export class StateSelectionField extends Component {
     }
 
     async updateRecord(value) {
-        await this.props.record.update({ [this.props.name]: value }, { save: this.props.autosave });
+        await this.props.record.update(
+            {[this.props.name]: value},
+            {save: this.props.autosave}
+        );
     }
 }
 
@@ -93,9 +103,9 @@ export const stateSelectionField = {
         },
     ],
     supportedTypes: ["selection"],
-    extractProps({ options, viewType }, dynamicInfo) {
+    extractProps({options, viewType}, dynamicInfo) {
         return {
-            showLabel: 'hide_label' in options ? !options.hide_label : false,
+            showLabel: "hide_label" in options ? !options.hide_label : false,
             withCommand: viewType === "form",
             readonly: dynamicInfo.readonly,
             autosave: "autosave" in options ? !!options.autosave : true,

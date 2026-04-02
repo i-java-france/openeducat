@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo.addons.website_slides.tests import common as slides_common
+from unittest.mock import patch
+
 from odoo.exceptions import UserError
 from odoo.tests.common import HttpCase, users
-from unittest.mock import patch
+
+from odoo.addons.website_slides.tests import common as slides_common
 
 
 class TestSlidesManagement(slides_common.SlidesCase, HttpCase):

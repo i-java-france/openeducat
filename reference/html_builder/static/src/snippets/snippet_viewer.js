@@ -1,19 +1,19 @@
-import { Component, markup, useRef } from "@odoo/owl";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { InputConfirmationDialog } from "./input_confirmation_dialog";
-import { fuzzyLookup } from "@web/core/utils/search";
+import {Component, markup, useRef} from "@odoo/owl";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {InputConfirmationDialog} from "./input_confirmation_dialog";
+import {fuzzyLookup} from "@web/core/utils/search";
 
 export class SnippetViewer extends Component {
     static template = "html_builder.SnippetViewer";
     static props = {
-        state: { type: Object },
-        selectSnippet: { type: Function },
+        state: {type: Object},
+        selectSnippet: {type: Function},
         hasSearchResults: Function,
-        snippetModel: { type: Object },
-        installSnippetModule: { type: Function },
-        frontendDirection: { type: String },
+        snippetModel: {type: Object},
+        installSnippetModule: {type: Function},
+        frontendDirection: {type: String},
     };
 
     setup() {
@@ -22,10 +22,10 @@ export class SnippetViewer extends Component {
     }
 
     getRenameBtnLabel(snippetName) {
-        return _t("Rename %(snippetName)s", { snippetName });
+        return _t("Rename %(snippetName)s", {snippetName});
     }
     getDeleteBtnLabel(snippetName) {
-        return _t("Delete %(snippetName)s", { snippetName });
+        return _t("Delete %(snippetName)s", {snippetName});
     }
 
     onClickRename(snippet) {
@@ -67,7 +67,10 @@ export class SnippetViewer extends Component {
 
     onClick(snippet) {
         if (snippet.moduleId) {
-            this.props.snippetModel.installSnippetModule(snippet, this.props.installSnippetModule);
+            this.props.snippetModel.installSnippetModule(
+                snippet,
+                this.props.installSnippetModule
+            );
         } else {
             this.props.selectSnippet(snippet);
         }
@@ -100,7 +103,10 @@ export class SnippetViewer extends Component {
         }
         const getClasses = (snippet) => {
             const classes = new Set();
-            const elements = [snippet.content, ...snippet.content.querySelectorAll("*")];
+            const elements = [
+                snippet.content,
+                ...snippet.content.querySelectorAll("*"),
+            ];
             for (const el of elements) {
                 for (const className of el.classList) {
                     if (className.startsWith("s_")) {
@@ -111,12 +117,16 @@ export class SnippetViewer extends Component {
             return Array.from(classes);
         };
         if (this.props.state.search) {
-            return fuzzyLookup(this.props.state.search, snippetStructures, (snippet) => [
-                snippet.title || "",
-                snippet.name || "",
-                ...(snippet.keyWords?.split(",") || ""),
-                ...getClasses(snippet),
-            ]);
+            return fuzzyLookup(
+                this.props.state.search,
+                snippetStructures,
+                (snippet) => [
+                    snippet.title || "",
+                    snippet.name || "",
+                    ...(snippet.keyWords?.split(",") || ""),
+                    ...getClasses(snippet),
+                ]
+            );
         }
 
         return snippetStructures.filter(

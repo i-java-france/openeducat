@@ -1,9 +1,9 @@
-import { hasHardwareAcceleration } from "@mail/utils/common/misc";
-import { _t } from "@web/core/l10n/translation";
-import { browser } from "@web/core/browser/browser";
-import { fields, Record } from "./record";
-import { debounce } from "@web/core/utils/timing";
-import { rpc } from "@web/core/network/rpc";
+import {hasHardwareAcceleration} from "@mail/utils/common/misc";
+import {_t} from "@web/core/l10n/translation";
+import {browser} from "@web/core/browser/browser";
+import {fields, Record} from "./record";
+import {debounce} from "@web/core/utils/timing";
+import {rpc} from "@web/core/network/rpc";
 
 export const MESSAGE_SOUND = "mail.user_setting.message_sound";
 export const USE_BLUR_LS = "mail_user_setting_use_blur";
@@ -27,7 +27,8 @@ export class Settings extends Record {
             );
         }, 2000);
         this.hasCanvasFilterSupport =
-            typeof document.createElement("canvas").getContext("2d").filter !== "undefined";
+            typeof document.createElement("canvas").getContext("2d").filter !==
+            "undefined";
         this._loadLocalSettings();
     }
 
@@ -42,7 +43,9 @@ export class Settings extends Record {
      */
     channel_notifications = fields.Attr("mentions", {
         compute() {
-            return this.channel_notifications === false ? "mentions" : this.channel_notifications;
+            return this.channel_notifications === false
+                ? "mentions"
+                : this.channel_notifications;
         },
     });
     _recomputeMessageSound = 0;
@@ -55,15 +58,22 @@ export class Settings extends Record {
     useCallAutoFocus = fields.Attr(true, {
         /** @this {import("models").Settings} */
         compute() {
-            return !browser.localStorage.getItem("mail_user_setting_disable_call_auto_focus");
+            return !browser.localStorage.getItem(
+                "mail_user_setting_disable_call_auto_focus"
+            );
         },
         /** @this {import("models").Settings} */
         onUpdate() {
             if (this.useCallAutoFocus) {
-                browser.localStorage.removeItem("mail_user_setting_disable_call_auto_focus");
+                browser.localStorage.removeItem(
+                    "mail_user_setting_disable_call_auto_focus"
+                );
                 return;
             }
-            browser.localStorage.setItem("mail_user_setting_disable_call_auto_focus", "true");
+            browser.localStorage.setItem(
+                "mail_user_setting_disable_call_auto_focus",
+                "true"
+            );
         },
     });
 
@@ -209,7 +219,9 @@ export class Settings extends Record {
     async setCustomNotifications(custom_notifications, thread = undefined) {
         return rpc("/discuss/settings/custom_notifications", {
             custom_notifications:
-                !thread && custom_notifications === "mentions" ? false : custom_notifications,
+                !thread && custom_notifications === "mentions"
+                    ? false
+                    : custom_notifications,
             channel_id: thread?.id,
         });
     }
@@ -230,7 +242,10 @@ export class Settings extends Record {
      */
     async setAudioInputDevice(audioInputDeviceId) {
         this.audioInputDeviceId = audioInputDeviceId;
-        browser.localStorage.setItem("mail_user_setting_audio_input_device_id", audioInputDeviceId);
+        browser.localStorage.setItem(
+            "mail_user_setting_audio_input_device_id",
+            audioInputDeviceId
+        );
     }
     /**
      * @param {String} audioOutputDeviceId
@@ -280,7 +295,7 @@ export class Settings extends Record {
      * @param {number} [param0.guestId]
      * @param {number} param0.volume
      */
-    async saveVolumeSetting({ partnerId, guestId, volume }) {
+    async saveVolumeSetting({partnerId, guestId, volume}) {
         if (!this.store.self_partner) {
             return;
         }
@@ -291,7 +306,12 @@ export class Settings extends Record {
         this.volumeSettingsTimeouts.set(
             key,
             browser.setTimeout(
-                this._onSaveVolumeSettingTimeout.bind(this, { key, partnerId, guestId, volume }),
+                this._onSaveVolumeSettingTimeout.bind(this, {
+                    key,
+                    partnerId,
+                    guestId,
+                    volume,
+                }),
                 5000
             )
         );
@@ -306,7 +326,7 @@ export class Settings extends Record {
 
     // methods
 
-    buildKeySet({ shiftKey, ctrlKey, altKey, key }) {
+    buildKeySet({shiftKey, ctrlKey, altKey, key}) {
         const keys = new Set();
         if (key) {
             keys.add(key === "Meta" ? "Alt" : key);
@@ -332,7 +352,7 @@ export class Settings extends Record {
             return false;
         }
         const [shiftKey, ctrlKey, altKey, key] = this.push_to_talk_key.split(".");
-        const settingsKeySet = this.buildKeySet({ shiftKey, ctrlKey, altKey, key });
+        const settingsKeySet = this.buildKeySet({shiftKey, ctrlKey, altKey, key});
         const eventKeySet = this.buildKeySet({
             shiftKey: ev.shiftKey,
             ctrlKey: ev.ctrlKey,
@@ -380,12 +400,17 @@ export class Settings extends Record {
             "mail_user_setting_camera_input_device_id"
         );
         this.showOnlyVideo =
-            browser.localStorage.getItem("mail_user_setting_show_only_video") === "true";
+            browser.localStorage.getItem("mail_user_setting_show_only_video") ===
+            "true";
         const backgroundBlurAmount = browser.localStorage.getItem(
             "mail_user_setting_background_blur_amount"
         );
-        this.backgroundBlurAmount = backgroundBlurAmount ? parseInt(backgroundBlurAmount) : 10;
-        const edgeBlurAmount = browser.localStorage.getItem("mail_user_setting_edge_blur_amount");
+        this.backgroundBlurAmount = backgroundBlurAmount
+            ? parseInt(backgroundBlurAmount)
+            : 10;
+        const edgeBlurAmount = browser.localStorage.getItem(
+            "mail_user_setting_edge_blur_amount"
+        );
         this.edgeBlurAmount = edgeBlurAmount ? parseInt(edgeBlurAmount) : 10;
         this.useCallAutoFocus = !browser.localStorage.getItem(
             "mail_user_setting_disable_call_auto_focus"
@@ -415,13 +440,13 @@ export class Settings extends Record {
      * @param {number} [param0.partnerId]
      * @param {number} param0.volume
      */
-    async _onSaveVolumeSettingTimeout({ key, partnerId, guestId, volume }) {
+    async _onSaveVolumeSettingTimeout({key, partnerId, guestId, volume}) {
         this.volumeSettingsTimeouts.delete(key);
         await this.store.env.services.orm.call(
             "res.users.settings",
             "set_volume_setting",
             [[this.id], partnerId, volume],
-            { guest_id: guestId }
+            {guest_id: guestId}
         );
     }
     onStorage(ev) {

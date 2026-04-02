@@ -1,11 +1,13 @@
-import { registry } from "@web/core/registry";
-import { patch } from "@web/core/utils/patch";
+import {registry} from "@web/core/registry";
+import {patch} from "@web/core/utils/patch";
 
 /**
  * Speed up fade-in fade-out to avoid useless delay in tests.
  */
 function patchSurveyForm() {
-    const SurveyForm = odoo.loader.modules.get("@survey/interactions/survey_form").SurveyForm;
+    const SurveyForm = odoo.loader.modules.get(
+        "@survey/interactions/survey_form"
+    ).SurveyForm;
     patch(SurveyForm.prototype, {
         submitForm() {
             this.fadeInOutDelay = 0;

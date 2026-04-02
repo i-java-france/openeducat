@@ -1,11 +1,12 @@
 from contextlib import contextmanager
+from unittest.mock import patch
 
 from odoo import Command, fields
 from odoo.exceptions import UserError
+from odoo.tests import Form, tagged
+
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.addons.mail.tests.common import MailCommon
-from odoo.tests import Form, tagged
-from unittest.mock import patch
 
 
 @tagged('post_install', '-at_install')

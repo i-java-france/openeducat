@@ -1,7 +1,7 @@
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { manuallyDispatchProgrammaticEvent } from "@odoo/hoot-dom";
-import { Deferred, advanceTime, animationFrame } from "@odoo/hoot-mock";
-import { Component, OwlError, onError, onWillStart, xml } from "@odoo/owl";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {manuallyDispatchProgrammaticEvent} from "@odoo/hoot-dom";
+import {Deferred, advanceTime, animationFrame} from "@odoo/hoot-mock";
+import {Component, OwlError, onError, onWillStart, xml} from "@odoo/owl";
 import {
     makeMockEnv,
     mockService,
@@ -10,16 +10,16 @@ import {
     patchWithCleanup,
     serverState,
 } from "@web/../tests/web_test_helpers";
-import { browser } from "@web/core/browser/browser";
+import {browser} from "@web/core/browser/browser";
 import {
     ClientErrorDialog,
     RPCErrorDialog,
     standardErrorDialogProps,
 } from "@web/core/errors/error_dialogs";
-import { UncaughtPromiseError } from "@web/core/errors/error_service";
-import { ConnectionLostError, RPCError } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { omit } from "@web/core/utils/objects";
+import {UncaughtPromiseError} from "@web/core/errors/error_service";
+import {ConnectionLostError, RPCError} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {omit} from "@web/core/utils/objects";
 
 const errorDialogRegistry = registry.category("error_dialogs");
 const errorHandlerRegistry = registry.category("error_handlers");
@@ -33,7 +33,7 @@ test("can handle rejected promise errors with a string as reason", async () => {
         (env, err, originalError) => {
             expect(originalError).toBe("-- something went wrong --");
         },
-        { sequence: 0 }
+        {sequence: 0}
     );
     Promise.reject("-- something went wrong --");
     await animationFrame();
@@ -46,7 +46,7 @@ test("handle RPC_ERROR of type='server' and no associated dialog class", async (
     const error = new RPCError();
     error.code = 701;
     error.message = "Some strange error occured";
-    error.data = { debug: "somewhere" };
+    error.data = {debug: "somewhere"};
     error.subType = "strange_error";
     error.model = "some model";
 
@@ -80,15 +80,15 @@ test("handle custom RPC_ERROR of type='server' and associated custom dialog clas
     expect.errors(1);
     class CustomDialog extends Component {
         static template = xml`<RPCErrorDialog title="'Strange Error'"/>`;
-        static components = { RPCErrorDialog };
-        static props = { ...standardErrorDialogProps };
+        static components = {RPCErrorDialog};
+        static props = {...standardErrorDialogProps};
     }
     const error = new RPCError();
     error.code = 701;
     error.message = "Some strange error occured";
     error.model = "some model";
     const errorData = {
-        context: { exception_class: "strange_error" },
+        context: {exception_class: "strange_error"},
         name: "strange_error",
     };
     error.data = errorData;
@@ -122,19 +122,19 @@ test("handle normal RPC_ERROR of type='server' and associated custom dialog clas
     expect.errors(1);
     class CustomDialog extends Component {
         static template = xml`<RPCErrorDialog title="'Strange Error'"/>`;
-        static components = { RPCErrorDialog };
+        static components = {RPCErrorDialog};
         static props = ["*"];
     }
     class NormalDialog extends Component {
         static template = xml`<RPCErrorDialog title="'Normal Error'"/>`;
-        static components = { RPCErrorDialog };
+        static components = {RPCErrorDialog};
         static props = ["*"];
     }
     const error = new RPCError();
     error.code = 701;
     error.message = "A normal error occured";
     const errorData = {
-        context: { exception_class: "strange_error" },
+        context: {exception_class: "strange_error"},
     };
     error.exceptionName = "normal_error";
     error.data = errorData;
@@ -174,15 +174,15 @@ test("handle CONNECTION_LOST_ERROR", async () => {
             };
         },
     });
-    const values = [false, true]; // simulate the 'back online status' after 2 'version_info' calls
+    const values = [false, true]; // Simulate the 'back online status' after 2 'version_info' calls
     onRpc("/web/webclient/version_info", async () => {
         expect.step("version_info");
         const online = values.shift();
         if (online) {
             return true;
-        } else {
-            return Promise.reject();
         }
+            return Promise.reject();
+
     });
 
     await makeMockEnv();
@@ -192,7 +192,7 @@ test("handle CONNECTION_LOST_ERROR", async () => {
     patchWithCleanup(Math, {
         random: () => 0,
     });
-    // wait for timeouts
+    // Wait for timeouts
     await advanceTime(2000);
     await advanceTime(3500);
     expect.verifySteps([
@@ -236,7 +236,7 @@ test("originalError is the root cause of the error chain", async () => {
     errorHandlerRegistry.add("__test_handler__", (env, err, originalError) => {
         expect(err).toBeInstanceOf(UncaughtPromiseError); // Wrapped by error service
         expect(err.cause).toBeInstanceOf(OwlError); // Wrapped by owl
-        expect(err.cause.cause).toBe(originalError); // original error
+        expect(err.cause.cause).toBe(originalError); // Original error
         expect.step("in handler");
         return true;
     });
@@ -261,7 +261,7 @@ test("originalError is the root cause of the error chain", async () => {
     }
 
     let prom = new Deferred();
-    mountWithCleanup(ErrHandler, { props: { comp: ThrowInSetup } });
+    mountWithCleanup(ErrHandler, {props: {comp: ThrowInSetup}});
     await prom;
     expect.verifyErrors([
         `Error: An error occured in the owl lifecycle (see this Error's "cause" property)`,
@@ -279,7 +279,7 @@ test("originalError is the root cause of the error chain", async () => {
     }
 
     prom = new Deferred();
-    mountWithCleanup(ErrHandler, { props: { comp: ThrowInWillStart } });
+    mountWithCleanup(ErrHandler, {props: {comp: ThrowInWillStart}});
     await prom;
     expect.verifyErrors([`Error: The following error occurred in onWillStart: ""`]);
     expect.verifySteps(["in handler"]);
@@ -323,7 +323,9 @@ test("handle uncaught client errors", async () => {
         add(dialogClass, props) {
             expect(dialogClass).toBe(ClientErrorDialog);
             expect(props.name).toBe("UncaughtClientError > TestError");
-            expect(props.message).toBe("Uncaught Javascript Error > This is an error test");
+            expect(props.message).toBe(
+                "Uncaught Javascript Error > This is an error test"
+            );
         },
     });
     await makeMockEnv();
@@ -350,7 +352,7 @@ test("don't show dialog for errors in third-party scripts", async () => {
 
     // Error events from errors in third-party scripts have no colno, no lineno and no filename
     // because of CORS.
-    await manuallyDispatchProgrammaticEvent(window, "error", { error });
+    await manuallyDispatchProgrammaticEvent(window, "error", {error});
     await animationFrame();
     expect.verifyErrors(["Script error."]);
 });
@@ -372,7 +374,7 @@ test("show dialog for errors in third-party scripts in debug mode", async () => 
 
     // Error events from errors in third-party scripts have no colno, no lineno and no filename
     // because of CORS.
-    await manuallyDispatchProgrammaticEvent(window, "error", { error });
+    await manuallyDispatchProgrammaticEvent(window, "error", {error});
     await animationFrame();
     expect.verifyErrors(["Script error."]);
     expect.verifySteps(["Dialog: Third-Party Script Error"]);
@@ -423,7 +425,9 @@ describe("Error Service Logs", () => {
             /Caused by:.*This is a second wrapper error/,
             /Caused by:.*This is the original error/,
         ];
-        const errorRegex = new RegExp(regexParts.map((re) => re.source).join(/[\s\S]*/.source));
+        const errorRegex = new RegExp(
+            regexParts.map((re) => re.source).join(/[\s\S]*/.source)
+        );
         patchWithCleanup(console, {
             error(errorMessage) {
                 expect(errorMessage).toMatch(errorRegex);
@@ -451,7 +455,9 @@ describe("Error Service Logs", () => {
             /Caused by:.*This is a second wrapper error/,
             /Caused by:.*This is the original error/,
         ];
-        const errorRegex = new RegExp(regexParts.map((re) => re.source).join(/[\s\S]*/.source));
+        const errorRegex = new RegExp(
+            regexParts.map((re) => re.source).join(/[\s\S]*/.source)
+        );
         patchWithCleanup(console, {
             error(errorMessage) {
                 expect(errorMessage).toMatch(errorRegex);
@@ -468,7 +474,7 @@ describe("Error Service Logs", () => {
             cancelable: true,
         });
         errorEvent.error = error;
-        errorEvent.filename = "dummy_file.js"; // needed to not be treated as a CORS error
+        errorEvent.filename = "dummy_file.js"; // Needed to not be treated as a CORS error
         await errorCb(errorEvent);
         expect(errorEvent.defaultPrevented).toBe(true);
     });
@@ -484,7 +490,7 @@ describe("Error Service Logs", () => {
             (env, err, originalError) => {
                 throw new Error("Boom in handler");
             },
-            { sequence: 0 }
+            {sequence: 0}
         );
         // We want to assert that the error_service code does the preventDefault.
         patchWithCleanup(console, {
@@ -506,7 +512,7 @@ describe("Error Service Logs", () => {
 
         errorEvent.error = new Error("Genuine Business Boom");
         errorEvent.error.annotatedTraceback = "annotated";
-        errorEvent.filename = "dummy_file.js"; // needed to not be treated as a CORS error
+        errorEvent.filename = "dummy_file.js"; // Needed to not be treated as a CORS error
         await errorCb(errorEvent);
         expect(errorEvent.defaultPrevented).toBe(true);
         expect.verifySteps(["error logged"]);

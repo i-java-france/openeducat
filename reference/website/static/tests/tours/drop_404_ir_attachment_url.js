@@ -3,7 +3,7 @@ import {
     insertSnippet,
     registerWebsitePreviewTour,
 } from "@website/js/tours/tour_utils";
-import { onceAllImagesLoaded } from "@website/utils/images";
+import {onceAllImagesLoaded} from "@website/utils/images";
 
 registerWebsitePreviewTour(
     "drop_404_ir_attachment_url",

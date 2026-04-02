@@ -1,4 +1,4 @@
-import { ResCompany } from "@point_of_sale/../tests/unit/data/res_company.data";
+import {ResCompany} from "@point_of_sale/../tests/unit/data/res_company.data";
 
 ResCompany._records = [
     ...ResCompany._records,

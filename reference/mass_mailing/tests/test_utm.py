@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo.exceptions import UserError
+from odoo.tests.common import tagged, users
 
 from odoo.addons.mass_mailing.tests.common import MassMailCommon
 from odoo.addons.utm.tests.common import TestUTMCommon
-from odoo.exceptions import UserError
-from odoo.tests.common import tagged, users
 
 
 @tagged('post_install', '-at_install', 'utm_consistency')
@@ -12,7 +12,7 @@ class TestUTMConsistencyMassMailing(TestUTMCommon, MassMailCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(TestUTMConsistencyMassMailing, cls).setUpClass()
+        super().setUpClass()
         cls._create_mailing_list()
 
     @users('__system__')

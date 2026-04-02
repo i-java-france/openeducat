@@ -1,14 +1,14 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { checkFileSize, DEFAULT_MAX_FILE_SIZE } from "@web/core/utils/files";
-import { useService } from "@web/core/utils/hooks";
-import { pick } from "@web/core/utils/objects";
-import { groupBy, sortBy } from "@web/core/utils/arrays";
-import { memoize } from "@web/core/utils/functions";
-import { session } from "@web/session";
-import { useState } from "@odoo/owl";
-import { ImportBlockUI } from "./import_block_ui";
-import { BinaryFileManager } from "./binary_file_manager";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {checkFileSize, DEFAULT_MAX_FILE_SIZE} from "@web/core/utils/files";
+import {useService} from "@web/core/utils/hooks";
+import {pick} from "@web/core/utils/objects";
+import {groupBy, sortBy} from "@web/core/utils/arrays";
+import {memoize} from "@web/core/utils/functions";
+import {session} from "@web/session";
+import {useState} from "@odoo/owl";
+import {ImportBlockUI} from "./import_block_ui";
+import {BinaryFileManager} from "./binary_file_manager";
 
 const mainComponentRegistry = registry.category("main_components");
 
@@ -48,7 +48,8 @@ const humanToStrftimeFormat = memoize(function humanToStrftimeFormat(value) {
         }
         return (
             "%" +
-            (strftimeFormatTable[value.toLowerCase()] || strftimeFormatTable[value.toUpperCase()])
+            (strftimeFormatTable[value.toLowerCase()] ||
+                strftimeFormatTable[value.toUpperCase()])
         );
     });
 });
@@ -78,7 +79,7 @@ const strftimeToHumanFormat = memoize(function strftimeToHumanFormat(value) {
  *
  */
 export class BaseImportModel {
-    constructor({ env, context, orm }) {
+    constructor({env, context, orm}) {
         this.id = 1;
         this.env = env;
         this.orm = orm;
@@ -133,7 +134,9 @@ export class BaseImportModel {
                 value: {},
             },
             maxSizePerBatch: {
-                help: _t("Defines how many megabytes can be imported in each batch import"),
+                help: _t(
+                    "Defines how many megabytes can be imported in each batch import"
+                ),
                 value: 10,
                 max: Math.round(maxUploadSize / 1024 / 1024),
                 min: 0,
@@ -157,7 +160,10 @@ export class BaseImportModel {
     //--------------------------------------------------------------------------
 
     get formattingOptions() {
-        return pick(this.importOptionsValues, ...Object.keys(this.formattingOptionsValues));
+        return pick(
+            this.importOptionsValues,
+            ...Object.keys(this.formattingOptionsValues)
+        );
     }
 
     /**
@@ -221,7 +227,7 @@ export class BaseImportModel {
                     message,
                 },
             },
-            { force: true }
+            {force: true}
         );
     }
 
@@ -238,7 +244,7 @@ export class BaseImportModel {
             this.orm.call(this.resModel, "get_import_templates", [], {
                 context: this.context,
             }),
-            this.orm.call("base_import.import", "create", [{ res_model: this.resModel }]),
+            this.orm.call("base_import.import", "create", [{res_model: this.resModel}]),
         ]);
     }
 
@@ -250,7 +256,9 @@ export class BaseImportModel {
         const startRow = this.importOptions.skip;
         const importRes = {
             ids: [],
-            fields: this.columns.map((e) => Boolean(e.fieldInfo) && e.fieldInfo.fieldPath),
+            fields: this.columns.map(
+                (e) => Boolean(e.fieldInfo) && e.fieldInfo.fieldPath
+            ),
             columns: this.columns.map((e) => e.name.trim().toLowerCase()),
             hasError: false,
         };
@@ -268,7 +276,8 @@ export class BaseImportModel {
             if (error) {
                 const errorData = error.data || {};
                 const message =
-                    (errorData.arguments && (errorData.arguments[1] || errorData.arguments[0])) ||
+                    (errorData.arguments &&
+                        (errorData.arguments[1] || errorData.arguments[0])) ||
                     _t(
                         "An unknown issue occurred during import (possibly lost connection, data limit exceeded or memory limits exceeded). Please retry in case the issue is transient. If the issue still occurs, try to split the file rather than import it at once."
                     );
@@ -306,7 +315,7 @@ export class BaseImportModel {
         } else {
             importRes.nextrow = startRow;
         }
-        return { res: importRes };
+        return {res: importRes};
     }
 
     /**
@@ -326,12 +335,14 @@ export class BaseImportModel {
 
         if (!res.error) {
             res.options.date_format = strftimeToHumanFormat(res.options.date_format);
-            res.options.datetime_format = strftimeToHumanFormat(res.options.datetime_format);
+            res.options.datetime_format = strftimeToHumanFormat(
+                res.options.datetime_format
+            );
             this._onLoadSuccess(res);
         } else {
             this._onLoadError();
         }
-        return { res, error: res.error };
+        return {res, error: res.error};
     }
 
     async setOption(optionName, value, fieldName) {
@@ -398,10 +409,8 @@ export class BaseImportModel {
             importRes.columns,
             this.formattedImportOptions,
         ];
-        const { ids, messages, nextrow, name, error, binary_filenames } = await this._callImport(
-            isTest,
-            importArgs
-        );
+        const {ids, messages, nextrow, name, error, binary_filenames} =
+            await this._callImport(isTest, importArgs);
 
         // Handle server errors
         if (error) {
@@ -441,7 +450,8 @@ export class BaseImportModel {
             const parameters = {
                 tracking_disable: this.importOptions.tracking_disable,
                 delayAfterEachBatch: this.binaryFilesParams.delayAfterEachBatch.value,
-                maxBatchSize: this.binaryFilesParams.maxSizePerBatch.value * 1024 * 1024,
+                maxBatchSize:
+                    this.binaryFilesParams.maxSizePerBatch.value * 1024 * 1024,
             };
 
             if (!this.binaryFilesParams.binaryFiles) {
@@ -481,20 +491,25 @@ export class BaseImportModel {
 
     async _callImport(dryrun, args) {
         try {
-            const res = await this.orm.silent.call("base_import.import", "execute_import", args, {
-                dryrun,
-                context: {
-                    ...this.context,
-                    tracking_disable: this.importOptions.tracking_disable,
-                },
-            });
+            const res = await this.orm.silent.call(
+                "base_import.import",
+                "execute_import",
+                args,
+                {
+                    dryrun,
+                    context: {
+                        ...this.context,
+                        tracking_disable: this.importOptions.tracking_disable,
+                    },
+                }
+            );
             return res;
         } catch (error) {
             // This pattern isn't optimal but it is need to have
             // similar behaviours as in legacy. That is, catching
             // all import errors and showing them inside the top
             // "messages" area.
-            return { error };
+            return {error};
         }
     }
 
@@ -509,7 +524,9 @@ export class BaseImportModel {
             this._addMessage(sortedMessages[0].type, [sortedMessages[0].message]);
             delete sortedMessages[0];
         } else {
-            this._addMessage("danger", [_t("The file contains blocking errors (see below)")]);
+            this._addMessage("danger", [
+                _t("The file contains blocking errors (see below)"),
+            ]);
         }
 
         for (const [columnFieldId, errors] of Object.entries(sortedMessages)) {
@@ -544,7 +561,10 @@ export class BaseImportModel {
 
     _groupErrorsByField(messages) {
         const groupedErrors = {};
-        const errorsByMessage = groupBy(this._sortErrors(messages), (f) => f.message || "0");
+        const errorsByMessage = groupBy(
+            this._sortErrors(messages),
+            (f) => f.message || "0"
+        );
         for (const [message, errors] of Object.entries(errorsByMessage)) {
             if (!message.record) {
                 const foundError = errors.find((e) => e.record === undefined);
@@ -555,7 +575,9 @@ export class BaseImportModel {
             }
 
             errors[0].rows.to = errors[errors.length - 1].rows.to;
-            const fieldId = errors[0].field_path ? errors[0].field_path.join("/") : errors[0].field;
+            const fieldId = errors[0].field_path
+                ? errors[0].field_path.join("/")
+                : errors[0].field;
             if (groupedErrors[fieldId]) {
                 groupedErrors[fieldId].push(errors[0]);
             } else {
@@ -566,7 +588,9 @@ export class BaseImportModel {
     }
 
     _sortErrors(messages) {
-        return sortBy(messages, (e) => ["error", "warning", "info"].indexOf(e.priority));
+        return sortBy(messages, (e) =>
+            ["error", "warning", "info"].indexOf(e.priority)
+        );
     }
 
     /**
@@ -700,7 +724,9 @@ export class BaseImportModel {
                 if (field.name === "id") {
                     collection = fields.basic;
                 } else if (isRegular(field.fields)) {
-                    collection = hasType(types, field) ? fields.suggested : fields.additional;
+                    collection = hasType(types, field)
+                        ? fields.suggested
+                        : fields.additional;
                 } else {
                     collection = fields.relational;
                 }
@@ -749,14 +775,18 @@ export class BaseImportModel {
                 if (column.fieldInfo.type === "many2many") {
                     column.comments.push({
                         type: "info",
-                        content: _t("To import multiple values, separate them by a comma."),
+                        content: _t(
+                            "To import multiple values, separate them by a comma."
+                        ),
                     });
                 }
 
                 // If multiple columns are mapped on the same field, inform
                 // the user that they will be concatenated.
                 const samefieldColumns = this.columns.filter(
-                    (col) => col.fieldInfo && col.fieldInfo.fieldPath === column.fieldInfo.fieldPath
+                    (col) =>
+                        col.fieldInfo &&
+                        col.fieldInfo.fieldPath === column.fieldInfo.fieldPath
                 );
                 if (samefieldColumns.length >= 2) {
                     column.comments.push({
@@ -765,7 +795,11 @@ export class BaseImportModel {
                         fieldName: column.fieldInfo.string,
                     });
                 }
-            } else if (updatedColumn && column.id !== updatedColumn.id && updatedColumn.fieldInfo) {
+            } else if (
+                updatedColumn &&
+                column.id !== updatedColumn.id &&
+                updatedColumn.fieldInfo
+            ) {
                 // If column is mapped on an already mapped field, remove that field
                 // from the old column to keep it unique.
                 if (updatedColumn.fieldInfo.fieldPath === column.fieldInfo.fieldPath) {
@@ -799,10 +833,10 @@ export class BaseImportModel {
                 type: "select",
                 value: "",
                 options: [
-                    { value: ",", label: _t("Comma") },
-                    { value: ";", label: _t("Semicolon") },
-                    { value: "\t", label: _t("Tab") },
-                    { value: " ", label: _t("Space") },
+                    {value: ",", label: _t("Comma")},
+                    {value: ";", label: _t("Semicolon")},
+                    {value: "\t", label: _t("Tab")},
+                    {value: " ", label: _t("Space")},
                 ],
             },
             quoting: {
@@ -847,9 +881,9 @@ export class BaseImportModel {
                 type: "select",
                 value: ",",
                 options: [
-                    { value: ",", label: _t("Comma") },
-                    { value: ".", label: _t("Dot") },
-                    { value: "", label: _t("No Separator") },
+                    {value: ",", label: _t("Comma")},
+                    {value: ".", label: _t("Dot")},
+                    {value: "", label: _t("No Separator")},
                 ],
             },
             float_decimal_separator: {
@@ -857,8 +891,8 @@ export class BaseImportModel {
                 type: "select",
                 value: ".",
                 options: [
-                    { value: ",", label: _t("Comma") },
-                    { value: ".", label: _t("Dot") },
+                    {value: ",", label: _t("Comma")},
+                    {value: ".", label: _t("Dot")},
                 ],
             },
         };
@@ -868,7 +902,7 @@ export class BaseImportModel {
 /**
  * @returns {BaseImportModel}columns
  */
-export function useImportModel({ env, context }) {
+export function useImportModel({env, context}) {
     const orm = useService("orm");
-    return useState(new BaseImportModel({ env, context, orm }));
+    return useState(new BaseImportModel({env, context, orm}));
 }

@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -60,7 +59,7 @@ class PosPaymentMethod(models.Model):
                     raise ValidationError(_("The %s already has one online payment.", config.name))
 
     def _is_write_forbidden(self, fields):
-        return super(PosPaymentMethod, self)._is_write_forbidden(fields - {'online_payment_provider_ids'})
+        return super()._is_write_forbidden(fields - {'online_payment_provider_ids'})
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -106,7 +105,7 @@ class PosPaymentMethod(models.Model):
             vals['payment_method_type'] = 'none'
 
     def _get_payment_terminal_selection(self):
-        return super(PosPaymentMethod, self)._get_payment_terminal_selection() if not self.is_online_payment else []
+        return super()._get_payment_terminal_selection() if not self.is_online_payment else []
 
     @api.depends('type')
     def _compute_hide_use_payment_terminal(self):

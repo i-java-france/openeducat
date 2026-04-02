@@ -1,6 +1,6 @@
-import { useHotkey } from "../hotkeys/hotkey_hook";
+import {useHotkey} from "../hotkeys/hotkey_hook";
 
-import { Component, useRef } from "@odoo/owl";
+import {Component, useRef} from "@odoo/owl";
 
 /**
  * Custom checkbox
@@ -65,11 +65,11 @@ export class CheckBox extends Component {
         // when the focus is inside the root element
         useHotkey(
             "Enter",
-            ({ area }) => {
+            ({area}) => {
                 const oldValue = area.querySelector("input").checked;
                 this.props.onChange(!oldValue);
             },
-            { area: () => this.rootRef.el, bypassEditableProtection: true }
+            {area: () => this.rootRef.el, bypassEditableProtection: true}
         );
     }
 

@@ -1,11 +1,14 @@
-import { setupInteractionWhiteList, startInteractions } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { hover, queryOne } from "@odoo/hoot-dom";
-import { advanceTime } from "@odoo/hoot-mock";
+import {describe, expect, test} from "@odoo/hoot";
+import {hover, queryOne} from "@odoo/hoot-dom";
+import {advanceTime} from "@odoo/hoot-mock";
 
-import { onRpc, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { onceAllImagesLoaded } from "@website/utils/images";
+import {onRpc, patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {onceAllImagesLoaded} from "@website/utils/images";
 
 setupInteractionWhiteList("website.image_shape_hover_effect");
 
@@ -19,7 +22,7 @@ test("image_shape_hover_effect changes image on enter & leave", async () => {
             setTimeout(() => super.onload());
         },
     });
-    const { core } = await startInteractions(`
+    const {core} = await startInteractions(`
         <div id="wrapwrap">
             <img class="img img-fluid mx-auto o_we_image_cropped o_animate_on_hover rounded-circle rounded"
                 src="/web/image/384-8a55a748/s_banner_3.svg" alt=""

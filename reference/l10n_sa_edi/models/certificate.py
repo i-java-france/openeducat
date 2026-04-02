@@ -1,9 +1,9 @@
 import base64
 
 from cryptography import x509
+from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.x509 import ObjectIdentifier
 from cryptography.x509.oid import NameOID
-from cryptography.hazmat.primitives import hashes, serialization
 
 from odoo import _, api, models, service
 from odoo.exceptions import UserError

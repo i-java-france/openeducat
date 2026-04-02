@@ -1,13 +1,13 @@
-import { Dialog } from "@web/core/dialog/dialog";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
-import { _t } from "@web/core/l10n/translation";
-import { KeepLast, Race } from "@web/core/utils/concurrency";
-import { useAutofocus, useService } from "@web/core/utils/hooks";
-import { scrollTo } from "@web/core/utils/scrolling";
-import { fuzzyLookup } from "@web/core/utils/search";
-import { debounce } from "@web/core/utils/timing";
-import { isMacOS, isMobileOS } from "@web/core/browser/feature_detection";
-import { highlightText } from "@web/core/utils/html";
+import {Dialog} from "@web/core/dialog/dialog";
+import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
+import {_t} from "@web/core/l10n/translation";
+import {KeepLast, Race} from "@web/core/utils/concurrency";
+import {useAutofocus, useService} from "@web/core/utils/hooks";
+import {scrollTo} from "@web/core/utils/scrolling";
+import {fuzzyLookup} from "@web/core/utils/search";
+import {debounce} from "@web/core/utils/timing";
+import {isMacOS, isMobileOS} from "@web/core/browser/feature_detection";
+import {highlightText} from "@web/core/utils/html";
 
 import {
     Component,
@@ -71,7 +71,8 @@ const FUZZY_NAMESPACES = ["default"];
 function commandsWithinCategory(categoryName, categories) {
     return (cmd) => {
         const inCurrentCategory = categoryName === cmd.category;
-        const fallbackCategory = categoryName === "default" && !categories.includes(cmd.category);
+        const fallbackCategory =
+            categoryName === "default" && !categories.includes(cmd.category);
         return inCurrentCategory || fallbackCategory;
     };
 }
@@ -79,32 +80,34 @@ function commandsWithinCategory(categoryName, categories) {
 export class DefaultCommandItem extends Component {
     static template = "web.DefaultCommandItem";
     static props = {
-        slots: { type: Object, optional: true },
+        slots: {type: Object, optional: true},
         // Props send by the command palette:
-        hotkey: { type: String, optional: true },
-        hotkeyOptions: { type: String, optional: true },
-        name: { type: String, optional: true },
-        searchValue: { type: String, optional: true },
-        executeCommand: { type: Function, optional: true },
+        hotkey: {type: String, optional: true},
+        hotkeyOptions: {type: String, optional: true},
+        name: {type: String, optional: true},
+        searchValue: {type: String, optional: true},
+        executeCommand: {type: Function, optional: true},
     };
 }
 
 export class CommandPalette extends Component {
     static template = "web.CommandPalette";
-    static components = { Dialog };
+    static components = {Dialog};
     static lastSessionId = 0;
     static props = {
-        bus: { type: EventBus, optional: true },
+        bus: {type: EventBus, optional: true},
         close: Function,
         config: Object,
-        closeMe: { type: Function, optional: true },
+        closeMe: {type: Function, optional: true},
     };
 
     setup() {
         if (this.props.bus) {
-            const setConfig = ({ detail }) => this.setCommandPaletteConfig(detail);
+            const setConfig = ({detail}) => this.setCommandPaletteConfig(detail);
             this.props.bus.addEventListener(`SET-CONFIG`, setConfig);
-            onWillDestroy(() => this.props.bus.removeEventListener(`SET-CONFIG`, setConfig));
+            onWillDestroy(() =>
+                this.props.bus.removeEventListener(`SET-CONFIG`, setConfig)
+            );
         }
 
         this.keyId = 1;
@@ -115,7 +118,9 @@ export class CommandPalette extends Component {
         this.activeElement = useService("ui").activeElement;
         this.inputRef = useAutofocus();
 
-        useHotkey("Enter", () => this.executeSelectedCommand(), { bypassEditableProtection: true });
+        useHotkey("Enter", () => this.executeSelectedCommand(), {
+            bypassEditableProtection: true,
+        });
         useHotkey("Control+Enter", () => this.executeSelectedCommand(true), {
             bypassEditableProtection: true,
         });
@@ -171,7 +176,7 @@ export class CommandPalette extends Component {
         this.configByNamespace = config.configByNamespace || {};
         this.state.FooterComponent = config.FooterComponent;
 
-        this.providersByNamespace = { default: [] };
+        this.providersByNamespace = {default: []};
         for (const provider of config.providers) {
             const namespace = provider.namespace || "default";
             if (namespace in this.providersByNamespace) {
@@ -181,7 +186,9 @@ export class CommandPalette extends Component {
             }
         }
 
-        const { namespace, searchValue } = this.processSearchValue(config.searchValue || "");
+        const {namespace, searchValue} = this.processSearchValue(
+            config.searchValue || ""
+        );
         this.switchNamespace(namespace);
         this.state.searchValue = searchValue;
         await this.race.add(this.search(searchValue));
@@ -197,7 +204,7 @@ export class CommandPalette extends Component {
         this.categoryKeys = ["default"];
         this.categoryNames = {};
         const proms = this.providersByNamespace[namespace].map((provider) => {
-            const { provide } = provider;
+            const {provide} = provider;
             const result = provide(this.env, options);
             return result;
         });
@@ -216,7 +223,9 @@ export class CommandPalette extends Component {
                 }
                 for (const category of this.categoryKeys) {
                     commandsSorted = commandsSorted.concat(
-                        commands.filter(commandsWithinCategory(category, this.categoryKeys))
+                        commands.filter(
+                            commandsWithinCategory(category, this.categoryKeys)
+                        )
                     );
                 }
                 commands = commandsSorted;
@@ -227,7 +236,11 @@ export class CommandPalette extends Component {
             commands.slice(0, 100).map((command) => ({
                 ...command,
                 keyId: this.keyId++,
-                text: highlightText(options.searchValue, command.name, "fw-bolder text-primary"),
+                text: highlightText(
+                    options.searchValue,
+                    command.name,
+                    "fw-bolder text-primary"
+                ),
             }))
         );
         this.selectCommand(this.state.commands.length ? 0 : -1);
@@ -262,7 +275,7 @@ export class CommandPalette extends Component {
         this.selectCommand(nextIndex);
 
         const command = this.listboxRef.el.querySelector(`#o_command_${nextIndex}`);
-        scrollTo(command, { scrollable: this.listboxRef.el });
+        scrollTo(command, {scrollable: this.listboxRef.el});
     }
 
     onCommandClicked(event, index) {
@@ -324,7 +337,7 @@ export class CommandPalette extends Component {
     }
 
     debounceSearch(value) {
-        const { namespace, searchValue } = this.processSearchValue(value);
+        const {namespace, searchValue} = this.processSearchValue(value);
         if (namespace !== "default" && this.state.namespace !== namespace) {
             this.switchNamespace(namespace);
         }
@@ -339,7 +352,11 @@ export class CommandPalette extends Component {
     }
 
     onKeyDown(ev) {
-        if (ev.key.toLowerCase() === "backspace" && !ev.target.value.length && !ev.repeat) {
+        if (
+            ev.key.toLowerCase() === "backspace" &&
+            !ev.target.value.length &&
+            !ev.repeat
+        ) {
             this.switchNamespace("default");
             this.state.searchValue = "";
             this.searchValuePromise = this.lastDebounceSearch("").catch(() => {
@@ -367,7 +384,8 @@ export class CommandPalette extends Component {
             namespaceConfig.debounceDelay || 0
         );
         this.state.namespace = namespace;
-        this.state.placeholder = namespaceConfig.placeholder || DEFAULT_PLACEHOLDER.toString();
+        this.state.placeholder =
+            namespaceConfig.placeholder || DEFAULT_PLACEHOLDER.toString();
     }
 
     processSearchValue(searchValue) {
@@ -376,7 +394,7 @@ export class CommandPalette extends Component {
             namespace = searchValue[0];
             searchValue = searchValue.slice(1);
         }
-        return { namespace, searchValue };
+        return {namespace, searchValue};
     }
 
     get isMacOS() {

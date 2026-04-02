@@ -83,7 +83,7 @@ class ProductPricelist(models.Model):
         default = dict(default or {})
         vals_list = super().copy_data(default=default)
         if 'name' not in default:
-            for pricelist, vals in zip(self, vals_list):
+            for pricelist, vals in zip(self, vals_list, strict=False):
                 vals['name'] = _("%s (copy)", pricelist.name)
         return vals_list
 

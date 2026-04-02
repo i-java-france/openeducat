@@ -1,12 +1,12 @@
-import { fields } from "@web/../tests/web_test_helpers";
-import { projectModels } from "@project/../tests/project_models";
+import {fields} from "@web/../tests/web_test_helpers";
+import {projectModels} from "@project/../tests/project_models";
 
 export class ProjectTask extends projectModels.ProjectTask {
     _name = "project.task";
 
-    company_id = fields.Many2one({ string: "Company", relation: "res.company" });
-    tag_ids = fields.Many2many({ relation: "project.tags" });
-    date_deadline = fields.Datetime({ string: "Deadline" });
+    company_id = fields.Many2one({string: "Company", relation: "res.company"});
+    tag_ids = fields.Many2many({relation: "project.tags"});
+    date_deadline = fields.Datetime({string: "Deadline"});
 
     _records = [
         {

@@ -1,5 +1,5 @@
-import { patch } from "@web/core/utils/patch";
-import { ActionPanel } from "@mail/discuss/core/common/action_panel";
+import {patch} from "@web/core/utils/patch";
+import {ActionPanel} from "@mail/discuss/core/common/action_panel";
 
 patch(ActionPanel.prototype, {
     get initialWidth() {

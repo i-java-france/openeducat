@@ -1,9 +1,9 @@
-import { useHover } from "@mail/utils/common/hooks";
-import { Component } from "@odoo/owl";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+import {useHover} from "@mail/utils/common/hooks";
+import {Component} from "@odoo/owl";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
 
 /**
  * @typedef {Object} Props
@@ -12,7 +12,7 @@ import { useService } from "@web/core/utils/hooks";
 export class DiscussSearch extends Component {
     static template = "mail.DiscussSearch";
     static props = ["class?"];
-    static components = { Dropdown };
+    static components = {Dropdown};
 
     setup() {
         super.setup();
@@ -69,6 +69,6 @@ export class DiscussSearch extends Component {
     }
 
     onClickSearchConversations() {
-        this.command.openMainPalette({ searchValue: "@" });
+        this.command.openMainPalette({searchValue: "@"});
     }
 }

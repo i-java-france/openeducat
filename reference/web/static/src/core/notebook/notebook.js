@@ -1,4 +1,11 @@
-import { Component, onWillRender, onWillUpdateProps, useEffect, useRef, useState } from "@odoo/owl";
+import {
+    Component,
+    onWillRender,
+    onWillUpdateProps,
+    useEffect,
+    useRef,
+    useState,
+} from "@odoo/owl";
 
 /**
  * A notebook component that will render only the current page and allow
@@ -57,21 +64,21 @@ export class Notebook extends Component {
         onPageUpdate: () => {},
     };
     static props = {
-        slots: { type: Object, optional: true },
-        pages: { type: Object, optional: true },
-        class: { optional: true },
-        className: { type: String, optional: true },
-        defaultPage: { type: String, optional: true },
-        orientation: { type: String, optional: true },
-        icons: { type: Object, optional: true },
-        onPageUpdate: { type: Function, optional: true },
+        slots: {type: Object, optional: true},
+        pages: {type: Object, optional: true},
+        class: {optional: true},
+        className: {type: String, optional: true},
+        defaultPage: {type: String, optional: true},
+        orientation: {type: String, optional: true},
+        icons: {type: Object, optional: true},
+        onPageUpdate: {type: Function, optional: true},
     };
 
     setup() {
         this.activePane = useRef("activePane");
         this.pages = this.computePages(this.props);
         this.invalidPages = new Set();
-        this.state = useState({ currentPage: null });
+        this.state = useState({currentPage: null});
         this.state.currentPage = this.computeActivePage(this.props.defaultPage, true);
         useEffect(
             () => {
@@ -85,9 +92,13 @@ export class Notebook extends Component {
         });
         onWillUpdateProps((nextProps) => {
             const activateDefault =
-                this.props.defaultPage !== nextProps.defaultPage || !this.defaultVisible;
+                this.props.defaultPage !== nextProps.defaultPage ||
+                !this.defaultVisible;
             this.pages = this.computePages(nextProps);
-            this.state.currentPage = this.computeActivePage(nextProps.defaultPage, activateDefault);
+            this.state.currentPage = this.computeActivePage(
+                nextProps.defaultPage,
+                activateDefault
+            );
         });
     }
 
@@ -101,7 +112,10 @@ export class Notebook extends Component {
     }
 
     activatePage(pageIndex) {
-        if (!this.disabledPages.includes(pageIndex) && this.state.currentPage !== pageIndex) {
+        if (
+            !this.disabledPages.includes(pageIndex) &&
+            this.state.currentPage !== pageIndex
+        ) {
             this.activePane.el?.classList.remove("show");
             this.state.currentPage = pageIndex;
         }
@@ -119,7 +133,7 @@ export class Notebook extends Component {
         this.disabledPages = [];
         const pages = [];
         const pagesWithIndex = [];
-        for (const [k, v] of Object.entries({ ...props.slots, ...props.pages })) {
+        for (const [k, v] of Object.entries({...props.slots, ...props.pages})) {
             const id = v.id || k;
             if (v.index) {
                 pagesWithIndex.push([id, v]);

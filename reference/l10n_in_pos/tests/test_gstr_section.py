@@ -1,6 +1,8 @@
-from odoo.addons.l10n_in_pos.tests.common import TestInPosBase
-from odoo.tests import tagged
 from datetime import date
+
+from odoo.tests import tagged
+
+from odoo.addons.l10n_in_pos.tests.common import TestInPosBase
 
 TEST_DATE = date(2023, 5, 20)
 

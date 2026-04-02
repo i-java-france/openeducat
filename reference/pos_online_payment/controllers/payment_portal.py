@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from werkzeug.urls import url_encode
 
 from odoo import _, http, tools
+from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.http import request
-from odoo.exceptions import AccessError, ValidationError, UserError
+
 from odoo.addons.payment.controllers import portal as payment_portal
 
 

@@ -1,22 +1,22 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <odoo>
-<!--Notable pitfalls-->
-<!--Unpatched wkhtmltoimage uses an old version of webkit, meaning things like standard flexbox
+    <!--Notable pitfalls-->
+    <!--Unpatched wkhtmltoimage uses an old version of webkit, meaning things like standard flexbox
     are not supported and -webkit flags should be used.-->
-<!--Your local fonts may diverge from production fonts, make sure the designs work as intended
+    <!--Your local fonts may diverge from production fonts, make sure the designs work as intended
     in their final production environment.-->
-<template id="common_template">
-    <html>
-        <head>
-            <meta charset="utf-8"/>
-            <style>
+    <template id="common_template">
+        <html>
+            <head>
+                <meta charset="utf-8" />
+                <style>
             body {
                 @charset "UTF-8";
                 padding: 35px;
                 font-family: Roboto, Ubuntu, "Noto Sans", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
                 font-size: 1em;
-                background: <t t-out="card_campaign.card_template_id.primary_color"/>;
-                color: <t t-out="card_campaign.card_template_id.primary_text_color"/>;
+                background: <t t-out="card_campaign.card_template_id.primary_color" />;
+                color: <t t-out="card_campaign.card_template_id.primary_text_color" />;
                 background-size: cover;
                 background-attachment: fixed;
                 display: -webkit-box;
@@ -27,8 +27,12 @@
                 justify-content: space-around;
             }
             .button_background {
-                background: <t t-out="card_campaign.card_template_id.secondary_color"/>;
-                color: <t t-out="card_campaign.card_template_id.secondary_text_color"/>;
+                background: <t
+                    t-out="card_campaign.card_template_id.secondary_color"
+                />;
+                color: <t
+                    t-out="card_campaign.card_template_id.secondary_text_color"
+                />;
             }
             .header {
                 line-height: 1.2em;
@@ -93,16 +97,20 @@
                 font-size: 1rem;
             }
             </style>
-        </head>
-        <t t-set="values" t-value="card_campaign._get_card_element_values(object)"/>
-        <body t-attf-style="background-image: url('data:image/png;base64,{{card_campaign.content_background or card_campaign.card_template_id.default_background}}');">
-        </body>
-    </html>
-</template>
+            </head>
+            <t
+                t-set="values"
+                t-value="card_campaign._get_card_element_values(object)"
+            />
+            <body
+                t-attf-style="background-image: url('data:image/png;base64,{{card_campaign.content_background or card_campaign.card_template_id.default_background}}');"
+            />
+        </html>
+    </template>
 
-<template id="template_1" inherit_id="common_template" primary="True">
-    <xpath expr="//html/head/style" position="after">
-    <style>
+    <template id="template_1" inherit_id="common_template" primary="True">
+        <xpath expr="//html/head/style" position="after">
+            <style>
         body {
             -webkit-box-align: center;
             align-items: center;
@@ -142,50 +150,61 @@
             width: auto;
         }
     </style>
-    </xpath>
-    <xpath expr="//html/body" position="inside">
-        <div class="center_column">
-            <div class="title">
-                <h1 class="header" t-out="values['header']" t-att-style="'color: %s;' % card_campaign.content_header_color"></h1>
-                <h2 class="subheader" t-out="values['sub_header']" t-att-style="'color: %s;' % card_campaign.content_sub_header_color"></h2>
-            </div>
-            <div class="button_background rounded_button cta_button" t-if="card_campaign.content_button">
-                <h1 t-out="card_campaign.content_button">Button</h1>
-            </div>
-        </div>
-        <div class="footer">
-            <div class="profile_section">
-                <img
-                t-attf-src="data:image/png;base64,{{values['image1']}}"
-                alt="Profile Picture"
-                width="64px"
-                height="64px"
-                style="margin-right: 10px"
-                t-if="values['image1']"
-                />
-                <div t-else=""></div>
-                <div class="text_section">
-                    <span t-out="values['section']"/>
-                    <div class="text_subsections">
-                        <span t-out="values['sub_section1']"/>
-                        <span t-out="values['sub_section2']"/>
-                    </div>
+        </xpath>
+        <xpath expr="//html/body" position="inside">
+            <div class="center_column">
+                <div class="title">
+                    <h1
+                        class="header"
+                        t-out="values['header']"
+                        t-att-style="'color: %s;' % card_campaign.content_header_color"
+                    />
+                    <h2
+                        class="subheader"
+                        t-out="values['sub_header']"
+                        t-att-style="'color: %s;' % card_campaign.content_sub_header_color"
+                    />
+                </div>
+                <div
+                    class="button_background rounded_button cta_button"
+                    t-if="card_campaign.content_button"
+                >
+                    <h1 t-out="card_campaign.content_button">Button</h1>
                 </div>
             </div>
-            <img
-                t-attf-src="data:image/png;base64,{{values['image2']}}"
-                alt="Profile Picture"
-                height="auto"
-                class="logo"
-                t-if="values['image2']"
-            />
-        </div>
-    </xpath>
-</template>
+            <div class="footer">
+                <div class="profile_section">
+                    <img
+                        t-attf-src="data:image/png;base64,{{values['image1']}}"
+                        alt="Profile Picture"
+                        width="64px"
+                        height="64px"
+                        style="margin-right: 10px"
+                        t-if="values['image1']"
+                    />
+                    <div t-else="" />
+                    <div class="text_section">
+                        <span t-out="values['section']" />
+                        <div class="text_subsections">
+                            <span t-out="values['sub_section1']" />
+                            <span t-out="values['sub_section2']" />
+                        </div>
+                    </div>
+                </div>
+                <img
+                    t-attf-src="data:image/png;base64,{{values['image2']}}"
+                    alt="Profile Picture"
+                    height="auto"
+                    class="logo"
+                    t-if="values['image2']"
+                />
+            </div>
+        </xpath>
+    </template>
 
-<template id="template_2" inherit_id="common_template" primary="True">
-    <xpath expr="//html/head/style" position="after">
-    <style>
+    <template id="template_2" inherit_id="common_template" primary="True">
+        <xpath expr="//html/head/style" position="after">
+            <style>
         body {
             -webkit-box-align: center;
             align-items: center;
@@ -234,48 +253,59 @@
             width: auto;
         }
     </style>
-    </xpath>
-    <xpath expr="//html/body" position="inside">
-        <div class="logo_line">
-            <img
-                t-attf-src="data:image/png;base64,{{values['image2']}}"
-                alt="Profile Picture"
-                class="logo"
-                t-if="values['image2']"
-            />
-        </div>
-        <div class="title">
-            <h1 class="header" t-out="values['header']" t-att-style="'color: %s;' % card_campaign.content_header_color"/>
-            <h2 class="subheader" t-out="values['sub_header']" t-att-style="'color: %s;' % card_campaign.content_sub_header_color"/>
-        </div>
-        <div class="footer">
-            <div class="profile_section">
+        </xpath>
+        <xpath expr="//html/body" position="inside">
+            <div class="logo_line">
                 <img
-                    t-attf-src="data:image/png;base64,{{values['image1']}}"
+                    t-attf-src="data:image/png;base64,{{values['image2']}}"
                     alt="Profile Picture"
-                    width="64px"
-                    height="64px"
-                    t-if="values['image1']"
+                    class="logo"
+                    t-if="values['image2']"
                 />
-                <div t-else=""></div>
-                <div class="text_section">
-                    <span t-out="values['section']"/>
-                    <div class="text_subsections">
-                        <span t-out="values['sub_section1']"/>
-                        <span t-out="values['sub_section2']"/>
+            </div>
+            <div class="title">
+                <h1
+                    class="header"
+                    t-out="values['header']"
+                    t-att-style="'color: %s;' % card_campaign.content_header_color"
+                />
+                <h2
+                    class="subheader"
+                    t-out="values['sub_header']"
+                    t-att-style="'color: %s;' % card_campaign.content_sub_header_color"
+                />
+            </div>
+            <div class="footer">
+                <div class="profile_section">
+                    <img
+                        t-attf-src="data:image/png;base64,{{values['image1']}}"
+                        alt="Profile Picture"
+                        width="64px"
+                        height="64px"
+                        t-if="values['image1']"
+                    />
+                    <div t-else="" />
+                    <div class="text_section">
+                        <span t-out="values['section']" />
+                        <div class="text_subsections">
+                            <span t-out="values['sub_section1']" />
+                            <span t-out="values['sub_section2']" />
+                        </div>
                     </div>
                 </div>
+                <div
+                    class="button_background rounded_button cta_button"
+                    t-if="card_campaign.content_button"
+                >
+                    <h1 t-out="card_campaign.content_button">button text</h1>
+                </div>
             </div>
-            <div class="button_background rounded_button cta_button" t-if="card_campaign.content_button">
-                <h1 t-out="card_campaign.content_button">button text</h1>
-            </div>
-        </div>
-    </xpath>
-</template>
+        </xpath>
+    </template>
 
-<template id="template_3" inherit_id="common_template" primary="True">
-    <xpath expr="//html/head/style" position="after">
-    <style>
+    <template id="template_3" inherit_id="common_template" primary="True">
+        <xpath expr="//html/head/style" position="after">
+            <style>
         body {
             -webkit-box-pack: justify;
             justify-content: space-between;
@@ -325,48 +355,60 @@
             width: auto;
         }
     </style>
-    </xpath>
-    <xpath expr="//html/body" position="inside">
-        <img
-            t-attf-src="data:image/png;base64,{{values['image2']}}"
-            alt="Profile Picture"
-            class="logo"
-            t-if="values['image2']"
-        />
-        <div class="title">
-            <h2 class="subheader" t-out="values['sub_header']" t-att-style="'color: %s;' % card_campaign.content_sub_header_color"></h2>
-            <h1 class="header" t-out="values['header']" t-att-style="'color: %s;' % card_campaign.content_header_color"></h1>
-        </div>
-        <div class="footer">
-            <div>
-                <div class="text_section">
-                    <span t-out="values['section']"/>
-                    <div class="text_subsections">
-                        <span t-out="values['sub_section1']"/>
-                        <t t-if="values['sub_section1'] and values['sub_section2']">-</t>
-                        <span t-out="values['sub_section2']"/>
+        </xpath>
+        <xpath expr="//html/body" position="inside">
+            <img
+                t-attf-src="data:image/png;base64,{{values['image2']}}"
+                alt="Profile Picture"
+                class="logo"
+                t-if="values['image2']"
+            />
+            <div class="title">
+                <h2
+                    class="subheader"
+                    t-out="values['sub_header']"
+                    t-att-style="'color: %s;' % card_campaign.content_sub_header_color"
+                />
+                <h1
+                    class="header"
+                    t-out="values['header']"
+                    t-att-style="'color: %s;' % card_campaign.content_header_color"
+                />
+            </div>
+            <div class="footer">
+                <div>
+                    <div class="text_section">
+                        <span t-out="values['section']" />
+                        <div class="text_subsections">
+                            <span t-out="values['sub_section1']" />
+                            <t
+                                t-if="values['sub_section1'] and values['sub_section2']"
+                            >-</t>
+                            <span t-out="values['sub_section2']" />
+                        </div>
+                    </div>
+                    <div
+                        class="button_background rounded_rectangle_button cta_button"
+                        t-if="card_campaign.content_button"
+                    >
+                        <h2 t-out="card_campaign.content_button">button text</h2>
                     </div>
                 </div>
-                <div class="button_background rounded_rectangle_button cta_button" t-if="card_campaign.content_button">
-                    <h2 t-out="card_campaign.content_button">button text</h2>
-                </div>
+                <img
+                    class="profile_image"
+                    t-attf-src="data:image/png;base64,{{values['image1']}}"
+                    alt="Profile Picture"
+                    width="106px"
+                    height="106px"
+                    t-if="values['image1']"
+                />
             </div>
-            <img
-                class="profile_image"
-                t-attf-src="data:image/png;base64,{{values['image1']}}"
-                alt="Profile Picture"
-                width="106px"
-                height="106px"
-                t-if="values['image1']"
-            />
-        </div>
-    </xpath>
-</template>
+        </xpath>
+    </template>
 
-
-<template id="template_4" inherit_id="common_template" primary="True">
-    <xpath expr="//html/head/style" position="after">
-    <style>
+    <template id="template_4" inherit_id="common_template" primary="True">
+        <xpath expr="//html/head/style" position="after">
+            <style>
         body {
             justify-content: space-between;
         }
@@ -437,47 +479,60 @@
             top: 35px;
         }
     </style>
-    </xpath>
-    <xpath expr="//html/body" position="inside">
-        <div class="logo_line">
+        </xpath>
+        <xpath expr="//html/body" position="inside">
+            <div class="logo_line">
+                <img
+                    t-attf-src="data:image/png;base64,{{values['image2']}}"
+                    alt="Profile Picture"
+                    class="logo"
+                    t-if="values['image2']"
+                />
+            </div>
             <img
-                t-attf-src="data:image/png;base64,{{values['image2']}}"
+                class="profile_image"
+                t-attf-src="data:image/png;base64,{{values['image1']}}"
                 alt="Profile Picture"
-                class="logo"
-                t-if="values['image2']"
+                width="106px"
+                height="106px"
+                t-if="values['image1']"
             />
-        </div>
-        <img
-            class="profile_image"
-            t-attf-src="data:image/png;base64,{{values['image1']}}"
-            alt="Profile Picture"
-            width="106px"
-            height="106px"
-            t-if="values['image1']"
-        />
-        <div class="title">
-            <h2 class="subheader" t-out="values['sub_header']" t-att-style="'color: %s;' % card_campaign.content_sub_header_color"></h2>
-            <h1 class="header" t-out="values['header']" t-att-style="'color: %s;' % card_campaign.content_header_color"></h1>
-        </div>
-        <div class="footer">
-            <div class="text_section">
-                <span t-out="values['section']"/>
-                <div class="text_subsections">
-                    <span t-out="values['sub_section1']"/>
-                    <t t-if="values['sub_section1'] and values['sub_section2']">-</t>
-                    <span t-out="values['sub_section2']"/>
+            <div class="title">
+                <h2
+                    class="subheader"
+                    t-out="values['sub_header']"
+                    t-att-style="'color: %s;' % card_campaign.content_sub_header_color"
+                />
+                <h1
+                    class="header"
+                    t-out="values['header']"
+                    t-att-style="'color: %s;' % card_campaign.content_header_color"
+                />
+            </div>
+            <div class="footer">
+                <div class="text_section">
+                    <span t-out="values['section']" />
+                    <div class="text_subsections">
+                        <span t-out="values['sub_section1']" />
+                        <t
+                            t-if="values['sub_section1'] and values['sub_section2']"
+                        >-</t>
+                        <span t-out="values['sub_section2']" />
+                    </div>
+                </div>
+                <div
+                    class="button_background rounded_button cta_button"
+                    t-if="card_campaign.content_button"
+                >
+                    <h1 t-out="card_campaign.content_button">button text</h1>
                 </div>
             </div>
-            <div class="button_background rounded_button cta_button" t-if="card_campaign.content_button">
-                <h1 t-out="card_campaign.content_button">button text</h1>
-            </div>
-        </div>
-    </xpath>
-</template>
+        </xpath>
+    </template>
 
-<template id="template_5" inherit_id="common_template" primary="True">
-    <xpath expr="//html/head/style" position="after">
-    <style>
+    <template id="template_5" inherit_id="common_template" primary="True">
+        <xpath expr="//html/head/style" position="after">
+            <style>
         body {
             height: 100%;
         }
@@ -531,43 +586,56 @@
             width: auto;
         }
     </style>
-    </xpath>
-    <xpath expr="//html/body" position="inside">
-        <div class="logo_line">
-            <img
-                class="profile_image"
-                t-attf-src="data:image/png;base64,{{values['image1']}}"
-                alt="Profile Picture"
-                width="60px"
-                height="60px"
-                t-if="values['image1']"
-            />
-            <!--spacing filler in case there is no image-->
-            <div t-if="not values['image1']"></div>
-            <div class="button_background rounded_button cta_button" t-if="card_campaign.content_button">
-                <h1 t-out="card_campaign.content_button">button text</h1>
-            </div>
-        </div>
-        <div class="title">
-            <h2 class="subheader" t-out="values['sub_header']" t-att-style="'color: %s;' % card_campaign.content_sub_header_color"></h2>
-            <h1 class="header" t-out="values['header']" t-att-style="'color: %s;' % card_campaign.content_header_color"></h1>
-        </div>
-        <div class="footer">
-            <div class="text_section">
-                <span t-out="values['section']"/>
-                <div class="text_subsections">
-                    <span t-out="values['sub_section1']"/>
-                    <t t-if="values['sub_section1'] and values['sub_section2']">-</t>
-                    <span t-out="values['sub_section2']"/>
+        </xpath>
+        <xpath expr="//html/body" position="inside">
+            <div class="logo_line">
+                <img
+                    class="profile_image"
+                    t-attf-src="data:image/png;base64,{{values['image1']}}"
+                    alt="Profile Picture"
+                    width="60px"
+                    height="60px"
+                    t-if="values['image1']"
+                />
+                <!--spacing filler in case there is no image-->
+                <div t-if="not values['image1']" />
+                <div
+                    class="button_background rounded_button cta_button"
+                    t-if="card_campaign.content_button"
+                >
+                    <h1 t-out="card_campaign.content_button">button text</h1>
                 </div>
             </div>
-            <img
-                t-attf-src="data:image/png;base64,{{values['image2']}}"
-                alt="Profile Picture"
-                class="logo"
-                t-if="values['image2']"
-            />
-        </div>
-    </xpath>
-</template>
+            <div class="title">
+                <h2
+                    class="subheader"
+                    t-out="values['sub_header']"
+                    t-att-style="'color: %s;' % card_campaign.content_sub_header_color"
+                />
+                <h1
+                    class="header"
+                    t-out="values['header']"
+                    t-att-style="'color: %s;' % card_campaign.content_header_color"
+                />
+            </div>
+            <div class="footer">
+                <div class="text_section">
+                    <span t-out="values['section']" />
+                    <div class="text_subsections">
+                        <span t-out="values['sub_section1']" />
+                        <t
+                            t-if="values['sub_section1'] and values['sub_section2']"
+                        >-</t>
+                        <span t-out="values['sub_section2']" />
+                    </div>
+                </div>
+                <img
+                    t-attf-src="data:image/png;base64,{{values['image2']}}"
+                    alt="Profile Picture"
+                    class="logo"
+                    t-if="values['image2']"
+                />
+            </div>
+        </xpath>
+    </template>
 </odoo>

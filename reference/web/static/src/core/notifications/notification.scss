@@ -13,7 +13,10 @@
     }
 
     .o_notification {
-        background-color: var(--Notification__background-color, #{$o-view-background-color}); // Needed to override the background in 'website.scss'
+        background-color: var(
+            --Notification__background-color,
+            #{$o-view-background-color}
+        ); // Needed to override the background in 'website.scss'
     }
 
     .o_notification_bar {

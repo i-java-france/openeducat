@@ -1,5 +1,13 @@
-import { Component, onMounted, onWillStart, useEffect, useRef, useState, status } from "@odoo/owl";
-import { loadBundle } from "@web/core/assets";
+import {
+    Component,
+    onMounted,
+    onWillStart,
+    useEffect,
+    useRef,
+    useState,
+    status,
+} from "@odoo/owl";
+import {loadBundle} from "@web/core/assets";
 
 export class CodeEditor extends Component {
     static template = "web.CodeEditor";
@@ -10,20 +18,20 @@ export class CodeEditor extends Component {
             optional: true,
             validate: (mode) => CodeEditor.MODES.includes(mode),
         },
-        value: { validate: (v) => typeof v === "string", optional: true },
-        readonly: { type: Boolean, optional: true },
-        onChange: { type: Function, optional: true },
-        onBlur: { type: Function, optional: true },
-        class: { type: String, optional: true },
+        value: {validate: (v) => typeof v === "string", optional: true},
+        readonly: {type: Boolean, optional: true},
+        onChange: {type: Function, optional: true},
+        onBlur: {type: Function, optional: true},
+        class: {type: String, optional: true},
         theme: {
             type: String,
             optional: true,
             validate: (theme) => CodeEditor.THEMES.includes(theme),
         },
-        maxLines: { type: Number, optional: true },
-        sessionId: { type: [Number, String], optional: true },
-        initialCursorPosition: { type: Object, optional: true },
-        showLineNumbers: { type: Boolean, optional: true },
+        maxLines: {type: Number, optional: true},
+        sessionId: {type: [Number, String], optional: true},
+        initialCursorPosition: {type: Object, optional: true},
+        showLineNumbers: {type: Boolean, optional: true},
     };
     static defaultProps = {
         readonly: false,
@@ -71,7 +79,10 @@ export class CodeEditor extends Component {
                 this.aceEditor.$blockScrolling = true;
 
                 this.aceEditor.on("changeMode", () => {
-                    this.state.activeMode = this.aceEditor.getSession().$modeId.split("/").at(-1);
+                    this.state.activeMode = this.aceEditor
+                        .getSession()
+                        .$modeId.split("/")
+                        .at(-1);
                 });
 
                 const session = aceEditor.getSession();
@@ -165,7 +176,7 @@ export class CodeEditor extends Component {
                 window.requestAnimationFrame(() => {
                     if (status(this) != "destroyed" && this.aceEditor) {
                         this.aceEditor.focus();
-                        const { row, column } = initialCursorPosition;
+                        const {row, column} = initialCursorPosition;
                         const pos = {
                             row: row || 0,
                             column: column || 0,

@@ -14,8 +14,8 @@ import struct
 import warnings
 from contextlib import suppress
 
-from OpenSSL import crypto as ssl_crypto
 import OpenSSL._util as ssl_util
+from OpenSSL import crypto as ssl_crypto
 
 _logger = logging.getLogger(__name__)
 

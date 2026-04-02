@@ -1,10 +1,10 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class SelectionBox extends Component {
     static components = {};
     static template = "web.SelectionBox";
     static props = {
-        root: { type: Object },
+        root: {type: Object},
     };
     setup() {
         this.root = this.props.root;

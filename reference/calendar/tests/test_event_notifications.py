@@ -1,13 +1,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import date, datetime
 from unittest.mock import patch
-from datetime import datetime, date
+
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
 from odoo import fields
 from odoo.tests import Form, tagged
 from odoo.tests.common import new_test_user
+
 from odoo.addons.base.tests.test_ir_cron import CronMixinCase
 from odoo.addons.mail.tests.common import MailCase
 
@@ -731,5 +733,5 @@ class TestEventNotifications(CalendarMailCommon):
         expected_alarms = sorted([stop + relativedelta(days=offset) - relativedelta(minutes=15) for offset in range(1, recurrence_count)])
         actual_alarms = sorted([data.get('last_alarm') for data in result.values()])
 
-        for expected, actual in zip(expected_alarms, actual_alarms):
+        for expected, actual in zip(expected_alarms, actual_alarms, strict=False):
             self.assertEqual(actual, expected)

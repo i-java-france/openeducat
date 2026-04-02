@@ -8,10 +8,10 @@ import * as NumberPopup from "@point_of_sale/../tests/generic_helpers/number_pop
 import * as Order from "@point_of_sale/../tests/generic_helpers/order_widget_util";
 import * as Dialog from "@point_of_sale/../tests/generic_helpers/dialog_util";
 import * as Numpad from "@point_of_sale/../tests/generic_helpers/numpad_util";
-import { registry } from "@web/core/registry";
-import { inLeftSide } from "@point_of_sale/../tests/pos/tours/utils/common";
+import {registry} from "@web/core/registry";
+import {inLeftSide} from "@point_of_sale/../tests/pos/tours/utils/common";
 import * as OfflineUtil from "@point_of_sale/../tests/generic_helpers/offline_util";
-import { run, negateStep } from "@point_of_sale/../tests/generic_helpers/utils";
+import {run, negateStep} from "@point_of_sale/../tests/generic_helpers/utils";
 
 registry.category("web_tour.tours").add("ReceiptScreenTour", {
     steps: () =>
@@ -45,7 +45,9 @@ registry.category("web_tour.tours").add("ReceiptScreenTour", {
             ProductScreen.addOrderline("Monitor Stand", "6", "1", "6.0"),
             ProductScreen.clickPayButton(),
             PaymentScreen.clickPaymentMethod("Cash"),
-            PaymentScreen.enterPaymentLineAmount("Cash", "70", true, { remaining: "2.0" }),
+            PaymentScreen.enterPaymentLineAmount("Cash", "70", true, {
+                remaining: "2.0",
+            }),
             PaymentScreen.clickNumpad("0"),
             PaymentScreen.fillPaymentLineAmountMobile("Cash", "700"),
             PaymentScreen.changeIs("628.0"),
@@ -81,19 +83,19 @@ registry.category("web_tour.tours").add("ReceiptScreenTour", {
             // Test customer note in receipt
             ProductScreen.addOrderline("Desk Pad", "1", "5"),
             inLeftSide([
-                { ...ProductScreen.clickLine("Desk Pad")[0], isActive: ["mobile"] },
+                {...ProductScreen.clickLine("Desk Pad")[0], isActive: ["mobile"]},
                 ...ProductScreen.addCustomerNote("Test customer note"),
             ]),
             ProductScreen.clickPayButton(),
             PaymentScreen.clickPaymentMethod("Bank"),
             PaymentScreen.clickValidate(),
-            Order.hasLine({ customerNote: "Test customer note" }),
+            Order.hasLine({customerNote: "Test customer note"}),
             ReceiptScreen.clickNextOrder(),
 
             // Test that Internal notes are not available on receipt
             ProductScreen.addOrderline("Desk Pad", "1", "5"),
             inLeftSide([
-                { ...ProductScreen.clickLine("Desk Pad")[0], isActive: ["mobile"] },
+                {...ProductScreen.clickLine("Desk Pad")[0], isActive: ["mobile"]},
                 ...ProductScreen.addInternalNote("Test internal note"),
                 ...ProductScreen.clickSelectedLine("Desk Pad"),
                 ...ProductScreen.addInternalNote("Test internal note on order"),
@@ -103,14 +105,14 @@ registry.category("web_tour.tours").add("ReceiptScreenTour", {
             PaymentScreen.clickPaymentMethod("Bank"),
             PaymentScreen.clickValidate(),
             ReceiptScreen.isShown(),
-            negateStep(...Order.hasLine({ internalNote: "Test internal note" })),
+            negateStep(...Order.hasLine({internalNote: "Test internal note"})),
             negateStep(...Order.hasInternalNote("Test internal note on order")),
             ReceiptScreen.clickNextOrder(),
 
             // Test discount and original price
             ProductScreen.addOrderline("Desk Pad", "1", "20"),
             inLeftSide([
-                { ...ProductScreen.clickLine("Desk Pad")[0], isActive: ["mobile"] },
+                {...ProductScreen.clickLine("Desk Pad")[0], isActive: ["mobile"]},
                 Numpad.click("%"),
                 ...ProductScreen.selectedOrderlineHasDirect("Desk Pad", "1", "20"),
                 Numpad.click("5"),
@@ -121,7 +123,7 @@ registry.category("web_tour.tours").add("ReceiptScreenTour", {
             PaymentScreen.clickPaymentMethod("Bank"),
             PaymentScreen.clickValidate(),
             ReceiptScreen.receiptIsThere(),
-            Order.hasLine({ productName: "Desk Pad", priceNoDiscount: "20" }),
+            Order.hasLine({productName: "Desk Pad", priceNoDiscount: "20"}),
             ReceiptScreen.totalAmountContains("19.00"),
             ReceiptScreen.clickNextOrder(),
             OfflineUtil.setOnlineMode(),
@@ -135,16 +137,16 @@ registry.category("web_tour.tours").add("ReceiptScreenDiscountWithPricelistTour"
             Dialog.confirm("Open Register"),
             ProductScreen.addOrderline("Test Product", "1"),
             ProductScreen.clickPriceList("special_pricelist"),
-            inLeftSide(Order.hasLine({ productName: "Test Product", price: "6.30" })),
+            inLeftSide(Order.hasLine({productName: "Test Product", price: "6.30"})),
             ProductScreen.clickPayButton(),
             PaymentScreen.clickPaymentMethod("Cash"),
             PaymentScreen.clickValidate(),
-            Order.hasLine({ price: "6.30" }),
+            Order.hasLine({price: "6.30"}),
 
             ReceiptScreen.clickNextOrder(),
             ProductScreen.addOrderline("Test Product", "1"),
             inLeftSide([
-                { ...ProductScreen.clickLine("Test Product")[0], isActive: ["mobile"] },
+                {...ProductScreen.clickLine("Test Product")[0], isActive: ["mobile"]},
                 Numpad.click("Price"),
                 Numpad.isActive("Price"),
                 Numpad.click("9"),
@@ -224,10 +226,12 @@ registry.category("web_tour.tours").add("point_of_sale.test_printed_receipt_tour
                     }
 
                     if (rendered.includes("5.00 / Units")) {
-                        throw new Error("The price should not be included on a basic receipt");
+                        throw new Error(
+                            "The price should not be included on a basic receipt"
+                        );
                     }
                 };
-                await posmodel.printReceipt({ basic: true });
+                await posmodel.printReceipt({basic: true});
             }, "Basic receipt doesn't have price"),
         ].flat(),
 });

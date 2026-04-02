@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import ast
 import itertools
 import logging
 from datetime import date, timedelta
 
-from dateutil.relativedelta import relativedelta, MO
+from dateutil.relativedelta import MO, relativedelta
 from markupsafe import Markup
 
 from odoo import _, api, exceptions, fields, models
@@ -379,13 +378,13 @@ class GamificationChallenge(models.Model):
                     date_clause += " AND g.end_date = %s"
                     query_params.append(end_date)
 
-                query = """SELECT u.id AS user_id
+                query = f"""SELECT u.id AS user_id
                              FROM res_users u
                         LEFT JOIN gamification_goal g
                                ON (u.id = g.user_id)
                             WHERE line_id = %s
                               {date_clause}
-                        """.format(date_clause=date_clause)
+                        """
                 self.env.cr.execute(query, query_params)
                 user_with_goal_ids = {it for [it] in self.env.cr._obj}
 

@@ -1,6 +1,6 @@
-import { Deferred } from "@web/core/utils/concurrency";
-import { IDBQuotaExceededError, IndexedDB } from "@web/core/utils/indexed_db";
-import { deepCopy } from "../utils/objects";
+import {Deferred} from "@web/core/utils/concurrency";
+import {IDBQuotaExceededError, IndexedDB} from "@web/core/utils/indexed_db";
+import {deepCopy} from "../utils/objects";
 
 /**
  * @typedef {{
@@ -14,7 +14,7 @@ function jsonEqual(v1, v2) {
     return JSON.stringify(v1) === JSON.stringify(v2);
 }
 
-function validateSettings({ type, update }) {
+function validateSettings({type, update}) {
     if (!["ram", "disk"].includes(type)) {
         throw new Error(`Invalid "type" settings provided to RPCCache: ${type}`);
     }
@@ -55,10 +55,10 @@ class Crypto {
             this._cryptoKey,
             new TextEncoder().encode(JSON.stringify(value)) // encoded Data
         );
-        return { ciphertext, iv };
+        return {ciphertext, iv};
     }
 
-    async decrypt({ ciphertext, iv }) {
+    async decrypt({ciphertext, iv}) {
         await this._ready;
         const decrypted = await window.crypto.subtle.decrypt(
             {
@@ -117,9 +117,11 @@ export class RPCCache {
     }
 
     async checkSize() {
-        const { usage } = await navigator.storage.estimate();
+        const {usage} = await navigator.storage.estimate();
         if (usage > MAX_STORAGE_SIZE) {
-            console.log(`Deleting indexedDB database as maximum storage size is reached`);
+            console.log(
+                `Deleting indexedDB database as maximum storage size is reached`
+            );
             return this.indexedDB.deleteDatabase();
         }
     }
@@ -130,8 +132,13 @@ export class RPCCache {
      * @param {function} fallback
      * @param {RPCCacheSettings} settings
      */
-    read(table, key, fallback, { callback = () => {}, type = "ram", update = "once" } = {}) {
-        validateSettings({ type, update });
+    read(
+        table,
+        key,
+        fallback,
+        {callback = () => {}, type = "ram", update = "once"} = {}
+    ) {
+        validateSettings({type, update});
 
         let ramValue = this.ramCache.read(table, key);
 
@@ -145,7 +152,7 @@ export class RPCCache {
         }
 
         if (!ramValue || update === "always") {
-            const request = { callbacks: [callback], invalidated: false };
+            const request = {callbacks: [callback], invalidated: false};
             this.pendingRequests[requestKey] = request;
 
             // execute the fallback and write the result in the caches
@@ -155,7 +162,8 @@ export class RPCCache {
                 const onFullfilled = (result) => {
                     resolve(result);
                     // call the pending request callbacks with the result
-                    const hasChanged = !!fromCacheValue && !jsonEqual(fromCacheValue, result);
+                    const hasChanged =
+                        !!fromCacheValue && !jsonEqual(fromCacheValue, result);
                     request.callbacks.forEach((cb) => cb(deepCopy(result), hasChanged));
                     if (request.invalidated) {
                         return result;
@@ -165,13 +173,15 @@ export class RPCCache {
                     this.ramCache.write(table, key, Promise.resolve(result));
                     if (type === "disk") {
                         this.crypto.encrypt(result).then((encryptedResult) => {
-                            this.indexedDB.write(table, key, encryptedResult).catch((e) => {
-                                if (e instanceof IDBQuotaExceededError) {
-                                    this.indexedDB.deleteDatabase();
-                                } else {
-                                    throw e;
-                                }
-                            });
+                            this.indexedDB
+                                .write(table, key, encryptedResult)
+                                .catch((e) => {
+                                    if (e instanceof IDBQuotaExceededError) {
+                                        this.indexedDB.deleteDatabase();
+                                    } else {
+                                        throw e;
+                                    }
+                                });
                         });
                     }
                     return result;

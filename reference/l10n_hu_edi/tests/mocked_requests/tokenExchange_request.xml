@@ -1,6 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TokenExchangeRequest xmlns:common="http://schemas.nav.gov.hu/NTCA/1.0/common"
-    xmlns="http://schemas.nav.gov.hu/OSA/3.0/api">
+<?xml version="1.0" encoding="UTF-8" ?>
+<TokenExchangeRequest
+    xmlns:common="http://schemas.nav.gov.hu/NTCA/1.0/common"
+    xmlns="http://schemas.nav.gov.hu/OSA/3.0/api"
+>
     <common:header>
         <common:requestId>___ignore___</common:requestId>
         <common:timestamp>___ignore___</common:timestamp>
@@ -11,7 +13,9 @@
         <common:login>___ignore___</common:login>
         <common:passwordHash cryptoType="SHA-512">___ignore___</common:passwordHash>
         <common:taxNumber>___ignore___</common:taxNumber>
-        <common:requestSignature cryptoType="SHA3-512">___ignore___</common:requestSignature>
+        <common:requestSignature
+            cryptoType="SHA3-512"
+        >___ignore___</common:requestSignature>
     </common:user>
     <software>
         <softwareId>___ignore___</softwareId>

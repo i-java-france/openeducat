@@ -1,11 +1,11 @@
-import { addBuilderOption, setupHTMLBuilder } from "@html_builder/../tests/helpers";
-import { expect, test, describe } from "@odoo/hoot";
-import { queryAllTexts, queryAllValues, waitFor } from "@odoo/hoot-dom";
-import { xml } from "@odoo/owl";
-import { contains } from "@web/../tests/web_test_helpers";
+import {addBuilderOption, setupHTMLBuilder} from "@html_builder/../tests/helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {queryAllTexts, queryAllValues, waitFor} from "@odoo/hoot-dom";
+import {xml} from "@odoo/owl";
+import {contains} from "@web/../tests/web_test_helpers";
 
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { ShadowOption } from "@html_builder/plugins/shadow_option";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {ShadowOption} from "@html_builder/plugins/shadow_option";
 
 describe.current.tags("desktop");
 
@@ -14,7 +14,7 @@ test("edit box-shadow with ShadowOption", async () => {
         class extends BaseOptionComponent {
             static selector = ".test-options-target";
             static template = xml`<ShadowOption/>`;
-            static components = { ShadowOption };
+            static components = {ShadowOption};
         }
     );
     await setupHTMLBuilder(`<div class="test-options-target">b</div>`);
@@ -33,7 +33,12 @@ test("edit box-shadow with ShadowOption", async () => {
         "Blur",
         "Spread",
     ]);
-    expect(queryAllValues('[data-action-id="setShadow"] input')).toEqual(["0", "8", "16", "0"]);
+    expect(queryAllValues('[data-action-id="setShadow"] input')).toEqual([
+        "0",
+        "8",
+        "16",
+        "0",
+    ]);
     expect(":iframe .test-options-target").toHaveOuterHTML(
         '<div class="test-options-target shadow" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 8px 16px 0px !important;">b</div>'
     );

@@ -1,6 +1,6 @@
-import { patch } from "@web/core/utils/patch";
-import { SelfOrder } from "@pos_self_order/app/services/self_order_service";
-import { Razorpay, RazorpayError } from "@pos_self_order_razorpay/app/razorpay";
+import {patch} from "@web/core/utils/patch";
+import {SelfOrder} from "@pos_self_order/app/services/self_order_service";
+import {Razorpay, RazorpayError} from "@pos_self_order_razorpay/app/razorpay";
 
 patch(SelfOrder.prototype, {
     async setup() {
@@ -23,7 +23,9 @@ patch(SelfOrder.prototype, {
 
     filterPaymentMethods(pms) {
         const pm = super.filterPaymentMethods(...arguments);
-        const razorpay_pm = pms.filter((rec) => rec.use_payment_terminal === "razorpay");
+        const razorpay_pm = pms.filter(
+            (rec) => rec.use_payment_terminal === "razorpay"
+        );
         return [...new Set([...pm, ...razorpay_pm])];
     },
 

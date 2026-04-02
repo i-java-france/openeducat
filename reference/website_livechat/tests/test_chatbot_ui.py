@@ -1,10 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import Command, tests
+
 from odoo.addons.im_livechat.tests.chatbot_common import ChatbotCase
-from odoo.addons.website_livechat.tests.common import TestLivechatCommon as TestWebsiteLivechatCommon
 from odoo.addons.im_livechat.tests.common import TestGetOperatorCommon
+from odoo.addons.website_livechat.tests.common import (
+    TestLivechatCommon as TestWebsiteLivechatCommon,
+)
 
 
 @tests.tagged('post_install', '-at_install', 'is_tour')
@@ -137,7 +139,7 @@ class TestLivechatChatbotUI(TestLivechatChatbotUICommon):
 
         # check that the whole conversation is correctly saved
         # including welcome steps: see chatbot.script#_post_welcome_steps
-        for conversation_message, expected_message in zip(conversation_messages, expected_messages):
+        for conversation_message, expected_message in zip(conversation_messages, expected_messages, strict=False):
             [body, operator, user_script_answer_id] = expected_message
 
             self.assertIn(body, conversation_message.body)

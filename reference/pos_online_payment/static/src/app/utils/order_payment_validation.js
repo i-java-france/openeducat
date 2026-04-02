@@ -1,15 +1,17 @@
 import OrderPaymentValidation from "@point_of_sale/app/utils/order_payment_validation";
-import { patch } from "@web/core/utils/patch";
-import { _t } from "@web/core/l10n/translation";
-import { OnlinePaymentPopup } from "@pos_online_payment/app/components/popups/online_payment_popup/online_payment_popup";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { qrCodeSrc } from "@point_of_sale/utils";
-import { ask } from "@point_of_sale/app/utils/make_awaitable_dialog";
+import {patch} from "@web/core/utils/patch";
+import {_t} from "@web/core/l10n/translation";
+import {OnlinePaymentPopup} from "@pos_online_payment/app/components/popups/online_payment_popup/online_payment_popup";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {qrCodeSrc} from "@point_of_sale/utils";
+import {ask} from "@point_of_sale/app/utils/make_awaitable_dialog";
 
 patch(OrderPaymentValidation.prototype, {
     getRemainingOnlinePaymentLines() {
         return this.paymentLines.filter(
-            (line) => line.payment_method_id.is_online_payment && line.getPaymentStatus() !== "done"
+            (line) =>
+                line.payment_method_id.is_online_payment &&
+                line.getPaymentStatus() !== "done"
         );
     },
     checkRemainingOnlinePaymentLines(unpaidAmount) {
@@ -74,10 +76,11 @@ patch(OrderPaymentValidation.prototype, {
             for (const onlinePaymentLine of onlinePaymentLines) {
                 const onlinePaymentLineAmount = onlinePaymentLine.getAmount();
                 // The local state is not aware if the online payment has already been done.
-                lastOrderServerOPData = await this.pos.updateOnlinePaymentsDataWithServer(
-                    this.order,
-                    onlinePaymentLineAmount
-                );
+                lastOrderServerOPData =
+                    await this.pos.updateOnlinePaymentsDataWithServer(
+                        this.order,
+                        onlinePaymentLineAmount
+                    );
                 if (!lastOrderServerOPData) {
                     this.pos.dialog.add(AlertDialog, {
                         title: _t("Online payment unavailable"),
@@ -93,24 +96,30 @@ patch(OrderPaymentValidation.prototype, {
                         this.cancelOnlinePayment(this.order);
                         this.pos.dialog.add(AlertDialog, {
                             title: _t("Updated online payments"),
-                            body: _t("There are online payments that were missing in your view."),
+                            body: _t(
+                                "There are online payments that were missing in your view."
+                            ),
                         });
                         return false;
                     }
                     if (
                         (prevOnlinePaymentLine &&
                             prevOnlinePaymentLine?.getPaymentStatus() !== "done") ||
-                        !this.checkRemainingOnlinePaymentLines(lastOrderServerOPData.amount_unpaid)
+                        !this.checkRemainingOnlinePaymentLines(
+                            lastOrderServerOPData.amount_unpaid
+                        )
                     ) {
                         this.cancelOnlinePayment(this.order);
                         return false;
                     }
 
-                    await this.pos.syncAllOrders({ orders: [this.order] });
+                    await this.pos.syncAllOrders({orders: [this.order]});
                     onlinePaymentLine.setPaymentStatus("waiting");
                     this.order.selectPaymentline(onlinePaymentLine);
                     const onlinePaymentData = {
-                        formattedAmount: this.pos.env.utils.formatCurrency(onlinePaymentLineAmount),
+                        formattedAmount: this.pos.env.utils.formatCurrency(
+                            onlinePaymentLineAmount
+                        ),
                         qrCode: qrCodeSrc(
                             `${this.pos.config._base_url}/pos/pay/${this.order.id}?access_token=${this.order.access_token}`
                         ),
@@ -143,10 +152,8 @@ patch(OrderPaymentValidation.prototype, {
             }
 
             if (!lastOrderServerOPData || !lastOrderServerOPData.isPaid) {
-                lastOrderServerOPData = await this.pos.updateOnlinePaymentsDataWithServer(
-                    this.order,
-                    0
-                );
+                lastOrderServerOPData =
+                    await this.pos.updateOnlinePaymentsDataWithServer(this.order, 0);
             }
             if (!lastOrderServerOPData || !lastOrderServerOPData.isPaid) {
                 return false;
@@ -175,7 +182,9 @@ patch(OrderPaymentValidation.prototype, {
             if (orderServerOPData.modified_payment_lines) {
                 this.pos.dialog.add(AlertDialog, {
                     title: _t("Updated online payments"),
-                    body: _t("There are online payments that were missing in your view."),
+                    body: _t(
+                        "There are online payments that were missing in your view."
+                    ),
                 });
                 return false;
             }
@@ -232,7 +241,9 @@ patch(OrderPaymentValidation.prototype, {
                     showReloadButton: true,
                 });
             } else {
-                await this.pos.env.services.account_move.downloadPdf(orderJSON[0].account_move);
+                await this.pos.env.services.account_move.downloadPdf(
+                    orderJSON[0].account_move
+                );
             }
         }
 

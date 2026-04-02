@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import collections
@@ -8,7 +7,7 @@ import json
 import operator
 from textwrap import shorten
 
-from odoo import api, fields, models, tools, _
+from odoo import _, api, fields, models, tools
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -419,7 +418,7 @@ class SurveyQuestion(models.Model):
 
     def copy(self, default=None):
         new_questions = super().copy(default)
-        for old_question, new_question in zip(self, new_questions):
+        for old_question, new_question in zip(self, new_questions, strict=False):
             if old_question.triggering_answer_ids:
                 new_question.triggering_answer_ids = old_question.triggering_answer_ids
         return new_questions

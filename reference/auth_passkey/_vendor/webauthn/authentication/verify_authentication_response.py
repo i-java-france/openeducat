@@ -1,6 +1,5 @@
-from dataclasses import dataclass
 import hashlib
-from typing import List, Union
+from dataclasses import dataclass
 
 from cryptography.exceptions import InvalidSignature
 
@@ -9,10 +8,10 @@ from ...webauthn.helpers import (
     byteslike_to_bytes,
     decode_credential_public_key,
     decoded_public_key_to_cryptography,
+    parse_authentication_credential_json,
     parse_authenticator_data,
     parse_backup_flags,
     parse_client_data_json,
-    parse_authentication_credential_json,
     verify_signature,
 )
 from ...webauthn.helpers.exceptions import InvalidAuthenticationResponse
@@ -45,10 +44,10 @@ expected_token_binding_statuses = [
 
 def verify_authentication_response(
     *,
-    credential: Union[str, dict, AuthenticationCredential],
+    credential: str | dict | AuthenticationCredential,
     expected_challenge: bytes,
     expected_rp_id: str,
-    expected_origin: Union[str, List[str]],
+    expected_origin: str | list[str],
     credential_public_key: bytes,
     credential_current_sign_count: int,
     require_user_verification: bool = False,

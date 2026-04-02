@@ -19,7 +19,7 @@ export async function preloadBackground(imageUrl) {
         resolvePreload = resolve;
     });
     const background = new Image();
-    background.addEventListener("load", () => resolvePreload(imageUrl), { once: true });
+    background.addEventListener("load", () => resolvePreload(imageUrl), {once: true});
     background.src = imageUrl;
 
     return preloadPromise;

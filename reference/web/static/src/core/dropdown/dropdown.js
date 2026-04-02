@@ -8,18 +8,18 @@ import {
     useEffect,
     xml,
 } from "@odoo/owl";
-import { useDropdownGroup } from "@web/core/dropdown/_behaviours/dropdown_group_hook";
-import { useDropdownNesting } from "@web/core/dropdown/_behaviours/dropdown_nesting";
-import { DropdownPopover } from "@web/core/dropdown/_behaviours/dropdown_popover";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { useNavigation } from "@web/core/navigation/navigation";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { mergeClasses } from "@web/core/utils/classname";
-import { useChildRef, useService } from "@web/core/utils/hooks";
-import { deepMerge } from "@web/core/utils/objects";
-import { effect } from "@web/core/utils/reactive";
-import { utils } from "@web/core/ui/ui_service";
-import { hasTouch } from "@web/core/browser/feature_detection";
+import {useDropdownGroup} from "@web/core/dropdown/_behaviours/dropdown_group_hook";
+import {useDropdownNesting} from "@web/core/dropdown/_behaviours/dropdown_nesting";
+import {DropdownPopover} from "@web/core/dropdown/_behaviours/dropdown_popover";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {useNavigation} from "@web/core/navigation/navigation";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {mergeClasses} from "@web/core/utils/classname";
+import {useChildRef, useService} from "@web/core/utils/hooks";
+import {deepMerge} from "@web/core/utils/objects";
+import {effect} from "@web/core/utils/reactive";
+import {utils} from "@web/core/ui/ui_service";
+import {hasTouch} from "@web/core/browser/feature_detection";
 
 function getFirstElementOfNode(node) {
     if (!node) {
@@ -54,13 +54,13 @@ export class Dropdown extends Component {
     static template = xml`<t t-slot="default"/>`;
     static components = {};
     static props = {
-        menuClass: { optional: true },
-        position: { type: String, optional: true },
+        menuClass: {optional: true},
+        position: {type: String, optional: true},
         slots: {
             type: Object,
             shape: {
-                default: { optional: true },
-                content: { optional: true },
+                default: {optional: true},
+                content: {optional: true},
             },
         },
 
@@ -72,20 +72,20 @@ export class Dropdown extends Component {
                 shape: {
                     label: String,
                     onSelected: Function,
-                    class: { optional: true },
+                    class: {optional: true},
                     "*": true,
                 },
             },
         },
 
-        menuRef: { type: Function, optional: true }, // to be used with useChildRef
-        disabled: { type: Boolean, optional: true },
-        holdOnHover: { type: Boolean, optional: true },
-        focusToggleOnClosed: { type: Boolean, optional: true },
+        menuRef: {type: Function, optional: true}, // to be used with useChildRef
+        disabled: {type: Boolean, optional: true},
+        holdOnHover: {type: Boolean, optional: true},
+        focusToggleOnClosed: {type: Boolean, optional: true},
 
-        beforeOpen: { type: Function, optional: true },
-        onOpened: { type: Function, optional: true },
-        onStateChanged: { type: Function, optional: true },
+        beforeOpen: {type: Function, optional: true},
+        onOpened: {type: Function, optional: true},
+        onStateChanged: {type: Function, optional: true},
 
         /** Manual state handling, @see useDropdownState */
         state: {
@@ -98,17 +98,17 @@ export class Dropdown extends Component {
             },
             optional: true,
         },
-        manual: { type: Boolean, optional: true },
+        manual: {type: Boolean, optional: true},
 
         /** When true, do not add optional styling css classes on the target*/
-        noClasses: { type: Boolean, optional: true },
+        noClasses: {type: Boolean, optional: true},
 
         /**
          * Override the internal navigation hook options
          * @type {import("@web/core/navigation/navigation").NavigationOptions}
          */
-        navigationOptions: { type: Object, optional: true },
-        bottomSheet: { type: Boolean, optional: true },
+        navigationOptions: {type: Object, optional: true},
+        bottomSheet: {type: Boolean, optional: true},
     };
     static defaultProps = {
         disabled: false,
@@ -155,10 +155,10 @@ export class Dropdown extends Component {
             env: this.__owl__.childEnv,
             holdOnHover: this.props.holdOnHover,
             onClose: () => this.state.close(),
-            onPositioned: (el, { direction }) => this.setTargetDirectionClass(direction),
+            onPositioned: (el, {direction}) => this.setTargetDirectionClass(direction),
             popoverClass: mergeClasses(
                 "o-dropdown--menu dropdown-menu mx-0",
-                { "o-dropdown--menu-submenu": this.hasParent },
+                {"o-dropdown--menu-submenu": this.hasParent},
                 this.props.menuClass
             ),
             role: "menu",
@@ -171,14 +171,19 @@ export class Dropdown extends Component {
         if (this.isBottomSheet) {
             Object.assign(options, {
                 useBottomSheet: true,
-                class: mergeClasses("o-dropdown--menu dropdown-menu show", this.props.menuClass),
+                class: mergeClasses(
+                    "o-dropdown--menu dropdown-menu show",
+                    this.props.menuClass
+                ),
             });
         }
         this.popover = usePopover(DropdownPopover, options);
 
         // As the popover is in another context we need to force
         // its re-rendering when the dropdown re-renders
-        onRendered(() => (this.popoverRefresher ? this.popoverRefresher.token++ : null));
+        onRendered(() =>
+            this.popoverRefresher ? this.popoverRefresher.token++ : null
+        );
 
         onMounted(() => this.onStateChanged(this.state));
         effect((state) => this.onStateChanged(state), [this.state]);
@@ -188,7 +193,7 @@ export class Dropdown extends Component {
             () => [this.target]
         );
 
-        onWillUpdateProps(({ disabled }) => {
+        onWillUpdateProps(({disabled}) => {
             if (disabled) {
                 this.closePopover();
             }
@@ -274,7 +279,18 @@ export class Dropdown extends Component {
         }
 
         const tagName = target.tagName.toLowerCase();
-        if (!["input", "textarea", "table", "thead", "tbody", "tr", "th", "td"].includes(tagName)) {
+        if (
+            ![
+                "input",
+                "textarea",
+                "table",
+                "thead",
+                "tbody",
+                "tr",
+                "th",
+                "td",
+            ].includes(tagName)
+        ) {
             optionalClasses.push("dropdown-toggle");
             if (this.hasParent) {
                 optionalClasses.push("o-dropdown-item", "dropdown-item");
@@ -300,7 +316,10 @@ export class Dropdown extends Component {
 
             return () => {
                 target.removeEventListener("click", this.handleClick.bind(this));
-                target.removeEventListener("mouseenter", this.handleMouseEnter.bind(this));
+                target.removeEventListener(
+                    "mouseenter",
+                    this.handleMouseEnter.bind(this)
+                );
             };
         }
     }
@@ -328,7 +347,7 @@ export class Dropdown extends Component {
             return;
         }
 
-        this.popoverRefresher = reactive({ token: 0 });
+        this.popoverRefresher = reactive({token: 0});
         const props = {
             beforeOpen: () => this.props.beforeOpen?.(),
             onOpened: () => this.onOpened(),

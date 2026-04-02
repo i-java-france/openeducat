@@ -1,4 +1,4 @@
-import { Plugin } from "@html_editor/plugin";
+import {Plugin} from "@html_editor/plugin";
 
 // 60 seconds
 export const HISTORY_SNAPSHOT_INTERVAL = 1000 * 60;
@@ -34,7 +34,7 @@ export class CollaborationPlugin extends Plugin {
         /** Handlers */
         history_cleaned_handlers: this.onHistoryClean.bind(this),
         history_reset_handlers: this.onHistoryReset.bind(this),
-        step_added_handlers: ({ step }) => this.onStepAdded(step),
+        step_added_handlers: ({step}) => this.onStepAdded(step),
 
         /** Overrides */
         set_attribute_overrides: this.setAttribute.bind(this),
@@ -75,7 +75,7 @@ export class CollaborationPlugin extends Plugin {
     }
     onHistoryReset() {
         const firstStep = this.dependencies.history.getHistorySteps()[0];
-        this.snapshots = [{ step: firstStep }];
+        this.snapshots = [{step: firstStep}];
     }
     /**
      * @param {HistoryStep} step
@@ -143,7 +143,9 @@ export class CollaborationPlugin extends Plugin {
             stepIndex++;
         }
         if (selectionData.documentSelectionIsInEditable) {
-            this.dependencies.selection.rectifySelection(selectionData.editableSelection);
+            this.dependencies.selection.rectifySelection(
+                selectionData.editableSelection
+            );
         }
 
         this.dispatchTo("external_history_step_handlers");
@@ -224,10 +226,12 @@ export class CollaborationPlugin extends Plugin {
      * @param {string} params.fromStepId
      * @param {string} [params.toStepId]
      */
-    historyGetMissingSteps({ fromStepId, toStepId }) {
+    historyGetMissingSteps({fromStepId, toStepId}) {
         const steps = this.dependencies.history.getHistorySteps();
         const fromIndex = steps.findIndex((x) => x.id === fromStepId);
-        const toIndex = toStepId ? steps.findIndex((x) => x.id === toStepId) : steps.length;
+        const toIndex = toStepId
+            ? steps.findIndex((x) => x.id === toStepId)
+            : steps.length;
         if (fromIndex === -1 || toIndex === -1) {
             return -1;
         }
@@ -240,7 +244,7 @@ export class CollaborationPlugin extends Plugin {
         // other snapshot that have been made (either it is the one created upon
         // initialization or reseted by history's resetFromSteps).
         if (!this.snapshots[0].time) {
-            return { steps: historySteps, historyIds: this.getBranchIds() };
+            return {steps: historySteps, historyIds: this.getBranchIds()};
         }
         const snapshotSteps = [];
         let snapshot;
@@ -259,7 +263,7 @@ export class CollaborationPlugin extends Plugin {
         snapshotSteps.push(snapshot.step);
         snapshotSteps.reverse();
 
-        return { steps: snapshotSteps, historyIds: this.getBranchIds() };
+        return {steps: snapshotSteps, historyIds: this.getBranchIds()};
     }
     setInitialBranchStepId(stepId) {
         this.initialBranchStepId = stepId;
@@ -267,7 +271,7 @@ export class CollaborationPlugin extends Plugin {
     resetFromSteps(steps, branchStepIds) {
         this.dependencies.selection.resetSelection();
         this.dependencies.history.resetFromSteps(steps);
-        this.snapshots = [{ step: steps[0] }];
+        this.snapshots = [{step: steps[0]}];
         this.branchStepIds = branchStepIds;
 
         // @todo @phoenix: test that the hint are proprely handeled

@@ -1,15 +1,15 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
-import { registry } from "@web/core/registry";
-import { url } from "@web/core/utils/urls";
+import {registry} from "@web/core/registry";
+import {url} from "@web/core/utils/urls";
 
 const actionRegistry = registry.category("actions");
 
 class QRModalComponent extends Component {
     static props = {
         action: Object,
-        actionId: { type: Number, optional: true },
-        className: { type: String, optional: true },
+        actionId: {type: Number, optional: true},
+        className: {type: String, optional: true},
     };
     static template = "hr_expense.QRModalComponent";
 

@@ -1,16 +1,16 @@
 /* global owl */
 
-const { Component, xml } = owl;
+const {Component, xml} = owl;
 
 export class SingleData extends Component {
     static props = {
         name: String,
         value: String,
-        icon: { type: String, optional: true },
-        style: { type: String, optional: true },
-        slots: { type: Object, optional: true },
-        btnName: { type: String, optional: true },
-        btnAction: { type: Function, optional: true },
+        icon: {type: String, optional: true},
+        style: {type: String, optional: true},
+        slots: {type: Object, optional: true},
+        btnName: {type: String, optional: true},
+        btnAction: {type: Function, optional: true},
     };
     static defaultProps = {
         style: "primary",

@@ -1,6 +1,6 @@
-import { markRaw, reactive } from "@odoo/owl";
-import { registry } from "../registry";
-import { OverlayContainer } from "./overlay_container";
+import {markRaw, reactive} from "@odoo/owl";
+import {registry} from "../registry";
+import {OverlayContainer} from "./overlay_container";
 
 const mainComponents = registry.category("main_components");
 const services = registry.category("services");
@@ -21,7 +21,7 @@ export const overlayService = {
 
         mainComponents.add("OverlayContainer", {
             Component: OverlayContainer,
-            props: { overlays },
+            props: {overlays},
         });
 
         const remove = async (id, onRemove = () => {}, removeParams) => {
@@ -53,7 +53,7 @@ export const overlayService = {
             return removeCurrentOverlay;
         };
 
-        return { add, overlays };
+        return {add, overlays};
     },
 };
 

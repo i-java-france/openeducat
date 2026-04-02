@@ -3,7 +3,8 @@ import re
 from types import SimpleNamespace
 
 from odoo import models
-from odoo.tools import float_round, float_is_zero
+from odoo.tools import float_is_zero, float_round
+
 from odoo.addons.account_edi_ubl_cii.models.account_edi_common import FloatFmt
 
 JO_MAX_DP = 9
@@ -67,7 +68,7 @@ class AccountEdiXmlUBL21JO(models.AbstractModel):
         # However, taxes need to be calculated with `round_per_line` so that _round_base_lines_tax_details does not
         # end up generating lines taxes using unrounded base amounts
         new_base_lines = [base_line.copy() for base_line in base_lines]
-        for base_line, new_base_line in zip(base_lines, new_base_lines):
+        for base_line, new_base_line in zip(base_lines, new_base_lines, strict=False):
             AccountTax._add_tax_details_in_base_line(new_base_line, new_base_line['record'].company_id, 'round_globally')
             for key in [
                 'raw_total_excluded_currency',

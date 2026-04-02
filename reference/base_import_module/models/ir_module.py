@@ -3,27 +3,39 @@ import base64
 import io
 import json
 import logging
-import lxml
 import os
 import pathlib
 import sys
 import traceback
 import zipfile
-from babel.messages import extract
 from collections import defaultdict
 from io import BytesIO
 from os.path import join as opj
 
-from odoo import api, fields, models, _
+import lxml
+from babel.messages import extract
+
+from odoo import _, api, fields, models
 from odoo.exceptions import AccessDenied, AccessError, UserError
 from odoo.fields import Domain
 from odoo.http import request
 from odoo.modules.module import MANIFEST_NAMES, Manifest
 from odoo.release import major_version
-from odoo.tools import SQL, convert_file
-from odoo.tools import file_open, file_path, file_open_temporary_directory, ormcache
+from odoo.tools import (
+    SQL,
+    convert_file,
+    file_open,
+    file_open_temporary_directory,
+    file_path,
+    ormcache,
+)
 from odoo.tools.misc import OrderedSet, topological_sort
-from odoo.tools.translate import JAVASCRIPT_TRANSLATION_COMMENT, CodeTranslations, TranslationImporter, get_base_langs
+from odoo.tools.translate import (
+    JAVASCRIPT_TRANSLATION_COMMENT,
+    CodeTranslations,
+    TranslationImporter,
+    get_base_langs,
+)
 
 from odoo.addons.base.models.ir_asset import is_wildcard_glob
 

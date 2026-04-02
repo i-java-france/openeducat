@@ -1,14 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
-from dateutil.relativedelta import relativedelta
 from datetime import datetime
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError
-from odoo.fields import Domain
-from odoo.addons.fleet.models.fleet_vehicle_model import FUEL_TYPES
+from dateutil.relativedelta import relativedelta
 
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+
+from odoo.addons.fleet.models.fleet_vehicle_model import FUEL_TYPES
 
 #Some fields don't have the exact same name
 MODEL_FIELDS_TO_VEHICLE = {
@@ -392,7 +392,7 @@ class FleetVehicle(models.Model):
 
         vehicles = super().create(vals_list)
 
-        for vehicle, vals in zip(vehicles, vals_list):
+        for vehicle, vals in zip(vehicles, vals_list, strict=False):
             if vals.get('driver_id'):
                 vehicle.create_driver_history(vals)
         return vehicles
@@ -432,7 +432,7 @@ class FleetVehicle(models.Model):
             self.env['fleet.vehicle.log.contract'].search([('vehicle_id', 'in', self.ids)]).active = False
             self.env['fleet.vehicle.log.services'].search([('vehicle_id', 'in', self.ids)]).active = False
 
-        res = super(FleetVehicle, self).write(vals)
+        res = super().write(vals)
         return res
 
     def _get_driver_history_data(self, vals):
@@ -458,7 +458,7 @@ class FleetVehicle(models.Model):
             'plan_to_change_car': False,
             'plan_to_change_bike': False,
         })
-        
+
         for vehicle in self:
             vehicle.plan_to_change_bike = False
             vehicle.plan_to_change_car = False
@@ -497,7 +497,7 @@ class FleetVehicle(models.Model):
         self.ensure_one()
         if 'driver_id' in init_values or 'future_driver_id' in init_values:
             return self.env.ref('fleet.mt_fleet_driver_updated')
-        return super(FleetVehicle, self)._track_subtype(init_values)
+        return super()._track_subtype(init_values)
 
     def open_assignation_logs(self):
         self.ensure_one()

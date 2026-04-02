@@ -1,4 +1,4 @@
-import { _t } from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 
 export class QFPayError extends Error {}
 
@@ -16,10 +16,11 @@ export class QFPay {
 
     async makeQFPayRequest(endpoint, payload) {
         try {
-            const signedPayload = await this.orm.call("pos.payment.method", "qfpay_sign_request", [
-                this.paymentMethod.id,
-                payload,
-            ]);
+            const signedPayload = await this.orm.call(
+                "pos.payment.method",
+                "qfpay_sign_request",
+                [this.paymentMethod.id, payload]
+            );
             const result = await fetch(
                 `https://${this.paymentMethod.qfpay_terminal_ip_address}:9001/api/pos/${endpoint}`,
                 {
@@ -39,7 +40,9 @@ export class QFPay {
                     this.errorCallback(
                         new QFPayError(
                             `Error Code: ${response.respcd}\nError Message: ${
-                                response.resperr || response.respmsg || _t("Unknown error occurred")
+                                response.resperr ||
+                                response.respmsg ||
+                                _t("Unknown error occurred")
                             }`
                         )
                     );

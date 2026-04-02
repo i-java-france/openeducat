@@ -1,14 +1,14 @@
-import { Component, onWillUpdateProps, useState } from "@odoo/owl";
-import { OptionsContainer } from "./option_container";
-import { useVisibilityObserver } from "../core/utils";
-import { CustomizeComponent } from "@html_builder/sidebar/customize_component";
+import {Component, onWillUpdateProps, useState} from "@odoo/owl";
+import {OptionsContainer} from "./option_container";
+import {useVisibilityObserver} from "../core/utils";
+import {CustomizeComponent} from "@html_builder/sidebar/customize_component";
 
 export class CustomizeTab extends Component {
     static template = "html_builder.CustomizeTab";
-    static components = { CustomizeComponent, OptionsContainer };
+    static components = {CustomizeComponent, OptionsContainer};
     static props = {
-        currentOptionsContainers: { type: Array, optional: true },
-        snippetModel: { type: Object },
+        currentOptionsContainers: {type: Array, optional: true},
+        snippetModel: {type: Object},
     };
     static defaultProps = {
         currentOptionsContainers: [],
@@ -28,7 +28,8 @@ export class CustomizeTab extends Component {
             if (
                 !this.state.hasContent &&
                 nextProps.currentOptionsContainers.length > 0 &&
-                nextProps.currentOptionsContainers !== this.props.currentOptionsContainers
+                nextProps.currentOptionsContainers !==
+                    this.props.currentOptionsContainers
             ) {
                 // Force a reconsideration of `content`
                 this.state.hasContent = true;

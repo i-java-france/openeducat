@@ -1,14 +1,13 @@
-
-import { Component } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { Product } from "../product/product";
+import {Component} from "@odoo/owl";
+import {_t} from "@web/core/l10n/translation";
+import {Product} from "../product/product";
 
 export class ProductList extends Component {
-    static components = { Product };
+    static components = {Product};
     static template = "sale.ProductList";
     static props = {
         products: Array,
-        areProductsOptional: { type: Boolean, optional: true },
+        areProductsOptional: {type: Boolean, optional: true},
     };
     static defaultProps = {
         areProductsOptional: false,

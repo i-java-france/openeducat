@@ -1,18 +1,18 @@
-import { Layout } from "@web/search/layout";
-import { useModelWithSampleData } from "@web/model/model";
-import { standardViewProps } from "@web/views/standard_view_props";
-import { useSetupAction } from "@web/search/action_hook";
-import { SearchBar } from "@web/search/search_bar/search_bar";
-import { useSearchBarToggler } from "@web/search/search_bar/search_bar_toggler";
-import { CogMenu } from "@web/search/cog_menu/cog_menu";
-import { Widget } from "@web/views/widgets/widget";
-import { ActionHelper } from "@web/views/action_helper";
+import {Layout} from "@web/search/layout";
+import {useModelWithSampleData} from "@web/model/model";
+import {standardViewProps} from "@web/views/standard_view_props";
+import {useSetupAction} from "@web/search/action_hook";
+import {SearchBar} from "@web/search/search_bar/search_bar";
+import {useSearchBarToggler} from "@web/search/search_bar/search_bar_toggler";
+import {CogMenu} from "@web/search/cog_menu/cog_menu";
+import {Widget} from "@web/views/widgets/widget";
+import {ActionHelper} from "@web/views/action_helper";
 
-import { Component, useRef } from "@odoo/owl";
+import {Component, useRef} from "@odoo/owl";
 
 export class GraphController extends Component {
     static template = "web.GraphView";
-    static components = { Layout, SearchBar, CogMenu, Widget, ActionHelper };
+    static components = {Layout, SearchBar, CogMenu, Widget, ActionHelper};
     static props = {
         ...standardViewProps,
         Model: Function,
@@ -30,7 +30,7 @@ export class GraphController extends Component {
 
         useSetupAction({
             rootRef: useRef("root"),
-            getLocalState: () => ({ metaData: this.model.metaData }),
+            getLocalState: () => ({metaData: this.model.metaData}),
             getContext: () => this.getContext(),
         });
         this.searchBarToggler = useSearchBarToggler();
@@ -50,7 +50,7 @@ export class GraphController extends Component {
      */
     getContext() {
         // expand context object? change keys?
-        const { measure, groupBy, mode } = this.model.metaData;
+        const {measure, groupBy, mode} = this.model.metaData;
         const context = {
             graph_measure: measure,
             graph_mode: mode,

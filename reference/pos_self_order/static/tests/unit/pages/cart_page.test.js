@@ -1,8 +1,8 @@
-import { test, expect } from "@odoo/hoot";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { CartPage } from "@pos_self_order/app/pages/cart_page/cart_page";
-import { setupSelfPosEnv, getFilledSelfOrder, addComboProduct } from "../utils";
-import { definePosSelfModels } from "../data/generate_model_definitions";
+import {expect, test} from "@odoo/hoot";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {CartPage} from "@pos_self_order/app/pages/cart_page/cart_page";
+import {addComboProduct, getFilledSelfOrder, setupSelfPosEnv} from "../utils";
+import {definePosSelfModels} from "../data/generate_model_definitions";
 
 definePosSelfModels();
 
@@ -24,10 +24,10 @@ test("changeQuantity", async () => {
     const comp = await mountWithCleanup(CartPage, {});
 
     expect(order.lines).toHaveLength(2);
-    // decrease the qty of line by 1
+    // Decrease the qty of line by 1
     comp.changeQuantity(line, false);
     expect(line.qty).toBe(1);
-    // decrease the qty of line again, should trigger removeLine
+    // Decrease the qty of line again, should trigger removeLine
     comp.changeQuantity(line, false);
     expect(order.lines).toHaveLength(1);
 });
@@ -59,10 +59,10 @@ test("totalPriceAndTax", async () => {
     await getFilledSelfOrder(store);
     const comp = await mountWithCleanup(CartPage, {});
 
-    expect(comp.totalPriceAndTax).toEqual({ priceWithTax: 595, tax: 95 });
+    expect(comp.totalPriceAndTax).toEqual({priceWithTax: 595, tax: 95});
     await comp.pay();
     await store.addToCart(store.models["product.template"].get(6), 2);
-    expect(comp.totalPriceAndTax).toEqual({ priceWithTax: 250, tax: 50 });
+    expect(comp.totalPriceAndTax).toEqual({priceWithTax: 250, tax: 50});
 });
 
 test("getPrice", async () => {

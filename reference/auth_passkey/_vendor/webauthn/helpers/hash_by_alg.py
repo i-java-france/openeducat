@@ -1,5 +1,4 @@
 import hashlib
-from typing import Optional
 
 from .cose import COSEAlgorithmIdentifier
 
@@ -22,7 +21,7 @@ SHA_1 = [
 ]
 
 
-def hash_by_alg(to_hash: bytes, alg: Optional[COSEAlgorithmIdentifier] = None) -> bytes:
+def hash_by_alg(to_hash: bytes, alg: COSEAlgorithmIdentifier | None = None) -> bytes:
     """
     Generate a hash of `to_hash` by the specified COSE algorithm ID. Defaults to hashing
     with SHA256

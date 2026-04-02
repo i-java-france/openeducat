@@ -1,6 +1,6 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { Many2XAutocomplete } from "@web/views/fields/relational_utils";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {Many2XAutocomplete} from "@web/views/fields/relational_utils";
 import {
     Many2ManyTagsField,
     many2ManyTagsField,
@@ -14,7 +14,11 @@ export class Many2XTaxTagsAutocomplete extends Many2XAutocomplete {
     async loadOptionsSource(request) {
         // Always include Search More
         let options = await super.loadOptionsSource(...arguments);
-        if (!options.slice(-1)[0]?.cssClass?.includes("o_m2o_dropdown_option_search_more")) {
+        if (
+            !options
+                .slice(-1)[0]
+                ?.cssClass?.includes("o_m2o_dropdown_option_search_more")
+        ) {
             options.push({
                 label: this.SearchMoreButtonLabel,
                 onSelect: this.onSearchMore.bind(this, request),
@@ -25,7 +29,7 @@ export class Many2XTaxTagsAutocomplete extends Many2XAutocomplete {
     }
 
     async onSearchMore(request) {
-        const { getDomain, context, fieldString } = this.props;
+        const {getDomain, context, fieldString} = this.props;
 
         const domain = getDomain();
         let dynamicFilters = [];
@@ -46,7 +50,6 @@ export class Many2XTaxTagsAutocomplete extends Many2XAutocomplete {
             title,
         });
     }
-
 }
 
 export class Many2ManyTaxTagsField extends Many2ManyTagsField {
@@ -59,7 +62,7 @@ export class Many2ManyTaxTagsField extends Many2ManyTagsField {
 export const many2ManyTaxTagsField = {
     ...many2ManyTagsField,
     component: Many2ManyTaxTagsField,
-    additionalClasses: ['o_field_many2many_tags']
+    additionalClasses: ["o_field_many2many_tags"],
 };
 
 registry.category("fields").add("many2many_tax_tags", many2ManyTaxTagsField);

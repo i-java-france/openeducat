@@ -1,4 +1,4 @@
-import { Record } from "@mail/core/common/record";
+import {Record} from "@mail/core/common/record";
 
 export class HrDepartment extends Record {
     static _name = "hr.department";

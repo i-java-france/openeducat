@@ -1,4 +1,4 @@
-import { browser } from "./browser";
+import {browser} from "./browser";
 
 // -----------------------------------------------------------------------------
 // Feature detection
@@ -71,7 +71,10 @@ export function isDisplayStandalone() {
 }
 
 export function hasTouch() {
-    return browser.ontouchstart !== undefined || browser.matchMedia("(pointer:coarse)").matches;
+    return (
+        browser.ontouchstart !== undefined ||
+        browser.matchMedia("(pointer:coarse)").matches
+    );
 }
 
 export function maxTouchPoints() {

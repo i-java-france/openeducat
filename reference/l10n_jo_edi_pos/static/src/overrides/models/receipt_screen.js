@@ -1,9 +1,9 @@
-import { _t } from "@web/core/l10n/translation";
-import { onMounted } from "@odoo/owl";
-import { patch } from "@web/core/utils/patch";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import {_t} from "@web/core/l10n/translation";
+import {onMounted} from "@odoo/owl";
+import {patch} from "@web/core/utils/patch";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
 
-import { ReceiptScreen } from "@point_of_sale/app/screens/receipt_screen/receipt_screen";
+import {ReceiptScreen} from "@point_of_sale/app/screens/receipt_screen/receipt_screen";
 
 patch(ReceiptScreen.prototype, {
     setup() {

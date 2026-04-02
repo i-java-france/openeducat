@@ -1,11 +1,11 @@
-import { registry } from "@web/core/registry";
-import { Transition } from "@web/core/transition";
-import { user } from "@web/core/user";
-import { useBus } from "@web/core/utils/hooks";
-import { BurgerUserMenu } from "./burger_user_menu/burger_user_menu";
-import { MobileSwitchCompanyMenu } from "./mobile_switch_company_menu/mobile_switch_company_menu";
+import {registry} from "@web/core/registry";
+import {Transition} from "@web/core/transition";
+import {user} from "@web/core/user";
+import {useBus} from "@web/core/utils/hooks";
+import {BurgerUserMenu} from "./burger_user_menu/burger_user_menu";
+import {MobileSwitchCompanyMenu} from "./mobile_switch_company_menu/mobile_switch_company_menu";
 
-import { Component, useState } from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 
 /**
  * This file includes the widget Menu in mobile to render the BurgerMenu which
@@ -32,7 +32,7 @@ export class BurgerMenu extends Component {
         useBus(this.env.bus, "HOME-MENU:TOGGLED", () => {
             this._closeBurger();
         });
-        useBus(this.env.bus, "ACTION_MANAGER:UPDATE", ({ detail: req }) => {
+        useBus(this.env.bus, "ACTION_MANAGER:UPDATE", ({detail: req}) => {
             if (req.id) {
                 this._closeBurger();
             }
@@ -64,4 +64,4 @@ const systrayItem = {
     Component: BurgerMenu,
 };
 
-registry.category("systray").add("burger_menu", systrayItem, { sequence: 0 });
+registry.category("systray").add("burger_menu", systrayItem, {sequence: 0});

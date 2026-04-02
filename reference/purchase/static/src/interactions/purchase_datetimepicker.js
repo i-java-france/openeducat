@@ -1,7 +1,7 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { rpc } from "@web/core/network/rpc";
+import {rpc} from "@web/core/network/rpc";
 
 export class PurchaseDatetimePicker extends Interaction {
     static selector = ".o-purchase-datetimepicker";
@@ -12,11 +12,14 @@ export class PurchaseDatetimePicker extends Interaction {
                 .create({
                     target: this.el,
                     onChange: (newDate) => {
-                        const { accessToken, orderId, lineId } = this.el.dataset;
+                        const {accessToken, orderId, lineId} = this.el.dataset;
                         this.waitFor(
-                            rpc(`/my/purchase/${orderId}/update?access_token=${accessToken}`, {
-                                [lineId]: newDate.toISODate(),
-                            })
+                            rpc(
+                                `/my/purchase/${orderId}/update?access_token=${accessToken}`,
+                                {
+                                    [lineId]: newDate.toISODate(),
+                                }
+                            )
                         );
                     },
                     pickerProps: {

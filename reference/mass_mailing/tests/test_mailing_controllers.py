@@ -1,24 +1,24 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
-from freezegun import freeze_time
-from markupsafe import Markup
-from requests import Session, PreparedRequest, Response
 
 import datetime
 
+from freezegun import freeze_time
+from markupsafe import Markup
+from requests import PreparedRequest, Response, Session
+
 from odoo import tools
-from odoo.addons.mail.tests.common import mail_new_test_user
-from odoo.addons.mass_mailing.tests.common import MassMailCommon
 from odoo.tests import HttpCase, tagged
 from odoo.tools import mute_logger
+
+from odoo.addons.mail.tests.common import mail_new_test_user
+from odoo.addons.mass_mailing.tests.common import MassMailCommon
 
 
 class TestMailingControllersCommon(MassMailCommon, HttpCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMailingControllersCommon, cls).setUpClass()
+        super().setUpClass()
 
         # cleanup lists
         cls.env['mailing.list'].search([]).unlink()

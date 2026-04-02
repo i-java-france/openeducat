@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 
 from contextlib import contextmanager
 from unittest.mock import patch
 
 from odoo.tests import tagged
+
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.addons.account_edi_ubl_cii.models.account_edi_common import EAS_MAPPING
 

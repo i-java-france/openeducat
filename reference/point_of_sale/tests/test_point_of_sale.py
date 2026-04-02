@@ -1,13 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo.exceptions import UserError
 from odoo.fields import Command
 from odoo.tests.common import TransactionCase
-from odoo.exceptions import UserError
 
 
 class TestPointOfSale(TransactionCase):
     def setUp(self):
-        super(TestPointOfSale, self).setUp()
+        super().setUp()
 
         # ignore pre-existing pricelists for the purpose of this test
         self.env["product.pricelist"].search([]).write({"active": False})

@@ -1,10 +1,10 @@
-import { Component, onWillUpdateProps } from "@odoo/owl";
-import { ActionPanel } from "@mail/discuss/core/common/action_panel";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { SearchMessageInput } from "@mail/core/common/search_message_input";
-import { SearchMessageResult } from "@mail/core/common/search_message_result";
-import { useMessageSearch } from "./message_search_hook";
+import {Component, onWillUpdateProps} from "@odoo/owl";
+import {ActionPanel} from "@mail/discuss/core/common/action_panel";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {SearchMessageInput} from "@mail/core/common/search_message_input";
+import {SearchMessageResult} from "@mail/core/common/search_message_result";
+import {useMessageSearch} from "./message_search_hook";
 
 /**
  * @typedef {Object} Props
@@ -12,13 +12,14 @@ import { useMessageSearch } from "./message_search_hook";
  */
 export class SearchMessagesPanel extends Component {
     static template = "mail.SearchMessagesPanel";
-    static components = { ActionPanel, SearchMessageInput, SearchMessageResult };
+    static components = {ActionPanel, SearchMessageInput, SearchMessageResult};
     static props = ["thread"];
 
     setup() {
         super.setup();
         this.store = useService("mail.store");
-        this.messageSearch = this.env.messageSearch ?? useMessageSearch(this.props.thread);
+        this.messageSearch =
+            this.env.messageSearch ?? useMessageSearch(this.props.thread);
         onWillUpdateProps((nextProps) => {
             if (this.props.thread.notEq(nextProps.thread)) {
                 this.env.searchMenu?.close();

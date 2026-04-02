@@ -1,9 +1,9 @@
-import { Component, onWillStart, useState } from "@odoo/owl";
-import { ColorPicker } from "@web/core/color_picker/color_picker";
-import { HighlightPicker } from "./highlight_picker";
-import { normalizeColor } from "@html_builder/utils/utils_css";
-import { getHtmlStyle } from "@html_editor/utils/formatting";
-import { _t } from "@web/core/l10n/translation";
+import {Component, onWillStart, useState} from "@odoo/owl";
+import {ColorPicker} from "@web/core/color_picker/color_picker";
+import {HighlightPicker} from "./highlight_picker";
+import {normalizeColor} from "@html_builder/utils/utils_css";
+import {getHtmlStyle} from "@html_editor/utils/formatting";
+import {_t} from "@web/core/l10n/translation";
 
 export const highlightIdToName = {
     underline: "Underline",
@@ -31,7 +31,7 @@ export const highlightIdToName = {
 
 export class HighlightConfigurator extends Component {
     static template = "website.highlightConfigurator";
-    static components = { ColorPicker };
+    static components = {ColorPicker};
     static props = {
         applyHighlight: Function,
         applyHighlightStyle: Function,
@@ -84,7 +84,7 @@ export class HighlightConfigurator extends Component {
         this.props.componentStack.push(
             ColorPicker,
             {
-                state: { selectedColor: this.state.color, defaultTab: "solid" },
+                state: {selectedColor: this.state.color, defaultTab: "solid"},
                 colorPrefix: "hb-cp-",
                 getUsedCustomColors: this.props.getUsedCustomColors,
                 enabledTabs: ["solid", "custom"],

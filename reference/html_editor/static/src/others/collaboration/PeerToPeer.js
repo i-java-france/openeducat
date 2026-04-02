@@ -8,7 +8,10 @@ if (typeof collaborationDebug === "string") {
             urlParams.get("collaborationDebug")
         );
     } else {
-        localStorage.setItem(COLLABORATION_LOCALSTORAGE_KEY, urlParams.get("collaborationDebug"));
+        localStorage.setItem(
+            COLLABORATION_LOCALSTORAGE_KEY,
+            urlParams.get("collaborationDebug")
+        );
     }
 }
 const debugValue = localStorage.getItem(COLLABORATION_LOCALSTORAGE_KEY);
@@ -18,7 +21,7 @@ const debugShowNotifications = debugValue === "all";
 
 const baseNotificationMethods = {
     ptp_request: async function (notification) {
-        const { requestId, requestName, requestPayload, requestTransport } =
+        const {requestId, requestName, requestPayload, requestTransport} =
             notification.notificationPayload;
         this._onRequest(
             notification.fromPeerId,
@@ -29,7 +32,7 @@ const baseNotificationMethods = {
         );
     },
     ptp_request_result: function (notification) {
-        const { requestId, result } = notification.notificationPayload;
+        const {requestId, result} = notification.notificationPayload;
         // If not in _pendingRequestResolver, it means it has timeout.
         if (this._pendingRequestResolver[requestId]) {
             clearTimeout(this._pendingRequestResolver[requestId].rejectTimeout);
@@ -56,7 +59,9 @@ const baseNotificationMethods = {
             !peerInfos.peerConnection ||
             peerInfos.peerConnection.connectionState === "closed"
         ) {
-            console.groupCollapsed("=== ERROR: Handle Ice Candidate from undefined|closed ===");
+            console.groupCollapsed(
+                "=== ERROR: Handle Ice Candidate from undefined|closed ==="
+            );
             console.trace(peerInfos);
             console.groupEnd();
             return;
@@ -78,7 +83,8 @@ const baseNotificationMethods = {
         }
 
         const peerInfos =
-            this.peersInfos[notification.fromPeerId] || this._createPeer(notification.fromPeerId);
+            this.peersInfos[notification.fromPeerId] ||
+            this._createPeer(notification.fromPeerId);
         const pc = peerInfos.peerConnection;
 
         if (!pc || pc.connectionState === "closed") {
@@ -105,7 +111,8 @@ const baseNotificationMethods = {
         // continuing the process. The peer that is polite is the one that
         // will rollback.
         const isPolite =
-            ("" + notification.fromPeerId).localeCompare("" + this._currentPeerId) === 1;
+            ("" + notification.fromPeerId).localeCompare("" + this._currentPeerId) ===
+            1;
         if (debugShowLog) {
             console.log(
                 `%cisPolite: %c${isPolite}`,
@@ -161,7 +168,11 @@ const baseNotificationMethods = {
                     throw e;
                 }
             }
-            this.notifyPeer(notification.fromPeerId, "rtc_signal_description", pc.localDescription);
+            this.notifyPeer(
+                notification.fromPeerId,
+                "rtc_signal_description",
+                pc.localDescription
+            );
         }
     },
 };
@@ -224,7 +235,11 @@ export class PeerToPeer {
         }
     }
 
-    async notifyAllPeers(notificationName, notificationPayload, { transport = "server" } = {}) {
+    async notifyAllPeers(
+        notificationName,
+        notificationPayload,
+        {transport = "server"} = {}
+    ) {
         if (this._stopped) {
             return;
         }
@@ -246,7 +261,12 @@ export class PeerToPeer {
         }
     }
 
-    notifyPeer(peerId, notificationName, notificationPayload, { transport = "server" } = {}) {
+    notifyPeer(
+        peerId,
+        notificationName,
+        notificationPayload,
+        {transport = "server"} = {}
+    ) {
         if (this._stopped) {
             return;
         }
@@ -300,7 +320,7 @@ export class PeerToPeer {
         if (this._stopped) {
             return;
         }
-        return this.handleNotification({ notificationName, notificationPayload });
+        return this.handleNotification({notificationName, notificationPayload});
     }
 
     handleNotification(notification) {
@@ -312,7 +332,8 @@ export class PeerToPeer {
             typeof notification.toPeerId === "undefined";
         if (
             isInternalNotification ||
-            (notification.fromPeerId !== this._currentPeerId && !notification.toPeerId) ||
+            (notification.fromPeerId !== this._currentPeerId &&
+                !notification.toPeerId) ||
             notification.toPeerId === this._currentPeerId
         ) {
             if (debugShowNotifications) {
@@ -349,7 +370,8 @@ export class PeerToPeer {
                 }
             }
             try {
-                const baseMethod = baseNotificationMethods[notification.notificationName];
+                const baseMethod =
+                    baseNotificationMethods[notification.notificationName];
                 if (baseMethod) {
                     return baseMethod.call(this, notification);
                 }
@@ -357,14 +379,16 @@ export class PeerToPeer {
                     return this.options.onNotification(notification);
                 }
             } catch (error) {
-                console.groupCollapsed("=== ERROR: On notification in collaboration ===");
+                console.groupCollapsed(
+                    "=== ERROR: On notification in collaboration ==="
+                );
                 console.error(error);
                 console.groupEnd();
             }
         }
     }
 
-    requestPeer(peerId, requestName, requestPayload, { transport = "server" } = {}) {
+    requestPeer(peerId, requestName, requestPayload, {transport = "server"} = {}) {
         if (this._stopped) {
             return;
         }
@@ -396,16 +420,16 @@ export class PeerToPeer {
                     requestPayload,
                     requestTransport: transport,
                 },
-                { transport }
+                {transport}
             );
         });
     }
     abortCurrentRequests() {
-        for (const { abort } of Object.values(this._pendingRequestResolver)) {
+        for (const {abort} of Object.values(this._pendingRequestResolver)) {
             abort();
         }
     }
-    _createPeer(peerId, { makeOffer = true } = {}) {
+    _createPeer(peerId, {makeOffer = true} = {}) {
         if (this._stopped) {
             return;
         }
@@ -445,7 +469,11 @@ export class PeerToPeer {
                         return;
                     }
                     await pc.setLocalDescription(offer);
-                    this.notifyPeer(peerId, "rtc_signal_description", pc.localDescription);
+                    this.notifyPeer(
+                        peerId,
+                        "rtc_signal_description",
+                        pc.localDescription
+                    );
                 } catch (err) {
                     console.error(err);
                 } finally {
@@ -518,9 +546,15 @@ export class PeerToPeer {
                 console.trace(error);
                 console.groupEnd();
             }
-            this._recoverConnection(peerId, { delay: 3000, reason: "ice candidate error" });
+            this._recoverConnection(peerId, {
+                delay: 3000,
+                reason: "ice candidate error",
+            });
         };
-        const dataChannel = pc.createDataChannel("notifications", { negotiated: true, id: 1 });
+        const dataChannel = pc.createDataChannel("notifications", {
+            negotiated: true,
+            id: 1,
+        });
         let message = [];
         dataChannel.onmessage = (event) => {
             if (event.data !== "-") {
@@ -589,11 +623,18 @@ export class PeerToPeer {
         return this._lastRequestId;
     }
 
-    async _onRequest(fromPeerId, requestId, requestName, requestPayload, requestTransport) {
+    async _onRequest(
+        fromPeerId,
+        requestId,
+        requestName,
+        requestPayload,
+        requestTransport
+    ) {
         if (this._stopped) {
             return;
         }
-        const requestFunction = this.options.onRequest && this.options.onRequest[requestName];
+        const requestFunction =
+            this.options.onRequest && this.options.onRequest[requestName];
         const result = await requestFunction({
             fromPeerId,
             requestId,
@@ -603,8 +644,8 @@ export class PeerToPeer {
         this.notifyPeer(
             fromPeerId,
             "ptp_request_result",
-            { requestId, result },
-            { transport: requestTransport }
+            {requestId, result},
+            {transport: requestTransport}
         );
     }
     /**
@@ -616,7 +657,7 @@ export class PeerToPeer {
      * @param {number} [param1.delay] in ms
      * @param {string} [param1.reason]
      */
-    _recoverConnection(peerId, { delay = 0, reason = "" } = {}) {
+    _recoverConnection(peerId, {delay = 0, reason = ""} = {}) {
         if (this._stopped) {
             this.removePeer(peerId);
             return;
@@ -673,7 +714,11 @@ export class PeerToPeer {
 
         // If there is no connection after 10 seconds, terminate.
         peerInfos.zombieTimeout = setTimeout(() => {
-            if (peerInfos && peerInfos.dataChannel && peerInfos.dataChannel.readyState !== "open") {
+            if (
+                peerInfos &&
+                peerInfos.dataChannel &&
+                peerInfos.dataChannel.readyState !== "open"
+            ) {
                 if (debugShowLog) {
                     console.log(`%c KILL ZOMBIE ${peerId}`, "background: red;");
                 }

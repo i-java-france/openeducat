@@ -1,12 +1,12 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { press, queryOne } from "@odoo/hoot-dom";
-import { animationFrame } from "@odoo/hoot-mock";
-import { Component, useState, xml } from "@odoo/owl";
-import { getService, mountWithCleanup } from "../web_test_helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {press, queryOne} from "@odoo/hoot-dom";
+import {animationFrame} from "@odoo/hoot-mock";
+import {Component, useState, xml} from "@odoo/owl";
+import {getService, mountWithCleanup} from "../web_test_helpers";
 
-import { MainComponentsContainer } from "@web/core/main_components_container";
-import { useActiveElement } from "@web/core/ui/ui_service";
-import { useAutofocus } from "@web/core/utils/hooks";
+import {MainComponentsContainer} from "@web/core/main_components_container";
+import {useActiveElement} from "@web/core/ui/ui_service";
+import {useAutofocus} from "@web/core/utils/hooks";
 
 describe.current.tags("desktop");
 
@@ -86,12 +86,12 @@ test("UI active element: trap focus", async () => {
     await mountWithCleanup(MyComponent);
 
     expect("input[placeholder=withFocus]").toBeFocused();
-    let [firstEvent] = await press("Tab", { shiftKey: false });
+    let [firstEvent] = await press("Tab", {shiftKey: false});
     await animationFrame();
     expect(firstEvent.defaultPrevented).toBe(true);
     expect("input[placeholder=withFocus]").toBeFocused();
 
-    [firstEvent] = await press("Tab", { shiftKey: true });
+    [firstEvent] = await press("Tab", {shiftKey: true});
     await animationFrame();
     expect(firstEvent.defaultPrevented).toBe(true);
     expect("input[placeholder=withFocus]").toBeFocused();
@@ -119,17 +119,17 @@ test("UI active element: trap focus - default focus with autofocus", async () =>
     await mountWithCleanup(MyComponent);
 
     expect("input[placeholder=withAutoFocus]").toBeFocused();
-    let [firstEvent] = await press("Tab", { shiftKey: false });
+    let [firstEvent] = await press("Tab", {shiftKey: false});
     await animationFrame();
     expect(firstEvent.defaultPrevented).toBe(true);
     expect("input[placeholder=withoutFocus]").toBeFocused();
 
-    [firstEvent] = await press("Tab", { shiftKey: true });
+    [firstEvent] = await press("Tab", {shiftKey: true});
     await animationFrame();
     expect(firstEvent.defaultPrevented).toBe(true);
     expect("input[placeholder=withAutoFocus]").toBeFocused();
 
-    [firstEvent] = await press("Tab", { shiftKey: true });
+    [firstEvent] = await press("Tab", {shiftKey: true});
     await animationFrame();
     expect(firstEvent.defaultPrevented).toBe(false);
 });
@@ -197,7 +197,7 @@ test("UI active element: trap focus - first or last tabable changes", async () =
         `;
         static props = ["*"];
         setup() {
-            this.show = useState({ a: true, c: false });
+            this.show = useState({a: true, c: false});
             useActiveElement("delegatedRef");
         }
     }
@@ -206,7 +206,7 @@ test("UI active element: trap focus - first or last tabable changes", async () =
 
     expect("input[name=a]").toBeFocused();
 
-    let [firstEvent] = await press("Tab", { shiftKey: true });
+    let [firstEvent] = await press("Tab", {shiftKey: true});
     await animationFrame();
     expect(firstEvent.defaultPrevented).toBe(true);
     expect("input[name=b]").toBeFocused();
@@ -216,7 +216,7 @@ test("UI active element: trap focus - first or last tabable changes", async () =
     await animationFrame();
     expect("input[name=b]").toBeFocused();
 
-    [firstEvent] = await press("Tab", { shiftKey: true });
+    [firstEvent] = await press("Tab", {shiftKey: true});
     await animationFrame();
     expect(firstEvent.defaultPrevented).toBe(true);
     expect("input[name=c]").toBeFocused();
@@ -247,12 +247,12 @@ test("UI active element: trap focus is not bypassed using invisible elements", a
 
     expect("input[placeholder=withFocus]").toBeFocused();
 
-    let [firstEvent] = await press("Tab", { shiftKey: false });
+    let [firstEvent] = await press("Tab", {shiftKey: false});
     await animationFrame();
     expect(firstEvent.defaultPrevented).toBe(true);
     expect("input[placeholder=withFocus]").toBeFocused();
 
-    [firstEvent] = await press("Tab", { shiftKey: true });
+    [firstEvent] = await press("Tab", {shiftKey: true});
     await animationFrame();
     expect(firstEvent.defaultPrevented).toBe(true);
     expect("input[placeholder=withFocus]").toBeFocused();

@@ -2,10 +2,11 @@
 
 ## Technical details
 
-API: [Iyzico Checkout Form API](https://docs.iyzico.com/en/payment-methods/direct-charge/checkoutform)
+API:
+[Iyzico Checkout Form API](https://docs.iyzico.com/en/payment-methods/direct-charge/checkoutform)
 
-This module integrates Iyzico using the generic payment with redirection flow based on form
-submission provided by the payment module.
+This module integrates Iyzico using the generic payment with redirection flow based on
+form submission provided by the payment module.
 
 ## Supported features
 

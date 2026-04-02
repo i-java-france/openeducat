@@ -1,11 +1,11 @@
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
-import { computeComboItems } from "./utils/compute_combo_items";
-import { localization } from "@web/core/l10n/localization";
-import { formatDate, serializeDateTime } from "@web/core/l10n/dates";
-import { PosOrderAccounting } from "./accounting/pos_order_accounting";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {computeComboItems} from "./utils/compute_combo_items";
+import {localization} from "@web/core/l10n/localization";
+import {formatDate, serializeDateTime} from "@web/core/l10n/dates";
+import {PosOrderAccounting} from "./accounting/pos_order_accounting";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 
 export class PosOrder extends PosOrderAccounting {
     static pythonModel = "pos.order";
@@ -132,7 +132,9 @@ export class PosOrder extends PosOrderAccounting {
         return this.preset_time?.isValid
             ? this.preset_time.hasSame(this.date_order, "day")
                 ? this.preset_time.toFormat(localization.timeFormat)
-                : this.preset_time.toFormat(`${localization.dateFormat} ${localization.timeFormat}`)
+                : this.preset_time.toFormat(
+                      `${localization.dateFormat} ${localization.timeFormat}`
+                  )
             : false;
     }
 
@@ -151,22 +153,28 @@ export class PosOrder extends PosOrderAccounting {
 
     get presetRequirementsFilled() {
         const invalidCustomer =
-            (this.preset_id?.needsName && !(this.floating_order_name || this.partner_id)) ||
+            (this.preset_id?.needsName &&
+                !(this.floating_order_name || this.partner_id)) ||
             (this.preset_id?.needsPartner && !this.partner_id);
         const isAddressMissing =
-            this.preset_id?.needsPartner && !(this.partner_id?.street || this.partner_id?.street2);
+            this.preset_id?.needsPartner &&
+            !(this.partner_id?.street || this.partner_id?.street2);
         const invalidSlot = this.preset_id?.needsSlot && !this.preset_time;
 
         if (invalidCustomer || isAddressMissing || invalidSlot) {
             this.uiState.requiredPartnerDetails = {
                 field: _t(
-                    invalidCustomer ? _t("Customer") : isAddressMissing ? _t("Address") : _t("Slot")
+                    invalidCustomer
+                        ? _t("Customer")
+                        : isAddressMissing
+                          ? _t("Address")
+                          : _t("Slot")
                 ),
                 message: invalidCustomer
                     ? _t("Please add a valid customer to the order.")
                     : isAddressMissing
-                    ? _t("The selected customer needs an address.")
-                    : _t("Please select a time slot before proceeding."),
+                      ? _t("The selected customer needs an address.")
+                      : _t("Please select a time slot before proceeding."),
             };
             return false;
         }
@@ -239,15 +247,21 @@ export class PosOrder extends PosOrderAccounting {
         });
         // Checks whether an orderline has been deleted from the order since it
         // was last sent to the preparation tools or updated. If so we delete older changes.
-        for (const [key, change] of Object.entries(this.last_order_preparation_change.lines)) {
+        for (const [key, change] of Object.entries(
+            this.last_order_preparation_change.lines
+        )) {
             const orderline = this.models["pos.order.line"].getBy("uuid", change.uuid);
             const lineNote = orderline?.note;
             const changeNote = change?.note;
-            if (!orderline || (lineNote && changeNote && changeNote.trim() !== lineNote.trim())) {
+            if (
+                !orderline ||
+                (lineNote && changeNote && changeNote.trim() !== lineNote.trim())
+            ) {
                 delete this.last_order_preparation_change.lines[key];
             }
         }
-        this.last_order_preparation_change.general_customer_note = this.general_customer_note;
+        this.last_order_preparation_change.general_customer_note =
+            this.general_customer_note;
         this.last_order_preparation_change.internal_note = this.internal_note;
         this.last_order_preparation_change.sittingMode = this.preset_id?.id || 0;
         this.last_order_preparation_change.metadata = {
@@ -336,7 +350,8 @@ export class PosOrder extends PosOrderAccounting {
             (line) => line.price_type === "original" && line.combo_line_ids?.length
         );
         for (const pLine of combo_parent_lines) {
-            const { childLineFree, childLineExtra } = this.getFreeAndExtraChildLines(pLine);
+            const {childLineFree, childLineExtra} =
+                this.getFreeAndExtraChildLines(pLine);
             attributes_prices[pLine.id] = computeComboItems(
                 pLine.product_id,
                 childLineFree,
@@ -372,21 +387,24 @@ export class PosOrder extends PosOrderAccounting {
                 comboRemainingFree[cLine.combo_item_id.combo_id.id] =
                     cLine.combo_item_id.combo_id.qty_free;
             }
-            const newQty = comboRemainingFree[cLine.combo_item_id.combo_id.id] - cLine.qty;
-            const baseData = { combo_item_id: cLine.combo_item_id };
+            const newQty =
+                comboRemainingFree[cLine.combo_item_id.combo_id.id] - cLine.qty;
+            const baseData = {combo_item_id: cLine.combo_item_id};
             if (cLine.attribute_value_ids) {
-                baseData.configuration = { attribute_value_ids: cLine.attribute_value_ids };
+                baseData.configuration = {
+                    attribute_value_ids: cLine.attribute_value_ids,
+                };
             }
             if (cLine.qty) {
                 if (newQty >= 0) {
                     comboRemainingFree[cLine.combo_item_id.combo_id.id] = newQty;
-                    childLineFree.push({ ...baseData, qty: cLine.qty });
+                    childLineFree.push({...baseData, qty: cLine.qty});
                 } else {
-                    childLineExtra.push({ ...baseData, qty: cLine.qty });
+                    childLineExtra.push({...baseData, qty: cLine.qty});
                 }
             }
         }
-        return { childLineFree, childLineExtra };
+        return {childLineFree, childLineExtra};
     }
 
     /**
@@ -400,7 +418,9 @@ export class PosOrder extends PosOrderAccounting {
         const linesToRemove = line.getAllLinesInCombo();
         for (const lineToRemove of linesToRemove) {
             if (lineToRemove.refunded_orderline_id?.uuid in this.uiState.lineToRefund) {
-                delete this.uiState.lineToRefund[lineToRemove.refunded_orderline_id.uuid];
+                delete this.uiState.lineToRefund[
+                    lineToRemove.refunded_orderline_id.uuid
+                ];
             }
 
             if (this.assertEditable()) {
@@ -419,7 +439,9 @@ export class PosOrder extends PosOrderAccounting {
     }
 
     getSelectedOrderline() {
-        return this.lines.find((line) => line.uuid === this.uiState.selected_orderline_uuid);
+        return this.lines.find(
+            (line) => line.uuid === this.uiState.selected_orderline_uuid
+        );
     }
 
     getSelectedPaymentline() {
@@ -445,7 +467,9 @@ export class PosOrder extends PosOrderAccounting {
     /* ---- Payment Lines --- */
     addPaymentline(payment_method) {
         this.assertEditable();
-        const existingCash = this.payment_ids.find((pl) => pl.payment_method_id.is_cash_count);
+        const existingCash = this.payment_ids.find(
+            (pl) => pl.payment_method_id.is_cash_count
+        );
 
         if (this.electronicPaymentInProgress()) {
             return {
@@ -455,7 +479,7 @@ export class PosOrder extends PosOrderAccounting {
         }
 
         if (existingCash && payment_method.is_cash_count) {
-            return { status: false, data: _t("There is already a cash payment line.") };
+            return {status: false, data: _t("There is already a cash payment line.")};
         }
 
         const totalAmountDue = this.getDefaultAmountDueToPayIn(payment_method);
@@ -472,7 +496,7 @@ export class PosOrder extends PosOrderAccounting {
         ) {
             newPaymentLine.setPaymentStatus("pending");
         }
-        return { status: true, data: newPaymentLine };
+        return {status: true, data: newPaymentLine};
     }
 
     getPaymentlineByUuid(uuid) {
@@ -489,7 +513,7 @@ export class PosOrder extends PosOrderAccounting {
             this.selectPaymentline(undefined);
         }
 
-        line.delete({ backend: true });
+        line.delete({backend: true});
     }
 
     selectPaymentline(line) {
@@ -519,7 +543,8 @@ export class PosOrder extends PosOrderAccounting {
         return this.currency.round(
             this.lines.reduce((sum, orderLine) => {
                 if (!ignored_product_ids.includes(orderLine.product_id.id)) {
-                    const data = orderLine.order_id.prices.baseLineByLineUuids[orderLine.uuid];
+                    const data =
+                        orderLine.order_id.prices.baseLineByLineUuids[orderLine.uuid];
                     sum += data.tax_details.discount_amount;
                     if (
                         orderLine.displayDiscountPolicy() === "without_discount" &&
@@ -527,7 +552,8 @@ export class PosOrder extends PosOrderAccounting {
                         orderLine.discount == 0
                     ) {
                         sum +=
-                            (orderLine.displayPriceUnit - orderLine.displayPriceUnitNoDiscount) *
+                            (orderLine.displayPriceUnit -
+                                orderLine.displayPriceUnitNoDiscount) *
                             orderLine.getQuantity();
                     }
                 }
@@ -544,7 +570,9 @@ export class PosOrder extends PosOrderAccounting {
         return (
             this.isRefund &&
             this.payment_ids.some(
-                (pl) => pl.payment_method_id.use_payment_terminal && pl.payment_status !== "done"
+                (pl) =>
+                    pl.payment_method_id.use_payment_terminal &&
+                    pl.payment_status !== "done"
             )
         );
     }
@@ -604,7 +632,7 @@ export class PosOrder extends PosOrderAccounting {
     }
 
     getCurrentScreenData() {
-        return this.uiState.screen_data["value"] ?? { name: "ProductScreen" };
+        return this.uiState.screen_data["value"] ?? {name: "ProductScreen"};
     }
 
     //see setScreenData
@@ -615,16 +643,16 @@ export class PosOrder extends PosOrderAccounting {
         //   with payment line -> payment screen
         if (!screen) {
             if (!this.finalized && this.payment_ids.length > 0) {
-                return { name: "PaymentScreen" };
+                return {name: "PaymentScreen"};
             } else if (!this.finalized) {
-                return { name: "ProductScreen" };
+                return {name: "ProductScreen"};
             }
         }
         if (!this.finalized && this.payment_ids.length > 0) {
-            return { name: "PaymentScreen" };
+            return {name: "PaymentScreen"};
         }
 
-        return screen || { name: "" };
+        return screen || {name: ""};
     }
 
     waitForPushOrder() {
@@ -645,7 +673,8 @@ export class PosOrder extends PosOrderAccounting {
                 : defaultFiscalPosition;
             newPartnerPricelist =
                 this.models["product.pricelist"].find(
-                    (pricelist) => pricelist.id === newPartner.property_product_pricelist?.id
+                    (pricelist) =>
+                        pricelist.id === newPartner.property_product_pricelist?.id
                 ) || this.config.pricelist_id;
         } else {
             newPartnerFiscalPosition = defaultFiscalPosition;
@@ -707,7 +736,9 @@ export class PosOrder extends PosOrderAccounting {
             data.last_order_preparation_change &&
             typeof data.last_order_preparation_change === "object"
         ) {
-            data.last_order_preparation_change = JSON.stringify(data.last_order_preparation_change);
+            data.last_order_preparation_change = JSON.stringify(
+                data.last_order_preparation_change
+            );
         }
         return data;
     }

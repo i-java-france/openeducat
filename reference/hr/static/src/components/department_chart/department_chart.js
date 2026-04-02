@@ -1,8 +1,8 @@
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
 
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
-import { onWillStart, useState, onWillUpdateProps, Component } from "@odoo/owl";
+import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
+import {onWillStart, useState, onWillUpdateProps, Component} from "@odoo/owl";
 
 export class DepartmentChart extends Component {
     static template = "hr.DepartmentChart";
@@ -26,9 +26,11 @@ export class DepartmentChart extends Component {
     }
 
     async fetchHierarchy(departmentId) {
-        this.state.hierarchy = await this.orm.call("hr.department", "get_department_hierarchy", [
-            departmentId,
-        ]);
+        this.state.hierarchy = await this.orm.call(
+            "hr.department",
+            "get_department_hierarchy",
+            [departmentId]
+        );
     }
 
     async openDepartmentEmployees(departmentId) {

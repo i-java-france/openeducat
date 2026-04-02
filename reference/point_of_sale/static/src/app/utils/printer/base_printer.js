@@ -1,6 +1,6 @@
-import { _t } from "@web/core/l10n/translation";
-import { ConnectionLostError } from "@web/core/network/rpc";
-import { htmlToCanvas } from "@point_of_sale/app/services/render_service";
+import {_t} from "@web/core/l10n/translation";
+import {ConnectionLostError} from "@web/core/network/rpc";
+import {htmlToCanvas} from "@point_of_sale/app/services/render_service";
 /**
  * Implements basic printer functions.
  */
@@ -27,7 +27,7 @@ export class BasePrinter {
         while (this.receiptQueue.length > 0) {
             receipt = this.receiptQueue.shift();
             image = this.processCanvas(
-                await htmlToCanvas(receipt, { addClass: "pos-receipt-print" })
+                await htmlToCanvas(receipt, {addClass: "pos-receipt-print"})
             );
             try {
                 printResult = await this.sendPrintingJob(image);
@@ -95,7 +95,9 @@ export class BasePrinter {
             canRetry: true,
             message: {
                 title: _t("No Internet Connection"),
-                body: _t("Please ensure you are connected to the internet before retrying."),
+                body: _t(
+                    "Please ensure you are connected to the internet before retrying."
+                ),
             },
         };
     }

@@ -1,7 +1,7 @@
-import { expect, test } from "@odoo/hoot";
-import { queryAllTexts, queryFirst } from "@odoo/hoot-dom";
-import { runAllTimers } from "@odoo/hoot-mock";
-import { Component, onError, useState, xml } from "@odoo/owl";
+import {expect, test} from "@odoo/hoot";
+import {queryAllTexts, queryFirst} from "@odoo/hoot-dom";
+import {runAllTimers} from "@odoo/hoot-mock";
+import {Component, onError, useState, xml} from "@odoo/owl";
 import {
     contains,
     defineModels,
@@ -13,25 +13,25 @@ import {
     onRpc,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
-import { useService } from "@web/core/utils/hooks";
+import {useService} from "@web/core/utils/hooks";
 
-import { Record } from "@web/model/record";
-import { RelationalModel } from "@web/model/relational_model/relational_model";
-import { useRecordObserver } from "@web/model/relational_model/utils";
-import { CharField } from "@web/views/fields/char/char_field";
-import { Field } from "@web/views/fields/field";
-import { Many2ManyTagsField } from "@web/views/fields/many2many_tags/many2many_tags_field";
-import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
+import {Record} from "@web/model/record";
+import {RelationalModel} from "@web/model/relational_model/relational_model";
+import {useRecordObserver} from "@web/model/relational_model/utils";
+import {CharField} from "@web/views/fields/char/char_field";
+import {Field} from "@web/views/fields/field";
+import {Many2ManyTagsField} from "@web/views/fields/many2many_tags/many2many_tags_field";
+import {Many2OneField} from "@web/views/fields/many2one/many2one_field";
 
 class Foo extends models.Model {
     foo = fields.Char();
 
     _records = [
-        { id: 1, foo: "yop" },
-        { id: 2, foo: "blip" },
-        { id: 3, foo: "gnap" },
-        { id: 4, foo: "abc" },
-        { id: 5, foo: "blop" },
+        {id: 1, foo: "yop"},
+        {id: 2, foo: "blip"},
+        {id: 3, foo: "gnap"},
+        {id: 4, foo: "abc"},
+        {id: 5, foo: "blop"},
     ];
 }
 
@@ -40,7 +40,7 @@ defineModels([Foo]);
 test(`display a simple field`, async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Field };
+        static components = {Record, Field};
         static template = xml`
             <div class="root">
                 <Record resModel="'foo'" resId="1" fieldNames="['foo']" t-slot-scope="data">
@@ -51,7 +51,7 @@ test(`display a simple field`, async () => {
         `;
     }
 
-    onRpc(({ route }) => expect.step(route));
+    onRpc(({route}) => expect.step(route));
     await mountWithCleanup(Parent);
     expect(queryFirst`.root`).toHaveOuterHTML(`
         <div class="root">
@@ -70,7 +70,7 @@ test(`display a simple field`, async () => {
 test(`can be updated with different resId`, async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Field };
+        static components = {Record, Field};
         static template = xml`
             <Record resModel="'foo'" resId="state.resId" fieldNames="['foo']" t-slot-scope="data">
                 <Field name="'foo'" record="data.record"/>
@@ -85,7 +85,7 @@ test(`can be updated with different resId`, async () => {
         }
     }
 
-    onRpc(({ route }) => expect.step(route));
+    onRpc(({route}) => expect.step(route));
     await mountWithCleanup(Parent);
     expect.verifySteps([
         "/web/dataset/call_kw/foo/fields_get",
@@ -101,7 +101,7 @@ test(`can be updated with different resId`, async () => {
 test(`can be receive a context as props`, async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Field };
+        static components = {Record, Field};
         static template = xml`
             <div class="root">
                 <Record resModel="'foo'" fieldNames="['foo']" context="{ test: 4 }" t-slot-scope="data">
@@ -111,7 +111,7 @@ test(`can be receive a context as props`, async () => {
         `;
     }
 
-    onRpc("onchange", ({ kwargs }) => {
+    onRpc("onchange", ({kwargs}) => {
         expect.step(`onchange`);
         expect(kwargs.context).toEqual({
             allowed_company_ids: [1],
@@ -128,7 +128,7 @@ test(`can be receive a context as props`, async () => {
 test(`predefined fields and values`, async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Field };
+        static components = {Record, Field};
         static template = xml`
             <Record resModel="'foo'" fieldNames="['foo']" fields="fields" values="values" t-slot-scope="data">
                 <Field name="'foo'" record="data.record"/>
@@ -153,7 +153,7 @@ test(`predefined fields and values`, async () => {
         }
     }
 
-    onRpc(({ route }) => expect.step(route));
+    onRpc(({route}) => expect.step(route));
     await mountWithCleanup(Parent);
     expect.verifySteps([]);
     expect(`.o_field_widget input`).toHaveValue("abc");
@@ -163,7 +163,7 @@ test(`Record with onRootLoaded props`, async () => {
     let record;
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Field };
+        static components = {Record, Field};
         static template = xml`
             <Record resModel="'foo'" fieldNames="['foo']" fields="fields" t-slot-scope="data" hooks="hooks">
                 <Field name="'foo'" record="data.record"/>
@@ -198,7 +198,7 @@ test(`Record with onRootLoaded props`, async () => {
 test(`Record with onRecordChanged props`, async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Field };
+        static components = {Record, Field};
         static template = xml`
             <Record resModel="'foo'" fieldNames="['foo']" fields="fields" values="values" t-slot-scope="data" hooks="hooks">
                 <Field name="'foo'" record="data.record"/>
@@ -228,11 +228,11 @@ test(`Record with onRecordChanged props`, async () => {
         onRecordChanged(record, changes) {
             expect.step("record changed");
             expect(record.model.constructor.name).toBe("StandaloneRelationalModel");
-            expect(changes).toEqual({ foo: "753" });
+            expect(changes).toEqual({foo: "753"});
         }
     }
 
-    onRpc(({ route }) => expect.step(route));
+    onRpc(({route}) => expect.step(route));
     await mountWithCleanup(Parent);
     expect(`[name='foo'] input`).toHaveValue("abc");
 
@@ -244,7 +244,7 @@ test(`Record with onRecordChanged props`, async () => {
 test(`Record with onWillSaveRecord and onRecordSavedProps`, async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Field };
+        static components = {Record, Field};
         static template = xml`
             <Record resModel="'foo'" resId="1" fieldNames="['foo']" mode="'edit'" t-slot-scope="data" hooks="hooks">
                 <button class="save" t-on-click="() => data.record.save()">Save</button>
@@ -268,18 +268,24 @@ test(`Record with onWillSaveRecord and onRecordSavedProps`, async () => {
         }
     }
 
-    onRpc(({ method }) => expect.step(method));
+    onRpc(({method}) => expect.step(method));
     await mountWithCleanup(Parent);
 
     await contains(`[name='foo'] input`).edit("abc");
     await contains(`button.save`).click();
-    expect.verifySteps(["fields_get", "web_read", "onWillSaveRecord", "web_save", "onRecordSaved"]);
+    expect.verifySteps([
+        "fields_get",
+        "web_read",
+        "onWillSaveRecord",
+        "web_save",
+        "onRecordSaved",
+    ]);
 });
 
 test(`can access record changes`, async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Field };
+        static components = {Record, Field};
         static template = xml`
             <Record resModel="'foo'" fieldNames="['foo']" t-slot-scope="data">
                 <button class="do_something" t-on-click="() => doSomething(data.record)">
@@ -290,7 +296,9 @@ test(`can access record changes`, async () => {
         `;
 
         async doSomething(record) {
-            expect.step(`do something with ${JSON.stringify(await record.getChanges())}`);
+            expect.step(
+                `do something with ${JSON.stringify(await record.getChanges())}`
+            );
         }
     }
 
@@ -310,15 +318,15 @@ test(`handles many2one fields: value is an object`, async () => {
         name = fields.Char();
 
         _records = [
-            { id: 1, name: "bar1" },
-            { id: 3, name: "abc" },
+            {id: 1, name: "bar1"},
+            {id: 3, name: "abc"},
         ];
     }
     defineModels([Bar]);
 
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Many2OneField };
+        static components = {Record, Many2OneField};
         static template = xml`
             <Record resModel="'foo'" fieldNames="['foo']" fields="fields" values="values" t-slot-scope="data" hooks="hooks">
                 <Many2OneField name="'foo'" record="data.record"/>
@@ -334,7 +342,7 @@ test(`handles many2one fields: value is an object`, async () => {
                 },
             };
             this.values = {
-                foo: { id: 1, display_name: "bar1" },
+                foo: {id: 1, display_name: "bar1"},
             };
             this.hooks = {
                 onRecordChanged: this.onRecordChanged.bind(this),
@@ -343,19 +351,19 @@ test(`handles many2one fields: value is an object`, async () => {
 
         onRecordChanged(record, changes) {
             expect.step("record changed");
-            expect(changes).toEqual({ foo: 3 });
-            expect(record.data).toEqual({ foo: { id: 3, display_name: "abc" } });
+            expect(changes).toEqual({foo: 3});
+            expect(record.data).toEqual({foo: {id: 3, display_name: "abc"}});
             expect(record.data.foo.id).toBe(3);
             expect(record.data.foo.display_name).toBe("abc");
         }
     }
 
-    onRpc(({ route }) => expect.step(route));
+    onRpc(({route}) => expect.step(route));
     await mountWithCleanup(Parent);
     expect.verifySteps([]);
     expect(`.o_field_many2one_selection input`).toHaveValue("bar1");
 
-    await contains(`.o_field_many2one_selection input`).edit("abc", { confirm: false });
+    await contains(`.o_field_many2one_selection input`).edit("abc", {confirm: false});
     await runAllTimers();
     expect.verifySteps(["/web/dataset/call_kw/bar/web_name_search"]);
 
@@ -370,15 +378,15 @@ test(`handles many2one fields: value is a pair id, display_name`, async () => {
         name = fields.Char();
 
         _records = [
-            { id: 1, name: "bar1" },
-            { id: 3, name: "abc" },
+            {id: 1, name: "bar1"},
+            {id: 3, name: "abc"},
         ];
     }
     defineModels([Bar]);
 
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Many2OneField };
+        static components = {Record, Many2OneField};
         static template = xml`
             <Record resModel="'foo'" fieldNames="['foo']" fields="fields" values="values" t-slot-scope="data" hooks="hooks">
                 <Many2OneField name="'foo'" record="data.record"/>
@@ -394,7 +402,7 @@ test(`handles many2one fields: value is a pair id, display_name`, async () => {
                 },
             };
             this.values = {
-                foo: { id: 1, display_name: "bar1" },
+                foo: {id: 1, display_name: "bar1"},
             };
             this.hooks = {
                 onRecordChanged: this.onRecordChanged.bind(this),
@@ -403,19 +411,19 @@ test(`handles many2one fields: value is a pair id, display_name`, async () => {
 
         onRecordChanged(record, changes) {
             expect.step("record changed");
-            expect(changes).toEqual({ foo: 3 });
-            expect(record.data).toEqual({ foo: { id: 3, display_name: "abc" } });
+            expect(changes).toEqual({foo: 3});
+            expect(record.data).toEqual({foo: {id: 3, display_name: "abc"}});
             expect(record.data.foo.id).toBe(3);
             expect(record.data.foo.display_name).toBe("abc");
         }
     }
 
-    onRpc(({ route }) => expect.step(route));
+    onRpc(({route}) => expect.step(route));
     await mountWithCleanup(Parent);
     expect.verifySteps([]);
     expect(`.o_field_many2one_selection input`).toHaveValue("bar1");
 
-    await contains(`.o_field_many2one_selection input`).edit("abc", { confirm: false });
+    await contains(`.o_field_many2one_selection input`).edit("abc", {confirm: false});
     await runAllTimers();
     expect.verifySteps(["/web/dataset/call_kw/bar/web_name_search"]);
 
@@ -429,15 +437,15 @@ test(`handles many2one fields: value is an id`, async () => {
         name = fields.Char();
 
         _records = [
-            { id: 1, name: "bar1" },
-            { id: 3, name: "abc" },
+            {id: 1, name: "bar1"},
+            {id: 3, name: "abc"},
         ];
     }
     defineModels([Bar]);
 
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Many2OneField };
+        static components = {Record, Many2OneField};
         static template = xml`
             <Record resModel="'foo'" fieldNames="['foo']" fields="fields" values="values" t-slot-scope="data">
                 <Many2OneField name="'foo'" record="data.record"/>
@@ -458,7 +466,7 @@ test(`handles many2one fields: value is an id`, async () => {
         }
     }
 
-    onRpc(({ route }) => expect.step(route));
+    onRpc(({route}) => expect.step(route));
     await mountWithCleanup(Parent);
     expect.verifySteps(["/web/dataset/call_kw/bar/web_read"]);
     expect(`.o_field_many2one_selection input`).toHaveValue("bar1");
@@ -469,15 +477,15 @@ test(`handles many2one fields: value is an object with id only`, async () => {
         name = fields.Char();
 
         _records = [
-            { id: 1, name: "bar1" },
-            { id: 3, name: "abc" },
+            {id: 1, name: "bar1"},
+            {id: 3, name: "abc"},
         ];
     }
     defineModels([Bar]);
 
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Many2OneField };
+        static components = {Record, Many2OneField};
         static template = xml`
             <Record resModel="'foo'" fieldNames="['foo']" fields="fields" values="values" t-slot-scope="data">
                 <Many2OneField name="'foo'" record="data.record"/>
@@ -493,12 +501,12 @@ test(`handles many2one fields: value is an object with id only`, async () => {
                 },
             };
             this.values = {
-                foo: { id: 1 },
+                foo: {id: 1},
             };
         }
     }
 
-    onRpc(({ route }) => expect.step(route));
+    onRpc(({route}) => expect.step(route));
     await mountWithCleanup(Parent);
     expect.verifySteps(["/web/dataset/call_kw/bar/web_read"]);
     expect(`.o_field_many2one_selection input`).toHaveValue("bar1");
@@ -509,15 +517,15 @@ test(`handles x2many fields`, async () => {
         name = fields.Char();
 
         _records = [
-            { id: 1, name: "bug" },
-            { id: 3, name: "ref" },
+            {id: 1, name: "bug"},
+            {id: 3, name: "ref"},
         ];
     }
     defineModels([Tag]);
 
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Many2ManyTagsField };
+        static components = {Record, Many2ManyTagsField};
         static template = xml`
             <Record resModel="'foo'" fieldNames="['tags']" activeFields="activeFields" fields="fields" values="values" t-slot-scope="data">
                 <Many2ManyTagsField name="'tags'" record="data.record"/>
@@ -532,7 +540,7 @@ test(`handles x2many fields`, async () => {
                             display_name: {},
                         },
                         fields: {
-                            display_name: { name: "display_name", type: "string" },
+                            display_name: {name: "display_name", type: "string"},
                         },
                     },
                 },
@@ -550,7 +558,7 @@ test(`handles x2many fields`, async () => {
         }
     }
 
-    onRpc(({ route }) => expect.step(route));
+    onRpc(({route}) => expect.step(route));
     await mountWithCleanup(Parent);
     expect.verifySteps(["/web/dataset/call_kw/tag/web_read"]);
     expect(queryAllTexts`.o_tag`).toEqual(["bug", "ref"]);
@@ -559,7 +567,7 @@ test(`handles x2many fields`, async () => {
 test(`supports passing dynamic values -- full control to the user of Record`, async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Field };
+        static components = {Record, Field};
         static template = xml`
             <Record resModel="'foo'" fieldNames="['foo']" fields="fields" values="{ foo: values.foo }" t-slot-scope="data" hooks="hooks">
                 <Field name="'foo'" record="data.record"/>
@@ -589,13 +597,13 @@ test(`supports passing dynamic values -- full control to the user of Record`, as
         onRecordChanged(record, changes) {
             expect.step("record changed");
             expect(record.model.constructor.name).toBe("StandaloneRelationalModel");
-            expect(changes).toEqual({ foo: "753" });
+            expect(changes).toEqual({foo: "753"});
             this.values.foo = 357;
         }
     }
 
     onRpc(() => {
-        throw new makeServerError({ message: "should not do any rpc" });
+        throw new makeServerError({message: "should not do any rpc"});
     });
     await mountWithCleanup(Parent);
     expect(`[name='foo'] input`).toHaveValue("abc");
@@ -608,7 +616,7 @@ test(`supports passing dynamic values -- full control to the user of Record`, as
 test(`can switch records`, async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Field };
+        static components = {Record, Field};
         static template = xml`
             <a id="increment" t-on-click="() => state.num++" t-esc="state.num"/>
             <a id="next" t-on-click="next">NEXT</a>
@@ -618,7 +626,7 @@ test(`can switch records`, async () => {
         `;
 
         setup() {
-            this.state = useState({ currentId: 1, num: 0 });
+            this.state = useState({currentId: 1, num: 0});
         }
 
         next() {
@@ -627,7 +635,7 @@ test(`can switch records`, async () => {
         }
     }
 
-    onRpc("web_read", ({ method, args, kwargs }) => {
+    onRpc("web_read", ({method, args, kwargs}) => {
         expect.step(
             `${method} : ${JSON.stringify(args[0])} - ${JSON.stringify(kwargs.specification)}`
         );
@@ -652,7 +660,7 @@ test(`can switch records`, async () => {
 test(`can switch records with values`, async () => {
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Field };
+        static components = {Record, Field};
         static template = xml`
             <a id="next" t-on-click="next">NEXT</a>
             <Record resId="state.currentId" resModel="'foo'" fieldNames="['foo']" fields="fields" values="values" t-slot-scope="data">
@@ -675,7 +683,7 @@ test(`can switch records with values`, async () => {
                 foo: "abc",
                 bar: true,
             };
-            this.state = useState({ currentId: 99 });
+            this.state = useState({currentId: 99});
         }
 
         next() {
@@ -687,7 +695,7 @@ test(`can switch records with values`, async () => {
         }
     }
 
-    onRpc(({ route }) => expect.step(route));
+    onRpc(({route}) => expect.step(route));
     const parent = await mountWithCleanup(Parent);
     const _record = findComponent(
         parent,
@@ -722,7 +730,7 @@ test(`faulty useRecordObserver in widget`, async () => {
 
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Field };
+        static components = {Record, Field};
         static template = xml`
             <t t-if="!state.error">
                 <Record resId="1" resModel="'foo'" fieldNames="['foo']" fields="fields" values="values" t-slot-scope="data">
@@ -735,7 +743,7 @@ test(`faulty useRecordObserver in widget`, async () => {
         `;
 
         setup() {
-            this.state = useState({ error: false });
+            this.state = useState({error: false});
             onError((error) => {
                 this.state.error = error;
             });
@@ -764,8 +772,8 @@ test(`don't duplicate a useRecordObserver effect when switching back and forth b
                 config: {
                     resModel: "foo",
                     fieldNames: ["foo"],
-                    fields: { foo: { name: "foo", type: "char" } },
-                    activeFields: { foo: {} },
+                    fields: {foo: {name: "foo", type: "char"}},
+                    activeFields: {foo: {}},
                     isMonoRecord: true,
                 },
                 hooks: {
@@ -787,7 +795,7 @@ test(`don't duplicate a useRecordObserver effect when switching back and forth b
 
     class Parent extends Component {
         static props = ["*"];
-        static components = { Record, Field };
+        static components = {Record, Field};
         static template = xml`
             <a id="setRecord" t-on-click="setRecord">SET</a>
             <a id="toggleRecord" t-on-click="toggleRecord">TOGGLE</a>
@@ -796,18 +804,18 @@ test(`don't duplicate a useRecordObserver effect when switching back and forth b
 
         setup() {
             this.orm = useService("orm");
-            const services = { orm: this.orm };
+            const services = {orm: this.orm};
             const model = new StandaloneRelationalModel(this.env, {}, services);
-            model.load({ resId: 1, values: { foo: "abc" } });
+            model.load({resId: 1, values: {foo: "abc"}});
             const record1 = model.root;
-            model.load({ resId: 2, values: { foo: "def" } });
+            model.load({resId: 2, values: {foo: "def"}});
             const record2 = model.root;
             this.records = [record1, record2];
-            this.state = useState({ recordIndex: 0 });
+            this.state = useState({recordIndex: 0});
         }
 
         setRecord() {
-            this.records[this.state.recordIndex].update({ foo: "ghi" });
+            this.records[this.state.recordIndex].update({foo: "ghi"});
         }
 
         toggleRecord() {

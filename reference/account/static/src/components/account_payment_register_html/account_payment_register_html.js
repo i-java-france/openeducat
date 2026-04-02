@@ -1,6 +1,6 @@
-import { Component } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+import {Component} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
 
 class AccountPaymentRegisterHtmlField extends Component {
     static props = standardFieldProps;
@@ -13,11 +13,13 @@ class AccountPaymentRegisterHtmlField extends Component {
     switchInstallmentsAmount(ev) {
         if (ev.srcElement.classList.contains("installments_switch_button")) {
             const root = this.env.model.root;
-            root.update({ amount: root.data.installments_switch_amount });
+            root.update({amount: root.data.installments_switch_amount});
         }
     }
 }
 
-const accountPaymentRegisterHtmlField = { component: AccountPaymentRegisterHtmlField };
+const accountPaymentRegisterHtmlField = {component: AccountPaymentRegisterHtmlField};
 
-registry.category("fields").add("account_payment_register_html", accountPaymentRegisterHtmlField);
+registry
+    .category("fields")
+    .add("account_payment_register_html", accountPaymentRegisterHtmlField);

@@ -1,5 +1,5 @@
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 export class CollapsePlugin extends Plugin {
     static id = "collapse";
@@ -26,14 +26,16 @@ export class CollapsePlugin extends Plugin {
         this.body = this.document.body;
     }
 
-    onSnippetDropped({ snippetEl }) {
-        const accordionItemsEls = snippetEl.querySelectorAll(".accordion > .accordion-item");
+    onSnippetDropped({snippetEl}) {
+        const accordionItemsEls = snippetEl.querySelectorAll(
+            ".accordion > .accordion-item"
+        );
         accordionItemsEls.forEach((accordionItemEl) => {
             this.createIDs(accordionItemEl);
         });
     }
 
-    onCloned({ cloneEl }) {
+    onCloned({cloneEl}) {
         const arrayOfAccordionItemEls = cloneEl.matches(".accordion > .accordion-item")
             ? [cloneEl]
             : [...cloneEl.querySelectorAll(".accordion > .accordion-item")];

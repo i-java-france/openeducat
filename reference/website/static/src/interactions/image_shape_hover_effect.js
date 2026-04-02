@@ -1,5 +1,5 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class ImageShapeHoverEffect extends Interaction {
     static selector = "img[data-hover-effect]";
@@ -21,7 +21,9 @@ export class ImageShapeHoverEffect extends Interaction {
             this.originalImgSrc = this.el.src;
         });
         this.connectSourceObserver();
-        this.adjustImageSourceFrom = this.protectSyncAfterAsync(this.adjustImageSourceFrom);
+        this.adjustImageSourceFrom = this.protectSyncAfterAsync(
+            this.adjustImageSourceFrom
+        );
     }
 
     destroy() {
@@ -83,7 +85,11 @@ export class ImageShapeHoverEffect extends Interaction {
         this.lastMouseEvent = this.lastMouseEvent.then(
             () =>
                 new Promise((resolve) => {
-                    if (!this.originalImgSrc || !this.svgInEl || !this.el.dataset.hoverEffect) {
+                    if (
+                        !this.originalImgSrc ||
+                        !this.svgInEl ||
+                        !this.el.dataset.hoverEffect
+                    ) {
                         resolve();
                         return;
                     }

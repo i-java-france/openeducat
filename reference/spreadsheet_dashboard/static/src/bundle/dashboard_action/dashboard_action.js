@@ -1,21 +1,21 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { ControlPanel } from "@web/search/control_panel/control_panel";
-import { Status } from "./dashboard_loader_service";
-import { SpreadsheetComponent } from "@spreadsheet/actions/spreadsheet_component";
-import { useSetupAction } from "@web/search/action_hook";
-import { DashboardMobileSearchPanel } from "./mobile_search_panel/mobile_search_panel";
-import { MobileFigureContainer } from "./mobile_figure_container/mobile_figure_container";
-import { useService } from "@web/core/utils/hooks";
-import { standardActionServiceProps } from "@web/webclient/actions/action_service";
-import { SpreadsheetShareButton } from "@spreadsheet/components/share_button/share_button";
-import { useSpreadsheetPrint } from "@spreadsheet/hooks";
-import { Registry } from "@odoo/o-spreadsheet";
-import { router } from "@web/core/browser/router";
-import { useSearchBarToggler } from "@web/search/search_bar/search_bar_toggler";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {ControlPanel} from "@web/search/control_panel/control_panel";
+import {Status} from "./dashboard_loader_service";
+import {SpreadsheetComponent} from "@spreadsheet/actions/spreadsheet_component";
+import {useSetupAction} from "@web/search/action_hook";
+import {DashboardMobileSearchPanel} from "./mobile_search_panel/mobile_search_panel";
+import {MobileFigureContainer} from "./mobile_figure_container/mobile_figure_container";
+import {useService} from "@web/core/utils/hooks";
+import {standardActionServiceProps} from "@web/webclient/actions/action_service";
+import {SpreadsheetShareButton} from "@spreadsheet/components/share_button/share_button";
+import {useSpreadsheetPrint} from "@spreadsheet/hooks";
+import {Registry} from "@odoo/o-spreadsheet";
+import {router} from "@web/core/browser/router";
+import {useSearchBarToggler} from "@web/search/search_bar/search_bar_toggler";
 
-import { Component, onWillStart, useState, useEffect } from "@odoo/owl";
-import { DashboardSearchBar } from "./dashboard_search_bar/dashboard_search_bar";
+import {Component, onWillStart, useState, useEffect} from "@odoo/owl";
+import {DashboardSearchBar} from "./dashboard_search_bar/dashboard_search_bar";
 
 export const dashboardActionRegistry = new Registry();
 
@@ -30,7 +30,7 @@ export class SpreadsheetDashboardAction extends Component {
         SpreadsheetShareButton,
         DashboardSearchBar,
     };
-    static props = { ...standardActionServiceProps };
+    static props = {...standardActionServiceProps};
     static displayName = _t("Dashboards");
 
     setup() {
@@ -52,7 +52,7 @@ export class SpreadsheetDashboardAction extends Component {
             }
         });
         useEffect(
-            () => router.pushState({ dashboard_id: this.activeDashboardId }),
+            () => router.pushState({dashboard_id: this.activeDashboardId}),
             () => [this.activeDashboardId]
         );
         useEffect(
@@ -76,7 +76,7 @@ export class SpreadsheetDashboardAction extends Component {
         });
         useSpreadsheetPrint(() => this.loader.getActiveDashboard()?.model);
         /** @type {{ sidebarExpanded: boolean}} */
-        this.state = useState({ sidebarExpanded: true });
+        this.state = useState({sidebarExpanded: true});
         this.searchBarToggler = useSearchBarToggler();
     }
 
@@ -156,13 +156,17 @@ export class SpreadsheetDashboardAction extends Component {
     }
 
     async shareSpreadsheet(data, excelExport) {
-        const url = await this.orm.call("spreadsheet.dashboard.share", "action_get_share_url", [
-            {
-                dashboard_id: this.activeDashboardId,
-                spreadsheet_data: JSON.stringify(data),
-                excel_files: excelExport.files,
-            },
-        ]);
+        const url = await this.orm.call(
+            "spreadsheet.dashboard.share",
+            "action_get_share_url",
+            [
+                {
+                    dashboard_id: this.activeDashboardId,
+                    spreadsheet_data: JSON.stringify(data),
+                    excel_files: excelExport.files,
+                },
+            ]
+        );
         return url;
     }
 
@@ -170,7 +174,7 @@ export class SpreadsheetDashboardAction extends Component {
         if (!this.loader.getActiveDashboard()) {
             return;
         }
-        const { id, is_favorite } = this.loader.getActiveDashboard().data;
+        const {id, is_favorite} = this.loader.getActiveDashboard().data;
         await this.orm.call("spreadsheet.dashboard", "action_toggle_favorite", [id]);
         this.loader.getActiveDashboard().data.is_favorite = !is_favorite;
     }
@@ -183,11 +187,11 @@ export class SpreadsheetDashboardAction extends Component {
         return this.getDashboardGroups().find(
             (group) =>
                 group.id !== "favorites" && // Skip the FAVORITES group
-                group.dashboards.some(({ data }) => data.id === this.activeDashboardId)
+                group.dashboards.some(({data}) => data.id === this.activeDashboardId)
         )?.name;
     }
 }
 
 registry
     .category("actions")
-    .add("action_spreadsheet_dashboard", SpreadsheetDashboardAction, { force: true });
+    .add("action_spreadsheet_dashboard", SpreadsheetDashboardAction, {force: true});

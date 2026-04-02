@@ -1,18 +1,19 @@
-import babel.dates
-import werkzeug
-
 from ast import literal_eval
 from collections import Counter
+
+import babel.dates
+import werkzeug
 from werkzeug.exceptions import NotFound
 
-from odoo import fields, http, _
-from odoo.addons.website.controllers.main import QueryURL
+from odoo import _, fields, http
+from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
 from odoo.http import request
-from odoo.tools.misc import get_lang
 from odoo.tools import lazy
+from odoo.tools.misc import get_lang
 from odoo.tools.translate import LazyTranslate
-from odoo.exceptions import UserError, ValidationError
+
+from odoo.addons.website.controllers.main import QueryURL
 
 _lt = LazyTranslate(__name__)
 
@@ -280,7 +281,7 @@ class WebsiteEventController(http.Controller):
             'event_slot': slot,
             'seats_available_slot_tickets': {
                 ticket.id: availability
-                for (_, ticket), availability in zip(slot_tickets, event._get_seats_availability(slot_tickets))
+                for (_, ticket), availability in zip(slot_tickets, event._get_seats_availability(slot_tickets), strict=False)
             }
         })
 

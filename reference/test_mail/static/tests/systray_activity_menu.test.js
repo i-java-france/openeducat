@@ -1,10 +1,10 @@
-import { start, startServer } from "@mail/../tests/mail_test_helpers";
-import { click, contains } from "@mail/../tests/mail_test_helpers_contains";
-import { beforeEach, describe, expect, test } from "@odoo/hoot";
-import { mockDate } from "@odoo/hoot-mock";
-import { defineTestMailModels } from "@test_mail/../tests/test_mail_test_helpers";
-import { asyncStep, mockService, waitForSteps } from "@web/../tests/web_test_helpers";
-import { serializeDate, today } from "@web/core/l10n/dates";
+import {start, startServer} from "@mail/../tests/mail_test_helpers";
+import {click, contains} from "@mail/../tests/mail_test_helpers_contains";
+import {beforeEach, describe, expect, test} from "@odoo/hoot";
+import {mockDate} from "@odoo/hoot-mock";
+import {defineTestMailModels} from "@test_mail/../tests/test_mail_test_helpers";
+import {asyncStep, mockService, waitForSteps} from "@web/../tests/web_test_helpers";
+import {serializeDate, today} from "@web/core/l10n/dates";
 
 describe.current.tags("desktop");
 defineTestMailModels();
@@ -20,7 +20,7 @@ test("menu with no records", async () => {
 });
 
 test("do not show empty text when at least some future activities", async () => {
-    const tomorrow = today().plus({ days: 1 });
+    const tomorrow = today().plus({days: 1});
     const pyEnv = await startServer();
     const activityId = pyEnv["mail.test.activity"].create({});
     pyEnv["mail.activity"].create([
@@ -39,13 +39,17 @@ test("do not show empty text when at least some future activities", async () => 
 });
 
 test("activity menu widget: activity menu with 2 models", async () => {
-    const tomorrow = today().plus({ days: 1 });
-    const yesterday = today().plus({ days: -1 });
+    const tomorrow = today().plus({days: 1});
+    const yesterday = today().plus({days: -1});
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({});
     const activityIds = pyEnv["mail.test.activity"].create([{}, {}, {}, {}]);
     pyEnv["mail.activity"].create([
-        { res_id: partnerId, res_model: "res.partner", date_deadline: serializeDate(today()) },
+        {
+            res_id: partnerId,
+            res_model: "res.partner",
+            date_deadline: serializeDate(today()),
+        },
         {
             res_id: activityIds[0],
             res_model: "mail.test.activity",
@@ -70,7 +74,7 @@ test("activity menu widget: activity menu with 2 models", async () => {
     await start();
     await contains(".o_menu_systray i[aria-label='Activities']");
     await contains(".o-mail-ActivityMenu-counter");
-    await contains(".o-mail-ActivityMenu-counter", { text: "5" });
+    await contains(".o-mail-ActivityMenu-counter", {text: "5"});
     const actionChecks = {
         context: {
             force_search_count: 1,
@@ -94,29 +98,31 @@ test("activity menu widget: activity menu with 2 models", async () => {
     });
     await click(".o_menu_systray i[aria-label='Activities']");
     await contains(".o-mail-ActivityMenu");
-    await contains(".o-mail-ActivityMenu .o-mail-ActivityGroup", { count: 2 });
+    await contains(".o-mail-ActivityMenu .o-mail-ActivityGroup", {count: 2});
     await contains(".o-mail-ActivityMenu .o-mail-ActivityGroup", {
         contains: [
-            ["div[name='activityTitle']", { text: "res.partner" }],
-            ["span", { text: "0 Late" }],
-            ["span", { text: "1 Today" }],
-            ["span", { text: "0 Future" }],
+            ["div[name='activityTitle']", {text: "res.partner"}],
+            ["span", {text: "0 Late"}],
+            ["span", {text: "1 Today"}],
+            ["span", {text: "0 Future"}],
         ],
     });
     await contains(".o-mail-ActivityMenu .o-mail-ActivityGroup", {
         contains: [
-            ["div[name='activityTitle']", { text: "mail.test.activity" }],
-            ["span", { text: "1 Late" }],
-            ["span", { text: "1 Today" }],
-            ["span", { text: "2 Future" }],
+            ["div[name='activityTitle']", {text: "mail.test.activity"}],
+            ["span", {text: "1 Late"}],
+            ["span", {text: "1 Today"}],
+            ["span", {text: "2 Future"}],
         ],
     });
     actionChecks.res_model = "res.partner";
-    await click(".o-mail-ActivityMenu .o-mail-ActivityGroup", { text: "res.partner" });
-    await contains(".o-mail-ActivityMenu", { count: 0 });
+    await click(".o-mail-ActivityMenu .o-mail-ActivityGroup", {text: "res.partner"});
+    await contains(".o-mail-ActivityMenu", {count: 0});
     await click(".o_menu_systray i[aria-label='Activities']");
     actionChecks.res_model = "mail.test.activity";
-    await click(".o-mail-ActivityMenu .o-mail-ActivityGroup", { text: "mail.test.activity" });
+    await click(".o-mail-ActivityMenu .o-mail-ActivityGroup", {
+        text: "mail.test.activity",
+    });
     await waitForSteps(["do_action:res.partner", "do_action:mail.test.activity"]);
 });
 
@@ -125,5 +131,5 @@ test("activity menu widget: close on messaging menu click", async () => {
     await click(".o_menu_systray i[aria-label='Activities']");
     await contains(".o-mail-ActivityMenu");
     await click(".o_menu_systray i[aria-label='Messages']");
-    await contains(".o-mail-ActivityMenu", { count: 0 });
+    await contains(".o-mail-ActivityMenu", {count: 0});
 });

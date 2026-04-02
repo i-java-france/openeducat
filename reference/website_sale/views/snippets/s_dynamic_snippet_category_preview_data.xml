@@ -1,6 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <template id="s_dynamic_snippet_category_preview_data" name="Category List Preview Data">
+    <template
+        id="s_dynamic_snippet_category_preview_data"
+        name="Category List Preview Data"
+    >
         <div
             class="o_category_container d-grid gap-2 rounded-2"
             contenteditable="false"
@@ -18,10 +21,10 @@
                         class="o_category_image img-fluid position-absolute w-100 h-100 object-fit-cover"
                         src="/website_sale/static/src/img/categories/desks.jpg"
                     />
-                    <div
-                        class="position-relative w-100 h-100 p-3 bg-black-25"
-                    >
-                        <h4 class="position-absolute start-50 top-50 translate-middle">Desks</h4>
+                    <div class="position-relative w-100 h-100 p-3 bg-black-25">
+                        <h4
+                            class="position-absolute start-50 top-50 translate-middle"
+                        >Desks</h4>
                     </div>
                 </div>
                 <div
@@ -36,7 +39,9 @@
                         src="/website_sale/static/src/img/categories/furnitures.jpg"
                     />
                     <div class="position-relative w-100 h-100 p-3 bg-black-25">
-                        <h4 class="position-absolute start-50 top-50 translate-middle">Furnitures</h4>
+                        <h4
+                            class="position-absolute start-50 top-50 translate-middle"
+                        >Furnitures</h4>
                     </div>
                 </div>
                 <div
@@ -51,7 +56,9 @@
                         src="/website_sale/static/src/img/categories/boxes.jpg"
                     />
                     <div class="position-relative w-100 h-100 p-3 bg-black-25">
-                        <h4 class="position-absolute start-50 top-50 translate-middle">Boxes</h4>
+                        <h4
+                            class="position-absolute start-50 top-50 translate-middle"
+                        >Boxes</h4>
                     </div>
                 </div>
                 <div
@@ -66,7 +73,9 @@
                         src="/website_sale/static/src/img/categories/drawers.jpg"
                     />
                     <div class="position-relative w-100 h-100 p-3 bg-black-25">
-                        <h4 class="position-absolute start-50 top-50 translate-middle">Drawers</h4>
+                        <h4
+                            class="position-absolute start-50 top-50 translate-middle"
+                        >Drawers</h4>
                     </div>
                 </div>
                 <div
@@ -81,7 +90,9 @@
                         src="/website_sale/static/src/img/categories/cabinets.jpg"
                     />
                     <div class="position-relative w-100 h-100 p-3 bg-black-25">
-                        <h4 class="position-absolute start-50 top-50 translate-middle">Cabinets</h4>
+                        <h4
+                            class="position-absolute start-50 top-50 translate-middle"
+                        >Cabinets</h4>
                     </div>
                 </div>
                 <div
@@ -96,7 +107,9 @@
                         src="/website_sale/static/src/img/categories/bins.jpg"
                     />
                     <div class="position-relative w-100 h-100 p-3 bg-black-25">
-                        <h4 class="position-absolute start-50 top-50 translate-middle">Bins</h4>
+                        <h4
+                            class="position-absolute start-50 top-50 translate-middle"
+                        >Bins</h4>
                     </div>
                 </div>
                 <div
@@ -111,7 +124,9 @@
                         src="/website_sale/static/src/img/categories/lamps.jpg"
                     />
                     <div class="position-relative w-100 h-100 p-3 bg-black-25">
-                        <h4 class="position-absolute start-50 top-50 translate-middle">Lamps</h4>
+                        <h4
+                            class="position-absolute start-50 top-50 translate-middle"
+                        >Lamps</h4>
                     </div>
                 </div>
                 <div
@@ -126,7 +141,9 @@
                         src="/website_sale/static/src/img/categories/services.jpg"
                     />
                     <div class="position-relative w-100 h-100 p-3 bg-black-25">
-                        <h4 class="position-absolute start-50 top-50 translate-middle">Services</h4>
+                        <h4
+                            class="position-absolute start-50 top-50 translate-middle"
+                        >Services</h4>
                     </div>
                 </div>
             </div>

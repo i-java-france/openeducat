@@ -1,4 +1,4 @@
-import { backgroundImageCssToParts } from "@html_editor/utils/image";
+import {backgroundImageCssToParts} from "@html_editor/utils/image";
 import {
     changeBackgroundColor,
     changeOption,
@@ -51,7 +51,9 @@ function addCheck(steps, checkX, checkNoX, xType, noSwitch = false) {
 
     const name = typeToName(xType);
     const selectorCheckX = checkX && `[data-color="${checkX}"].selected`;
-    const selectorCheckNoX = checkNoX ? `[data-color="${checkNoX}"]:not(.selected)` : null;
+    const selectorCheckNoX = checkNoX
+        ? `[data-color="${checkNoX}"]:not(.selected)`
+        : null;
 
     const step = {
         trigger: selectorCheckX || selectorCheckNoX,
@@ -105,7 +107,7 @@ function checkAndUpdateBackgroundColor({
     return steps;
 }
 
-function updateAndCheckCustomGradient({ updateStep, checkGradient }) {
+function updateAndCheckCustomGradient({updateStep, checkGradient}) {
     const steps = [updateStep];
     addCheck(
         steps,
@@ -264,7 +266,9 @@ registerWebsitePreviewTour(
                     getComputedStyle(this.anchor)["background-image"]
                 );
                 if (!parts.url || !parts.url.startsWith("url(")) {
-                    throw new Error("The image should have been kept when changing the gradient");
+                    throw new Error(
+                        "The image should have been kept when changing the gradient"
+                    );
                 }
                 if (parts.gradient !== gradients[0]) {
                     throw new Error("The gradient should have been changed");
@@ -315,7 +319,8 @@ registerWebsitePreviewTour(
                 content: "Delete step",
                 run: "click",
             },
-            checkGradient: "linear-gradient(135deg, rgb(203, 94, 238) 0%, rgb(75, 225, 236) 100%)",
+            checkGradient:
+                "linear-gradient(135deg, rgb(203, 94, 238) 0%, rgb(75, 225, 236) 100%)",
         }),
         // Linear
         ...updateAndCheckCustomGradient({
@@ -324,7 +329,8 @@ registerWebsitePreviewTour(
                 content: "Change angle",
                 run: "edit 50 && click .o_color_picker_inputs",
             },
-            checkGradient: "linear-gradient(50deg, rgb(203, 94, 238) 0%, rgb(75, 225, 236) 100%)",
+            checkGradient:
+                "linear-gradient(50deg, rgb(203, 94, 238) 0%, rgb(75, 225, 236) 100%)",
         }),
         // Radial
         ...updateAndCheckCustomGradient({
@@ -393,7 +399,9 @@ registerWebsitePreviewTour(
                     getComputedStyle(this.anchor)["background-image"]
                 );
                 if (!parts.url || !parts.url.startsWith("url(")) {
-                    throw new Error("The image should have been kept when re-adding the gradient");
+                    throw new Error(
+                        "The image should have been kept when re-adding the gradient"
+                    );
                 }
                 if (parts.gradient !== gradients[1]) {
                     throw new Error("The gradient should have been re-added");

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
     <t t-name="web.CalendarQuickCreate">
@@ -17,13 +17,22 @@
                 />
             </div>
             <t t-set-slot="footer">
-                <button class="btn btn-primary o-calendar-quick-create--create-btn" t-on-click="onCreateBtnClick">
+                <button
+                    class="btn btn-primary o-calendar-quick-create--create-btn"
+                    t-on-click="onCreateBtnClick"
+                >
                     Create
                 </button>
-                <button class="btn btn-secondary o-calendar-quick-create--edit-btn" t-on-click="onEditBtnClick">
+                <button
+                    class="btn btn-secondary o-calendar-quick-create--edit-btn"
+                    t-on-click="onEditBtnClick"
+                >
                     Edit
                 </button>
-                <button class="btn btn-secondary o-calendar-quick-create--cancel-btn" t-on-click="onCancelBtnClick">
+                <button
+                    class="btn btn-secondary o-calendar-quick-create--cancel-btn"
+                    t-on-click="onCancelBtnClick"
+                >
                     Cancel
                 </button>
             </t>

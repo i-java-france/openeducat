@@ -2,7 +2,8 @@
     --mail-Discuss-surface-dark: #{mix($white, $o-webclient-background-color, 15%)};
     --NavBar-entry-backgroundColor: var(--mail-Discuss-surface-dark);
 
-    .o_main_navbar, .o_control_panel {
+    .o_main_navbar,
+    .o_control_panel {
         background-color: var(--mail-Discuss-surface-dark);
     }
 }

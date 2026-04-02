@@ -1,9 +1,9 @@
-import { markup, reactive } from "@odoo/owl";
+import {markup, reactive} from "@odoo/owl";
 
-import { parseVersion } from "@mail/utils/common/misc";
-import { browser } from "@web/core/browser/browser";
-import { registry } from "@web/core/registry";
-import { _t } from "@web/core/l10n/translation";
+import {parseVersion} from "@mail/utils/common/misc";
+import {browser} from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
 
 /** In object so it's patchable */
 export const pttExtensionServiceInternal = {
@@ -20,7 +20,7 @@ export const pttExtensionHookService = {
         const EXT_ID = "mdiacebcbkmjjlpclnbcgiepgifcnpmg";
         const versionPromise =
             window.chrome?.runtime
-                ?.sendMessage(EXT_ID, { type: "ask-version" })
+                ?.sendMessage(EXT_ID, {type: "ask-version"})
                 .catch(() => "1.0.0.0") ?? Promise.resolve("1.0.0.0");
         const self = reactive({
             isEnabled: undefined,
@@ -47,7 +47,7 @@ export const pttExtensionHookService = {
             },
         });
 
-        browser.addEventListener("message", ({ data, origin, source }) => {
+        browser.addEventListener("message", ({data, origin, source}) => {
             const rtc = env.services["discuss.rtc"];
             if (
                 source !== window ||
@@ -67,7 +67,9 @@ export const pttExtensionHookService = {
                             // Second key press is slow to come thus, the first timeout
                             // must be greater than the following ones.
                             rtc.setPttReleaseTimeout(
-                                isFirstPress ? INITIAL_RELEASE_TIMEOUT : COMMON_RELEASE_TIMEOUT
+                                isFirstPress
+                                    ? INITIAL_RELEASE_TIMEOUT
+                                    : COMMON_RELEASE_TIMEOUT
                             );
                         }
                     }
@@ -103,10 +105,10 @@ export const pttExtensionHookService = {
                 return;
             }
             if (version.isLowerThan("1.0.0.2")) {
-                window.postMessage({ from: "discuss", type, value }, location.origin);
+                window.postMessage({from: "discuss", type, value}, location.origin);
                 return;
             }
-            window.chrome?.runtime?.sendMessage(EXT_ID, { type, value });
+            window.chrome?.runtime?.sendMessage(EXT_ID, {type, value});
         }
 
         sendMessage("ask-is-enabled");

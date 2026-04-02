@@ -1,6 +1,6 @@
-import { unwrapContents } from "@html_editor/utils/dom";
-import { closestElement, firstLeaf, lastLeaf } from "@html_editor/utils/dom_traversal";
-import { getFontSizeOrClass } from "@html_editor/utils/formatting";
+import {unwrapContents} from "@html_editor/utils/dom";
+import {closestElement, firstLeaf, lastLeaf} from "@html_editor/utils/dom_traversal";
+import {getFontSizeOrClass} from "@html_editor/utils/formatting";
 
 export function createList(document, mode) {
     const node = document.createElement(mode === "OL" ? "OL" : "UL");
@@ -20,7 +20,11 @@ export function insertListAfter(document, afterNode, mode, content = []) {
         const lastLeafNode = lastLeaf(content[0]);
         const firstClosestFont = closestElement(firstLeafNode, "font");
         const lastClosestFont = closestElement(lastLeafNode, "font");
-        if (firstClosestFont && lastClosestFont && firstClosestFont === lastClosestFont) {
+        if (
+            firstClosestFont &&
+            lastClosestFont &&
+            firstClosestFont === lastClosestFont
+        ) {
             li.style.color = firstClosestFont.style.color;
             unwrapContents(firstClosestFont);
         }

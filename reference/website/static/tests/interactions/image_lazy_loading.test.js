@@ -1,11 +1,14 @@
-import { setupInteractionWhiteList, startInteractions } from "@web/../tests/public/helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
 
-import { describe, expect, test } from "@odoo/hoot";
-import { Deferred, queryOne, tick } from "@odoo/hoot-dom";
+import {describe, expect, test} from "@odoo/hoot";
+import {Deferred, queryOne, tick} from "@odoo/hoot-dom";
 
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { ImageLazyLoading } from "@website/interactions/image_lazy_loading";
-import { onceAllImagesLoaded } from "@website/utils/images";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {ImageLazyLoading} from "@website/interactions/image_lazy_loading";
+import {onceAllImagesLoaded} from "@website/utils/images";
 
 setupInteractionWhiteList("website.image_lazy_loading");
 
@@ -18,7 +21,7 @@ test("images lazy loading removes height then restores it", async () => {
             await def;
         },
     });
-    const { core } = await startInteractions(
+    const {core} = await startInteractions(
         `
         <div>Fake surrounding
             <div id="wrapwrap">
@@ -26,17 +29,17 @@ test("images lazy loading removes height then restores it", async () => {
             </div>
         </div>
     `,
-        { waitForStart: false }
+        {waitForStart: false}
     );
     expect(core.interactions).toHaveLength(1);
     expect("img").toHaveAttribute("src", "/web/image/website.library_image_08");
     expect("img").toHaveAttribute("loading", "lazy");
-    expect("img").toHaveStyle({ "min-height": "1px" });
+    expect("img").toHaveStyle({"min-height": "1px"});
 
     await onceAllImagesLoaded(queryOne("#wrapwrap img"));
     def.resolve();
     await tick();
     expect("img").toHaveAttribute("src", "/web/image/website.library_image_08");
     expect("img").toHaveAttribute("loading", "lazy");
-    expect("img").toHaveStyle({ "min-height": "100px" });
+    expect("img").toHaveStyle({"min-height": "100px"});
 });

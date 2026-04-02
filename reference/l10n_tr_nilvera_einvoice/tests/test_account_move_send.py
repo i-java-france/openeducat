@@ -1,7 +1,10 @@
-from odoo.tests import tagged
-from .test_xml_ubl_tr_common import TestUBLTRCommon
-from odoo.addons.account.tests.test_account_move_send import TestAccountMoveSendCommon
 import xml.etree.ElementTree as ET
+
+from odoo.tests import tagged
+
+from odoo.addons.account.tests.test_account_move_send import TestAccountMoveSendCommon
+
+from .test_xml_ubl_tr_common import TestUBLTRCommon
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')

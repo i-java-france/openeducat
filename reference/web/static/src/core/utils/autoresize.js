@@ -1,5 +1,5 @@
-import { useEffect } from "@odoo/owl";
-import { browser } from "../browser/browser";
+import {useEffect} from "@odoo/owl";
+import {browser} from "../browser/browser";
 
 /**
  * This is used on text inputs or textareas to automatically resize it based on its
@@ -76,7 +76,8 @@ function resizeInput(input, options) {
         input.style.width = "100%";
         return;
     }
-    input.style.width = input.scrollWidth + 5 + (isSafari16 ? 8 : 0) + (options.offset || 0) + "px";
+    input.style.width =
+        input.scrollWidth + 5 + (isSafari16 ? 8 : 0) + (options.offset || 0) + "px";
 }
 
 /**
@@ -88,8 +89,10 @@ export function resizeTextArea(textarea, options = {}) {
     let heightOffset = 0;
     const style = window.getComputedStyle(textarea);
     if (style.boxSizing === "border-box") {
-        const paddingHeight = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
-        const borderHeight = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+        const paddingHeight =
+            parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+        const borderHeight =
+            parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
         heightOffset = borderHeight + paddingHeight;
     }
     const previousStyle = {
@@ -106,6 +109,6 @@ export function resizeTextArea(textarea, options = {}) {
     });
     textarea.style.height = "auto";
     const height = Math.max(minimumHeight, textarea.scrollHeight + heightOffset);
-    Object.assign(textarea.style, previousStyle, { height: `${height}px` });
+    Object.assign(textarea.style, previousStyle, {height: `${height}px`});
     textarea.parentElement.style.height = `${height}px`;
 }

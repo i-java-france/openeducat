@@ -1,7 +1,7 @@
-import { useService } from "@web/core/utils/hooks";
-import { Component, onWillStart, useState } from "@odoo/owl";
-import { Dialog } from "@web/core/dialog/dialog";
-import { CodeEditor } from "@web/core/code_editor/code_editor";
+import {useService} from "@web/core/utils/hooks";
+import {Component, onWillStart, useState} from "@odoo/owl";
+import {Dialog} from "@web/core/dialog/dialog";
+import {CodeEditor} from "@web/core/code_editor/code_editor";
 
 /**
  * A dialog that let the user edit the code that will be injected in the <head>
@@ -10,7 +10,7 @@ import { CodeEditor } from "@web/core/code_editor/code_editor";
  */
 export class EditHeadBodyDialog extends Component {
     static template = "website.EditHeadBodyDialog";
-    static components = { CodeEditor, Dialog };
+    static components = {CodeEditor, Dialog};
     static props = {
         close: Function,
     };

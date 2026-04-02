@@ -146,7 +146,7 @@ class ProjectProject(models.Model):
 
         if analytic_accounts_vals:
             analytic_accounts = self.env['account.analytic.account'].create(self._get_values_analytic_account_batch(analytic_accounts_vals))
-            for vals, analytic_account in zip(analytic_accounts_vals, analytic_accounts):
+            for vals, analytic_account in zip(analytic_accounts_vals, analytic_accounts, strict=False):
                 vals['account_id'] = analytic_account.id
         return super().create(vals_list)
 

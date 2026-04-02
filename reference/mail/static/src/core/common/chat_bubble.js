@@ -1,12 +1,12 @@
-import { ImStatus } from "@mail/core/common/im_status";
+import {ImStatus} from "@mail/core/common/im_status";
 
-import { Component, useEffect, useRef, useState, useSubEnv } from "@odoo/owl";
+import {Component, useEffect, useRef, useState, useSubEnv} from "@odoo/owl";
 
-import { useChildRef, useService } from "@web/core/utils/hooks";
-import { useHover } from "@mail/utils/common/hooks";
-import { usePopover } from "@web/core/popover/popover_hook";
-import { CountryFlag } from "@mail/core/common/country_flag";
-import { isMobileOS } from "@web/core/browser/feature_detection";
+import {useChildRef, useService} from "@web/core/utils/hooks";
+import {useHover} from "@mail/utils/common/hooks";
+import {usePopover} from "@web/core/popover/popover_hook";
+import {CountryFlag} from "@mail/core/common/country_flag";
+import {isMobileOS} from "@web/core/browser/feature_detection";
 
 class ChatBubblePreview extends Component {
     static props = ["chatWindow", "close"];
@@ -31,7 +31,7 @@ class ChatBubblePreview extends Component {
  * @extends {Component<Props, Env>}
  */
 export class ChatBubble extends Component {
-    static components = { CountryFlag, ImStatus };
+    static components = {CountryFlag, ImStatus};
     static props = ["chatWindow"];
     static template = "mail.ChatBubble";
 
@@ -47,7 +47,7 @@ export class ChatBubble extends Component {
                 "dropdown-menu bg-view border-0 p-0 overflow-visible o-rounded-bubble mx-1",
             ref: popoverRef,
         });
-        this.env.bus.addEventListener("ChatBubble:preview-will-open", ({ detail }) => {
+        this.env.bus.addEventListener("ChatBubble:preview-will-open", ({detail}) => {
             if (detail === this) {
                 return;
             }
@@ -56,19 +56,19 @@ export class ChatBubble extends Component {
         this.hover = useHover(["root", popoverRef], {
             onHover: () => {
                 this.env.bus.trigger("ChatBubble:preview-will-open", this);
-                this.popover.open(this.rootRef.el, { chatWindow: this.props.chatWindow });
+                this.popover.open(this.rootRef.el, {chatWindow: this.props.chatWindow});
             },
             onAway: () => this.popover.close(),
         });
         this.rootRef = useRef("root");
-        this.state = useState({ bouncing: false });
+        this.state = useState({bouncing: false});
         useEffect(
             (importantCounter) => {
                 this.state.bouncing = Boolean(importantCounter);
             },
             () => [this.thread?.importantCounter]
         );
-        useSubEnv({ inChatBubble: true });
+        useSubEnv({inChatBubble: true});
     }
 
     /** @returns {import("models").Thread} */

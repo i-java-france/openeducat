@@ -19,8 +19,8 @@ export function getBaseContainerSelector(nodeName) {
     return `${nodeName}${suffix}`;
 }
 
-export const baseContainerGlobalSelector = `:is(${SUPPORTED_BASE_CONTAINER_NAMES.map((name) =>
-    getBaseContainerSelector(name)
+export const baseContainerGlobalSelector = `:is(${SUPPORTED_BASE_CONTAINER_NAMES.map(
+    (name) => getBaseContainerSelector(name)
 ).join(",")})`;
 
 /**
@@ -37,7 +37,8 @@ export function createBaseContainer(nodeName, document) {
     if (!document && window) {
         document = window.document;
     }
-    nodeName = nodeName && SUPPORTED_BASE_CONTAINER_NAMES.includes(nodeName) ? nodeName : "P";
+    nodeName =
+        nodeName && SUPPORTED_BASE_CONTAINER_NAMES.includes(nodeName) ? nodeName : "P";
     const el = document.createElement(nodeName);
     if (nodeName !== "P") {
         el.className = BASE_CONTAINER_CLASS;

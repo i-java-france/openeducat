@@ -1,17 +1,17 @@
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
-import { useDiscussSystray } from "@mail/utils/common/hooks";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { useDropdownState } from "@web/core/dropdown/dropdown_hooks";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import { Domain } from "@web/core/domain";
-import { user } from "@web/core/user";
-import { useCommand } from "@web/core/commands/command_hook";
-import { _t } from "@web/core/l10n/translation";
+import {useDiscussSystray} from "@mail/utils/common/hooks";
+import {Dropdown} from "@web/core/dropdown/dropdown";
+import {useDropdownState} from "@web/core/dropdown/dropdown_hooks";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
+import {Domain} from "@web/core/domain";
+import {user} from "@web/core/user";
+import {useCommand} from "@web/core/commands/command_hook";
+import {_t} from "@web/core/l10n/translation";
 
 export class ActivityMenu extends Component {
-    static components = { Dropdown };
+    static components = {Dropdown};
     static props = [];
     static template = "mail.ActivityMenu";
 
@@ -27,7 +27,7 @@ export class ActivityMenu extends Component {
             category: "activity",
             hotkey: "alt+shift+a",
             global: true,
-            hotkeyOptions: { bypassEditableProtection: true },
+            hotkeyOptions: {bypassEditableProtection: true},
             isAvailable: () =>
                 !this.ui.activeElement.querySelector(
                     "[data-hotkey='shift+a'], .o_mail_activity_schedule_wizard"
@@ -122,4 +122,4 @@ export class ActivityMenu extends Component {
 
 registry
     .category("systray")
-    .add("mail.activity_menu", { Component: ActivityMenu }, { sequence: 20 });
+    .add("mail.activity_menu", {Component: ActivityMenu}, {sequence: 20});

@@ -1,12 +1,12 @@
-import { contains, mockService } from "@web/../tests/web_test_helpers";
-import { defineSpreadsheetModels } from "@spreadsheet/../tests/helpers/data";
-import { expect, test } from "@odoo/hoot";
+import {contains, mockService} from "@web/../tests/web_test_helpers";
+import {defineSpreadsheetModels} from "@spreadsheet/../tests/helpers/data";
+import {expect, test} from "@odoo/hoot";
 
-import { mountPublicSpreadsheet } from "@spreadsheet/../tests/helpers/ui";
-import { THIS_YEAR_GLOBAL_FILTER } from "@spreadsheet/../tests/helpers/global_filter";
-import { addGlobalFilter } from "@spreadsheet/../tests/helpers/commands";
-import { freezeOdooData } from "@spreadsheet/helpers/model";
-import { createModelWithDataSource } from "@spreadsheet/../tests/helpers/model";
+import {mountPublicSpreadsheet} from "@spreadsheet/../tests/helpers/ui";
+import {THIS_YEAR_GLOBAL_FILTER} from "@spreadsheet/../tests/helpers/global_filter";
+import {addGlobalFilter} from "@spreadsheet/../tests/helpers/commands";
+import {freezeOdooData} from "@spreadsheet/helpers/model";
+import {createModelWithDataSource} from "@spreadsheet/../tests/helpers/model";
 
 defineSpreadsheetModels();
 
@@ -20,7 +20,7 @@ mockService("http", {
 });
 
 test("show spreadsheet in readonly mode", async function () {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     await addGlobalFilter(model, THIS_YEAR_GLOBAL_FILTER);
     data = await freezeOdooData(model);
     const fixture = await mountPublicSpreadsheet("dashboardDataUrl", "spreadsheet");
@@ -29,7 +29,7 @@ test("show spreadsheet in readonly mode", async function () {
 });
 
 test("show dashboard in dashboard mode when there are global filters", async function () {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     await addGlobalFilter(model, THIS_YEAR_GLOBAL_FILTER);
     data = await freezeOdooData(model);
     const fixture = await mountPublicSpreadsheet("dashboardDataUrl", "dashboard");
@@ -38,7 +38,7 @@ test("show dashboard in dashboard mode when there are global filters", async fun
 });
 
 test("show dashboard in dashboard mode when there are no global filters", async function () {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     data = await freezeOdooData(model);
     const fixture = await mountPublicSpreadsheet("dashboardDataUrl", "dashboard");
     const filterButton = fixture.querySelector(".o-public-spreadsheet-filter-button");
@@ -46,7 +46,7 @@ test("show dashboard in dashboard mode when there are no global filters", async 
 });
 
 test("click filter button can show all filters", async function () {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     await addGlobalFilter(model, THIS_YEAR_GLOBAL_FILTER);
     data = await freezeOdooData(model);
     const fixture = await mountPublicSpreadsheet("dashboardDataUrl", "dashboard");
@@ -56,7 +56,7 @@ test("click filter button can show all filters", async function () {
 });
 
 test("click close button in filter panel will close the panel", async function () {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     await addGlobalFilter(model, THIS_YEAR_GLOBAL_FILTER);
     data = await freezeOdooData(model);
     const fixture = await mountPublicSpreadsheet("dashboardDataUrl", "dashboard");
@@ -68,9 +68,15 @@ test("click close button in filter panel will close the panel", async function (
 
 test.tags("desktop");
 test("Hides the download button when the downloadExcelUrl is not provided", async function () {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     data = await freezeOdooData(model);
-    const fixture = await mountPublicSpreadsheet("dashboardDataUrl", "spreadsheet", false);
+    const fixture = await mountPublicSpreadsheet(
+        "dashboardDataUrl",
+        "spreadsheet",
+        false
+    );
     await contains(".o-topbar-menu[data-id='file']").click();
-    expect(fixture.querySelector(".o-menu-item[data-name='download_public_excel']")).toBe(null);
+    expect(
+        fixture.querySelector(".o-menu-item[data-name='download_public_excel']")
+    ).toBe(null);
 });

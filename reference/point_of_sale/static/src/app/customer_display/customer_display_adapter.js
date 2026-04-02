@@ -1,6 +1,6 @@
-import { formatCurrency } from "@point_of_sale/app/models/utils/currency";
-import { toRaw } from "@odoo/owl";
-import { logPosMessage } from "@point_of_sale/app/utils/pretty_console_log";
+import {formatCurrency} from "@point_of_sale/app/models/utils/currency";
+import {toRaw} from "@odoo/owl";
+import {logPosMessage} from "@point_of_sale/app/utils/pretty_console_log";
 
 const CONSOLE_COLOR = "#FF8269";
 
@@ -48,7 +48,8 @@ export class CustomerDisplayPosAdapter {
                 order.config_id.iface_tax_included !== "total" &&
                 order.prices.taxDetails.has_tax_groups &&
                 order.currencyDisplayPriceExcl,
-            amountTaxes: order.prices.taxDetails.has_tax_groups && order.currencyAmountTaxes,
+            amountTaxes:
+                order.prices.taxDetails.has_tax_groups && order.currencyAmountTaxes,
             change: order.change && formatCurrency(order.change, order.currency),
             paymentLines: order.payment_ids.map((pl) => this.getPaymentData(pl)),
             lines: order.lines.map((l) => this.getOrderlineData(l)),
@@ -70,7 +71,10 @@ export class CustomerDisplayPosAdapter {
             unitPrice: line.currencyDisplayPriceUnit,
             packLotLines: line.packLotLines,
             comboParent: line.combo_parent_id?.getFullProductName?.() || "",
-            price_without_discount: formatCurrency(line.displayPriceNoDiscount, line.currency),
+            price_without_discount: formatCurrency(
+                line.displayPriceNoDiscount,
+                line.currency
+            ),
             isSelected: line.isSelected(),
         };
     }

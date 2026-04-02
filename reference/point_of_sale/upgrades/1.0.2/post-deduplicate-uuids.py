@@ -1,6 +1,7 @@
 import uuid
+
 from psycopg2.extras import Json
-from odoo.tools import split_every
+
 
 def migrate(cr, version):
     """
@@ -8,9 +9,9 @@ def migrate(cr, version):
     they were initially generated on the backend, defined as the default value
     on the column. The issue with this is that during the upgrade to 18.0+
     from a version < 18.0, this default value is determined once for the column
-    and then applied to all records, resulting in one UUID, duplicated across 
+    and then applied to all records, resulting in one UUID, duplicated across
     all existing POS records.
-    
+
     This migration fixes the issue by generating a new UUID for each record
     that has the same UUID as another record. Specifically, it does this for
     the following tables:

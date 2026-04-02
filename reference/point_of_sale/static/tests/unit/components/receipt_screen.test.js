@@ -1,9 +1,9 @@
-import { test, expect } from "@odoo/hoot";
-import { mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { setupPosEnv, getFilledOrder } from "../utils";
-import { definePosModels } from "../data/generate_model_definitions";
-import { queryOne } from "@odoo/hoot-dom";
-import { ReceiptScreen } from "@point_of_sale/app/screens/receipt_screen/receipt_screen";
+import {expect, test} from "@odoo/hoot";
+import {mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {getFilledOrder, setupPosEnv} from "../utils";
+import {definePosModels} from "../data/generate_model_definitions";
+import {queryOne} from "@odoo/hoot-dom";
+import {ReceiptScreen} from "@point_of_sale/app/screens/receipt_screen/receipt_screen";
 
 definePosModels();
 
@@ -12,7 +12,7 @@ test("Total on receipt always incl", async () => {
     const order = await getFilledOrder(store);
     order.config.iface_tax_included = "total";
     await mountWithCleanup(ReceiptScreen, {
-        props: { orderUuid: order.uuid },
+        props: {orderUuid: order.uuid},
     });
     const total = queryOne(".pos-receipt-amount .pos-receipt-right-align");
     expect(total.innerHTML).toBe("$&nbsp;17.85");

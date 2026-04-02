@@ -5,8 +5,8 @@ import {
     start,
     startServer,
 } from "@mail/../tests/mail_test_helpers";
-import { describe, test } from "@odoo/hoot";
-import { defineSnailmailModels } from "../snailmail_test_helpers";
+import {describe, test} from "@odoo/hoot";
+import {defineSnailmailModels} from "../snailmail_test_helpers";
 
 describe.current.tags("desktop");
 defineSnailmailModels();
@@ -33,7 +33,7 @@ test("Sent", async () => {
     await openFormView("res.partner", partnerId);
     await click(".o-mail-Message-notification i.fa-paper-plane");
     await contains(".o-snailmail-SnailmailNotificationPopover i.fa-check");
-    await contains(".o-snailmail-SnailmailNotificationPopover", { text: "Sent" });
+    await contains(".o-snailmail-SnailmailNotificationPopover", {text: "Sent"});
 });
 
 test("Cancelled", async () => {
@@ -58,7 +58,7 @@ test("Cancelled", async () => {
     await openFormView("res.partner", partnerId);
     await click(".o-mail-Message-notification i.fa-paper-plane");
     await contains(".o-snailmail-SnailmailNotificationPopover i.fa-trash-o");
-    await contains(".o-snailmail-SnailmailNotificationPopover", { text: "Cancelled" });
+    await contains(".o-snailmail-SnailmailNotificationPopover", {text: "Cancelled"});
 });
 
 test("Pending", async () => {
@@ -83,7 +83,9 @@ test("Pending", async () => {
     await openFormView("res.partner", partnerId);
     await click(".o-mail-Message-notification i.fa-paper-plane");
     await contains(".o-snailmail-SnailmailNotificationPopover i.fa-clock-o");
-    await contains(".o-snailmail-SnailmailNotificationPopover", { text: "Awaiting Dispatch" });
+    await contains(".o-snailmail-SnailmailNotificationPopover", {
+        text: "Awaiting Dispatch",
+    });
 });
 
 test("No Price Available", async () => {

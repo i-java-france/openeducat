@@ -1,9 +1,9 @@
-import { HEADER_ELEMENTS } from "@website/builder/plugins/options/header/header_option_plugin";
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { registry } from "@web/core/registry";
-import { after } from "@html_builder/utils/option_sequence";
-import { BaseOptionComponent } from "@html_builder/core/utils";
+import {HEADER_ELEMENTS} from "@website/builder/plugins/options/header/header_option_plugin";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {registry} from "@web/core/registry";
+import {after} from "@html_builder/utils/option_sequence";
+import {BaseOptionComponent} from "@html_builder/core/utils";
 
 export class ShowEmptyOption extends BaseOptionComponent {
     static template = "website_sale.ShowEmptyOption";
@@ -15,9 +15,7 @@ export class ShowEmptyOption extends BaseOptionComponent {
 class WebsiteSaleShowEmptyOptionPlugin extends Plugin {
     static id = "showEmptyOption";
     resources = {
-        builder_options: [
-            withSequence(after(HEADER_ELEMENTS), ShowEmptyOption),
-        ],
+        builder_options: [withSequence(after(HEADER_ELEMENTS), ShowEmptyOption)],
     };
 }
 

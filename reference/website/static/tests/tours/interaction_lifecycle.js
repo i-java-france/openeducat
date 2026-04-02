@@ -47,7 +47,9 @@ registerWebsitePreviewTour(
                 "Wait for the interaction to be started and check the order of the lifecycle method call of the interaction and the wysiwyg",
             trigger: ":iframe .s_countdown.interaction_started",
             run() {
-                const result = JSON.parse(window.localStorage.interactionAndWysiwygLifecycle);
+                const result = JSON.parse(
+                    window.localStorage.interactionAndWysiwygLifecycle
+                );
                 const expected = [
                     "interactionStop",
                     "interactionStart",
@@ -64,7 +66,8 @@ registerWebsitePreviewTour(
                     "interactionStart",
                 ];
                 const resultIsEqualTo = (arr) =>
-                    arr.length === result.length && arr.every((item, i) => item === result[i]);
+                    arr.length === result.length &&
+                    arr.every((item, i) => item === result[i]);
                 if (!(resultIsEqualTo(expected) || resultIsEqualTo(alternative))) {
                     // The "destroy" method of the wysiwyg is called two times
                     // when leaving the edit mode: the first one comes

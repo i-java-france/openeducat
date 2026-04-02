@@ -1,6 +1,6 @@
-import { useOperation } from "@html_builder/core/operation_plugin";
-import { useDomState } from "@html_builder/core/utils";
-import { Component } from "@odoo/owl";
+import {useOperation} from "@html_builder/core/operation_plugin";
+import {useDomState} from "@html_builder/core/utils";
+import {Component} from "@odoo/owl";
 
 export class CarouselItemHeaderMiddleButtons extends Component {
     static template = "website.CarouselItemHeaderMiddleButtons";

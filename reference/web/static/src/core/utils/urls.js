@@ -1,7 +1,7 @@
-import { session } from "@web/session";
-import { browser } from "../browser/browser";
-import { shallowEqual } from "@web/core/utils/objects";
-const { DateTime } = luxon;
+import {session} from "@web/session";
+import {browser} from "../browser/browser";
+import {shallowEqual} from "@web/core/utils/objects";
+const {DateTime} = luxon;
 
 export class RedirectionError extends Error {}
 
@@ -29,7 +29,7 @@ export function getOrigin(origin) {
         // remove trailing slashes
         origin = origin.replace(/\/+$/, "");
     } else {
-        const { host, protocol } = browser.location;
+        const {host, protocol} = browser.location;
         origin = `${protocol}//${host}`;
     }
     return origin;
@@ -73,7 +73,7 @@ export function imageUrl(
     model,
     id,
     field,
-    { access_token, crop, filename, height, unique, width } = {}
+    {access_token, crop, filename, height, unique, width} = {}
 ) {
     let route = `/web/image/${model}/${id}/${field}`;
     if (width && height) {
@@ -84,10 +84,10 @@ export function imageUrl(
     }
     const urlParams = {};
     if (access_token) {
-        Object.assign(urlParams, { access_token });
+        Object.assign(urlParams, {access_token});
     }
     if (crop) {
-        Object.assign(urlParams, { crop });
+        Object.assign(urlParams, {crop});
     }
     if (unique) {
         if (unique instanceof DateTime) {
@@ -139,7 +139,7 @@ export function getDataURLFromFile(file) {
  * @throws {RedirectionError} if the given url has a different origin
  */
 export function redirect(url) {
-    const { origin, pathname } = browser.location;
+    const {origin, pathname} = browser.location;
     const _url = new URL(url, `${origin}${pathname}`);
     if (_url.origin !== origin) {
         throw new RedirectionError("Can't redirect to another origin");

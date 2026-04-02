@@ -1,14 +1,14 @@
-import { Component, useState, onWillUnmount } from "@odoo/owl";
+import {Component, useState, onWillUnmount} from "@odoo/owl";
 
-const { DateTime } = luxon;
+const {DateTime} = luxon;
 export class CardLayout extends Component {
     static template = "hr_attendance.CardLayout";
     static props = {
         slots: Object,
-        fromTrialMode: { type: Boolean, optional: true },
-        companyImageUrl: { type: String },
-        kioskReturn: { type: Function },
-        activeDisplay: { type: String },
+        fromTrialMode: {type: Boolean, optional: true},
+        companyImageUrl: {type: String},
+        kioskReturn: {type: Function},
+        activeDisplay: {type: String},
     };
     static defaultProps = {
         kioskModeClasses: "",

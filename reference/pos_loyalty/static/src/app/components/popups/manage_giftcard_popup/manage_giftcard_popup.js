@@ -1,22 +1,22 @@
-import { Component, onMounted, useRef, useState } from "@odoo/owl";
-import { Dialog } from "@web/core/dialog/dialog";
-import { useService } from "@web/core/utils/hooks";
-import { DateTimeInput } from "@web/core/datetime/datetime_input";
-import { deserializeDateTime, serializeDate } from "@web/core/l10n/dates";
-import { usePos } from "@point_of_sale/app/hooks/pos_hook";
-import { _t } from "@web/core/l10n/translation";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { debounce } from "@bus/workers/bus_worker_utils";
-import { logPosMessage } from "@point_of_sale/app/utils/pretty_console_log";
-import { roundCurrency } from "@point_of_sale/app/models/utils/currency";
+import {Component, onMounted, useRef, useState} from "@odoo/owl";
+import {Dialog} from "@web/core/dialog/dialog";
+import {useService} from "@web/core/utils/hooks";
+import {DateTimeInput} from "@web/core/datetime/datetime_input";
+import {deserializeDateTime, serializeDate} from "@web/core/l10n/dates";
+import {usePos} from "@point_of_sale/app/hooks/pos_hook";
+import {_t} from "@web/core/l10n/translation";
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
+import {debounce} from "@bus/workers/bus_worker_utils";
+import {logPosMessage} from "@point_of_sale/app/utils/pretty_console_log";
+import {roundCurrency} from "@point_of_sale/app/models/utils/currency";
 
 export class ManageGiftCardPopup extends Component {
     static template = "pos_loyalty.ManageGiftCardPopup";
-    static components = { Dialog, DateTimeInput };
+    static components = {Dialog, DateTimeInput};
     static props = {
         title: String,
-        placeholder: { type: String, optional: true },
-        rows: { type: Number, optional: true },
+        placeholder: {type: String, optional: true},
+        rows: {type: Number, optional: true},
         line: Object,
         getPayload: Function,
         close: Function,
@@ -38,7 +38,7 @@ export class ManageGiftCardPopup extends Component {
             amountValue: this.props.line.prices.total_included.toString(),
             error: false,
             amountError: false,
-            expirationDate: luxon.DateTime.now().plus({ year: 1 }),
+            expirationDate: luxon.DateTime.now().plus({year: 1}),
         });
         this.inputRef = useRef("input");
         this.amountInputRef = useRef("amountInput");
@@ -49,7 +49,8 @@ export class ManageGiftCardPopup extends Component {
     onMounted() {
         // Removing the main "DateTimeInput" component's class "o_input" and
         // adding the CSS classes "form-control" and "form-control-lg" for styling the form input with Bootstrap.
-        const expirationDateInput = document.querySelector(".o_exp_date_container").children[1];
+        const expirationDateInput = document.querySelector(".o_exp_date_container")
+            .children[1];
         expirationDateInput.classList.remove("o_input");
         expirationDateInput.classList.add("form-control", "form-control-lg");
         this.inputRef.el.focus();
@@ -63,10 +64,11 @@ export class ManageGiftCardPopup extends Component {
     async checkGiftCard() {
         try {
             const code = this.state.inputValue.trim();
-            const result = await this.pos.data.call("loyalty.card", "get_gift_card_status", [
-                code,
-                this.pos.config.id,
-            ]);
+            const result = await this.pos.data.call(
+                "loyalty.card",
+                "get_gift_card_status",
+                [code, this.pos.config.id]
+            );
 
             if (!result.status) {
                 this.dialog.add(AlertDialog, {
@@ -90,7 +92,9 @@ export class ManageGiftCardPopup extends Component {
                 this.state.lockGiftCardFields = true;
 
                 if (giftCard.expiration_date) {
-                    this.state.expirationDate = deserializeDateTime(giftCard.expiration_date);
+                    this.state.expirationDate = deserializeDateTime(
+                        giftCard.expiration_date
+                    );
                 }
             } else {
                 this.state.lockGiftCardFields = false;
@@ -132,7 +136,7 @@ export class ManageGiftCardPopup extends Component {
     }
 
     validateCode() {
-        const { inputValue, amountValue } = this.state;
+        const {inputValue, amountValue} = this.state;
         if (inputValue.trim() === "") {
             this.state.error = true;
             return false;

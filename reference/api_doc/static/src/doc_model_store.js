@@ -1,5 +1,5 @@
-import { markRaw, markup } from "@odoo/owl";
-import { Reactive } from "@web/core/utils/reactive";
+import {markRaw, markup} from "@odoo/owl";
+import {Reactive} from "@web/core/utils/reactive";
 
 function tryParseJSON(jsonString) {
     try {
@@ -17,23 +17,24 @@ async function tryFetch(input) {
         try {
             responseJson = await response.json();
         } catch (err) {
-            throw new DocAPIError ({
+            throw new DocAPIError({
                 name: "Invalid JSON Response",
                 status: response.status,
                 traceback: err,
             });
         }
         if (!response.ok) {
-            throw new DocAPIError ({
-                name: response.status === 500
-                    ? "Internal Server Error"
-                    : `HTTP $(response.status)`,
+            throw new DocAPIError({
+                name:
+                    response.status === 500
+                        ? "Internal Server Error"
+                        : `HTTP $(response.status)`,
                 status: response.status,
                 traceback: responseJson.debug,
             });
         }
         return responseJson;
-    } catch(err) {
+    } catch (err) {
         if (err instanceof DocAPIError) throw err;
         throw new DocAPIError({
             name: "Network Error",
@@ -44,7 +45,7 @@ async function tryFetch(input) {
 }
 
 class DocAPIError extends Error {
-    constructor({ name, status, traceback } = {}) {
+    constructor({name, status, traceback} = {}) {
         super(name);
         this.name = name;
         this.status = status ?? null;
@@ -77,7 +78,7 @@ export class ModelStore extends Reactive {
             console.info("Loading Models...");
             const response = await tryFetch(`/doc/index.json`);
 
-            const { models } = response;
+            const {models} = response;
             console.info("Models List Loaded", models);
 
             models.sort((a, b) => a.model.localeCompare(b.model));
@@ -96,7 +97,7 @@ export class ModelStore extends Reactive {
                 }
             }
 
-            const other = { name: "other", models: [] };
+            const other = {name: "other", models: []};
             for (const category in addons) {
                 const models = addons[category].models;
                 if (models.length <= 3) {
@@ -142,7 +143,7 @@ export class ModelStore extends Reactive {
         }
     }
 
-    setActiveModel({ model, method = null, field = null }) {
+    setActiveModel({model, method = null, field = null}) {
         if (typeof model === "string") {
             model = this.getBasicModelData(model);
         }
@@ -194,9 +195,9 @@ export class ModelStore extends Reactive {
                 result.error = !json
                     ? body
                     : [
-                        `<h3 class="mb-1">${json.message}</h3>`,
-                        `<pre class="p-2">${json.debug}</pre>`,
-                    ].join("\n");
+                          `<h3 class="mb-1">${json.message}</h3>`,
+                          `<pre class="p-2">${json.debug}</pre>`,
+                      ].join("\n");
             }
         } catch (error) {
             result.error = error;

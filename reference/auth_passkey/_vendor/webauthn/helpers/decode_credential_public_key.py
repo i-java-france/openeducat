@@ -1,7 +1,4 @@
-from typing import Union
 from dataclasses import dataclass
-
-import cbor2
 
 from .cose import COSECRV, COSEKTY, COSEAlgorithmIdentifier, COSEKey
 from .exceptions import InvalidPublicKeyStructure, UnsupportedPublicKeyType
@@ -35,7 +32,7 @@ class DecodedRSAPublicKey:
 
 def decode_credential_public_key(
     key: bytes,
-) -> Union[DecodedOKPPublicKey, DecodedEC2PublicKey, DecodedRSAPublicKey]:
+) -> DecodedOKPPublicKey | DecodedEC2PublicKey | DecodedRSAPublicKey:
     """
     Decode a CBOR-encoded public key and turn it into a data structure.
 

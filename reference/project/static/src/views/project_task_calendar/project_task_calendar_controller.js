@@ -1,11 +1,11 @@
-import { useRef } from "@odoo/owl";
+import {useRef} from "@odoo/owl";
 
-import { _t } from "@web/core/l10n/translation";
-import { CalendarController } from "@web/views/calendar/calendar_controller";
-import { subTaskDeleteConfirmationMessage } from "@project/views/project_task_form/project_task_form_controller";
+import {_t} from "@web/core/l10n/translation";
+import {CalendarController} from "@web/views/calendar/calendar_controller";
+import {subTaskDeleteConfirmationMessage} from "@project/views/project_task_form/project_task_form_controller";
 
-import { ProjectTaskCalendarSidePanel } from "./side_panel/project_task_calendar_side_panel";
-import { useCalendarTaskToPlanDraggable } from "./hooks/project_task_calendar_task_to_plan_draggable";
+import {ProjectTaskCalendarSidePanel} from "./side_panel/project_task_calendar_side_panel";
+import {useCalendarTaskToPlanDraggable} from "./hooks/project_task_calendar_task_to_plan_draggable";
 
 export class ProjectTaskCalendarController extends CalendarController {
     static components = {
@@ -22,15 +22,15 @@ export class ProjectTaskCalendarController extends CalendarController {
                 enable: this.draggable,
                 elements: ".o_task_to_plan_draggable",
                 ignore: "button",
-                onElementEnter: ({ addClass, element }) => {
+                onElementEnter: ({addClass, element}) => {
                     addClass(element, "o-highlight");
                 },
-                onElementLeave: ({ removeClass, element }) => {
+                onElementLeave: ({removeClass, element}) => {
                     removeClass(element, "o-highlight");
                 },
                 onDrop: (params) => {
                     this.dropTaskToPlan(params);
-                }
+                },
             });
         }
     }
@@ -39,7 +39,7 @@ export class ProjectTaskCalendarController extends CalendarController {
         return {
             ...super.modelParams,
             showTasksToPlan: this.canDragAndDropRecord,
-        }
+        };
     }
 
     get editRecordDefaultDisplayText() {
@@ -62,19 +62,21 @@ export class ProjectTaskCalendarController extends CalendarController {
     }
 
     deleteConfirmationDialogProps(record) {
-        const deleteConfirmationDialogProps = super.deleteConfirmationDialogProps(record);
-        if  (!record.rawRecord.subtask_count) {
+        const deleteConfirmationDialogProps = super.deleteConfirmationDialogProps(
+            record
+        );
+        if (!record.rawRecord.subtask_count) {
             return deleteConfirmationDialogProps;
         }
 
         return {
             ...deleteConfirmationDialogProps,
             body: subTaskDeleteConfirmationMessage,
-        }
+        };
     }
 
     async dropTaskToPlan(params) {
-        const { element, calendarCell, timeSlotElement } = params;
+        const {element, calendarCell, timeSlotElement} = params;
         const taskId = Number(element.dataset.resId);
         let dateStr = calendarCell.dataset.date;
         if (timeSlotElement) {

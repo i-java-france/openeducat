@@ -1,12 +1,16 @@
-import { Plugin } from "@html_editor/plugin";
-import { withSequence } from "@html_editor/utils/resource";
-import { useDragAndDrop } from "@html_editor/utils/drag_and_drop";
-import { closestScrollableY, getScrollingElement, isScrollableY } from "@web/core/utils/scrolling";
-import { closest, touching } from "@web/core/utils/ui";
-import { clamp } from "@web/core/utils/numbers";
-import { rowSize } from "@html_builder/utils/grid_layout_utils";
-import { isEditable, isVisible } from "@html_builder/utils/utils";
-import { DragAndDropMoveHandle } from "./drag_and_drop_move_handle";
+import {Plugin} from "@html_editor/plugin";
+import {withSequence} from "@html_editor/utils/resource";
+import {useDragAndDrop} from "@html_editor/utils/drag_and_drop";
+import {
+    closestScrollableY,
+    getScrollingElement,
+    isScrollableY,
+} from "@web/core/utils/scrolling";
+import {closest, touching} from "@web/core/utils/ui";
+import {clamp} from "@web/core/utils/numbers";
+import {rowSize} from "@html_builder/utils/grid_layout_utils";
+import {isEditable, isVisible} from "@html_builder/utils/utils";
+import {DragAndDropMoveHandle} from "./drag_and_drop_move_handle";
 
 /**
  * @typedef {{
@@ -80,7 +84,7 @@ export class DragAndDropPlugin extends Plugin {
     static dependencies = ["dropzone", "history", "operation", "builderOptions"];
     /** @type {import("plugins").BuilderResources} */
     resources = {
-        has_overlay_options: { hasOption: (el) => this.isDraggable(el) },
+        has_overlay_options: {hasOption: (el) => this.isDraggable(el)},
         get_overlay_buttons: withSequence(1, {
             getButtons: this.getActiveOverlayButtons.bind(this),
         }),
@@ -100,7 +104,7 @@ export class DragAndDropPlugin extends Plugin {
         this.draggableComponentImgs?.destroy();
     }
 
-    cleanForSave({ root }) {
+    cleanForSave({root}) {
         [root, ...root.querySelectorAll(".o_draggable")].forEach((el) => {
             el.classList.remove("o_draggable");
         });
@@ -111,7 +115,8 @@ export class DragAndDropPlugin extends Plugin {
             isEditable(el.parentNode) &&
             !el.matches(".oe_unmovable") &&
             !!this.dropzoneSelectors.find(
-                ({ selector, exclude = false }) => el.matches(selector) && !el.matches(exclude)
+                ({selector, exclude = false}) =>
+                    el.matches(selector) && !el.matches(exclude)
             );
         if (!isDraggable) {
             return false;
@@ -190,16 +195,17 @@ export class DragAndDropPlugin extends Plugin {
         };
 
         const dragAndDropOptions = {
-            ref: { el: element },
+            ref: {el: element},
             iframeWindow,
             cursor: "move",
             elements: elementsSelector,
             scrollingElement,
             handle: handleSelector,
             allowDisconnected: true, // To be challenged in master
-            enable: () => !!document.querySelector(".o_move_handle") || this.dragStarted, // Still needed ?
+            enable: () =>
+                !!document.querySelector(".o_move_handle") || this.dragStarted, // Still needed ?
             dropzones: () => dropzoneEls,
-            helper: ({ helperOffset }) => {
+            helper: ({helperOffset}) => {
                 const draggedEl = document.createElement("div");
                 draggedEl.classList.add("o_drag_move_helper");
                 Object.assign(draggedEl.style, {
@@ -207,12 +213,13 @@ export class DragAndDropPlugin extends Plugin {
                     height: "24px",
                 });
                 document.body.append(draggedEl);
-                const iframeRect = this.document.defaultView.frameElement.getBoundingClientRect();
+                const iframeRect =
+                    this.document.defaultView.frameElement.getBoundingClientRect();
                 helperOffset.x = 12 - (fromIframe ? iframeRect.x : 0);
                 helperOffset.y = 12;
                 return draggedEl;
             },
-            onDragStart: ({ x, y }) => {
+            onDragStart: ({x, y}) => {
                 const dragAndDropProm = new Promise(
                     (resolve) => (dragAndDropResolve = () => resolve())
                 );
@@ -227,7 +234,9 @@ export class DragAndDropPlugin extends Plugin {
                     this.dragState.restoreCallbacks?.forEach((restore) => restore());
                     restoreDragSavePoint();
                     dragAndDropResolve();
-                    this.dependencies.builderOptions.updateContainers(this.overlayTarget);
+                    this.dependencies.builderOptions.updateContainers(
+                        this.overlayTarget
+                    );
                 };
 
                 this.dragStarted = true;
@@ -244,13 +253,17 @@ export class DragAndDropPlugin extends Plugin {
                     targetRect.top + 12, // helper offset
                     targetRect.bottom - gridRowSize // height minus one grid row
                 );
-                this.dragState.mousePositionYOnElement = boundedYMousePosition - targetRect.y;
-                this.dragState.mousePositionXOnElement = (x - targetRect.x) * (this.isRtl ? -1 : 1);
+                this.dragState.mousePositionYOnElement =
+                    boundedYMousePosition - targetRect.y;
+                this.dragState.mousePositionXOnElement =
+                    (x - targetRect.x) * (this.isRtl ? -1 : 1);
 
                 // Stop marking the elements with mutations as dirty and make
                 // some changes on the page to ease the drag and drop.
                 const restoreCallbacks = [];
-                for (const prepareDrag of this.getResource("on_prepare_drag_handlers")) {
+                for (const prepareDrag of this.getResource(
+                    "on_prepare_drag_handlers"
+                )) {
                     const restore = prepareDrag();
                     restoreCallbacks.unshift(restore);
                 }
@@ -274,7 +287,8 @@ export class DragAndDropPlugin extends Plugin {
                 // Store the parent and siblings.
                 const parentEl = this.overlayTarget.parentElement;
                 this.dragState.startParentEl = parentEl;
-                this.dragState.startPreviousEl = this.overlayTarget.previousElementSibling;
+                this.dragState.startPreviousEl =
+                    this.overlayTarget.previousElementSibling;
                 this.dragState.startNextEl = this.overlayTarget.nextElementSibling;
 
                 // Add a clone, to allow to drop where it started.
@@ -309,14 +323,14 @@ export class DragAndDropPlugin extends Plugin {
                     toInsertInline,
                 });
             },
-            dropzoneOver: ({ dropzone }) => {
+            dropzoneOver: ({dropzone}) => {
                 const dropzoneEl = dropzone.el;
 
                 // Prevent the element to be trapped in an upper dropzone at the
                 // start of the drag.
                 if (this.dragState.overFirstDropzone) {
                     this.dragState.overFirstDropzone = false;
-                    const { startTop, startMiddle } = this.dragState;
+                    const {startTop, startMiddle} = this.dragState;
                     // The element is considered as glued to the dropzone if the
                     // dropzone is above and if it is touching the initial
                     // helper position.
@@ -329,7 +343,8 @@ export class DragAndDropPlugin extends Plugin {
                     const dropzoneRect = dropzoneEl.getBoundingClientRect();
                     const dropzoneBottom = dropzoneRect.bottom;
                     const isGluedToDropzone =
-                        startTop >= dropzoneBottom && !!touching([dropzoneEl], helperRect).length;
+                        startTop >= dropzoneBottom &&
+                        !!touching([dropzoneEl], helperRect).length;
                     if (isGluedToDropzone) {
                         return;
                     }
@@ -344,7 +359,7 @@ export class DragAndDropPlugin extends Plugin {
                     dragState: this.dragState,
                 });
             },
-            onDrag: ({ x, y }) => {
+            onDrag: ({x, y}) => {
                 if (!this.dragState.currentDropzoneEl) {
                     return;
                 }
@@ -371,7 +386,7 @@ export class DragAndDropPlugin extends Plugin {
                 dropzoneEl.classList.remove("invisible");
                 this.dragState.currentDropzoneEl = null;
             },
-            onDragEnd: async ({ x, y }) => {
+            onDragEnd: async ({x, y}) => {
                 this.dragStarted = false;
                 let currentDropzoneEl = this.dragState.currentDropzoneEl;
                 const isDroppedOver = !!currentDropzoneEl;
@@ -379,7 +394,7 @@ export class DragAndDropPlugin extends Plugin {
                 // If the snippet was dropped outside of a dropzone, find the
                 // dropzone that is the nearest to the dropping point.
                 if (!currentDropzoneEl) {
-                    const closestDropzoneEl = closest(dropzoneEls, { x, y });
+                    const closestDropzoneEl = closest(dropzoneEls, {x, y});
                     if (!closestDropzoneEl) {
                         this.cancelDragAndDrop();
                         return;
@@ -404,7 +419,7 @@ export class DragAndDropPlugin extends Plugin {
                 // In order to mark only the concerned elements as dirty, place
                 // the element back where it started. The move will then be
                 // replayed after re-allowing to mark dirty.
-                const { startPreviousEl, startNextEl, startParentEl } = this.dragState;
+                const {startPreviousEl, startNextEl, startParentEl} = this.dragState;
                 if (startPreviousEl) {
                     startPreviousEl.after(this.overlayTarget);
                 } else if (startNextEl) {
@@ -425,7 +440,9 @@ export class DragAndDropPlugin extends Plugin {
                 this.dragState.dropCloneEl?.remove();
 
                 // Process the dropped element.
-                for (const onElementDropped of this.getResource("on_element_dropped_handlers")) {
+                for (const onElementDropped of this.getResource(
+                    "on_element_dropped_handlers"
+                )) {
                     const cancel = await onElementDropped({
                         droppedEl: this.overlayTarget,
                         dragState: this.dragState,

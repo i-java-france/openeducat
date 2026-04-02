@@ -1,6 +1,6 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
-import { useDynamicSnippetOption } from "@website/builder/plugins/options/dynamic_snippet_hook";
-import { onWillStart, useState } from "@odoo/owl";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
+import {useDynamicSnippetOption} from "@website/builder/plugins/options/dynamic_snippet_hook";
+import {onWillStart, useState} from "@odoo/owl";
 
 export class DynamicSnippetProductsOption extends BaseOptionComponent {
     static template = "website_sale.DynamicSnippetProductsOption";
@@ -8,8 +8,11 @@ export class DynamicSnippetProductsOption extends BaseOptionComponent {
     static selector = ".s_dynamic_snippet_products";
     setup() {
         super.setup();
-        const { fetchCategories, getModelNameFilter } = this.dependencies.dynamicSnippetProductsOption;
-        const contextualFilterDomain = getContextualFilterDomain(this.env.editor.editable);
+        const {fetchCategories, getModelNameFilter} =
+            this.dependencies.dynamicSnippetProductsOption;
+        const contextualFilterDomain = getContextualFilterDomain(
+            this.env.editor.editable
+        );
         this.dynamicOptionParams = useDynamicSnippetOption(
             getModelNameFilter(),
             contextualFilterDomain

@@ -1,25 +1,25 @@
-import { Dialog } from "@web/core/dialog/dialog";
-import { _t } from "@web/core/l10n/translation";
-import { useChildRef } from "@web/core/utils/hooks";
-import { useState, Component } from "@odoo/owl";
+import {Dialog} from "@web/core/dialog/dialog";
+import {_t} from "@web/core/l10n/translation";
+import {useChildRef} from "@web/core/utils/hooks";
+import {useState, Component} from "@odoo/owl";
 
 const NO_OP = () => {};
 
 export class WebsiteDialog extends Component {
     static template = "website.WebsiteDialog";
-    static components = { Dialog };
+    static components = {Dialog};
     static props = {
         ...Dialog.props,
-        primaryTitle: { type: String, optional: true },
-        primaryClick: { type: Function, optional: true },
-        secondaryTitle: { type: String, optional: true },
-        secondaryClick: { type: Function, optional: true },
-        showSecondaryButton: { type: Boolean, optional: true },
-        close: { type: Function, optional: true },
-        closeOnClick: { type: Boolean, optional: true },
-        body: { type: String, optional: true },
-        slots: { type: Object, optional: true },
-        showFooter: { type: Boolean, optional: true },
+        primaryTitle: {type: String, optional: true},
+        primaryClick: {type: Function, optional: true},
+        secondaryTitle: {type: String, optional: true},
+        secondaryClick: {type: Function, optional: true},
+        showSecondaryButton: {type: Boolean, optional: true},
+        close: {type: Function, optional: true},
+        closeOnClick: {type: Boolean, optional: true},
+        body: {type: String, optional: true},
+        slots: {type: Object, optional: true},
+        showFooter: {type: Boolean, optional: true},
     };
     static defaultProps = {
         ...Dialog.defaultProps,

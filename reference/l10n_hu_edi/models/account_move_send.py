@@ -1,7 +1,8 @@
 import time
 from datetime import timedelta
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
+
 from odoo.addons.l10n_hu_edi.models.l10n_hu_edi_connection import L10nHuEdiConnection
 
 

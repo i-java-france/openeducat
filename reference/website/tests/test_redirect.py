@@ -1,8 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.http_routing.tests.common import MockRequest
 from odoo.exceptions import ValidationError
 from odoo.tests import TransactionCase, tagged
+
+from odoo.addons.http_routing.tests.common import MockRequest
 
 
 @tagged('-at_install', 'post_install')

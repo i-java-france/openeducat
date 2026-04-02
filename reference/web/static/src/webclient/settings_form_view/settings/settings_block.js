@@ -1,7 +1,14 @@
-import { HighlightText } from "../highlight_text/highlight_text";
-import { escapeRegExp } from "@web/core/utils/strings";
+import {HighlightText} from "../highlight_text/highlight_text";
+import {escapeRegExp} from "@web/core/utils/strings";
 
-import { Component, useState, useRef, useEffect, onWillRender, useChildSubEnv } from "@odoo/owl";
+import {
+    Component,
+    useState,
+    useRef,
+    useEffect,
+    onWillRender,
+    useChildSubEnv,
+} from "@odoo/owl";
 
 export class SettingsBlock extends Component {
     static template = "web.SettingsBlock";
@@ -9,10 +16,10 @@ export class SettingsBlock extends Component {
         HighlightText,
     };
     static props = {
-        title: { type: String, optional: true },
-        tip: { type: String, optional: true },
-        slots: { type: Object, optional: true },
-        class: { type: String, optional: true },
+        title: {type: String, optional: true},
+        tip: {type: String, optional: true},
+        slots: {type: Object, optional: true},
+        class: {type: String, optional: true},
     };
     setup() {
         this.state = useState({

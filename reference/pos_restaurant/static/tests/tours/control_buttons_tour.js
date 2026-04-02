@@ -3,14 +3,14 @@ import * as NumberPopup from "@point_of_sale/../tests/generic_helpers/number_pop
 import * as FloorScreen from "@pos_restaurant/../tests/tours/utils/floor_screen_util";
 import * as ProductScreenPos from "@point_of_sale/../tests/pos/tours/utils/product_screen_util";
 import * as ProductScreenResto from "@pos_restaurant/../tests/tours/utils/product_screen_util";
-const ProductScreen = { ...ProductScreenPos, ...ProductScreenResto };
+const ProductScreen = {...ProductScreenPos, ...ProductScreenResto};
 import * as SplitBillScreen from "@pos_restaurant/../tests/tours/utils/split_bill_screen_util";
 import * as Order from "@point_of_sale/../tests/generic_helpers/order_widget_util";
 import * as ChromePos from "@point_of_sale/../tests/pos/tours/utils/chrome_util";
 import * as ChromeRestaurant from "@pos_restaurant/../tests/tours/utils/chrome";
-const Chrome = { ...ChromePos, ...ChromeRestaurant };
-import { registry } from "@web/core/registry";
-import { delay } from "@web/core/utils/concurrency";
+const Chrome = {...ChromePos, ...ChromeRestaurant};
+import {registry} from "@web/core/registry";
+import {delay} from "@web/core/utils/concurrency";
 
 registry.category("web_tour.tours").add("ControlButtonsTour", {
     steps: () =>
@@ -36,9 +36,9 @@ registry.category("web_tour.tours").add("ControlButtonsTour", {
                     await helpers.click();
                 },
             },
-            Order.hasLine({ productName: "Water", quantity: "5" }),
-            Order.hasLine({ productName: "Minute Maid", quantity: "3" }),
-            Order.hasLine({ productName: "Coca-Cola", quantity: "1" }),
+            Order.hasLine({productName: "Water", quantity: "5"}),
+            Order.hasLine({productName: "Minute Maid", quantity: "3"}),
+            Order.hasLine({productName: "Coca-Cola", quantity: "1"}),
 
             // Test SplitBillButton
             ProductScreen.clickControlButton("Split"),
@@ -95,7 +95,7 @@ registry.category("web_tour.tours").add("ControlButtonsTour", {
 
             // Test Cancel Order Button
             Dialog.cancel(),
-            Order.hasLine({ productName: "Water", quantity: "5" }),
+            Order.hasLine({productName: "Water", quantity: "5"}),
             ProductScreen.clickControlButton("Cancel Order"),
             Dialog.confirm(),
             Order.doesNotHaveLine(),
@@ -107,6 +107,6 @@ registry.category("web_tour.tours").add("ControlButtonsTour", {
             ProductScreen.clickControlButton("Transfer"),
             FloorScreen.clickFloor("Second Floor"),
             FloorScreen.clickTable("1"),
-            Order.hasLine({ productName: "Water", quantity: "5" }),
+            Order.hasLine({productName: "Water", quantity: "5"}),
         ].flat(),
 });

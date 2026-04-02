@@ -1,10 +1,10 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { getCSSVariableValue, getHtmlStyle } from "@html_editor/utils/formatting";
-import { _t } from "@web/core/l10n/translation";
-import { isCSSColor } from "@web/core/utils/colors";
-import { verifyHttpsUrl } from "@website/utils/misc";
+import {getCSSVariableValue, getHtmlStyle} from "@html_editor/utils/formatting";
+import {_t} from "@web/core/l10n/translation";
+import {isCSSColor} from "@web/core/utils/colors";
+import {verifyHttpsUrl} from "@website/utils/misc";
 
 export class Countdown extends Interaction {
     static selector = ".s_countdown";
@@ -46,7 +46,9 @@ export class Countdown extends Interaction {
         this.progressBarStyle = this.el.dataset.progressBarStyle;
         this.progressBarWeight = this.el.dataset.progressBarWeight;
 
-        this.layoutBackgroundColor = this.ensureCSSColor(this.el.dataset.layoutBackgroundColor);
+        this.layoutBackgroundColor = this.ensureCSSColor(
+            this.el.dataset.layoutBackgroundColor
+        );
         this.progressBarColor = this.ensureCSSColor(this.el.dataset.progressBarColor);
         this.textColor = this.ensureCSSColor(this.el.dataset.textColor);
 
@@ -65,7 +67,9 @@ export class Countdown extends Interaction {
     destroy() {
         // The optional chaining is required because the queried element may not
         // exist anymore if the interaction target has just been deleted
-        this.el.querySelector(".s_countdown_canvas_wrapper")?.classList.remove("d-none");
+        this.el
+            .querySelector(".s_countdown_canvas_wrapper")
+            ?.classList.remove("d-none");
         clearInterval(this.setInterval);
         window.removeEventListener("resize", this.onResize);
     }
@@ -105,8 +109,13 @@ export class Countdown extends Interaction {
                     );
                 }
             }
-        } else if (this.endAction === "message" || this.endAction === "message_no_countdown") {
-            this.el.querySelector(".s_countdown_end_message")?.classList.remove("d-none");
+        } else if (
+            this.endAction === "message" ||
+            this.endAction === "message_no_countdown"
+        ) {
+            this.el
+                .querySelector(".s_countdown_end_message")
+                ?.classList.remove("d-none");
         }
         this.registerCleanup(() =>
             this.el.querySelector(".s_countdown_end_message")?.classList.add("d-none")
@@ -145,7 +154,10 @@ export class Countdown extends Interaction {
                 nbSeconds: 86400,
             });
         }
-        if (this.isUnitVisible("h") || (this.onlyOneUnit && delta < 86400 && delta > 3600)) {
+        if (
+            this.isUnitVisible("h") ||
+            (this.onlyOneUnit && delta < 86400 && delta > 3600)
+        ) {
             const divEl = this.createCanvasWrapper();
             this.insert(divEl, this.wrapperEl);
             this.timeDiff.push({
@@ -155,7 +167,10 @@ export class Countdown extends Interaction {
                 nbSeconds: 3600,
             });
         }
-        if (this.isUnitVisible("m") || (this.onlyOneUnit && delta < 3600 && delta > 60)) {
+        if (
+            this.isUnitVisible("m") ||
+            (this.onlyOneUnit && delta < 3600 && delta > 60)
+        ) {
             const divEl = this.createCanvasWrapper();
             this.insert(divEl, this.wrapperEl);
             this.timeDiff.push({
@@ -231,8 +246,11 @@ export class Countdown extends Interaction {
             }
             this.textWrapperEl.classList.toggle("d-none", this.shouldHideCountdown);
 
-            const countdownText = this.timeDiff.map((e) => e.nb + " " + e.label).join(", ");
-            this.el.querySelector(".s_countdown_text").innerText = countdownText.toLowerCase();
+            const countdownText = this.timeDiff
+                .map((e) => e.nb + " " + e.label)
+                .join(", ");
+            this.el.querySelector(".s_countdown_text").innerText =
+                countdownText.toLowerCase();
         } else {
             for (const val of this.timeDiff) {
                 const canvas = val.canvas.querySelector("canvas");
@@ -252,12 +270,22 @@ export class Countdown extends Interaction {
                 if (this.layoutBackground !== "none") {
                     this.drawBgShape(ctx, this.layoutBackground === "plain");
                 }
-                this.drawText(canvas, val.nb, val.label, this.layoutBackground === "plain");
+                this.drawText(
+                    canvas,
+                    val.nb,
+                    val.label,
+                    this.layoutBackground === "plain"
+                );
                 if (this.progressBarStyle === "surrounded") {
                     this.drawProgressBarBg(ctx, this.progressBarWeight === "thin");
                 }
                 if (this.progressBarStyle !== "none") {
-                    this.drawProgressBar(ctx, val.nb, val.total, this.progressBarWeight === "thin");
+                    this.drawProgressBar(
+                        ctx,
+                        val.nb,
+                        val.total,
+                        this.progressBarWeight === "thin"
+                    );
                 }
                 val.canvas.classList.toggle("mx-1", this.layout === "boxes");
             }
@@ -345,14 +373,24 @@ export class Countdown extends Interaction {
             }
 
             ctx.fillStyle = this.layoutBackgroundColor;
-            ctx.rect(barWidth, barWidth, this.width - barWidth * 2, this.size - barWidth * 2);
+            ctx.rect(
+                barWidth,
+                barWidth,
+                this.width - barWidth * 2,
+                this.size - barWidth * 2
+            );
             ctx.fill();
 
             const gradient = ctx.createLinearGradient(0, this.width, 0, 0);
             gradient.addColorStop(0, "#ffffff24");
             gradient.addColorStop(1, this.layoutBackgroundColor);
             ctx.fillStyle = gradient;
-            ctx.rect(barWidth, barWidth, this.width - barWidth * 2, this.size - barWidth * 2);
+            ctx.rect(
+                barWidth,
+                barWidth,
+                this.width - barWidth * 2,
+                this.size - barWidth * 2
+            );
             ctx.fill();
             ctx.canvas.style.borderRadius = "8px";
         }
@@ -386,7 +424,8 @@ export class Countdown extends Interaction {
                 (linePc) => [
                     0 + ctx.lineWidth / 2,
                     0,
-                    ((this.width - ctx.lineWidth / 2) * linePc) / 25 + ctx.lineWidth / 2,
+                    ((this.width - ctx.lineWidth / 2) * linePc) / 25 +
+                        ctx.lineWidth / 2,
                     0,
                 ],
                 (linePc) => [
@@ -405,7 +444,9 @@ export class Countdown extends Interaction {
                 ],
                 (linePc) => [
                     0,
-                    this.size - ((this.size - ctx.lineWidth / 2) * linePc) / 25 - ctx.lineWidth / 2,
+                    this.size -
+                        ((this.size - ctx.lineWidth / 2) * linePc) / 25 -
+                        ctx.lineWidth / 2,
                     0,
                     this.size - ctx.lineWidth / 2,
                 ],
@@ -432,7 +473,13 @@ export class Countdown extends Interaction {
         ctx.lineWidth = useThinLine ? this.size / 35 : this.size / 10;
         if (this.layout === "circle") {
             ctx.beginPath();
-            ctx.arc(this.size / 2, this.size / 2, this.size / 2 - this.size / 20, 0, Math.PI * 2);
+            ctx.arc(
+                this.size / 2,
+                this.size / 2,
+                this.size / 2 - this.size / 20,
+                0,
+                Math.PI * 2
+            );
             ctx.stroke();
         } else if (this.layout === "boxes") {
             ctx.lineWidth *= 2;

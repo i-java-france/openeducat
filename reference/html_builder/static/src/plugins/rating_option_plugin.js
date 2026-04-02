@@ -1,7 +1,7 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { BaseOptionComponent } from "@html_builder/core/utils";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {BaseOptionComponent} from "@html_builder/core/utils";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
 
 export class RatingOption extends BaseOptionComponent {
     static template = "html_builder.RatingOption";
@@ -27,20 +27,20 @@ class RatingOptionPlugin extends Plugin {
 
 export class SetIconsAction extends BuilderAction {
     static id = "setIcons";
-    apply({ editingElement, params: { mainParam: iconParam } }) {
+    apply({editingElement, params: {mainParam: iconParam}}) {
         editingElement.dataset.icon = iconParam;
         renderIcons(editingElement);
         delete editingElement.dataset.activeCustomIcon;
         delete editingElement.dataset.inactiveCustomIcon;
     }
-    isApplied({ editingElement, params: { mainParam: iconParam } }) {
+    isApplied({editingElement, params: {mainParam: iconParam}}) {
         return getIconType(editingElement) === iconParam;
     }
 }
 export class CustomIconAction extends BuilderAction {
     static id = "customIcon";
     static dependencies = ["media"];
-    async load({ editingElement, params: { mainParam: customParam } }) {
+    async load({editingElement, params: {mainParam: customParam}}) {
         return new Promise((resolve) => {
             const isCustomActive = customParam === "customActiveIcon";
             const media = document.createElement("i");
@@ -61,7 +61,7 @@ export class CustomIconAction extends BuilderAction {
             onClose.then(resolve);
         });
     }
-    apply({ editingElement, loadResult: savedIconEl, params: { mainParam: customParam } }) {
+    apply({editingElement, loadResult: savedIconEl, params: {mainParam: customParam}}) {
         if (!savedIconEl) {
             return;
         }
@@ -72,9 +72,13 @@ export class CustomIconAction extends BuilderAction {
         const iconEls = isCustomActive ? activeIconEls : inactiveIconEls;
         iconEls.forEach((iconEl) => (iconEl.className = customClass));
         const faClassActiveCustomIcons =
-            activeIconEls.length > 0 ? activeIconEls[0].getAttribute("class") : customClass;
+            activeIconEls.length > 0
+                ? activeIconEls[0].getAttribute("class")
+                : customClass;
         const faClassInactiveCustomIcons =
-            inactiveIconEls.length > 0 ? inactiveIconEls[0].getAttribute("class") : customClass;
+            inactiveIconEls.length > 0
+                ? inactiveIconEls[0].getAttribute("class")
+                : customClass;
         editingElement.dataset.activeCustomIcon = faClassActiveCustomIcons;
         editingElement.dataset.inactiveCustomIcon = faClassInactiveCustomIcons;
         editingElement.dataset.icon = "custom";
@@ -82,7 +86,7 @@ export class CustomIconAction extends BuilderAction {
 }
 export class ActiveIconsNumberAction extends BuilderAction {
     static id = "activeIconsNumber";
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         const nbActiveIcons = parseInt(value);
         const nbTotalIcons = getAllIcons(editingElement).length;
         createIcons({
@@ -91,13 +95,13 @@ export class ActiveIconsNumberAction extends BuilderAction {
             nbTotalIcons: nbTotalIcons,
         });
     }
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         return getActiveIcons(editingElement).length;
     }
 }
 export class TotalIconsNumberAction extends BuilderAction {
     static id = "totalIconsNumber";
-    apply({ editingElement, value }) {
+    apply({editingElement, value}) {
         const nbTotalIcons = Math.max(parseInt(value), 1);
         const nbActiveIcons = getActiveIcons(editingElement).length;
         createIcons({
@@ -106,14 +110,14 @@ export class TotalIconsNumberAction extends BuilderAction {
             nbTotalIcons: nbTotalIcons,
         });
     }
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         return getAllIcons(editingElement).length;
     }
 }
 
 registry.category("builder-plugins").add(RatingOptionPlugin.id, RatingOptionPlugin);
 
-function createIcons({ editingElement, nbActiveIcons, nbTotalIcons }) {
+function createIcons({editingElement, nbActiveIcons, nbTotalIcons}) {
     const activeIconEl = editingElement.querySelector(".s_rating_active_icons");
     const inactiveIconEl = editingElement.querySelector(".s_rating_inactive_icons");
     const iconEls = getAllIcons(editingElement);
@@ -155,9 +159,15 @@ function renderIcons(editingElement) {
     const faClassActiveIcons =
         iconType === "custom" ? getActiveCustomIcons(editingElement) : "fa " + iconType;
     const faClassInactiveIcons =
-        iconType === "custom" ? getInactiveCustomIcons(editingElement) : "fa " + icons[iconType];
+        iconType === "custom"
+            ? getInactiveCustomIcons(editingElement)
+            : "fa " + icons[iconType];
     const activeIconEls = getActiveIcons(editingElement);
     const inactiveIconEls = getInactiveIcons(editingElement);
-    activeIconEls.forEach((activeIconEl) => (activeIconEl.className = faClassActiveIcons));
-    inactiveIconEls.forEach((inactiveIconEl) => (inactiveIconEl.className = faClassInactiveIcons));
+    activeIconEls.forEach(
+        (activeIconEl) => (activeIconEl.className = faClassActiveIcons)
+    );
+    inactiveIconEls.forEach(
+        (inactiveIconEl) => (inactiveIconEl.className = faClassInactiveIcons)
+    );
 }

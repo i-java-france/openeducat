@@ -1,17 +1,18 @@
+import random
 from datetime import date, datetime, timedelta, timezone
-from dateutil.relativedelta import relativedelta
-from freezegun import freeze_time
 from unittest.mock import patch
 
 import pytz
-import random
+from dateutil.relativedelta import relativedelta
+from freezegun import freeze_time
 
 from odoo import fields, tests
+from odoo.tests import tagged, users
+from odoo.tools import mute_logger
+
 from odoo.addons.mail.models.mail_activity import MailActivity
 from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.addons.test_mail.tests.test_mail_activity import TestActivityCommon
-from odoo.tests import tagged, users
-from odoo.tools import mute_logger
 
 
 @tagged('mail_activity', 'mail_activity_mixin')
@@ -636,7 +637,7 @@ class TestORM(TestActivityCommon):
                     "res_model_id": self.env["ir.model"]._get_id("mail.test.lead"),
                     "summary": f"Test activity for CRM lead {lead.id}",
                     "user_id": self.env.user.id,
-                } for lead, delta_days in zip(leads, lead_timedelta_setup)
+                } for lead, delta_days in zip(leads, lead_timedelta_setup, strict=False)
             ])
 
             # grouping by 'activity_state' and 'activity_state' as the progress bar

@@ -1,8 +1,9 @@
 from markupsafe import Markup
 
-from odoo.addons.survey.tests import common
 from odoo.tests import tagged
 from odoo.tests.common import HttpCase
+
+from odoo.addons.survey.tests import common
 
 
 @tagged('-at_install', 'post_install', 'functional')

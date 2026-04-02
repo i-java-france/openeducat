@@ -1,12 +1,12 @@
-import { Component, useState } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
+import {Component, useState} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
 
 export class ImportDataColumnError extends Component {
     static template = "ImportDataColumnError";
     static props = {
-        errors: { type: Array },
-        fieldInfo: { type: Object },
-        resultNames: { type: Array },
+        errors: {type: Array},
+        fieldInfo: {type: Object},
+        resultNames: {type: Array},
     };
 
     setup() {

@@ -2,6 +2,7 @@
 
 import json
 import logging
+
 import psycopg2
 
 import odoo.api
@@ -12,10 +13,11 @@ from odoo.exceptions import AccessError
 from odoo.http import request
 from odoo.service import security
 from odoo.tools.misc import hmac
-from odoo.tools.translate import _, LazyTranslate
+from odoo.tools.translate import LazyTranslate, _
+
 from .utils import (
-    ensure_db,
     _get_login_redirect_url,
+    ensure_db,
     is_user_internal,
 )
 

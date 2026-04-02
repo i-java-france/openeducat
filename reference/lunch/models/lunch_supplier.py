@@ -1,19 +1,18 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import math
-import pytz
-
 from collections import defaultdict
 from datetime import datetime, time, timedelta
 from textwrap import dedent
 
-from odoo import api, fields, models, _
+import pytz
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.fields import Domain
 from odoo.tools import float_round
 
 from odoo.addons.base.models.res_partner import _tz_get
-
 
 WEEKDAY_TO_NAME = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 CRON_DEPENDS = {'name', 'active', 'send_by', 'automatic_email_time', 'moment', 'tz'}
@@ -179,7 +178,7 @@ class LunchSupplier(models.Model):
             # noupdate is set to true to avoid to delete record at module update
             'noupdate': True,
         } for cron in crons])
-        for vals, cron in zip(vals_list, crons):
+        for vals, cron in zip(vals_list, crons, strict=False):
             vals['cron_id'] = cron.id
 
         suppliers = super().create(vals_list)

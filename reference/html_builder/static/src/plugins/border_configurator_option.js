@@ -1,14 +1,14 @@
-import { BaseOptionComponent, useDomState } from "@html_builder/core/utils";
+import {BaseOptionComponent, useDomState} from "@html_builder/core/utils";
 
 export class BorderConfigurator extends BaseOptionComponent {
     static template = "html_builder.BorderConfiguratorOption";
     static dependencies = ["builderActions"];
     static props = {
-        label: { type: String },
-        direction: { type: String, optional: true },
-        withRoundCorner: { type: Boolean, optional: true },
-        withBSClass: { type: Boolean, optional: true },
-        action: { type: String, optional: true },
+        label: {type: String},
+        direction: {type: String, optional: true},
+        withRoundCorner: {type: Boolean, optional: true},
+        withBSClass: {type: Boolean, optional: true},
+        action: {type: String, optional: true},
     };
     static defaultProps = {
         withRoundCorner: true,
@@ -31,7 +31,7 @@ export class BorderConfigurator extends BaseOptionComponent {
         return property;
     }
     hasBorder(editingElement) {
-        const { getAction } = this.dependencies.builderActions;
+        const {getAction} = this.dependencies.builderActions;
         const styleActionValue = getAction("styleAction").getValue({
             editingElement,
             params: {

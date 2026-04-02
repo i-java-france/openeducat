@@ -1,6 +1,6 @@
-import { registry } from "@web/core/registry";
-import { Base } from "./related_models";
-const { DateTime } = luxon;
+import {registry} from "@web/core/registry";
+import {Base} from "./related_models";
+const {DateTime} = luxon;
 
 export class PosPayment extends Base {
     static pythonModel = "pos.payment";
@@ -35,7 +35,8 @@ export class PosPayment extends Base {
 
     isDone() {
         return this.getPaymentStatus()
-            ? this.getPaymentStatus() === "done" || this.getPaymentStatus() === "reversed"
+            ? this.getPaymentStatus() === "done" ||
+                  this.getPaymentStatus() === "reversed"
             : true;
     }
 
@@ -63,7 +64,8 @@ export class PosPayment extends Base {
         if (isPaymentSuccessful) {
             this.setPaymentStatus("done");
             if (this.payment_method_id.payment_method_type !== "qr_code") {
-                this.can_be_reversed = this.payment_method_id.payment_terminal.supports_reversals;
+                this.can_be_reversed =
+                    this.payment_method_id.payment_terminal.supports_reversals;
             }
         } else {
             this.setPaymentStatus("retry");

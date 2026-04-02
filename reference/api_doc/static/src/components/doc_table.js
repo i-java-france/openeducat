@@ -1,4 +1,10 @@
-import { Component, useState, useExternalListener, useRef, onWillRender } from "@odoo/owl";
+import {
+    Component,
+    useState,
+    useExternalListener,
+    useRef,
+    onWillRender,
+} from "@odoo/owl";
 
 export const TABLE_TYPES = {
     Id: "id",
@@ -7,7 +13,7 @@ export const TABLE_TYPES = {
 };
 
 export class DocTable extends Component {
-    static components = { DocTable };
+    static components = {DocTable};
     static template = "web.DocTable";
 
     static props = {
@@ -165,6 +171,6 @@ export class DocTable extends Component {
     }
 
     goToModel(model) {
-        this.env.modelStore.setActiveModel({ model });
+        this.env.modelStore.setActiveModel({model});
     }
 }

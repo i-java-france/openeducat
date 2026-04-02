@@ -1,9 +1,12 @@
-import { registries, chartHelpers } from "@odoo/o-spreadsheet";
-import { _t } from "@web/core/l10n/translation";
-import { OdooChart } from "./odoo_chart";
-import { onOdooChartItemHover, onWaterfallOdooChartItemClick } from "./odoo_chart_helpers";
+import {registries, chartHelpers} from "@odoo/o-spreadsheet";
+import {_t} from "@web/core/l10n/translation";
+import {OdooChart} from "./odoo_chart";
+import {
+    onOdooChartItemHover,
+    onWaterfallOdooChartItemClick,
+} from "./odoo_chart_helpers";
 
-const { chartRegistry } = registries;
+const {chartRegistry} = registries;
 
 const {
     CHART_COMMON_OPTIONS,
@@ -53,7 +56,8 @@ chartRegistry.add("odoo_waterfall", {
     getChartRuntime: createOdooChartRuntime,
     validateChartDefinition: (validator, definition) =>
         OdooWaterfallChart.validateChartDefinition(validator, definition),
-    transformDefinition: (definition) => OdooWaterfallChart.transformDefinition(definition),
+    transformDefinition: (definition) =>
+        OdooWaterfallChart.transformDefinition(definition),
     getChartDefinitionFromContextCreation: () =>
         OdooWaterfallChart.getDefinitionFromContextCreation(),
     name: _t("Waterfall"),
@@ -61,14 +65,14 @@ chartRegistry.add("odoo_waterfall", {
 
 function createOdooChartRuntime(chart, getters) {
     const background = chart.background || "#FFFFFF";
-    const { datasets, labels } = chart.dataSource.getData();
+    const {datasets, labels} = chart.dataSource.getData();
 
     const definition = chart.getDefinition();
     const locale = getters.getLocale();
 
     const chartData = {
         labels,
-        dataSetsValues: datasets.map((ds) => ({ data: ds.data, label: ds.label })),
+        dataSetsValues: datasets.map((ds) => ({data: ds.data, label: ds.label})),
         locale,
     };
 
@@ -76,7 +80,7 @@ function createOdooChartRuntime(chart, getters) {
 
     const config = {
         type: "bar",
-        data: { labels: chartJSData.labels, datasets: chartJSData.datasets },
+        data: {labels: chartJSData.labels, datasets: chartJSData.datasets},
         options: {
             ...CHART_COMMON_OPTIONS,
             layout: getChartLayout(definition, chartData),
@@ -85,13 +89,18 @@ function createOdooChartRuntime(chart, getters) {
                 title: getChartTitle(definition, getters),
                 legend: getWaterfallChartLegend(definition, chartData),
                 tooltip: getWaterfallChartTooltip(definition, chartData),
-                chartShowValuesPlugin: getWaterfallChartShowValues(definition, chartData),
-                waterfallLinesPlugin: { showConnectorLines: definition.showConnectorLines },
+                chartShowValuesPlugin: getWaterfallChartShowValues(
+                    definition,
+                    chartData
+                ),
+                waterfallLinesPlugin: {
+                    showConnectorLines: definition.showConnectorLines,
+                },
             },
             onHover: onOdooChartItemHover(),
             onClick: onWaterfallOdooChartItemClick(getters, chart),
         },
     };
 
-    return { background, chartJsConfig: config };
+    return {background, chartJsConfig: config};
 }

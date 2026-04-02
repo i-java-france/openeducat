@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
 
 from odoo import _
-
-from odoo.http import request, route, Controller, content_disposition
+from odoo.http import Controller, content_disposition, request, route
 
 
 class HrEmployeeCV(Controller):

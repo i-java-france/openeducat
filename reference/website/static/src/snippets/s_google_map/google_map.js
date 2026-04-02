@@ -1,7 +1,7 @@
 /* global google */
 
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
 export class GoogleMap extends Interaction {
     static selector = ".s_google_map";
@@ -61,7 +61,7 @@ export class GoogleMap extends Interaction {
         }
         // Define a default map's colors set
         const std = [];
-        new google.maps.StyledMapType(std, { name: "Std Map" });
+        new google.maps.StyledMapType(std, {name: "Std Map"});
 
         // Default options, will be overwritten by the user
         const myOptions = {
@@ -95,7 +95,8 @@ export class GoogleMap extends Interaction {
             position: new google.maps.LatLng(p[0], p[1]),
         };
         if (this.el.dataset.pinStyle === "flat") {
-            markerOptions.icon = "/website/static/src/img/snippets_thumbs/s_google_map_marker.png";
+            markerOptions.icon =
+                "/website/static/src/img/snippets_thumbs/s_google_map_marker.png";
         }
         new google.maps.Marker(markerOptions);
 
@@ -108,7 +109,7 @@ export class GoogleMap extends Interaction {
             const mapColor = this.mapColors[mapColorAttr];
             map.mapTypes.set(
                 "map_style",
-                new google.maps.StyledMapType(mapColor, { name: "Styled Map" })
+                new google.maps.StyledMapType(mapColor, {name: "Styled Map"})
             );
             map.setMapTypeId("map_style");
         }

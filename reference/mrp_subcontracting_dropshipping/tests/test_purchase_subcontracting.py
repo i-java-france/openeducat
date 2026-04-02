@@ -2,6 +2,7 @@
 
 from odoo import Command
 from odoo.tests import Form, tagged
+
 from odoo.addons.mrp_subcontracting.tests.common import TestMrpSubcontractingCommon
 from odoo.addons.stock_account.tests.common import TestStockValuationCommon
 

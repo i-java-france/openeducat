@@ -1,4 +1,4 @@
-import { expect, test } from "@odoo/hoot";
+import {expect, test} from "@odoo/hoot";
 import {
     contains,
     defineModels,
@@ -55,9 +55,11 @@ test("Show copy button even on empty field", async () => {
         char_field: false,
     });
 
-    await mountView({ type: "form", resModel: "res.partner", resId: 2 });
+    await mountView({type: "form", resModel: "res.partner", resId: 2});
 
-    expect(".o_field_CopyClipboardChar[name='char_field'] .o_clipboard_button").toHaveCount(1);
+    expect(
+        ".o_field_CopyClipboardChar[name='char_field'] .o_clipboard_button"
+    ).toHaveCount(1);
 });
 
 test("Show copy button even on readonly empty field", async () => {
@@ -75,13 +77,15 @@ test("Show copy button even on readonly empty field", async () => {
         </form>`,
     });
 
-    expect(".o_field_CopyClipboardChar[name='char_field'] .o_clipboard_button").toHaveCount(1);
+    expect(
+        ".o_field_CopyClipboardChar[name='char_field'] .o_clipboard_button"
+    ).toHaveCount(1);
 });
 
 test("Display a tooltip on click", async () => {
     mockService("popover", {
         add(el, comp, params) {
-            expect(params).toEqual({ tooltip: "Copied" });
+            expect(params).toEqual({tooltip: "Copied"});
             expect.step("copied tooltip");
             return () => {};
         },
@@ -100,7 +104,7 @@ test("Display a tooltip on click", async () => {
     });
 
     await expect(".o_clipboard_button.o_btn_char_copy").toHaveCount(1);
-    await contains(".o_clipboard_button", { visible: false }).click();
+    await contains(".o_clipboard_button", {visible: false}).click();
     expect.verifySteps(["char value", "copied tooltip"]);
 });
 

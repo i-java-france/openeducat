@@ -2,9 +2,9 @@ import {
     defineLivechatModels,
     loadDefaultEmbedConfig,
 } from "@im_livechat/../tests/livechat_test_helpers";
-import { click, start, startServer } from "@mail/../tests/mail_test_helpers";
-import { describe, test } from "@odoo/hoot";
-import { press, waitFor } from "@odoo/hoot-dom";
+import {click, start, startServer} from "@mail/../tests/mail_test_helpers";
+import {describe, test} from "@odoo/hoot";
+import {press, waitFor} from "@odoo/hoot-dom";
 import {
     asyncStep,
     contains,
@@ -20,13 +20,13 @@ defineLivechatModels();
 test("Handle livechat history command", async () => {
     const pyEnv = await startServer();
     await loadDefaultEmbedConfig();
-    onRpc("/im_livechat/history", ({ url }) => {
+    onRpc("/im_livechat/history", ({url}) => {
         asyncStep(new URL(url).pathname);
         return true;
     });
-    await start({ authenticateAs: false });
+    await start({authenticateAs: false});
     await click(".o-livechat-LivechatButton");
-    await contains(".o-mail-Composer-input").edit("Hello World!", { confirm: false });
+    await contains(".o-mail-Composer-input").edit("Hello World!", {confirm: false});
     await press("Enter");
     await waitFor(".o-mail-Message:contains(Hello World!)");
     const thread = Object.values(getService("mail.store").Thread.records).at(-1);

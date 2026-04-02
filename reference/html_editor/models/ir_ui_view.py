@@ -3,11 +3,13 @@
 import copy
 import logging
 import uuid
+
 from lxml import etree, html
 
-from odoo import api, models, _
-from odoo.exceptions import ValidationError, MissingError
+from odoo import _, api, models
+from odoo.exceptions import MissingError, ValidationError
 from odoo.fields import Domain
+
 from odoo.addons.base.models.ir_ui_view import MOVABLE_BRANDING
 
 _logger = logging.getLogger(__name__)
@@ -224,7 +226,7 @@ class IrUiView(models.Model):
             return False
         if len(arch1) != len(arch2):
             return False
-        return all(self._are_archs_equal(arch1, arch2) for arch1, arch2 in zip(arch1, arch2))
+        return all(self._are_archs_equal(arch1, arch2) for arch1, arch2 in zip(arch1, arch2, strict=False))
 
     @api.model
     def _get_allowed_root_attrs(self):

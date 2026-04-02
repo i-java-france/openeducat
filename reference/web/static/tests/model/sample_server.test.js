@@ -1,5 +1,5 @@
-import { describe, expect, test } from "@odoo/hoot";
-import { SampleServer } from "@web/model/sample_server";
+import {describe, expect, test} from "@odoo/hoot";
+import {SampleServer} from "@web/model/sample_server";
 
 const {
     MAIN_RECORDSET_SIZE,
@@ -37,21 +37,21 @@ class DeterministicSampleServer extends SampleServer {
 
 const fields = {
     "res.users": {
-        display_name: { string: "Name", type: "char" },
-        name: { string: "Reference", type: "char" },
-        email: { string: "Email", type: "char" },
-        phone_number: { string: "Phone number", type: "char" },
-        website_url: { string: "URL", type: "char" },
-        urlemailphone: { string: "Whatever", type: "char" },
-        active: { string: "Active", type: "boolean" },
-        is_alive: { string: "Is alive", type: "boolean" },
-        description: { string: "Description", type: "text" },
-        birthday: { string: "Birthday", type: "date" },
-        arrival_date: { string: "Date of arrival", type: "datetime" },
-        height: { string: "Height", type: "float" },
-        color: { string: "Color", type: "integer" },
-        age: { string: "Age", type: "integer" },
-        salary: { string: "Salary", type: "monetary" },
+        display_name: {string: "Name", type: "char"},
+        name: {string: "Reference", type: "char"},
+        email: {string: "Email", type: "char"},
+        phone_number: {string: "Phone number", type: "char"},
+        website_url: {string: "URL", type: "char"},
+        urlemailphone: {string: "Whatever", type: "char"},
+        active: {string: "Active", type: "boolean"},
+        is_alive: {string: "Is alive", type: "boolean"},
+        description: {string: "Description", type: "text"},
+        birthday: {string: "Birthday", type: "date"},
+        arrival_date: {string: "Date of arrival", type: "datetime"},
+        height: {string: "Height", type: "float"},
+        color: {string: "Color", type: "integer"},
+        age: {string: "Age", type: "integer"},
+        salary: {string: "Salary", type: "monetary"},
         currency: {
             string: "Currency",
             type: "many2one",
@@ -72,7 +72,7 @@ const fields = {
             type: "one2many",
             relation: "res.users",
         },
-        tag_ids: { string: "Tags", type: "many2many", relation: "tag" },
+        tag_ids: {string: "Tags", type: "many2many", relation: "tag"},
         type: {
             string: "Type",
             type: "selection",
@@ -84,10 +84,10 @@ const fields = {
         },
     },
     "res.country": {
-        display_name: { string: "Name", type: "char" },
+        display_name: {string: "Name", type: "char"},
     },
     hobbit: {
-        display_name: { string: "Name", type: "char" },
+        display_name: {string: "Name", type: "char"},
         profession: {
             string: "Profession",
             type: "selection",
@@ -97,10 +97,10 @@ const fields = {
                 ["adventurer", "Adventurer"],
             ],
         },
-        age: { string: "Age", type: "integer" },
+        age: {string: "Age", type: "integer"},
     },
     "ir.attachment": {
-        display_name: { string: "Name", type: "char" },
+        display_name: {string: "Name", type: "char"},
     },
 };
 
@@ -113,12 +113,12 @@ describe("Sample data", () => {
             specification[fieldName] = {};
             if (fields["res.users"][fieldName].type === "many2one") {
                 specification[fieldName] = {
-                    fields: { display_name: {} },
+                    fields: {display_name: {}},
                 };
             }
         }
         const server = new DeterministicSampleServer("res.users", fields["res.users"]);
-        const { records } = await server.mockRpc({
+        const {records} = await server.mockRpc({
             method: "web_search_read",
             model: "res.users",
             specification,
@@ -127,7 +127,9 @@ describe("Sample data", () => {
         // Basic fields
         expect(SAMPLE_PEOPLE).toInclude(rec.display_name);
         expect(SAMPLE_PEOPLE).toInclude(rec.name);
-        expect(rec.email).toBe(`${rec.display_name.replace(/ /, ".").toLowerCase()}@sample.demo`);
+        expect(rec.email).toBe(
+            `${rec.display_name.replace(/ /, ".").toLowerCase()}@sample.demo`
+        );
         expect(rec.phone_number).toMatch(/\+1 555 754 000\d/);
         expect(rec.website_url).toMatch(/http:\/\/sample\d\.com/);
         expect(rec.urlemailphone).toBe(false);
@@ -140,7 +142,7 @@ describe("Sample data", () => {
         expect(rec.color).toBeWithin(0, MAX_COLOR_INT - 1);
         expect(rec.age).toBeWithin(0, MAX_INTEGER - 1);
         expect(rec.salary).toBeWithin(0, MAX_MONETARY - 1);
-        // check float field have 2 decimal rounding
+        // Check float field have 2 decimal rounding
         expect(rec.height).toBe(parseFloat(parseFloat(rec.height).toFixed(2)));
         const selectionValues = fields["res.users"].type.selection.map((sel) => sel[0]);
         expect(selectionValues).toInclude(rec.type);
@@ -160,21 +162,24 @@ describe("Sample data", () => {
     });
 
     test("country type", async () => {
-        const server = new DeterministicSampleServer("res.country", fields["res.country"]);
-        const { records } = await server.mockRpc({
+        const server = new DeterministicSampleServer(
+            "res.country",
+            fields["res.country"]
+        );
+        const {records} = await server.mockRpc({
             method: "web_search_read",
             model: "res.country",
-            specification: { display_name: {} },
+            specification: {display_name: {}},
         });
         expect(SAMPLE_COUNTRIES).toInclude(records[0].display_name);
     });
 
     test("any type", async () => {
         const server = new DeterministicSampleServer("hobbit", fields.hobbit);
-        const { records } = await server.mockRpc({
+        const {records} = await server.mockRpc({
             method: "web_search_read",
             model: "hobbit",
-            specification: { display_name: {} },
+            specification: {display_name: {}},
         });
         expect(SAMPLE_TEXTS).toInclude(records[0].display_name);
     });
@@ -186,7 +191,7 @@ describe("RPC calls", () => {
         const result = await server.mockRpc({
             method: "web_search_read",
             model: "hobbit",
-            specification: { display_name: {} },
+            specification: {display_name: {}},
         });
         expect(Object.keys(result.records[0])).toEqual(["id", "display_name"]);
         expect(result.length).toBe(SEARCH_READ_LIMIT);
@@ -202,7 +207,7 @@ describe("RPC calls", () => {
             model: "res.users",
             specification: {
                 manager_id: {
-                    fields: { display_name: {} },
+                    fields: {display_name: {}},
                 },
             },
         });
@@ -220,7 +225,7 @@ describe("RPC calls", () => {
             groupBy: ["profession"],
             aggregates: ["__count"],
             auto_unfold: true,
-            unfold_read_specification: { display_name: {}, age: {}, profession: {} },
+            unfold_read_specification: {display_name: {}, age: {}, profession: {}},
         });
         expect(result).toEqual({
             groups: [
@@ -236,7 +241,9 @@ describe("RPC calls", () => {
                     __extra_domain: [],
                     profession: "brewer",
                     __count: 5,
-                    __records: server.data.hobbit.records.filter((r) => r.profession === "brewer"),
+                    __records: server.data.hobbit.records.filter(
+                        (r) => r.profession === "brewer"
+                    ),
                 },
                 {
                     __extra_domain: [],
@@ -254,8 +261,8 @@ describe("RPC calls", () => {
     test("'web_read_group': 2 groups", async () => {
         const server = new DeterministicSampleServer("hobbit", fields.hobbit);
         const existingGroups = [
-            { profession: "gardener", count: 0, __records: [] }, // fake group
-            { profession: "adventurer", count: 0, __records: [] }, // fake group
+            {profession: "gardener", count: 0, __records: []}, // Fake group
+            {profession: "adventurer", count: 0, __records: []}, // Fake group
         ];
         server.setExistingGroups(existingGroups);
         const result = await server.mockRpc({
@@ -264,21 +271,26 @@ describe("RPC calls", () => {
             groupBy: ["profession"],
             aggregates: ["__count"],
             auto_unfold: true,
-            unfold_read_specification: { display_name: {}, age: {} },
+            unfold_read_specification: {display_name: {}, age: {}},
         });
         expect(result).toHaveLength(2);
         expect(result.groups).toHaveLength(2);
-        expect(result.groups.map((g) => g.profession)).toEqual(["gardener", "adventurer"]);
-        expect(result.groups.reduce((acc, g) => acc + g.__count, 0)).toBe(MAIN_RECORDSET_SIZE);
+        expect(result.groups.map((g) => g.profession)).toEqual([
+            "gardener",
+            "adventurer",
+        ]);
+        expect(result.groups.reduce((acc, g) => acc + g.__count, 0)).toBe(
+            MAIN_RECORDSET_SIZE
+        );
         expect(result.groups.every((g) => g.__count === g.__records.length)).toBe(true);
     });
 
     test("'web_read_group': all groups", async () => {
         const server = new DeterministicSampleServer("hobbit", fields.hobbit);
         const existingGroups = [
-            { profession: "gardener", count: 0, __records: [] }, // fake group
-            { profession: "brewer", count: 0, __records: [] }, // fake group
-            { profession: "adventurer", count: 0, __records: [] }, // fake group
+            {profession: "gardener", count: 0, __records: []}, // Fake group
+            {profession: "brewer", count: 0, __records: []}, // Fake group
+            {profession: "adventurer", count: 0, __records: []}, // Fake group
         ];
         server.setExistingGroups(existingGroups);
         const result = await server.mockRpc({
@@ -287,7 +299,7 @@ describe("RPC calls", () => {
             groupBy: ["profession"],
             aggregates: ["__count"],
             auto_unfold: true,
-            unfold_read_specification: { display_name: {}, age: {} },
+            unfold_read_specification: {display_name: {}, age: {}},
         });
         expect(result.length).toBe(3);
         expect(result.groups).toHaveLength(3);
@@ -296,7 +308,9 @@ describe("RPC calls", () => {
             "brewer",
             "adventurer",
         ]);
-        expect(result.groups.reduce((acc, g) => acc + g.__count, 0)).toBe(MAIN_RECORDSET_SIZE);
+        expect(result.groups.reduce((acc, g) => acc + g.__count, 0)).toBe(
+            MAIN_RECORDSET_SIZE
+        );
         expect(result.groups.every((g) => g.__count === g.__records.length)).toBe(true);
     });
 
@@ -308,7 +322,7 @@ describe("RPC calls", () => {
             groupBy: ["name"],
             aggregates: ["age:max", "height:min"],
         });
-        // didn't crash, but we can't assert the aggregate values as they are non deterministic,
+        // Didn't crash, but we can't assert the aggregate values as they are non deterministic,
         // and we don't really mind actually (max/min aren't even implemented, they behave as sum)
         expect(result.length).toEqual(5);
     });
@@ -322,7 +336,11 @@ describe("RPC calls", () => {
             aggregates: ["__count"],
         });
         expect(result).toHaveLength(3);
-        expect(result.map((g) => g.profession)).toEqual(["adventurer", "brewer", "gardener"]);
+        expect(result.map((g) => g.profession)).toEqual([
+            "adventurer",
+            "brewer",
+            "gardener",
+        ]);
         expect(result.reduce((acc, g) => acc + g.__count, 0)).toBe(MAIN_RECORDSET_SIZE);
     });
 
@@ -335,7 +353,11 @@ describe("RPC calls", () => {
             aggregates: ["__count", "age:sum"],
         });
         expect(result).toHaveLength(3);
-        expect(result.map((g) => g.profession)).toEqual(["adventurer", "brewer", "gardener"]);
+        expect(result.map((g) => g.profession)).toEqual([
+            "adventurer",
+            "brewer",
+            "gardener",
+        ]);
         expect(result.reduce((acc, g) => acc + g.__count, 0)).toBe(MAIN_RECORDSET_SIZE);
         expect(result.reduce((acc, g) => acc + g["age:sum"], 0)).toBe(
             server.data.hobbit.records.reduce((acc, rec) => acc + rec.age, 0)
@@ -399,7 +421,7 @@ describe("RPC calls", () => {
     });
 
     test("'formatted_read_group': partial support of array_agg", async () => {
-        fields["res.users"].id = { type: "integer", name: "ID" };
+        fields["res.users"].id = {type: "integer", name: "ID"};
         const server = new DeterministicSampleServer("res.users", fields["res.users"]);
         const result = await server.mockRpc({
             method: "formatted_read_group",

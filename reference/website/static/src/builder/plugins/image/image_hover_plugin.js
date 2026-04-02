@@ -1,7 +1,7 @@
-import { BuilderAction } from "@html_builder/core/builder_action";
-import { Plugin } from "@html_editor/plugin";
-import { registry } from "@web/core/registry";
-import { convertCSSColorToRgba } from "@web/core/utils/colors";
+import {BuilderAction} from "@html_builder/core/builder_action";
+import {Plugin} from "@html_editor/plugin";
+import {registry} from "@web/core/registry";
+import {convertCSSColorToRgba} from "@web/core/utils/colors";
 
 /**
  * @typedef { Object } ImageHoverShared
@@ -32,7 +32,9 @@ export class ImageHoverPlugin extends Plugin {
             // Add the required parts for the hover effects to the SVG.
             const hoverEffectName = params.hoverEffect;
             const hoverEffectsSvg = await this.getSvgHoverEffects();
-            const hoverEffectEls = hoverEffectsSvg.querySelectorAll(`#${hoverEffectName} > *`);
+            const hoverEffectEls = hoverEffectsSvg.querySelectorAll(
+                `#${hoverEffectName} > *`
+            );
             hoverEffectEls.forEach((hoverEffectEl) => {
                 svg.appendChild(hoverEffectEl.cloneNode(true));
             });
@@ -41,13 +43,17 @@ export class ImageHoverPlugin extends Plugin {
             const animateEl = svg.querySelector("animate");
             const animateTransformEls = svg.querySelectorAll("animateTransform");
             const animateElValues = animateEl?.getAttribute("values");
-            let animateTransformElValues = animateTransformEls[0]?.getAttribute("values");
+            let animateTransformElValues =
+                animateTransformEls[0]?.getAttribute("values");
             if (params.hoverEffectColor) {
                 rgba = convertCSSColorToRgba(params.hoverEffectColor);
                 rbg = `rgb(${rgba.red},${rgba.green},${rgba.blue})`;
                 opacity = rgba.opacity / 100;
                 if (!["outline", "image_mirror_blur"].includes(hoverEffectName)) {
-                    svg.querySelector('[fill="hover_effect_color"]').setAttribute("fill", rbg);
+                    svg.querySelector('[fill="hover_effect_color"]').setAttribute(
+                        "fill",
+                        rbg
+                    );
                     animateEl.setAttribute(
                         "values",
                         animateElValues.replace("hover_effect_opacity", opacity)
@@ -56,17 +62,22 @@ export class ImageHoverPlugin extends Plugin {
             }
             switch (hoverEffectName) {
                 case "outline": {
-                    svg.querySelector('[stroke="hover_effect_color"]').setAttribute("stroke", rbg);
-                    svg.querySelector('[stroke-opacity="hover_effect_opacity"]').setAttribute(
-                        "stroke-opacity",
-                        opacity
+                    svg.querySelector('[stroke="hover_effect_color"]').setAttribute(
+                        "stroke",
+                        rbg
                     );
+                    svg.querySelector(
+                        '[stroke-opacity="hover_effect_opacity"]'
+                    ).setAttribute("stroke-opacity", opacity);
                     // The stroke width needs to be multiplied by two because half
                     // of the stroke is invisible since it is centered on the path.
                     const strokeWidth = parseInt(params.hoverEffectStrokeWidth) * 2;
                     animateEl.setAttribute(
                         "values",
-                        animateElValues.replace("hover_effect_stroke_width", strokeWidth)
+                        animateElValues.replace(
+                            "hover_effect_stroke_width",
+                            strokeWidth
+                        )
                     );
                     break;
                 }
@@ -88,7 +99,10 @@ export class ImageHoverPlugin extends Plugin {
                     clipPathEl.setAttribute("clipPathUnits", "userSpaceOnUse");
                     const clipPathValue = imageEl.getAttribute("clip-path");
                     imageEl.removeAttribute("clip-path");
-                    const gEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                    const gEl = document.createElementNS(
+                        "http://www.w3.org/2000/svg",
+                        "g"
+                    );
                     gEl.setAttribute("clip-path", clipPathValue);
                     imageEl.parentNode.replaceChild(gEl, imageEl);
                     gEl.appendChild(imageEl);
@@ -115,7 +129,10 @@ export class ImageHoverPlugin extends Plugin {
                                     animateTransformEl.getAttribute("values");
                                 animateTransformEl.setAttribute(
                                     "values",
-                                    animateTransformElValues.replace("hover_effect_zoom", zoomValue)
+                                    animateTransformElValues.replace(
+                                        "hover_effect_zoom",
+                                        zoomValue
+                                    )
                                 );
                             }
                         });
@@ -130,7 +147,8 @@ export class ImageHoverPlugin extends Plugin {
                     imageMirrorEl.setAttribute("id", "shapeImageMirror");
                     imageMirrorEl.setAttribute("filter", "url(#blurFilter)");
                     imageEl.insertAdjacentElement("beforebegin", imageMirrorEl);
-                    const zoomValue = 0.99 - parseInt(params.hoverEffectIntensity) / 200;
+                    const zoomValue =
+                        0.99 - parseInt(params.hoverEffectIntensity) / 200;
                     animateTransformEls[0].setAttribute(
                         "values",
                         animateTransformElValues.replace("hover_effect_zoom", zoomValue)
@@ -183,13 +201,15 @@ export class ImageHoverPlugin extends Plugin {
         return this.hoverEffectsSvg;
     }
     getDefaultValue(hoverEffectId) {
-        const defaultColor = { hoverEffectColor: "rgba(0, 0, 0, 0)" };
+        const defaultColor = {hoverEffectColor: "rgba(0, 0, 0, 0)"};
         const defaultEffectValues = {
             overlay: () => ({
-                hoverEffectColor: this.dependencies.imageToolOption.getCSSColorValue("black-25"),
+                hoverEffectColor:
+                    this.dependencies.imageToolOption.getCSSColorValue("black-25"),
             }),
             outline: () => ({
-                hoverEffectColor: this.dependencies.imageToolOption.getCSSColorValue("primary"),
+                hoverEffectColor:
+                    this.dependencies.imageToolOption.getCSSColorValue("primary"),
                 hoverEffectStrokeWidth: 10,
             }),
             image_zoom_in: () => defaultColor,
@@ -208,11 +228,14 @@ export class SetHoverEffectAction extends BuilderAction {
     static id = "setHoverEffect";
     static dependencies = ["imageHover"];
 
-    isApplied({ editingElement, value: hoverEffectId }) {
+    isApplied({editingElement, value: hoverEffectId}) {
         return editingElement.dataset.hoverEffect === hoverEffectId;
     }
-    async apply({ editingElement, value: hoverEffectId, isPreviewing }) {
-        await this.dependencies.imageHover.setHoverEffect(editingElement, hoverEffectId);
+    async apply({editingElement, value: hoverEffectId, isPreviewing}) {
+        await this.dependencies.imageHover.setHoverEffect(
+            editingElement,
+            hoverEffectId
+        );
         if (isPreviewing) {
             // Wait a tick to ensure the interactions are restarted.
             // Simulate a mouseenter event to trigger the hover effect. (See
@@ -227,13 +250,14 @@ export class SetHoverEffectIntensityAction extends BuilderAction {
     static id = "setHoverEffectIntensity";
     static dependencies = ["imagePostProcess"];
 
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         return parseInt(
-            editingElement.dataset.hoverEffectIntensity || this.defaultHoverEffectIntensity,
+            editingElement.dataset.hoverEffectIntensity ||
+                this.defaultHoverEffectIntensity,
             10
         );
     }
-    async apply({ editingElement, value: intensity }) {
+    async apply({editingElement, value: intensity}) {
         const updateAttributes = await this.dependencies.imagePostProcess.processImage({
             img: editingElement,
             newDataset: {
@@ -247,10 +271,10 @@ export class SetHoverEffectColorAction extends BuilderAction {
     static id = "setHoverEffectColor";
     static dependencies = ["imagePostProcess"];
 
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         return editingElement.dataset.hoverEffectColor;
     }
-    async apply({ editingElement, value: color }) {
+    async apply({editingElement, value: color}) {
         const updateAttributes = await this.dependencies.imagePostProcess.processImage({
             img: editingElement,
             newDataset: {
@@ -264,12 +288,12 @@ export class SetHoverEffectStrokeWidthAction extends BuilderAction {
     static id = "setHoverEffectStrokeWidth";
     static dependencies = ["imagePostProcess"];
 
-    getValue({ editingElement }) {
+    getValue({editingElement}) {
         return editingElement.dataset.hoverEffectStrokeWidth
             ? parseInt(editingElement.dataset.hoverEffectStrokeWidth, 10)
             : undefined;
     }
-    async apply({ editingElement, value: strokeWidth }) {
+    async apply({editingElement, value: strokeWidth}) {
         const updateAttributes = await this.dependencies.imagePostProcess.processImage({
             img: editingElement,
             newDataset: {

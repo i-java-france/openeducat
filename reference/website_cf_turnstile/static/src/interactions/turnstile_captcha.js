@@ -1,9 +1,9 @@
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { uniqueId } from "@web/core/utils/functions";
-import { session } from "@web/session";
-import { TurnStile } from "./turnstile";
+import {uniqueId} from "@web/core/utils/functions";
+import {session} from "@web/session";
+import {TurnStile} from "./turnstile";
 
 export class TurnstileCaptcha extends Interaction {
     static selector = "form[data-captcha]";
@@ -13,10 +13,7 @@ export class TurnstileCaptcha extends Interaction {
     }
 
     start() {
-        if (
-            !this.el.querySelector(".s_turnstile")
-            && session.turnstile_site_key
-        ) {
+        if (!this.el.querySelector(".s_turnstile") && session.turnstile_site_key) {
             this.uniq = uniqueId("turnstile_");
             const action = this.el.dataset.captcha || "generic";
             const turnstile = new TurnStile(action);

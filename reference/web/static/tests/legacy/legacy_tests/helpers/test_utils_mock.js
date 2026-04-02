@@ -9,7 +9,7 @@
  * testUtils file.
  */
 
-import { patchDate } from "@web/../tests/helpers/utils";
+import {patchDate} from "@web/../tests/helpers/utils";
 
 //------------------------------------------------------------------------------
 // Public functions
@@ -33,7 +33,9 @@ function intercept(widget, eventName, fn, propagate) {
     widget._trigger_up = function (event) {
         if (event.name === eventName) {
             fn(event);
-            if (!propagate) { return; }
+            if (!propagate) {
+                return;
+            }
         }
         _trigger_up(event);
     };

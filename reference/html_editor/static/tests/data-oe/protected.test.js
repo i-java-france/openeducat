@@ -1,13 +1,13 @@
-import { expect, test } from "@odoo/hoot";
-import { setupEditor, testEditor } from "../_helpers/editor";
-import { unformat } from "../_helpers/format";
-import { setSelection, setContent, getContent } from "../_helpers/selection";
-import { deleteBackward, insertText, undo } from "../_helpers/user_actions";
-import { parseHTML } from "@html_editor/utils/html";
-import { Plugin } from "@html_editor/plugin";
-import { MAIN_PLUGINS } from "@html_editor/plugin_sets";
-import { execCommand } from "../_helpers/userCommands";
-import { expectElementCount } from "../_helpers/ui_expectations";
+import {expect, test} from "@odoo/hoot";
+import {setupEditor, testEditor} from "../_helpers/editor";
+import {unformat} from "../_helpers/format";
+import {getContent, setContent, setSelection} from "../_helpers/selection";
+import {deleteBackward, insertText, undo} from "../_helpers/user_actions";
+import {parseHTML} from "@html_editor/utils/html";
+import {Plugin} from "@html_editor/plugin";
+import {MAIN_PLUGINS} from "@html_editor/plugin_sets";
+import {execCommand} from "../_helpers/userCommands";
+import {expectElementCount} from "../_helpers/ui_expectations";
 
 test("should ignore protected elements children mutations (true)", async () => {
     await testEditor({
@@ -45,7 +45,7 @@ test("should not ignore unprotected elements children mutations (false)", async 
             const unProtectedParagraph = editor.editable.querySelector(
                 '[data-oe-protected="false"] > p'
             );
-            setSelection({ anchorNode: unProtectedParagraph, anchorOffset: 1 });
+            setSelection({anchorNode: unProtectedParagraph, anchorOffset: 1});
             await insertText(editor, "bc");
             execCommand(editor, "historyUndo");
         },
@@ -60,7 +60,9 @@ test("should not ignore unprotected elements children mutations (false)", async 
 });
 
 test("should not update activeSelection when clicking inside a protected node", async () => {
-    const { el, editor } = await setupEditor(`<p><span data-oe-protected="true"></span>[]</p>`);
+    const {el, editor} = await setupEditor(
+        `<p><span data-oe-protected="true"></span>[]</p>`
+    );
     const span = el.querySelector("span");
     let editableSelection = editor.shared.selection.getEditableSelection();
     const documentSelection = editor.document.getSelection();
@@ -106,8 +108,12 @@ test("should not normalize protected elements children (true)", async () => {
 });
 
 test("should not remove/merge empty (identical) protecting nodes", async () => {
-    const { el, editor } = await setupEditor(`<p><span data-oe-protected="true"></span>[]</p>`);
-    editor.shared.dom.insert(parseHTML(editor.document, `<span data-oe-protected="true"></span>`));
+    const {el, editor} = await setupEditor(
+        `<p><span data-oe-protected="true"></span>[]</p>`
+    );
+    editor.shared.dom.insert(
+        parseHTML(editor.document, `<span data-oe-protected="true"></span>`)
+    );
     editor.shared.history.addStep();
     expect(getContent(el)).toBe(
         unformat(
@@ -249,7 +255,7 @@ test("should not select a protected table even if it is contenteditable='true'",
 });
 
 test("select a protected element shouldn't open the toolbar", async () => {
-    const { el } = await setupEditor(
+    const {el} = await setupEditor(
         `<div><p>[a]</p></div><div data-oe-protected="true"><p>b</p><div data-oe-protected="false">c</div></div>`
     );
     await expectElementCount(".o-we-toolbar", 1);
@@ -268,11 +274,11 @@ test("select a protected element shouldn't open the toolbar", async () => {
 });
 
 const configWithoutSelectionPlaceholder = {
-    config: { Plugins: MAIN_PLUGINS.filter((p) => p.id !== "selectionPlaceholder") },
+    config: {Plugins: MAIN_PLUGINS.filter((p) => p.id !== "selectionPlaceholder")},
 };
 
 test("should protect disconnected nodes", async () => {
-    const { editor, el, plugins } = await setupEditor(
+    const {editor, el, plugins} = await setupEditor(
         `<div data-oe-protected="true"><p>a</p></div><p>a</p>`,
         configWithoutSelectionPlaceholder
     );
@@ -285,12 +291,13 @@ test("should protect disconnected nodes", async () => {
     expect(lastStep.mutations.length).toBe(1);
     expect(lastStep.mutations[0].type).toBe("remove");
     expect(
-        plugins.get("history").unserializeNode(lastStep.mutations[0].serializedNode).outerHTML
+        plugins.get("history").unserializeNode(lastStep.mutations[0].serializedNode)
+            .outerHTML
     ).toBe(`<div contenteditable="false" data-oe-protected="true"></div>`);
 });
 
 test("should not crash when changing attributes and removing a protecting anchor", async () => {
-    const { editor, el, plugins } = await setupEditor(
+    const {editor, el, plugins} = await setupEditor(
         `<div data-oe-protected="true" data-attr="value"><p>a</p></div><p>a</p>`,
         configWithoutSelectionPlaceholder
     );
@@ -303,14 +310,15 @@ test("should not crash when changing attributes and removing a protecting anchor
     expect(lastStep.mutations[0].type).toBe("attributes");
     expect(lastStep.mutations[1].type).toBe("remove");
     expect(
-        plugins.get("history").unserializeNode(lastStep.mutations[1].serializedNode).outerHTML
+        plugins.get("history").unserializeNode(lastStep.mutations[1].serializedNode)
+            .outerHTML
     ).toBe(
         `<div contenteditable="false" data-attr="other" data-oe-protected="true"><p>a</p></div>`
     );
 });
 
 test("removing a protected node should be undo-able", async () => {
-    const { editor, el } = await setupEditor(
+    const {editor, el} = await setupEditor(
         `<div data-oe-protected="true"><p>a</p></div><p>[]a</p>`
     );
     deleteBackward(editor);
@@ -322,7 +330,7 @@ test("removing a protected node should be undo-able", async () => {
 });
 
 test("removing a recursively protected then unprotected node should be undo-able", async () => {
-    const { editor, el, plugins } = await setupEditor(
+    const {editor, el, plugins} = await setupEditor(
         unformat(`
             <div data-oe-protected="true">
                 <p>a</p>
@@ -384,7 +392,7 @@ test("removing a recursively protected then unprotected node should be undo-able
 });
 
 test("removing a protected node and then removing its protected parent should be ignored", async () => {
-    const { editor, el, plugins } = await setupEditor(
+    const {editor, el, plugins} = await setupEditor(
         unformat(`
             <div data-oe-protected="true">
                 <div class="a">
@@ -409,7 +417,7 @@ test("removing a protected node and then removing its protected parent should be
 });
 
 test("removing a protected ancestor, then a protected descendant, then its protected parent should be ignored", async () => {
-    const { editor, el, plugins } = await setupEditor(
+    const {editor, el, plugins} = await setupEditor(
         unformat(`
             <div data-oe-protected="true">
                 <div class="a">
@@ -438,7 +446,7 @@ test("removing a protected ancestor, then a protected descendant, then its prote
 });
 
 test("moving a protected node at an unprotected location, only remove should be ignored", async () => {
-    const { editor, el, plugins } = await setupEditor(
+    const {editor, el, plugins} = await setupEditor(
         unformat(`
             <div data-oe-protected="true">
                 <div class="b" data-oe-protected="false"></div>
@@ -477,7 +485,7 @@ test("moving a protected node at an unprotected location, only remove should be 
 });
 
 test("moving an unprotected node at a protected location, only add should be ignored", async () => {
-    const { editor, el, plugins } = await setupEditor(
+    const {editor, el, plugins} = await setupEditor(
         unformat(`
             <div data-oe-protected="true">
                 <div data-oe-protected="false">
@@ -516,7 +524,7 @@ test("moving an unprotected node at a protected location, only add should be ign
 });
 
 test("sequentially added nodes under a protecting parent are correctly protected", async () => {
-    const { editor, el, plugins } = await setupEditor(
+    const {editor, el, plugins} = await setupEditor(
         unformat(`
             <div data-oe-protected="true">
                 content
@@ -559,7 +567,7 @@ test("sequentially added nodes under a protecting parent are correctly protected
 });
 
 test("don't protect a node under data-oe-protected='false' through delete and undo", async () => {
-    const { editor, el, plugins } = await setupEditor(
+    const {editor, el, plugins} = await setupEditor(
         unformat(`
             <div data-oe-protected="true">
                 <div data-oe-protected="false">
@@ -627,7 +635,7 @@ test("protected plugin is robust against other plugins which can filter mutation
             return true;
         }
     }
-    const { editor, el, plugins } = await setupEditor(
+    const {editor, el, plugins} = await setupEditor(
         unformat(`
             <div data-oe-protected="true">
                 <div class="a">
@@ -637,7 +645,7 @@ test("protected plugin is robust against other plugins which can filter mutation
         `),
         // Put FilterPlugin as the first plugin, so that its filter is applied before
         // protected_node_plugin.
-        { config: { Plugins: [FilterPlugin, ...MAIN_PLUGINS] } }
+        {config: {Plugins: [FilterPlugin, ...MAIN_PLUGINS]}}
     );
     const historyPlugin = plugins.get("history");
     expect(editor.shared.history.getHistorySteps().length).toBe(1);

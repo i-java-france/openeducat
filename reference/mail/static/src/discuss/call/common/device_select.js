@@ -1,9 +1,9 @@
-import { Component, onWillDestroy, onWillStart, useState } from "@odoo/owl";
+import {Component, onWillDestroy, onWillStart, useState} from "@odoo/owl";
 
-import { browser } from "@web/core/browser/browser";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { isBrowserChrome } from "@web/core/browser/feature_detection";
+import {browser} from "@web/core/browser/browser";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {isBrowserChrome} from "@web/core/browser/feature_detection";
 
 const deviceKind = new Set(["audioinput", "videoinput", "audiooutput"]);
 
@@ -30,9 +30,11 @@ export class DeviceSelect extends Component {
                 // zxing-js: isMediaDevicesSuported or canEnumerateDevices is false.
                 this.notification.add(
                     _t("Media devices unobtainable. SSL might not be set up properly."),
-                    { type: "warning" }
+                    {type: "warning"}
                 );
-                console.warn("Media devices unobtainable. SSL might not be set up properly.");
+                console.warn(
+                    "Media devices unobtainable. SSL might not be set up properly."
+                );
                 return;
             }
             await this.updateDevicesList();
@@ -44,36 +46,41 @@ export class DeviceSelect extends Component {
     }
 
     async updateDevicesList() {
-        this.state.userDevices = await browser.navigator.mediaDevices.enumerateDevices();
+        this.state.userDevices =
+            await browser.navigator.mediaDevices.enumerateDevices();
     }
 
     async setupEventListeners() {
         const boundHandler = this.updateDevicesList.bind(this);
         const signal = this.abortController.signal;
 
-        browser.navigator.mediaDevices.addEventListener("devicechange", boundHandler, { signal });
+        browser.navigator.mediaDevices.addEventListener("devicechange", boundHandler, {
+            signal,
+        });
         if (this.props.kind == "videoinput") {
-            const cameraPermission = await browser.navigator.permissions.query({ name: "camera" });
-            cameraPermission.addEventListener("change", boundHandler, { signal });
+            const cameraPermission = await browser.navigator.permissions.query({
+                name: "camera",
+            });
+            cameraPermission.addEventListener("change", boundHandler, {signal});
         } else {
             const microphonePermission = await browser.navigator.permissions.query({
                 name: "microphone",
             });
-            microphonePermission.addEventListener("change", boundHandler, { signal });
+            microphonePermission.addEventListener("change", boundHandler, {signal});
         }
     }
 
     async showPermissionDialog(kind) {
         if (kind === "videoinput") {
             if (this.store.rtc.cameraPermission === "denied") {
-                this.store.rtc.showMediaUnavailableWarning({ camera: true });
+                this.store.rtc.showMediaUnavailableWarning({camera: true});
             } else {
                 this.store.rtc.showMediaPermissionDialog("camera");
                 return;
             }
         } else {
             if (this.store.rtc.microphonePermission === "denied") {
-                this.store.rtc.showMediaUnavailableWarning({ microphone: true });
+                this.store.rtc.showMediaUnavailableWarning({microphone: true});
             } else {
                 this.store.rtc.showMediaPermissionDialog("microphone");
                 return;

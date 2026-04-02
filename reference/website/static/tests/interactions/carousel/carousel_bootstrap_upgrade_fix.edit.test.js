@@ -1,8 +1,11 @@
-import { startInteractions, setupInteractionWhiteList } from "@web/../tests/public/helpers";
-import { describe, expect, test } from "@odoo/hoot";
-import { click, queryOne } from "@odoo/hoot-dom";
-import { advanceTime } from "@odoo/hoot-mock";
-import { switchToEditMode } from "../../helpers";
+import {
+    setupInteractionWhiteList,
+    startInteractions,
+} from "@web/../tests/public/helpers";
+import {describe, expect, test} from "@odoo/hoot";
+import {click, queryOne} from "@odoo/hoot-dom";
+import {advanceTime} from "@odoo/hoot-mock";
+import {switchToEditMode} from "../../helpers";
 
 setupInteractionWhiteList("website.carousel_bootstrap_upgrade_fix");
 
@@ -43,7 +46,7 @@ const imageGalleryCarouselStyleSnippet = `
     </section>`;
 
 test("[EDIT] carousel_bootstrap_upgrade_fix prevents ride", async () => {
-    const { core } = await startInteractions(imageGalleryCarouselStyleSnippet);
+    const {core} = await startInteractions(imageGalleryCarouselStyleSnippet);
     expect(core.interactions).toHaveLength(1);
     await switchToEditMode(core);
     const carouselEl = queryOne(".carousel");
@@ -53,7 +56,7 @@ test("[EDIT] carousel_bootstrap_upgrade_fix prevents ride", async () => {
 });
 
 test("carousel_bootstrap_upgrade_fix is tagged while sliding", async () => {
-    const { core } = await startInteractions(imageGalleryCarouselStyleSnippet);
+    const {core} = await startInteractions(imageGalleryCarouselStyleSnippet);
     expect(core.interactions).toHaveLength(1);
 
     const carouselEl = queryOne(".carousel");

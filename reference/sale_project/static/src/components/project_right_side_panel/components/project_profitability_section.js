@@ -1,9 +1,8 @@
-import { useService } from "@web/core/utils/hooks";
-import { Component, useState } from "@odoo/owl";
-import { formatFloat, formatFloatTime } from "@web/views/fields/formatters";
+import {useService} from "@web/core/utils/hooks";
+import {Component, useState} from "@odoo/owl";
+import {formatFloat, formatFloatTime} from "@web/views/fields/formatters";
 
 export class ProjectProfitabilitySection extends Component {
-
     static props = {
         revenue: Object,
         labels: Object,
@@ -14,7 +13,6 @@ export class ProjectProfitabilitySection extends Component {
         context: Object,
     };
     static template = "sale_project.ProjectProfitabilitySection";
-
 
     setup() {
         this.orm = useService("orm");
@@ -33,7 +31,7 @@ export class ProjectProfitabilitySection extends Component {
     async toggleSaleItems() {
         if (this.state.displayLoadMore === null) {
             // first time the section is unfold, load the 5 first items.
-            await this.onLoadMoreClick()
+            await this.onLoadMoreClick();
         }
         // the state change is done at the end to ensure the loaded data are present when the component is rendered
         this.state.isFolded = !this.state.isFolded;
@@ -68,7 +66,10 @@ export class ProjectProfitabilitySection extends Component {
 
     async onSaleItemActionClick(params) {
         if (params.resId && params.type !== "object") {
-            const action = await this.actionService.loadAction(params.name, this.props.context);
+            const action = await this.actionService.loadAction(
+                params.name,
+                this.props.context
+            );
             this.actionService.doAction({
                 ...action,
                 res_id: params.resId,

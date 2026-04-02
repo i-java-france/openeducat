@@ -1,17 +1,16 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <odoo>
     <data>
-
         <record model="ir.ui.view" id="view_message_subtype_tree">
             <field name="name">mail.message.subtype.list</field>
             <field name="model">mail.message.subtype</field>
             <field name="priority">10</field>
             <field name="arch" type="xml">
                 <list string="Subtype">
-                    <field name="sequence" widget="handle"/>
-                    <field name="name"/>
-                    <field name="res_model"/>
-                    <field name="default"/>
+                    <field name="sequence" widget="handle" />
+                    <field name="name" />
+                    <field name="res_model" />
+                    <field name="default" />
                 </list>
             </field>
         </record>
@@ -24,18 +23,18 @@
                     <sheet>
                         <group>
                             <group string='Description'>
-                                <field name="name"/>
-                                <field name="sequence"/>
-                                <field name="res_model"/>
-                                <field name="description"/>
-                                <field name="default"/>
-                                <field name="internal"/>
-                                <field name="hidden"/>
-                                <field name="track_recipients"/>
+                                <field name="name" />
+                                <field name="sequence" />
+                                <field name="res_model" />
+                                <field name="description" />
+                                <field name="default" />
+                                <field name="internal" />
+                                <field name="hidden" />
+                                <field name="track_recipients" />
                             </group>
                             <group string='Auto subscription'>
-                                <field name="parent_id"/>
-                                <field name="relation_field"/>
+                                <field name="parent_id" />
+                                <field name="relation_field" />
                             </group>
                         </group>
                     </sheet>
@@ -48,10 +47,14 @@
             <field name="model">mail.message.subtype</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="name"/>
-                    <field name="res_model"/>
-                    <field name="description"/>
-                    <filter string="Default" name="filter_default" domain="[('default', '=', True)]"/>
+                    <field name="name" />
+                    <field name="res_model" />
+                    <field name="description" />
+                    <filter
+                        string="Default"
+                        name="filter_default"
+                        domain="[('default', '=', True)]"
+                    />
                 </search>
             </field>
         </record>
@@ -61,6 +64,5 @@
             <field name="res_model">mail.message.subtype</field>
             <field name="view_mode">list,form</field>
         </record>
-
     </data>
 </odoo>

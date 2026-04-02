@@ -1,5 +1,5 @@
-import { registry } from "@web/core/registry";
-import { browser } from "@web/core/browser/browser";
+import {registry} from "@web/core/registry";
+import {browser} from "@web/core/browser/browser";
 const localStorage = browser.localStorage;
 
 odoo.loader.bus.addEventListener("module-started", (e) => {
@@ -7,7 +7,7 @@ odoo.loader.bus.addEventListener("module-started", (e) => {
         return;
     }
 
-    const { Interaction } = e.detail.module;
+    const {Interaction} = e.detail.module;
 
     const localStorageKey = "interactionAndWysiwygLifecycle";
     if (!localStorage.getItem(localStorageKey)) {
@@ -39,7 +39,9 @@ odoo.loader.bus.addEventListener("module-started", (e) => {
         }
     }
 
-    registry.category("public.interactions").add("website.countdown_patch", CountdownPatch);
+    registry
+        .category("public.interactions")
+        .add("website.countdown_patch", CountdownPatch);
 
     registry.category("public.interactions.edit").add("website.countdown_patch", {
         Interaction: CountdownPatch,

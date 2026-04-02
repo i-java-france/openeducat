@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
@@ -102,7 +101,7 @@ class FleetVehicleLogContract(models.Model):
                 record.expires_today = False
 
     def write(self, vals):
-        res = super(FleetVehicleLogContract, self).write(vals)
+        res = super().write(vals)
         if 'start_date' in vals or 'expiration_date' in vals:
             date_today = fields.Date.today()
             future_contracts, running_contracts, expired_contracts = self.env[self._name], self.env[self._name], self.env[self._name]

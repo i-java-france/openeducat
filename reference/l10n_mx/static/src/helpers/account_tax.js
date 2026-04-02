@@ -1,6 +1,6 @@
-import { patch } from "@web/core/utils/patch";
+import {patch} from "@web/core/utils/patch";
 
-import { accountTaxHelpers } from "@account/helpers/account_tax";
+import {accountTaxHelpers} from "@account/helpers/account_tax";
 
 // -------------------------------------------------------------------------
 // HELPERS IN BOTH PYTHON/JAVASCRIPT (account_tax.js / account_tax.py)
@@ -8,20 +8,20 @@ import { accountTaxHelpers } from "@account/helpers/account_tax";
 
 patch(accountTaxHelpers, {
     // EXTENDS 'account'
-    round_tax_details_tax_amounts(base_lines, company, { mode = "mixed" } = {}) {
+    round_tax_details_tax_amounts(base_lines, company, {mode = "mixed"} = {}) {
         const country_code = company.account_fiscal_country_id.code;
         if (country_code === "MX") {
             mode = "excluded";
         }
-        return super.round_tax_details_tax_amounts(base_lines, company, { mode: mode });
+        return super.round_tax_details_tax_amounts(base_lines, company, {mode: mode});
     },
 
     // EXTENDS 'account'
-    round_tax_details_base_lines(base_lines, company, { mode = "mixed" } = {}) {
+    round_tax_details_base_lines(base_lines, company, {mode = "mixed"} = {}) {
         const country_code = company.account_fiscal_country_id.code;
         if (country_code === "MX") {
             mode = "excluded";
         }
-        return super.round_tax_details_base_lines(base_lines, company, { mode: mode });
+        return super.round_tax_details_base_lines(base_lines, company, {mode: mode});
     },
 });

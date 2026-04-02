@@ -1,9 +1,9 @@
 // @ts-check
 
-import { LOADING_ERROR, LoadableDataSource, getFields } from "./data_source";
-import { Domain } from "@web/core/domain";
-import { user } from "@web/core/user";
-import { omit } from "@web/core/utils/objects";
+import {LOADING_ERROR, LoadableDataSource, getFields} from "./data_source";
+import {Domain} from "@web/core/domain";
+import {user} from "@web/core/user";
+import {omit} from "@web/core/utils/objects";
 
 /**
  * @typedef {import("@spreadsheet").OdooField} OdooField
@@ -130,7 +130,10 @@ export class OdooViewsDataSource extends LoadableDataSource {
      * @param {string} domain
      */
     addDomain(domain) {
-        const newDomain = Domain.and([this._initialSearchParams.domain, domain]).toString();
+        const newDomain = Domain.and([
+            this._initialSearchParams.domain,
+            domain,
+        ]).toString();
         if (newDomain.toString() === new Domain(this._customDomain).toString()) {
             return;
         }
@@ -140,7 +143,7 @@ export class OdooViewsDataSource extends LoadableDataSource {
             // at reloading it now.
             return;
         }
-        this.load({ reload: true });
+        this.load({reload: true});
     }
 
     /**
@@ -148,7 +151,7 @@ export class OdooViewsDataSource extends LoadableDataSource {
      */
     async getModelLabel() {
         const result = await this._orm
-            .cache({ type: "disk" })
+            .cache({type: "disk"})
             .call("ir.model", "display_name_for", [[this._metaData.resModel]]);
         return result[0]?.display_name || "";
     }

@@ -1,6 +1,6 @@
-import { LinkPreview } from "@mail/core/common/link_preview";
+import {LinkPreview} from "@mail/core/common/link_preview";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 /**
  * @typedef {Object} Props
@@ -10,5 +10,5 @@ import { Component } from "@odoo/owl";
 export class MessageLinkPreviewList extends Component {
     static template = "mail.MessageLinkPreviewList";
     static props = ["messageLinkPreviews"];
-    static components = { LinkPreview };
+    static components = {LinkPreview};
 }

@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
-import { kanbanView } from "@web/views/kanban/kanban_view";
-import { ProjectUpdateKanbanController } from './project_update_kanban_controller';
-import { ProjectRelationalModel } from "../project_relational_model";
+import {registry} from "@web/core/registry";
+import {kanbanView} from "@web/views/kanban/kanban_view";
+import {ProjectUpdateKanbanController} from "./project_update_kanban_controller";
+import {ProjectRelationalModel} from "../project_relational_model";
 
 export const projectUpdateKanbanView = {
     ...kanbanView,
@@ -9,4 +9,4 @@ export const projectUpdateKanbanView = {
     Model: ProjectRelationalModel,
 };
 
-registry.category('views').add('project_update_kanban', projectUpdateKanbanView);
+registry.category("views").add("project_update_kanban", projectUpdateKanbanView);

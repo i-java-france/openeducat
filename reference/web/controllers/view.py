@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.exceptions import AccessError
-from odoo.http import Controller, route, request
+from odoo.http import Controller, request, route
 from odoo.tools.translate import _
 
 

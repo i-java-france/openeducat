@@ -1,10 +1,13 @@
-import { _t } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
+import {registry} from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
 
-import { SelectionField, selectionField } from "@web/views/fields/selection/selection_field";
+import {
+    SelectionField,
+    selectionField,
+} from "@web/views/fields/selection/selection_field";
 
-import { Component } from "@odoo/owl";
+import {Component} from "@odoo/owl";
 
 export class DocumentStatePopover extends Component {
     static template = "account.DocumentStatePopover";
@@ -31,7 +34,7 @@ export class DocumentState extends SelectionField {
 
     copyText() {
         navigator.clipboard.writeText(this.message);
-        this.notification.add(_t("Text copied"), { type: "success" });
+        this.notification.add(_t("Text copied"), {type: "success"});
         this.popoverCloseFn();
         this.popoverCloseFn = null;
     }
@@ -58,7 +61,7 @@ export class DocumentState extends SelectionField {
             {
                 closeOnClickAway: true,
                 position: "top",
-            },
+            }
         );
     }
 }

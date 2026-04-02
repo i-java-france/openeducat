@@ -1,7 +1,7 @@
-# coding: utf-8
-import logging
 import json
-from odoo import http, _
+import logging
+
+from odoo import _, http
 from odoo.http import request
 from odoo.tools import consteq
 

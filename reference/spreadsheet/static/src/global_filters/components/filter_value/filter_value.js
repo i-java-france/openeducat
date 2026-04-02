@@ -1,25 +1,25 @@
 /** @ts-check */
 
-import { MultiRecordSelector } from "@web/core/record_selectors/multi_record_selector";
-import { DateFilterValue } from "../date_filter_value/date_filter_value";
+import {MultiRecordSelector} from "@web/core/record_selectors/multi_record_selector";
+import {DateFilterValue} from "../date_filter_value/date_filter_value";
 
-import { Component, onWillStart } from "@odoo/owl";
-import { components } from "@odoo/o-spreadsheet";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
-import { Domain } from "@web/core/domain";
-import { user } from "@web/core/user";
-import { TextFilterValue } from "../filter_text_value/filter_text_value";
-import { getFields, ModelNotFoundError } from "@spreadsheet/data_sources/data_source";
-import { SelectionFilterValue } from "../selection_filter_value/selection_filter_value";
+import {Component, onWillStart} from "@odoo/owl";
+import {components} from "@odoo/o-spreadsheet";
+import {_t} from "@web/core/l10n/translation";
+import {useService} from "@web/core/utils/hooks";
+import {Domain} from "@web/core/domain";
+import {user} from "@web/core/user";
+import {TextFilterValue} from "../filter_text_value/filter_text_value";
+import {getFields, ModelNotFoundError} from "@spreadsheet/data_sources/data_source";
+import {SelectionFilterValue} from "../selection_filter_value/selection_filter_value";
 import {
     isTextualOperator,
     isSetOperator,
     getDefaultValue,
 } from "@spreadsheet/global_filters/helpers";
-import { NumericFilterValue } from "../numeric_filter_value/numeric_filter_value";
+import {NumericFilterValue} from "../numeric_filter_value/numeric_filter_value";
 
-const { ValidationMessages } = components;
+const {ValidationMessages} = components;
 
 export class FilterValue extends Component {
     static template = "spreadsheet.FilterValue";
@@ -35,9 +35,9 @@ export class FilterValue extends Component {
         filter: Object,
         model: Object,
         setGlobalFilterValue: Function,
-        globalFilterValue: { optional: true },
-        showTitle: { type: Boolean, optional: true },
-        showClear: { type: Boolean, optional: true },
+        globalFilterValue: {optional: true},
+        showTitle: {type: Boolean, optional: true},
+        showClear: {type: Boolean, optional: true},
     };
 
     setup() {
@@ -114,7 +114,7 @@ export class FilterValue extends Component {
             return;
         }
         const operator = this.filterValue?.operator ?? this.getDefaultOperator();
-        this.props.setGlobalFilterValue(id, { operator, strings: value });
+        this.props.setGlobalFilterValue(id, {operator, strings: value});
     }
 
     onTargetValueNumericInput(id, value) {
@@ -132,7 +132,7 @@ export class FilterValue extends Component {
             min = max;
             max = tmp;
         }
-        return { minimumValue: min, maximumValue: max };
+        return {minimumValue: min, maximumValue: max};
     }
 
     onMinimumValueNumericInput(id, value) {
@@ -167,7 +167,7 @@ export class FilterValue extends Component {
             return;
         }
         const operator = this.filterValue?.operator ?? this.getDefaultOperator();
-        this.props.setGlobalFilterValue(id, { operator, selectionValues: value });
+        this.props.setGlobalFilterValue(id, {operator, selectionValues: value});
     }
 
     async onTagSelected(id, resIds) {
@@ -176,7 +176,7 @@ export class FilterValue extends Component {
             this.clear(id);
         } else {
             const operator = this.filterValue?.operator ?? this.getDefaultOperator();
-            this.props.setGlobalFilterValue(id, { operator, ids: resIds });
+            this.props.setGlobalFilterValue(id, {operator, ids: resIds});
         }
     }
 

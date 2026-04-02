@@ -1,10 +1,11 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
-from odoo.fields import Datetime
+
 from odoo import tests
+from odoo.fields import Datetime
 from odoo.tests.common import users
+
 from odoo.addons.website_slides.tests.test_ui_wslides import TestUICommon
 
 

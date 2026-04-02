@@ -12,14 +12,14 @@ import {
     runAllTimers,
     tick,
 } from "@odoo/hoot";
-import { Component, onMounted, useSubEnv, xml } from "@odoo/owl";
-import { Dialog } from "@web/core/dialog/dialog";
-import { MainComponentsContainer } from "@web/core/main_components_container";
-import { View } from "@web/views/view";
-import { mountWithCleanup } from "./component_test_helpers";
-import { contains } from "./dom_test_helpers";
-import { getMockEnv, getService } from "./env_test_helpers";
-import { registerInlineViewArchs } from "./mock_server/mock_model";
+import {Component, onMounted, useSubEnv, xml} from "@odoo/owl";
+import {Dialog} from "@web/core/dialog/dialog";
+import {MainComponentsContainer} from "@web/core/main_components_container";
+import {View} from "@web/views/view";
+import {mountWithCleanup} from "./component_test_helpers";
+import {contains} from "./dom_test_helpers";
+import {getMockEnv, getService} from "./env_test_helpers";
+import {registerInlineViewArchs} from "./mock_server/mock_model";
 
 /**
  * @typedef {import("@web/views/view").Config} Config
@@ -63,7 +63,7 @@ import { registerInlineViewArchs } from "./mock_server/mock_model";
 const isNil = (value) => value === null || value === undefined;
 
 class ViewDialog extends Component {
-    static components = { Dialog, View };
+    static components = {Dialog, View};
 
     static props = {
         onMounted: Function,
@@ -160,7 +160,7 @@ export async function clickFieldDropdownItem(fieldName, itemContent, options) {
     } else if (dropdowns.length > 1) {
         throw new Error(`Found ${dropdowns.length} dropdowns for field ${fieldName}`);
     }
-    const dropdownItems = queryAll(buildSelector("li", options), { root: dropdowns[0] });
+    const dropdownItems = queryAll(buildSelector("li", options), {root: dropdowns[0]});
     const indexToClick = queryAllTexts(dropdownItems).indexOf(itemContent);
     if (indexToClick === -1) {
         throw new Error(`The element '${itemContent}' does not exist in the dropdown`);
@@ -222,7 +222,7 @@ export async function mountViewInDialog(params) {
     });
     const deferred = new Deferred();
     getService("dialog").add(ViewDialog, {
-        viewEnv: { config: params.config },
+        viewEnv: {config: params.config},
         viewProps: parseViewProps(params),
         onMounted() {
             deferred.resolve();
@@ -243,7 +243,7 @@ export async function mountView(params, target = null) {
     after(() => actionManagerEl.remove());
     return mountWithCleanup(View, {
         env: params.env,
-        componentEnv: { config: params.config },
+        componentEnv: {config: params.config},
         props: parseViewProps(params),
         target: actionManagerEl,
     });
@@ -259,7 +259,7 @@ export function parseViewProps(props) {
         className += " " + props.className;
     }
 
-    const viewProps = { ...props, className };
+    const viewProps = {...props, className};
 
     if (
         props.archs ||
@@ -324,14 +324,14 @@ export async function hideTab() {
  * @param {string} selector
  * @param {EditSelectMenuParams} [params]
  */
-export async function editSelectMenu(selector, { value, index }) {
+export async function editSelectMenu(selector, {value, index}) {
     async function selectItem(value) {
         const elementToSelect = queryFirst(`.o_select_menu_item:contains(${value})`);
         if (elementToSelect) {
             await click(elementToSelect);
             return;
         } else {
-            await contains(inputSelector).edit(value, { confirm: false });
+            await contains(inputSelector).edit(value, {confirm: false});
             await runAllTimers();
             return selectItem(value);
         }
@@ -357,7 +357,7 @@ export async function editSelectMenu(selector, { value, index }) {
         if (clearButton) {
             await click(clearButton);
         } else {
-            await contains(inputSelector).edit("", { confirm: false });
+            await contains(inputSelector).edit("", {confirm: false});
             queryFirst(inputSelector).dispatchEvent(new Event("blur"));
         }
     } else {

@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import re
-
 from random import randint
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools import ormcache, make_index_name, create_index
+from odoo.tools import create_index, make_index_name, ormcache
 
 from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
 

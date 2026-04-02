@@ -3,10 +3,15 @@ import {
     dummyBase64Img,
     waitForEndOfOperation,
 } from "@html_builder/../tests/helpers";
-import { expect, test } from "@odoo/hoot";
-import { click, queryAll, queryOne, waitFor } from "@odoo/hoot-dom";
-import { contains, dataURItoBlob, onRpc, patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { uniqueId } from "@web/core/utils/functions";
+import {expect, test} from "@odoo/hoot";
+import {click, queryAll, queryOne, waitFor} from "@odoo/hoot-dom";
+import {
+    contains,
+    dataURItoBlob,
+    onRpc,
+    patchWithCleanup,
+} from "@web/../tests/web_test_helpers";
+import {uniqueId} from "@web/core/utils/functions";
 import {
     defineWebsiteModels,
     setupWebsiteBuilder,
@@ -108,12 +113,14 @@ test.skip("Remove all images in gallery", async () => {
 });
 
 test("Change gallery layout", async () => {
-    const { waitSidebarUpdated } = await setupWbsiteBuilderWithImageWall();
+    const {waitSidebarUpdated} = await setupWbsiteBuilderWithImageWall();
 
     await contains(":iframe img").click();
     await waitSidebarUpdated();
     expect("[data-label='Mode']").toHaveCount(1);
-    expect(queryOne("[data-label='Mode'] .dropdown-toggle").textContent).toBe("Masonry");
+    expect(queryOne("[data-label='Mode'] .dropdown-toggle").textContent).toBe(
+        "Masonry"
+    );
     await contains("[data-label='Mode'] .dropdown-toggle").click();
 
     await contains("[data-action-param='grid']").click();
@@ -129,9 +136,9 @@ test("Change gallery restore the container to the cloned equivalent image", asyn
     const editor = builder.getEditor();
     const builderOptions = editor.shared.builderOptions;
     const expectOptionContainerToInclude = (elem) => {
-        expect(builderOptions.getContainers().map((container) => container.element)).toInclude(
-            elem
-        );
+        expect(
+            builderOptions.getContainers().map((container) => container.element)
+        ).toInclude(elem);
     };
 
     await contains(":iframe img[data-index='1']").click();
@@ -159,7 +166,9 @@ test("Change gallery layout when images have a link", async () => {
     await contains("[data-label='Your URL'] [data-action-id='setUrl'] > input").fill(
         "http://odoo.com"
     );
-    expect(":iframe section a[href='http://odoo.com'] > img[data-index='1']").toHaveCount(1);
+    expect(
+        ":iframe section a[href='http://odoo.com'] > img[data-index='1']"
+    ).toHaveCount(1);
 
     await contains("[data-label='Mode'] .dropdown-toggle").click();
     await contains("[data-action-param='grid']").click();
@@ -170,7 +179,7 @@ test("Change gallery layout when images have a link", async () => {
 
 test("Dropping multiple image galleries should produce unique IDs", async () => {
     await setupWebsiteBuilder("");
-    patchWithCleanup(uniqueId, { nextId: 0 });
+    patchWithCleanup(uniqueId, {nextId: 0});
 
     const imageSnippetButtonSelector =
         ".o-website-builder_sidebar  #snippet_groups .o_snippet[name='Images'] button";
@@ -187,7 +196,7 @@ test("Dropping multiple image galleries should produce unique IDs", async () => 
 
 test("Cloning an image gallery should produce a unique ID", async () => {
     await setupWebsiteBuilder("");
-    patchWithCleanup(uniqueId, { nextId: 0 });
+    patchWithCleanup(uniqueId, {nextId: 0});
 
     const imageSnippetButtonSelector =
         ".o-website-builder_sidebar  #snippet_groups .o_snippet[name='Images'] button";
@@ -205,7 +214,7 @@ test("Cloning an image gallery should produce a unique ID", async () => {
 });
 
 test("Change gallery layout still works when img.decode() fails", async () => {
-    // to handle the Chrome bug where img.decode() can fail with "EncodingError:
+    // To handle the Chrome bug where img.decode() can fail with "EncodingError:
     // The source image cannot be decoded" when decoding many images simultaneously.
     // See: https://bugs.chromium.org/p/chromium/issues/detail?id=1256288
     // To reproduce the issue in the test we will set image src = "".

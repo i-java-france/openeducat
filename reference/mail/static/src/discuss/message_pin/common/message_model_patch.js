@@ -1,9 +1,9 @@
-import { patch } from "@web/core/utils/patch";
-import { Message } from "@mail/core/common/message_model";
-import { fields } from "@mail/core/common/record";
-import { _t } from "@web/core/l10n/translation";
-import { MessageConfirmDialog } from "@mail/core/common/message_confirm_dialog";
-import { Deferred } from "@web/core/utils/concurrency";
+import {patch} from "@web/core/utils/patch";
+import {Message} from "@mail/core/common/message_model";
+import {fields} from "@mail/core/common/record";
+import {_t} from "@web/core/l10n/translation";
+import {MessageConfirmDialog} from "@mail/core/common/message_confirm_dialog";
+import {Deferred} from "@web/core/utils/concurrency";
 
 patch(Message.prototype, {
     setup() {
@@ -35,11 +35,11 @@ patch(Message.prototype, {
                         "discuss.channel",
                         "set_message_pin",
                         [this.thread.id],
-                        { message_id: this.id, pinned: true }
+                        {message_id: this.id, pinned: true}
                     );
                 },
             },
-            { onClose: () => def.resolve(false) }
+            {onClose: () => def.resolve(false)}
         );
         return def;
     },
@@ -63,11 +63,11 @@ patch(Message.prototype, {
                         "discuss.channel",
                         "set_message_pin",
                         [this.thread.id],
-                        { message_id: this.id, pinned: false }
+                        {message_id: this.id, pinned: false}
                     );
                 },
             },
-            { onClose: () => def.resolve(false) }
+            {onClose: () => def.resolve(false)}
         );
         return def;
     },

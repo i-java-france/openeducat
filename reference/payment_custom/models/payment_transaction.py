@@ -5,7 +5,6 @@ from odoo import _, models
 from odoo.addons.payment.logging import get_payment_logger
 from odoo.addons.payment_custom.controllers.main import CustomController
 
-
 _logger = get_payment_logger(__name__)
 
 

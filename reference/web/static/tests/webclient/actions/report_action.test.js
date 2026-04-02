@@ -1,6 +1,6 @@
-import { afterEach, expect, test } from "@odoo/hoot";
-import { animationFrame, runAllTimers } from "@odoo/hoot-mock";
-import { waitFor } from "@odoo/hoot-dom";
+import {afterEach, expect, test} from "@odoo/hoot";
+import {animationFrame, runAllTimers} from "@odoo/hoot-mock";
+import {waitFor} from "@odoo/hoot-dom";
 import {
     contains,
     defineActions,
@@ -15,20 +15,20 @@ import {
     stepAllNetworkCalls,
 } from "@web/../tests/web_test_helpers";
 
-import { router } from "@web/core/browser/router";
-import { download } from "@web/core/network/download";
-import { rpc } from "@web/core/network/rpc";
-import { registry } from "@web/core/registry";
-import { ReportAction } from "@web/webclient/actions/reports/report_action";
-import { downloadReport } from "@web/webclient/actions/reports/utils";
-import { WebClient } from "@web/webclient/webclient";
+import {router} from "@web/core/browser/router";
+import {download} from "@web/core/network/download";
+import {rpc} from "@web/core/network/rpc";
+import {registry} from "@web/core/registry";
+import {ReportAction} from "@web/webclient/actions/reports/report_action";
+import {downloadReport} from "@web/webclient/actions/reports/utils";
+import {WebClient} from "@web/webclient/webclient";
 
 class Partner extends models.Model {
     _rec_name = "display_name";
 
     _records = [
-        { id: 1, display_name: "First record" },
-        { id: 2, display_name: "Second record" },
+        {id: 1, display_name: "First record"},
+        {id: 2, display_name: "Second record"},
     ];
     _views = {
         form: `
@@ -101,7 +101,7 @@ test("can execute report actions from db ID", async () => {
     stepAllNetworkCalls();
 
     await mountWithCleanup(WebClient);
-    await getService("action").doAction(7, { onClose: () => expect.step("on_close") });
+    await getService("action").doAction(7, {onClose: () => expect.step("on_close")});
     expect.verifySteps([
         "/web/webclient/translations",
         "/web/webclient/load_menus",
@@ -132,12 +132,12 @@ test("report actions can close modals and reload views", async () => {
     onRpc("/report/check_wkhtmltopdf", () => "ok");
 
     await mountWithCleanup(WebClient);
-    await getService("action").doAction(5, { onClose: () => expect.step("on_close") });
+    await getService("action").doAction(5, {onClose: () => expect.step("on_close")});
     expect(".o_technical_modal .o_form_view").toHaveCount(1, {
         message: "should have rendered a form view in a modal",
     });
 
-    await getService("action").doAction(7, { onClose: () => expect.step("on_printed") });
+    await getService("action").doAction(7, {onClose: () => expect.step("on_printed")});
     expect(".o_technical_modal .o_form_view").toHaveCount(1, {
         message: "The modal should still exist",
     });
@@ -147,7 +147,12 @@ test("report actions can close modals and reload views", async () => {
     expect(".o_technical_modal .o_form_view").toHaveCount(0, {
         message: "the modal should have been closed after the action report",
     });
-    expect.verifySteps(["/report/download", "on_printed", "/report/download", "on_close"]);
+    expect.verifySteps([
+        "/report/download",
+        "on_printed",
+        "/report/download",
+        "on_close",
+    ]);
 });
 
 test("should trigger a notification if wkhtmltopdf is to upgrade", async () => {
@@ -177,7 +182,7 @@ test("should trigger a notification if wkhtmltopdf is to upgrade", async () => {
 });
 
 test("should open the report client action if wkhtmltopdf is broken", async () => {
-    // patch the report client action to override its iframe's url so that
+    // Patch the report client action to override its iframe's url so that
     // it doesn't trigger an RPC when it is appended to the DOM
     patchWithCleanup(ReportAction.prototype, {
         setup() {
@@ -188,7 +193,7 @@ test("should open the report client action if wkhtmltopdf is broken", async () =
     });
     patchWithCleanup(download, {
         _download: () => {
-            expect.step("download"); // should not be called
+            expect.step("download"); // Should not be called
             return Promise.resolve();
         },
     });
@@ -199,7 +204,9 @@ test("should open the report client action if wkhtmltopdf is broken", async () =
     onRpc("/report/check_wkhtmltopdf", () => "broken");
     onRpc("/report/html/some_report", async (request) => {
         const search = decodeURIComponent(new URL(request.url).search);
-        expect(search).toBe(`?context={"lang":"en","tz":"taht","uid":7,"allowed_company_ids":[1]}`);
+        expect(search).toBe(
+            `?context={"lang":"en","tz":"taht","uid":7,"allowed_company_ids":[1]}`
+        );
         return true;
     });
     stepAllNetworkCalls();
@@ -209,7 +216,7 @@ test("should open the report client action if wkhtmltopdf is broken", async () =
     expect(".o_content iframe").toHaveCount(1, {
         message: "should have opened the report client action",
     });
-    // the control panel has the content twice and a d-none class is toggled depending the screen size
+    // The control panel has the content twice and a d-none class is toggled depending the screen size
     expect(":not(.d-none) > button[title='Print']").toHaveCount(1, {
         message: "should have a print button",
     });
@@ -224,8 +231,8 @@ test("should open the report client action if wkhtmltopdf is broken", async () =
 });
 
 test("send context in case of html report", async () => {
-    serverState.userContext = { some_key: 2 };
-    // patch the report client action to override its iframe's url so that
+    serverState.userContext = {some_key: 2};
+    // Patch the report client action to override its iframe's url so that
     // it doesn't trigger an RPC when it is appended to the DOM
     patchWithCleanup(ReportAction.prototype, {
         setup() {
@@ -236,7 +243,7 @@ test("send context in case of html report", async () => {
     });
     patchWithCleanup(download, {
         _download: () => {
-            expect.step("download"); // should not be called
+            expect.step("download"); // Should not be called
             return Promise.resolve();
         },
     });
@@ -257,7 +264,9 @@ test("send context in case of html report", async () => {
 
     await mountWithCleanup(WebClient);
     await getService("action").doAction(12);
-    expect(".o_content iframe").toHaveCount(1, { message: "should have opened the client action" });
+    expect(".o_content iframe").toHaveCount(1, {
+        message: "should have opened the client action",
+    });
     expect.verifySteps([
         "/web/webclient/translations",
         "/web/webclient/load_menus",
@@ -326,14 +335,16 @@ test("can use custom handlers for report actions", async () => {
 
     await mountWithCleanup(WebClient);
     let customHandlerCalled = false;
-    registry.category("ir.actions.report handlers").add("custom_handler", async (action) => {
-        if (action.id === 7 && !customHandlerCalled) {
-            customHandlerCalled = true;
-            expect.step("calling custom handler");
-            return true;
-        }
-        expect.step("falling through to default handler");
-    });
+    registry
+        .category("ir.actions.report handlers")
+        .add("custom_handler", async (action) => {
+            if (action.id === 7 && !customHandlerCalled) {
+                customHandlerCalled = true;
+                expect.step("calling custom handler");
+                return true;
+            }
+            expect.step("falling through to default handler");
+        });
     await getService("action").doAction(7);
     expect.step("first doAction finished");
 
@@ -371,10 +382,12 @@ test("custom handlers can close modals", async () => {
     onRpc("/report/check_wkhtmltopdf", () => "ok");
 
     await mountWithCleanup(WebClient);
-    registry.category("ir.actions.report handlers").add("custom_handler", async (action) => {
-        expect.step("calling custom handler for action " + action.id);
-        return true;
-    });
+    registry
+        .category("ir.actions.report handlers")
+        .add("custom_handler", async (action) => {
+            expect.step("calling custom handler for action " + action.id);
+            return true;
+        });
 
     await getService("action").doAction(5);
     await waitFor(".o_technical_modal .o_form_view");
@@ -424,7 +437,9 @@ test("context is correctly passed to the client action report", async (assert) =
     onRpc("/report/check_wkhtmltopdf", () => "ok");
     onRpc("/report/html", async (request) => {
         const search = decodeURIComponent(new URL(request.url).search);
-        expect(search).toBe(`?context={"lang":"en","tz":"taht","uid":7,"allowed_company_ids":[1]}`);
+        expect(search).toBe(
+            `?context={"lang":"en","tz":"taht","uid":7,"allowed_company_ids":[1]}`
+        );
         return true;
     });
     stepAllNetworkCalls();
@@ -463,7 +478,7 @@ test("url is valid", async (assert) => {
     await getService("action").doAction(12); // 12 is a html report action
     await runAllTimers();
     const urlState = router.current;
-    // used to put report.client_action in the url
+    // Used to put report.client_action in the url
     expect(urlState.action === "report.client_action").toBe(false);
     expect(urlState.action).toBe(12);
 });

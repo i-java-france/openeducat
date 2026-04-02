@@ -1,6 +1,6 @@
-import { loadJS } from "@web/core/assets";
-import { hasTouch } from "@web/core/browser/feature_detection";
-import { SIZES, utils as uiUtils } from "@web/core/ui/ui_service";
+import {loadJS} from "@web/core/assets";
+import {hasTouch} from "@web/core/browser/feature_detection";
+import {SIZES, utils as uiUtils} from "@web/core/ui/ui_service";
 
 /**
  * Takes care of any necessary setup for autoplaying video. In practice,
@@ -40,7 +40,11 @@ export function triggerAutoplay(iframeEl) {
 
     // YouTube does not allow to auto-play video in mobile devices, so we
     // have to play the video manually.
-    if (isYoutubeVideo && isMobileEnv && iframeEl.closest("[data-need-cookies-approval]")) {
+    if (
+        isYoutubeVideo &&
+        isMobileEnv &&
+        iframeEl.closest("[data-need-cookies-approval]")
+    ) {
         new window.YT.Player(iframeEl, {
             events: {
                 onReady: (ev) => ev.target.playVideo(),

@@ -2,8 +2,9 @@
 
 from unittest.mock import patch
 
-from odoo.addons.sale.tests.common import SaleCommon
 from odoo.tests import tagged
+
+from odoo.addons.sale.tests.common import SaleCommon
 
 
 @tagged('post_install', '-at_install')

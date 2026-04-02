@@ -1,6 +1,6 @@
-import { useEnv, useState } from "@odoo/owl";
-import { DROPDOWN_NESTING } from "@web/core/dropdown/_behaviours/dropdown_nesting";
-import { Reactive } from "@web/core/utils/reactive";
+import {useEnv, useState} from "@odoo/owl";
+import {DROPDOWN_NESTING} from "@web/core/dropdown/_behaviours/dropdown_nesting";
+import {Reactive} from "@web/core/utils/reactive";
 
 /**
  * Represents the state of a dropdown.
@@ -12,7 +12,7 @@ import { Reactive } from "@web/core/utils/reactive";
  */
 export class DropdownState extends Reactive {
     isOpen = false;
-    constructor({ onOpen, onClose } = {}) {
+    constructor({onOpen, onClose} = {}) {
         super();
         this._onOpen = onOpen;
         this._onClose = onClose;
@@ -34,8 +34,8 @@ export class DropdownState extends Reactive {
  * @param {Function} callbacks.onClose
  * @returns {DropdownState}
  */
-export function useDropdownState({ onOpen, onClose } = {}) {
-    return useState(new DropdownState({ onOpen, onClose }));
+export function useDropdownState({onOpen, onClose} = {}) {
+    return useState(new DropdownState({onOpen, onClose}));
 }
 
 /**

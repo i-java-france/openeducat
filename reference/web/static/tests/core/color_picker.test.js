@@ -1,10 +1,16 @@
-import { test, expect } from "@odoo/hoot";
-import { press, click, animationFrame, queryOne, manuallyDispatchProgrammaticEvent } from "@odoo/hoot-dom";
-import { Component, xml, useState } from "@odoo/owl";
-import { defineStyle, mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { ColorPicker, DEFAULT_COLORS } from "@web/core/color_picker/color_picker";
-import { CustomColorPicker } from "@web/core/color_picker/custom_color_picker/custom_color_picker";
-import { registry } from "@web/core/registry";
+import {expect, test} from "@odoo/hoot";
+import {
+    animationFrame,
+    click,
+    manuallyDispatchProgrammaticEvent,
+    press,
+    queryOne,
+} from "@odoo/hoot-dom";
+import {Component, useState, xml} from "@odoo/owl";
+import {defineStyle, mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {ColorPicker, DEFAULT_COLORS} from "@web/core/color_picker/color_picker";
+import {CustomColorPicker} from "@web/core/color_picker/custom_color_picker/custom_color_picker";
+import {registry} from "@web/core/registry";
 
 test("basic rendering", async () => {
     await mountWithCleanup(ColorPicker, {
@@ -24,10 +30,12 @@ test("basic rendering", async () => {
     expect(".o_font_color_selector .btn-tab").toHaveCount(2);
     expect(".o_font_color_selector .btn.fa-trash").toHaveCount(1);
     expect(".o_font_color_selector .o_colorpicker_section").toHaveCount(1);
-    expect(".o_font_color_selector .o_colorpicker_section .o_color_button").toHaveCount(5);
-    expect(".o_font_color_selector .o_color_section .o_color_button[data-color]").toHaveCount(
-        DEFAULT_COLORS.flat().length
+    expect(".o_font_color_selector .o_colorpicker_section .o_color_button").toHaveCount(
+        5
     );
+    expect(
+        ".o_font_color_selector .o_color_section .o_color_button[data-color]"
+    ).toHaveCount(DEFAULT_COLORS.flat().length);
 });
 
 test("basic rendering with selected color", async () => {
@@ -45,9 +53,9 @@ test("basic rendering with selected color", async () => {
         },
     });
     expect(".o_font_color_selector").toHaveCount(1);
-    expect(".o_font_color_selector .o_color_section .o_color_button[data-color]").toHaveCount(
-        DEFAULT_COLORS.flat().length
-    );
+    expect(
+        ".o_font_color_selector .o_color_section .o_color_button[data-color]"
+    ).toHaveCount(DEFAULT_COLORS.flat().length);
     expect(
         ".o_font_color_selector .o_color_section .o_color_button[data-color='#B5D6A5'].selected"
     ).toHaveCount(1);
@@ -67,7 +75,7 @@ test("keyboard navigation", async () => {
             colorPrefix: "",
         },
     });
-    // select the first color
+    // Select the first color
     await click(
         ".o_font_color_selector .o_color_section .o_color_button[data-color]:first-of-type"
     );
@@ -76,69 +84,71 @@ test("keyboard navigation", async () => {
         ".o_font_color_selector .o_color_section .o_color_button[data-color]:first-of-type"
     ).toBeFocused();
 
-    // move to the second color
+    // Move to the second color
     await press("arrowright");
     expect(
         ".o_font_color_selector .o_color_section .o_color_button[data-color]:nth-of-type(2)"
     ).toBeFocused();
 
-    // select the second color using Enter key
+    // Select the second color using Enter key
     await press("enter");
     await animationFrame();
     expect(
         ".o_font_color_selector .o_color_section .o_color_button[data-color]:nth-of-type(2)"
     ).toHaveClass("selected");
 
-    // move back to the first color
+    // Move back to the first color
     await press("arrowleft");
     expect(
         ".o_font_color_selector .o_color_section .o_color_button[data-color]:first-of-type"
     ).toBeFocused();
 
-    // cannot move if no previous color
+    // Cannot move if no previous color
     await press("arrowleft");
     expect(
         ".o_font_color_selector .o_color_section .o_color_button[data-color]:first-of-type"
     ).toBeFocused();
 
-    // move the color below
+    // Move the color below
     await press("arrowdown");
     expect(
         ".o_font_color_selector .o_color_section .o_color_button[data-color]:nth-of-type(9)"
     ).toBeFocused();
 
-    // move back to the first color
+    // Move back to the first color
     await press("arrowup");
     expect(
         ".o_font_color_selector .o_color_section .o_color_button[data-color]:first-of-type"
     ).toBeFocused();
 
-    // select the last color of the first row
+    // Select the last color of the first row
     await click(
         ".o_font_color_selector .o_color_section .o_color_button[data-color]:nth-of-type(8)"
     );
     await animationFrame();
 
-    // move to the first color of the second row
+    // Move to the first color of the second row
     await press("arrowright");
     expect(
         ".o_font_color_selector .o_color_section .o_color_button[data-color]:nth-of-type(9)"
     ).toBeFocused();
 
-    // move back to the last color of the first row
+    // Move back to the last color of the first row
     await press("arrowleft");
     expect(
         ".o_font_color_selector .o_color_section .o_color_button[data-color]:nth-of-type(8)"
     ).toBeFocused();
 
-    // select the last color
-    await click(".o_font_color_selector .o_color_section .o_color_button[data-color]:last-of-type");
+    // Select the last color
+    await click(
+        ".o_font_color_selector .o_color_section .o_color_button[data-color]:last-of-type"
+    );
     await animationFrame();
     expect(
         ".o_font_color_selector .o_color_section .o_color_button[data-color]:last-of-type"
     ).toBeFocused();
 
-    // cannot move if no next color
+    // Cannot move if no next color
     await press("arrowright");
     expect(
         ".o_font_color_selector .o_color_section .o_color_button[data-color]:last-of-type"
@@ -236,14 +246,14 @@ test("should preserve color slider when picking max lightness color", async () =
             <div style="width: 222px">
                 <CustomColorPicker selectedColor="state.color" onColorPreview.bind="onColorChange" onColorSelect.bind="onColorChange"/>
             </div>`;
-        static components = { CustomColorPicker };
+        static components = {CustomColorPicker};
         static props = ["*"];
         setup() {
             this.state = useState({
                 color: "#FFFF00",
             });
         }
-        onColorChange({ cssColor }) {
+        onColorChange({cssColor}) {
             this.state.color = cssColor;
         }
     }
@@ -263,11 +273,11 @@ test("should preserve color slider when picking max lightness color", async () =
     });
 
     await animationFrame();
-    expect(colorPickerArea).toHaveStyle({ backgroundColor: "rgb(255, 255, 0)" });
+    expect(colorPickerArea).toHaveStyle({backgroundColor: "rgb(255, 255, 0)"});
 });
 
 test("custom color picker change color on click in hue slider", async () => {
-    await mountWithCleanup(CustomColorPicker, { props: { selectedColor: "#FF0000" } });
+    await mountWithCleanup(CustomColorPicker, {props: {selectedColor: "#FF0000"}});
     expect("input.o_hex_input").toHaveValue("#FF0000");
     await click(".o_color_slider");
     expect("input.o_hex_input").not.toHaveValue("#FF0000");

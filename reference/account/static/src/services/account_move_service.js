@@ -1,6 +1,6 @@
-import { _t } from "@web/core/l10n/translation";
-import { markup } from "@odoo/owl";
-import { registry } from "@web/core/registry";
+import {_t} from "@web/core/l10n/translation";
+import {markup} from "@odoo/owl";
+import {registry} from "@web/core/registry";
 
 export class AccountMoveService {
     constructor(env, services) {
@@ -15,7 +15,11 @@ export class AccountMoveService {
     }
 
     async getDeletionDialogBody(body, moveIds) {
-        const isMoveEndOfChain = await this.orm.call("account.move", "check_move_sequence_chain", [moveIds]);
+        const isMoveEndOfChain = await this.orm.call(
+            "account.move",
+            "check_move_sequence_chain",
+            [moveIds]
+        );
         if (!isMoveEndOfChain) {
             const message = _t("This operation will create a gap in the sequence.");
             return markup`<div class="text-danger">${message}</div>${body}`;

@@ -1,16 +1,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import re
-
-from markupsafe import Markup
 from collections import defaultdict
 from datetime import datetime
+
+from markupsafe import Markup
 
 from odoo import api, fields, models, tools
 from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
 from odoo.tools import SQL, clean_context
 from odoo.tools.translate import _
-
 
 AVAILABLE_PRIORITIES = [
     ('0', 'Normal'),
@@ -610,7 +609,7 @@ class HrApplicant(models.Model):
         if not self.env.context.get("no_copy_in_partner_name"):
             vals_list = [
                 dict(vals, partner_name=self.env._("%s (copy)", applicant.partner_name))
-                for applicant, vals in zip(self, vals_list)
+                for applicant, vals in zip(self, vals_list, strict=False)
             ]
         return vals_list
 

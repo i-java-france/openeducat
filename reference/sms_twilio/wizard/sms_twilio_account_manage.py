@@ -1,10 +1,12 @@
 import logging
+
 import requests
 
 from odoo import _, fields, models
+from odoo.exceptions import UserError
+
 from odoo.addons.phone_validation.tools import phone_validation
 from odoo.addons.sms_twilio.tools.sms_twilio import get_twilio_from_number
-from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 

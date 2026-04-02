@@ -1,9 +1,9 @@
 // @ts-check
 
-import { stores } from "@odoo/o-spreadsheet";
-import { createModelWithDataSource } from "@spreadsheet/../tests/helpers/model";
+import {stores} from "@odoo/o-spreadsheet";
+import {createModelWithDataSource} from "@spreadsheet/../tests/helpers/model";
 
-const { ModelStore, NotificationStore, DependencyContainer } = stores;
+const {ModelStore, NotificationStore, DependencyContainer} = stores;
 
 /**
  * @template T
@@ -21,7 +21,7 @@ const { ModelStore, NotificationStore, DependencyContainer } = stores;
  * @return {Promise<{ store: T, container: InstanceType<DependencyContainer>, model: OdooSpreadsheetModel }>}
  */
 export async function makeStore(Store, ...args) {
-    const { model } = await createModelWithDataSource();
+    const {model} = await createModelWithDataSource();
     return makeStoreWithModel(model, Store, ...args);
 }
 

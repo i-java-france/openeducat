@@ -1,6 +1,6 @@
-import { Component } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { computeM2OProps, Many2One } from "../many2one/many2one";
+import {Component} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {computeM2OProps, Many2One} from "../many2one/many2one";
 import {
     buildM2OFieldDescription,
     extractM2OFieldProps,
@@ -9,8 +9,8 @@ import {
 
 export class Many2OneAvatarField extends Component {
     static template = "web.Many2OneAvatarField";
-    static components = { Many2One };
-    static props = { ...Many2OneField.props };
+    static components = {Many2One};
+    static props = {...Many2OneField.props};
 
     get m2oProps() {
         return computeM2OProps(this.props);

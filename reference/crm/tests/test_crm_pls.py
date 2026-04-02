@@ -1,12 +1,13 @@
 from datetime import timedelta
 
 from odoo import exceptions, tools
-from odoo.addons.crm.tests.common import TestCrmCommon
-from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.fields import Date
 from odoo.tests import Form, tagged, users
 from odoo.tests.common import TransactionCase
 from odoo.tools import mute_logger
+
+from odoo.addons.crm.tests.common import TestCrmCommon
+from odoo.addons.mail.tests.common import mail_new_test_user
 
 
 class CrmPlsCommon(TransactionCase):

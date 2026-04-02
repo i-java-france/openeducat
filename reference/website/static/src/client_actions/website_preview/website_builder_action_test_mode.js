@@ -1,6 +1,6 @@
 /** @odoo-module **/
-import { patch } from "@web/core/utils/patch";
-import { WebsiteBuilderClientAction } from "./website_builder_action";
+import {patch} from "@web/core/utils/patch";
+import {WebsiteBuilderClientAction} from "./website_builder_action";
 
 patch(WebsiteBuilderClientAction.prototype, {
     /**

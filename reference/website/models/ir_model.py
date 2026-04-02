@@ -1,7 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from . import ir_http
 from odoo import models
+
+from . import ir_http
 
 
 class Base(models.AbstractModel):

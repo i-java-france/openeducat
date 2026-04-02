@@ -1,10 +1,10 @@
-import { Component, onWillStart, xml } from "@odoo/owl";
-import { test, expect, beforeEach, getFixture } from "@odoo/hoot";
-import { getService, mountWithCleanup } from "@web/../tests/web_test_helpers";
-import { animationFrame } from "@odoo/hoot-mock";
-import { MainComponentsContainer } from "@web/core/main_components_container";
-import { click, press } from "@odoo/hoot-dom";
-import { Deferred } from "@web/core/utils/concurrency";
+import {Component, onWillStart, xml} from "@odoo/owl";
+import {beforeEach, expect, getFixture, test} from "@odoo/hoot";
+import {getService, mountWithCleanup} from "@web/../tests/web_test_helpers";
+import {animationFrame} from "@odoo/hoot-mock";
+import {MainComponentsContainer} from "@web/core/main_components_container";
+import {click, press} from "@odoo/hoot-dom";
+import {Deferred} from "@web/core/utils/concurrency";
 
 let target;
 
@@ -110,7 +110,12 @@ test("do not close on click away", async () => {
         static props = ["*"];
     }
 
-    const remove = getService("popover").add(target, Comp, {}, { closeOnClickAway: false });
+    const remove = getService("popover").add(
+        target,
+        Comp,
+        {},
+        {closeOnClickAway: false}
+    );
     await animationFrame();
 
     expect(".o_popover").toHaveCount(1);
@@ -139,7 +144,7 @@ test("close callback", async () => {
         expect.step("close");
     }
 
-    getService("popover").add(target, Comp, {}, { onClose });
+    getService("popover").add(target, Comp, {}, {onClose});
     await animationFrame();
 
     await click(document.body);
@@ -202,7 +207,7 @@ test("close and do not crash if target parent does not exist", async () => {
         expect.step("close");
     }
 
-    getService("popover").add(dissapearedTarget, Comp, {}, { onClose });
+    getService("popover").add(dissapearedTarget, Comp, {}, {onClose});
     await animationFrame();
 
     expect.verifySteps(["close"]);
@@ -219,7 +224,7 @@ test("keep popover if target sibling is removed", async () => {
         static props = ["*"];
     }
 
-    await mountWithCleanup(Sibling, { noMainContainer: true });
+    await mountWithCleanup(Sibling, {noMainContainer: true});
 
     getService("popover").add(target, Comp);
     await animationFrame();

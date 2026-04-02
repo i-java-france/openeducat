@@ -1,7 +1,7 @@
-import { registry } from "@web/core/registry";
-import { Component, onMounted, reactive, useRef, xml } from "@odoo/owl";
-import { toCanvas } from "@point_of_sale/app/utils/html-to-image";
-import { waitImages } from "@point_of_sale/utils";
+import {registry} from "@web/core/registry";
+import {Component, onMounted, reactive, useRef, xml} from "@odoo/owl";
+import {toCanvas} from "@point_of_sale/app/utils/html-to-image";
+import {waitImages} from "@point_of_sale/utils";
 
 class ComponentRenderer extends Component {
     static props = ["comp", "onMounted"];
@@ -20,7 +20,7 @@ class ComponentRenderer extends Component {
 
 export class RenderContainer extends Component {
     static props = ["comp", "onRendered"];
-    static components = { ComponentRenderer };
+    static components = {ComponentRenderer};
     // the `.render-container` is used by other functions that need a
     // place where to momentarily render some html code
     // we should only intact with that div through the `whenMounted` function
@@ -56,7 +56,7 @@ export const renderService = {
             },
         });
         const toHtml = async (component, props) => {
-            Object.assign(toBeRenderedComponentData, { component, props });
+            Object.assign(toBeRenderedComponentData, {component, props});
             // we wait for the RenderContainer component to actually
             // render our component
             await new Promise((r) => (resolver = r));
@@ -66,14 +66,16 @@ export const renderService = {
             htmlToCanvas(await toHtml(component, props), options);
         const toJpeg = async (component, props, options) => {
             const canvas = await toCanvas(component, props, options);
-            return canvas.toDataURL("image/jpeg").replace("data:image/jpeg;base64,", "");
+            return canvas
+                .toDataURL("image/jpeg")
+                .replace("data:image/jpeg;base64,", "");
         };
-        const whenMounted = async ({ el, container, callback }) => {
+        const whenMounted = async ({el, container, callback}) => {
             container ||= document.querySelector(".render-container");
             container.textContent = "";
-            return await applyWhenMounted({ el, container, callback });
+            return await applyWhenMounted({el, container, callback});
         };
-        return { toHtml, toCanvas, toJpeg, whenMounted };
+        return {toHtml, toCanvas, toJpeg, whenMounted};
     },
 };
 registry.category("services").add("renderer", renderService);
@@ -84,9 +86,11 @@ registry.category("services").add("renderer", renderService);
  * that html code has to be in the dom for the action to be
  * performed. ( for example calling html-to-image )
  */
-const applyWhenMounted = async ({ el, container, callback }) => {
+const applyWhenMounted = async ({el, container, callback}) => {
     const elClone = el.cloneNode(true);
-    const sameClassElements = container.querySelectorAll(`.${[...el.classList].join(".")}`);
+    const sameClassElements = container.querySelectorAll(
+        `.${[...el.classList].join(".")}`
+    );
     // Remove all elements with the same class as the one we are about to add
     sameClassElements.forEach((element) => {
         element.remove();
@@ -98,7 +102,10 @@ const applyWhenMounted = async ({ el, container, callback }) => {
 
 const sanitizeNodeText = (element) => {
     if (element.nodeType === Node.TEXT_NODE) {
-        element.textContent = element.textContent.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, ""); // eslint-disable-line no-control-regex
+        element.textContent = element.textContent.replace(
+            /[\x00-\x08\x0B\x0C\x0E-\x1F]/g,
+            ""
+        ); // eslint-disable-line no-control-regex
         return;
     }
     for (const child of element.childNodes) {

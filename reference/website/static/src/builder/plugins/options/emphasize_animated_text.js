@@ -1,10 +1,10 @@
-import { Component, useState } from "@odoo/owl";
-import { CheckBox } from "@web/core/checkbox/checkbox";
-import { useBus } from "@web/core/utils/hooks";
+import {Component, useState} from "@odoo/owl";
+import {CheckBox} from "@web/core/checkbox/checkbox";
+import {useBus} from "@web/core/utils/hooks";
 
 export class EmphasizeAnimatedText extends Component {
     static template = "website.EmphasizeAnimatedText";
-    static components = { CheckBox };
+    static components = {CheckBox};
     static props = [];
 
     setup() {
@@ -18,13 +18,16 @@ export class EmphasizeAnimatedText extends Component {
     }
 
     toggleEmphasizeAnimatedText() {
-        this.state.animatedTextEmphasized = this.env.editor.document.body.classList.toggle(
-            "o_animated_text_emphasized"
-        );
+        this.state.animatedTextEmphasized =
+            this.env.editor.document.body.classList.toggle(
+                "o_animated_text_emphasized"
+            );
     }
 
     isAnimatedTextEmphasized() {
-        return !!this.env.editor.document.body.classList.contains("o_animated_text_emphasized");
+        return !!this.env.editor.document.body.classList.contains(
+            "o_animated_text_emphasized"
+        );
     }
 
     hasAnimatedText() {

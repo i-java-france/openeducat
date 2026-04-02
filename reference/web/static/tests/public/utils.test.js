@@ -1,6 +1,6 @@
-import { describe, expect, test } from "@odoo/hoot";
+import {describe, expect, test} from "@odoo/hoot";
 
-import { PairSet, patchDynamicContent } from "@web/public/utils";
+import {PairSet, patchDynamicContent} from "@web/public/utils";
 
 describe.current.tags("headless");
 

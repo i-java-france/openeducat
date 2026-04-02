@@ -1,15 +1,15 @@
 /** @odoo-module **/
 
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
 
-import { ReCaptcha } from "@google_recaptcha/js/recaptcha";
-import { addLoadingEffect } from "@web/core/utils/ui";
+import {ReCaptcha} from "@google_recaptcha/js/recaptcha";
+import {addLoadingEffect} from "@web/core/utils/ui";
 
 export class RecaptchaForm extends Interaction {
     static selector = "form[data-captcha]";
     dynamicContent = {
-        _root: { "t-on-submit": this.onSubmit },
+        _root: {"t-on-submit": this.onSubmit},
     };
 
     setup() {

@@ -1,9 +1,9 @@
-import { reactive } from "@odoo/owl";
-import { rpc } from "@web/core/network/rpc";
-import { user } from "@web/core/user";
-import { formatFloat, humanNumber } from "@web/core/utils/numbers";
-import { nbsp } from "@web/core/utils/strings";
-import { session } from "@web/session";
+import {reactive} from "@odoo/owl";
+import {rpc} from "@web/core/network/rpc";
+import {user} from "@web/core/user";
+import {formatFloat, humanNumber} from "@web/core/utils/numbers";
+import {nbsp} from "@web/core/utils/strings";
+import {session} from "@web/session";
 
 export const currencies = session.currencies || {};
 // to make sure code is reading currencies from here
@@ -31,7 +31,7 @@ export async function getCurrencyRates() {
         model,
         method,
         args: [Object.keys(currencies).map(Number), ["inverse_rate"]],
-        kwargs: { context },
+        kwargs: {context},
     };
     const records = await rpc(url, params, {
         cache: {
@@ -75,7 +75,8 @@ export async function getCurrencyRates() {
 export function formatCurrency(amount, currencyId, options = {}) {
     const currency = getCurrency(currencyId);
 
-    const digits = (options.digits !== undefined)? options.digits : (currency && currency.digits)
+    const digits =
+        options.digits !== undefined ? options.digits : currency && currency.digits;
 
     let formattedAmount;
     if (options.humanReadable) {
@@ -84,7 +85,11 @@ export function formatCurrency(amount, currencyId, options = {}) {
             minDigits: options.minDigits,
         });
     } else {
-        formattedAmount = formatFloat(amount, { digits, minDigits: options.minDigits, trailingZeros: options.trailingZeros });
+        formattedAmount = formatFloat(amount, {
+            digits,
+            minDigits: options.minDigits,
+            trailingZeros: options.trailingZeros,
+        });
     }
 
     if (!currency || options.noSymbol) {

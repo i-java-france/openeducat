@@ -1,5 +1,5 @@
-import { CalendarModel } from "@web/views/calendar/calendar_model";
-import { serializeDate } from "@web/core/l10n/dates";
+import {CalendarModel} from "@web/views/calendar/calendar_model";
+import {serializeDate} from "@web/core/l10n/dates";
 
 /**
  * Slots are created differently depending on the screen size.
@@ -7,7 +7,6 @@ import { serializeDate } from "@web/core/l10n/dates";
  * Mobile: Using the calendar quick create dialog.
  */
 export class EventSlotCalendarModel extends CalendarModel {
-
     /**
      * @override
      * Set slot date and hours from selected datetimes.
@@ -15,10 +14,12 @@ export class EventSlotCalendarModel extends CalendarModel {
     buildRawRecord(partialRecord, options = {}) {
         const rawRecord = super.buildRawRecord(partialRecord, options);
         rawRecord["date"] = serializeDate(partialRecord.start);
-        rawRecord["start_hour"] = partialRecord.start.hour + partialRecord.start.minute / 60;
+        rawRecord["start_hour"] =
+            partialRecord.start.hour + partialRecord.start.minute / 60;
         // There could be no 'end' when opening the mobile quick create dialog.
         if (partialRecord.end) {
-            rawRecord["end_hour"] = partialRecord.end.hour + partialRecord.end.minute / 60;
+            rawRecord["end_hour"] =
+                partialRecord.end.hour + partialRecord.end.minute / 60;
         }
         return rawRecord;
     }
@@ -46,12 +47,15 @@ export class EventSlotCalendarModel extends CalendarModel {
      */
     normalizeRecord(rawRecord) {
         const normalizedRecord = super.normalizeRecord(rawRecord);
-        const tz = rawRecord.date_tz || 'utc';
-        normalizedRecord.start = normalizedRecord.start.setZone(tz).setZone('local', {keepLocalTime: true});
-        normalizedRecord.end = normalizedRecord.end.setZone(tz).setZone('local', {keepLocalTime: true});
+        const tz = rawRecord.date_tz || "utc";
+        normalizedRecord.start = normalizedRecord.start
+            .setZone(tz)
+            .setZone("local", {keepLocalTime: true});
+        normalizedRecord.end = normalizedRecord.end
+            .setZone(tz)
+            .setZone("local", {keepLocalTime: true});
         // Always display the slot time
         normalizedRecord.isTimeHidden = false;
         return normalizedRecord;
     }
-
 }

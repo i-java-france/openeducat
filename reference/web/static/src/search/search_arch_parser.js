@@ -1,9 +1,9 @@
-import { makeContext } from "@web/core/context";
-import { _t } from "@web/core/l10n/translation";
-import { evaluateBooleanExpr, evaluateExpr } from "@web/core/py_js/py";
-import { clamp } from "@web/core/utils/numbers";
-import { visitXML } from "@web/core/utils/xml";
-import { DEFAULT_INTERVAL, toGeneratorId } from "@web/search/utils/dates";
+import {makeContext} from "@web/core/context";
+import {_t} from "@web/core/l10n/translation";
+import {evaluateBooleanExpr, evaluateExpr} from "@web/core/py_js/py";
+import {clamp} from "@web/core/utils/numbers";
+import {visitXML} from "@web/core/utils/xml";
+import {DEFAULT_INTERVAL, toGeneratorId} from "@web/search/utils/dates";
 
 const ALL = _t("All");
 const DEFAULT_LIMIT = 200;
@@ -35,8 +35,13 @@ function reduceType(type) {
 }
 
 export class SearchArchParser {
-    constructor(searchViewDescription, fields, searchDefaults = {}, searchPanelDefaults = {}) {
-        const { irFilters, arch } = searchViewDescription;
+    constructor(
+        searchViewDescription,
+        fields,
+        searchDefaults = {},
+        searchPanelDefaults = {}
+    ) {
+        const {irFilters, arch} = searchViewDescription;
 
         this.fields = fields || {};
         this.irFilters = irFilters || [];
@@ -111,7 +116,7 @@ export class SearchArchParser {
 
     visitField(node) {
         this.pushGroup("field");
-        const preField = { type: "field" };
+        const preField = {type: "field"};
         if (node.hasAttribute("invisible")) {
             preField.invisible = node.getAttribute("invisible");
         }
@@ -147,15 +152,21 @@ export class SearchArchParser {
                     // Note: many2one as a default filter will have a
                     // numeric value instead of a string => we want "="
                     // instead of "ilike".
-                    if (["char", "html", "many2many", "one2many", "text"].includes(type)) {
+                    if (
+                        ["char", "html", "many2many", "one2many", "text"].includes(type)
+                    ) {
                         operator = "ilike";
                     } else {
                         operator = "=";
                     }
                 }
                 preField.defaultRank = -10;
-                const { selection, context, relation } = this.fields[name];
-                preField.defaultAutocompleteValue = { label: `${value}`, operator, value };
+                const {selection, context, relation} = this.fields[name];
+                preField.defaultAutocompleteValue = {
+                    label: `${value}`,
+                    operator,
+                    value,
+                };
                 if (fieldType === "selection") {
                     const option = selection.find((sel) => sel[0] === value);
                     if (!option) {
@@ -165,7 +176,9 @@ export class SearchArchParser {
                 } else if (fieldType === "many2one") {
                     this.labels.push((orm) =>
                         orm
-                            .call(relation, "read", [value, ["display_name"]], { context })
+                            .call(relation, "read", [value, ["display_name"]], {
+                                context,
+                            })
                             .then((results) => {
                                 preField.defaultAutocompleteValue.label =
                                     results[0]["display_name"];
@@ -180,7 +193,7 @@ export class SearchArchParser {
                     preField.defaultAutocompleteValue.value = val;
                     this.labels.push((orm) =>
                         orm
-                            .call(relation, "read", [val, ["display_name"]], { context })
+                            .call(relation, "read", [val, ["display_name"]], {context})
                             .then((results) => {
                                 preField.defaultAutocompleteValue.label = `${results
                                     .map((r) => r["display_name"])
@@ -203,7 +216,7 @@ export class SearchArchParser {
     }
 
     visitFilter(node, visitChildren) {
-        const preSearchItem = { type: "filter" };
+        const preSearchItem = {type: "filter"};
         if (node.hasAttribute("context")) {
             const context = node.getAttribute("context");
             const [fieldName, defaultInterval] = getContextGroupBy(context);
@@ -214,7 +227,8 @@ export class SearchArchParser {
                 preSearchItem.fieldType = groupByField.type;
                 if (["date", "datetime"].includes(groupByField.type)) {
                     preSearchItem.type = "dateGroupBy";
-                    preSearchItem.defaultIntervalId = defaultInterval || DEFAULT_INTERVAL;
+                    preSearchItem.defaultIntervalId =
+                        defaultInterval || DEFAULT_INTERVAL;
                 }
             } else {
                 preSearchItem.context = context;
@@ -236,8 +250,14 @@ export class SearchArchParser {
                     endMonth: Number(node.getAttribute("end_month") || 0),
                     customOptions: [],
                 };
-                const defaultOffset = clamp(optionsParams.startMonth, optionsParams.endMonth, 0);
-                preSearchItem.defaultGeneratorIds = [toGeneratorId("month", defaultOffset)];
+                const defaultOffset = clamp(
+                    optionsParams.startMonth,
+                    optionsParams.endMonth,
+                    0
+                );
+                preSearchItem.defaultGeneratorIds = [
+                    toGeneratorId("month", defaultOffset),
+                ];
                 if (node.hasAttribute("default_period")) {
                     preSearchItem.defaultGeneratorIds = node
                         .getAttribute("default_period")
@@ -296,7 +316,7 @@ export class SearchArchParser {
     }
 
     visitDateOption(node) {
-        const preDateOption = { type: "dateOption" };
+        const preDateOption = {type: "dateOption"};
         for (const attribute of ["name", "string", "domain"]) {
             if (!node.getAttribute(attribute)) {
                 throw new Error(`Attribute "${attribute}" is missing.`);
@@ -331,7 +351,9 @@ export class SearchArchParser {
             this.searchPanelInfo.className = searchPanelNode.getAttribute("class");
         }
         if (searchPanelNode.hasAttribute("view_types")) {
-            this.searchPanelInfo.viewTypes = searchPanelNode.getAttribute("view_types").split(",");
+            this.searchPanelInfo.viewTypes = searchPanelNode
+                .getAttribute("view_types")
+                .split(",");
         }
 
         for (const node of searchPanelNode.children) {
@@ -374,7 +396,8 @@ export class SearchArchParser {
                     bold: true,
                     parentId: false,
                 });
-                hasCategoryWithCounters = hasCategoryWithCounters || section.enableCounters;
+                hasCategoryWithCounters =
+                    hasCategoryWithCounters || section.enableCounters;
             } else {
                 section.domain = attrs.domain || "[]";
                 section.groupBy = attrs.groupby || null;

@@ -5,7 +5,7 @@ from datetime import date, datetime
 
 from odoo import api, models
 from odoo.fields import Domain
-from odoo.tools import float_is_zero, format_date, OrderedSet
+from odoo.tools import OrderedSet, float_is_zero, format_date
 
 
 class StockForecasted_Product_Product(models.AbstractModel):

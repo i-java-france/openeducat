@@ -8,10 +8,11 @@ from werkzeug.urls import url_encode
 import odoo
 import odoo.tests
 from odoo import http
+from odoo.fields import Command
+
 from odoo.addons.base.tests.common import HttpCaseWithUserDemo
 from odoo.addons.html_editor.controllers.main import HTML_Editor
 from odoo.addons.website.tests.common import HttpCaseWithWebsiteUser
-from odoo.fields import Command
 
 
 @odoo.tests.tagged('-at_install', 'post_install')

@@ -1,6 +1,6 @@
-import { Domain } from "@web/core/domain";
-import { formatAST } from "@web/core/py_js/py";
-import { addChild, connector, toValue } from "./condition_tree";
+import {Domain} from "@web/core/domain";
+import {formatAST} from "@web/core/py_js/py";
+import {addChild, connector, toValue} from "./condition_tree";
 
 /** @typedef { import("@web/core/py_js/py_parser").AST } AST */
 /** @typedef {import("@web/core/domain").DomainRepr} DomainRepr */
@@ -19,7 +19,7 @@ function _constructTree(ASTs, distributeNot = false, negate = false) {
         return _constructTree(tailASTs, distributeNot, !negate);
     }
 
-    const tree = { type: firstAST.type === 1 ? "connector" : "condition" };
+    const tree = {type: firstAST.type === 1 ? "connector" : "condition"};
     if (tree.type === "connector") {
         tree.value = firstAST.value;
         if (distributeNot && negate) {
@@ -37,7 +37,10 @@ function _constructTree(ASTs, distributeNot = false, negate = false) {
         tree.value = toValue(valueAST);
         if (["any", "not any"].includes(tree.operator)) {
             try {
-                tree.value = constructTreeFromDomain(formatAST(valueAST), distributeNot);
+                tree.value = constructTreeFromDomain(
+                    formatAST(valueAST),
+                    distributeNot
+                );
             } catch {
                 tree.value = Array.isArray(tree.value) ? tree.value : [tree.value];
             }
@@ -46,7 +49,7 @@ function _constructTree(ASTs, distributeNot = false, negate = false) {
     let remaimingASTs = tailASTs;
     if (tree.type === "connector") {
         for (let i = 0; i < 2; i++) {
-            const { tree: child, remaimingASTs: otherASTs } = _constructTree(
+            const {tree: child, remaimingASTs: otherASTs} = _constructTree(
                 remaimingASTs,
                 distributeNot,
                 distributeNot && negate
@@ -55,7 +58,7 @@ function _constructTree(ASTs, distributeNot = false, negate = false) {
             addChild(tree, child);
         }
     }
-    return { tree, remaimingASTs };
+    return {tree, remaimingASTs};
 }
 
 /**
@@ -71,6 +74,6 @@ export function constructTreeFromDomain(domain, distributeNot = false) {
     if (!initialASTs.length) {
         return connector("&");
     }
-    const { tree } = _constructTree(initialASTs, distributeNot);
+    const {tree} = _constructTree(initialASTs, distributeNot);
     return tree;
 }

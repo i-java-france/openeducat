@@ -1,6 +1,6 @@
-import { Component, useState } from "@odoo/owl";
-import { LANGUAGES, createRequestCode } from "@api_doc/utils/doc_code_gen";
-import { CodeEditor } from "@web/core/code_editor/code_editor";
+import {Component, useState} from "@odoo/owl";
+import {LANGUAGES, createRequestCode} from "@api_doc/utils/doc_code_gen";
+import {CodeEditor} from "@web/core/code_editor/code_editor";
 
 class CopyableCodeEditor extends CodeEditor {
     static template = "web.DocRequest.CodeEditor";
@@ -22,8 +22,8 @@ export class DocRequest extends Component {
     };
     static props = {
         url: String,
-        request: { optional: true },
-        method: { type: String, optional: true },
+        request: {optional: true},
+        method: {type: String, optional: true},
     };
     static defaultProps = {
         httpMethod: "POST",

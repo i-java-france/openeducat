@@ -1,11 +1,11 @@
-import { preloadBackground } from "@survey/js/survey_preload_image_mixin";
-import { _t } from "@web/core/l10n/translation";
-import { rpc } from "@web/core/network/rpc";
-import { browser } from "@web/core/browser/browser";
-import { Interaction } from "@web/public/interaction";
-import { registry } from "@web/core/registry";
-import { fadeIn, fadeOut } from "@survey/utils";
-import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
+import {preloadBackground} from "@survey/js/survey_preload_image_mixin";
+import {_t} from "@web/core/l10n/translation";
+import {rpc} from "@web/core/network/rpc";
+import {browser} from "@web/core/browser/browser";
+import {Interaction} from "@web/public/interaction";
+import {registry} from "@web/core/registry";
+import {fadeIn, fadeOut} from "@survey/utils";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
 
 const nextPageTooltips = {
     closingWords: _t("End of Survey"),
@@ -37,7 +37,9 @@ export class SurveySessionManage extends Interaction {
         },
         ".o_survey_session_navigation_previous": {
             "t-on-click.prevent": this.onBack,
-            "t-att-class": () => ({ "d-none": this.isFirstQuestion || this.isSessionClosed }),
+            "t-att-class": () => ({
+                "d-none": this.isFirstQuestion || this.isSessionClosed,
+            }),
         },
         ".o_survey_session_close": {
             "t-on-click.prevent": this.onEndSessionClick,
@@ -50,7 +52,10 @@ export class SurveySessionManage extends Interaction {
         },
         ".o_survey_session_results": {
             "t-att-class": () => ({
-                "d-none": this.isSessionClosed || this.leaderboardIsFadingOut || this.hideResults,
+                "d-none":
+                    this.isSessionClosed ||
+                    this.leaderboardIsFadingOut ||
+                    this.hideResults,
             }),
             "t-on-setDisplayNone": () => {
                 // The leaderboard interaction will send a setDisplayNone event
@@ -59,7 +64,7 @@ export class SurveySessionManage extends Interaction {
             },
         },
         ".o_survey_session_description_done": {
-            "t-att-class": () => ({ "d-none": !this.isSessionClosed }),
+            "t-att-class": () => ({"d-none": !this.isSessionClosed}),
         },
     };
 
@@ -78,14 +83,19 @@ export class SurveySessionManage extends Interaction {
         // Elements related to other interactions
         this.chartEl = this.el.querySelector(".o_survey_session_chart");
         this.leaderboardEl = this.el.querySelector(".o_survey_session_leaderboard");
-        this.timerEl = this.el.querySelector(".o_survey_timer_container .o_survey_timer");
-        this.textAnswersEl = this.el.querySelector(".o_survey_session_text_answers_container");
+        this.timerEl = this.el.querySelector(
+            ".o_survey_timer_container .o_survey_timer"
+        );
+        this.textAnswersEl = this.el.querySelector(
+            ".o_survey_session_text_answers_container"
+        );
         // General survey props
         this.surveyId = parseInt(this.el.dataset.surveyId);
         this.attendeesCount = this.el.dataset.attendeesCount
             ? parseInt(this.el.dataset.attendeesCount, 10)
             : 0;
-        this.surveyHasConditionalQuestions = this.el.dataset.surveyHasConditionalQuestions;
+        this.surveyHasConditionalQuestions =
+            this.el.dataset.surveyHasConditionalQuestions;
         this.surveyAccessToken = this.el.dataset.surveyAccessToken;
         this.isStartScreen = this.el.dataset.isStartScreen;
         this.isFirstQuestion = this.el.dataset.isFirstQuestion;
@@ -137,7 +147,10 @@ export class SurveySessionManage extends Interaction {
             const chartPromise = new Promise(function (resolve) {
                 resolveChartPromise = resolve;
             });
-            this.env.bus.addEventListener("SURVEY:CHART_INTERACTION_STARTED", resolveChartPromise);
+            this.env.bus.addEventListener(
+                "SURVEY:CHART_INTERACTION_STARTED",
+                resolveChartPromise
+            );
             await chartPromise;
         }
     }
@@ -147,7 +160,7 @@ export class SurveySessionManage extends Interaction {
         this.startTimer();
         // Check if we are loading this page because the user clicked on 'previous'
         if (this.el.dataset.goingBack) {
-            this.chartUpdateState({ showInputs: true, showAnswers: true });
+            this.chartUpdateState({showInputs: true, showAnswers: true});
             if (this.sessionShowLeaderboard && this.isScoredQuestion) {
                 this.currentScreen = "leaderboard";
                 this.leaderboardEl.dispatchEvent(
@@ -187,7 +200,10 @@ export class SurveySessionManage extends Interaction {
         );
         this.protectSyncAfterAsync(() => {
             this.copyBtnPopover.show();
-            this.waitForTimeout(() => this.copyBtnPopover.hide(), copyBtnTooltipHideDelay);
+            this.waitForTimeout(
+                () => this.copyBtnPopover.hide(),
+                copyBtnTooltipHideDelay
+            );
         })();
     }
 
@@ -214,10 +230,10 @@ export class SurveySessionManage extends Interaction {
         const screenToDisplay = this.getNextScreen();
         switch (screenToDisplay) {
             case "userInputs":
-                this.chartUpdateState({ showInputs: true });
+                this.chartUpdateState({showInputs: true});
                 break;
             case "results":
-                this.chartUpdateState({ showAnswers: true });
+                this.chartUpdateState({showAnswers: true});
                 // when showing results, stop refreshing answers
                 clearInterval(this.resultsRefreshInterval);
                 delete this.resultsRefreshInterval;
@@ -258,10 +274,10 @@ export class SurveySessionManage extends Interaction {
         const screenToDisplay = this.getPreviousScreen();
         switch (screenToDisplay) {
             case "question":
-                this.chartUpdateState({ showInputs: false });
+                this.chartUpdateState({showInputs: false});
                 break;
             case "userInputs":
-                this.chartUpdateState({ showAnswers: false });
+                this.chartUpdateState({showAnswers: false});
                 // resume refreshing answers if necessary
                 if (!this.resultsRefreshInterval) {
                     this.resultsRefreshInterval = setInterval(
@@ -404,7 +420,9 @@ export class SurveySessionManage extends Interaction {
         );
         let preloadBgPromise;
         if (this.refreshBackground && this.nextQuestion.background_image_url) {
-            preloadBgPromise = preloadBackground(this.nextQuestion.background_image_url);
+            preloadBgPromise = preloadBackground(
+                this.nextQuestion.background_image_url
+            );
         } else {
             preloadBgPromise = Promise.resolve();
         }
@@ -426,8 +444,10 @@ export class SurveySessionManage extends Interaction {
         }
 
         const parser = new DOMParser();
-        const newContent = parser.parseFromString(this.nextQuestion.question_html, "text/html").body
-            .firstChild;
+        const newContent = parser.parseFromString(
+            this.nextQuestion.question_html,
+            "text/html"
+        ).body.firstChild;
         newContent.style.opacity = 0;
 
         if (goBack) {
@@ -439,7 +459,9 @@ export class SurveySessionManage extends Interaction {
 
         // Background Management
         if (this.refreshBackground) {
-            const surveyBackground = newContent.querySelector("div.o_survey_background");
+            const surveyBackground = newContent.querySelector(
+                "div.o_survey_background"
+            );
             if (surveyBackground) {
                 surveyBackground.style.backgroundImage = `url(${this.nextQuestion.background_image_url})`;
                 surveyBackground.classList.remove("o_survey_background_transition");
@@ -464,7 +486,9 @@ export class SurveySessionManage extends Interaction {
         // ev could not exist (onNextQuestionDone )
         const showResults = ev?.currentTarget?.dataset?.showResults;
         await this.waitFor(
-            this.services.orm.call("survey.survey", "action_end_session", [[this.surveyId]])
+            this.services.orm.call("survey.survey", "action_end_session", [
+                [this.surveyId],
+            ])
         );
         this.protectSyncAfterAsync(() => {
             if (showResults) {
@@ -501,7 +525,7 @@ export class SurveySessionManage extends Interaction {
         } else {
             this.currentScreen = "question";
         }
-        this.chartUpdateState({ showInputs: this.currentScreen === "userInputs" });
+        this.chartUpdateState({showInputs: this.currentScreen === "userInputs"});
         this.updateNextScreenTooltip();
     }
 
@@ -588,7 +612,12 @@ export class SurveySessionManage extends Interaction {
         const questionTimeLimitReached = !!timerData.questionTimeLimitReached;
         const timeLimitMinutes = Number(timerData.timeLimitMinutes);
         const hasAnswered = !!timerData.hasAnswered;
-        if (this.timerEl && !questionTimeLimitReached && !hasAnswered && timeLimitMinutes) {
+        if (
+            this.timerEl &&
+            !questionTimeLimitReached &&
+            !hasAnswered &&
+            timeLimitMinutes
+        ) {
             this.addListener(surveyManagerEl, "time_up", async () => {
                 if (this.currentScreen === "question" && this.isScoredQuestion) {
                     this.onNext();
@@ -628,7 +657,9 @@ export class SurveySessionManage extends Interaction {
                             questionResults.question_statistics_graph
                         );
                         if (parsedStatistics.length > 0) {
-                            this.chartUpdateState({ questionStatistics: parsedStatistics });
+                            this.chartUpdateState({
+                                questionStatistics: parsedStatistics,
+                            });
                         }
                     } else if (!this.isStartScreen && this.showTextAnswers) {
                         this.textAnswersEl.dispatchEvent(
@@ -697,11 +728,17 @@ export class SurveySessionManage extends Interaction {
      */
     refreshAttendeesCount() {
         this.waitFor(
-            this.services.orm.read("survey.survey", [this.surveyId], ["session_answer_count"])
+            this.services.orm.read(
+                "survey.survey",
+                [this.surveyId],
+                ["session_answer_count"]
+            )
         ).then(
             this.protectSyncAfterAsync((result) => {
                 if (result && result.length === 1) {
-                    this.sessionAttendeesCountText = String(result[0].session_answer_count);
+                    this.sessionAttendeesCountText = String(
+                        result[0].session_answer_count
+                    );
                 }
             }),
             this.protectSyncAfterAsync((err) => {
@@ -713,4 +750,6 @@ export class SurveySessionManage extends Interaction {
     }
 }
 
-registry.category("public.interactions").add("survey.survey_session_manage", SurveySessionManage);
+registry
+    .category("public.interactions")
+    .add("survey.survey_session_manage", SurveySessionManage);

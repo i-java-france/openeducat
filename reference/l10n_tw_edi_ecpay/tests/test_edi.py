@@ -7,10 +7,11 @@ from urllib.parse import urljoin
 from freezegun import freeze_time
 
 from odoo import Command
-from odoo.addons.account.tests.test_account_move_send import TestAccountMoveSendCommon
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tests.common import HttpCase
+
+from odoo.addons.account.tests.test_account_move_send import TestAccountMoveSendCommon
 
 CALL_API_METHOD = 'odoo.addons.l10n_tw_edi_ecpay.models.account_move.call_ecpay_api'
 

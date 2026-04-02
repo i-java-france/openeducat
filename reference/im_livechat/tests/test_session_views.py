@@ -1,7 +1,8 @@
 from odoo import Command
 from odoo.tests import new_test_user
+from odoo.tests.common import tagged, users
+
 from odoo.addons.im_livechat.tests.common import TestImLivechatCommon
-from odoo.tests.common import users, tagged
 
 
 @tagged("-at_install", "post_install")

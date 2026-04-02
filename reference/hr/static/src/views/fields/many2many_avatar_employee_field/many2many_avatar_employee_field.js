@@ -1,4 +1,4 @@
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import {
     Many2ManyTagsAvatarUserField,
     KanbanMany2ManyTagsAvatarUserField,
@@ -7,14 +7,15 @@ import {
     kanbanMany2ManyTagsAvatarUserField,
     listMany2ManyTagsAvatarUserField,
 } from "@mail/views/web/fields/many2many_avatar_user_field/many2many_avatar_user_field";
-import { EmployeeFieldRelationMixin } from "@hr/views/fields/employee_field_relation_mixin";
+import {EmployeeFieldRelationMixin} from "@hr/views/fields/employee_field_relation_mixin";
 
 export class Many2ManyTagsAvatarEmployeeField extends EmployeeFieldRelationMixin(
     Many2ManyTagsAvatarUserField
 ) {
     displayAvatarCard(record) {
         return (
-            (!this.env.isSmall && ["hr.employee", "hr.employee.public"].includes(this.relation)) ||
+            (!this.env.isSmall &&
+                ["hr.employee", "hr.employee.public"].includes(this.relation)) ||
             super.displayAvatarCard(record)
         );
     }
@@ -34,14 +35,17 @@ export const many2ManyTagsAvatarEmployeeField = {
     }),
 };
 
-registry.category("fields").add("many2many_avatar_employee", many2ManyTagsAvatarEmployeeField);
+registry
+    .category("fields")
+    .add("many2many_avatar_employee", many2ManyTagsAvatarEmployeeField);
 
 export class KanbanMany2ManyTagsAvatarEmployeeField extends EmployeeFieldRelationMixin(
     KanbanMany2ManyTagsAvatarUserField
 ) {
     displayAvatarCard(record) {
         return (
-            (!this.env.isSmall && ["hr.employee", "hr.employee.public"].includes(this.relation)) ||
+            (!this.env.isSmall &&
+                ["hr.employee", "hr.employee.public"].includes(this.relation)) ||
             super.displayAvatarCard(record)
         );
     }
@@ -70,7 +74,8 @@ export class ListMany2ManyTagsAvatarEmployeeField extends EmployeeFieldRelationM
 ) {
     displayAvatarCard(record) {
         return (
-            (!this.env.isSmall && ["hr.employee", "hr.employee.public"].includes(this.relation)) ||
+            (!this.env.isSmall &&
+                ["hr.employee", "hr.employee.public"].includes(this.relation)) ||
             super.displayAvatarCard(record)
         );
     }

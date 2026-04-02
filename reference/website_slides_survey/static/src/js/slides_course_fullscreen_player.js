@@ -1,4 +1,4 @@
-import { renderToElement } from "@web/core/utils/render";
+import {renderToElement} from "@web/core/utils/render";
 import Fullscreen from "@website_slides/js/slides_course_fullscreen_player";
 
 Fullscreen.include({
@@ -15,7 +15,9 @@ Fullscreen.include({
         if (this._slideValue.category === "certification") {
             contentEl.textContent = "";
             contentEl.append(
-                renderToElement("website.slides.fullscreen.certification", { widget: this })
+                renderToElement("website.slides.fullscreen.certification", {
+                    widget: this,
+                })
             );
         }
         return Promise.all([def]);

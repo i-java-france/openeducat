@@ -1,12 +1,12 @@
 /** @odoo-module **/
 
-import { registry } from "@web/core/registry";
+import {registry} from "@web/core/registry";
 import {
     copyClipboardButtonField,
     CopyClipboardButtonField,
 } from "@web/views/fields/copy_clipboard/copy_clipboard_field";
 
-import { CopyButton } from "@web/core/copy_button/copy_button";
+import {CopyButton} from "@web/core/copy_button/copy_button";
 
 class PaymentWizardCopyButton extends CopyButton {
     async onClick() {
@@ -16,7 +16,7 @@ class PaymentWizardCopyButton extends CopyButton {
 }
 
 class PaymentWizardCopyClipboardButtonField extends CopyClipboardButtonField {
-    static components = { CopyButton: PaymentWizardCopyButton };
+    static components = {CopyButton: PaymentWizardCopyButton};
 }
 
 const paymentWizardCopyClipboardButtonField = {
@@ -26,4 +26,7 @@ const paymentWizardCopyClipboardButtonField = {
 
 registry
     .category("fields")
-    .add("PaymentWizardCopyClipboardButtonField", paymentWizardCopyClipboardButtonField);
+    .add(
+        "PaymentWizardCopyClipboardButtonField",
+        paymentWizardCopyClipboardButtonField
+    );

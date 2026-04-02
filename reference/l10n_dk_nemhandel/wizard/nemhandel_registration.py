@@ -1,4 +1,5 @@
 import contextlib
+
 try:
     import phonenumbers
 except ImportError:
@@ -7,7 +8,9 @@ except ImportError:
 from odoo import _, api, fields, models, modules
 from odoo.exceptions import RedirectWarning, UserError, ValidationError
 
-from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import AccountEdiProxyError
+from odoo.addons.account_edi_proxy_client.models.account_edi_proxy_user import (
+    AccountEdiProxyError,
+)
 from odoo.addons.l10n_dk_nemhandel.tools.demo_utils import handle_demo
 
 

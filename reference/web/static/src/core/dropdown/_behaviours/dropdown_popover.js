@@ -1,8 +1,15 @@
-import { Component, onMounted, onRendered, onWillDestroy, onWillStart, xml } from "@odoo/owl";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+import {
+    Component,
+    onMounted,
+    onRendered,
+    onWillDestroy,
+    onWillStart,
+    xml,
+} from "@odoo/owl";
+import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 
 export class DropdownPopover extends Component {
-    static components = { DropdownItem };
+    static components = {DropdownItem};
     static template = xml`
         <t t-if="this.props.items">
             <t t-foreach="this.props.items" t-as="item" t-key="this.getKey(item, item_index)">
@@ -13,17 +20,17 @@ export class DropdownPopover extends Component {
     `;
     static props = {
         // Popover service
-        close: { type: Function, optional: true },
+        close: {type: Function, optional: true},
 
         // Events & Handlers
-        beforeOpen: { type: Function, optional: true },
-        onOpened: { type: Function, optional: true },
-        onClosed: { type: Function, optional: true },
+        beforeOpen: {type: Function, optional: true},
+        onOpened: {type: Function, optional: true},
+        onClosed: {type: Function, optional: true},
 
         // Rendering & Context
         refresher: Object,
         slots: Object,
-        items: { type: Array, optional: true },
+        items: {type: Array, optional: true},
     };
 
     setup() {

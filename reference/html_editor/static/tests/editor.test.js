@@ -1,13 +1,13 @@
-import { Editor } from "@html_editor/editor";
-import { Plugin } from "@html_editor/plugin";
-import { MAIN_PLUGINS } from "@html_editor/plugin_sets";
-import { closestElement } from "@html_editor/utils/dom_traversal";
-import { beforeEach, expect, test } from "@odoo/hoot";
-import { patchWithCleanup } from "@web/../tests/web_test_helpers";
-import { setupEditor, testEditor } from "./_helpers/editor";
-import { insertText } from "./_helpers/user_actions";
-import { getContent } from "./_helpers/selection";
-import { unformat } from "./_helpers/format";
+import {Editor} from "@html_editor/editor";
+import {Plugin} from "@html_editor/plugin";
+import {MAIN_PLUGINS} from "@html_editor/plugin_sets";
+import {closestElement} from "@html_editor/utils/dom_traversal";
+import {beforeEach, expect, test} from "@odoo/hoot";
+import {patchWithCleanup} from "@web/../tests/web_test_helpers";
+import {setupEditor, testEditor} from "./_helpers/editor";
+import {insertText} from "./_helpers/user_actions";
+import {getContent} from "./_helpers/selection";
+import {unformat} from "./_helpers/format";
 
 beforeEach(() => {
     patchWithCleanup(Editor.prototype, {
@@ -21,13 +21,13 @@ beforeEach(() => {
 });
 
 test("can get content of an Editor", async () => {
-    const { el, editor } = await setupEditor("<p>hel[lo] world</p>", {});
+    const {el, editor} = await setupEditor("<p>hel[lo] world</p>", {});
     expect(el.innerHTML).toBe(`<p>hello world</p>`);
     expect(editor.getContent()).toBe(`<p>hello world</p>`);
 });
 
 test("can get content of an empty paragraph", async () => {
-    const { el, editor } = await setupEditor("<p>[]</p>", {});
+    const {el, editor} = await setupEditor("<p>[]</p>", {});
     expect(el.innerHTML).toBe(
         `<p o-we-hint-text="Type &quot;/&quot; for commands" class="o-we-hint"></p>`
     );
@@ -36,8 +36,8 @@ test("can get content of an empty paragraph", async () => {
 
 test("is notified when content is changed", async () => {
     let n = 0;
-    const { editor } = await setupEditor("<p>hello[] world</p>", {
-        config: { onChange: () => n++ },
+    const {editor} = await setupEditor("<p>hello[] world</p>", {
+        config: {onChange: () => n++},
     });
     expect(n).toBe(0);
     await insertText(editor, "a");
@@ -60,8 +60,12 @@ test("plugin destruction is reverse of instantiation order", async () => {
             }
         };
     }
-    const Plugins = [...MAIN_PLUGINS, makeTestPlugin("first"), makeTestPlugin("second", ["first"])];
-    const { editor } = await setupEditor(`<p>[]</p>`, { config: { Plugins } });
+    const Plugins = [
+        ...MAIN_PLUGINS,
+        makeTestPlugin("first"),
+        makeTestPlugin("second", ["first"]),
+    ];
+    const {editor} = await setupEditor(`<p>[]</p>`, {config: {Plugins}});
     expect.verifySteps(["setup: first", "setup: second"]);
     editor.destroy();
     expect.verifySteps(["destroy: second", "destroy: first"]);
@@ -78,7 +82,7 @@ test("Remove odoo-editor-editable class after every plugin is destroyed", async 
         }
     }
     const Plugins = [...MAIN_PLUGINS, TestPlugin];
-    const { editor } = await setupEditor(`<div><p>a</p></div>`, { config: { Plugins } });
+    const {editor} = await setupEditor(`<div><p>a</p></div>`, {config: {Plugins}});
     editor.destroy();
     expect.verifySteps(["operation"]);
 });
@@ -95,10 +99,10 @@ test("Element is not editable if any plugin marks it non-editable", async () => 
         };
     }
     const Plugins = [...MAIN_PLUGINS, TestPlugin];
-    const { el, plugins } = await setupEditor(
+    const {el, plugins} = await setupEditor(
         `<div>[<img class="o-editable-media o-will-break-if-edited">]</div>`,
         {
-            config: { Plugins },
+            config: {Plugins},
         }
     );
     const img = el.querySelector(".o-editable-media");
@@ -113,7 +117,7 @@ test("clean_for_save_listeners is done last", async () => {
     class TestPlugin extends Plugin {
         static id = "test";
         resources = {
-            clean_for_save_handlers: ({ root }) => {
+            clean_for_save_handlers: ({root}) => {
                 for (const el of root.querySelectorAll("c-div")) {
                     el.removeAttribute("class");
                 }
@@ -126,8 +130,8 @@ test("clean_for_save_listeners is done last", async () => {
         }
     }
     const Plugins = [...MAIN_PLUGINS, TestPlugin];
-    const { editor } = await setupEditor(`<div><c-div>a</c-div><c-div>b</c-div></div>`, {
-        config: { Plugins },
+    const {editor} = await setupEditor(`<div><c-div>a</c-div><c-div>b</c-div></div>`, {
+        config: {Plugins},
     });
 
     const el = editor.getElContent();
@@ -170,7 +174,7 @@ test("Convert self closing elements to opening/closing tags", async () => {
 });
 
 test("Remove `width`, `height` attributes from image and apply them to style", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <div>
             <img src="#" width="50%" height="50%">
         </div>
@@ -181,7 +185,7 @@ test("Remove `width`, `height` attributes from image and apply them to style", a
 });
 
 test("Remove `width`, `height` attributes from image and apply them to style with default unit (px)", async () => {
-    const { el } = await setupEditor(`
+    const {el} = await setupEditor(`
         <div>
             <img src="#" width="50" height="50">
         </div>

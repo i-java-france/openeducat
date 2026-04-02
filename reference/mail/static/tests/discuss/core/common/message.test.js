@@ -7,8 +7,8 @@ import {
     startServer,
 } from "@mail/../tests/mail_test_helpers";
 
-import { describe, test } from "@odoo/hoot";
-import { getOrigin } from "@web/core/utils/urls";
+import {describe, test} from "@odoo/hoot";
+import {getOrigin} from "@web/core/utils/urls";
 
 describe.current.tags("desktop");
 defineMailModels();
@@ -16,8 +16,8 @@ defineMailModels();
 test("clicking message link does not swap open chat window", async () => {
     const pyEnv = await startServer();
     const [rdId, supportId] = pyEnv["discuss.channel"].create([
-        { name: "R&D" },
-        { name: "Support" },
+        {name: "R&D"},
+        {name: "Support"},
     ]);
     const messageRdId = pyEnv["mail.message"].create({
         body: "Hello R&D",
@@ -36,16 +36,22 @@ test("clicking message link does not swap open chat window", async () => {
         model: "discuss.channel",
         res_id: rdId,
     });
-    setupChatHub({ opened: [rdId, supportId] });
+    setupChatHub({opened: [rdId, supportId]});
     await start();
     await contains(".o-mail-ChatWindow:eq(0) .o-mail-ChatWindow-header:contains(R&D)");
-    await contains(".o-mail-ChatWindow:eq(1) .o-mail-ChatWindow-header:contains(Support)");
+    await contains(
+        ".o-mail-ChatWindow:eq(1) .o-mail-ChatWindow-header:contains(Support)"
+    );
     await click("a.o_message_redirect:contains(R&D)");
     await contains(".o-mail-Message.o-highlighted:contains(Hello R&D)");
     await contains(".o-mail-ChatWindow:eq(0) .o-mail-ChatWindow-header:contains(R&D)");
-    await contains(".o-mail-ChatWindow:eq(1) .o-mail-ChatWindow-header:contains(Support)");
+    await contains(
+        ".o-mail-ChatWindow:eq(1) .o-mail-ChatWindow-header:contains(Support)"
+    );
     await click("a.o_message_redirect:contains(Support)");
     await contains(".o-mail-Message.o-highlighted:contains(Hello from there)");
     await contains(".o-mail-ChatWindow:eq(0) .o-mail-ChatWindow-header:contains(R&D)");
-    await contains(".o-mail-ChatWindow:eq(1) .o-mail-ChatWindow-header:contains(Support)");
+    await contains(
+        ".o-mail-ChatWindow:eq(1) .o-mail-ChatWindow-header:contains(Support)"
+    );
 });

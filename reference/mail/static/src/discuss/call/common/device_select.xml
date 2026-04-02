@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
     <t t-name="discuss.CallDeviceSelect">
@@ -19,8 +19,12 @@
         >
             <option t-if="!isBrowserChrome" value="">Browser Default</option>
             <t t-foreach="state.userDevices" t-as="device" t-key="device_index">
-                <option t-if="device.kind === props.kind" t-att-selected="isSelected(device.deviceId)" t-att-value="device.deviceId">
-                    <t t-esc="device.label || 'device ' + device_index"/>
+                <option
+                    t-if="device.kind === props.kind"
+                    t-att-selected="isSelected(device.deviceId)"
+                    t-att-value="device.deviceId"
+                >
+                    <t t-esc="device.label || 'device ' + device_index" />
                 </option>
             </t>
         </select>
