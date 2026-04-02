@@ -4,9 +4,13 @@
     "license": "LGPL-3",
     "summary": "A simple test module for Odoo 19",
     "author": "Odoo Community Association (OCA)",
-    "website": "https://github.com/OCA/oca-addons-repo-template",
+    "website": "https://github.com/i-java-france/openeducat",
     "category": "Uncategorized",
     "depends": ["base"],
+    "external_dependencies": {
+        "python": [],
+        "bin": [],
+    },
     "data": [
         "security/ir.model.access.csv",
         "views/test_model_views.xml",
