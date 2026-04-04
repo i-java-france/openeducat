@@ -2483,7 +2483,6 @@ of the corresponding model will be created.
        on the company's mail server, so that as soon as a new mail.alias is
        created, it becomes immediately usable and Odoo will accept email for it.
 
-
 **Fields:**
 
 | Field                    | Label                               | Type        | Req | Store | Relation          |

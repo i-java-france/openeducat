@@ -180,7 +180,7 @@ def field_to_python(f: dict) -> str:
     if not store and ftype not in ("one2many", "many2many"):
         args.append("store=False")
     if ftype == "selection":
-        args.append("selection=[]  # TODO: add selection values")
+        args.append("selection=[]")
     if fhelp:
         safe_help = fhelp.replace("'", "\\'").replace("\n", " ")[:120]
         args.append(f"help='{safe_help}'")

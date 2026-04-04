@@ -20,3 +20,6 @@ docker/19/odoo-data/
 #node_modules
 jira/node_modules/*
 .ruff_cache/
+
+# scrapper/
+scrapper/venv/
