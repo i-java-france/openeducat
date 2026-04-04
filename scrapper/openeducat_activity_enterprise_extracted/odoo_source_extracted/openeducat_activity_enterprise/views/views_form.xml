@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_op_student_activity_progress_form" model="ir.ui.view">
+        <field name="name">op.activity.form</field>
+        <field name="model">op.activity</field>
+        <field name="type">form</field>
+        <field name="priority">10</field>
+        <field name="inherit_id" ref="op.activity.form" />
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//field[@name='faculty_id']" position="after">
+                    <field name="progression_id" readonly="1" force_save="1" />
+                </xpath>
+
+                <xpath expr="//field[@name='date']" position="after">
+                    <field
+                        name="company_id"
+                        groups="base.group_multi_company"
+                        optional="show"
+                    />
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+    <record id="view_op_activity_type_inherited_form_view" model="ir.ui.view">
+        <field name="name">op.activity.inherited.form.view</field>
+        <field name="model">op.activity.type</field>
+        <field name="type">form</field>
+        <field name="priority">10</field>
+        <field name="inherit_id" ref="op.activity.type.form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field
+                    name="company_id"
+                    groups="base.group_multi_company"
+                    optional="show"
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_op_student_progress_activity_form_inherite" model="ir.ui.view">
+        <field name="name">Student Progression Activity Form</field>
+        <field name="model">op.student.progression</field>
+        <field name="type">form</field>
+        <field name="priority">10</field>
+        <field name="inherit_id" ref="Student Progression Form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="Activity" string="Activity">
+                    <button
+                        name="1245"
+                        type="action"
+                        string="Get Activity"
+                        class="oe_highlight"
+                        invisible="state not in ['open','draft']"
+                    />
+
+                    <group class="pt-4 pb-4">
+                        <group>
+                            <field name="total_activity" />
+                        </group>
+                    </group>
+
+                    <field
+                        name="activity_lines"
+                        domain="[('student_id', '=', student_id)]"
+                        readonly="state not in ['open','draft']"
+                        widget="one2many"
+                    >
+                        <list editable="bottom" default_order="date asc">
+                            <field name="progression_id" optional="show" />
+
+                            <field name="date" />
+
+                            <field name="faculty_id" />
+
+                            <field name="type_id" />
+
+                            <field name="description" optional="hide" />
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="student_progress_activity_wizad_form" model="ir.ui.view">
+        <field name="name">Activity Progress Wizard</field>
+        <field name="model">activity.progress.wizard</field>
+        <field name="type">form</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <form string="student progress wizard ">
+                <group col="2" colspan="2">
+                    <field name="student_id" invisible="True" />
+
+                    <field
+                        name="activity_ids"
+                        widget="many2many_lines"
+                        domain="[('student_id', '=', student_id)]"
+                    />
+                </group>
+
+                <footer>
+                    <span groups="base.group_user">
+                        <button
+                            string="Add"
+                            type="object"
+                            name="Add_activity"
+                            class="oe_highlight"
+                        />
+
+                        <button special="cancel" string="Close" type="object" />
+                    </span>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

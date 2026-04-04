@@ -1,6 +1,7 @@
 exclude: |
   (?x)
   # --- TEMPORARY IGNORE ---
+  ^scrapper/|
   ^addons/|
 
   # NOT INSTALLABLE ADDONS
@@ -69,7 +70,7 @@ repos:
           - --convert-fragments-to-markdown
       #- id: oca-gen-external-dependencies
   - repo: https://github.com/OCA/odoo-pre-commit-hooks
-    rev: v0.1.7
+    rev: v0.2.20
     hooks:
       - id: oca-checks-odoo-module
       - id: oca-checks-po

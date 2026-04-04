@@ -42,6 +42,7 @@
     "demo": [
         "demo/activity_demo.xml",
     ],
+
     "images": [
         "static/description/openeducat-activity_banner.jpg",
     ],
