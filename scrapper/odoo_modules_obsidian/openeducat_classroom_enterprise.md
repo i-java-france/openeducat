@@ -12,8 +12,7 @@ application: true
 auto_install: false
 tags: [odoo/module, odoo/state/installed, odoo/category/_________, odoo/app]
 ---
-
-# 🟢 OpenEduCat Classroom Enterprise
+🟢 OpenEduCat Classroom Enterprise
 
 > **Module:** `openeducat_classroom_enterprise` | **Version:** `19.0.1.0` **Category:**
 > Education | **License:** `Other proprietary` **Author:** OpenEduCat Inc **Website:**
@@ -78,7 +77,7 @@ Main super-class for regular database-persisted Odoo models.
 
     Odoo models are created by inheriting from this class::
 
-        class ResUsers(Model):
+    class ResUsers(Model):
             ...
 
     The system will later instantiate the class once per database (on
@@ -86,8 +85,8 @@ Main super-class for regular database-persisted Odoo models.
 
 **Fields:**
 
-| Field          | Label           | Type       | Req | Store | Relation         |
-| -------------- | --------------- | ---------- | --- | ----- | ---------------- |
+| Field            | Label           | Type         | Req | Store | Relation         |
+| ---------------- | --------------- | ------------ | --- | ----- | ---------------- |
 | `active`       | Active          | `boolean`  |     | ✅    |                  |
 | `asset_line`   | Asset           | `one2many` |     | ✅    | op.asset         |
 | `batch_id`     | Batch           | `many2one` |     | ✅    | op.batch         |
@@ -106,8 +105,8 @@ Main super-class for regular database-persisted Odoo models.
 
 **Access Rights:**
 
-| Name                                | Group               | Perms     |
-| ----------------------------------- | ------------------- | --------- |
+| Name                                | Group               | Perms       |
+| ----------------------------------- | ------------------- | ----------- |
 | name_op_classroom_back_office_admin | Classroom / Manager | `R/W/C/D` |
 | name_op_classroom_faculty           | Classroom / User    | `R/W`     |
 
@@ -123,7 +122,7 @@ Main super-class for regular database-persisted Odoo models.
 
     Odoo models are created by inheriting from this class::
 
-        class ResUsers(Model):
+    class ResUsers(Model):
             ...
 
     The system will later instantiate the class once per database (on
@@ -131,8 +130,8 @@ Main super-class for regular database-persisted Odoo models.
 
 **Fields:**
 
-| Field             | Label           | Type       | Req | Store | Relation        |
-| ----------------- | --------------- | ---------- | --- | ----- | --------------- |
+| Field               | Label           | Type         | Req | Store | Relation        |
+| ------------------- | --------------- | ------------ | --- | ----- | --------------- |
 | `asset_id`        | Asset           | `many2one` |     | ✅    | op.classroom    |
 | `code`            | Code            | `char`     |     | ✅    |                 |
 | `company_id`      | Company         | `many2one` |     | ✅    | res.company     |
@@ -147,8 +146,8 @@ Main super-class for regular database-persisted Odoo models.
 
 **Access Rights:**
 
-| Name                            | Group               | Perms     |
-| ------------------------------- | ------------------- | --------- |
+| Name                            | Group               | Perms       |
+| ------------------------------- | ------------------- | ----------- |
 | name_op_asset_back_office_admin | Classroom / Manager | `R/W/C/D` |
 | name_op_asset_faculty           | Classroom / User    | `R`       |
 

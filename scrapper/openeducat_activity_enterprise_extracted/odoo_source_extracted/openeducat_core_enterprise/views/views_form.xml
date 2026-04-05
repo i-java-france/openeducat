@@ -1,0 +1,2604 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_op_student_form_badge_inherit" model="ir.ui.view">
+        <field name="name">op.student.form.badge_inherit</field>
+        <field name="model">op.student</field>
+        <field name="type">form</field>
+        <field name="priority">1</field>
+        <field name="inherit_id" ref="op.student.form"/>
+        <field name="arch" type="xml">
+<data>
+    <xpath expr="//field[@name='lang']" position="before">
+        
+                    
+        <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+        
+                
+    </xpath>
+    
+                
+    <xpath expr="//div[@name='button_box']" position="inside">
+        
+                    
+        <button class="btn oe_stat_button" type="object" name="get_student" style="border-right: 1px solid;" icon="fa-book">
+            
+                        
+            <field string="Admission" name="student_count" widget="statinfo"/>
+            
+                    
+        </button>
+        
+                
+    </xpath>
+    
+            
+</data>
+        </field>
+    </record>
+
+    <record id="view_academic_plan_form" model="ir.ui.view">
+        <field name="name">op.academic.plan.form</field>
+        <field name="model">op.academic.plan</field>
+        <field name="type">form</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<form string="Academic Plan">
+    
+                
+    <header>
+        
+                    
+        <!-- <button string="Set to draft" name="action_draft" invisible="state ==
+                    'draft'" type="object"
+                            class="oe_highlight"/>
+                    <button name="action_approved" invisible="state in
+                    ['approved','rejected','done','dean_approve','academic_approve','academic_reject','dean_reject']"
+                            string="Approved" type="object" class="oe_highlight"/>
+                    <button name="action_rejected" invisible="state in
+                    ['approved','rejected','done','dean_approve','academic_approve']"
+                            string="Rejected" type="object" class="oe_highlight"/>
+                    <button name="action_done" invisible="state  in
+                    ['draft','rejected','done','dean_approve','academic_reject','approved','dean_reject']"
+                            string="Done" type="object" class="oe_highlight"/>
+                    <button name="action_dean_approved" invisible="state in
+                    ['draft','rejected','done','dean_approve','academic_approve','academic_reject','dean_reject']"
+                            string="Dean Approved" type="object" class="oe_highlight"/>
+                    <button name="action_academic_approved" invisible="state in
+                    ['approved','draft','rejected','done','academic_approve','academic_reject','dean_reject']"
+                            string="Academic Approved" type="object" class="oe_highlight"/>
+                    <button name="action_academic_reject" invisible="state in
+                    ['approved','draft','rejected','done','academic_approve','academic_reject','dean_reject']"
+                            string="Academic Reject" type="object" class="oe_highlight"/>
+                    <button name="action_dean_reject" invisible="state in
+                    ['draft','rejected','done','dean_approve','academic_reject','dean_reject','academic_approve']"
+                            string="Dean Reject" type="object" class="oe_highlight"/> -->
+        
+                    
+        <field name="stages_id" widget="statusbar" options="{'clickable': '1'}"/>
+        
+                
+    </header>
+    
+                
+    <sheet>
+        
+                    
+        <div class="oe_button_box" name="button_box">
+            
+                        
+            <button class="oe_stat_button" name="get_active_student" type="object" icon="fa-user">
+                
+                            
+                <field string="Students" name="student_count" widget="statinfo"/>
+                
+                        
+            </button>
+            
+                        
+            <button class="oe_stat_button" name="get_course_configure" type="object" icon="fa-book">
+                
+                            
+                <field string="Course Configure " name="course_configure_count" widget="statinfo"/>
+                
+                        
+            </button>
+            
+                    
+        </div>
+        
+                    
+        <div class="oe_title">
+            
+                        
+            <h1>
+                
+                            
+                <field name="name" readonly="1"/>
+                
+                        
+            </h1>
+            
+                    
+        </div>
+        
+                    
+        <group>
+            
+                        
+            <group>
+                
+                            
+                <!-- <field name="course_id" options="{'no_create': True}"
+                                   readonly="state != 'draft'"/> -->
+                
+                            
+                <field name="program_id" readonly="state != 'draft'"/>
+                
+                            
+                <field name="intake_year_ids" widget="many2many_tags" options="{'no_create': True}" readonly="state != 'draft'" domain="[('academic_year_id', '=', academic_year_id)]"/>
+                
+                            
+                <field name="start_date" required="True" readonly="state != 'draft'"/>
+                
+                            
+                <field name="first_approve_user_id" required="True" readonly="state != 'draft'"/>
+                
+                            
+                <field name="final_approve_user_id" required="True" readonly="state != 'draft'"/>
+                
+                        
+            </group>
+            
+                        
+            <group>
+                
+                            
+                <field name="sequence" readonly="1"/>
+                
+                            
+                <field name="code" readonly="state != 'draft'"/>
+                
+                            
+                <field name="academic_year_id" options="{'no_create': True}" readonly="state != 'draft'"/>
+                
+                            
+                <field name="end_date" required="True" readonly="state != 'draft'"/>
+                
+                            
+                <!-- <field name="academic_term_id" required="True"
+                                   readonly="state != 'draft'" domain="[('academic_year_id', '=', academic_year_id)]"/> -->
+                
+                            
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                
+                        
+            </group>
+            
+                    
+        </group>
+        
+                    
+        <notebook>
+            
+                        
+            <page string="Course Configure" name="course_configuration">
+                
+                            
+                <field name="course_plan_line" nolabel="1">
+                    
+                                
+                    <list>
+                        
+                                    
+                        <field name="name"/>
+                        
+                                    
+                        <field name="course_id"/>
+                        
+                                    
+                        <field name="academic_term_id"/>
+                        
+                                    
+                        <field name="academic_plan_id"/>
+                        
+                                
+                    </list>
+                    
+                                
+                    <form string="course plan">
+                        
+                                    
+                        <header/>
+                        
+                                    
+                        <sheet>
+                            
+                                        
+                            <div class="oe_button_box" name="button_box">
+                                
+                                            
+                                <button class="oe_stat_button" name="get_subject_configure" type="object" icon="fa-book">
+                                    
+                                                
+                                    <field string="Configure Subject" name="subject_configure_count" widget="statinfo"/>
+                                    
+                                            
+                                </button>
+                                
+                                        
+                            </div>
+                            
+                                        
+                            <group>
+                                
+                                            
+                                <group>
+                                    
+                                                
+                                    <field name="name"/>
+                                    
+                                                
+                                    <field name="course_id" domain="[('program_id', '=', parent.program_id)]"/>
+                                    
+                                            
+                                </group>
+                                
+                                            
+                                <group>
+                                    
+                                                
+                                    <field name="academic_term_id"/>
+                                    
+                                                
+                                    <!--                                                        <field name="fees_term_id"/>-->
+                                    
+                                                
+                                    <field name="academic_plan_id" invisible="1"/>
+                                    
+
+                                            
+                                </group>
+                                
+                                            
+                                <notebook>
+                                    
+                                                
+                                    <page string="Configure Subjects">
+                                        
+                                                    
+                                        <field name="subject_faculty_line" nolabel="1">
+                                            
+                                                        
+                                            <list>
+                                                
+                                                            
+                                                <field name="academic_plan_id" optional="hide"/>
+                                                
+                                                            
+                                                <field name="subject_id"/>
+                                                
+                                                            
+                                                <field name="credit"/>
+                                                
+                                                            
+                                                <field name="faculty_id" options="{'no_create': True}"/>
+                                                
+                                                            
+                                                <field name="total_lectures"/>
+                                                
+                                                            
+                                                <field name="total_lab"/>
+                                                
+                                                            
+                                                <field name="tuition"/>
+                                                
+                                                            
+                                                <field name="total_marks"/>
+                                                
+                                                        
+                                            </list>
+                                            
+                                                        
+                                            <form string="Subject">
+                                                
+                                                            
+                                                <sheet>
+                                                    
+                                                                
+                                                    <group>
+                                                        
+                                                                    
+                                                        <group>
+                                                            
+                                                                        
+                                                            <field name="academic_plan_id" invisible="1"/>
+                                                            
+                                                                        
+                                                            <field name="subject_ids" invisible="1"/>
+                                                            
+                                                                        
+                                                            <field name="subject_id" domain="[('course_id', '=', parent.course_id)]" options="{'no_create': True}"/>
+                                                            
+                                                                        
+                                                            <field name="credit"/>
+                                                            
+                                                                        
+                                                            <field name="company_id" invisible="1"/>
+                                                            
+                                                                        
+                                                            <field name="total_lab"/>
+                                                            
+                                                                        
+                                                            <field name="total_marks" readonly="1"/>
+                                                            
+                                                                    
+                                                        </group>
+                                                        
+                                                                    
+                                                        <group>
+                                                            
+                                                                        
+                                                            <field name="faculty_id" options="{'no_create': True}" required="True"/>
+                                                            
+                                                                        
+                                                            <field name="total_lectures"/>
+                                                            
+                                                                        
+                                                            <field name="tuition"/>
+                                                            
+                                                                        
+                                                            <field name="subject_type"/>
+                                                            
+                                                                    
+                                                        </group>
+                                                        
+                                                                    
+                                                        <notebook>
+                                                            
+                                                                        
+                                                            <page string="Marks Line">
+                                                                
+                                                                            
+                                                                <field name="marks_line">
+                                                                    
+                                                                                
+                                                                    <list editable="top">
+                                                                        
+                                                                                    
+                                                                        <field name="assessment_type_id"/>
+                                                                        
+                                                                                    
+                                                                        <field name="maximum_marks"/>
+                                                                        
+                                                                                    
+                                                                        <field name="passing_marks"/>
+                                                                        
+                                                                                
+                                                                    </list>
+                                                                    
+                                                                                
+                                                                    <form>
+                                                                        
+                                                                                    
+                                                                        <group>
+                                                                            
+                                                                                        
+                                                                            <group>
+                                                                                
+                                                                                            
+                                                                                <field name="assessment_type_id"/>
+                                                                                
+                                                                                        
+                                                                            </group>
+                                                                            
+                                                                                        
+                                                                            <group>
+                                                                                
+                                                                                            
+                                                                                <field name="maximum_marks"/>
+                                                                                
+                                                                                            
+                                                                                <field name="passing_marks"/>
+                                                                                
+                                                                                            
+                                                                                <field name="subject_faculty_id" invisible="1"/>
+                                                                                
+                                                                                        
+                                                                            </group>
+                                                                            
+                                                                                    
+                                                                        </group>
+                                                                        
+                                                                                
+                                                                    </form>
+                                                                    
+                                                                            
+                                                                </field>
+                                                                
+                                                                        
+                                                            </page>
+                                                            
+                                                                        
+                                                            <page string="Topics">
+                                                                
+                                                                            
+                                                                <field name="topics_line" nolabel="1">
+                                                                    
+                                                                                
+                                                                    <list editable="top">
+                                                                        
+                                                                                    
+                                                                        <field name="name"/>
+                                                                        
+                                                                                    
+                                                                        <field name="parent_id"/>
+                                                                        
+                                                                                    
+                                                                        <field name="description"/>
+                                                                        
+                                                                                    
+                                                                        <field name="academic_plan_id" optional="hide"/>
+                                                                        
+                                                                                
+                                                                    </list>
+                                                                    
+                                                                                
+                                                                    <form string="Topics">
+                                                                        
+                                                                                    
+                                                                        <sheet>
+                                                                            
+                                                                                        
+                                                                            <group>
+                                                                                
+                                                                                            
+                                                                                <group>
+                                                                                    
+                                                                                                
+                                                                                    <field name="name"/>
+                                                                                    
+                                                                                                
+                                                                                    <field name="parent_id"/>
+                                                                                    
+                                                                                            
+                                                                                </group>
+                                                                                
+                                                                                            
+                                                                                <group>
+                                                                                    
+                                                                                                
+                                                                                    <field name="academic_plan_id" invisible="1"/>
+                                                                                    
+                                                                                                
+                                                                                    <field name="description"/>
+                                                                                    
+                                                                                            
+                                                                                </group>
+                                                                                
+                                                                                        
+                                                                            </group>
+                                                                            
+                                                                                    
+                                                                        </sheet>
+                                                                        
+                                                                                
+                                                                    </form>
+                                                                    
+                                                                            
+                                                                </field>
+                                                                
+                                                                        
+                                                            </page>
+                                                            
+                                                                    
+                                                        </notebook>
+                                                        
+                                                                
+                                                    </group>
+                                                    
+                                                            
+                                                </sheet>
+                                                
+                                                        
+                                            </form>
+                                            
+                                                    
+                                        </field>
+                                        
+                                                
+                                    </page>
+                                    
+                                            
+                                </notebook>
+                                
+                                        
+                            </group>
+                            
+                                    
+                        </sheet>
+                        
+                                
+                    </form>
+                    
+                            
+                </field>
+                
+                        
+            </page>
+            
+                        
+            <page string="Active Students">
+                
+                            
+                <field name="student_course_ids" nolabel="1" readonly="1">
+                    
+                                
+                    <list editable="bottom">
+                        
+                                    
+                        <field name="student_id" options="{'no_create': True}"/>
+                        
+                                    
+                        <field name="subject_ids" widget="many2many_tags"/>
+                        
+                                    
+                        <field name="batch_id" options="{'no_create': True}"/>
+                        
+                                    
+                        <field name="state"/>
+                        
+                                    
+                        <field name="academic_plan_id" optional="hide"/>
+                        
+                                
+                    </list>
+                    
+                            
+                </field>
+                
+                        
+            </page>
+            
+                    
+        </notebook>
+        
+                
+    </sheet>
+    
+                
+    <chatter/>
+    
+            
+</form>
+        </field>
+    </record>
+
+    <record id="view_op_academic_plan_stages_form" model="ir.ui.view">
+        <field name="name">op.academic.plan.stages.form</field>
+        <field name="model">op.academic.plan.stages</field>
+        <field name="type">form</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<form string="Marks Detail Line">
+    
+                    
+    <header/>
+    
+                    
+    <sheet>
+        
+                        
+        <group>
+            
+                            
+            <group>
+                
+                                
+                <field name="name"/>
+                
+                                
+                <field name="state"/>
+                
+                                
+                <field name="is_approve"/>
+                
+                                
+                <field name="is_done"/>
+                
+                            
+            </group>
+            
+                            
+            <group>
+                
+                                
+                <field name="sequence"/>
+                
+                                
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                
+                            
+            </group>
+            
+
+                        
+        </group>
+        
+                    
+    </sheet>
+    
+                    
+    <chatter/>
+    
+                
+</form>
+        </field>
+    </record>
+
+    <record id="view_op_area_form" model="ir.ui.view">
+        <field name="name">op.area.form</field>
+        <field name="model">op.area</field>
+        <field name="type">form</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<form string="Area">
+    
+                    
+    <header/>
+    
+                    
+    <sheet>
+        
+                        
+        <div name="button_box" class="oe_button_box">
+                        </div>
+        
+                        
+        <field name="active" invisible="1"/>
+        
+                        
+        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active == True"/>
+        
+                        
+        <group>
+            
+                            
+            <group>
+                
+                                
+                <field name="name"/>
+                
+                                
+                <field name="company_id"/>
+                
+                            
+            </group>
+            
+                            
+            <group>
+                
+                                
+                <field name="code"/>
+                
+                            
+            </group>
+            
+                        
+        </group>
+        
+                    
+    </sheet>
+    
+                    
+    <chatter/>
+    
+                
+</form>
+        </field>
+    </record>
+
+    <record id="view_op_assessment_type_form" model="ir.ui.view">
+        <field name="name">op.assessment.type.form</field>
+        <field name="model">op.assessment.type</field>
+        <field name="type">form</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<form string="Marks Detail Line">
+    
+                    
+    <header/>
+    
+                    
+    <sheet>
+        
+                        
+        <group>
+            
+                            
+            <group>
+                
+                                
+                <field name="name"/>
+                
+                                
+                <field name="parent_id"/>
+                
+                            
+            </group>
+            
+                            
+            <group>
+                
+                                
+                <field name="index"/>
+                
+                                
+                <field name="code"/>
+                
+                                
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                
+                            
+            </group>
+            
+                        
+        </group>
+        
+                    
+    </sheet>
+    
+                
+</form>
+        </field>
+    </record>
+
+    <record id="view_op_batch_form_onboard" model="ir.ui.view">
+        <field name="name">op.batch.form</field>
+        <field name="model">op.batch</field>
+        <field name="type">form</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<form string="Batch">
+    
+                
+    <sheet>
+        
+                    
+        <group>
+            
+                        
+            <group name="main">
+                
+                            
+                <field name="name"/>
+                
+                            
+                <field name="start_date"/>
+                
+                            
+                <field name="course_id"/>
+                
+                        
+            </group>
+            
+                        
+            <group>
+                
+                            
+                <field name="code"/>
+                
+                            
+                <field name="end_date"/>
+                
+                        
+            </group>
+            
+                    
+        </group>
+        
+                
+    </sheet>
+    
+                
+    <footer>
+        
+                    
+        <button string="Apply" class="btn btn-primary" type="object" name="action_onboarding_batch_step"/>
+        
+                
+    </footer>
+    
+            
+</form>
+        </field>
+    </record>
+
+    <record id="view_op_board_affiliation_form" model="ir.ui.view">
+        <field name="name">op.board.affiliation.form</field>
+        <field name="model">op.board.affiliation</field>
+        <field name="type">form</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<form string="Board Affiliation">
+    
+                    
+    <sheet>
+        
+                        
+        <group>
+            
+                            
+            <group>
+                
+                                
+                <field name="name" required="1"/>
+                
+                                
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                
+                            
+            </group>
+            
+                            
+            <group>
+                
+                                
+                <field name="code" required="1"/>
+                
+                            
+            </group>
+            
+                            
+            <label for="note" string="Description" class="mt-3"/>
+            
+                            
+            <field name="note" nolabel="1"/>
+            
+                        
+        </group>
+        
+                    
+    </sheet>
+    
+                
+</form>
+        </field>
+    </record>
+
+    <record id="view_course_category_form" model="ir.ui.view">
+        <field name="name">op.course.category.form</field>
+        <field name="model">op.course.category</field>
+        <field name="type">form</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<form string="Course Category">
+    
+                    
+    <header/>
+    
+                    
+    <sheet>
+        
+                        
+        <field name="active" invisible="1"/>
+        
+                        
+        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active == True"/>
+        
+                        
+        <group class="">
+            
+                            
+            <group>
+                
+                                
+                <field name="name" required="1"/>
+                
+                                
+                <field name="icon" placeholder="E.g fa fa-home"/>
+                
+                                
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                
+                            
+            </group>
+            
+                            
+            <group>
+                
+                                
+                <field name="code"/>
+                
+                                
+                <field name="parent_id"/>
+                
+                            
+            </group>
+            
+                            
+            <group>
+                
+                            
+                <!-- <label name="Description" for="desc"/> -->
+                
+                            
+                <field name="desc" placeholder="Description..." nolabel="1"/>
+                
+                        
+            </group>
+            
+                        
+        </group>
+        
+
+                    
+    </sheet>
+    
+                
+</form>
+        </field>
+    </record>
+
+    <record id="view_op_course_form_onboard" model="ir.ui.view">
+        <field name="name">op.course.form</field>
+        <field name="model">op.course</field>
+        <field name="type">form</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<form string="Course">
+    
+                
+    <sheet>
+        
+                    
+        <group>
+            
+                        
+            <group class="course_info">
+                
+                            
+                <field name="name"/>
+                
+                            
+                <field name="code"/>
+                
+                        
+            </group>
+            
+                    
+        </group>
+        
+                    
+        <group class="pt-3">
+            
+                        
+            <group name="main">
+                
+                            
+                <field name="evaluation_type"/>
+                
+                            
+                <field name="min_unit_load"/>
+                
+                            
+                <field name="department_id" groups="openeducat_core.group_multi_department"/>
+                
+                        
+            </group>
+            
+                        
+            <group>
+                
+                            
+                <field name="parent_id"/>
+                
+                            
+                <field name="max_unit_load"/>
+                
+                        
+            </group>
+            
+                    
+        </group>
+        
+                    
+        <notebook>
+            
+                        
+            <page string="Subjects" name="subject">
+                
+                            
+                <field name="subject_ids" nolabel="1" readonly="1">
+                            </field>
+                
+                        
+            </page>
+            
+                    
+        </notebook>
+        
+                
+    </sheet>
+    
+                
+    <footer>
+        
+                    
+        <button string="Apply" class="btn btn-primary" type="object" name="action_onboarding_course_step"/>
+        
+                
+    </footer>
+    
+            
+</form>
+        </field>
+    </record>
+
+    <record id="view_op_course_plan_form" model="ir.ui.view">
+        <field name="name">op.course.plan.form</field>
+        <field name="model">op.course.plan</field>
+        <field name="type">form</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<form string="course plan">
+    
+                    
+    <header/>
+    
+                    
+    <sheet>
+        
+                        
+        <div class="oe_button_box" name="button_box">
+            
+                            
+            <button class="oe_stat_button" name="get_subject_configure" type="object" icon="fa-book">
+                
+                                
+                <field string="Configure Subject" name="subject_configure_count" widget="statinfo"/>
+                
+                            
+            </button>
+            
+                        
+        </div>
+        
+                        
+        <group>
+            
+                            
+            <group>
+                
+                                
+                <field name="name"/>
+                
+                                
+                <field name="course_id" domain="[('id', 'in', course_ids)]"/>
+                
+                            
+            </group>
+            
+                            
+            <group>
+                
+                                
+                <field name="academic_term_id"/>
+                
+                                
+                <field name="academic_plan_id" invisible="1"/>
+                
+
+                            
+            </group>
+            
+                            
+            <notebook>
+                
+                                
+                <page string="Configure Subjects">
+                    
+                                    
+                    <field name="subject_faculty_line" nolabel="1">
+                        
+                                        
+                        <list>
+                            
+                                            
+                            <field name="academic_plan_id" optional="hide"/>
+                            
+                                            
+                            <field name="subject_id"/>
+                            
+                                            
+                            <field name="credit"/>
+                            
+                                            
+                            <field name="faculty_id" options="{'no_create': True}"/>
+                            
+                                            
+                            <field name="total_lectures"/>
+                            
+                                            
+                            <field name="total_lab"/>
+                            
+                                            
+                            <field name="tuition"/>
+                            
+                                            
+                            <field name="total_marks"/>
+                            
+                                        
+                        </list>
+                        
+                                        
+                        <form string="Subject">
+                            
+                                            
+                            <sheet>
+                                
+                                                
+                                <group>
+                                    
+                                                    
+                                    <group>
+                                        
+                                                        
+                                        <field name="academic_plan_id" invisible="1"/>
+                                        
+                                                        
+                                        <field name="subject_ids" invisible="1"/>
+                                        
+                                                        
+                                        <field name="subject_id" domain="[('course_id', '=', parent.course_id)]" options="{'no_create': True}"/>
+                                        
+                                                        
+                                        <field name="credit"/>
+                                        
+                                                        
+                                        <field name="company_id" invisible="1"/>
+                                        
+                                                        
+                                        <field name="total_lab"/>
+                                        
+                                                        
+                                        <field name="total_marks" readonly="1"/>
+                                        
+                                                    
+                                    </group>
+                                    
+                                                    
+                                    <group>
+                                        
+                                                        
+                                        <field name="faculty_id" options="{'no_create': True}" required="True"/>
+                                        
+                                                        
+                                        <field name="total_lectures"/>
+                                        
+                                                        
+                                        <field name="tuition"/>
+                                        
+                                                        
+                                        <field name="subject_type"/>
+                                        
+                                                    
+                                    </group>
+                                    
+                                                    
+                                    <notebook>
+                                        
+                                                        
+                                        <page string="Marks Line">
+                                            
+                                                            
+                                            <field name="marks_line">
+                                                
+                                                                
+                                                <list editable="top">
+                                                    
+                                                                    
+                                                    <field name="assessment_type_id"/>
+                                                    
+                                                                    
+                                                    <field name="maximum_marks"/>
+                                                    
+                                                                    
+                                                    <field name="passing_marks"/>
+                                                    
+                                                                
+                                                </list>
+                                                
+                                                                
+                                                <form>
+                                                    
+                                                                    
+                                                    <group>
+                                                        
+                                                                        
+                                                        <group>
+                                                            
+                                                                            
+                                                            <field name="assessment_type_id"/>
+                                                            
+                                                                        
+                                                        </group>
+                                                        
+                                                                        
+                                                        <group>
+                                                            
+                                                                            
+                                                            <field name="maximum_marks"/>
+                                                            
+                                                                            
+                                                            <field name="passing_marks"/>
+                                                            
+                                                                            
+                                                            <field name="subject_faculty_id" invisible="1"/>
+                                                            
+                                                                        
+                                                        </group>
+                                                        
+                                                                    
+                                                    </group>
+                                                    
+                                                                
+                                                </form>
+                                                
+                                                            
+                                            </field>
+                                            
+                                                        
+                                        </page>
+                                        
+                                                        
+                                        <page string="Topics">
+                                            
+                                                            
+                                            <field name="topics_line" nolabel="1">
+                                                
+                                                                
+                                                <list editable="top">
+                                                    
+                                                                    
+                                                    <field name="name"/>
+                                                    
+                                                                    
+                                                    <field name="parent_id"/>
+                                                    
+                                                                    
+                                                    <field name="description"/>
+                                                    
+                                                                    
+                                                    <field name="academic_plan_id" optional="hide"/>
+                                                    
+                                                                
+                                                </list>
+                                                
+                                                                
+                                                <form string="Topics">
+                                                    
+                                                                    
+                                                    <sheet>
+                                                        
+                                                                        
+                                                        <group>
+                                                            
+                                                                            
+                                                            <group>
+                                                                
+                                                                                
+                                                                <field name="name"/>
+                                                                
+                                                                                
+                                                                <field name="parent_id"/>
+                                                                
+                                                                            
+                                                            </group>
+                                                            
+                                                                            
+                                                            <group>
+                                                                
+                                                                                
+                                                                <field name="academic_plan_id" invisible="1"/>
+                                                                
+                                                                                
+                                                                <field name="description"/>
+                                                                
+                                                                            
+                                                            </group>
+                                                            
+                                                                        
+                                                        </group>
+                                                        
+                                                                    
+                                                    </sheet>
+                                                    
+                                                                
+                                                </form>
+                                                
+                                                            
+                                            </field>
+                                            
+                                                        
+                                        </page>
+                                        
+                                                    
+                                    </notebook>
+                                    
+                                                
+                                </group>
+                                
+                                            
+                            </sheet>
+                            
+                                        
+                        </form>
+                        
+                                    
+                    </field>
+                    
+                                
+                </page>
+                
+                            
+            </notebook>
+            
+                        
+        </group>
+        
+                    
+    </sheet>
+    
+                    
+    <chatter/>
+    
+                
+</form>
+        </field>
+    </record>
+
+    <record id="view_op_intake_year_form" model="ir.ui.view">
+        <field name="name">op.intake.year.form</field>
+        <field name="model">op.intake.year</field>
+        <field name="type">form</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<form string="Intake Year">
+    
+                    
+    <header/>
+    
+                    
+    <sheet>
+        
+                        
+        <div name="button_box" class="oe_button_box">
+                        </div>
+        
+                        
+        <field name="active" invisible="1"/>
+        
+                        
+        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active == True"/>
+        
+                        
+        <group>
+            
+                            
+            <group>
+                
+                                
+                <field name="name"/>
+                
+                                
+                <field name="start_date" required="1"/>
+                
+                                
+                <field name="company_id"/>
+                
+                            
+            </group>
+            
+                            
+            <group>
+                
+                                
+                <field name="academic_year_id"/>
+                
+                                
+                <field name="end_date" required="1"/>
+                
+                            
+            </group>
+            
+                        
+        </group>
+        
+                    
+    </sheet>
+    
+                    
+    <chatter/>
+    
+                
+</form>
+        </field>
+    </record>
+
+    <record id="view_op_section_form" model="ir.ui.view">
+        <field name="name">op.section.form</field>
+        <field name="model">op.section</field>
+        <field name="type">form</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<form string="Section">
+    
+                    
+    <sheet>
+        
+                        
+        <group>
+            
+                            
+            <group>
+                
+                                
+                <field name="name"/>
+                
+                                
+                <field name="batch_ids" widget="many2many_tags"/>
+                
+                                
+                <field name="company_id" groups="base.group_multi_company"/>
+                
+                            
+            </group>
+            
+                            
+            <group>
+                
+                                
+                <field name="course_ids" widget="many2many_tags"/>
+                
+                                
+                <field name="subject_id"/>
+                
+                            
+            </group>
+            
+                        
+        </group>
+        
+                        
+        <notebook>
+            
+                            
+            <page string="Student" name="student">
+                
+                                
+                <field name="student_course_ids" nolabel="1" domain="[('course_id', '=', course_ids),('batch_id','=',batch_ids)]"/>
+                
+                            
+            </page>
+            
+                        
+        </notebook>
+        
+                    
+    </sheet>
+    
+                
+</form>
+        </field>
+    </record>
+
+    <record id="view_op_specialization_form" model="ir.ui.view">
+        <field name="name">op.specialization.form</field>
+        <field name="model">op.specialization</field>
+        <field name="type">form</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<form string="Specializations">
+    
+                    
+    <header/>
+    
+                    
+    <sheet>
+        
+                        
+        <div name="button_box" class="oe_button_box">
+                        </div>
+        
+                        
+        <field name="active" invisible="1"/>
+        
+                        
+        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active == True"/>
+        
+                        
+        <group>
+            
+                            
+            <group>
+                
+                                
+                <field name="name"/>
+                
+                                
+                <field name="area_id"/>
+                
+                            
+            </group>
+            
+                            
+            <group>
+                
+                                
+                <field name="code"/>
+                
+                                
+                <field name="company_id"/>
+                
+                            
+            </group>
+            
+                        
+        </group>
+        
+                    
+    </sheet>
+    
+                    
+    <chatter/>
+    
+                
+</form>
+        </field>
+    </record>
+
+    <record id="viewop_subject_faculty_form" model="ir.ui.view">
+        <field name="name">op.subject.faculty.form</field>
+        <field name="model">op.subject.faculty</field>
+        <field name="type">form</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<form string="course plan">
+    
+                    
+    <header/>
+    
+                    
+    <sheet>
+        
+                        
+        <div class="oe_button_box" name="button_box">
+                        </div>
+        
+                        
+        <group>
+            
+                            
+            <group>
+                
+                                
+                <field name="subject_id" domain="[('id', 'in', subject_ids)]"/>
+                
+                                
+                <field name="subject_type"/>
+                
+                                
+                <field name="tuition"/>
+                
+                                
+                <field name="total_lab"/>
+                
+                                
+                <field name="credit"/>
+                
+                                
+                <field name="sequence" readonly="1"/>
+                
+                            
+            </group>
+            
+                            
+            <group>
+                
+                                
+                <field name="faculty_id"/>
+                
+                                
+                <field name="total_lectures"/>
+                
+                                
+                <field name="academic_plan_id" required="0"/>
+                
+                                
+                <field name="course_plan_id"/>
+                
+                                
+                <field name="total_marks"/>
+                
+                            
+            </group>
+            
+                            
+            <notebook>
+                
+                                
+                <page string="Marks Line">
+                    
+                                    
+                    <field name="marks_line">
+                        
+                                        
+                        <list editable="top">
+                            
+                                            
+                            <field name="assessment_type_id"/>
+                            
+                                            
+                            <field name="maximum_marks"/>
+                            
+                                            
+                            <field name="passing_marks"/>
+                            
+                                        
+                        </list>
+                        
+                                        
+                        <form>
+                            
+                                            
+                            <group>
+                                
+                                                
+                                <group>
+                                    
+                                                    
+                                    <field name="assessment_type_id"/>
+                                    
+                                                
+                                </group>
+                                
+                                                
+                                <group>
+                                    
+                                                    
+                                    <field name="maximum_marks"/>
+                                    
+                                                    
+                                    <field name="passing_marks"/>
+                                    
+                                                    
+                                    <field name="subject_faculty_id" invisible="1"/>
+                                    
+                                                
+                                </group>
+                                
+                                            
+                            </group>
+                            
+                                        
+                        </form>
+                        
+                                    
+                    </field>
+                    
+                                
+                </page>
+                
+                                
+                <page string="Topics">
+                    
+                                    
+                    <field name="topics_line" nolabel="1">
+                        
+                                        
+                        <list editable="top">
+                            
+                                            
+                            <field name="name"/>
+                            
+                                            
+                            <field name="parent_id"/>
+                            
+                                            
+                            <field name="description"/>
+                            
+                                            
+                            <field name="academic_plan_id" optional="hide"/>
+                            
+                                        
+                        </list>
+                        
+                                        
+                        <form string="Topics">
+                            
+                                            
+                            <sheet>
+                                
+                                                
+                                <group>
+                                    
+                                                    
+                                    <group>
+                                        
+                                                        
+                                        <field name="name"/>
+                                        
+                                                        
+                                        <field name="parent_id"/>
+                                        
+                                                    
+                                    </group>
+                                    
+                                                    
+                                    <group>
+                                        
+                                                        
+                                        <field name="academic_plan_id" invisible="1"/>
+                                        
+                                                        
+                                        <field name="description"/>
+                                        
+                                                    
+                                    </group>
+                                    
+                                                
+                                </group>
+                                
+                                            
+                            </sheet>
+                            
+                                        
+                        </form>
+                        
+                                    
+                    </field>
+                    
+                                
+                </page>
+                
+                            
+            </notebook>
+            
+                        
+        </group>
+        
+                    
+    </sheet>
+    
+                
+</form>
+        </field>
+    </record>
+
+    <record id="view_op_subject_form_onboard" model="ir.ui.view">
+        <field name="name">op.subject.form</field>
+        <field name="model">op.subject</field>
+        <field name="type">form</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<form string="Subject">
+    
+                
+    <sheet>
+        
+                    
+        <group>
+            
+                        
+            <group>
+                
+                            
+                <field name="name"/>
+                
+                            
+                <field name="type"/>
+                
+                            
+                <field name="subject_type"/>
+                
+                            
+                <field name="department_id" groups="openeducat_core.group_multi_department"/>
+                
+                        
+            </group>
+            
+                        
+            <group>
+                
+                            
+                <field name="code"/>
+                
+                            
+                <field name="grade_weightage"/>
+                
+                        
+            </group>
+            
+                    
+        </group>
+        
+                
+    </sheet>
+    
+                
+    <footer>
+        
+                    
+        <button string="Apply" class="btn btn-primary" type="object" name="action_onboarding_subject_step"/>
+        
+                
+    </footer>
+    
+            
+</form>
+        </field>
+    </record>
+
+    <record id="op_faculty_from_view_inherited" model="ir.ui.view">
+        <field name="name">op.faculty.form.view.inherited</field>
+        <field name="model">op.faculty</field>
+        <field name="type">form</field>
+        <field name="priority">9</field>
+        <field name="inherit_id" ref="op.faculty.form"/>
+        <field name="arch" type="xml">
+<data>
+    <xpath expr="//div[@name='button_box']" position="inside">
+        
+                
+        <button class="btn oe_stat_button" type="object" name="get_courses" style="border-right: 1px solid;" icon="fa-book" string="Courses">
+            
+                    
+            <field string="Courses" name="course_count" widget="statinfo"/>
+            
+                
+        </button>
+        
+                
+        <button class="btn oe_stat_button" type="object" name="get_subjects" style="border-right: 1px solid;" icon="fa-pencil-square-o">
+            
+                    
+            <field string="Subjects" name="subject_count" widget="statinfo"/>
+            
+                
+        </button>
+        
+            
+    </xpath>
+    
+            
+    <xpath expr="//field[@name='emergency_contact']" position="after">
+        
+                
+        <field name="company_id" groups="base.group_multi_company" optional="show"/>
+        
+            
+    </xpath>
+    
+        
+</data>
+        </field>
+    </record>
+
+    <record id="op_student_badge_form_view" model="ir.ui.view">
+        <field name="name">Badge Form</field>
+        <field name="model">op.gamification.badge</field>
+        <field name="type">form</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<form string="Badge">
+    
+                    
+    <header>
+        
+                        
+        <button string="Grant this Badge" type="action" name="1010" class="oe_highlight"/>
+        
+                    
+    </header>
+    
+                    
+    <sheet>
+        
+                        
+        <div class="oe_button_box" name="button_box"/>
+        
+                        
+        <field name="image" widget="image" class="oe_avatar"/>
+        
+                        
+        <div class="oe_title">
+            
+                            
+            <label for="name" class="oe_edit_only"/>
+            
+                            
+            <h1>
+                <field name="name" placeholder="Badge Name"/>
+            </h1>
+            
+                        
+        </div>
+        
+                        
+        <field name="description" nolabel="1" placeholder="Badge Description"/>
+        
+                    
+    </sheet>
+    
+                
+</form>
+        </field>
+    </record>
+
+    <record id="academic_calendar_form_view" model="ir.ui.view">
+        <field name="name">calendar.event.inherited.form.view</field>
+        <field name="model">calendar.event</field>
+        <field name="type">form</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="calendar.event.form"/>
+        <field name="arch" type="xml">
+<data>
+    <!-- <xpath expr="//sheet" position="before">
+                    <header/>
+                </xpath> -->
+    
+                
+    <xpath expr="//group[1]/group[2]" position="inside">
+        
+                    
+        <field name="academic_calendar" string="Academic?" invisible="1"/>
+        
+                    
+        <field name="course_ids" widget="many2many_tags"/>
+        
+                    
+        <field name="batch_ids" required="academic_calendar == True" widget="many2many_tags"/>
+        
+                
+    </xpath>
+    
+                
+    <xpath expr="//div[hasclass('d-flex', 'align-items-baseline')]" position="attributes">
+        
+                    
+        <attribute name="style">height: 175px;overflow-y: auto !important;</attribute>
+        
+                
+    </xpath>
+    
+            
+</data>
+        </field>
+    </record>
+
+    <record id="view_student_badge_wizard_grant" model="ir.ui.view">
+        <field name="name">Grant Badge User Form</field>
+        <field name="model">op.badge.student.wizard</field>
+        <field name="type">form</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<form string="Grant Badge To">
+    
+                
+    <sheet>
+        
+                    
+        <group>
+            
+                        
+            <field name="badge_id" invisible="1"/>
+            
+                        
+            <label for="student_id" string="Who would you like to reward?" class="mt-3"/>
+            
+                        
+            <field name="student_id" nolabel="1"/>
+            
+                        
+            <label for="comment" string="Describe what they did and why it matters." class="mt-3"/>
+            
+                        
+            <field name="comment" nolabel="1"/>
+            
+                    
+        </group>
+        
+                
+    </sheet>
+    
+                
+    <footer>
+        
+                    
+        <button string="Grant Badge" type="object" name="action_grant_badge" class="btn-primary"/>
+        
+                    
+        <button string="Cancel" special="cancel" class="btn btn-secondary"/>
+        
+                
+    </footer>
+    
+            
+</form>
+        </field>
+    </record>
+
+    <record id="view_op_batch_inherited_form_view" model="ir.ui.view">
+        <field name="name">op.batch.form</field>
+        <field name="model">op.batch</field>
+        <field name="type">form</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="op.batch.form"/>
+        <field name="arch" type="xml">
+<data>
+    <xpath expr="//field[@name='end_date']" position="after">
+        
+                    
+        <field name="company_id" groups="base.group_multi_company" optional="show"/>
+        
+                
+    </xpath>
+    
+                
+    <xpath expr="//sheet" position="inside">
+        
+                    
+        <div class="oe_button_box" name="button_box">
+            
+                        
+            <button class="oe_stat_button" name="1015" type="action" icon="fa-users">
+                
+                            
+                <field string="Students" name="student_count" widget="statinfo"/>
+                
+                        
+            </button>
+            
+                    
+        </div>
+        
+                
+    </xpath>
+    
+            
+</data>
+        </field>
+    </record>
+
+    <record id="view_op_course_inherited_form_view" model="ir.ui.view">
+        <field name="name">op.course.form</field>
+        <field name="model">op.course</field>
+        <field name="type">form</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="op.course.form"/>
+        <field name="arch" type="xml">
+<data>
+    <xpath expr="//div[@name='button_box']" position="inside">
+        
+                
+        <button class="btn oe_stat_button" type="object" name="get_subject" style="border-right: 1px solid;" icon="fa-book">
+            
+                    
+            <field string="Subjects" name="subject_count" widget="statinfo"/>
+            
+                
+        </button>
+        
+                
+        <button class="btn oe_stat_button" type="object" name="get_faculty" style="border-right: 1px solid;" icon="fa-users">
+            
+                    
+            <field string="Faculties" name="faculty_count" widget="statinfo"/>
+            
+                
+        </button>
+        
+
+                
+        <button class="btn oe_stat_button" type="action" name="1016" style="border-right: 1px solid;" icon="fa-users">
+            
+                    
+            <field string="Students" name="student_count" widget="statinfo"/>
+            
+                
+        </button>
+        
+            
+    </xpath>
+    
+            
+    <xpath expr="//field[@name='min_unit_load']" position="after">
+        
+                
+        <field name="company_id" groups="base.group_multi_company" optional="show"/>
+        
+            
+    </xpath>
+    
+            
+    <xpath expr="//div[@name='combine']" position="inside">
+        
+            
+        <div class="col-3">
+            
+                
+            <field name="course_image" widget="image" class="oe_right oe_avatar"/>
+            
+                
+        </div>
+        
+            
+    </xpath>
+    
+            
+    <xpath expr="//field[@name='max_unit_load']" position="after">
+        
+                
+        <field name="area_id"/>
+        
+                
+        <field name="specialization_id"/>
+        
+            
+    </xpath>
+    
+        
+</data>
+        </field>
+    </record>
+
+    <record id="openeducat_department_form_view_inherit" model="ir.ui.view">
+        <field name="name">op.department.form</field>
+        <field name="model">op.department</field>
+        <field name="type">form</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="op.department.form"/>
+        <field name="arch" type="xml">
+<data>
+    <xpath expr="//sheet" position="inside">
+        
+                    
+        <div class="oe_button_box" name="button_box">
+            
+                        
+            <button class="oe_stat_button" name="1034" type="action" icon="fa-book">
+                
+                            
+                <field string="Courses" name="course_count" widget="statinfo"/>
+                
+                        
+            </button>
+            
+                        
+            <button class="oe_stat_button" name="1039" type="action" icon="fa-users">
+                
+                            
+                <field string="Faculties" name="faculty_count" widget="statinfo"/>
+                
+                        
+            </button>
+            
+                        
+            <button class="oe_stat_button" name="1038" type="action" icon="fa-users">
+                
+                            
+                <field string="Students" name="student_count" widget="statinfo"/>
+                
+                        
+            </button>
+            
+                        
+            <button class="oe_stat_button" name="1036" type="action" icon="fa-pencil-square-o">
+                
+                            
+                <field string="Subjects" name="subject_count" widget="statinfo"/>
+                
+                        
+            </button>
+            
+                        
+            <button class="oe_stat_button" name="1017" type="action" icon="fa-book">
+                
+                            
+                <field string="Batches" name="batch_count" widget="statinfo"/>
+                
+                        
+            </button>
+            
+                    
+        </div>
+        
+                
+    </xpath>
+    
+                
+    <xpath expr="//field[@name='code']" position="after">
+        
+                    
+        <field name="company_id"/>
+        
+                
+    </xpath>
+    
+            
+</data>
+        </field>
+    </record>
+
+    <record id="view_op_program_form_inherit" model="ir.ui.view">
+        <field name="name">op.program.form.inherit</field>
+        <field name="model">op.program</field>
+        <field name="type">form</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="op.program.form"/>
+        <field name="arch" type="xml">
+<data>
+    <xpath expr="//field[@name='min_unit_load']" position="after">
+        
+                    
+        <field name="area_id" required="True"/>
+        
+                
+    </xpath>
+    
+                
+    <xpath expr="//field[@name='max_unit_load']" position="after">
+        
+                    
+        <field name="company_id"/>
+        
+                
+    </xpath>
+    
+            
+</data>
+        </field>
+    </record>
+
+    <record id="view_op_student_course_form_inherit" model="ir.ui.view">
+        <field name="name">op.student.course.form.inherited</field>
+        <field name="model">op.student.course</field>
+        <field name="type">form</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="op.student.course.form"/>
+        <field name="arch" type="xml">
+<data>
+    <xpath expr="//field[@name='academic_term_id']" position="after">
+        
+                
+        <field name="faculty_advisor_id"/>
+        
+                
+        <field name="required_field" invisible="1"/>
+        
+                
+        <field name="user_id" invisible="1"/>
+        
+                
+        <field name="intake_year_id" groups="openeducat_core_enterprise.group_use_academic_plan"/>
+        
+            
+    </xpath>
+    
+            
+    <xpath expr="//page[@name='subjects']" position="attributes">
+        
+                
+        <attribute name="invisible">1</attribute>
+        
+            
+    </xpath>
+    
+            
+    <xpath expr="//page[@name='subjects']" position="after">
+        
+                
+        <page name="subjects" string="Subjects">
+            
+                    
+            <field name="subject_ids" nolabel="1" domain="[('course_id', '=', course_id)]"/>
+            
+                
+        </page>
+        
+            
+    </xpath>
+    
+            
+    <xpath expr="//field[@name='academic_years_id']" position="after">
+        
+                
+        <field name="academic_plan_id" required="required_field == True" groups="openeducat_core_enterprise.group_use_academic_plan" domain="[('course_plan_line.course_id','=',course_id),('stages_id.is_approve','=',True)]"/>
+        
+                
+        <field name="program_id" readonly="1"/>
+        
+            
+    </xpath>
+    
+        
+</data>
+        </field>
+    </record>
+
+    <record id="op_subject_from_view_inherited" model="ir.ui.view">
+        <field name="name">op.subject.form.inherited</field>
+        <field name="model">op.subject</field>
+        <field name="type">form</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="op.subject.form"/>
+        <field name="arch" type="xml">
+<data>
+    <xpath expr="//group[1]" position="before">
+        
+                    
+        <div class="oe_button_box" name="button_box" width="100%">
+                    </div>
+        
+                
+    </xpath>
+    
+
+                
+    <xpath expr="//field[@name='code']" position="after">
+        
+                    
+        <field name="course_id" required="1"/>
+        
+                
+    </xpath>
+    
+                
+    <xpath expr="//field[@name='grade_weightage']" position="after">
+        
+                    
+        <field name="company_id" groups="base.group_multi_company" optional="show"/>
+        
+                
+    </xpath>
+    
+                
+    <xpath expr="//field[@name='course_id']" position="after">
+        
+                    
+        <field name="credit_point"/>
+        
+                
+    </xpath>
+    
+            
+</data>
+        </field>
+    </record>
+
+    <record id="view_subject_registration_form_inherit" model="ir.ui.view">
+        <field name="name">op.subject.registration.form.inherit</field>
+        <field name="model">op.subject.registration</field>
+        <field name="type">form</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="op.subject.registration.form"/>
+        <field name="arch" type="xml">
+<data>
+    <xpath expr="//field[@name='min_unit_load']" position="after">
+        
+                
+        <field name="required_field" invisible="1"/>
+        
+                
+        <field name="user_id" invisible="1"/>
+        
+                
+        <field name="academic_plan_id" required="required_field == True" groups="openeducat_core_enterprise.group_use_academic_plan" domain="[('course_id','=',course_id),('state','=','approved')]"/>
+        
+                
+        <field name="cl_subject_ids" invisible="1"/>
+        
+                
+        <field name="el_subject_ids" invisible="1"/>
+        
+            
+    </xpath>
+    
+            
+    <xpath expr="//field[@name='compulsory_subject_ids']" position="attributes">
+        
+                
+        <attribute name="domain">
+                    [('id','in',cl_subject_ids)]
+                </attribute>
+        
+            
+    </xpath>
+    
+            
+    <xpath expr="//field[@name='elective_subject_ids']" position="attributes">
+        
+                
+        <attribute name="domain">
+                    [('id','in',el_subject_ids)]
+                </attribute>
+        
+            
+    </xpath>
+    
+        
+</data>
+        </field>
+    </record>
+
+    <record id="view_res_company_affiliation_form" model="ir.ui.view">
+        <field name="name">res.company.form</field>
+        <field name="model">res.company</field>
+        <field name="type">form</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="res.company.form"/>
+        <field name="arch" type="xml">
+<xpath expr="//notebook" position="inside">
+    
+                    
+    <page string="Board Affiliation">
+        
+                        
+        <field name="affiliation_ids"/>
+        
+                    
+    </page>
+    
+                
+</xpath>
+        </field>
+    </record>
+
+    <record id="op_student_course_allocation_view" model="ir.ui.view">
+        <field name="name">wizard.course.allocation.form</field>
+        <field name="model">wizard.course.allocation</field>
+        <field name="type">form</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<form string="Create Course Allocation">
+    
+                
+    <p class="oe_grey">Create Course Allocation For Selected Students</p>
+    
+                
+    <group>
+        
+                    
+        <group>
+            
+                        
+            <field name="course_id" required="1"/>
+            
+                        
+            <field name="batch_id" domain="[('course_id', '=', course_id)]" required="1"/>
+            
+                    
+        </group>
+        
+                
+    </group>
+    
+                
+    <separator string="Students" colspan="4"/>
+    
+                
+    <field name="student_ids" widget="many2many_tags"/>
+    
+                
+    <footer>
+        
+                    
+        <button string="Create Course Allocation" name="create_course_allocation" type="object" default_focus="1" class="oe_highlight"/>
+        
+                    
+        <button string="Cancel" class="btn-secondary ms-1" special="cancel"/>
+        
+                
+    </footer>
+    
+            
+</form>
+        </field>
+    </record>
+
+    <record id="res_config_setting_view_form_inherit" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="type">form</field>
+        <field name="priority">40</field>
+        <field name="inherit_id" ref="res.config.settings.view.form"/>
+        <field name="arch" type="xml">
+<xpath expr="//div[@id='invite_users']" position="after">
+    
+                
+    <h2>Global Users</h2>
+    
+
+                
+    <div class="row mt16 o_settings_container" title="Events of this user can be show in portal users.">
+        
+                    
+        <div class="col-12 col-lg-6 o_setting_box" title="It specifies achievement of student.">
+            
+                        
+            <div class="o_setting_left_pane">
+                        </div>
+            
+                        
+            <div class="o_setting_right_pane">
+                
+                            
+                <label for="global_calendar_user_id"/>
+                
+                            
+                <field name="global_calendar_user_id" string="Calendar User"/>
+                
+                            
+                <div class="text-muted">
+                                Events of this user can be show in portal users.
+                            </div>
+                
+                        
+            </div>
+            
+                    
+        </div>
+        
+                
+    </div>
+    
+
+            
+</xpath>
+        </field>
+    </record>
+
+    <record id="res_config_settings_view_inherit_for_academic_plan" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="type">form</field>
+        <field name="priority">40</field>
+        <field name="inherit_id" ref="res.config.settings.view.form.core"/>
+        <field name="arch" type="xml">
+<xpath expr="//div[@name='openeducat_achievement']" position="before">
+    
+                
+    <div class="col-12 col-lg-6 o_setting_box" title="Manage the academic planning process for students">
+        
+                    
+        <div class="o_setting_left_pane">
+            
+                        
+            <field name="enable_academic_plan"/>
+            
+                    
+        </div>
+        
+                    
+        <div class="o_setting_right_pane">
+            
+                        
+            <label for="enable_academic_plan"/>
+            
+                        
+            <span class="fa fa-info-circle" title="Openeducat Enterprise Module"/>
+            
+                        
+            <div class="text-muted">Manage Academic Plan.</div>
+            
+                    
+        </div>
+        
+                
+    </div>
+    
+            
+</xpath>
+        </field>
+    </record>
+</odoo>

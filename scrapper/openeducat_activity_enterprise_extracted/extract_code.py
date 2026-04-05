@@ -31,7 +31,7 @@ import requests
 # ─────────────────────────────────────────────────────────
 CONFIG = {
     "url": "https://abdelhadieddiraa46080.o19.oeducat.org",
-    "session_id": "zH45O4Rl3WcXndrJ2DzJ-iYJluj36Q9ynsu_P3gbBTwUL0tUsxqJAteXA0OyiLxAz0I-sw1lmEnVRamwVQC8",
+    "session_id": "mbngZtbqkBkb9dfGlvlNCUJjazlxMg1j3xawMFuvP82GV2oN25l6Z6EFwQ0mYdVrvFRL-F5frOGHaIvpzNS5",
     "output_dir": "./odoo_source_extracted",
 }
 # ─────────────────────────────────────────────────────────

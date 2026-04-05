@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="act_open_academic_plan_view" model="ir.actions.act_window">
+        <field name="name">Academic Plan</field>
+        <field name="res_model">op.academic.plan</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{'search_default_group_by_stages_id': 1}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="act_open_op_academic_plan_stages_view" model="ir.actions.act_window">
+        <field name="name">Academic Stages</field>
+        <field name="res_model">op.academic.plan.stages</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="act_open_op_area_view" model="ir.actions.act_window">
+        <field name="name">Area</field>
+        <field name="res_model">op.area</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="act_open_op_assessment_type_view" model="ir.actions.act_window">
+        <field name="name">Assessment Type</field>
+        <field name="res_model">op.assessment.type</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_group_by_parent_id': 1}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="student_badge_list_action" model="ir.actions.act_window">
+        <field name="name">Badges</field>
+        <field name="res_model">op.gamification.badge</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="act_dashboard_op_batch_view" model="ir.actions.act_window">
+        <field name="name">Batch</field>
+        <field name="res_model">op.batch</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('course_id.department_id','in',[active_id])]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="act_dashboard_op_batch_view_for_course_dashboard" model="ir.actions.act_window">
+        <field name="name">Batch</field>
+        <field name="res_model">op.batch</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('course_id','child_of',[active_id])]</field>
+        <field name="context">{'default_course_id': active_id}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="open_batch_dashboard_kanban" model="ir.actions.act_window">
+        <field name="name">Batch</field>
+        <field name="res_model">op.batch</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="action_onboarding_batch_layout" model="ir.actions.act_window">
+        <field name="name">Batch Configuration</field>
+        <field name="res_model">op.batch</field>
+        <field name="view_mode">form</field>
+        <field name="context">{}</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="open_program_batch_dashboard" model="ir.actions.act_window">
+        <field name="name">Batches</field>
+        <field name="res_model">op.batch</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('course_id.program_id','in',[active_id])]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="open_batch_department_dashboard" model="ir.actions.act_window">
+        <field name="name">Batches</field>
+        <field name="res_model">op.batch</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('course_id.department_id','in',[active_id])]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="act_open_op_board_affiliation_view" model="ir.actions.act_window">
+        <field name="name">Board Affiliation</field>
+        <field name="res_model">op.board.affiliation</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="child_course_dashboard_kanban" model="ir.actions.act_window">
+        <field name="name">Course</field>
+        <field name="res_model">op.course</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[('parent_id','=',context.get('active_id', False))]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="open_course_dashboard_kanban" model="ir.actions.act_window">
+        <field name="name">Course</field>
+        <field name="res_model">op.course</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[('parent_id','=',context.get('active_id', False))]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="open_program_courses_dashboard_kanban" model="ir.actions.act_window">
+        <field name="name">Course</field>
+        <field name="res_model">op.course</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[('program_id','in',[active_id])]</field>
+        <field name="context">{'default_program_id': active_id}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="open_course_department_dashboard_kanban" model="ir.actions.act_window">
+        <field name="name">Course</field>
+        <field name="res_model">op.course</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[('department_id','in',[active_id])]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="act_open_course_category_view" model="ir.actions.act_window">
+        <field name="name">Course Category</field>
+        <field name="res_model">op.course.category</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="action_onboarding_course_layout" model="ir.actions.act_window">
+        <field name="name">course Configuration</field>
+        <field name="res_model">op.course</field>
+        <field name="view_mode">form</field>
+        <field name="context">{}</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="act_open_op_course_plan_view" model="ir.actions.act_window">
+        <field name="name">Course Plan</field>
+        <field name="res_model">op.course.plan</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="act_openop_subject_faculty_view" model="ir.actions.act_window">
+        <field name="name">Course Plan</field>
+        <field name="res_model">op.subject.faculty</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="act_dashboard_op_course_view" model="ir.actions.act_window">
+        <field name="name">Courses</field>
+        <field name="res_model">op.course</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('id','in',[active_id])]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="open_department_dashboard_kanban" model="ir.actions.act_window">
+        <field name="name">Department</field>
+        <field name="res_model">op.department</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[('id', 'in', department_ids),('parent_id','=',context.get('active_id', False))]
+        </field>
+        <field name="context">{'department_ids': department_ids}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="open_faculty_department_dashboard" model="ir.actions.act_window">
+        <field name="name">Faculty</field>
+        <field name="res_model">op.faculty</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[('faculty_subject_ids.department_id','in',[active_id])]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="act_open_op_intake_year_view" model="ir.actions.act_window">
+        <field name="name">Intake Year</field>
+        <field name="res_model">op.intake.year</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="open_program_dashboard_kanban" model="ir.actions.act_window">
+        <field name="name">Program</field>
+        <field name="res_model">op.program</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="open_program_department_dashboard_kanban" model="ir.actions.act_window">
+        <field name="name">Program</field>
+        <field name="res_model">op.program</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[('department_id','in',[active_id])]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="op_section_view_1" model="ir.actions.act_window">
+        <field name="name">Section</field>
+        <field name="res_model">op.section</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'search_default_group_by_subject_id': 0}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="act_open_op_specialization_view" model="ir.actions.act_window">
+        <field name="name">Specializations</field>
+        <field name="res_model">op.specialization</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="student_course_allocation_view_act" model="ir.actions.act_window">
+        <field name="name">Student Course Allocation</field>
+        <field name="res_model">wizard.course.allocation</field>
+        <field name="view_mode">form</field>
+        <field name="context">{}</field>
+        <field name="target">new</field>
+        <field name="binding_model_id">Student</field>
+    </record>
+
+    <record id="act_op_student_course_analysis_pivot_view" model="ir.actions.act_window">
+        <field name="name">Student Course Analysis</field>
+        <field name="res_model">op.student.course</field>
+        <field name="view_mode">pivot</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="action_student_grant_wizard" model="ir.actions.act_window">
+        <field name="name">Student Grant Badge</field>
+        <field name="res_model">op.badge.student.wizard</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'default_badge_id': active_id, 'badge_id': active_id}</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="act_batch_dashboard_op_student_view" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">op.student</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('course_detail_ids.batch_id','in',[active_id])]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="act_course_dashboard_op_student_view" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">op.student</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('course_detail_ids.course_id','child_of',[active_id])]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="open_program_student_dashboard" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">op.student</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[('course_detail_ids.course_id.program_id','in',[active_id])]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="open_student_department_dashboard" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">op.student</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[('course_detail_ids.course_id.department_id','in',[active_id])]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="action_onboarding_subject_layout" model="ir.actions.act_window">
+        <field name="name">Subject Configuration</field>
+        <field name="res_model">op.subject</field>
+        <field name="view_mode">form</field>
+        <field name="context">{}</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="act_op_subject_registration_analysis_pivot_view" model="ir.actions.act_window">
+        <field name="name">Subject Registration Analysis</field>
+        <field name="res_model">op.subject.registration</field>
+        <field name="view_mode">pivot</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="act_dashboard_op_subject_view" model="ir.actions.act_window">
+        <field name="name">Subjects</field>
+        <field name="res_model">op.subject</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('course_id','child_of',[active_id])]</field>
+        <field name="context">{'default_course_id': active_id}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="open_program_subjects_dashboard" model="ir.actions.act_window">
+        <field name="name">Subjects</field>
+        <field name="res_model">op.subject</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('course_id.program_id','in',[active_id])]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="open_subject_department_dashboard" model="ir.actions.act_window">
+        <field name="name">Subjects</field>
+        <field name="res_model">op.subject</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('department_id','in',[active_id])]</field>
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+</odoo>

@@ -20,6 +20,7 @@ Usage:
     python gen_python.py                                   # all modules
 """
 
+import base64
 import sys
 import time
 from pathlib import Path
@@ -31,7 +32,7 @@ import requests
 # ─────────────────────────────────────────────────────────
 CONFIG = {
     "url": "https://abdelhadieddiraa46080.o19.oeducat.org",
-    "session_id": "zH45O4Rl3WcXndrJ2DzJ-iYJluj36Q9ynsu_P3gbBTwUL0tUsxqJAteXA0OyiLxAz0I-sw1lmEnVRamwVQC8",
+    "session_id": "mbngZtbqkBkb9dfGlvlNCUJjazlxMg1j3xawMFuvP82GV2oN25l6Z6EFwQ0mYdVrvFRL-F5frOGHaIvpzNS5",
     "output_dir": "./odoo_source_extracted",
 }
 # ─────────────────────────────────────────────────────────
@@ -375,11 +376,15 @@ def generate_manifest(mod: dict, dep_names: list) -> str:
         ",\n        ".join(f"'{d}'" for d in dep_names) if dep_names else "'base'"
     )
 
+    images_str = ""
+    if mod.get("icon_image"):
+        images_str = "    'images': ['static/description/icon.png'],\n"
+
     return f"""# -*- coding: utf-8 -*-
 # AUTO-GENERATED — reconstructed from Odoo database metadata
 {{
     'name': '{name}',
-    'version': '{version}',
+{images_str}    'version': '{version}',
     'summary': '{summary}',
     'description': \"\"\"
         {summary}
@@ -427,6 +432,7 @@ def fetch_module_info(module_name):
                 "application",
                 "auto_install",
                 "dependencies_id",
+                "icon_image",
             ],
             "limit": 1,
         },
@@ -569,6 +575,17 @@ def generate_module(module_name, out_base):
 
     out_dir = out_base / module_name
     out_dir.mkdir(parents=True, exist_ok=True)
+
+    # Icon
+    icon_b64 = mod.get("icon_image")
+    if icon_b64:
+        icon_dir = out_dir / "static" / "description"
+        icon_dir.mkdir(parents=True, exist_ok=True)
+        try:
+            icon_data = base64.b64decode(icon_b64)
+            (icon_dir / "icon.png").write_bytes(icon_data)
+        except Exception as e:
+            print(f"     ⚠️  Failed to save icon: {e}")
 
     # __manifest__.py
     save(out_dir / "__manifest__.py", generate_manifest(mod, dep_names))

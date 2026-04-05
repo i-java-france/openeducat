@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="op_academic_plan_sequence" model="ir.sequence">
+        <field name="name">Academic Plan</field>
+        <field name="code">op.academic.plan</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+        <field name="number_next_actual">6</field>
+    </record>
+
+    <record id="op_assessment_type_sequence" model="ir.sequence">
+        <field name="name">Assessment Type</field>
+        <field name="code">op.assessment.type</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+        <field name="number_next_actual">7</field>
+    </record>
+
+    <record id="op_faculty_line_sequence" model="ir.sequence">
+        <field name="name">Faculty Line</field>
+        <field name="code">op.faculty.line</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+        <field name="number_next_actual">9</field>
+    </record>
+</odoo>

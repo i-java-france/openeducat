@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_op_boarding_tree" model="ir.ui.view">
+        <field name="name">oe.onboarding.plan</field>
+        <field name="model">oe.onboarding.plan</field>
+        <field name="type">list</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<list create="false">
+    
+                
+    <field name="name"/>
+    
+            
+</list>
+        </field>
+    </record>
+</odoo>

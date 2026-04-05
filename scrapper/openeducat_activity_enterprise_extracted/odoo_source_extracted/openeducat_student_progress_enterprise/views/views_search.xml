@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_op_student_progression_search" model="ir.ui.view">
+        <field name="name">op.student.progression.search</field>
+        <field name="model">op.student.progression</field>
+        <field name="type">search</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+<search string="Progression Records">
+    
+                    
+    <field name="student_id" select="True"/>
+    
+                    
+    <field name="date" select="True"/>
+    
+                    
+    <field name="created_by" select="True"/>
+    
+                    
+    <field name="state" select="True"/>
+    
+                    
+    <newline/>
+    
+                    
+    <filter string="Today" name="today" domain="[('date', '&gt;=', time.strftime('%Y-%m-%d 00:00:00')),('date', '&lt;=', time.strftime('%Y-%m-%d 23:59:59'))]"/>
+    
+                    
+    <filter string="Week" name="week" domain="['&amp;',('date', '&gt;=', (context_today() + relativedelta(weeks=-1,days=1,weekday=0)).strftime('%Y-%m-%d')),('date', '&lt;=', (context_today() + relativedelta(weekday=6)).strftime('%Y-%m-%d'))]"/>
+    
+                    
+    <filter string="Month" name="month" domain="[('date','&gt;=', context_today().strftime('%Y-%m-1')), ('date','&lt;', ((context_today() + relativedelta(months=1)).strftime('%Y-%m-1')) )]"/>
+    
+                    
+    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+    
+                    
+    <group>
+        
+                        
+        <filter string="Student" name="group_by_student" domain="[]" context="{'group_by':'student_id'}"/>
+        
+                        
+        <filter string="Created By" name="group_by_created" domain="[]" context="{'group_by':'created_by'}"/>
+        
+                        
+        <filter string="State" name="group_by_state" domain="[]" context="{'group_by':'state'}"/>
+        
+                    
+    </group>
+    
+                
+</search>
+        </field>
+    </record>
+</odoo>

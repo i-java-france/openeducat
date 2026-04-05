@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_academic_plan_search" model="ir.ui.view">
+        <field name="name">op.academic.plan.search</field>
+        <field name="model">op.academic.plan</field>
+        <field name="type">search</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<search>
+    
+                
+    <field name="active"/>
+    
+                
+    <field name="academic_year_id"/>
+    
+                
+    <newline/>
+    
+                
+    <group>
+        
+                    
+        <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+        
+                    
+        <filter string="Stages" name="group_by_stages_id" domain="[]" context="{'group_by':'stages_id'}"/>
+        
+                    
+        <!-- <filter string="Course" name="group_by_course_id"
+                            domain="[]" context="{'group_by':'course_id'}"/> -->
+        
+                    
+        <!-- <filter string="Academic term" name="group_by_academic_term_id"
+                            domain="[]" context="{'group_by':'academic_term_id'}"/> -->
+        
+                    
+        <filter string="Academic Year" name="group_by_academic_year_id" domain="[]" context="{'group_by':'academic_year_id'}"/>
+        
+                
+    </group>
+    
+            
+</search>
+        </field>
+    </record>
+
+    <record id="view_op_area_search" model="ir.ui.view">
+        <field name="name">op.area.search</field>
+        <field name="model">op.area</field>
+        <field name="type">search</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<search string="Program">
+    
+                    
+    <field name="name"/>
+    
+                    
+    <field name="code"/>
+    
+                    
+    <field name="company_id"/>
+    
+                    
+    <field name="active"/>
+    
+                    
+    <newline/>
+    
+                    
+    <group>
+        
+                        
+        <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+        
+                        
+        <filter string="Company" name="company" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+        
+                    
+    </group>
+    
+                
+</search>
+        </field>
+    </record>
+
+    <record id="view_op_assessment_type_search" model="ir.ui.view">
+        <field name="name">op.assessment.type.search</field>
+        <field name="model">op.assessment.type</field>
+        <field name="type">search</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<search>
+    
+                    
+    <newline/>
+    
+                    
+    <group>
+        
+                        
+        <filter string="Parent" name="group_by_parent_id" domain="[]" context="{'group_by':'parent_id'}"/>
+        
+                    
+    </group>
+    
+                
+</search>
+        </field>
+    </record>
+
+    <record id="view_course_category_search" model="ir.ui.view">
+        <field name="name">op.course.category.search</field>
+        <field name="model">op.course.category</field>
+        <field name="type">search</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<search string="Course Category">
+    
+                    
+    <field name="name" select="True"/>
+    
+                    
+    <field name="code"/>
+    
+                    
+    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+    
+                
+</search>
+        </field>
+    </record>
+
+    <record id="view_op_intake_year_search" model="ir.ui.view">
+        <field name="name">op.intake.year.search</field>
+        <field name="model">op.intake.year</field>
+        <field name="type">search</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<search string="Intake Year">
+    
+                    
+    <field name="name"/>
+    
+                    
+    <field name="academic_year_id"/>
+    
+                    
+    <field name="company_id"/>
+    
+                    
+    <field name="active"/>
+    
+                    
+    <newline/>
+    
+                    
+    <group>
+        
+                        
+        <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+        
+                        
+        <filter string="Academic Year" name="group_by_academic_year" domain="[]" context="{'group_by':'academic_year_id'}"/>
+        
+                        
+        <filter string="Company" name="group_by_company" domain="[]" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+        
+                    
+    </group>
+    
+                
+</search>
+        </field>
+    </record>
+
+    <record id="op_section_search_view" model="ir.ui.view">
+        <field name="name">op.section.search.view</field>
+        <field name="model">op.section</field>
+        <field name="type">search</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<search string="Section">
+    
+                    
+    <field name="subject_id"/>
+    
+                    
+    <filter name="subject_id" string="Subject" domain="[]"/>
+    
+                    
+    <group>
+        
+                        
+        <filter name="group_by_subject_id" string="Subjects" domain="[]" context="{'group_by':'subject_id'}"/>
+        
+                    
+    </group>
+    
+                
+</search>
+        </field>
+    </record>
+
+    <record id="view_op_specialization_search" model="ir.ui.view">
+        <field name="name">op.specialization.search</field>
+        <field name="model">op.specialization</field>
+        <field name="type">search</field>
+        <field name="priority">8</field>
+        <field name="arch" type="xml">
+<search string="Specializations">
+    
+                    
+    <field name="name"/>
+    
+                    
+    <field name="code"/>
+    
+                    
+    <field name="area_id"/>
+    
+                    
+    <field name="company_id"/>
+    
+                    
+    <field name="active"/>
+    
+                    
+    <newline/>
+    
+                    
+    <group>
+        
+                        
+        <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+        
+                        
+        <filter string="Area" name="group_by_area" domain="[]" context="{'group_by':'area_id'}"/>
+        
+                        
+        <filter string="Company" name="company" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+        
+                    
+    </group>
+    
+                
+</search>
+        </field>
+    </record>
+
+    <record id="view_op_program_search_inherit" model="ir.ui.view">
+        <field name="name">op.program.search.inherit</field>
+        <field name="model">op.program</field>
+        <field name="type">search</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="op.program.search"/>
+        <field name="arch" type="xml">
+<data>
+    <xpath expr="//field[@name='active']" position="after">
+        
+                    
+        <field name="company_id"/>
+        
+                
+    </xpath>
+    
+                
+    <xpath expr="//group//filter[@name='inactive']" position="after">
+        
+                    
+        <filter string="Company" name="group_by_company" domain="[]" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+        
+                
+    </xpath>
+    
+            
+</data>
+        </field>
+    </record>
+
+    <record id="op_subject_search_view_inherited" model="ir.ui.view">
+        <field name="name">op.subject.search.inherited</field>
+        <field name="model">op.subject</field>
+        <field name="type">search</field>
+        <field name="priority">16</field>
+        <field name="inherit_id" ref="op.subject.search"/>
+        <field name="arch" type="xml">
+<xpath expr="." position="inside">
+    
+                    
+    <searchpanel>
+        
+                        
+        <field name="course_id" icon="fa fa-book"/>
+        
+                    
+    </searchpanel>
+    
+                
+</xpath>
+        </field>
+    </record>
+</odoo>

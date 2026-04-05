@@ -1,0 +1,41 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_op_academic_plan_stages_back_office_admin,access_op_academic_plan_stages_back_office_admin,Academic plan Stages,OpenEduCat / Manager,1,1,1,1
+access_op_academic_plan_stages_faculty,access_op_academic_plan_stages_faculty,Academic plan Stages,OpenEduCat / User,1,1,0,0
+access_op_course_plan_back_office_admin,access_op_course_plan_back_office_admin,Course Plan,OpenEduCat / Manager,1,1,1,1
+access_op_course_plan_faculty,access_op_course_plan_faculty,Course Plan,OpenEduCat / User,1,1,0,0
+access_student_gamification_badge,student_gamifiction_badge,Gamification Badge,OpenEduCat / User,1,1,1,1
+access_op_academic_plan_back_office_admin,access_op_academic_plan_back_office_admin,OpenEduCat Academic Plan,OpenEduCat / Manager,1,1,1,1
+access_op_academic_plan_faculty,access_op_academic_plan_faculty,OpenEduCat Academic Plan,OpenEduCat / User,1,0,0,0
+access_op_academic_plan_portal_user,access_op_academic_plan_portal_user,OpenEduCat Academic Plan,Role / Portal,1,1,0,0
+access_op_area_back_office_admin,access_op_area_back_office_admin,OpenEduCat Area,OpenEduCat / Manager,1,1,1,1
+access_op_area_faculty,access_op_area_faculty,OpenEduCat Area,OpenEduCat / User,1,0,0,0
+access_op_intake_year_back_office_admin,access_op_intake_year_back_office_admin,OpenEduCat Intake Year,OpenEduCat / Manager,1,1,1,1
+access_op_intake_year_faculty,access_op_intake_year_faculty,OpenEduCat Intake Year,OpenEduCat / User,1,0,0,0
+access_op_specialization_back_office_admin,access_op_specialization_back_office_admin,OpenEduCat Specializations,OpenEduCat / Manager,1,1,1,1
+access_op_specialization_faculty,access_op_specialization_faculty,OpenEduCat Specializations,OpenEduCat / User,1,0,0,0
+access_op_assessment_type_group_academic_plan_admin,access_op_assessment_type_group_academic_plan_admin,Assessment Type,OpenEduCat / Manager,1,1,1,1
+access_op_assessment_type_group_academic_plan_user,access_op_assessment_type_group_academic_plan_user,Assessment Type,OpenEduCat / User,1,0,0,0
+access_op_badge_student_wizard,name_op_badge_student_wizard,Badge Student Wizard,OpenEduCat / Manager,1,1,1,1
+access_op_badge_student_wizard_faculty,name_op_badge_student_wizard_faculty,Badge Student Wizard,OpenEduCat / User,1,1,1,0
+access_op_board_affiliation_back_office_admin,name_op_board_affiliation_back_office_admin,Board Affiliation,OpenEduCat / Manager,1,1,1,1
+access_op_board_affiliation_user,name_op_board_affiliation_user,Board Affiliation,OpenEduCat / User,1,1,0,0
+access_op_course_category_back_office_admin,access_op_course_category_back_office_admin,Course Category,OpenEduCat / Manager,1,1,1,1
+access_op_course_category_faculty,access_op_course_category_faculty,Course Category,OpenEduCat / User,1,1,1,0
+access_op_course_category_portal,access_op_course_category_portal,Course Category,Role / Portal,1,0,0,0
+access_op_course_category_public,access_op_course_category_public,Course Category,Role / Public,1,0,0,0
+access_op_course_category_user,access_op_course_category_user,Course Category,Role / User,1,0,0,0
+access_wizard_course_allocation_admin,access_wizard_course_allocation_admin,Create course allocation for selected Student(s),OpenEduCat / Manager,1,1,1,1
+access_wizard_course_allocation_faculty,access_wizard_course_allocation_faculty,Create course allocation for selected Student(s),OpenEduCat / User,1,1,1,0
+access_wizard_course_allocation_user,access_wizard_course_allocation_user,Create course allocation for selected Student(s),Role / User,1,1,1,1
+access_op_gamification_badge_student,name_op_gamification_badge_student,Gamification Badge,OpenEduCat / Manager,1,1,1,1
+access_op_gamification_badge_faculty,name_op_gamification_badge_faculty,Gamification Badge,OpenEduCat / User,1,1,1,0
+access_op_badge_student_student,name_op_badge_student_student,Gamification Student badge,OpenEduCat / Manager,1,1,1,1
+access_op_badge_student_faculty,name_op_badge_student_faculty,Gamification Student badge,OpenEduCat / User,1,1,1,0
+access_op_marks_line_faculty_back_office_admin,access_op_marks_line_faculty_back_office_admin,Marks Line,OpenEduCat / Manager,1,1,1,1
+access_op_marks_faculty,access_op_marks_faculty,Marks Line,OpenEduCat / User,1,1,0,0
+access_op_section_back_office_admin,name_op_section_back_office_admin,Section,OpenEduCat / Manager,1,1,1,1
+access_op_section_faculty,name_op_section_faculty,Section,OpenEduCat / User,1,1,0,0
+access_op_subject_faculty_back_office_admin,access_op_subject_faculty_back_office_admin,Subject Faculty Line,OpenEduCat / Manager,1,1,1,1
+access_op_subject_faculty_faculty,access_op_subject_faculty_faculty,Subject Faculty Line,OpenEduCat / User,1,0,0,0
+access_op_topics_back_office_admin,access_op_topics_back_office_admin,Topics,OpenEduCat / Manager,1,1,1,1
+access_op_topics_faculty,access_op_topics_faculty,Topics,OpenEduCat / User,1,1,0,0

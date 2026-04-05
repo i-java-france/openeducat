@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_sequence_onboarding_view" model="ir.sequence">
+        <field name="name">Onboarding Step Sequence</field>
+        <field name="code">oe.onboarding.steps</field>
+        <field name="number_increment">10</field>
+        <field name="number_next_actual">150</field>
+    </record>
+</odoo>
